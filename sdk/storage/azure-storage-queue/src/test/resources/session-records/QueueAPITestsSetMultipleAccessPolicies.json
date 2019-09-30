@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmultipleaccesspolicies16522a4462e10",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmultipleaccesspolicies37599ee3ba068",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "a0f6594a-2a4a-4583-9352-85759c656d8f"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0adcb-d003-0034-0c88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:19 GMT"
-    }
+      "x-ms-request-id" : "b181470a-6003-00c8-3fc2-62a141000000",
+      "Date" : "Wed, 04 Sep 2019 01:45:42 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmultipleaccesspolicies16522a4462e10?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmultipleaccesspolicies37599ee3ba068?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "c5b33f2c-09f7-4903-99ee-ab05e9ae075f",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -29,15 +32,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "86d0ade0-d003-0034-1f88-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:19 GMT"
-    }
+      "x-ms-request-id" : "b1814710-6003-00c8-42c2-62a141000000",
+      "Date" : "Wed, 04 Sep 2019 01:45:42 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmultipleaccesspolicies16522a4462e10?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetmultipleaccesspolicies37599ee3ba068?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "06dd309f-304a-4c3e-8498-c7ca5952b59b"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -46,11 +51,12 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "86d0adfb-d003-0034-3788-539fde000000",
+      "x-ms-request-id" : "b1814717-6003-00c8-48c2-62a141000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>policy0</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier><SignedIdentifier><Id>policy1</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier><SignedIdentifier><Id>policy2</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
-      "Date" : "Thu, 15 Aug 2019 16:40:19 GMT",
+      "Date" : "Wed, 04 Sep 2019 01:45:42 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetmultipleaccesspolicies16522a4462e10" ]
+  "variables" : [ "queueapitestssetmultipleaccesspolicies37599ee3ba068" ]
 }

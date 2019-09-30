@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
@@ -62,7 +62,7 @@ public final class BlobItem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -72,7 +72,7 @@ public final class BlobItem {
      * @param name the name value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem name(String name) {
+    public BlobItem setName(String name) {
         this.name = name;
         return this;
     }
@@ -82,7 +82,7 @@ public final class BlobItem {
      *
      * @return the deleted value.
      */
-    public boolean deleted() {
+    public boolean isDeleted() {
         return this.deleted;
     }
 
@@ -92,7 +92,7 @@ public final class BlobItem {
      * @param deleted the deleted value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem deleted(boolean deleted) {
+    public BlobItem setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -102,7 +102,7 @@ public final class BlobItem {
      *
      * @return the snapshot value.
      */
-    public String snapshot() {
+    public String getSnapshot() {
         return this.snapshot;
     }
 
@@ -112,7 +112,7 @@ public final class BlobItem {
      * @param snapshot the snapshot value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem snapshot(String snapshot) {
+    public BlobItem setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -122,7 +122,7 @@ public final class BlobItem {
      *
      * @return the properties value.
      */
-    public BlobProperties properties() {
+    public BlobProperties getProperties() {
         return this.properties;
     }
 
@@ -132,7 +132,7 @@ public final class BlobItem {
      * @param properties the properties value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem properties(BlobProperties properties) {
+    public BlobItem setProperties(BlobProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -142,7 +142,7 @@ public final class BlobItem {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -152,7 +152,7 @@ public final class BlobItem {
      * @param metadata the metadata value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem metadata(Map<String, String> metadata) {
+    public BlobItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -162,7 +162,7 @@ public final class BlobItem {
      *
      * @return the versionId value.
      */
-    public String versionId() {
+    public String getVersionId() {
         return this.versionId;
     }
 
@@ -172,7 +172,7 @@ public final class BlobItem {
      * @param versionId the versionId value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem versionId(String versionId) {
+    public BlobItem setVersionId(String versionId) {
         this.versionId = versionId;
         return this;
     }
@@ -192,7 +192,7 @@ public final class BlobItem {
      * @param isPrefix the isPrefix value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem isPrefix(Boolean isPrefix) {
+    public BlobItem setIsPrefix(Boolean isPrefix) {
         this.isPrefix = isPrefix;
         return this;
     }

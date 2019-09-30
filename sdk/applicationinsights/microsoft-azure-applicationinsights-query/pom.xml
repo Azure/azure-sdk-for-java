@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-applicationinsights-query</artifactId>
-    <version>1.0.0-Preview-1</version>
+    <version>1.0.0-preview-2</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Application Insights Query API</name>
     <description>This package contains Microsoft Application Insights SDK for retrieving metrics, events, and running queries.</description>
@@ -17,7 +17,7 @@
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-data-sdk-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
         <relativePath>../../../pom.data.xml</relativePath>
     </parent>
     <licenses>
@@ -134,7 +134,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.8</version>
                 <configuration>
                     <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.search</excludePackageNames>
                     <bottom>

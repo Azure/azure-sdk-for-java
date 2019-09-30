@@ -2,15 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
-import com.azure.storage.file.models.FileRangeWriteType;
+import com.azure.storage.file.models.NtfsFileAttributes;
 import reactor.core.publisher.Flux;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Map;
 
 /**
@@ -34,7 +40,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient client = new FileClientBuilder()
             .connectionString("${connectionString}")
             .endpoint("${endpoint}")
-            .buildAsyncClient();
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation
     }
 
@@ -48,8 +54,8 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildAsyncClient();
+            .resourcePath("myfilepath")
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.sastoken
         return fileAsyncClient;
     }
@@ -64,14 +70,15 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
-            .filePath("myfilepath")
-            .buildAsyncClient();
+            .resourcePath("myfilepath")
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.credential
         return fileAsyncClient;
     }
 
     /**
-     * Generates code sample for creating a {@link FileAsyncClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link FileAsyncClient} with {@code connectionString}
+     * which turns into {@link SharedKeyCredential}
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithConnectionString() {
@@ -79,8 +86,8 @@ public class FileAsyncJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
-            .connectionString(connectionString).shareName("myshare").filePath("myfilepath")
-            .buildAsyncClient();
+            .connectionString(connectionString).shareName("myshare").resourcePath("myfilepath")
+            .buildFileAsyncClient();
         // END: com.azure.storage.file.fileAsyncClient.instantiation.connectionstring
         return fileAsyncClient;
     }
@@ -106,23 +113,36 @@ public class FileAsyncJavaDocCodeSamples {
     public void createFileAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().setFileContentType("text/plain");
         fileAsyncClient.create(1024)
-            .doOnSuccess(response -> System.out.printf("Creating the file completed."));
+            .doOnSuccess(response -> System.out.println("Creating the file completed."));
         // END: com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#createWithResponse(long, FileHTTPHeaders, Map)}
+     * Generates a code sample for using {@link FileAsyncClient#createWithResponse(long, FileHTTPHeaders, FileSmbProperties, String, Map)}
      */
     public void createWithResponse() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        fileAsyncClient.createWithResponse(1024, httpHeaders, Collections.singletonMap("file", "updatedMetadata"))
+        // BEGIN: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        fileAsyncClient.createWithResponse(1024, httpHeaders, smbProperties, filePermission,
+            Collections.singletonMap("directory", "metadata"))
             .subscribe(response -> System.out.printf("Creating the file completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-map
+                response.getStatusCode()));
+        // END: com.azure.storage.file.fileAsyncClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map
     }
 
     /**
@@ -149,7 +169,7 @@ public class FileAsyncJavaDocCodeSamples {
         fileAsyncClient.startCopyWithResponse("https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata")).subscribe(
                 response ->
-                    System.out.println("Successfully copying the file with status code: " + response.statusCode()),
+                    System.out.println("Successfully copying the file with status code: " + response.getStatusCode()),
                 error -> System.err.println(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map
@@ -162,7 +182,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.abortCopy#string
         fileAsyncClient.abortCopy("someCopyId")
-            .doOnSuccess(response -> System.out.printf("Abort copying the file completed."));
+            .doOnSuccess(response -> System.out.println("Abort copying the file completed."));
         // END: com.azure.storage.file.fileAsyncClient.abortCopy#string
     }
 
@@ -174,7 +194,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.abortCopyWithResponse#string
         fileAsyncClient.abortCopyWithResponse("someCopyId")
             .subscribe(response -> System.out.printf("Abort copying the file completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.abortCopyWithResponse#string
     }
 
@@ -194,6 +214,21 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link FileAsyncClient#upload(Flux, long, long)}
+     */
+    public void uploadDataMaxOverloadAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
+        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
+        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete deleting the file!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
+    }
+
+    /**
      * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long)}
      */
     public void uploadWithResponse() {
@@ -201,42 +236,52 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining()).subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.statusCode()),
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
     }
 
-
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, long, FileRangeWriteType)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, long)}
      */
     public void uploadWithResponseOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024,
-            FileRangeWriteType.UPDATE).subscribe(
-                response -> System.out.println("Complete deleting the file with status code" + response.statusCode()),
-                error -> System.err.print(error.toString())
+        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024).subscribe(
+            response -> System.out.println("Complete deleting the file with status code" + response.getStatusCode()),
+            error -> System.err.print(error.toString())
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#ByteBuffer-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#upload(Flux, long)}
+     * Generates a code sample for using {@link FileAsyncClient#clearRange(long)}
      */
-    public void uploadDataAsyncMaxOverload() {
+    public void clearRangeAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining(), 1024,
-            FileRangeWriteType.UPDATE).subscribe(
-                response -> { },
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete deleting the file!")
+        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long
+        fileAsyncClient.clearRange(1024).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete clearing the range!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#ByteBuffer-long-int-filerangewritetype
+        // END: com.azure.storage.file.fileAsyncClient.clearRange#long
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#clearRangeWithResponse(long, long)}
+     */
+    public void clearRangeAsyncMaxOverload() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.clearRange#long-long
+        fileAsyncClient.clearRangeWithResponse(1024, 1024).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete clearing the range!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.clearRange#long-long
     }
 
     /**
@@ -254,19 +299,33 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadFromFile(String, FileRangeWriteType)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURL(long, long, long, URI)}
+     * @throws URISyntaxException when the URI is invalid
      */
-    public void uploadFileAsyncMaxOverload() {
+    public void uploadFileFromURLAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
-        fileAsyncClient.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE)
-            .subscribe(response -> {
-                if (fileAsyncClient.getProperties() != null) {
-                    System.out.printf("Upload the file with length of %d completed",
-                        fileAsyncClient.getPropertiesWithResponse().block().value().contentLength());
-                }
-            });
-        // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
+        fileAsyncClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Completed upload range from url!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURLWithResponse(long, long, long, URI)}
+     * @throws URISyntaxException when the URI is invalid
+     */
+    public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
+        fileAsyncClient.uploadRangeFromURLWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+            response -> { },
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Completed upload range from url!")
+        );
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
     }
 
     /**
@@ -304,10 +363,11 @@ public class FileAsyncJavaDocCodeSamples {
     public void downloadWithPropertiesWithResponse() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
-        fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false).subscribe(
-            response -> System.out.println("Complete downloading the data with status code: " + response.statusCode()),
-            error -> System.err.print(error.toString())
-        );
+        fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false)
+            .subscribe(
+                response -> System.out.println("Complete downloading the data with status code: " + response.getStatusCode()),
+                error -> System.err.print(error.toString())
+            );
         // END: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
     }
 
@@ -368,7 +428,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.deleteWithResponse
         fileAsyncClient.deleteWithResponse().subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.statusCode()),
+            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
             error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.deleteWithResponse
@@ -382,7 +442,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.getProperties
         fileAsyncClient.getProperties()
             .subscribe(properties -> {
-                System.out.printf("File latest modified date is %s.", properties.lastModified());
+                System.out.printf("File latest modified date is %s.", properties.getLastModified());
             });
         // END: com.azure.storage.file.fileAsyncClient.getProperties
     }
@@ -395,8 +455,8 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.getPropertiesWithResponse
         fileAsyncClient.getPropertiesWithResponse()
             .subscribe(response -> {
-                FileProperties properties = response.value();
-                System.out.printf("File latest modified date is %s.", properties.lastModified());
+                FileProperties properties = response.getValue();
+                System.out.printf("File latest modified date is %s.", properties.getLastModified());
             });
         // END: com.azure.storage.file.fileAsyncClient.getPropertiesWithResponse
     }
@@ -408,7 +468,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadata#map
         fileAsyncClient.setMetadata(Collections.singletonMap("file", "updatedMetadata"))
-            .doOnSuccess(response -> System.out.printf("Setting the file metadata completed."));
+            .doOnSuccess(response -> System.out.println("Setting the file metadata completed."));
         // END: com.azure.storage.file.fileAsyncClient.setMetadata#map
     }
 
@@ -420,7 +480,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map
         fileAsyncClient.setMetadataWithResponse(Collections.singletonMap("file", "updatedMetadata"))
             .subscribe(response -> System.out.printf("Setting the file metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map
     }
 
@@ -432,7 +492,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map.clearMetadata
         fileAsyncClient.setMetadataWithResponse(null).subscribe(
             response -> System.out.printf("Setting the file metadata completed with status code %d",
-                response.statusCode()));
+                response.getStatusCode()));
         // END: com.azure.storage.file.fileAsyncClient.setMetadataWithResponse#map.clearMetadata
     }
 
@@ -443,57 +503,83 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata
         fileAsyncClient.setMetadata(null).subscribe(
-            response -> System.out.printf("Setting the file metadata completed.")
+            response -> System.out.println("Setting the file metadata completed.")
         );
         // END: com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#setHttpHeaders(long, FileHTTPHeaders)}
+     * Generates a code sample for using {@link FileAsyncClient#setProperties(long, FileHTTPHeaders, FileSmbProperties, String)}
      */
-    public void setHTTPHeadersAsync() {
+    public void setFilePropertiesAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        fileAsyncClient.setHttpHeaders(1024, httpHeaders)
-            .doOnSuccess(response -> System.out.printf("Setting the file httpHeaders completed."));
-        // END: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders
+        // BEGIN: com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        fileAsyncClient.setProperties(1024, httpHeaders, smbProperties, filePermission)
+            .doOnSuccess(response -> System.out.println("Setting the file properties completed."));
+        // END: com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#setHttpHeadersWithResponse(long, FileHTTPHeaders)}
+     * Generates a code sample for using {@link FileAsyncClient#setPropertiesWithResponse(long, FileHTTPHeaders, FileSmbProperties, String)}
      */
     public void setHttpHeadersWithResponse() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeadersWithResponse#long-filehttpheaders
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-        fileAsyncClient.setHttpHeadersWithResponse(1024, httpHeaders)
-            .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.fileAsyncClient.setHttpHeadersWithResponse#long-filehttpheaders
+        // BEGIN: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string
+        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+            .setFileContentType("text/html")
+            .setFileContentEncoding("gzip")
+            .setFileContentLanguage("en")
+            .setFileCacheControl("no-transform")
+            .setFileContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+        fileAsyncClient.setPropertiesWithResponse(1024, httpHeaders, smbProperties, filePermission)
+            .subscribe(response -> System.out.printf("Setting the file properties completed with status code %d",
+                response.getStatusCode()));
+        // END: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#setHttpHeadersWithResponse(long, FileHTTPHeaders)} to clear httpHeaders.
+     * Generates a code sample for using {@link FileAsyncClient#setPropertiesWithResponse(long, FileHTTPHeaders, FileSmbProperties, String)}
+     * to clear httpHeaders.
      */
     public void clearHTTPHeadersAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeadersWithResponse#long-filehttpheaders.clearHttpHeaders
-        fileAsyncClient.setHttpHeadersWithResponse(1024, null)
+        // BEGIN: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
+        fileAsyncClient.setPropertiesWithResponse(1024, null, null, null)
             .subscribe(response -> System.out.printf("Setting the file httpHeaders completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.fileAsyncClient.setHttpHeadersWithResponse#long-filehttpheaders.clearHttpHeaders
+                response.getStatusCode()));
+        // END: com.azure.storage.file.fileAsyncClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#setHttpHeaders(long, FileHTTPHeaders)} to clear httpHeaders.
+     * Generates a code sample for using {@link FileAsyncClient#setProperties(long, FileHTTPHeaders, FileSmbProperties, String)}
+     * to clear httpHeaders.
      */
     public void clearHTTPHeaders() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
-        fileAsyncClient.setHttpHeaders(1024, null)
-            .subscribe(response -> System.out.printf("Setting the file httpHeaders completed."));
-        // END: com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders
+        // BEGIN: com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
+        fileAsyncClient.setProperties(1024, null, null, null)
+            .subscribe(response -> System.out.println("Setting the file httpHeaders completed."));
+        // END: com.azure.storage.file.fileAsyncClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
     }
 
     /**
@@ -503,7 +589,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges
         fileAsyncClient.listRanges().subscribe(range ->
-            System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
+            System.out.printf("List ranges completed with start: %d, end: %d", range.getStart(), range.getEnd()));
         // END: com.azure.storage.file.fileAsyncClient.listRanges
     }
 
@@ -515,7 +601,7 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges#filerange
         fileAsyncClient.listRanges(new FileRange(1024, 2048L))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
-                result.start(), result.end()));
+                result.getStart(), result.getEnd()));
         // END: com.azure.storage.file.fileAsyncClient.listRanges#filerange
     }
 
@@ -526,7 +612,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles
         fileAsyncClient.listHandles()
-            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.handleId()));
+            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.getHandleId()));
         // END: com.azure.storage.file.fileAsyncClient.listHandles
     }
 
@@ -537,7 +623,7 @@ public class FileAsyncJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listHandles#integer
         fileAsyncClient.listHandles(10)
-            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.handleId()));
+            .subscribe(result -> System.out.printf("List handles completed with handle id %s", result.getHandleId()));
         // END: com.azure.storage.file.fileAsyncClient.listHandles#integer
     }
 
@@ -549,10 +635,40 @@ public class FileAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
         fileAsyncClient.listHandles(10)
             .subscribe(result -> {
-                fileAsyncClient.forceCloseHandles(result.handleId()).subscribe(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles));
+                fileAsyncClient.forceCloseHandles(result.getHandleId()).subscribe(
+                    numOfClosedHandles -> System.out.printf("Close %d handles.", numOfClosedHandles));
             });
         // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#generateSAS(String, FileSASPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     */
+    public void generateSASAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        String identifier = "identifier";
+        FileSASPermission permissions = new FileSASPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setWritePermission(true);
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        IPRange ipRange = new IPRange()
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255");
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        String cacheControl = "cache";
+        String contentDisposition = "disposition";
+        String contentEncoding = "encoding";
+        String contentLanguage = "language";
+        String contentType = "type";
+        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        String sas = fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+        // END: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 
     /**
@@ -565,10 +681,33 @@ public class FileAsyncJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
-            .filePath("myfiile")
+            .resourcePath("myfiile")
             .snapshot(currentTime.toString())
-            .buildAsyncClient();
-        fileAsyncClient.getShareSnapshotId();
+            .buildFileAsyncClient();
+
+        System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getShareName()}
+     */
+    public void getShareNameAsync() {
+        FileAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getShareName
+        String shareName = directoryAsyncClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.fileAsyncClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getFilePath()}
+     */
+    public void getFilePathAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getFilePath
+        String filePath = fileAsyncClient.getFilePath();
+        System.out.println("The name of the file is " + filePath);
+        // END: com.azure.storage.file.fileAsyncClient.getFilePath
     }
 }

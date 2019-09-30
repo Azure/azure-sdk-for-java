@@ -5,8 +5,8 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.annotation.HeaderCollection;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -65,7 +65,7 @@ public final class QueueGetPropertiesHeaders {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -75,7 +75,7 @@ public final class QueueGetPropertiesHeaders {
      * @param metadata the metadata value to set.
      * @return the QueueGetPropertiesHeaders object itself.
      */
-    public QueueGetPropertiesHeaders metadata(Map<String, String> metadata) {
+    public QueueGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -87,7 +87,7 @@ public final class QueueGetPropertiesHeaders {
      *
      * @return the approximateMessagesCount value.
      */
-    public Integer approximateMessagesCount() {
+    public Integer getApproximateMessagesCount() {
         return this.approximateMessagesCount;
     }
 
@@ -100,7 +100,7 @@ public final class QueueGetPropertiesHeaders {
      * set.
      * @return the QueueGetPropertiesHeaders object itself.
      */
-    public QueueGetPropertiesHeaders approximateMessagesCount(Integer approximateMessagesCount) {
+    public QueueGetPropertiesHeaders setApproximateMessagesCount(Integer approximateMessagesCount) {
         this.approximateMessagesCount = approximateMessagesCount;
         return this;
     }
@@ -111,7 +111,7 @@ public final class QueueGetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -122,7 +122,7 @@ public final class QueueGetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the QueueGetPropertiesHeaders object itself.
      */
-    public QueueGetPropertiesHeaders requestId(String requestId) {
+    public QueueGetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -134,7 +134,7 @@ public final class QueueGetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -146,7 +146,7 @@ public final class QueueGetPropertiesHeaders {
      * @param version the version value to set.
      * @return the QueueGetPropertiesHeaders object itself.
      */
-    public QueueGetPropertiesHeaders version(String version) {
+    public QueueGetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -157,11 +157,11 @@ public final class QueueGetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -171,7 +171,7 @@ public final class QueueGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the QueueGetPropertiesHeaders object itself.
      */
-    public QueueGetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public QueueGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -185,7 +185,7 @@ public final class QueueGetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -195,7 +195,7 @@ public final class QueueGetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the QueueGetPropertiesHeaders object itself.
      */
-    public QueueGetPropertiesHeaders errorCode(String errorCode) {
+    public QueueGetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

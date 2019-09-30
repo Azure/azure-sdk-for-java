@@ -28,6 +28,11 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
     Boolean automaticSnapshotPolicyEnabled();
 
     /**
+     * @return the changeFeed value.
+     */
+    ChangeFeed changeFeed();
+
+    /**
      * @return the cors value.
      */
     CorsRules cors();
@@ -99,6 +104,18 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
         }
 
         /**
+         * The stage of the blobserviceproperties definition allowing to specify ChangeFeed.
+         */
+        interface WithChangeFeed {
+            /**
+             * Specifies changeFeed.
+             * @param changeFeed The blob service properties for change feed events
+             * @return the next definition stage
+             */
+            WithCreate withChangeFeed(ChangeFeed changeFeed);
+        }
+
+        /**
          * The stage of the blobserviceproperties definition allowing to specify Cors.
          */
         interface WithCors {
@@ -139,13 +156,13 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithAutomaticSnapshotPolicyEnabled, DefinitionStages.WithCors, DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy {
+        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithAutomaticSnapshotPolicyEnabled, DefinitionStages.WithChangeFeed, DefinitionStages.WithCors, DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy {
         }
     }
     /**
      * The template for a BlobServiceProperties update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithAutomaticSnapshotPolicyEnabled, UpdateStages.WithCors, UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy {
+    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithAutomaticSnapshotPolicyEnabled, UpdateStages.WithChangeFeed, UpdateStages.WithCors, UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy {
     }
 
     /**
@@ -162,6 +179,18 @@ public interface BlobServiceProperties extends HasInner<BlobServicePropertiesInn
              * @return the next update stage
              */
             Update withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled);
+        }
+
+        /**
+         * The stage of the blobserviceproperties update allowing to specify ChangeFeed.
+         */
+        interface WithChangeFeed {
+            /**
+             * Specifies changeFeed.
+             * @param changeFeed The blob service properties for change feed events
+             * @return the next update stage
+             */
+            Update withChangeFeed(ChangeFeed changeFeed);
         }
 
         /**

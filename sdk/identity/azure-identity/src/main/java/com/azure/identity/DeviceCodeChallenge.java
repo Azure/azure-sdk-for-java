@@ -3,7 +3,7 @@
 
 package com.azure.identity;
 
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.annotation.Immutable;
 
 import java.time.Duration;
 
@@ -23,7 +23,8 @@ public class DeviceCodeChallenge {
      * @param interval interval at which the STS should be polled at
      * @param message message which should be displayed to the user
      */
-    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUri, long expiresIn, long interval, String message) {
+    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUri, long expiresIn,
+                               long interval, String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUri = verificationUri;
@@ -48,42 +49,42 @@ public class DeviceCodeChallenge {
     /**
      * @return code which user needs to provide when authenticating at the verification URI.
      */
-    public String userCode() {
+    public String getUserCode() {
         return userCode;
     }
 
     /**
      * @return code which should be included in the request for the access token.
      */
-    public String deviceCode() {
+    public String getDeviceCode() {
         return deviceCode;
     }
 
     /**
      * @return URI where user can authenticate.
      */
-    public String verificationUri() {
+    public String getVerificationUri() {
         return verificationUri;
     }
 
     /**
      * @return expiration time of device code.
      */
-    public Duration expiresIn() {
+    public Duration getExpiresIn() {
         return expiresIn;
     }
 
     /**
      * @return interval at which the STS should be polled at.
      */
-    public Duration interval() {
+    public Duration getInterval() {
         return interval;
     }
 
     /**
      * @return message which should be displayed to the user.
      */
-    public String message() {
+    public String getMessage() {
         return message;
     }
 }

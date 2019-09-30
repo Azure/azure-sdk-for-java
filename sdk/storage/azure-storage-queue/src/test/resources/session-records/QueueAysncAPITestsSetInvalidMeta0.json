@@ -1,10 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetinvalidmeta01683215ccccf91c2",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetinvalidmeta05950644925d01a49",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.4 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "95fa6cb4-a334-464c-8dc8-2154d16bf37f"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,27 +13,31 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "86d0b3f6-d003-0034-7988-539fde000000",
-      "Date" : "Thu, 15 Aug 2019 16:40:32 GMT"
-    }
+      "x-ms-request-id" : "f7f7d117-b003-0085-10ee-7367a3000000",
+      "Date" : "Wed, 25 Sep 2019 22:13:54 GMT"
+    },
+    "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetinvalidmeta01683215ccccf91c2?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueaysncapitestssetinvalidmeta05950644925d01a49?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.4 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "f1cb6143-deb2-4781-88c6-060b03e65c36"
     },
     "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "AuthenticationFailed",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidMetadata",
       "retry-after" : "0",
-      "Content-Length" : "790",
-      "StatusCode" : "403",
-      "x-ms-request-id" : "86d0b401-d003-0034-0288-539fde000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:86d0b401-d003-0034-0288-539fde000000\nTime:2019-08-15T16:40:33.1201697Z</Message><AuthenticationErrorDetail>The MAC signature found in the HTTP request 'e+GF4D6YPu1FAAvKG8lumPMuaoEpcPbaCCWI3NCVxQ8=' is not the same as any computed signature. Server used following string to sign: 'PUT\n\n\n\n\n\nThu, 15 Aug 2019 16:40:33 GMT\n\n\n\n\n\nx-ms-client-request-id:5d04df0d-c387-4de8-8021-1db1a744ee09\nx-ms-meta-invalidmeta:value\nx-ms-version:2018-03-28\n/azstoragesdkaccount/queueaysncapitestssetinvalidmeta01683215ccccf91c2\ncomp:metadata'.</AuthenticationErrorDetail></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:32 GMT",
+      "Content-Length" : "260",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "f7f7d122-b003-0085-19ee-7367a3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:f7f7d122-b003-0085-19ee-7367a3000000\nTime:2019-09-25T22:13:54.6386914Z</Message></Error>",
+      "Date" : "Wed, 25 Sep 2019 22:13:54 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestssetinvalidmeta01683215ccccf91c2" ]
+  "variables" : [ "queueaysncapitestssetinvalidmeta05950644925d01a49" ]
 }

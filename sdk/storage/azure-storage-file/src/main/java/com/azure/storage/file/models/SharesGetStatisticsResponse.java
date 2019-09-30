@@ -29,7 +29,7 @@ public final class SharesGetStatisticsResponse extends ResponseBase<ShareGetStat
      * @return the deserialized response body.
      */
     @Override
-    public ShareStats value() {
-        return super.value();
+    public ShareStats getValue() {
+        return super.getValue();
     }
 }

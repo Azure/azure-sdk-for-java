@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -37,7 +37,7 @@ class KeyVerifyRequest {
      *
      * @return the algorithm value
      */
-    public SignatureAlgorithm algorithm() {
+    public SignatureAlgorithm getAlgorithm() {
         return this.algorithm;
     }
 
@@ -47,7 +47,7 @@ class KeyVerifyRequest {
      * @param algorithm the algorithm value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyRequest algorithm(SignatureAlgorithm algorithm) {
+    public KeyVerifyRequest setAlgorithm(SignatureAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -57,7 +57,7 @@ class KeyVerifyRequest {
      *
      * @return the digest value
      */
-    public byte[] digest() {
+    public byte[] getDigest() {
         if (this.digest == null) {
             return new byte[0];
         }
@@ -70,7 +70,7 @@ class KeyVerifyRequest {
      * @param digest the digest value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyRequest digest(byte[] digest) {
+    public KeyVerifyRequest setDigest(byte[] digest) {
         if (digest == null) {
             this.digest = null;
         } else {
@@ -84,7 +84,7 @@ class KeyVerifyRequest {
      *
      * @return the signature value
      */
-    public byte[] signature() {
+    public byte[] getSignature() {
         if (this.signature == null) {
             return new byte[0];
         }
@@ -97,7 +97,7 @@ class KeyVerifyRequest {
      * @param signature the signature value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeyVerifyRequest signature(byte[] signature) {
+    public KeyVerifyRequest setSignature(byte[] signature) {
         if (signature == null) {
             this.signature = null;
         } else {

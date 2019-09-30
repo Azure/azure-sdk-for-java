@@ -3,7 +3,7 @@
 
 package com.azure.core;
 
-import com.azure.core.entities.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
@@ -20,7 +20,7 @@ public class MyOtherRestException extends HttpResponseException {
     }
 
     @Override
-    public HttpBinJSON value() {
-        return (HttpBinJSON) super.value();
+    public HttpBinJSON getValue() {
+        return (HttpBinJSON) super.getValue();
     }
 }

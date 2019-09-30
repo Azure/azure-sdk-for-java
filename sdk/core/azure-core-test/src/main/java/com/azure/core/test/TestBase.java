@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.rules.TestName;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -23,7 +22,7 @@ public abstract class TestBase {
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     private static TestMode testMode;
 
-    private final Logger logger = LoggerFactory.getLogger(TestBase.class);
+    private final ClientLogger logger = new ClientLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
@@ -43,17 +42,13 @@ public abstract class TestBase {
      */
     @Before
     public void setupTest() {
-        final String testName = testName();
-        if (logger.isInfoEnabled()) {
-            logger.info("Test Mode: {}, Name: {}", testMode, testName);
-        }
+        final String testName = getTestName();
+        logger.info("Test Mode: {}, Name: {}", testMode, testName);
 
         try {
             interceptorManager = new InterceptorManager(testName, testMode);
         } catch (IOException e) {
-            if (logger.isErrorEnabled()) {
-                logger.error("Could not create interceptor for {}", testName, e);
-            }
+            logger.error("Could not create interceptor for {}", testName, e);
             Assert.fail();
         }
         testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
@@ -82,12 +77,12 @@ public abstract class TestBase {
     /**
      * Gets the name of the current test being run.
      * <p>
-     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns {@code
-     * null}. See https://stackoverflow.com/a/16113631/4220757.
+     * NOTE: This could not be implemented in the base class using {@link TestName} because it always returns
+     * {@code null}. See https://stackoverflow.com/a/16113631/4220757.
      *
      * @return The name of the current test.
      */
-    protected abstract String testName();
+    protected abstract String getTestName();
 
     /**
      * Performs any set-up before each test case. Any initialization that occurs in TestBase occurs first before this.
@@ -104,24 +99,19 @@ public abstract class TestBase {
     }
 
     private static TestMode initializeTestMode() {
-        final Logger logger = LoggerFactory.getLogger(TestBase.class);
-        final String azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE);
+        final ClientLogger logger = new ClientLogger(TestBase.class);
+        final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {
                 return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
             } catch (IllegalArgumentException e) {
-                if (logger.isErrorEnabled()) {
-                    logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
-                }
-
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
                 return TestMode.PLAYBACK;
             }
         }
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
-        }
+        logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         return TestMode.PLAYBACK;
     }
 }

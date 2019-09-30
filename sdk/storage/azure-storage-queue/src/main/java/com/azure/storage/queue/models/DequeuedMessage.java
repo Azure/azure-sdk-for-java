@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -65,7 +65,7 @@ public final class DequeuedMessage {
      *
      * @return the messageId value.
      */
-    public String messageId() {
+    public String getMessageId() {
         return this.messageId;
     }
 
@@ -75,7 +75,7 @@ public final class DequeuedMessage {
      * @param messageId the messageId value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage messageId(String messageId) {
+    public DequeuedMessage setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -86,11 +86,11 @@ public final class DequeuedMessage {
      *
      * @return the insertionTime value.
      */
-    public OffsetDateTime insertionTime() {
+    public OffsetDateTime getInsertionTime() {
         if (this.insertionTime == null) {
             return null;
         }
-        return this.insertionTime.dateTime();
+        return this.insertionTime.getDateTime();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class DequeuedMessage {
      * @param insertionTime the insertionTime value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage insertionTime(OffsetDateTime insertionTime) {
+    public DequeuedMessage setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -115,11 +115,11 @@ public final class DequeuedMessage {
      *
      * @return the expirationTime value.
      */
-    public OffsetDateTime expirationTime() {
+    public OffsetDateTime getExpirationTime() {
         if (this.expirationTime == null) {
             return null;
         }
-        return this.expirationTime.dateTime();
+        return this.expirationTime.getDateTime();
     }
 
     /**
@@ -129,7 +129,7 @@ public final class DequeuedMessage {
      * @param expirationTime the expirationTime value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage expirationTime(OffsetDateTime expirationTime) {
+    public DequeuedMessage setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -145,7 +145,7 @@ public final class DequeuedMessage {
      *
      * @return the popReceipt value.
      */
-    public String popReceipt() {
+    public String getPopReceipt() {
         return this.popReceipt;
     }
 
@@ -157,7 +157,7 @@ public final class DequeuedMessage {
      * @param popReceipt the popReceipt value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage popReceipt(String popReceipt) {
+    public DequeuedMessage setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
     }
@@ -168,11 +168,11 @@ public final class DequeuedMessage {
      *
      * @return the timeNextVisible value.
      */
-    public OffsetDateTime timeNextVisible() {
+    public OffsetDateTime getTimeNextVisible() {
         if (this.timeNextVisible == null) {
             return null;
         }
-        return this.timeNextVisible.dateTime();
+        return this.timeNextVisible.getDateTime();
     }
 
     /**
@@ -182,7 +182,7 @@ public final class DequeuedMessage {
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage timeNextVisible(OffsetDateTime timeNextVisible) {
+    public DequeuedMessage setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
         } else {
@@ -197,7 +197,7 @@ public final class DequeuedMessage {
      *
      * @return the dequeueCount value.
      */
-    public long dequeueCount() {
+    public long getDequeueCount() {
         return this.dequeueCount;
     }
 
@@ -208,7 +208,7 @@ public final class DequeuedMessage {
      * @param dequeueCount the dequeueCount value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage dequeueCount(long dequeueCount) {
+    public DequeuedMessage setDequeueCount(long dequeueCount) {
         this.dequeueCount = dequeueCount;
         return this;
     }
@@ -218,7 +218,7 @@ public final class DequeuedMessage {
      *
      * @return the messageText value.
      */
-    public String messageText() {
+    public String getMessageText() {
         return this.messageText;
     }
 
@@ -228,7 +228,7 @@ public final class DequeuedMessage {
      * @param messageText the messageText value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage messageText(String messageText) {
+    public DequeuedMessage setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }

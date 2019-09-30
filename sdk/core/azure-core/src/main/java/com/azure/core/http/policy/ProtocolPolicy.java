@@ -7,8 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.UrlBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -19,7 +18,7 @@ import java.net.MalformedURLException;
 public class ProtocolPolicy implements HttpPipelinePolicy {
     private final String protocol;
     private final boolean overwrite;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProtocolPolicy.class);
+    private final ClientLogger logger = new ClientLogger(ProtocolPolicy.class);
 
     /**
      * Create a new ProtocolPolicy.
@@ -34,12 +33,12 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
-        if (overwrite || urlBuilder.scheme() == null) {
-            LOGGER.info("Setting protocol to {}", protocol);
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        if (overwrite || urlBuilder.getScheme() == null) {
+            logger.info("Setting protocol to {}", protocol);
 
             try {
-                context.httpRequest().url(urlBuilder.scheme(protocol).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

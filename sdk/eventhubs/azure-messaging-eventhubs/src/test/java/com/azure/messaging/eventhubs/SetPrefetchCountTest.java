@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -15,14 +15,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
 
-import java.time.Instant;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
@@ -30,7 +26,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
  * Verifies we can use various prefetch options with {@link EventHubAsyncConsumer}.
  */
 @Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
-public class SetPrefetchCountTest extends ApiTestBase {
+public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.
     private static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -41,8 +37,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
     // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
     // our own.
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
-    private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
+    private static volatile IntegrationTestEventData testData = null;
 
     private EventHubAsyncClient client;
     private EventHubAsyncConsumer consumer;
@@ -55,18 +50,18 @@ public class SetPrefetchCountTest extends ApiTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
+        client = createBuilder().buildAsyncClient();
 
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-
-        setupEventTestData(client);
+        if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
+            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
+        }
     }
 
     @Override
@@ -85,14 +80,14 @@ public class SetPrefetchCountTest extends ApiTestBase {
         final int eventCount = NUMBER_OF_EVENTS;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .retry(RETRY_OPTIONS)
-            .prefetchCount(2000);
+            .setRetry(RETRY_OPTIONS)
+            .setPrefetchCount(2000);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
         final Disposable subscription = consumer.receive()
-            .filter(x -> isMatchingEvent(x, MESSAGE_TRACKING_VALUE))
+            .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
         // Act
@@ -114,12 +109,13 @@ public class SetPrefetchCountTest extends ApiTestBase {
         // Arrange
         final int eventCount = 30;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
-        final EventHubConsumerOptions options = new EventHubConsumerOptions().prefetchCount(11);
+        final EventHubConsumerOptions options = new EventHubConsumerOptions().setPrefetchCount(11);
 
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
-            EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()), options);
+            EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()), options);
 
-        final Disposable subscription = consumer.receive().filter(x -> isMatchingEvent(x, MESSAGE_TRACKING_VALUE))
+        final Disposable subscription = consumer.receive()
+            .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
             .take(eventCount).subscribe(event -> countDownLatch.countDown());
 
         try {
@@ -130,31 +126,6 @@ public class SetPrefetchCountTest extends ApiTestBase {
             Assert.assertEquals(0, countDownLatch.getCount());
         } finally {
             subscription.dispose();
-        }
-    }
-
-    /**
-     * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
-     * events there.
-     */
-    private void setupEventTestData(EventHubAsyncClient client) {
-        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
-            return;
-        }
-
-        logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
-
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .partitionId(PARTITION_ID);
-        final EventHubAsyncProducer producer = client.createProducer(producerOptions);
-        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
-
-        try {
-            MESSAGES_PUSHED_INSTANT.set(Instant.now());
-            producer.send(events).block(RETRY_OPTIONS.tryTimeout());
-        } finally {
-            dispose(producer);
         }
     }
 }

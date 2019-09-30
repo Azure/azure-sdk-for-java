@@ -98,7 +98,7 @@ class RequestResponseLink extends ClientEntity {
 
                     Exception operationTimedout = new TimeoutException(
                             String.format(Locale.US, "Open operation on RequestResponseLink(%s) on Entity(%s) timed out at %s.", requestReponseLink.getClientId(), requestReponseLink.linkPath, ZonedDateTime.now().toString()));
-                    TRACE_LOGGER.error("RequestResponseLink open timed out.", operationTimedout);
+                    TRACE_LOGGER.info("RequestResponseLink open timed out.", operationTimedout);
                     AsyncUtil.completeFutureExceptionally(requestReponseLink.createFuture, operationTimedout);
                 }
             },
@@ -108,7 +108,7 @@ class RequestResponseLink extends ClientEntity {
         requestReponseLink.sendTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
             if (sasTokenEx != null) {
                 Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
-                TRACE_LOGGER.error("Sending SAS Token failed. RequestResponseLink path:{}", requestReponseLink.linkPath, cause);
+                TRACE_LOGGER.info("Sending SAS Token failed. RequestResponseLink path:{}", requestReponseLink.linkPath, cause);
                 requestReponseLink.createFuture.completeExceptionally(cause);
             } else {
                 try {
@@ -310,7 +310,7 @@ class RequestResponseLink extends ClientEntity {
                 this.isRecreateLinksInProgress = true;
                 this.recreateInternalLinks().handleAsync((v, recreationEx) -> {
                     if (recreationEx != null) {
-                        TRACE_LOGGER.warn("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
+                        TRACE_LOGGER.info("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
                     }
                     
                     synchronized (this.recreateLinksLock) {
@@ -337,7 +337,7 @@ class RequestResponseLink extends ClientEntity {
         this.sendTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
             if (sasTokenEx != null) {
                 Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
-                TRACE_LOGGER.error("Sending SAS Token failed. RequestResponseLink path:{}", this.linkPath, cause);
+                TRACE_LOGGER.info("Sending SAS Token failed. RequestResponseLink path:{}", this.linkPath, cause);
                 recreateInternalLinksFuture.completeExceptionally(cause);
                 this.completeAllPendingRequestsWithException(cause);
             } else {
@@ -375,7 +375,7 @@ class RequestResponseLink extends ClientEntity {
                 if (!recreateInternalLinksFuture.isDone()) {
                     Exception operationTimedout = new TimeoutException(
                             String.format(Locale.US, "Recreating internal links of requestresponselink to %s timed out.", RequestResponseLink.this.linkPath));
-                    TRACE_LOGGER.warn("Recreating internal links of requestresponselink timed out.", operationTimedout);
+                    TRACE_LOGGER.info("Recreating internal links of requestresponselink timed out.", operationTimedout);
                     RequestResponseLink.this.cancelSASTokenRenewTimer();
                     AsyncUtil.completeFutureExceptionally(recreateInternalLinksFuture, operationTimedout);
                 }
@@ -387,7 +387,7 @@ class RequestResponseLink extends ClientEntity {
     }
 
     private void completeAllPendingRequestsWithException(Throwable exception) {
-        TRACE_LOGGER.warn("Completing all pending requests with exception in request response link to {}", this.linkPath);
+        TRACE_LOGGER.info("Completing all pending requests with exception in request response link to {}", this.linkPath);
         for (RequestResponseWorkItem workItem : this.pendingRequests.values()) {
             AsyncUtil.completeFutureExceptionally(workItem.getWork(), exception);
             workItem.cancelTimeoutTask(true);
@@ -420,7 +420,7 @@ class RequestResponseLink extends ClientEntity {
 
     private ScheduledFuture<?> scheduleRequestTimeout(String requestId, Duration timeout) {
         return Timer.schedule(() -> {
-            TRACE_LOGGER.warn("Request with id:{} timed out", requestId);
+            TRACE_LOGGER.info("Request with id:{} timed out", requestId);
             RequestResponseWorkItem completedWorkItem = RequestResponseLink.this.exceptionallyCompleteRequest(requestId, new TimeoutException("Request timed out."), true);
             boolean isRetriedWorkItem = completedWorkItem.getLastKnownException() != null;
             RequestResponseLink.this.amqpSender.removeEnqueuedRequest(requestId, isRetriedWorkItem);
@@ -450,14 +450,14 @@ class RequestResponseLink extends ClientEntity {
             TRACE_LOGGER.debug("Response for request with id:{} has status code:{}", requestId, statusCode);
             // Retry on server busy and other retry-able status codes (what are other codes??)
             if (statusCode == ClientConstants.REQUEST_RESPONSE_SERVER_BUSY_STATUS_CODE) {
-                TRACE_LOGGER.warn("Request with id:{} received ServerBusy response from '{}'", requestId, this.linkPath);
+                TRACE_LOGGER.info("Request with id:{} received ServerBusy response from '{}'", requestId, this.linkPath);
                 // error response
                 Exception responseException = RequestResponseUtils.genereateExceptionFromResponse(responseMessage);
                 this.underlyingFactory.getRetryPolicy().incrementRetryCount(this.getClientId());
                 Duration retryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), responseException, workItem.getTimeoutTracker().remaining());
                 if (retryInterval == null) {
                     // Either not retry-able or not enough time to retry
-                    TRACE_LOGGER.error("Request with id:{} cannot be retried. So completing with excetion.", requestId, responseException);
+                    TRACE_LOGGER.info("Request with id:{} cannot be retried. So completing with excetion.", requestId, responseException);
                     this.exceptionallyCompleteRequest(requestId, responseException, false);
                 } else {
                     // Retry
@@ -483,7 +483,7 @@ class RequestResponseLink extends ClientEntity {
                 workItem.cancelTimeoutTask(true);
             }
         } else {
-            TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestId);
+            TRACE_LOGGER.info("Request with id:{} not found in the requestresponse link.", requestId);
         }
 
         return workItem;
@@ -501,7 +501,7 @@ class RequestResponseLink extends ClientEntity {
             () -> {
                 if (!closeFuture.isDone()) {
                     Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Link(%s) timed out at %s", "Close", linkName, ZonedDateTime.now()));
-                    TRACE_LOGGER.warn("Closing link timed out", operationTimedout);
+                    TRACE_LOGGER.info("Closing link timed out", operationTimedout);
 
                     AsyncUtil.completeFutureExceptionally(closeFuture, operationTimedout);
                 }
@@ -570,7 +570,7 @@ class RequestResponseLink extends ClientEntity {
                 // Send unlimited credit
                 this.receiveLink.flow(Integer.MAX_VALUE);
             } else {
-                TRACE_LOGGER.error("Opening internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, completionException);
+                TRACE_LOGGER.info("Opening internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, completionException);
                 this.setClosed();
                 AsyncUtil.completeFuture(this.closeFuture, null);
                 AsyncUtil.completeFutureExceptionally(this.openFuture, completionException);
@@ -585,11 +585,11 @@ class RequestResponseLink extends ClientEntity {
 
             if (this.getIsClosingOrClosed()) {
                 if (!this.closeFuture.isDone()) {
-                    TRACE_LOGGER.error("Closing internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, exception);
+                    TRACE_LOGGER.info("Closing internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, exception);
                     AsyncUtil.completeFutureExceptionally(this.closeFuture, exception);
                 }
             } else {
-                TRACE_LOGGER.warn("Internal receive link '{}' of requestresponselink to '{}' encountered error.", this.receiveLink.getName(), this.parent.linkPath, exception);
+                TRACE_LOGGER.info("Internal receive link '{}' of requestresponselink to '{}' encountered error.", this.receiveLink.getName(), this.parent.linkPath, exception);
                 this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
                 this.matchingSendLink.close();
                 this.parent.underlyingFactory.deregisterForConnectionError(this.matchingSendLink);
@@ -618,7 +618,7 @@ class RequestResponseLink extends ClientEntity {
                 delivery.disposition(Accepted.getInstance());
                 delivery.settle();
             } catch (Exception e) {
-                TRACE_LOGGER.warn("Reading message from delivery failed with unexpected exception.", e);
+                TRACE_LOGGER.info("Reading message from delivery failed with unexpected exception.", e);
 
                 // release the delivery ??
                 delivery.disposition(Released.getInstance());
@@ -634,7 +634,7 @@ class RequestResponseLink extends ClientEntity {
                     TRACE_LOGGER.debug("RequestRespnseLink received response for request with id :{}", requestMessageId);
                     this.parent.completeRequestWithResponse(requestMessageId, finalResponseMessage);
                 } else {
-                    TRACE_LOGGER.warn("RequestRespnseLink received a message with null correlationId");
+                    TRACE_LOGGER.info("RequestRespnseLink received a message with null correlationId");
                 }
             });
         }
@@ -721,7 +721,7 @@ class RequestResponseLink extends ClientEntity {
                 AsyncUtil.completeFuture(this.openFuture, null);
                 this.runSendLoop();
             } else {
-                TRACE_LOGGER.error("Opening internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, completionException);
+                TRACE_LOGGER.info("Opening internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, completionException);
                 this.setClosed();
                 AsyncUtil.completeFuture(this.closeFuture, null);
                 AsyncUtil.completeFutureExceptionally(this.openFuture, completionException);
@@ -736,11 +736,11 @@ class RequestResponseLink extends ClientEntity {
 
             if (this.getIsClosingOrClosed()) {
                 if (!this.closeFuture.isDone()) {
-                    TRACE_LOGGER.error("Closing internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, exception);
+                    TRACE_LOGGER.info("Closing internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, exception);
                     AsyncUtil.completeFutureExceptionally(this.closeFuture, exception);
                 }
             } else {
-                TRACE_LOGGER.warn("Internal send link '{}' of requestresponselink to '{}' encountered error.", this.sendLink.getName(), this.parent.linkPath, exception);
+                TRACE_LOGGER.info("Internal send link '{}' of requestresponselink to '{}' encountered error.", this.sendLink.getName(), this.parent.linkPath, exception);
                 this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
                 this.matchingReceiveLink.close();
                 this.parent.underlyingFactory.deregisterForConnectionError(this.matchingReceiveLink);
@@ -870,11 +870,11 @@ class RequestResponseLink extends ClientEntity {
                             this.availableCredit.decrementAndGet();
                             TRACE_LOGGER.debug("RequestResponseLink {} internal sender sent a request. available credit :{}", this.parent.linkPath, this.availableCredit.get());
                         } catch (Exception e) {
-                            TRACE_LOGGER.error("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
+                            TRACE_LOGGER.info("RequestResponseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestIdToBeSent, e);
                             this.parent.exceptionallyCompleteRequest(requestIdToBeSent, e, false);
                         }
                     } else {
-                        TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
+                        TRACE_LOGGER.info("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
                     }
                 }
             } finally {

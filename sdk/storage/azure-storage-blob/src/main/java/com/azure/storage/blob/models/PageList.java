@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public final class PageList {
      *
      * @return the pageRange value.
      */
-    public List<PageRange> pageRange() {
+    public List<PageRange> getPageRange() {
         return this.pageRange;
     }
 
@@ -43,7 +43,7 @@ public final class PageList {
      * @param pageRange the pageRange value to set.
      * @return the PageList object itself.
      */
-    public PageList pageRange(List<PageRange> pageRange) {
+    public PageList setPageRange(List<PageRange> pageRange) {
         this.pageRange = pageRange;
         return this;
     }
@@ -53,7 +53,7 @@ public final class PageList {
      *
      * @return the clearRange value.
      */
-    public List<ClearRange> clearRange() {
+    public List<ClearRange> getClearRange() {
         return this.clearRange;
     }
 
@@ -63,7 +63,7 @@ public final class PageList {
      * @param clearRange the clearRange value to set.
      * @return the PageList object itself.
      */
-    public PageList clearRange(List<ClearRange> clearRange) {
+    public PageList setClearRange(List<ClearRange> clearRange) {
         this.clearRange = clearRange;
         return this;
     }

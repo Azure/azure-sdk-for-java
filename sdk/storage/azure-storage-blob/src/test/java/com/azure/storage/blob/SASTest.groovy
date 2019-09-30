@@ -8,6 +8,12 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.AccountSASPermission
+import com.azure.storage.common.AccountSASResourceType
+import com.azure.storage.common.AccountSASService
+import com.azure.storage.common.AccountSASSignatureValues
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
@@ -22,18 +28,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class SASTest extends APISpec {
-    /*
-    This test is to validate the workaround for the autorest bug that forgets to set the request property on the
-    response.
-     */
-
-    def "Request property"() {
-        when:
-        def response = cc.deleteWithResponse(null, null, null)
-
-        then:
-        response.request() != null
-    }
 
     @Unroll
     def "Blob range"() {
@@ -70,12 +64,12 @@ class SASTest extends APISpec {
         setup:
         def data = "test".getBytes()
         def blobName = generateBlobName()
-        def bu = cc.getBlockBlobClient(blobName)
+        def bu = cc.getBlobClient(blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
         def snapshotId = bu.createSnapshot().getSnapshotId()
 
         when:
-        def snapshotBlob = cc.getBlockBlobClient(blobName, snapshotId)
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).asBlockBlobClient()
 
         then:
         snapshotBlob.getSnapshotId() == snapshotId
@@ -86,12 +80,12 @@ class SASTest extends APISpec {
         setup:
         def data = "test".getBytes()
         def blobName = generateBlobName()
-        def bu = cc.getBlockBlobClient(blobName)
+        def bu = cc.getBlobClient(blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
         def snapshotId = bu.createSnapshot().getSnapshotId()
 
         when:
-        def snapshotBlob = cc.getBlockBlobClient(blobName, snapshotId)
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).asBlockBlobClient()
 
         then:
         snapshotBlob.isSnapshot()
@@ -107,16 +101,16 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def permissions = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -135,10 +129,10 @@ class SASTest extends APISpec {
 
         then:
         os.toString() == new String(data)
-        properties.cacheControl() == "cache"
-        properties.contentDisposition() == "disposition"
-        properties.contentEncoding() == "encoding"
-        properties.contentLanguage() == "language"
+        properties.getCacheControl() == "cache"
+        properties.getContentDisposition() == "disposition"
+        properties.getContentEncoding() == "encoding"
+        properties.getContentLanguage() == "language"
         notThrown(StorageException)
     }
 
@@ -149,21 +143,21 @@ class SASTest extends APISpec {
         def blobName = generateBlobName()
         def bu = getBlobClient(primaryCredential, cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
-        String snapshotId = bu.createSnapshot().getSnapshotId()
+        def snapshotId = bu.createSnapshot().getSnapshotId()
 
-        def snapshotBlob = cc.getBlockBlobClient(blobName, snapshotId)
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).asBlockBlobClient()
 
         def permissions = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
         def ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
         def cacheControl = "cache"
         def contentDisposition = "disposition"
@@ -182,42 +176,42 @@ class SASTest extends APISpec {
 
         then:
         os.toString() == new String(data)
-        properties.cacheControl() == "cache"
-        properties.contentDisposition() == "disposition"
-        properties.contentEncoding() == "encoding"
-        properties.contentLanguage() == "language"
+        properties.getCacheControl() == "cache"
+        properties.getContentDisposition() == "disposition"
+        properties.getContentEncoding() == "encoding"
+        properties.getContentLanguage() == "language"
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test container"() {
         setup:
         def identifier = new SignedIdentifier()
-            .id("0000")
-            .accessPolicy(new AccessPolicy().permission("racwdl")
-                .expiry(getUTCNow().plusDays(1)))
+            .setId("0000")
+            .setAccessPolicy(new AccessPolicy().setPermission("racwdl")
+                .setExpiry(getUTCNow().plusDays(1)))
         cc.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
-        ContainerSASPermission permissions = new ContainerSASPermission()
-            .read(true)
-            .write(true)
-            .list(true)
-            .create(true)
-            .delete(true)
-            .add(true)
+        def permissions = new ContainerSASPermission()
+            .setRead(true)
+            .setWrite(true)
+            .setList(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setAdd(true)
+            .setList(true)
 
-        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        String sasWithId = cc.generateSAS(identifier.id())
+        def sasWithId = cc.generateSAS(identifier.getId())
 
-        ContainerClient client1 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithId), cc.getContainerUrl().toString())
+        def client1 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithId), cc.getContainerUrl().toString())
 
         client1.listBlobsFlat().iterator().hasNext()
 
-        String sasWithPermissions = cc.generateSAS(permissions, expiryTime)
+        def sasWithPermissions = cc.generateSAS(permissions, expiryTime)
 
-        ContainerClient client2 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
+        def client2 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
 
         client2.listBlobsFlat().iterator().hasNext()
 
@@ -225,95 +219,158 @@ class SASTest extends APISpec {
         notThrown(StorageException)
     }
 
-
+    /* TODO: Fix user delegation tests to run in CI */
     @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
-        byte[] data = "test".getBytes()
-        String blobName = generateBlobName()
-        BlockBlobClient bu = cc.getBlockBlobClient(blobName)
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
 
-        BlobSASPermission permissions = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
+        def permissions = new BlobSASPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
 
-        OffsetDateTime startTime = getUTCNow().minusDays(1)
-        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
-        IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+        def ipRange = new IPRange()
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
 
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
-        String cacheControl = "cache"
-        String contentDisposition = "disposition"
-        String contentEncoding = "encoding"
-        String contentLanguage = "language"
-        String contentType = "type"
+        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def cacheControl = "cache"
+        def contentDisposition = "disposition"
+        def contentEncoding = "encoding"
+        def contentLanguage = "language"
+        def contentType = "type"
 
-        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusDays(1))
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        String sas = bu.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = bu.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        BlockBlobClient client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
+        then:
+        sas != null
 
-        OutputStream os = new ByteArrayOutputStream()
+        when:
+        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
+
+        def os = new ByteArrayOutputStream()
         client.download(os)
-        BlobProperties properties = client.getProperties()
+        def properties = client.getProperties()
 
         then:
         os.toString() == new String(data)
-        properties.cacheControl() == "cache"
-        properties.contentDisposition() == "disposition"
-        properties.contentEncoding() == "encoding"
-        properties.contentLanguage() == "language"
+        properties.getCacheControl() == "cache"
+        properties.getContentDisposition() == "disposition"
+        properties.getContentEncoding() == "encoding"
+        properties.getContentLanguage() == "language"
         notThrown(StorageException)
+    }
+
+    def "BlobServiceSAS network test blob snapshot"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName = generateBlobName()
+        def containerClient = primaryBlobServiceClient.createContainer(containerName)
+        def blobClient = containerClient.getBlobClient(blobName).asBlockBlobClient()
+        blobClient.upload(defaultInputStream.get(), defaultDataSize) // need something to snapshot
+        def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(blobClient.createSnapshot()).buildBlockBlobClient()
+        def snapshotId = snapshotBlob.getSnapshotId()
+
+        def permissions = new BlobSASPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
+        def ipRange = new IPRange()
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
+        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def cacheControl = "cache"
+        def contentDisposition = "disposition"
+        def contentEncoding = "encoding"
+        def contentLanguage = "language"
+        def contentType = "type"
+
+        when:
+        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+
+        and:
+        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), containerClient.getContainerUrl().toString(), blobName).asAppendBlobClient()
+
+        client.download(new ByteArrayOutputStream())
+
+        then:
+        thrown(StorageException)
+
+        when:
+        def snapClient = getBlobClient(SASTokenCredential.fromSASTokenString(sas), containerClient.getContainerUrl().toString(), blobName, snapshotId).asAppendBlobClient()
+
+        def data = new ByteArrayOutputStream()
+        snapClient.download(data)
+
+        then:
+        notThrown(StorageException)
+        data.toByteArray() == defaultData.array()
+
+        and:
+        def properties = snapClient.getProperties()
+
+        then:
+        properties.getCacheControl() == "cache"
+        properties.getContentDisposition() == "disposition"
+        properties.getContentEncoding() == "encoding"
+        properties.getContentLanguage() == "language"
+
     }
 
     @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
-        byte[] data = "test".getBytes()
-        String blobName = generateBlobName()
-        BlockBlobClient bu = cc.getBlockBlobClient(blobName)
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
-        BlockBlobClient snapshotBlob = bu.createSnapshot().value().asBlockBlobClient()
-        String snapshotId = snapshotBlob.getSnapshotId()
+        def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(bu.createSnapshot()).buildBlockBlobClient()
+        def snapshotId = snapshotBlob.getSnapshotId()
 
-        BlobSASPermission permissions = new BlobSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
+        def permissions = new BlobSASPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
 
-        OffsetDateTime startTime = getUTCNow().minusDays(1)
-        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
+        def startTime = getUTCNow().minusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
-        IPRange ipRange = new IPRange()
-            .ipMin("0.0.0.0")
-            .ipMax("255.255.255.255")
+        def ipRange = new IPRange()
+            .setIpMin("0.0.0.0")
+            .setIpMax("255.255.255.255")
 
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
-        String cacheControl = "cache"
-        String contentDisposition = "disposition"
-        String contentEncoding = "encoding"
-        String contentLanguage = "language"
-        String contentType = "type"
+        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def cacheControl = "cache"
+        def contentDisposition = "disposition"
+        def contentEncoding = "encoding"
+        def contentLanguage = "language"
+        def contentType = "type"
 
-        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
+        def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
         when:
-
-        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
-        BlockBlobClient client1 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
+        def client1 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName).asBlockBlobClient()
         client1.download(new ByteArrayOutputStream())
 
         then:
@@ -322,8 +379,8 @@ class SASTest extends APISpec {
 
         when:
         // blob snapshot with snapshot SAS
-        BlockBlobClient client2 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName, snapshotId).asBlockBlobClient()
-        OutputStream os = new ByteArrayOutputStream()
+        def client2 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getContainerUrl().toString(), blobName, snapshotId).asBlockBlobClient()
+        def os = new ByteArrayOutputStream()
         client2.download(os)
 
         then:
@@ -334,30 +391,31 @@ class SASTest extends APISpec {
         def properties = client2.getProperties()
 
         then:
-        properties.cacheControl() == "cache"
-        properties.contentDisposition() == "disposition"
-        properties.contentEncoding() == "encoding"
-        properties.contentLanguage() == "language"
+        properties.getCacheControl() == "cache"
+        properties.getContentDisposition() == "disposition"
+        properties.getContentEncoding() == "encoding"
+        properties.getContentLanguage() == "language"
     }
 
     @Ignore
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
-        ContainerSASPermission permissions = new ContainerSASPermission()
-            .read(true)
-            .write(true)
-            .create(true)
-            .delete(true)
-            .add(true)
+        def permissions = new ContainerSASPermission()
+            .setRead(true)
+            .setWrite(true)
+            .setCreate(true)
+            .setDelete(true)
+            .setAdd(true)
+            .setList(true)
 
-        OffsetDateTime expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = getUTCNow().plusDays(1)
 
-        UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, getUTCNow().plusDays(1))
+        def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        String sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.accountName(), permissions, expiryTime)
+        def sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime)
 
-        ContainerClient client = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
+        def client = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getContainerUrl().toString())
         client.listBlobsFlat().iterator().hasNext()
 
         then:
@@ -368,17 +426,17 @@ class SASTest extends APISpec {
         setup:
         def data = "test".getBytes()
         def blobName = generateBlobName()
-        def bu = cc.getBlockBlobClient(blobName)
+        def bu = cc.getBlobClient(blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
-            .read(true)
+            .setReadPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -396,17 +454,17 @@ class SASTest extends APISpec {
         setup:
         def data = "test".getBytes()
         def blobName = generateBlobName()
-        def bu = cc.getBlockBlobClient(blobName)
+        def bu = cc.getBlobClient(blobName).asBlockBlobClient()
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
-            .read(true)
+            .setReadPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -422,14 +480,14 @@ class SASTest extends APISpec {
     def "accountSAS network create container fails"() {
         setup:
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
-            .read(true)
-            .create(false)
+            .setReadPermission(true)
+            .setCreatePermission(false)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -445,14 +503,14 @@ class SASTest extends APISpec {
     def "accountSAS network create container succeeds"() {
         setup:
         def service = new AccountSASService()
-            .blob(true)
+            .setBlob(true)
         def resourceType = new AccountSASResourceType()
-            .container(true)
-            .service(true)
-            .object(true)
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
         def permissions = new AccountSASPermission()
-            .read(true)
-            .create(true)
+            .setReadPermission(true)
+            .setCreatePermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
@@ -474,33 +532,34 @@ class SASTest extends APISpec {
     @Unroll
     def "serviceSasSignatures string to sign"() {
         when:
-        ServiceSASSignatureValues v = new ServiceSASSignatureValues()
+        def v = new BlobServiceSASSignatureValues()
         def p = new BlobSASPermission()
-        p.read(true)
-        v.permissions(p.toString())
+        p.setReadPermission(true)
+        v.setPermissions(p.toString())
 
-        v.startTime(startTime)
+        v.setStartTime(startTime)
         def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
-        v.expiryTime(e)
+        v.setExpiryTime(e)
 
-        v.canonicalName("containerName/blobName")
-            .snapshotId(snapId)
+        v.setCanonicalName("containerName/blobName")
+            .setSnapshotId(snapId)
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
-            v.ipRange(ipR)
+            ipR.setIpMin("ip")
+            v.setIpRange(ipR)
         }
-        v.identifier(identifier)
-            .protocol(protocol)
-            .cacheControl(cacheControl)
-            .contentDisposition(disposition)
-            .contentEncoding(encoding)
-            .contentLanguage(language)
-            .contentType(type)
+        v.setIdentifier(identifier)
+            .setProtocol(protocol)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(disposition)
+            .setContentEncoding(encoding)
+            .setContentLanguage(language)
+            .setContentType(type)
+        v.setResource("bs")
 
         def token = v.generateSASQueryParameters(primaryCredential)
         then:
-        token.signature() == primaryCredential.computeHmac256(expectedStringToSign)
+        token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -510,98 +569,86 @@ class SASTest extends APISpec {
          */
         where:
         startTime                                                 | identifier | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | "id"       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null       | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null       | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null       | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\nsnapId\n\n\n\n\n"
-        null                                                      | null       | null          | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\ncontrol\n\n\n\n"
-        null                                                      | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\ndisposition\n\n\n"
-        null                                                      | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\nencoding\n\n"
-        null                                                      | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\nlanguage\n"
-        null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\ntype"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | "id"       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null       | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null       | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null       | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
+        null                                                      | null       | null          | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\ncontrol\n\n\n\n"
+        null                                                      | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\ndisposition\n\n\n"
+        null                                                      | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\nencoding\n\n"
+        null                                                      | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\nlanguage\n"
+        null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\ntype"
     }
 
     @Unroll
     def "serviceSasSignatures string to sign user delegation key"() {
         when:
-        def v = new ServiceSASSignatureValues()
+        def v = new BlobServiceSASSignatureValues()
 
         def p = new BlobSASPermission()
-        p.read(true)
-        v.permissions(p.toString())
+        p.setReadPermission(true)
+        v.setPermissions(p.toString())
 
-        v.startTime(startTime)
+        v.setStartTime(startTime)
         def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
-        v.expiryTime(e)
+        v.setExpiryTime(e)
 
-        v.canonicalName("containerName/blobName")
-            .snapshotId(snapId)
+        v.setCanonicalName("containerName/blobName")
+            .setSnapshotId(snapId)
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
-            v.ipRange(ipR)
+            ipR.setIpMin("ip")
+            v.setIpRange(ipR)
         }
-        v.protocol(protocol)
-            .cacheControl(cacheControl)
-            .contentDisposition(disposition)
-            .contentEncoding(encoding)
-            .contentLanguage(language)
-            .contentType(type)
+        v.setProtocol(protocol)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(disposition)
+            .setContentEncoding(encoding)
+            .setContentLanguage(language)
+            .setContentType(type)
+        v.setResource("bs")
         def key = new UserDelegationKey()
-            .signedOid(keyOid)
-            .signedTid(keyTid)
-            .signedStart(keyStart)
-            .signedExpiry(keyExpiry)
-            .signedService(keyService)
-            .signedVersion(keyVersion)
-            .value(keyValue)
+            .setSignedOid(keyOid)
+            .setSignedTid(keyTid)
+            .setSignedStart(keyStart)
+            .setSignedExpiry(keyExpiry)
+            .setSignedService(keyService)
+            .setSignedVersion(keyVersion)
+            .setValue(keyValue)
         def token = v.generateSASQueryParameters(key)
 
         then:
-        token.signature() == Utility.computeHMac256(key.value(), expectedStringToSign)
+        token.getSignature() == Utility.computeHMac256(key.getValue(), expectedStringToSign)
 
         /*
         We test string to sign functionality directly related to user delegation sas specific parameters
          */
         where:
         startTime                                                 | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\nb\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\nsnapId\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\ncontrol\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\ndisposition\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\nencoding\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\nlanguage\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\ntype"
-    }
-
-    def "serviceSASSignatureValues canonicalizedResource"() {
-        setup:
-        def blobName = generateBlobName()
-        def accountName = "account"
-        def bu = cc.getBlockBlobClient(blobName)
-
-        when:
-        def serviceSASSignatureValues = bu.blockBlobAsyncClient.configureServiceSASSignatureValues(new ServiceSASSignatureValues(), accountName)
-
-        then:
-        serviceSASSignatureValues.canonicalName() == "/blob/" + accountName + cc.containerUrl.path + "/" + blobName
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\nb\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\ncontrol\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\ndisposition\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\nencoding\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\nlanguage\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\n\n\n\n\n\ntype"
     }
 
     @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
-        def v = new ServiceSASSignatureValues()
-            .snapshotId("2018-01-01T00:00:00.0000000Z")
-            .version(version)
+        def v = new BlobServiceSASSignatureValues()
+            .setSnapshotId("2018-01-01T00:00:00.0000000Z")
+            .setVersion(version)
 
         when:
         v.generateSASQueryParameters((SharedKeyCredential) creds)
@@ -620,11 +667,11 @@ class SASTest extends APISpec {
     def "BlobSASPermissions toString"() {
         setup:
         def perms = new BlobSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .create(create)
-            .add(add)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setCreatePermission(create)
+            .setAddPermission(add)
 
         expect:
         perms.toString() == expectedString
@@ -645,11 +692,11 @@ class SASTest extends APISpec {
         def perms = BlobSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.create() == create
-        perms.add() == add
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getAddPermission() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -674,12 +721,12 @@ class SASTest extends APISpec {
     def "ContainerSASPermissions toString"() {
         setup:
         def perms = new ContainerSASPermission()
-            .read(read)
-            .write(write)
-            .delete(delete)
-            .create(create)
-            .add(add)
-            .list(list)
+            .setRead(read)
+            .setWrite(write)
+            .setDelete(delete)
+            .setCreate(create)
+            .setAdd(add)
+            .setList(list)
 
         expect:
         perms.toString() == expectedString
@@ -701,12 +748,12 @@ class SASTest extends APISpec {
         def perms = ContainerSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.create() == create
-        perms.add() == add
-        perms.list() == list
+        perms.getRead() == read
+        perms.getWrite() == write
+        perms.getDelete() == delete
+        perms.getCreate() == create
+        perms.getAdd() == add
+        perms.getList() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -732,8 +779,8 @@ class SASTest extends APISpec {
     def "IPRange toString"() {
         setup:
         def ip = new IPRange()
-            .ipMin(min)
-            .ipMax(max)
+            .setIpMin(min)
+            .setIpMax(max)
 
         expect:
         ip.toString() == expectedString
@@ -751,8 +798,8 @@ class SASTest extends APISpec {
         def ip = IPRange.parse(rangeStr)
 
         then:
-        ip.ipMin() == min
-        ip.ipMax() == max
+        ip.getIpMin() == min
+        ip.getIpMax() == max
 
         where:
         rangeStr || min | max
@@ -775,14 +822,14 @@ class SASTest extends APISpec {
     @Unroll
     def "ServiceSASSignatureValues assertGenerateOk"() {
         when:
-        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues()
-        serviceSASSignatureValues.version(version)
-        serviceSASSignatureValues.canonicalName(canonicalName)
-        serviceSASSignatureValues.expiryTime(expiryTime)
-        serviceSASSignatureValues.permissions(permissions)
-        serviceSASSignatureValues.identifier(identifier)
-        serviceSASSignatureValues.resource(resource)
-        serviceSASSignatureValues.snapshotId(snapshotId)
+        def serviceSASSignatureValues = new BlobServiceSASSignatureValues()
+            .setVersion(version)
+            .setCanonicalName(canonicalName)
+            .setExpiryTime(expiryTime)
+            .setPermissions(permissions)
+            .setIdentifier(identifier)
+            .setResource(resource)
+            .setSnapshotId(snapshotId)
 
         if (usingUserDelegation) {
             serviceSASSignatureValues.generateSASQueryParameters(new UserDelegationKey())
@@ -798,12 +845,13 @@ class SASTest extends APISpec {
         usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                   | identifier | resource | snapshotId
         false               | null                                             | null                     | null                                                      | null                                          | null       | null     | null
         false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().read(true).toString() | null       | null     | null
-        false               | null                                             | null                     | null                                                      | null                                          | "0000"     | "c"      | "id"
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                                       | null   | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                       | null   | null | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSASPermission().setReadPermission(true).toString() | null   | null | null
+        false               | null                                             | null                     | null                                                      | null                                                       | "0000" | "c"  | "id"
     }
 
+    // TODO : Account SAS should go into the common package
     /*
      This test will ensure that each field gets placed into the proper location within the string to sign and that null
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
@@ -815,23 +863,23 @@ class SASTest extends APISpec {
         when:
         def v = new AccountSASSignatureValues()
         def p = new AccountSASPermission()
-            .read(true)
-        v.permissions(p.toString())
-            .services("b")
-            .resourceTypes("o")
-            .startTime(startTime)
-            .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setReadPermission(true)
+        v.setPermissions(p.toString())
+            .setServices("b")
+            .setResourceTypes("o")
+            .setStartTime(startTime)
+            .setExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
         if (ipRange != null) {
             def ipR = new IPRange()
-            ipR.ipMin("ip")
-            v.ipRange(ipR)
+            ipR.setIpMin("ip")
+            v.setIpRange(ipR)
         }
-        v.protocol(protocol)
+        v.setProtocol(protocol)
 
         def token = v.generateSASQueryParameters(primaryCredential)
 
         then:
-        token.signature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.accountName()))
+        token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.getAccountName()))
 
         where:
         startTime                                                 | ipRange       | protocol               || expectedStringToSign
@@ -844,11 +892,11 @@ class SASTest extends APISpec {
     def "accountSasSignatureValues IA"() {
         setup:
         def v = new AccountSASSignatureValues()
-            .permissions(permissions)
-            .services(service)
-            .resourceTypes(resourceType)
-            .expiryTime(expiryTime)
-            .version(version)
+            .setPermissions(permissions)
+            .setServices(service)
+            .setResourceTypes(resourceType)
+            .setExpiryTime(expiryTime)
+            .setVersion(version)
 
         when:
         v.generateSASQueryParameters(creds)
@@ -858,27 +906,27 @@ class SASTest extends APISpec {
         e.getMessage().contains(parameter)
 
         where:
-        permissions | service | resourceType | expiryTime           | version | creds             || parameter
-        null        | "b"     | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "permissions"
-        "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "services"
-        "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
-        "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "SharedKeyCredential"
+        permissions | service | resourceType | expiryTime                                                | version | creds             || parameter
+        null        | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "permissions"
+        "c"         | null    | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "services"
+        "c"         | "b"     | null         | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "resourceTypes"
+        "c"         | "b"     | "c"          | null                                                      | "v"     | primaryCredential || "expiryTime"
+        "c"         | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null    | primaryCredential || "version"
+        "c"         | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | null              || "SharedKeyCredential"
     }
 
     @Unroll
     def "AccountSASPermissions toString"() {
         setup:
         def perms = new AccountSASPermission()
-        perms.read(read)
-            .write(write)
-            .delete(delete)
-            .list(list)
-            .add(add)
-            .create(create)
-            .update(update)
-            .processMessages(process)
+        perms.setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setListPermission(list)
+            .setAddPermission(add)
+            .setCreatePermission(create)
+            .setUpdatePermission(update)
+            .setProcessMessages(process)
 
         expect:
         perms.toString() == expectedString
@@ -902,14 +950,14 @@ class SASTest extends APISpec {
         def perms = AccountSASPermission.parse(permString)
 
         then:
-        perms.read() == read
-        perms.write() == write
-        perms.delete() == delete
-        perms.list() == list
-        perms.add() == add
-        perms.create() == create
-        perms.update() == update
-        perms.processMessages() == process
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getListPermission() == list
+        perms.getAddPermission() == add
+        perms.getCreatePermission() == create
+        perms.getUpdatePermission() == update
+        perms.getProcessMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process
@@ -937,9 +985,9 @@ class SASTest extends APISpec {
     def "AccountSASResourceType toString"() {
         setup:
         def resourceTypes = new AccountSASResourceType()
-            .service(service)
-            .container(container)
-            .object(object)
+            .setService(service)
+            .setContainer(container)
+            .setObject(object)
 
         expect:
         resourceTypes.toString() == expectedString
@@ -958,9 +1006,9 @@ class SASTest extends APISpec {
         def resourceTypes = AccountSASResourceType.parse(resourceTypeString)
 
         then:
-        resourceTypes.service() == service
-        resourceTypes.container() == container
-        resourceTypes.object() == object
+        resourceTypes.isService() == service
+        resourceTypes.isContainer() == container
+        resourceTypes.getObject() == object
 
         where:
         resourceTypeString || service | container | object
@@ -982,16 +1030,17 @@ class SASTest extends APISpec {
     def "BlobURLParts"() {
         setup:
         def parts = new BlobURLParts()
-        parts.scheme("http")
-            .host("host")
-            .containerName("container")
-            .blobName("blob")
-            .snapshot("snapshot")
-        def sasValues = new ServiceSASSignatureValues()
-            .permissions("r")
-            .canonicalName("/containerName/blobName")
-            .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-        parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
+        parts.setScheme("http")
+            .setHost("host")
+            .setContainerName("container")
+            .setBlobName("blob")
+            .setSnapshot("snapshot")
+        def sasValues = new BlobServiceSASSignatureValues()
+            .setPermissions("r")
+            .setCanonicalName("/containerName/blobName")
+            .setExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setResource("bs")
+        parts.setSasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
 
         when:
         def splitParts = parts.toURL().toString().split("\\?")
@@ -1002,22 +1051,22 @@ class SASTest extends APISpec {
         splitParts[1].contains("snapshot=snapshot")
         splitParts[1].contains("sp=r")
         splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 5 // snapshot & sv & sr & sp & sig
+        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig
     }
 
     def "URLParser"() {
         when:
-        def parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = BlobURLParts.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
-        parts.scheme() == "http"
-        parts.host() == "host"
-        parts.containerName() == "container"
-        parts.blobName() == "blob"
-        parts.snapshot() == "snapshot"
-        parts.sasQueryParameters().permissions() == "r"
-        parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
-        parts.sasQueryParameters().resource() == "c"
-        parts.sasQueryParameters().signature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.getScheme() == "http"
+        parts.getHost() == "host"
+        parts.getContainerName() == "container"
+        parts.getBlobName() == "blob"
+        parts.getSnapshot() == "snapshot"
+        parts.getSasQueryParameters().getPermissions() == "r"
+        parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
+        parts.getSasQueryParameters().getResource() == "c"
+        parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }

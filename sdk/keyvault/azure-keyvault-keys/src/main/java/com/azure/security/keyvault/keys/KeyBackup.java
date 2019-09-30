@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,7 +21,7 @@ class KeyBackup {
      *
      * @return the value value
      */
-    public byte[] value() {
+    public byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }

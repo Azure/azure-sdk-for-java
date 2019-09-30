@@ -145,7 +145,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
                     returningFuture.complete(null);
                 } else {
                     // error response
-                    TRACE_LOGGER.error("Removing rule '{}' from entity '{}' failed with status code '{}'", ruleName, this.entityPath, statusCode);
+                    TRACE_LOGGER.info("Removing rule '{}' from entity '{}' failed with status code '{}'", ruleName, this.entityPath, statusCode);
                     returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
                 }
                 return returningFuture;
@@ -170,7 +170,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
                     returningFuture.complete(null);
                 } else {
                     // error response
-                    TRACE_LOGGER.error("Adding rule '{}' to entity '{}' failed with status code '{}'", ruleDescription.getName(), this.entityPath, statusCode);
+                    TRACE_LOGGER.info("Adding rule '{}' to entity '{}' failed with status code '{}'", ruleDescription.getName(), this.entityPath, statusCode);
                     returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
                 }
                 return returningFuture;
@@ -209,7 +209,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
                     returningFuture.complete(rules);
                 } else {
                     // error response
-                    TRACE_LOGGER.error("Fetching rules for entity '{}' failed with status code '{}'", this.entityPath, statusCode);
+                    TRACE_LOGGER.info("Fetching rules for entity '{}' failed with status code '{}'", this.entityPath, statusCode);
                     returningFuture.completeExceptionally(RequestResponseUtils.genereateExceptionFromResponse(responseMessage));
                 }
 

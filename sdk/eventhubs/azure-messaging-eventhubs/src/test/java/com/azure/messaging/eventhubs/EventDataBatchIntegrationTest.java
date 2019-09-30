@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
-import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
-public class EventDataBatchIntegrationTest extends ApiTestBase {
+public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     private EventHubAsyncClient client;
@@ -47,7 +47,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -55,9 +55,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = createBuilder().buildAsyncClient();
         producer = client.createProducer();
     }
 
@@ -71,10 +69,8 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendSmallEventsFullBatch() {
-        skipIfNotRecordMode();
-
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -91,14 +87,13 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     }
 
     /**
-     * Test for sending a message batch that is {@link EventHubAsyncProducer#MAX_MESSAGE_LENGTH_BYTES} with partition key.
+     * Test for sending a message batch that is {@link ClientConstants#MAX_MESSAGE_LENGTH_BYTES} with partition
+     * key.
      */
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
-        skipIfNotRecordMode();
-
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -115,21 +110,19 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
     /**
      * Verifies that when we send 10 messages with the same partition key and some application properties, the received
-     * EventData also contains the {@link EventData#partitionKey()} property set.
+     * EventData also contains the {@link EventData#getPartitionKey()} property set.
      */
     @Test
     public void sendBatchPartitionKeyValidate() throws InterruptedException {
-        skipIfNotRecordMode();
-
         // Arrange
         final String messageValue = UUID.randomUUID().toString();
 
-        final SendOptions sendOptions = new SendOptions().partitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(EventHubAsyncProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
+        final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
-            data.properties().put(MESSAGE_TRACKING_ID, messageValue);
+            data.getProperties().put(MESSAGE_TRACKING_ID, messageValue);
 
             if (!batch.tryAdd(data)) {
                 break;
@@ -149,20 +142,19 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
             final List<Disposable> consumerSubscriptions = consumers.map(consumer -> {
                 return consumer.receive().subscribe(event -> {
-                    if (event.partitionKey() == null || !PARTITION_KEY.equals(event.partitionKey())) {
+                    if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
                     }
 
                     if (isMatchingEvent(event, messageValue)) {
-                        logger.info("Event[{}] matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
+                        logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
                         countDownLatch.countDown();
                     } else {
                         logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
-                            event.sequenceNumber(), messageValue, event.properties().get(MESSAGE_TRACKING_ID)));
+                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
                     }
-                }, error -> {
-                        Assert.fail("An error should not have occurred:" + error.toString());
-                    }, () -> {
+                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                    () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         dispose(consumer);
                     });
@@ -174,7 +166,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
             subscriptions.addAll(consumerSubscriptions);
 
             // Act
-            producer.send(batch.getEvents(), sendOptions).block(TIMEOUT);
+            producer.send(batch.getEvents(), sendOptions).block();
 
             // Assert
             // Wait for all the events we sent to be received.
@@ -192,8 +184,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      */
     @Test
     public void sendEventsFullBatchWithPartitionKey() {
-        skipIfNotRecordMode();
-
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, PARTITION_KEY, contextProvider);
@@ -204,7 +194,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         while (true) {
             final EventData eventData = new EventData("a".getBytes());
             for (int i = 0; i < random.nextInt(20); i++) {
-                eventData.properties().put("key" + i, "value");
+                eventData.getProperties().put("key" + i, "value");
             }
 
             if (batch.tryAdd(eventData)) {

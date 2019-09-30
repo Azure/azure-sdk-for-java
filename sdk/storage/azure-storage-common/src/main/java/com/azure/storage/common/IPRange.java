@@ -26,9 +26,9 @@ public final class IPRange {
     public static IPRange parse(String rangeStr) {
         String[] addrs = rangeStr.split("-");
 
-        IPRange range = new IPRange().ipMin(addrs[0]);
+        IPRange range = new IPRange().setIpMin(addrs[0]);
         if (addrs.length > 1) {
-            range.ipMax(addrs[1]);
+            range.setIpMax(addrs[1]);
         }
 
         return range;
@@ -37,7 +37,7 @@ public final class IPRange {
     /**
      * @return the minimum IP address of the range
      */
-    public String ipMin() {
+    public String getIpMin() {
         return ipMin;
     }
 
@@ -47,7 +47,7 @@ public final class IPRange {
      * @param ipMin IP address to set as the minimum
      * @return the updated IPRange object
      */
-    public IPRange ipMin(String ipMin) {
+    public IPRange setIpMin(String ipMin) {
         this.ipMin = ipMin;
         return this;
     }
@@ -55,7 +55,7 @@ public final class IPRange {
     /**
      * @return the maximum IP address of the range
      */
-    public String ipMax() {
+    public String getIpMax() {
         return ipMax;
     }
 
@@ -65,7 +65,7 @@ public final class IPRange {
      * @param ipMax IP address to set as the maximum
      * @return the updated IPRange object
      */
-    public IPRange ipMax(String ipMax) {
+    public IPRange setIpMax(String ipMax) {
         this.ipMax = ipMax;
         return this;
     }

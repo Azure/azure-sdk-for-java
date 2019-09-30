@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -19,7 +20,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * authenticated, the oauth2 flow will notify the credential of the authentication code through the reply URL.
  *
  * <p>
- * The application to authenticate to must have delegated user login permissions and have {@code http://localhost:{port}}
+ * The application to authenticate to must have delegated user login permissions and have {@code
+ * http://localhost:{port}}
  * listed as a valid reply URL.
  */
 @Immutable
@@ -33,24 +35,34 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
+     * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param identityClientOptions the options for configuring the identity client
      */
-    InteractiveBrowserCredential(String clientId, int port, IdentityClientOptions identityClientOptions) {
+    InteractiveBrowserCredential(String clientId, String tenantId, int port,
+                                 IdentityClientOptions identityClientOptions) {
         this.port = port;
-        identityClient = new IdentityClientBuilder().tenantId("common").clientId(clientId).identityClientOptions(identityClientOptions).build();
+        if (tenantId == null) {
+            tenantId = "common";
+        }
+        identityClient = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         cachedToken = new AtomicReference<>();
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get()).onErrorResume(t -> Mono.empty());
+                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
+                    .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(scopes, port)))
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

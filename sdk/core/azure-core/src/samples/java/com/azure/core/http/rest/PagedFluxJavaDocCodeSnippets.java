@@ -36,7 +36,7 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedflux.pages
@@ -50,7 +50,7 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
@@ -72,6 +72,14 @@ public final class PagedFluxJavaDocCodeSnippets {
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(firstPageRetriever,
             nextPageRetriever);
         // END: com.azure.core.http.rest.pagedflux.instantiation
+
+        // BEGIN: com.azure.core.http.rest.pagedflux.singlepage.instantiation
+        // A supplier that fetches the first page of data from source/service
+        Supplier<Mono<PagedResponse<Integer>>> firstPageRetrieverFunction = () -> getFirstPage();
+
+        PagedFlux<Integer> pagedFluxInstance = new PagedFlux<>(firstPageRetrieverFunction,
+            nextPageRetriever);
+        // END: com.azure.core.http.rest.pagedflux.singlepage.instantiation
         return pagedFlux;
     }
 
@@ -87,7 +95,7 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedflux.bypage
@@ -99,7 +107,7 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedflux.bypage#String

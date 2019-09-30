@@ -48,8 +48,8 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
             .subscribe(
                 properties -> {
                     if (!properties.isEmpty()) {
-                        lastEnqueuedSequenceNumber = properties.lastEnqueuedSequenceNumber();
-                        lastEnqueuedSequencePartitionID = properties.id();
+                        lastEnqueuedSequenceNumber = properties.getLastEnqueuedSequenceNumber();
+                        lastEnqueuedSequencePartitionID = properties.getId();
                     }
                 },
                 error -> System.err.println("Error occurred while fetching partition properties: " + error.toString()),
@@ -80,19 +80,19 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the
         // countDownLatch.
         Disposable subscription = consumer.receive().subscribe(event -> {
-            String contents = UTF_8.decode(event.body()).toString();
+            String contents = UTF_8.decode(event.getBody()).toString();
             // ex. The last enqueued sequence number is 99. If isInclusive is true, the received event starting from the same
             // event with sequence number of '99'. Otherwise, the event with sequence number of '100' will be the first
             // event received.
             System.out.println(String.format("Receiving an event starting from the sequence number: %s. Contents: %s",
-                event.sequenceNumber(), contents));
+                event.getSequenceNumber(), contents));
 
             semaphore.release();
         });
 
         // Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
         // This creates a producer that only sends events to `lastEnqueuedSequencePartitionID`.
-        EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(lastEnqueuedSequencePartitionID);
+        EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(lastEnqueuedSequencePartitionID);
         EventHubAsyncProducer producer = client.createProducer(producerOptions);
 
         producer.send(new EventData("Hello world!".getBytes(UTF_8))).block(OPERATION_TIMEOUT);

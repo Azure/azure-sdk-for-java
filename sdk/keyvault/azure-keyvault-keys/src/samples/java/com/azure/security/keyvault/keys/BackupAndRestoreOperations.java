@@ -39,8 +39,8 @@ public class BackupAndRestoreOperations {
         // Let's create a Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048));
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(2048));
 
         // Backups are good to have, if in case keys get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.

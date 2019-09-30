@@ -24,10 +24,10 @@ public class MockHttpResponse extends HttpResponse {
     private final byte[] bodyBytes;
 
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        super(request);
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = bodyBytes;
-        this.request(request);
     }
 
     public MockHttpResponse(HttpRequest request, int statusCode) {
@@ -58,22 +58,22 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
     @Override
-    public String headerValue(String name) {
-        return headers.value(name);
+    public String getHeaderValue(String name) {
+        return headers.getValue(name);
     }
 
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return new HttpHeaders(headers);
     }
 
     @Override
-    public Mono<byte[]> bodyAsByteArray() {
+    public Mono<byte[]> getBodyAsByteArray() {
         if (bodyBytes == null) {
             return Mono.empty();
         } else {
@@ -82,7 +82,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flux<ByteBuffer> body() {
+    public Flux<ByteBuffer> getBody() {
         if (bodyBytes == null) {
             return Flux.empty();
         } else {
@@ -91,7 +91,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Mono<String> bodyAsString() {
+    public Mono<String> getBodyAsString() {
         if (bodyBytes == null) {
             return Mono.empty();
         } else {
@@ -100,7 +100,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Mono<String> bodyAsString(Charset charset) {
+    public Mono<String> getBodyAsString(Charset charset) {
         if (bodyBytes == null) {
             return Mono.empty();
         } else {

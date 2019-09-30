@@ -29,7 +29,7 @@ public final class FilesListHandlesResponse extends ResponseBase<FileListHandles
      * @return the deserialized response body.
      */
     @Override
-    public ListHandlesResponse value() {
-        return super.value();
+    public ListHandlesResponse getValue() {
+        return super.getValue();
     }
 }

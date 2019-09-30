@@ -24,7 +24,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @param deviceCodeChallengeConsumer a method allowing the user to meet the device code challenge
      * @return the InteractiveBrowserCredentialBuilder itself
      */
-    public DeviceCodeCredentialBuilder deviceCodeChallengeConsumer(Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer) {
+    public DeviceCodeCredentialBuilder deviceCodeChallengeConsumer(
+        Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer) {
         this.deviceCodeChallengeConsumer = deviceCodeChallengeConsumer;
         return this;
     }
@@ -37,6 +38,6 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
                 put("clientId", clientId);
                 put("deviceCodeChallengeConsumer", deviceCodeChallengeConsumer);
             }});
-        return new DeviceCodeCredential(clientId, deviceCodeChallengeConsumer, identityClientOptions);
+        return new DeviceCodeCredential(clientId, tenantId, deviceCodeChallengeConsumer, identityClientOptions);
     }
 }

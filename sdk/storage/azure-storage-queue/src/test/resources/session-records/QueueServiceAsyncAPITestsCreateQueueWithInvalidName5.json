@@ -4,7 +4,8 @@
     "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/verylongverylongverylongverylongverylongverylongverylongverylong",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.3 1.8.0_222; Windows 10 10.0",
+      "x-ms-client-request-id" : "371b4576-2a95-4780-889f-8ab5e55d9cea"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,11 +14,12 @@
       "retry-after" : "0",
       "Content-Length" : "256",
       "StatusCode" : "400",
-      "x-ms-request-id" : "14883049-6003-00ea-0788-53cf77000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:14883049-6003-00ea-0788-53cf77000000\nTime:2019-08-15T16:40:50.6326265Z</Message></Error>",
-      "Date" : "Thu, 15 Aug 2019 16:40:49 GMT",
+      "x-ms-request-id" : "7c536258-2003-0003-7bc2-623371000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:7c536258-2003-0003-7bc2-623371000000\nTime:2019-09-04T01:46:07.3499231Z</Message></Error>",
+      "Date" : "Wed, 04 Sep 2019 01:46:07 GMT",
       "Content-Type" : "application/xml"
-    }
+    },
+    "Exception" : null
   } ],
   "variables" : [ ]
 }

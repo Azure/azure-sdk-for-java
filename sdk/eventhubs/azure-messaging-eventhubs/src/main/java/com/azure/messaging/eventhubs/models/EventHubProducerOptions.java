@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 
@@ -20,8 +20,8 @@ public class EventHubProducerOptions implements Cloneable {
     private RetryOptions retryOptions;
 
     /**
-     * Sets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting it to
-     * sending events to only that partition.
+     * Sets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to,
+     * limiting it to sending events to only that partition.
      *
      * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
      * to an available partition.
@@ -31,7 +31,7 @@ public class EventHubProducerOptions implements Cloneable {
      *         the identifier of the desired partition.
      * @return The updated {@link EventHubProducerOptions} object.
      */
-    public EventHubProducerOptions partitionId(String partitionId) {
+    public EventHubProducerOptions setPartitionId(String partitionId) {
         this.partitionId = partitionId;
         return this;
     }
@@ -42,7 +42,7 @@ public class EventHubProducerOptions implements Cloneable {
      * @param retry The retry options used to govern retry attempts when an issue is encountered while sending.
      * @return The updated SenderOptions object.
      */
-    public EventHubProducerOptions retry(RetryOptions retry) {
+    public EventHubProducerOptions setRetry(RetryOptions retry) {
         this.retryOptions = retry;
         return this;
     }
@@ -50,23 +50,23 @@ public class EventHubProducerOptions implements Cloneable {
     /**
      * Gets the retry options used to govern retry attempts when an issue is encountered while sending.
      *
-     * @return the retry options used to govern retry attempts when an issue is encountered while sending. If {@code
-     *         null}, then the retry options configured on the associated {@link EventHubAsyncClient} is used.
+     * @return the retry options used to govern retry attempts when an issue is encountered while sending. If
+     *         {@code null}, then the retry options configured on the associated {@link EventHubAsyncClient} is used.
      */
-    public RetryOptions retry() {
+    public RetryOptions getRetry() {
         return retryOptions;
     }
 
     /**
-     * Gets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting it to
-     * sending events to only that partition.
+     * Gets the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to, limiting
+     * it to sending events to only that partition.
      *
      * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
      * to an available partition.
      *
      * @return the identifier of the Event Hub partition that the {@link EventHubAsyncProducer} will be bound to.
      */
-    public String partitionId() {
+    public String getPartitionId() {
         return partitionId;
     }
 
@@ -84,10 +84,10 @@ public class EventHubProducerOptions implements Cloneable {
             clone = new EventHubProducerOptions();
         }
 
-        clone.partitionId(partitionId);
+        clone.setPartitionId(partitionId);
 
         if (retryOptions != null) {
-            clone.retry(retryOptions.clone());
+            clone.setRetry(retryOptions.clone());
         }
 
         return clone;

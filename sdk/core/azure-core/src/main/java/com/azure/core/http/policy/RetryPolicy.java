@@ -45,45 +45,48 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptAsync(context, next, context.httpRequest(), 0);
+        return attemptAsync(context, next, context.getHttpRequest(), 0);
     }
 
-    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next, final HttpRequest originalHttpRequest, final int tryCount) {
-        context.httpRequest(originalHttpRequest.buffer());
+    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
+                                            final HttpRequest originalHttpRequest, final int tryCount) {
+        context.setHttpRequest(originalHttpRequest.copy());
         return next.clone().process()
-                .flatMap(httpResponse -> {
-                    if (shouldRetry(httpResponse, tryCount)) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(determineDelayDuration(httpResponse));
-                    } else {
-                        return Mono.just(httpResponse);
-                    }
-                })
-                .onErrorResume(err -> {
-                    if (tryCount < maxRetries) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
-                    } else {
-                        return Mono.error(err);
-                    }
-                });
+            .flatMap(httpResponse -> {
+                if (shouldRetry(httpResponse, tryCount)) {
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                        .delaySubscription(determineDelayDuration(httpResponse));
+                } else {
+                    return Mono.just(httpResponse);
+                }
+            })
+            .onErrorResume(err -> {
+                if (tryCount < maxRetries) {
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                        .delaySubscription(this.delayDuration);
+                } else {
+                    return Mono.error(err);
+                }
+            });
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
-        int code = response.statusCode();
+        int code = response.getStatusCode();
         return tryCount < maxRetries
-                && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                && code != HttpURLConnection.HTTP_VERSION));
+            && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+            || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+            && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+            && code != HttpURLConnection.HTTP_VERSION));
     }
 
     /**
      * Determines the delay duration that should be waited before retrying.
      * @param response HTTP response
      * @return If the HTTP response has a retry-after-ms header that will be returned,
-     * otherwise the duration used during the construction of the policy.
+     *     otherwise the duration used during the construction of the policy.
      */
     private Duration determineDelayDuration(HttpResponse response) {
-        int code = response.statusCode();
+        int code = response.getStatusCode();
 
         // Response will not have a retry-after-ms header.
         if (code != 429        // too many requests
@@ -91,7 +94,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return this.delayDuration;
         }
 
-        String retryHeader = response.headerValue(RETRY_AFTER_MS_HEADER);
+        String retryHeader = response.getHeaderValue(RETRY_AFTER_MS_HEADER);
 
         // Retry header is missing or empty, return the default delay duration.
         if (retryHeader == null || retryHeader.isEmpty()) {

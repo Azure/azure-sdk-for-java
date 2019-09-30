@@ -38,7 +38,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the recoveryId identifier.
      */
-    public String recoveryId() {
+    public String getRecoveryId() {
         return this.recoveryId;
     }
 
@@ -47,7 +47,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the scheduledPurgeDate UTC time.
      */
-    public OffsetDateTime scheduledPurgeDate() {
+    public OffsetDateTime getScheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
@@ -56,22 +56,23 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime deletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return this.deletedDate;
     }
 
     /**
-     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to OffsetDateTime and updates the
-     * value of class variable scheduledPurgeDate.
+     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
+     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
      */
     @JsonProperty("scheduledPurgeDate")
     private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
-        this.scheduledPurgeDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
+        this.scheduledPurgeDate =
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
     }
 
     /**
-     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime and updates the
-     * value of class variable deletedDate.
+     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
+     * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
     private void unpackDeletedDate(Long deletedDate) {
@@ -92,7 +93,7 @@ public final class DeletedKey extends KeyBase {
      *
      * @return the key value
      */
-    public JsonWebKey keyMaterial() {
+    public JsonWebKey getKeyMaterial() {
         return this.keyMaterial;
     }
 

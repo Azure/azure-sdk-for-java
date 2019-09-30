@@ -40,19 +40,21 @@ public final class MSIToken extends AccessToken {
     }
 
     @JsonCreator
-    private MSIToken(@JsonProperty(value = "access_token") String token, @JsonProperty(value = "expires_on") String expiresOn) {
+    private MSIToken(
+        @JsonProperty(value = "access_token") String token,
+        @JsonProperty(value = "expires_on") String expiresOn) {
         this(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
         this.accessToken = token;
         this.expiresOn =  expiresOn;
     }
 
     @Override
-    public String token() {
+    public String getToken() {
         return accessToken;
     }
 
     @Override
-    public OffsetDateTime expiresOn() {
+    public OffsetDateTime getExpiresOn() {
         return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
     }
 
@@ -69,13 +71,13 @@ public final class MSIToken extends AccessToken {
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         try {
             return Instant.from(dtf.parse(dateTime)).toEpochMilli() / 1000L;
         } catch (DateTimeParseException e) {
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         throw logger.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));

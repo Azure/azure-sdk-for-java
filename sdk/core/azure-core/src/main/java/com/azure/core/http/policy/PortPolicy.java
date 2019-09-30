@@ -7,8 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.UrlBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -19,7 +18,7 @@ import java.net.MalformedURLException;
 public class PortPolicy implements HttpPipelinePolicy {
     private final int port;
     private final boolean overwrite;
-    private static final Logger LOGGER = LoggerFactory.getLogger(PortPolicy.class);
+    private final ClientLogger logger = new ClientLogger(PortPolicy.class);
 
     /**
      * Create a new PortPolicy object.
@@ -34,12 +33,12 @@ public class PortPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
-        if (overwrite || urlBuilder.port() == null) {
-            LOGGER.info("Changing port to {}", port);
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        if (overwrite || urlBuilder.getPort() == null) {
+            logger.info("Changing port to {}", port);
 
             try {
-                context.httpRequest().url(urlBuilder.port(port).toURL());
+                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

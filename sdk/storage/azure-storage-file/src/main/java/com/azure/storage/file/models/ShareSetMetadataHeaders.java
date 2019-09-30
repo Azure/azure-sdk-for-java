@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -64,7 +64,7 @@ public final class ShareSetMetadataHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -75,7 +75,7 @@ public final class ShareSetMetadataHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareSetMetadataHeaders object itself.
      */
-    public ShareSetMetadataHeaders eTag(String eTag) {
+    public ShareSetMetadataHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -88,11 +88,11 @@ public final class ShareSetMetadataHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -104,7 +104,7 @@ public final class ShareSetMetadataHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareSetMetadataHeaders object itself.
      */
-    public ShareSetMetadataHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareSetMetadataHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -119,7 +119,7 @@ public final class ShareSetMetadataHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -130,7 +130,7 @@ public final class ShareSetMetadataHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareSetMetadataHeaders object itself.
      */
-    public ShareSetMetadataHeaders requestId(String requestId) {
+    public ShareSetMetadataHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -141,7 +141,7 @@ public final class ShareSetMetadataHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -152,7 +152,7 @@ public final class ShareSetMetadataHeaders {
      * @param version the version value to set.
      * @return the ShareSetMetadataHeaders object itself.
      */
-    public ShareSetMetadataHeaders version(String version) {
+    public ShareSetMetadataHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -163,11 +163,11 @@ public final class ShareSetMetadataHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -177,7 +177,7 @@ public final class ShareSetMetadataHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareSetMetadataHeaders object itself.
      */
-    public ShareSetMetadataHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareSetMetadataHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -191,7 +191,7 @@ public final class ShareSetMetadataHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -201,7 +201,7 @@ public final class ShareSetMetadataHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareSetMetadataHeaders object itself.
      */
-    public ShareSetMetadataHeaders errorCode(String errorCode) {
+    public ShareSetMetadataHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

@@ -23,9 +23,9 @@ public class PagedIterableJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedIterable.streamByPage
         // process the streamByPage
         pagedIterableResponse.streamByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
-                resp.request().url(), resp.statusCode());
-            resp.items().forEach(value -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+                resp.getRequest().getUrl(), resp.getStatusCode());
+            resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });
         });
@@ -41,9 +41,9 @@ public class PagedIterableJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedIterable.iterableByPage
         // process the iterableByPage
         pagedIterableResponse.iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
-                resp.request().url(), resp.statusCode());
-            resp.items().forEach(value -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+                resp.getRequest().getUrl(), resp.getStatusCode());
+            resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });
         });
@@ -61,9 +61,9 @@ public class PagedIterableJavaDocCodeSnippets {
         Iterator<PagedResponse<Integer>> ite = pagedIterableResponse.iterableByPage().iterator();
         while (ite.hasNext()) {
             PagedResponse<Integer> resp = ite.next();
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
-                resp.request().url(), resp.statusCode());
-            resp.items().forEach(value -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+                resp.getRequest().getUrl(), resp.getStatusCode());
+            resp.getItems().forEach(value -> {
                 System.out.printf("Response value is %d %n", value);
             });
         }

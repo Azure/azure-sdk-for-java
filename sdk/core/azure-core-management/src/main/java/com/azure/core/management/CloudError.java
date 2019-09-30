@@ -40,7 +40,7 @@ public final class CloudError {
     /**
      * @return the error code parsed from the body of the http error response
      */
-    public String code() {
+    public String getCode() {
         return code;
     }
 
@@ -50,7 +50,7 @@ public final class CloudError {
      * @param code the error code
      * @return the CloudError object itself
      */
-    public CloudError withCode(String code) {
+    public CloudError setCode(String code) {
         this.code = code;
         return this;
     }
@@ -58,7 +58,7 @@ public final class CloudError {
     /**
      * @return the error message
      */
-    public String message() {
+    public String getMessage() {
         return message;
     }
 
@@ -68,7 +68,7 @@ public final class CloudError {
      * @param message the error message
      * @return the CloudError object itself
      */
-    public CloudError withMessage(String message) {
+    public CloudError setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -76,7 +76,7 @@ public final class CloudError {
     /**
      * @return the target of the error
      */
-    public String target() {
+    public String getTarget() {
         return target;
     }
 
@@ -86,7 +86,7 @@ public final class CloudError {
      * @param target the target of the error
      * @return the CloudError object itself
      */
-    public CloudError withTarget(String target) {
+    public CloudError setTarget(String target) {
         this.target = target;
         return this;
     }
@@ -94,7 +94,7 @@ public final class CloudError {
     /**
      * @return the details for the error
      */
-    public List<CloudError> details() {
+    public List<CloudError> getDetails() {
         return details;
     }
 }

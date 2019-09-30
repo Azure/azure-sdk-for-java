@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -55,7 +55,7 @@ public final class BlockList {
      *
      * @return the committedBlocks value.
      */
-    public List<Block> committedBlocks() {
+    public List<Block> getCommittedBlocks() {
         if (this.committedBlocks == null) {
             this.committedBlocks = new CommittedBlocksWrapper(new ArrayList<Block>());
         }
@@ -68,7 +68,7 @@ public final class BlockList {
      * @param committedBlocks the committedBlocks value to set.
      * @return the BlockList object itself.
      */
-    public BlockList committedBlocks(List<Block> committedBlocks) {
+    public BlockList setCommittedBlocks(List<Block> committedBlocks) {
         this.committedBlocks = new CommittedBlocksWrapper(committedBlocks);
         return this;
     }
@@ -78,7 +78,7 @@ public final class BlockList {
      *
      * @return the uncommittedBlocks value.
      */
-    public List<Block> uncommittedBlocks() {
+    public List<Block> getUncommittedBlocks() {
         if (this.uncommittedBlocks == null) {
             this.uncommittedBlocks = new UncommittedBlocksWrapper(new ArrayList<Block>());
         }
@@ -91,7 +91,7 @@ public final class BlockList {
      * @param uncommittedBlocks the uncommittedBlocks value to set.
      * @return the BlockList object itself.
      */
-    public BlockList uncommittedBlocks(List<Block> uncommittedBlocks) {
+    public BlockList setUncommittedBlocks(List<Block> uncommittedBlocks) {
         this.uncommittedBlocks = new UncommittedBlocksWrapper(uncommittedBlocks);
         return this;
     }

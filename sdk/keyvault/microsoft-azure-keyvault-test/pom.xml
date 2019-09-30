@@ -4,12 +4,15 @@
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-parent</artifactId>
-    <version>1.2.1</version>
-    <relativePath>../pom.data.xml</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-sdk-parent</artifactId>
+    <version>1.2.0</version>
+    <relativePath>../../../pom.data.xml</relativePath>
   </parent>
+
+  <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-test</artifactId>
+  <version>1.2.3</version>
   <name>azure-keyvault-test</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -36,16 +39,19 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-webkey</artifactId>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault</artifactId>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-cryptography</artifactId>
+      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>

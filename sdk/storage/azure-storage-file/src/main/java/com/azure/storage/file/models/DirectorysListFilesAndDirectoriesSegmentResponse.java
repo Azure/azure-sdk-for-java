@@ -29,7 +29,7 @@ public final class DirectorysListFilesAndDirectoriesSegmentResponse extends Resp
      * @return the deserialized response body.
      */
     @Override
-    public ListFilesAndDirectoriesSegmentResponse value() {
-        return super.value();
+    public ListFilesAndDirectoriesSegmentResponse getValue() {
+        return super.getValue();
     }
 }

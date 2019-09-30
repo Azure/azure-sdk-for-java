@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -36,15 +37,20 @@ public class ClientSecretCredential implements TokenCredential {
      * @param clientSecret the secret value of the AAD application.
      * @param identityClientOptions the options for configuring the identity client
      */
-    ClientSecretCredential(String tenantId, String clientId, String clientSecret, IdentityClientOptions identityClientOptions) {
+    ClientSecretCredential(String tenantId, String clientId, String clientSecret,
+                           IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(clientSecret);
         Objects.requireNonNull(identityClientOptions);
-        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
+        identityClient = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .build();
         this.clientSecret = clientSecret;
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
-        return identityClient.authenticateWithClientSecret(clientSecret, scopes);
+    public Mono<AccessToken> getToken(TokenRequest request) {
+        return identityClient.authenticateWithClientSecret(clientSecret, request);
     }
 }

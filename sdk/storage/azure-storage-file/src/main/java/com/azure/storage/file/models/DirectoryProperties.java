@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.storage.file.FileSmbProperties;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ public final class DirectoryProperties {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final boolean isServerEncrypted;
+    private final FileSmbProperties smbProperties;
 
     /**
      * Creates an instance of properties information about a specific Directory.
@@ -21,40 +24,52 @@ public final class DirectoryProperties {
      * @param metadata A set of name-value pairs that contain metadata for the directory.
      * @param eTag Entity tag that corresponds to the directory.
      * @param lastModified Last time the directory was modified.
-     * @param isServerEncrypted  The value of this header is set to true if the directory metadata is completely encrypted using the specified algorithm. Otherwise, the value is set to false.
+     * @param isServerEncrypted The value of this header is set to true if the directory metadata is completely
+     * encrypted using the specified algorithm. Otherwise, the value is set to false.
+     * @param smbProperties The SMB properties of the directory.
      */
-    public DirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified, final boolean isServerEncrypted) {
+    public DirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified,
+        final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
     }
 
     /**
      * @return A set of name-value pairs that contain metadata for the directory.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 
     /**
      * @return Entity tag that corresponds to the directory.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
-     * @return The value of this header is true if the directory metadata is completely encrypted using the specified algorithm. Otherwise, the value is false.
+     * @return The value of this header is true if the directory metadata is completely encrypted using the specified
+     * algorithm. Otherwise, the value is false.
      */
     public boolean isServerEncrypted() {
         return isServerEncrypted;
+    }
+
+    /**
+     * @return The SMB Properties of the directory.
+     */
+    public FileSmbProperties getSmbProperties() {
+        return smbProperties;
     }
 }

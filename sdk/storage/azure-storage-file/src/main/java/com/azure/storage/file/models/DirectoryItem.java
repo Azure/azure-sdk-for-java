@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -25,7 +25,7 @@ public final class DirectoryItem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -35,7 +35,7 @@ public final class DirectoryItem {
      * @param name the name value to set.
      * @return the DirectoryItem object itself.
      */
-    public DirectoryItem name(String name) {
+    public DirectoryItem setName(String name) {
         this.name = name;
         return this;
     }

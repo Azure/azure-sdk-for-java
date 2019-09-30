@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
  * Sample demonstrates how to create, list and delete a share using the async file service client.
  */
 public class AsyncSample {
-    private static final String ENDPOINT = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -29,7 +29,7 @@ public class AsyncSample {
         String shareName = generateRandomName();
         fileServiceAsyncClient.createShareWithResponse(shareName, null, null).subscribe(
             response -> {
-                System.out.printf("Successfully created a share with status code: %d.", response.statusCode());
+                System.out.printf("Successfully created a share with status code: %d.", response.getStatusCode());
             },
             err -> {
                 System.out.println("Failed to create a share. Reasons: " + err.getMessage());
@@ -42,13 +42,13 @@ public class AsyncSample {
         // List all shares and delete them.
         fileServiceAsyncClient.listShares().subscribe(
             shareItem -> {
-                System.out.println("There is a share named: " + shareItem.name());
-                fileServiceAsyncClient.deleteShare(shareItem.name()).subscribe(
+                System.out.println("There is a share named: " + shareItem.getName());
+                fileServiceAsyncClient.deleteShare(shareItem.getName()).subscribe(
                     response -> {
-                        System.out.printf("Successfully delete the share: %s.", shareItem.name());
+                        System.out.printf("Successfully delete the share: %s.", shareItem.getName());
                     },
                     err -> {
-                        System.out.printf("Failed to delete the share: %s. Reasons: %s.", shareItem.name(), err.getMessage());
+                        System.out.printf("Failed to delete the share: %s. Reasons: %s.", shareItem.getName(), err.getMessage());
                     },
                     () -> {
                         System.out.println("Completed deleting the share.");

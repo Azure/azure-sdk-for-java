@@ -9,7 +9,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.ProxyOptions;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -28,7 +28,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Supplier;
 
 import static java.lang.StrictMath.pow;
 
@@ -56,7 +55,7 @@ class RequestRetryTestFactory {
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
     static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
-    static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
+    private static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
     private static final String RETRY_TEST_HEADER = "TestHeader";
     private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
     private static final Mono<HttpResponse> RETRY_TEST_OK_RESPONSE = Mono.just(new RetryTestResponse(200));
@@ -96,7 +95,7 @@ class RequestRetryTestFactory {
             .policies(new RequestRetryPolicy(this.options))
             .httpClient(new RetryTestClient(this))
             .build()
-            .send(new HttpRequest(HttpMethod.GET, url).body(Flux.just(RETRY_TEST_DEFAULT_DATA)));
+            .send(new HttpRequest(HttpMethod.GET, url).setBody(Flux.just(RETRY_TEST_DEFAULT_DATA)));
     }
 
     int getTryNumber() {
@@ -108,41 +107,42 @@ class RequestRetryTestFactory {
         int statusCode;
 
         RetryTestResponse(int statusCode) {
+            super(null);
             this.statusCode = statusCode;
         }
 
         @Override
-        public int statusCode() {
+        public int getStatusCode() {
             return this.statusCode;
         }
 
         @Override
-        public String headerValue(String headerName) {
+        public String getHeaderValue(String headerName) {
             return null;
         }
 
         @Override
-        public HttpHeaders headers() {
+        public HttpHeaders getHeaders() {
             return null;
         }
 
         @Override
-        public Flux<ByteBuffer> body() {
+        public Flux<ByteBuffer> getBody() {
             return null;
         }
 
         @Override
-        public Mono<byte[]> bodyAsByteArray() {
+        public Mono<byte[]> getBodyAsByteArray() {
             return null;
         }
 
         @Override
-        public Mono<String> bodyAsString() {
+        public Mono<String> getBodyAsString() {
             return null;
         }
 
         @Override
-        public Mono<String> bodyAsString(Charset charset) {
+        public Mono<String> getBodyAsString(Charset charset) {
             return null;
         }
     }
@@ -177,7 +177,7 @@ class RequestRetryTestFactory {
                 }
             }
 
-            if (!request.url().getHost().equals(expectedHost)) {
+            if (!request.getUrl().getHost().equals(expectedHost)) {
                 throw new IllegalArgumentException("The host does not match the expected host");
             }
 
@@ -185,16 +185,16 @@ class RequestRetryTestFactory {
              This policy will add test headers and query parameters. Ensure they are removed/reset for each retry.
              The retry policy should be starting with a fresh copy of the request for every try.
              */
-            if (request.headers().value(RETRY_TEST_HEADER) != null) {
+            if (request.getHeaders().getValue(RETRY_TEST_HEADER) != null) {
                 throw new IllegalArgumentException("Headers not reset.");
             }
-            if ((request.url().getQuery() != null && request.url().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
+            if ((request.getUrl().getQuery() != null && request.getUrl().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
                 throw new IllegalArgumentException("Query params not reset.");
             }
 
             // Subscribe and block until all information is read to prevent a blocking on another thread exception from Reactor.
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Disposable disposable = request.body().subscribe(data -> {
+            Disposable disposable = request.getBody().subscribe(data -> {
                 try {
                     outputStream.write(data.array());
                 } catch (IOException ex) {
@@ -212,11 +212,11 @@ class RequestRetryTestFactory {
             Modify the request as policies downstream of the retry policy are likely to do. These must be reset on each
             try.
              */
-            request.headers().put(RETRY_TEST_HEADER, "testheader");
-            UrlBuilder builder = UrlBuilder.parse(request.url());
+            request.getHeaders().put(RETRY_TEST_HEADER, "testheader");
+            UrlBuilder builder = UrlBuilder.parse(request.getUrl());
             builder.setQueryParameter(RETRY_TEST_QUERY_PARAM, "testquery");
             try {
-                request.url(builder.toURL());
+                request.setUrl(builder.toURL());
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("The URL has been mangled");
             }
@@ -354,21 +354,6 @@ class RequestRetryTestFactory {
             }
         }
 
-        @Override
-        public HttpClient proxy(Supplier<ProxyOptions> supplier) {
-            return null;
-        }
-
-        @Override
-        public HttpClient wiretap(boolean b) {
-            return null;
-        }
-
-        @Override
-        public HttpClient port(int i) {
-            return null;
-        }
-
         /*
          Calculate the delay in seconds. Round up to ensure we include the maximum value and some offset for the code
          executing between the original calculation in the retry policy and this check.
@@ -387,17 +372,17 @@ class RequestRetryTestFactory {
 
         private OffsetDateTime calcUpperBound(OffsetDateTime start, int primaryTryNumber, boolean tryingPrimary) {
             if (tryingPrimary) {
-                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 + 500, ChronoUnit.MILLIS);
+                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 + 1000, ChronoUnit.MILLIS);
             } else {
-                return start.plus(1400, ChronoUnit.MILLIS);
+                return start.plus(1500, ChronoUnit.MILLIS);
             }
         }
 
         private OffsetDateTime calcLowerBound(OffsetDateTime start, int primaryTryNumber, boolean tryingPrimary) {
             if (tryingPrimary) {
-                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 - 500, ChronoUnit.MILLIS);
+                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 - 1000, ChronoUnit.MILLIS);
             } else {
-                return start.plus(700, ChronoUnit.MILLIS);
+                return start.plus(500, ChronoUnit.MILLIS);
             }
         }
 

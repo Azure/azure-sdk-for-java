@@ -50,9 +50,9 @@ class PipelineSample {
                 .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.
-        final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().key("hello").value("world")),
-                client.setSetting(new ConfigurationSetting().key("newSetting").value("newValue")))
-                .then(client.listSettings(new SettingSelector().keys("*")).collectList())
+        final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().setKey("hello").setValue("world")),
+                client.setSetting(new ConfigurationSetting().setKey("newSetting").setValue("newValue")))
+                .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
                 .block();
 
         // Cleaning up after ourselves by deleting the values.
@@ -97,7 +97,7 @@ class PipelineSample {
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            tracker.increment(context.httpRequest().httpMethod());
+            tracker.increment(context.getHttpRequest().getHttpMethod());
             return next.process();
         }
     }

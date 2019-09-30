@@ -14,8 +14,8 @@ package com.microsoft.azure.cognitiveservices.vision.customvision.training.model
  */
 public class ExportIterationOptionalParameter {
     /**
-     * The flavor of the target platform (Windows, Linux, ARM, or GPU).
-     * Possible values include: 'Linux', 'Windows'.
+     * The flavor of the target platform. Possible values include: 'Linux',
+     * 'Windows', 'ONNX10', 'ONNX12', 'ARM'.
      */
     private String flavor;
 

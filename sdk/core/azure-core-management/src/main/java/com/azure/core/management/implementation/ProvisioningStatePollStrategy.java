@@ -45,7 +45,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
          * Create a new ProvisioningStatePollStrategyData.
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
-         *                     initiated the long running operation.
+         *     initiated the long running operation.
          * @param originalRequest The HTTP response to the original HTTP request.
          * @param provisioningState The provisioning state.
          * @param delayInMilliseconds The delay value.
@@ -61,7 +61,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         }
 
         PollStrategy initializeStrategy(RestProxy restProxy,
-                                                 SwaggerMethodParser methodParser) {
+                                        SwaggerMethodParser methodParser) {
             this.restProxy = restProxy;
             this.methodParser = methodParser;
             return new ProvisioningStatePollStrategy(this);
@@ -71,7 +71,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     HttpRequest createPollRequest() {
-        return new HttpRequest(HttpMethod.GET, data.originalRequest.url());
+        return new HttpRequest(HttpMethod.GET, data.originalRequest.getUrl());
     }
 
     @Override
@@ -79,7 +79,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         return ensureExpectedStatus(pollResponse)
             .flatMap(response -> {
                 final HttpResponse bufferedHttpPollResponse = response.buffer();
-                return bufferedHttpPollResponse.bodyAsString()
+                return bufferedHttpPollResponse.getBodyAsString()
                     .map(responseBody -> {
                         ResourceWithProvisioningState resource = null;
                         try {
@@ -87,12 +87,17 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
                         } catch (IOException ignored) {
                         }
 
-                        if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
-                            throw logger.logExceptionAsError(new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null));
-                        } else if (OperationState.isFailedOrCanceled(resource.properties().provisioningState())) {
-                            throw logger.logExceptionAsError(new CloudException("Async operation failed with provisioning state: " + resource.properties().provisioningState(), bufferedHttpPollResponse));
+                        if (resource == null
+                            || resource.getProperties() == null
+                            || resource.getProperties().getProvisioningState() == null) {
+                            throw logger.logExceptionAsError(new CloudException("The polling response does not "
+                                + "contain a valid body", bufferedHttpPollResponse, null));
+                        } else if (OperationState.isFailedOrCanceled(resource.getProperties().getProvisioningState())) {
+                            throw logger.logExceptionAsError(new CloudException("Async operation failed with "
+                                + "provisioning state: " + resource.getProperties().getProvisioningState(),
+                                bufferedHttpPollResponse));
                         } else {
-                            setStatus(resource.properties().provisioningState());
+                            setStatus(resource.getProperties().getProvisioningState());
                         }
                         return bufferedHttpPollResponse;
                     });
@@ -101,11 +106,11 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     boolean isDone() {
-        return OperationState.isCompleted(status());
+        return OperationState.isCompleted(getStatus());
     }
 
     @Override
-    public Serializable strategyData() {
+    public Serializable getStrategyData() {
         return this.data;
     }
 }

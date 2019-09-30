@@ -3,9 +3,7 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +14,12 @@ import java.util.Objects;
  * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
  *
  * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a throwable is the last
- * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose} logging the
- * stack trace for the throwable will be included in the log message.</p>
+ * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose}
+ * logging the stack trace for the throwable will be included in the log message.</p>
  *
- * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
- * environment configuration, by default logging is disabled.</p>
+ * <p>A minimum logging level threshold is determined by the
+ * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration, by default logging is
+ * disabled.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
@@ -218,11 +217,13 @@ public class ClientLogger {
     /*
      * Helper method that determines if logging is enabled at a given level.
      * @param level Logging level
-     * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
+     * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the
+     * given level.
      */
     private boolean canLogAtLevel(int level) {
         // Check the configuration level every time the logger is called in case it has changed.
-        int configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+        int configurationLevel =
+            Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL, DISABLED_LEVEL);
         if (level < configurationLevel) {
             return false;
         }

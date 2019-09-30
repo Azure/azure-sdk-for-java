@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubProducerIntegrationTest extends ApiTestBase {
+public class EventHubProducerIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     private EventHubClient client;
 
@@ -31,14 +31,12 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
     @Override
     protected void beforeTest() {
-        skipIfNotRecordMode();
-
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
@@ -57,7 +55,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
     @Test
     public void sendMessageToPartition() throws IOException {
         // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
@@ -122,7 +120,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
 
         // Act & Assert
         try (EventHubProducer producer = client.createProducer()) {
-            final BatchOptions options = new BatchOptions().partitionKey("my-partition-key");
+            final BatchOptions options = new BatchOptions().setPartitionKey("my-partition-key");
             final EventDataBatch batch = producer.createBatch(options);
 
             events.forEach(event -> {

@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: ./blob-2019-02-02.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-02-02/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -33,6 +33,9 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+models-subpackage: implementation.models
+custom-types: AccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobItem,BlobProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,ContainerItem,ContainerProperties,CopyStatusType,CorsRule,CpkInfo,CustomerProvidedKeyInfo,DataLakeStorageError,DataLakeStorageErrorError,DataLakeStorageErrorException,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobsIncludeItem,ListContainersIncludeType,Logging,Metrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,RetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,SignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,StorageError,StorageErrorCode,StorageErrorException,StorageServiceProperties,StorageServiceStats,SyncCopyStatusType,UserDelegationKey
+custom-types-subpackage: models
 ```
 
 ### /{containerName}?restype=container
@@ -762,20 +765,6 @@ directive:
     }
 ```
 
-### Make AccessTier Unique
-autorest.python complains that the same enum has different values
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.AccessTierRequired
-  transform: >
-    $["x-ms-enum"].name = "AccessTierRequired";
-- from: swagger-document
-  where: $.parameters.AccessTierOptional
-  transform: >
-    $["x-ms-enum"].name = "AccessTierOptional";
-```
-
 ### Extra parameters
 ``` yaml
 directive:
@@ -882,3 +871,54 @@ directive:
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
 ```
 
+### Add EncryptionKeySha256 to PageBlobUploadPagesFromURLHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&update&fromUrl"].put.responses["201"].headers
+  transform: >
+    if (!$["x-ms-encryption-key-sha256"]) {
+      $["x-ms-encryption-key-sha256"] = {
+        "x-ms-client-name": "EncryptionKeySha256",
+        "type": "string",
+        "description": "The SHA-256 hash of the encryption key used to encrypt the pages. This header is only returned when the pages were encrypted with a customer-provided key."
+      };
+    }
+```
+
+### Add IsServerEncrypted to AppendBlobAppendBlockFromUrlHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=appendblock&fromUrl"].put.responses["201"].headers
+  transform: >
+    if (!$["x-ms-request-server-encrypted"]) {
+      $["x-ms-request-server-encrypted"] = {
+        "x-ms-client-name": "IsServerEncrypted",
+        "type": "boolean",
+        "description": "The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm, and false otherwise."
+      };
+    }
+```
+
+### Add EncryptionKeySha256 and IsServerEncrypted to PageBlobClearPagesHeaders
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=page&clear"].put.responses["201"].headers
+  transform: >
+    if (!$["x-ms-request-server-encrypted"]) {
+      $["x-ms-request-server-encrypted"] = {
+        "x-ms-client-name": "IsServerEncrypted",
+        "type": "boolean",
+        "description": "The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm, and false otherwise."
+      };
+    }
+    if (!$["x-ms-encryption-key-sha256"]) {
+      $["x-ms-encryption-key-sha256"] = {
+        "x-ms-client-name": "EncryptionKeySha256",
+        "type": "string",
+        "description": "The SHA-256 hash of the encryption key used to encrypt the pages. This header is only returned when the pages were encrypted with a customer-provided key."
+      };
+    }
+```

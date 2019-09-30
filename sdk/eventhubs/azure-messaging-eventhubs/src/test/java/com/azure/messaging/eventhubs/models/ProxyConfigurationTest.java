@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.models;
 
+import com.azure.core.amqp.models.ProxyAuthenticationType;
+import com.azure.core.amqp.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
@@ -14,7 +16,7 @@ import org.junit.runner.RunWith;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-import static com.azure.messaging.eventhubs.models.ProxyConfiguration.SYSTEM_DEFAULTS;
+import static com.azure.core.amqp.models.ProxyConfiguration.SYSTEM_DEFAULTS;
 
 @RunWith(Theories.class)
 public class ProxyConfigurationTest {
@@ -36,9 +38,9 @@ public class ProxyConfigurationTest {
 
     @Test
     public void nullProxyConfiguration() {
-        Assert.assertNull(SYSTEM_DEFAULTS.authentication());
-        Assert.assertNull(SYSTEM_DEFAULTS.credential());
-        Assert.assertNull(SYSTEM_DEFAULTS.proxyAddress());
+        Assert.assertNull(SYSTEM_DEFAULTS.getAuthentication());
+        Assert.assertNull(SYSTEM_DEFAULTS.getCredential());
+        Assert.assertNull(SYSTEM_DEFAULTS.getProxyAddress());
     }
 
     @Theory
@@ -102,11 +104,11 @@ public class ProxyConfigurationTest {
     }
 
     private static void validateProxyConfiguration(ProxyConfiguration proxyConfiguration, ProxyAuthenticationType proxyAuthenticationType) {
-        String proxyAddressStr = proxyConfiguration.proxyAddress().address().toString();
-        ProxyAuthenticationType authentication = proxyConfiguration.authentication();
+        String proxyAddressStr = proxyConfiguration.getProxyAddress().address().toString();
+        ProxyAuthenticationType authentication = proxyConfiguration.getAuthentication();
         Assert.assertEquals(HTTP_PROXY, proxyAddressStr);
-        Assert.assertEquals(PROXY_USERNAME, proxyConfiguration.credential().getUserName());
-        Assert.assertEquals(PROXY_PASSWORD, new String(proxyConfiguration.credential().getPassword()));
+        Assert.assertEquals(PROXY_USERNAME, proxyConfiguration.getCredential().getUserName());
+        Assert.assertEquals(PROXY_PASSWORD, new String(proxyConfiguration.getCredential().getPassword()));
         Assert.assertTrue(proxyAuthenticationType.equals(authentication));
     }
 }

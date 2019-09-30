@@ -5,8 +5,8 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
-import com.azure.core.implementation.annotation.HeaderCollection;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -77,7 +77,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -87,7 +87,7 @@ public final class ShareGetPropertiesHeaders {
      * @param metadata the metadata value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders metadata(Map<String, String> metadata) {
+    public ShareGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -98,7 +98,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -109,7 +109,7 @@ public final class ShareGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders eTag(String eTag) {
+    public ShareGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -122,11 +122,11 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -138,7 +138,7 @@ public final class ShareGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders lastModified(OffsetDateTime lastModified) {
+    public ShareGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -153,7 +153,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -164,7 +164,7 @@ public final class ShareGetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders requestId(String requestId) {
+    public ShareGetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -175,7 +175,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -186,7 +186,7 @@ public final class ShareGetPropertiesHeaders {
      * @param version the version value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders version(String version) {
+    public ShareGetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -197,11 +197,11 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -211,7 +211,7 @@ public final class ShareGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders dateProperty(OffsetDateTime dateProperty) {
+    public ShareGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -225,7 +225,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the quota value.
      */
-    public Integer quota() {
+    public Integer getQuota() {
         return this.quota;
     }
 
@@ -235,7 +235,7 @@ public final class ShareGetPropertiesHeaders {
      * @param quota the quota value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders quota(Integer quota) {
+    public ShareGetPropertiesHeaders setQuota(Integer quota) {
         this.quota = quota;
         return this;
     }
@@ -245,7 +245,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -255,7 +255,7 @@ public final class ShareGetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders errorCode(String errorCode) {
+    public ShareGetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

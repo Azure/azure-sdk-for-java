@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: ./file-2019-02-02.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-02-02/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file
@@ -136,6 +136,11 @@ directive:
     if (!param["$ref"].endsWith("ShareName")) {
         const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
         $.put.parameters.splice(0, 0, { "$ref": path });
+    }
+    param = $.get.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.get.parameters.splice(0, 0, { "$ref": path });
     }
 ```
 
@@ -334,6 +339,9 @@ directive:
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["206"].headers["x-ms-file-change-time"].format = "date-time";
         op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
@@ -531,4 +539,19 @@ directive:
     delete $.default;
     delete $["x-ms-enum"];
     $["x-ms-parameter-location"] = "method";
+```
+
+### Add the CustomFileAndDirectoryListingDeserializer attribute
+``` yaml
+directive:
+- from: FilesAndDirectoriesListSegment.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class FilesAndDirectoriesListSegment {",
+        "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
 ```

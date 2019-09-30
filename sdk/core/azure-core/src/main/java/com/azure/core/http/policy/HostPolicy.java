@@ -7,8 +7,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.UrlBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
  */
 public class HostPolicy implements HttpPipelinePolicy {
     private final String host;
-    private static final Logger LOGGER = LoggerFactory.getLogger(HostPolicy.class);
+    private final ClientLogger logger = new ClientLogger(HostPolicy.class);
 
     /**
      * Create HostPolicy.
@@ -31,12 +31,12 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        LOGGER.info("Setting host to {}", host);
+        logger.info("Setting host to {}", host);
 
         Mono<HttpResponse> result;
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
-            context.httpRequest().url(urlBuilder.host(host).toURL());
+            context.getHttpRequest().setUrl(urlBuilder.setHost(host).toURL());
             result = next.process();
         } catch (MalformedURLException e) {
             result = Mono.error(e);

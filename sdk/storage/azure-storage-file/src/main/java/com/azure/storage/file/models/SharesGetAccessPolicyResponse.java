@@ -30,7 +30,7 @@ public final class SharesGetAccessPolicyResponse extends ResponseBase<ShareGetAc
      * @return the deserialized response body.
      */
     @Override
-    public List<SignedIdentifier> value() {
-        return super.value();
+    public List<SignedIdentifier> getValue() {
+        return super.getValue();
     }
 }

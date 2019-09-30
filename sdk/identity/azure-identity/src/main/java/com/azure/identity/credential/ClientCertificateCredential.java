@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -36,19 +37,25 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */
-    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword, IdentityClientOptions identityClientOptions) {
+    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword,
+                                IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath);
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = certificatePassword;
-        identityClient = new IdentityClientBuilder().tenantId(tenantId).clientId(clientId).identityClientOptions(identityClientOptions).build();
+        identityClient =
+            new IdentityClientBuilder()
+                .tenantId(tenantId)
+                .clientId(clientId)
+                .identityClientOptions(identityClientOptions)
+                .build();
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         if (clientCertificatePassword != null) {
-            return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, scopes);
+            return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, request);
         } else {
-            return identityClient.authenticateWithPemCertificate(clientCertificate, scopes);
+            return identityClient.authenticateWithPemCertificate(clientCertificate, request);
         }
     }
 }

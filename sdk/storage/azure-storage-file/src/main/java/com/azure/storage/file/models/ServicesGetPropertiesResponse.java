@@ -29,7 +29,7 @@ public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGet
      * @return the deserialized response body.
      */
     @Override
-    public FileServiceProperties value() {
-        return super.value();
+    public FileServiceProperties getValue() {
+        return super.getValue();
     }
 }

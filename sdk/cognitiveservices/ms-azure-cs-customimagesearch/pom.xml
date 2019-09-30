@@ -6,13 +6,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-      <groupId>com.microsoft.azure.cognitiveservices</groupId>
-      <artifactId>azure-cognitiveservices-parent</artifactId>
-      <version>1.0.2</version>
-      <relativePath>../pom.xml</relativePath>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-sdk-parent</artifactId>
+      <version>1.2.0</version>
+      <relativePath>../../../pom.data.xml</relativePath>
     </parent>
     <artifactId>azure-cognitiveservices-customimagesearch</artifactId>
-    <version>1.0.2-beta</version>
+    <groupId>com.microsoft.azure.cognitiveservices</groupId>
+    <version>1.1.0-preview.1</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Custom Image Search</name>
     <description>This package contains Microsoft Cognitive Service Custom Image Search SDK.</description>

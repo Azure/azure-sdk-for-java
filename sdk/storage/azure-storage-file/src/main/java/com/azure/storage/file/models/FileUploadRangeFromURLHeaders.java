@@ -5,7 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -82,7 +82,7 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -93,7 +93,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders eTag(String eTag) {
+    public FileUploadRangeFromURLHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -106,11 +106,11 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the lastModified value.
      */
-    public OffsetDateTime lastModified() {
+    public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
         }
-        return this.lastModified.dateTime();
+        return this.lastModified.getDateTime();
     }
 
     /**
@@ -122,7 +122,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders lastModified(OffsetDateTime lastModified) {
+    public FileUploadRangeFromURLHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -139,7 +139,7 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the xMsContentCrc64 value.
      */
-    public byte[] xMsContentCrc64() {
+    public byte[] getXMsContentCrc64() {
         return ImplUtils.clone(this.xMsContentCrc64);
     }
 
@@ -152,7 +152,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders xMsContentCrc64(byte[] xMsContentCrc64) {
+    public FileUploadRangeFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = ImplUtils.clone(xMsContentCrc64);
         return this;
     }
@@ -163,7 +163,7 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the requestId value.
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 
@@ -174,7 +174,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param requestId the requestId value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders requestId(String requestId) {
+    public FileUploadRangeFromURLHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -185,7 +185,7 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -196,7 +196,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param version the version value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders version(String version) {
+    public FileUploadRangeFromURLHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -207,11 +207,11 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the dateProperty value.
      */
-    public OffsetDateTime dateProperty() {
+    public OffsetDateTime getDateProperty() {
         if (this.dateProperty == null) {
             return null;
         }
-        return this.dateProperty.dateTime();
+        return this.dateProperty.getDateTime();
     }
 
     /**
@@ -221,7 +221,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders dateProperty(OffsetDateTime dateProperty) {
+    public FileUploadRangeFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -249,7 +249,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param isServerEncrypted the isServerEncrypted value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders isServerEncrypted(Boolean isServerEncrypted) {
+    public FileUploadRangeFromURLHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
@@ -259,7 +259,7 @@ public final class FileUploadRangeFromURLHeaders {
      *
      * @return the errorCode value.
      */
-    public String errorCode() {
+    public String getErrorCode() {
         return this.errorCode;
     }
 
@@ -269,7 +269,7 @@ public final class FileUploadRangeFromURLHeaders {
      * @param errorCode the errorCode value to set.
      * @return the FileUploadRangeFromURLHeaders object itself.
      */
-    public FileUploadRangeFromURLHeaders errorCode(String errorCode) {
+    public FileUploadRangeFromURLHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

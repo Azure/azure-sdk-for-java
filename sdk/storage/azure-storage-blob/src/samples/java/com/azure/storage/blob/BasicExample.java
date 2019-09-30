@@ -3,14 +3,15 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
@@ -20,6 +21,7 @@ public class BasicExample {
 
     /**
      * Entry point into the basic examples for Storage blobs.
+     *
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
      * @throws RuntimeException If the downloaded data doesn't match the uploaded data
@@ -69,10 +71,10 @@ public class BasicExample {
          * This returns a BlockBlobClient object that wraps the blob's endpoint, credential and a request pipeline
          * (inherited from containerClient). Note that blob names can be mixed case.
          */
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient("HelloWorld.txt");
+        BlockBlobClient blobClient = containerClient.getBlobClient("HelloWorld.txt").asBlockBlobClient();
 
         String data = "Hello world!";
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes());
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
 
         /*
          * Create the blob with string (plain text) content.
@@ -84,15 +86,15 @@ public class BasicExample {
         /*
          * Download the blob's content to output stream.
          */
-        int dataSize = (int) blobClient.getProperties().blobSize();
-        OutputStream outputStream = new ByteArrayOutputStream(dataSize);
+        int dataSize = (int) blobClient.getProperties().getBlobSize();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(dataSize);
         blobClient.download(outputStream);
         outputStream.close();
 
         /*
          * Verify that the blob data round-tripped correctly.
          */
-        if (!data.equals(outputStream.toString())) {
+        if (!data.equals(new String(outputStream.toByteArray(), StandardCharsets.UTF_8))) {
             throw new RuntimeException("The downloaded data does not match the uploaded data.");
         }
 
@@ -102,8 +104,8 @@ public class BasicExample {
         for (int i = 0; i < 3; i++) {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
-            containerClient.getBlockBlobClient("myblobsforlisting" + System.currentTimeMillis())
-                    .upload(dataInBlobs, sampleData.length());
+            containerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).asBlockBlobClient()
+                .upload(dataInBlobs, sampleData.length());
             dataInBlobs.close();
         }
 
@@ -111,7 +113,7 @@ public class BasicExample {
          * List the blob(s) in our container.
          */
         containerClient.listBlobsFlat()
-            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.name() + ", Snapshot: " + blobItem.snapshot()));
+            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
 
         /*
          * Delete the blob we created earlier.

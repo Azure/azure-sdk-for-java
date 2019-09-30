@@ -6,7 +6,7 @@ package com.azure.storage.queue.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
 
 /**
  * A builder for creating a new instance of the AzureQueueStorage type.
@@ -67,9 +67,6 @@ public final class AzureQueueStorageBuilder {
      * @return an instance of AzureQueueStorageImpl.
      */
     public AzureQueueStorageImpl build() {
-        if (version == null) {
-            this.version = "2018-03-28";
-        }
         if (pipeline == null) {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
@@ -79,6 +76,8 @@ public final class AzureQueueStorageBuilder {
         }
         if (this.version != null) {
             client.setVersion(this.version);
+        } else {
+            client.setVersion("2018-03-28");
         }
         return client;
     }

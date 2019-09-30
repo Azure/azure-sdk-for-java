@@ -18,12 +18,11 @@ import com.azure.data.cosmos.internal.changefeed.exceptions.PartitionSplitExcept
 import com.azure.data.cosmos.internal.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.List;
+import java.time.ZonedDateTime;
 
 import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 
@@ -41,7 +40,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ChangeFeedContextClient documentClient;
     private volatile RuntimeException resultException;
 
-    private String lastContinuation;
+    private volatile String lastContinuation;
+    private volatile boolean isFirstQueryForChangeFeeds;
+
 
     public PartitionProcessorImpl(ChangeFeedObserver observer, ChangeFeedContextClient documentClient, ProcessorSettings settings, PartitionCheckpointer checkpointer) {
         this.observer = observer;
@@ -61,10 +62,30 @@ class PartitionProcessorImpl implements PartitionProcessor {
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
         this.lastContinuation = this.settings.getStartContinuation();
+        this.isFirstQueryForChangeFeeds = true;
 
         this.options.requestContinuation(this.lastContinuation);
 
         return Flux.just(this)
+            .flatMap( value -> {
+                if (cancellationToken.isCancellationRequested()) {
+                    return Flux.empty();
+                }
+
+                if(this.isFirstQueryForChangeFeeds) {
+                    this.isFirstQueryForChangeFeeds = false;
+                    return Flux.just(value);
+                }
+
+                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.settings.getFeedPollDelay());
+                return Mono.just(value)
+                    .delayElement(Duration.ofMillis(100))
+                    .repeat( () -> {
+                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                    }).last();
+
+            })
             .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options)
                 .limitRequest(1)
             )
@@ -128,30 +149,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         }
                     }
                 } else if (throwable instanceof TaskCancelledException) {
-                    this.logger.warn("Exception: partition {}", this.settings.getPartitionKeyRangeId(), throwable);
+                    this.logger.debug("Exception: partition {}", this.settings.getPartitionKeyRangeId(), throwable);
                     this.resultException = (TaskCancelledException) throwable;
                 }
                 return Flux.error(throwable);
             })
             .repeat(() -> {
-                if (cancellationToken.isCancellationRequested()) {
-                    this.resultException = new TaskCancelledException();
-                    return false;
-                }
-
-                Duration delay = this.settings.getFeedPollDelay();
-                long remainingWork = delay.toMillis();
-
-                try {
-                    while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
-                        Thread.sleep(100);
-                        remainingWork -= 100;
-                    }
-                } catch (InterruptedException iex) {
-                    // exception caught
-                    return false;
-                }
-
                 if (cancellationToken.isCancellationRequested()) {
                     this.resultException = new TaskCancelledException();
                     return false;
@@ -171,7 +174,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private Mono<Void> dispatchChanges(FeedResponse<CosmosItemProperties> response) {
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.settings.getPartitionKeyRangeId(), response, this.checkpointer);
 
-        this.observer.processChanges(context, response.results());
-        return Mono.empty();
+        return this.observer.processChanges(context, response.results());
     }
 }

@@ -11,17 +11,17 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretBase}.
+ * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
+ * inherited from {@link SecretBase}.
  * It is managed by Secret Service.
  *
- *  @see SecretClient
- *  @see SecretAsyncClient
+ * @see SecretClient
+ * @see SecretAsyncClient
  */
 public final class DeletedSecret extends SecretBase {
 
     /**
-     * The url of the recovery object, used to identify and recover the deleted
-     * secret.
+     * The url of the recovery object, used to identify and recover the deleted secret.
      */
     @JsonProperty(value = "recoveryId")
     private String recoveryId;
@@ -41,7 +41,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the recoveryId identifier.
      */
-    public String recoveryId() {
+    public String getRecoveryId() {
         return this.recoveryId;
     }
 
@@ -51,7 +51,7 @@ public final class DeletedSecret extends SecretBase {
      * @param recoveryId The recoveryId identifier to set
      * @return the DeletedSecret object itself.
      */
-    public DeletedSecret recoveryId(String recoveryId) {
+    public DeletedSecret setRecoveryId(String recoveryId) {
         this.recoveryId = recoveryId;
         return this;
     }
@@ -61,7 +61,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the scheduledPurgeDate UTC time.
      */
-    public OffsetDateTime scheduledPurgeDate() {
+    public OffsetDateTime getScheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
@@ -70,25 +70,26 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime deletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return this.deletedDate;
     }
 
     /**
-     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to OffsetDateTime and updates the
-     * value of class variable scheduledPurgeDate.
+     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
+     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
      */
     @JsonProperty("scheduledPurgeDate")
     private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
-        this.scheduledPurgeDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
+        this.scheduledPurgeDate =
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
     }
 
     /**
-     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime and updates the
-     * value of class variable deletedDate.
+     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
+     * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
-    private void deletedDate(Long deletedDate) {
+    private void setDeletedDate(Long deletedDate) {
         this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 

@@ -16,7 +16,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-media</artifactId>
-  <version>0.9.8-SNAPSHOT</version>
+  <version>1.0.0-preview.1</version>
   <packaging>jar</packaging>
   <name>Microsoft Azure SDK for Media Services</name>
   <description>This package contains Microsoft Azure SDK for Media Services.</description>
@@ -25,7 +25,7 @@
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-data-sdk-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
         <relativePath>../../../pom.data.xml</relativePath>
     </parent>
 
@@ -180,7 +180,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8</version>
+        <!-- <version>2.8</version> -->
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
           <bottom><![CDATA[<code>/**

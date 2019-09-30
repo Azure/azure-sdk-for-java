@@ -4,30 +4,30 @@
 
 package com.azure.storage.blob.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetStatisticsResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKeyResponse;
+import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersIncludeType;
-import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
-import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
-import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
-import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import java.nio.ByteBuffer;
@@ -96,7 +96,7 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesGetAccountInfoResponse> getAccountInfo(@HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @Get("")
+        @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<ServicesSubmitBatchResponse> submitBatch(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
@@ -239,7 +239,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
      * @param context The context to associate with this operation.
@@ -256,7 +256,7 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves a user delgation key for the Blob service. This is only a valid operation when using bearer token authentication.
+     * Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
      *
      * @param keyInfo the KeyInfo value.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.

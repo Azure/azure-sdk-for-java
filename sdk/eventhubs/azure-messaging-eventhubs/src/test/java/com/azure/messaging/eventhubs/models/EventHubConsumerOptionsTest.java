@@ -16,7 +16,7 @@ public class EventHubConsumerOptionsTest {
         final EventHubConsumerOptions options = new EventHubConsumerOptions();
 
         // Assert
-        Assert.assertEquals(EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT, options.prefetchCount());
+        Assert.assertEquals(EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT, options.getPrefetchCount());
     }
 
     @Test
@@ -26,18 +26,18 @@ public class EventHubConsumerOptionsTest {
         final String longIdentifier = new String(new char[length]).replace("\0", "f");
         final String identifier = "An Identifier";
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .identifier(identifier);
+            .setIdentifier(identifier);
 
         // Act
         try {
-            options.identifier(longIdentifier);
+            options.setIdentifier(longIdentifier);
             Assert.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(identifier, options.identifier());
+        Assert.assertEquals(identifier, options.getIdentifier());
     }
 
     @Test
@@ -46,18 +46,18 @@ public class EventHubConsumerOptionsTest {
         final int prefetch = 235;
         final int invalid = EventHubConsumerOptions.MINIMUM_PREFETCH_COUNT - 1;
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .prefetchCount(prefetch);
+            .setPrefetchCount(prefetch);
 
         // Act
         try {
-            options.prefetchCount(invalid);
+            options.setPrefetchCount(invalid);
             Assert.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(prefetch, options.prefetchCount());
+        Assert.assertEquals(prefetch, options.getPrefetchCount());
     }
 
     @Test
@@ -66,18 +66,18 @@ public class EventHubConsumerOptionsTest {
         final int prefetch = 235;
         final int invalid = EventHubConsumerOptions.MAXIMUM_PREFETCH_COUNT + 1;
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .prefetchCount(prefetch);
+            .setPrefetchCount(prefetch);
 
         // Act
         try {
-            options.prefetchCount(invalid);
+            options.setPrefetchCount(invalid);
             Assert.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(prefetch, options.prefetchCount());
+        Assert.assertEquals(prefetch, options.getPrefetchCount());
     }
 
     @Test
@@ -86,17 +86,17 @@ public class EventHubConsumerOptionsTest {
         final long ownerLevel = 14;
         final long invalidOwnerLevel = -1;
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .ownerLevel(ownerLevel);
+            .setOwnerLevel(ownerLevel);
 
         // Act
         try {
-            options.ownerLevel(invalidOwnerLevel);
+            options.setOwnerLevel(invalidOwnerLevel);
             Assert.fail("Setting this should have failed.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
         }
 
         // Assert
-        Assert.assertEquals(Long.valueOf(ownerLevel), options.ownerLevel());
+        Assert.assertEquals(Long.valueOf(ownerLevel), options.getOwnerLevel());
     }
 }

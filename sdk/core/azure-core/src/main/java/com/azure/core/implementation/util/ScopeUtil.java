@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,17 +19,18 @@ public final class ScopeUtil {
      * @return the resource to authenticate with Azure Active Directory.
      * @throws IllegalArgumentException if scopes is empty or has more than 1 items
      */
-    public static String scopesToResource(String[] scopes) {
+    public static String scopesToResource(List<String> scopes) {
         Objects.requireNonNull(scopes);
-        if (scopes.length != 1) {
-            throw new IllegalArgumentException("To convert to a resource string the specified array must be exactly length 1");
+        if (scopes.size() != 1) {
+            throw new IllegalArgumentException(
+                "To convert to a resource string the specified array must be exactly length 1");
         }
 
-        if (!scopes[0].endsWith(DEFAULT_SUFFIX)) {
-            return scopes[0];
+        if (!scopes.get(0).endsWith(DEFAULT_SUFFIX)) {
+            return scopes.get(0);
         }
 
-        return scopes[0].substring(0, scopes[0].lastIndexOf(DEFAULT_SUFFIX));
+        return scopes.get(0).substring(0, scopes.get(0).lastIndexOf(DEFAULT_SUFFIX));
     }
 
     /**
