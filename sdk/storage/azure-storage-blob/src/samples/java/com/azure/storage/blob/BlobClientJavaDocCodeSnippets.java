@@ -95,12 +95,7 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClient#downloadToFile(String)} and
-<<<<<<< HEAD
-     * {@link BlobClient#downloadToFileWithResponse(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration, Context)}
-=======
-     * {@link BlobClient#downloadToFile(String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobAccessConditions,
-     * boolean, Duration, Context)}
->>>>>>> Introduced ParallelTransferOptions parameter to downloadToFile method on BlobClients
+     * {@link BlobClient#downloadToFileWithResponse(String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobAccessConditions, boolean, Duration, Context)}
      */
     public void downloadToFile() {
         // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String
@@ -108,25 +103,14 @@ public class BlobClientJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.BlobClient.downloadToFile#String
 
-<<<<<<< HEAD
-        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        Response<BlobProperties> response = client.downloadToFileWithResponse(file, range, 4 * Constants.MB,
+        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions().setBlockSize(4 * Constants.MB),
             options, null, false, timeout, new Context(key2, value2));
-        System.out.println("Completed download to file with status code " + response.getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
-=======
-        // BEGIN: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
-        BlobRange range = new BlobRange(1024, 2048L);
-        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
-
-        client.downloadToFile(file, range, new ParallelTransferOptions().setBlockSize(4 * Constants.MB), options, null,
-            false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
->>>>>>> Introduced ParallelTransferOptions parameter to downloadToFile method on BlobClients
+        // END: com.azure.storage.blob.BlobClient.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
     }
 
     /**
