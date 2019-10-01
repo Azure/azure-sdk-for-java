@@ -444,6 +444,131 @@ public final class ConfigurationClient {
     }
 
     /**
+     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string}
+     *
+     * @param key The key of the configuration setting to add.
+     * @param label The label of the configuration setting to add.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting setReadOnly(String key, String label) {
+        return setReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), Context.NONE).getValue();
+    }
+
+    /**
+     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting setReadOnly(ConfigurationSetting setting) {
+        return setReadOnlyWithResponse(setting, Context.NONE).getValue();
+    }
+
+    /**
+     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response containing the locked ConfigurationSetting. {@code null} is also returned if the
+     * {@code key} is an invalid value.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, Context context) {
+        return client.setReadOnly(setting, context).block();
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#string-string}
+     *
+     * @param key The key of the configuration setting to add.
+     * @param label The label of the configuration setting to add.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting clearReadOnly(String key, String label) {
+        return clearReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationSetting clearReadOnly(ConfigurationSetting setting) {
+        return clearReadOnlyWithResponse(setting, Context.NONE).getValue();
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A REST response containing the unlocked ConfigurationSetting. {@code null} is also returned if the
+     * {@code key} is an invalid value.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationSetting> clearReadOnlyWithResponse(ConfigurationSetting setting, Context context) {
+        return client.clearReadOnly(setting, context).block();
+    }
+
+    /**
      * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
      *

@@ -525,11 +525,118 @@ public final class ConfigurationAsyncClient {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), getETagValue(setting.getETag()),
+        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
+    }
+
+    /**
+     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string}
+     *
+     * @param key The key of the configuration setting to add.
+     * @param label The label of the configuration setting to add.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> setReadOnly(String key, String label) {
+        return withContext(context -> setReadOnly(
+            new ConfigurationSetting().setKey(key).setLabel(label), context))
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting) {
+        return withContext(context -> setReadOnly(setting, context));
+    }
+
+    Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+
+        return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
+            null, context)
+            .doOnRequest(ignoredValue -> logger.info("Setting read only ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.info("Failed to set read only ConfigurationSetting - {}", setting, error));
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.clearReadOnly#string-string}
+     *
+     * @param key The key of the configuration setting to add.
+     * @param label The label of the configuration setting to add.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> clearReadOnly(String key, String label) {
+        return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.clearReadOnlyWithResponse#ConfigurationSetting}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> clearReadOnlyWithResponse(ConfigurationSetting setting) {
+        return withContext(context -> clearReadOnly(setting, context));
+    }
+
+    Mono<Response<ConfigurationSetting>> clearReadOnly(ConfigurationSetting setting, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+
+        return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
+            null, null, context)
+            .doOnRequest(ignoredValue -> logger.info("Clearing read only ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.info("Failed to clear read only ConfigurationSetting - {}", setting, error));
     }
 
     /**

@@ -57,8 +57,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
+                    Mono<Response<ConfigurationSetting>> unlock;
+                    if (configurationSetting.isLocked()) {
+                        unlock = client.clearReadOnlyWithResponse(configurationSetting);
+                    } else {
+                        unlock = Mono.empty();
+                    }
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-                    return client.deleteSetting(configurationSetting);
+                    return unlock.then(client.deleteSetting(configurationSetting));
                 })
                 .blockLast();
 
@@ -368,6 +374,106 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting((String) null).block(), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null).block(), NullPointerException.class);
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnly() {
+        final String key = getKey();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+
+        StepVerifier.create(client.addSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.setReadOnly(setting.getKey(), setting.getLabel()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting.getKey()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSetting(setting))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnly() {
+        final String key = getKey();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+
+        StepVerifier.create(client.addSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.setReadOnly(setting.getKey(), setting.getLabel()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSetting(setting))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+
+        StepVerifier.create(client.clearReadOnly(setting.getKey(), setting.getLabel()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnlyWithConfigurationSetting() {
+        final String key = getKey();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+
+        StepVerifier.create(client.addSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.setReadOnlyWithResponse(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.getSetting(setting.getKey()))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSetting(setting))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnlyWithConfigurationSetting() {
+        final String key = getKey();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+
+        StepVerifier.create(client.addSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.setReadOnlyWithResponse(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSetting(setting))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+
+        StepVerifier.create(client.clearReadOnlyWithResponse(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
+
+        StepVerifier.create(client.deleteSetting(setting))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .verifyComplete();
     }
 
     /**

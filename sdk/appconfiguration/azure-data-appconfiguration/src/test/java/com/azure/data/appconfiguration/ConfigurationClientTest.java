@@ -56,6 +56,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
+            if (configurationSetting.isLocked()) {
+                client.clearReadOnly(configurationSetting);
+            }
             client.deleteSetting(configurationSetting);
         });
 
@@ -298,6 +301,56 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnly() {
+        final String key = getKey();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+        client.addSetting(setting);
+        client.setReadOnly(setting);
+        assertConfigurationEquals(setting, client.getSetting(setting));
+        assertRestException(() -> client.deleteSetting(setting), ResourceModifiedException.class, 409);
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnly() {
+        final String key = getKey();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
+        client.addSetting(setting);
+        client.setReadOnly(setting);
+        client.clearReadOnly(setting);
+        assertConfigurationEquals(setting, client.deleteSetting(setting));
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnlyWithConfigurationSetting() {
+        final String key = getKey();
+        final String value = "myValue";
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(value);
+        client.addSetting(setting);
+        client.setReadOnly(key, null);
+        assertConfigurationEquals(setting, client.getSetting(setting));
+        assertRestException(() -> client.deleteSetting(setting), ResourceModifiedException.class, 409);
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnlyWithConfigurationSetting() {
+        final String key = getKey();
+        final String value = "myValue";
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(value);
+        client.addSetting(setting);
+        client.setReadOnly(setting);
+        client.clearReadOnly(key, null);
+        assertConfigurationEquals(setting, client.deleteSetting(setting));
     }
 
     /**

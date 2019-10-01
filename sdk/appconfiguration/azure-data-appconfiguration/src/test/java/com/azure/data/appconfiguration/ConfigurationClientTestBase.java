@@ -302,6 +302,18 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void deleteSettingNullKey();
 
     @Test
+    public abstract void setReadOnly();
+
+    @Test
+    public abstract void clearReadOnly();
+
+    @Test
+    public abstract void setReadOnlyWithConfigurationSetting();
+
+    @Test
+    public abstract void clearReadOnlyWithConfigurationSetting();
+
+    @Test
     public abstract void listWithKeyAndLabel();
 
     @Test
