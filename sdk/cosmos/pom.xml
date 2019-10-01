@@ -391,9 +391,9 @@ Licensed under the MIT License.
   </developers>
 
   <modules>
-    <module>microsoft-azure-cosmos</module>
-    <module>microsoft-azure-cosmos-benchmark</module>
-    <module>microsoft-azure-cosmos-examples</module>
+    <module>azure-cosmos</module>
+    <module>azure-cosmos-benchmark</module>
+    <module>azure-cosmos-examples</module>
   </modules>
 
 </project>
