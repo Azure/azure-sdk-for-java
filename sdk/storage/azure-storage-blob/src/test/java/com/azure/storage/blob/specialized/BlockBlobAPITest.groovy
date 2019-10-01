@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.blob.models.StorageErrorCode
@@ -798,7 +799,9 @@ class BlockBlobAPITest extends APISpec {
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
-        bac.upload(Flux.just(data), bufferSize, numBuffs).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(bufferSize).setParallelTransfers(numBuffs)
+        bac.upload(Flux.just(data), parallelTransferOptions).block()
         data.position(0)
 
         then:
@@ -842,9 +845,11 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(bufferSize).setParallelTransfers(numBuffers)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        bac.upload(Flux.fromIterable(dataList), bufferSize, numBuffers).block()
+        bac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
 
         expect:
         compareListToBuffer(dataList, collectBytesInBuffer(bac.download().block()).block())
@@ -861,7 +866,9 @@ class BlockBlobAPITest extends APISpec {
 
     def "Buffered upload illegal arguments null"() {
         when:
-        bac.upload(null, 4, 4)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(4).setParallelTransfers(4)
+        bac.upload(null, parallelTransferOptions)
 
         then:
         thrown(NullPointerException)
@@ -870,7 +877,9 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Buffered upload illegal args out of bounds"() {
         when:
-        bac.upload(Flux.just(defaultData), bufferSize, numBuffs)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(bufferSize).setParallelTransfers(numBuffs)
+        bac.upload(Flux.just(defaultData), parallelTransferOptions)
 
         then:
         thrown(IllegalArgumentException)
@@ -887,7 +896,9 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload headers"() {
         when:
-        bac.uploadWithResponse(defaultFlux, 10, 2, new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(10)
+        bac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -921,7 +932,9 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 10, null, metadata, null, null).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(10).setParallelTransfers(10)
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, metadata, null, null).block()
         def response = bac.getPropertiesWithResponse(null).block()
 
         then:
@@ -948,7 +961,9 @@ class BlockBlobAPITest extends APISpec {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
 
         expect:
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, null, accessConditions).block().getStatusCode() == 201
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(10)
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block().getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -974,7 +989,9 @@ class BlockBlobAPITest extends APISpec {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
 
         when:
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), 10, 2, null, null, null, accessConditions).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(10)
+        bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block()
 
         then:
         def e = thrown(StorageException)
@@ -1065,7 +1082,9 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
-        bac.upload(nonReplayableFlux, 1024, 4).block()
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(1024).setParallelTransfers(4)
+        bac.upload(nonReplayableFlux, parallelTransferOptions).block()
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         then:
