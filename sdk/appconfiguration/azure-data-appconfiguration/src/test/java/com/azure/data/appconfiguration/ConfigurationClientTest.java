@@ -73,7 +73,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
     public void addSettingEmptyKey() {
-        assertRestException(() -> client.addSetting("", "A value"), HttpURLConnection.HTTP_BAD_METHOD);
+        assertRestException(() -> client.addSetting("", "A value", null), HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void addSettingEmptyValue() {
         addSettingEmptyValueRunner((setting) -> {
-            assertConfigurationEquals(setting, client.addSetting(setting.getKey(), setting.getValue()));
+            assertConfigurationEquals(setting, client.addSetting(setting.getKey(), setting.getValue(), setting.getLabel()));
             assertConfigurationEquals(setting, client.getSetting(setting.getKey()));
         });
     }
@@ -90,7 +90,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void addSettingNullKey() {
-        assertRunnableThrowsException(() -> client.addSetting(null, "A Value"), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.addSetting(null, "A Value", null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.addSetting(null), NullPointerException.class);
     }
 
@@ -180,7 +180,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void updateSettingOverload() {
         updateSettingOverloadRunner((original, updated) -> {
-            assertConfigurationEquals(original, client.addSetting(original.getKey(), original.getValue()));
+            assertConfigurationEquals(original, client.addSetting(original.getKey(), original.getValue(), original.getLabel()));
             assertConfigurationEquals(updated, client.updateSetting(updated.getKey(), updated.getValue()));
         });
     }
