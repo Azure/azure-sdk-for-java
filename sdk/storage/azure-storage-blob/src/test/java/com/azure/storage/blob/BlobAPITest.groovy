@@ -273,7 +273,6 @@ class BlobAPITest extends APISpec {
         when:
         bc.downloadToFile(testFile.getPath())
         def fileContent = new Scanner(testFile).useDelimiter("\\Z").next()
-
         then:
         fileContent == defaultText
 
