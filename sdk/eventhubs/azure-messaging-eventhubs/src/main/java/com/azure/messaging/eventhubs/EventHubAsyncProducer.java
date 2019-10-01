@@ -293,9 +293,9 @@ public class EventHubAsyncProducer implements Closeable {
         }
 
         if (ImplUtils.isNullOrEmpty(batch.getPartitionKey())) {
-            logger.info("Sending batch with size[{}], partitionKey[{}].", batch.getSize(), batch.getPartitionKey());
-        } else {
             logger.info("Sending batch with size[{}].", batch.getSize());
+        } else {
+            logger.info("Sending batch with size[{}], partitionKey[{}].", batch.getSize(), batch.getPartitionKey());
         }
 
         final String partitionKey = batch.getPartitionKey();
