@@ -10,7 +10,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -24,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code snippet for {@link BlockBlobAsyncClient}
@@ -60,16 +60,16 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void upload2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -78,7 +78,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
     }
 
     /**
@@ -96,16 +96,16 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void upload4() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -118,7 +118,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
     }
 
     /**
@@ -133,16 +133,16 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void uploadFromFile2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -153,7 +153,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             headers, metadata, AccessTier.HOT, accessConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
     }
 
     /**
@@ -250,16 +250,16 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void commitBlockList2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -267,6 +267,6 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
             AccessTier.HOT, accessConditions).subscribe(response ->
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
     }
 }

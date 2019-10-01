@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -28,6 +27,7 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code snippet for {@link BlockBlobClient}
@@ -64,16 +64,16 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
      */
     public void upload2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -85,7 +85,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 accessConditions, timeout, context)
                 .getValue()
                 .getContentMD5()));
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }
 
     /**
@@ -105,18 +105,18 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -131,7 +131,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
     }
 
     /**
@@ -223,16 +223,16 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
      */
     public void commitBlockList2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -242,6 +242,6 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
                 AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }
 }
