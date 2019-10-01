@@ -93,7 +93,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = [] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }

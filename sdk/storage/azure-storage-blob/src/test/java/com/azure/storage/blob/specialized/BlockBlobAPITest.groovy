@@ -389,7 +389,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Commit block list metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = [] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -608,7 +608,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Upload from file with metadata"() {
         given:
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"))
+        def metadata = Collections.singletonMap("metadata", "value")
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
         def outStream = new ByteArrayOutputStream()
 
@@ -689,7 +689,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Upload metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = [] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -804,7 +804,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            assert collectBytesInBuffer(bac.download().block()).block() == data
+            assert collectBytesInBuffer(bac.download()).block() == data
         }
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
@@ -847,7 +847,7 @@ class BlockBlobAPITest extends APISpec {
         bac.upload(Flux.fromIterable(dataList), bufferSize, numBuffers).block()
 
         expect:
-        compareListToBuffer(dataList, collectBytesInBuffer(bac.download().block()).block())
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:
@@ -912,7 +912,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = [] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }
