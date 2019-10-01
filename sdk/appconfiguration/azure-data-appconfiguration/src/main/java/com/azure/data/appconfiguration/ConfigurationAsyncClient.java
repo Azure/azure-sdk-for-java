@@ -474,7 +474,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The ConfigurationSetting to delete.
      * @param onlyIfUnchanged A boolean indicator to decide using setting's ETag value as IF-MATCH value.
