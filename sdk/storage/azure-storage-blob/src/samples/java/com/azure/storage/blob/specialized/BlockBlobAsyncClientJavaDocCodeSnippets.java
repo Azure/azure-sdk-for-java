@@ -88,7 +88,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-ParallelTransferOptions
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize)
-            .setParallelTransfers(numBuffers);
+            .setNumBuffers(numBuffers);
         client.upload(data, parallelTransferOptions).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMD5())));
@@ -113,7 +113,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize)
-            .setParallelTransfers(numBuffers);
+            .setNumBuffers(numBuffers);
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",

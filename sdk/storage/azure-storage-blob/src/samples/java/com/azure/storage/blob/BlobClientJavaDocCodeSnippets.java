@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;

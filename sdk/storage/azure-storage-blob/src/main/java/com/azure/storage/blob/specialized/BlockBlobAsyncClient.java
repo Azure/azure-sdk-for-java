@@ -193,14 +193,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to buffered upload.
-     * The block size is the size of each block that will be staged. This value also determines the size that each
-     * buffer used by this method will be and determines the number of requests that need to be made. The amount of
-     * memory consumed by this method may be up to blockSize * numBuffers. If block size is large, this method will make
-     * fewer network calls, but each individual call will send more data and will therefore take longer.
-     * The number of parallel transfers is the maximum number of buffers this method should allocate. Must be at least
-     * two. Typically, the larger the number of buffers, the more parallel, and thus faster, the upload portion of this
-     * operation will be. The amount of memory consumed by this method may be up to blockSize * numBuffers.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
@@ -236,14 +229,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to buffered upload.
-     * The block size is the size of each block that will be staged. This value also determines the size that each
-     * buffer used by this method will be and determines the number of requests that need to be made. The amount of
-     * memory consumed by this method may be up to blockSize * numBuffers. If block size is large, this method will make
-     * fewer network calls, but each individual call will send more data and will therefore take longer.
-     * The number of parallel transfers is the maximum number of buffers this method should allocate. Must be at least
-     * two. Typically, the larger the number of buffers, the more parallel, and thus faster, the upload portion of this
-     * operation will be. The amount of memory consumed by this method may be up to blockSize * numBuffers.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the destination blob.
@@ -259,10 +245,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobAccessConditions accessConditionsFinal = accessConditions == null
             ? new BlobAccessConditions() : accessConditions;
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions():
-            parallelTransferOptions;
+            ? new ParallelTransferOptions() : parallelTransferOptions;
         int blockSize = finalParallelTransferOptions.getBlockSize();
-        int numBuffers = finalParallelTransferOptions.getParallelTransfers();
+        int numBuffers = finalParallelTransferOptions.getNumBuffers();
 
         // TODO: Progress reporting.
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
@@ -354,6 +339,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
+    // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null

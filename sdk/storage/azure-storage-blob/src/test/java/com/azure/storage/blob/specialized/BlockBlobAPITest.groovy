@@ -800,7 +800,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setParallelTransfers(numBuffs)
+            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
         bac.upload(Flux.just(data), parallelTransferOptions).block()
         data.position(0)
 
@@ -846,7 +846,7 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setParallelTransfers(numBuffers)
+            .setBlockSize(bufferSize).setNumBuffers(numBuffers)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         bac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
@@ -867,7 +867,7 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload illegal arguments null"() {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(4).setParallelTransfers(4)
+            .setBlockSize(4).setNumBuffers(4)
         bac.upload(null, parallelTransferOptions)
 
         then:
@@ -878,7 +878,7 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload illegal args out of bounds"() {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(bufferSize).setParallelTransfers(numBuffs)
+            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
         bac.upload(Flux.just(defaultData), parallelTransferOptions)
 
         then:
@@ -933,7 +933,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(10).setParallelTransfers(10)
+            .setBlockSize(10).setNumBuffers(10)
         bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, metadata, null, null).block()
         def response = bac.getPropertiesWithResponse(null).block()
 
@@ -1083,7 +1083,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSize(1024).setParallelTransfers(4)
+            .setBlockSize(1024).setNumBuffers(4)
         bac.upload(nonReplayableFlux, parallelTransferOptions).block()
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
