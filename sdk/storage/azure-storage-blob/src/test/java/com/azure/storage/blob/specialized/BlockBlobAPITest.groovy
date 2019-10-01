@@ -1032,7 +1032,7 @@ class BlockBlobAPITest extends APISpec {
          buffering properly to allow for retries even given this source behavior.
          */
         bac.upload(Flux.just(defaultData), defaultDataSize).block()
-        def nonReplayableFlux = bac.download().block()
+        def nonReplayableFlux = bac.download()
 
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
