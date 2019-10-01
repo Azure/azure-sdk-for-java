@@ -366,9 +366,10 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#string}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#string-string}
      *
      * @param key The key of the setting to delete.
+     * @param label Optional, the label of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -376,8 +377,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().setKey(key), Context.NONE).getValue();
+    public ConfigurationSetting deleteSetting(String key, String label) {
+        return deleteSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
+            false, Context.NONE).getValue();
     }
 
     /**
@@ -391,9 +393,11 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting-boolean}
      *
      * @param setting The ConfigurationSetting to delete.
+     * @param onlyIfUnchanged A boolean indicator to decide using setting's ETag value as IF-MATCH value.
+     * If false, set IF_MATCH to {@code null}. Otherwise, set the setting's ETag value to IF_MATCH.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
      * current etag (which will also throw ServiceRequestException described below).
@@ -405,8 +409,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE).getValue();
+    public ConfigurationSetting deleteSetting(ConfigurationSetting setting, boolean onlyIfUnchanged) {
+        return deleteSettingWithResponse(setting, onlyIfUnchanged, Context.NONE).getValue();
     }
 
     /**
@@ -420,9 +424,11 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-boolean-Context}
      *
      * @param setting The ConfigurationSetting to delete.
+     * @param onlyIfUnchanged A boolean indicator to decide using setting's ETag value as IF-MATCH value.
+     * If false, set IF_MATCH to {@code null}. Otherwise, set the setting's ETag value to IF_MATCH.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but
@@ -435,12 +441,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return deleteSetting(setting, context);
-    }
-
-    private Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
-        return client.deleteSetting(setting, context).block();
+    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting,
+                                                                    boolean onlyIfUnchanged, Context context) {
+        return client.deleteSetting(setting, onlyIfUnchanged, context).block();
     }
 
     /**

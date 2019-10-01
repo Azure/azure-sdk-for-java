@@ -56,7 +56,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-            client.deleteSetting(configurationSetting);
+            client.deleteSetting(configurationSetting, false);
         });
 
         logger.info("Finished cleaning up values.");
@@ -255,7 +255,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addSetting(expected);
             assertConfigurationEquals(expected, client.getSetting(expected));
 
-            assertConfigurationEquals(expected, client.deleteSetting(expected));
+            assertConfigurationEquals(expected, client.deleteSetting(expected, false));
             assertRestException(() -> client.getSetting(expected), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
@@ -270,8 +270,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverDeletedConfiguation, client.addSetting(neverDeletedConfiguation));
 
-        assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"));
-        assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpURLConnection.HTTP_NO_CONTENT);
+        assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey", null));
+        assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, false, Context.NONE), HttpURLConnection.HTTP_NO_CONTENT);
 
         assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation.getKey()));
     }
@@ -286,8 +286,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting updatedConfig = client.updateSetting(update);
 
             assertConfigurationEquals(update, client.getSetting(initial));
-            assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
-            assertConfigurationEquals(update, client.deleteSetting(updatedConfig));
+            assertRestException(() -> client.deleteSetting(initiallyAddedConfig, true), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertConfigurationEquals(update, client.deleteSetting(updatedConfig, true));
             assertRestException(() -> client.getSetting(initial), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
@@ -296,8 +296,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
     public void deleteSettingNullKey() {
-        assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting(null, null), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting(null, false), NullPointerException.class);
     }
 
     /**
@@ -607,7 +607,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         client.listSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-            client.deleteSetting(configurationSetting);
+            client.deleteSetting(configurationSetting, false);
         });
     }
 }
