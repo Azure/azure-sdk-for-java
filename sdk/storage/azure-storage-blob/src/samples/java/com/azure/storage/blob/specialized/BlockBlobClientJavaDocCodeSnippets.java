@@ -224,7 +224,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
      * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
      */
     public void commitBlockList2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -240,6 +240,6 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
                 AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }
 }

@@ -333,14 +333,14 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobClientBase#setMetadataWithResponse(Map, BlobAccessConditions, Duration, Context)}
      */
     public void setMetadataWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobAccessConditions-Duration-Context
         BlobAccessConditions accessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), accessConditions, timeout,
                 new Context(key1, value1)).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobAccessConditions-Duration-Context
     }
 
     /**

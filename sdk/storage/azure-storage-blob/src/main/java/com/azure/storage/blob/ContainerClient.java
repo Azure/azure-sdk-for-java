@@ -280,7 +280,7 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Map-ContainerAccessConditions-Duration-Context}
      *
      * @param metadata Metadata to associate with the container.
      * @param accessConditions {@link ContainerAccessConditions}

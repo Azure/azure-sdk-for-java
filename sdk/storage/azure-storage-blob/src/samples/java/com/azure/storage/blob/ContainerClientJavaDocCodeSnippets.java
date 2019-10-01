@@ -251,7 +251,7 @@ public class ContainerClientJavaDocCodeSnippets {
      * Context)}
      */
     public void setMetadata2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Map-ContainerAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ContainerAccessConditions accessConditions = new ContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
@@ -261,7 +261,7 @@ public class ContainerClientJavaDocCodeSnippets {
 
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Map-ContainerAccessConditions-Duration-Context
     }
 
     /**
