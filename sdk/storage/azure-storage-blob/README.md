@@ -160,18 +160,18 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .buildClient();
 ```
 
-### Create ContainerClient
+### Create BlobContainerClient
 
-Create a ContainerClient if a BlobServiceClient exists.
+Create a BlobContainerClient if a BlobServiceClient exists.
 ```java
-ContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
+BlobContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
 ```
 
 or
 
-Create the ContainerClient from the builder [`sasToken`](#get-credentials) generated above.
+Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
-ContainerClient blobContainerClient = new ContainerClientBuilder()
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
          .endpoint("<your-storage-blob-url>")
          .credential("<your-sasToken>")
          .containerName("mycontainer")
@@ -206,14 +206,14 @@ blobServiceClient.createContainer("mycontainer");
 
 or
 
-Create a container using ContainerClient.
+Create a container using BlobContainerClient.
 ```java
 blobContainerClient.create();
 ```
 
 ### Uploading a blob from a stream
 
-Upload data stream to a blob using BlockBlobClient generated from a ContainerClient.
+Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
 
 ```java
 BlockBlobClient blockBlobClient = blobContainerClient.getBlockBlobClient("myblockblob");
@@ -225,7 +225,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 ### Uploading a blob from `File`
 
-Upload a file to a blob using BlockBlobClient generated from ContainerClient.
+Upload a file to a blob using BlockBlobClient generated from BlobContainerClient.
 
 ```java
 BlockBlobClient blockBlobClient = blobContainerClient.getBlockBlobClient("myblockblob");
@@ -251,7 +251,7 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 ### Enumerating blobs
 
-Enumerating all blobs using ContainerClient
+Enumerating all blobs using BlobContainerClient
 ```java
 blobContainerClient.listBlobsFlat()
         .forEach(
