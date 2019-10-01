@@ -196,14 +196,31 @@ public final class BlobServiceSASSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link ContainerSASPermission} or {@link
-     * BlobSASPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the Blob permissions allowed by the SAS.
      *
-     * @param permissions Permissions string for the SAS
+     * <p>this will set the {@link #resource} to {@link Constants.UrlConstants#SAS_BLOB_CONSTANT} or
+     * {@link Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of {@link #getSnapshotId()}.</p>
+     *
+     * @param permissions {@link BlobSASPermission}
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public BlobServiceSASSignatureValues setPermissions(BlobSASPermission permissions) {
+        this.permissions = permissions.toString();
+        this.resource = Constants.UrlConstants.SAS_BLOB_CONSTANT;
+        return this;
+    }
+
+    /**
+     * Sets the Container permissions allowed by the SAS.
+     *
+     * <p>this will set the {@link #resource} to {@link Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
+     *
+     * @param permissions {@link ContainerSASPermission}
+     * @return the updated BlobServiceSASSignatureValues object
+     */
+    public BlobServiceSASSignatureValues setPermissions(ContainerSASPermission permissions) {
+        this.permissions = permissions.toString();
+        this.resource = Constants.UrlConstants.SAS_CONTAINER_CONSTANT;
         return this;
     }
 
@@ -292,11 +309,18 @@ public final class BlobServiceSASSignatureValues {
     /**
      * Sets the specific snapshot the SAS user may access.
      *
+     * <p>{@link #resource} will be set to {@link Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} if the passed
+     * {@code snapshotId} isn't {@code null} and {@link #resource} is set to
+     * {@link Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
+     *
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
      */
     public BlobServiceSASSignatureValues setSnapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
+        if (snapshotId != null && Constants.UrlConstants.SAS_BLOB_CONSTANT.equals(resource)) {
+            this.resource = Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
+        }
         return this;
     }
 
