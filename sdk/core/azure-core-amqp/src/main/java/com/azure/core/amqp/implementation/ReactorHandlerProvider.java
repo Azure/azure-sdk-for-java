@@ -48,9 +48,11 @@ public class ReactorHandlerProvider {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
             case AMQP_WEB_SOCKETS:
-                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
-                    || WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
+                if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyConfiguration);
+                } else if (WebSocketsProxyConnectionHandler.shouldUseProxy(hostname)) {
+                    logger.info("System default proxy configured for hostname '{}'. Using proxy.", hostname);
+                    return new WebSocketsProxyConnectionHandler(connectionId, hostname, ProxyConfiguration.SYSTEM_DEFAULTS);
                 } else {
                     return new WebSocketsConnectionHandler(connectionId, hostname);
                 }

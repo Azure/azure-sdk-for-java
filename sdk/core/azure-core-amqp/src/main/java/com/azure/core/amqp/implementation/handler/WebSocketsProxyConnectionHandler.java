@@ -44,6 +44,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @param connectionId Identifier for this connection.
      * @param amqpHostname Hostname of the AMQP message broker. The hostname of the proxy is exposed in {@link
      *     #getHostname()}.
+     * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname,
                                             ProxyConfiguration proxyConfiguration) {
@@ -52,6 +53,13 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' is required.");
     }
 
+    /**
+     * Looks through system defined proxies to see if one should be used for connecting to the message broker.
+     *
+     * @param hostname Hostname for the AMQP message broker.
+     *
+     * @return {@code true} if a proxy should be used to connect to the AMQP message broker and null otherwise.
+     */
     public static boolean shouldUseProxy(final String hostname) {
         Objects.requireNonNull(hostname, "'hostname' cannot be null.");
 
