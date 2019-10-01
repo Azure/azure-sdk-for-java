@@ -2,8 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.examples;
 
-import com.azure.data.cosmos.*;
+import com.azure.data.cosmos.CosmosAsyncClient;
+import com.azure.data.cosmos.CosmosAsyncContainer;
 import com.azure.data.cosmos.CosmosAsyncDatabase;
+import com.azure.data.cosmos.CosmosAsyncItem;
+import com.azure.data.cosmos.CosmosAsyncItemResponse;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosContainerProperties;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -144,10 +152,12 @@ public class BasicDemo {
     }
     
     private void log(String msg, Throwable throwable){
-            log(msg + ": " + ((CosmosClientException)throwable).getStatusCode());
+        if (throwable instanceof CosmosClientException) {
+            log(msg + ": " + ((CosmosClientException) throwable).getStatusCode());
+        }
     }
 
-    class TestObject {
+    static class TestObject {
         String id;
         String name;
         String description;

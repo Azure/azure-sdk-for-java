@@ -29,7 +29,7 @@ public class HelloWorldDemo {
             .flatMap(response -> Mono.just(response.getContainer()))
             .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 
-        // Create an getItem
+        // Create an item
         container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
             .flatMap(response -> {
                 System.out.println("Created item: " + response.getProperties().toJson());
@@ -37,8 +37,8 @@ public class HelloWorldDemo {
                 return response.getItem().read();
             })
             .flatMap(response -> {
-                System.out.println("Read getItem: " + response.getProperties().toJson());
-                // Replace that getItem 🔁
+                System.out.println("Read item: " + response.getProperties().toJson());
+                // Replace that item 🔁
                 try {
                     Passenger p = response.getProperties().getObject(Passenger.class);
                     p.setDestination("SFO");

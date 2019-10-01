@@ -48,7 +48,7 @@ import com.azure.data.cosmos.internal.Strings;
  * DocumentCollection collectionSpec = new DocumentCollection();
  * collectionSpec.getId("Multi-master collection");
  *
- * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy("/getPath/for/getConflict/resolution");
+ * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy("/path/for/conflict/resolution");
  * collectionSpec.getConflictResolutionPolicy(policy);
  *
  * DocumentCollection collection = client.createCollection(databaseLink, collectionSpec, null)

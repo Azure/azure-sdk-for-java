@@ -599,7 +599,7 @@ public class ConflictWorker {
                     if (equals(conflictDocument.getId(), conflictDocumentContent.getId())) {
                         if (equals(conflictDocument.getResourceId(), conflictDocumentContent.getResourceId()) &&
                                 equals(conflictDocument.getETag(), conflictDocumentContent.getETag())) {
-                            logger.info("Document from Region {} lost getConflict @ {}",
+                            logger.info("Document from Region {} lost conflict @ {}",
                                     conflictDocument.getId(),
                                     conflictDocument.getInt("regionId"),
                                     client.getReadEndpoint());
@@ -628,14 +628,14 @@ public class ConflictWorker {
                     }
                 } else {
                     if (equals(conflict.getSourceResourceId(), conflictDocument.getResourceId())) {
-                        logger.info("DELETE getConflict found @ {}",
+                        logger.info("DELETE conflict found @ {}",
                                 client.getReadEndpoint());
                         return false;
                     }
                 }
             }
 
-            logger.error("Document {} is not found in getConflict feed @ {}, retrying",
+            logger.error("Document {} is not found in conflict feed @ {}, retrying",
                     conflictDocument.getId(),
                     client.getReadEndpoint());
 
@@ -653,7 +653,7 @@ public class ConflictWorker {
                 Document conflictContent = conflict.getResource(Document.class);
                 if (equals(conflictContent.getResourceId(), conflictDocument.getResourceId())
                         && equals(conflictContent.getETag(), conflictDocument.getETag())) {
-                    logger.info("Deleting manual getConflict {} from region {}",
+                    logger.info("Deleting manual conflict {} from region {}",
                             conflict.getSourceResourceId(),
                             conflictContent.getInt("regionId"));
                     delClient.deleteConflict(conflict.getSelfLink(), null)
@@ -661,7 +661,7 @@ public class ConflictWorker {
 
                 }
             } else if (equals(conflict.getSourceResourceId(), conflictDocument.getResourceId())) {
-                logger.info("Deleting manual getConflict {} from region {}",
+                logger.info("Deleting manual conflict {} from region {}",
                         conflict.getSourceResourceId(),
                         conflictDocument.getInt("regionId"));
                 delClient.deleteConflict(conflict.getSelfLink(), null)
@@ -695,7 +695,7 @@ public class ConflictWorker {
                 try {
                     client.readDocument(conflictDocument.get(0).getSelfLink(), null).single().block();
 
-                    logger.error("DELETE getConflict for document {} didnt win @ {}",
+                    logger.error("DELETE conflict for document {} didnt win @ {}",
                             conflictDocument.get(0).getId(),
                             client.getReadEndpoint());
 
@@ -708,10 +708,10 @@ public class ConflictWorker {
                     // NotFound
                     if (hasDocumentClientExceptionCause(exception, 404)) {
 
-                        logger.info("DELETE getConflict won @ {}", client.getReadEndpoint());
+                        logger.info("DELETE conflict won @ {}", client.getReadEndpoint());
                         return;
                     } else {
-                        logger.error("DELETE getConflict for document {} didnt win @ {}",
+                        logger.error("DELETE conflict for document {} didnt win @ {}",
                                 conflictDocument.get(0).getId(),
                                 client.getReadEndpoint());
 
@@ -787,7 +787,7 @@ public class ConflictWorker {
                             documentNameLink(udpCollectionName, conflictDocument.get(0).getId()), null)
                             .single().block();
 
-                    logger.error("DELETE getConflict for document {} didnt win @ {}",
+                    logger.error("DELETE conflict for document {} didnt win @ {}",
                             conflictDocument.get(0).getId(),
                             client.getReadEndpoint());
 
@@ -795,10 +795,10 @@ public class ConflictWorker {
 
                 } catch (Exception exception) {
                     if (hasDocumentClientExceptionCause(exception, 404)) {
-                        logger.info("DELETE getConflict won @ {}", client.getReadEndpoint());
+                        logger.info("DELETE conflict won @ {}", client.getReadEndpoint());
                         return;
                     } else {
-                        logger.error("DELETE getConflict for document {} didnt win @ {}",
+                        logger.error("DELETE conflict for document {} didnt win @ {}",
                                 conflictDocument.get(0).getId(),
                                 client.getReadEndpoint());
 

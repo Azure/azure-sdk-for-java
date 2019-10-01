@@ -2,8 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.*;
 import com.azure.data.cosmos.CosmosAsyncContainer;
+import com.azure.data.cosmos.CosmosAsyncItem;
+import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.SqlParameter;
+import com.azure.data.cosmos.SqlParameterList;
+import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.LeaseStore;
@@ -357,10 +363,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("continuationToken must be a non-empty string");
         }
 
-        CosmosItem itemForLease = this.createItemForLease(lease.getId());
+        CosmosAsyncItem itemForLease = this.createItemForLease(lease.getId());
 
         return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.properties()))
+            .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.getProperties()))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 this.createItemForLease(lease.getId()),

@@ -31,9 +31,9 @@ Licensed under the MIT License.
 
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
+      <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>3.3.0</version>
+      <version>4.0.0-preview.4</version>
     </dependency>
 
     <dependency>
