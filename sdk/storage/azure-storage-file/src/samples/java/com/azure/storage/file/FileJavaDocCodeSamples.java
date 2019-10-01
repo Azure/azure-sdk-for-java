@@ -4,9 +4,6 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -327,16 +324,18 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#downloadToFile(String, FileRange)}
+     * Generates a code sample for using {@link FileClient#downloadToFileWithResponse(String, FileRange, Duration, Context)}
      */
     public void downloadFileMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.downloadToFile#string-filerange
-        fileClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L));
+        // BEGIN: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context
+        Response<FileProperties> response =
+            fileClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L),
+            Duration.ofSeconds(1), Context.NONE);
         if (Files.exists(Paths.get("somelocalfilepath"))) {
-            System.out.println("Complete downloading the file.");
+            System.out.println("Complete downloading the file with status code " + response.getStatusCode());
         }
-        // END: com.azure.storage.file.fileClient.downloadToFile#string-filerange
+        // END: com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context
     }
 
     /**
@@ -593,36 +592,6 @@ public class FileJavaDocCodeSamples {
                     System.out.printf("Close %d handles.", numOfClosedHandles)
                 ));
         // END: com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context
-    }
-
-    /**
-     * Generates a code sample for using {@link FileClient#generateSAS(String, FileSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
-     */
-    public void generateSAS() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        String identifier = "identifier";
-        FileSASPermission permissions = new FileSASPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setWritePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = fileClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.FileClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
     }
 
      /**

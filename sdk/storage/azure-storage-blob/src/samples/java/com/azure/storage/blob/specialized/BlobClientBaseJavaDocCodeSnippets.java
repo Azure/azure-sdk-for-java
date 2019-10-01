@@ -98,7 +98,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClientBase#downloadToFile(String)} and
-     * {@link BlobClientBase#downloadToFile(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions,
+     * {@link BlobClientBase#downloadToFileWithResponse(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions,
      * boolean, Duration, Context)}
      */
     public void downloadToFile() {
@@ -107,13 +107,14 @@ public class BlobClientBaseJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFile(file, range, 4 * Constants.MB, options, null, false, timeout, new Context(key2, value2));
+        client.downloadToFileWithResponse(file, range, 4 * Constants.MB, options, null, false,
+            timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
     }
 
     /**
@@ -168,14 +169,14 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#setTier(AccessTier)} and
-     * {@link BlobClientBase#setTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions, Duration, Context)}
+     * Code snippets for {@link BlobClientBase#setAccessTier(AccessTier)} and
+     * {@link BlobClientBase#setAccessTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions, Duration, Context)}
      */
     public void setTier() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTier#AccessTier
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setAccessTier#AccessTier
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setTier#AccessTier
+            client.setAccessTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTier#AccessTier
 
 
     }
@@ -357,17 +358,16 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#setTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions,
-     * Duration, Context)}
+     * Code snippets for {@link BlobClientBase#setAccessTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions, Duration, Context)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
         System.out.printf("Set tier completed with status code %d%n",
-            client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions, timeout,
+            client.setAccessTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions, timeout,
                 new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context
     }
 
     /**

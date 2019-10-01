@@ -13,9 +13,6 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -128,12 +125,16 @@ public class FileAsyncClient {
      * @throws RuntimeException If the file is using a malformed URL.
      */
     public URL getFileUrl() {
+        StringBuilder fileURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(filePath);
+        if (snapshot != null) {
+            fileURLString.append("?snapshot=").append(snapshot);
+        }
         try {
-            return new URL(azureFileStorageClient.getUrl());
+            return new URL(fileURLString.toString());
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                    azureFileStorageClient.getUrl()), e));
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), fileURLString), e));
         }
     }
 
@@ -319,8 +320,8 @@ public class FileAsyncClient {
      * @param downloadFilePath The path where store the downloaded file
      * @return An empty response.
      */
-    public Mono<Void> downloadToFile(String downloadFilePath) {
-        return downloadToFile(downloadFilePath, null);
+    public Mono<FileProperties> downloadToFile(String downloadFilePath) {
+        return downloadToFileWithResponse(downloadFilePath, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -333,7 +334,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -342,19 +343,43 @@ public class FileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
-    public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
+    public Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
+        return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
+    }
+
+    Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+                                                                Context context) {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-            channel -> sliceFileRange(range)
-                .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-                    .map(dar -> dar.getValue().getBody())
+            channel -> getPropertiesWithResponse(context).flatMap(response ->
+                downloadResponseInChunk(response, channel, range, context)), this::channelCleanUp);
+    }
+
+    private Mono<Response<FileProperties>> downloadResponseInChunk(Response<FileProperties> response,
+                                                                   AsynchronousFileChannel channel,
+                                                                   FileRange range, Context context) {
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new FileRange(0, response.getValue()
+            .getContentLength())))
+            .map(currentRange -> {
+                List<FileRange> chunks = new ArrayList<>();
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = FILE_DEFAULT_BLOCK_SIZE;
+                    if (pos + count > currentRange.getEnd()) {
+                        count = currentRange.getEnd() - pos;
+                    }
+                    chunks.add(new FileRange(pos, pos + count - 1));
+                }
+                return chunks;
+            }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
+                downloadWithPropertiesWithResponse(chunk, false, context)
+                .map(dar -> dar.getValue().getBody())
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(fbb -> FluxUtil
+                    .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(fbb -> FluxUtil
-                        .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                        .subscribeOn(Schedulers.elastic())
-                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3, throwable -> throwable instanceof IOException
-                            || throwable instanceof TimeoutException)))
-                .then(), this::channelCleanUp);
+                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
+                    .retry(3, throwable -> throwable instanceof IOException
+                        || throwable instanceof TimeoutException)))
+            .then(Mono.just(response));
     }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
@@ -371,30 +396,6 @@ public class FileAsyncClient {
         } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
         }
-    }
-
-    private Flux<FileRange> sliceFileRange(FileRange fileRange) {
-        long offset = fileRange == null ? 0L : fileRange.getStart();
-        Mono<Long> end;
-        if (fileRange != null) {
-            end = Mono.just(fileRange.getEnd());
-        } else {
-            end = Mono.empty();
-        }
-        end = end.switchIfEmpty(getProperties().map(FileProperties::getContentLength));
-        return end
-            .map(e -> {
-                List<FileRange> chunks = new ArrayList<>();
-                for (long pos = offset; pos < e; pos += FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = FILE_DEFAULT_BLOCK_SIZE;
-                    if (pos + count > e) {
-                        count = e - pos;
-                    }
-                    chunks.add(new FileRange(pos, pos + count - 1));
-                }
-                return chunks;
-            })
-            .flatMapMany(Flux::fromIterable);
     }
 
     /**
@@ -1101,111 +1102,6 @@ public class FileAsyncClient {
      */
     public String getShareSnapshotId() {
         return this.snapshot;
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param permissions The {@code FileSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(FileSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
-        version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
-            null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
-            null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
-            contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
-            /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
-            null /* contentType */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @param cacheControl An optional {@code String} cache-control header for the SAS.
-     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage An optional {@code String} content-language header for the SAS.
-     * @param contentType An optional {@code String} content-type header for the SAS.
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-
-        FileServiceSASSignatureValues fileServiceSASSignatureValues = new FileServiceSASSignatureValues(version,
-            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
-            identifier, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-
-        SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.azureFileStorageClient.getHttpPipeline());
-
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
-            sharedKeyCredential.getAccountName());
-
-        FileServiceSASQueryParameters fileServiceSasQueryParameters =
-            values.generateSASQueryParameters(sharedKeyCredential);
-
-        return fileServiceSasQueryParameters.encode();
-    }
-
-    /**
-     * Sets fileServiceSASSignatureValues parameters dependent on the current file type
-     */
-    FileServiceSASSignatureValues configureServiceSASSignatureValues(
-        FileServiceSASSignatureValues fileServiceSASSignatureValues, String accountName) {
-
-        // Set canonical name
-        fileServiceSASSignatureValues.setCanonicalName(this.shareName, this.filePath, accountName);
-
-        // Set resource
-        fileServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_FILE_CONSTANT);
-
-        return fileServiceSASSignatureValues;
     }
 
     /**

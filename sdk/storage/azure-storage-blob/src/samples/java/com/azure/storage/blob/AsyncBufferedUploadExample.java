@@ -55,7 +55,6 @@ public class AsyncBufferedUploadExample {
         argument list.
          */
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
-            .flatMapMany(flux -> flux)
             // Perform some unpredicatable transformation.
             .map(AsyncBufferedUploadExample::randomTransformation);
 
