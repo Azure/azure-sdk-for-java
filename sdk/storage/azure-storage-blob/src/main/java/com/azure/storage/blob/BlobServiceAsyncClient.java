@@ -24,11 +24,11 @@ import com.azure.storage.blob.models.ListContainersOptions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobBatch;
-import com.azure.storage.blob.specialized.BlobBatchResult;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -463,19 +463,40 @@ public final class BlobServiceAsyncClient {
     /**
      * Submits a batch operation.
      *
+     * <p>If any request in a batch fails this will throw a {@link StorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * @param batch Batch to submit.
-     * @return Results of the batch.
+     * @return An empty response indicating that the batch operation has completed.
+     * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
      */
-    public Mono<BatchResult> submitBatch(BlobBatch batch) {
-        return withContext(context -> submitBatch(batch, context));
+    public Mono<Void> submitBatch(BlobBatch batch) {
+        return withContext(context -> submitBatchWithResponse(batch, true, context)).flatMap(FluxUtil::toMono);
     }
 
-    Mono<BatchResult> submitBatch(BlobBatch batch, Context context) {
+    /**
+     * Submits a batch operation.
+     *
+     * <p>If {@code throwOnAnyFailure} is {@code true} a {@link StorageException} will be thrown if any request
+     * fails.</p>
+     *
+     * @param batch Batch to submit.
+     * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
+     * @return A response only containing header and status code information, used to indicate that the batch operation
+     * has completed.
+     * @throws StorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link BlobBatch}
+     * failed or the batch request is malformed.
+     */
+    public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
+        return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure, context));
+    }
+
+    Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
         return postProcessResponse(this.azureBlobStorage.services()
-            .submitBatchWithRestResponseAsync(batch.getBody(), batch.getContentLength(), batch.getContentType(), context)
-            .map(BlobBatchResult::new));
+            .submitBatchWithRestResponseAsync(batch.getBody(), batch.getContentLength(), batch.getContentType(),
+                context))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

@@ -141,10 +141,10 @@ public final class BlobBatch {
      * @param blobName The name of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
-     * @return a {@link BatchOperation} that will be used to associate this operation to the response when the batch is
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      */
-    public BatchOperation<Void> delete(String containerName, String blobName,
+    public Response<Void> delete(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
         return deleteHelper(buildClient(containerName, blobName), deleteOptions, blobAccessConditions);
     }
@@ -155,15 +155,15 @@ public final class BlobBatch {
      * @param blobUrl URI of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
-     * @return a {@link BatchOperation} that will be used to associate this operation to the response when the batch is
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      */
-    public BatchOperation<Void> delete(URL blobUrl, DeleteSnapshotsOptionType deleteOptions,
+    public Response<Void> delete(URL blobUrl, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
         return deleteHelper(buildClient(blobUrl), deleteOptions, blobAccessConditions);
     }
 
-    private BatchOperation<Void> deleteHelper(BlobAsyncClientBase client, DeleteSnapshotsOptionType deleteOptions,
+    private Response<Void> deleteHelper(BlobAsyncClientBase client, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
         return createAndReturnBatchOperation(client.deleteWithResponse(deleteOptions, blobAccessConditions));
     }
@@ -175,10 +175,10 @@ public final class BlobBatch {
      * @param blobName The name of the blob.
      * @param accessTier The tier to set on the blob.
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
-     * @return a {@link BatchOperation} that will be used to associate this operation to the response when the batch is
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      */
-    public BatchOperation<Void> setTier(String containerName, String blobName, AccessTier accessTier,
+    public Response<Void> setTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
         return setTierHelper(buildClient(containerName, blobName), accessTier, leaseAccessConditions);
     }
@@ -189,20 +189,20 @@ public final class BlobBatch {
      * @param blobUrl URI of the blob.
      * @param accessTier The tier to set on the blob.
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
-     * @return a {@link BatchOperation} that will be used to associate this operation to the response when the batch is
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      */
-    public BatchOperation<Void> setTier(URL blobUrl, AccessTier accessTier,
+    public Response<Void> setTier(URL blobUrl, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
         return setTierHelper(buildClient(blobUrl), accessTier, leaseAccessConditions);
     }
 
-    private BatchOperation<Void> setTierHelper(BlobAsyncClientBase client, AccessTier accessTier,
+    private Response<Void> setTierHelper(BlobAsyncClientBase client, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
         return createAndReturnBatchOperation(client.setTierWithResponse(accessTier, null, leaseAccessConditions));
     }
 
-    private <T> BatchOperation<T> createAndReturnBatchOperation(Mono<Response<T>> response) {
+    private <T> Response<T> createAndReturnBatchOperation(Mono<Response<T>> response) {
         BlobBatchOperationResponse<T> batchOperation = new BlobBatchOperationResponse<>(response);
         this.batchOperationQueue.push(batchOperation);
         return batchOperation;

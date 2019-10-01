@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.ListContainersOptions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -363,12 +364,40 @@ public final class BlobServiceClient {
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
-    public BatchResult submitBatch(BlobBatch batch) {
-        return submitBatch(batch, null, Context.NONE);
+    /**
+     * Submits a batch operation.
+     *
+     * <p>If any request in a batch fails this will throw a {@link StorageException}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * @param batch Batch to submit.
+     * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
+     */
+    public void submitBatch(BlobBatch batch) {
+        submitBatchWithResponse(batch, true, null, Context.NONE);
     }
 
-    public BatchResult submitBatch(BlobBatch batch, Duration timeout, Context context) {
-        return Utility.blockWithOptionalTimeout(blobServiceAsyncClient.submitBatch(batch, context), timeout);
+    /**
+     * Submits a batch operation.
+     *
+     * <p>If {@code throwOnAnyFailure} is {@code true} a {@link StorageException} will be thrown if any request
+     * fails.</p>
+     *
+     * @param batch Batch to submit.
+     * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response only containing header and status code information, used to indicate that the batch operation
+     * has completed.
+     * @throws RuntimeException If the {@code timeout} duration completes before a response is returned.
+     * @throws StorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link BlobBatch}
+     * failed or the batch request is malformed.
+     */
+    public Response<Void> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Duration timeout,
+        Context context) {
+        return Utility.blockWithOptionalTimeout(blobServiceAsyncClient
+            .submitBatchWithResponse(batch, throwOnAnyFailure, context), timeout);
     }
 
     /**
