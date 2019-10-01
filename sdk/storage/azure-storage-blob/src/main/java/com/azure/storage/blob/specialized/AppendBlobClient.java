@@ -112,7 +112,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions-Duration-Context}
      *
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata Metdata to associate with the blob.
+     * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

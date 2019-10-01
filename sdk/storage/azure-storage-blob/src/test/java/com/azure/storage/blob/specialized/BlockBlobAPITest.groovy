@@ -389,7 +389,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Commit block list metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -689,7 +689,7 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Upload metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
         }
