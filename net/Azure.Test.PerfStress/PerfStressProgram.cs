@@ -15,6 +15,7 @@ namespace Azure.Test.PerfStress
     public static class PerfStressProgram
     {
         private static int _completedOperations;
+        private static TimeSpan[] _lastCompletionTimes;
 
         public static void Main(Assembly assembly, string[] args)
         {
@@ -44,13 +45,14 @@ namespace Azure.Test.PerfStress
             }));
             Console.WriteLine();
 
+            _lastCompletionTimes = new TimeSpan[options.Parallel];
+
             var duration = TimeSpan.FromSeconds(options.Duration);
 
             using (var test = (IPerfStressTest)Activator.CreateInstance(testType, options))
             using (var cts = new CancellationTokenSource(duration))
             {
                 var cancellationToken = cts.Token;
-                var sw = new Stopwatch();
 
                 _ = PrintStatusAsync(cancellationToken);
 
@@ -58,19 +60,16 @@ namespace Azure.Test.PerfStress
                 {
                     var tasks = new Task[options.Parallel];
 
-                    sw.Start();
                     for (var i = 0; i < options.Parallel; i++)
                     {
                         tasks[i] = RunLoopAsync(test, cancellationToken);
                     }
                     Task.WhenAll(tasks).Wait();
-                    sw.Stop();
                 }
                 else
                 {
                     var threads = new Thread[options.Parallel];
 
-                    sw.Start();
                     for (var i = 0; i < options.Parallel; i++)
                     {
                         threads[i] = new Thread(() => RunLoop(test, cancellationToken));
@@ -80,27 +79,29 @@ namespace Azure.Test.PerfStress
                     {
                         threads[i].Join();
                     }
-                    sw.Stop();
                 }
 
-                var elapsedSeconds = sw.Elapsed.TotalSeconds;
-                var operationsPerSecond = _completedOperations / elapsedSeconds;
+                var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();
+                var operationsPerSecond = _completedOperations / averageElapsedSeconds;
                 var secondsPerOperation = 1 / operationsPerSecond;
 
                 Console.WriteLine("=== Results ===");
-                Console.WriteLine($"Completed {_completedOperations} operations in {elapsedSeconds:N2}s ({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
+                Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
+                    $"({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
                 Console.WriteLine();
             }
         }
 
         private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)
         {
+            var sw = Stopwatch.StartNew();
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
                     test.Run(cancellationToken);
-                    Interlocked.Increment(ref _completedOperations);
+                    var count = Interlocked.Increment(ref _completedOperations);
+                    _lastCompletionTimes[count % _lastCompletionTimes.Length] = sw.Elapsed;
                 }
                 catch (OperationCanceledException)
                 {
@@ -110,12 +111,14 @@ namespace Azure.Test.PerfStress
 
         private static async Task RunLoopAsync(IPerfStressTest test, CancellationToken cancellationToken)
         {
+            var sw = Stopwatch.StartNew();
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
                     await test.RunAsync(cancellationToken);
-                    Interlocked.Increment(ref _completedOperations);
+                    var count = Interlocked.Increment(ref _completedOperations);
+                    _lastCompletionTimes[count % _lastCompletionTimes.Length] = sw.Elapsed;
                 }
                 catch (OperationCanceledException)
                 {
