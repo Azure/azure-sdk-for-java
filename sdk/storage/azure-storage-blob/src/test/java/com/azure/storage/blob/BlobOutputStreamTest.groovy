@@ -41,7 +41,7 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(pageBlobClient.openInputStream()) == data
     }
 
-    @Ignore
+    @Requires({ liveMode() })
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)

@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
@@ -172,7 +173,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null, null, null);
+        uploadFromFile(filePath, null, null, null, null, null, null);
     }
 
     /**
@@ -180,10 +181,11 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
-     * @param blockSize Size of the blocks to upload
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
+     *        transfers parameter is ignored.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the uploaded blob
@@ -191,10 +193,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
-        AccessTier tier, BlobAccessConditions accessConditions, Duration timeout) {
+    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
+        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Duration timeout) {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
-            filePath, blockSize, headers, metadata, tier, accessConditions);
+            filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
