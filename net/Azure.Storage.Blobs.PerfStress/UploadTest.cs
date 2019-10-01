@@ -8,6 +8,13 @@ namespace Azure.Storage.Blobs.PerfStress
     {
         public UploadTest(ParallelTransferOptionsOptions options) : base(options)
         {
+            try
+            {
+                BlobClient.Delete();
+            }
+            catch (StorageRequestFailedException)
+            {
+            }
         }
 
         public override void Run(CancellationToken cancellationToken)
