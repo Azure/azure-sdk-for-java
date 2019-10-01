@@ -192,12 +192,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setTier(AccessTier)}
+     * Code snippets for {@link BlobAsyncClientBase#setAccessTier(AccessTier)}
      */
     public void setTierCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier
-        client.setTier(AccessTier.HOT);
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier
+        client.setAccessTier(AccessTier.HOT);
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier
     }
 
     /**
@@ -374,17 +374,16 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setTierWithResponse(AccessTier, RehydratePriority,
-     * LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#setAccessTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
-        client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
+        client.setAccessTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
     }
 
     /**
