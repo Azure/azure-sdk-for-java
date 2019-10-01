@@ -14,7 +14,6 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.Metadata;
@@ -358,13 +357,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#PageRange}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @return A reactive response containing the information of the cleared pages.
      */
-    public Mono<PageList> getPageRanges(BlobRange blobRange) {
-        return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
+    public Mono<PageList> getPageRanges(PageRange pageRange) {
+        return getPageRangesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -373,24 +372,28 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#PageRange-BlobAccessConditions}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response emitting all the page ranges.
      */
-    public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
+    public Mono<Response<PageList>> getPageRangesWithResponse(PageRange pageRange,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> getPageRangesWithResponse(blobRange, accessConditions, context));
+        return withContext(context -> getPageRangesWithResponse(pageRange, accessConditions, context));
     }
 
-    Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
+    Mono<Response<PageList>> getPageRangesWithResponse(PageRange pageRange, BlobAccessConditions accessConditions,
         Context context) {
-        blobRange = blobRange == null ? new BlobRange(0) : blobRange;
+        if (pageRange == null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
+        }
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
-            null, null, getSnapshotId(), null, blobRange.toHeaderValue(),
+            null, null, getSnapshotId(), null, pageRangeToString(pageRange),
             null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
             context)).map(response -> new SimpleResponse<>(response, response.getValue()));
     }
@@ -402,16 +405,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#PageRange-String}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
      * @return A reactive response emitting all the different page ranges.
      */
-    public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
+    public Mono<PageList> getPageRangesDiff(PageRange pageRange, String prevSnapshot) {
+        return getPageRangesDiffWithResponse(pageRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -421,9 +424,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#PageRange-String-BlobAccessConditions}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
@@ -431,15 +434,20 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting all the different page ranges.
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
+    public Mono<Response<PageList>> getPageRangesDiffWithResponse(PageRange pageRange, String prevSnapshot,
         BlobAccessConditions accessConditions) {
         return withContext(context ->
-            getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
+            getPageRangesDiffWithResponse(pageRange, prevSnapshot, accessConditions, context));
     }
 
-    Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
+    Mono<Response<PageList>> getPageRangesDiffWithResponse(PageRange pageRange, String prevSnapshot,
         BlobAccessConditions accessConditions, Context context) {
-        blobRange = blobRange == null ? new BlobRange(0) : blobRange;
+        if (pageRange == null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
+        }
+
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         if (prevSnapshot == null) {
@@ -448,7 +456,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
             null, null, getSnapshotId(), null, prevSnapshot,
-            blobRange.toHeaderValue(), null, accessConditions.getLeaseAccessConditions(),
+            pageRangeToString(pageRange), null, accessConditions.getLeaseAccessConditions(),
             accessConditions.getModifiedAccessConditions(), context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }

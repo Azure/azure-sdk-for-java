@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -301,13 +300,13 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#PageRange}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @return The information of the cleared pages.
      */
-    public PageList getPageRanges(BlobRange blobRange) {
-        return getPageRangesWithResponse(blobRange, null, null, Context.NONE).getValue();
+    public PageList getPageRanges(PageRange pageRange) {
+        return getPageRangesWithResponse(pageRange, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -316,18 +315,18 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#PageRange-BlobAccessConditions-Duration-Context}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the page ranges.
      */
-    public Response<PageList> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
+    public Response<PageList> getPageRangesWithResponse(PageRange pageRange, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         return Utility.blockWithOptionalTimeout(pageBlobAsyncClient
-            .getPageRangesWithResponse(blobRange, accessConditions, context), timeout);
+            .getPageRangesWithResponse(pageRange, accessConditions, context), timeout);
     }
 
     /**
@@ -337,16 +336,16 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#PageRange-String}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
      * @return All the different page ranges.
      */
-    public PageList getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, null, Context.NONE).getValue();
+    public PageList getPageRangesDiff(PageRange pageRange, String prevSnapshot) {
+        return getPageRangesDiffWithResponse(pageRange, prevSnapshot, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -356,9 +355,9 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#PageRange-String-BlobAccessConditions-Duration-Context}
      *
-     * @param blobRange {@link BlobRange}
+     * @param pageRange {@link PageRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
@@ -367,10 +366,10 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return All the different page ranges.
      */
-    public Response<PageList> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
+    public Response<PageList> getPageRangesDiffWithResponse(PageRange pageRange, String prevSnapshot,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
         return Utility.blockWithOptionalTimeout(pageBlobAsyncClient
-            .getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context), timeout);
+            .getPageRangesDiffWithResponse(pageRange, prevSnapshot, accessConditions, context), timeout);
     }
 
     /**

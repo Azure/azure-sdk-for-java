@@ -161,6 +161,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block defaults"() {
         setup:
+
         def appendResponse = bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null)
 
         when:

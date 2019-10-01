@@ -6,7 +6,6 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -194,77 +193,85 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#getPageRanges(BlobRange)}
+     * Code snippets for {@link PageBlobClient#getPageRanges(PageRange)}
      */
     public void getPageRangesCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange
-        BlobRange blobRange = new BlobRange(offset);
-        PageList pageList = client.getPageRanges(blobRange);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#PageRange
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
+        PageList pageList = client.getPageRanges(pageRange);
 
         System.out.println("Valid Page Ranges are:");
-        for (PageRange pageRange : pageList.getPageRange()) {
-            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        for (PageRange rangePerPage : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
         }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#BlobRange
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRanges#PageRange
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#getPageRangesWithResponse(BlobRange, BlobAccessConditions, Duration,
+     * Code snippets for {@link PageBlobClient#getPageRangesWithResponse(PageRange, BlobAccessConditions, Duration,
      * Context)}
      */
     public void getPageRangesWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#PageRange-BlobAccessConditions-Duration-Context
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
         Context context = new Context(key, value);
 
         PageList pageList = client
-            .getPageRangesWithResponse(blobRange, blobAccessConditions, timeout, context).getValue();
+            .getPageRangesWithResponse(pageRange, blobAccessConditions, timeout, context).getValue();
 
         System.out.println("Valid Page Ranges are:");
-        for (PageRange pageRange : pageList.getPageRange()) {
-            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        for (PageRange rangePerPage : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
         }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#PageRange-BlobAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#getPageRangesDiff(BlobRange, String)}
+     * Code snippets for {@link PageBlobClient#getPageRangesDiff(PageRange, String)}
      */
     public void getPageRangesDiffCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#PageRange-String
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
         final String prevSnapshot = "previous snapshot";
-        PageList pageList = client.getPageRangesDiff(blobRange, prevSnapshot);
+        PageList pageList = client.getPageRangesDiff(pageRange, prevSnapshot);
 
         System.out.println("Valid Page Ranges are:");
-        for (PageRange pageRange : pageList.getPageRange()) {
-            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        for (PageRange rangePerPage : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
         }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#BlobRange-String
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiff#PageRange-String
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#getPageRangesDiffWithResponse(BlobRange, String, BlobAccessConditions,
+     * Code snippets for {@link PageBlobClient#getPageRangesDiffWithResponse(PageRange, String, BlobAccessConditions,
      * Duration, Context)}
      */
     public void getPageRangesDiffWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#PageRange-String-BlobAccessConditions-Duration-Context
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
         final String prevSnapshot = "previous snapshot";
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
         Context context = new Context(key, value);
 
         PageList pageList = client
-            .getPageRangesDiffWithResponse(blobRange, prevSnapshot, blobAccessConditions, timeout, context).getValue();
+            .getPageRangesDiffWithResponse(pageRange, prevSnapshot, blobAccessConditions, timeout, context).getValue();
 
         System.out.println("Valid Page Ranges are:");
-        for (PageRange pageRange : pageList.getPageRange()) {
-            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        for (PageRange rangePerPage : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
         }
-        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#PageRange-String-BlobAccessConditions-Duration-Context
     }
 
     /**

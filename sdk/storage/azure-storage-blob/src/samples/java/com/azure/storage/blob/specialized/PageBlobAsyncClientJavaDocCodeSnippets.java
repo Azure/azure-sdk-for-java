@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
@@ -182,76 +181,84 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#getPageRanges(BlobRange)}
+     * Code snippets for {@link PageBlobAsyncClient#getPageRanges(PageRange)}
      */
     public void getPageRangesCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#PageRange
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
 
-        client.getPageRanges(blobRange).subscribe(response -> {
+        client.getPageRanges(pageRange).subscribe(response -> {
             System.out.println("Valid Page Ranges are:");
-            for (PageRange pageRange : response.getPageRange()) {
-                System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+            for (PageRange rangePerPage : response.getPageRange()) {
+                System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
             }
         });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#PageRange
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#getPageRangesWithResponse(BlobRange, BlobAccessConditions)}
+     * Code snippets for {@link PageBlobAsyncClient#getPageRangesWithResponse(PageRange, BlobAccessConditions)}
      */
     public void getPageRangesWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#PageRange-BlobAccessConditions
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(512);
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.getPageRangesWithResponse(blobRange, blobAccessConditions)
+        client.getPageRangesWithResponse(pageRange, blobAccessConditions)
             .subscribe(response -> {
                 System.out.println("Valid Page Ranges are:");
-                for (PageRange pageRange : response.getValue().getPageRange()) {
-                    System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+                for (PageRange rangePerPage : response.getValue().getPageRange()) {
+                    System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
                 }
             });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#PageRange-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiff(BlobRange, String)}
+     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiff(PageRange, String)}
      */
     public void getPageRangesDiffCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#PageRange-String
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(512);
         final String prevSnapshot = "previous snapshot";
 
-        client.getPageRangesDiff(blobRange, prevSnapshot).subscribe(response -> {
+        client.getPageRangesDiff(pageRange, prevSnapshot).subscribe(response -> {
             System.out.println("Valid Page Ranges are:");
-            for (PageRange pageRange : response.getPageRange()) {
-                System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+            for (PageRange rangePerPage : response.getPageRange()) {
+                System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
             }
         });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#BlobRange-String
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiff#PageRange-String
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiffWithResponse(BlobRange, String,
+     * Code snippets for {@link PageBlobAsyncClient#getPageRangesDiffWithResponse(PageRange, String,
      * BlobAccessConditions)}
      */
     public void getPageRangesDiffWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions
-        BlobRange blobRange = new BlobRange(offset);
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#PageRange-String-BlobAccessConditions
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(512);
         final String prevSnapshot = "previous snapshot";
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.getPageRangesDiffWithResponse(blobRange, prevSnapshot, blobAccessConditions)
+        client.getPageRangesDiffWithResponse(pageRange, prevSnapshot, blobAccessConditions)
             .subscribe(response -> {
                 System.out.println("Valid Page Ranges are:");
-                for (PageRange pageRange : response.getValue().getPageRange()) {
-                    System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+                for (PageRange rangePerPage : response.getValue().getPageRange()) {
+                    System.out.printf("Start: %s, End: %s%n", rangePerPage.getStart(), rangePerPage.getEnd());
                 }
             });
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#PageRange-String-BlobAccessConditions
     }
 
     /**
