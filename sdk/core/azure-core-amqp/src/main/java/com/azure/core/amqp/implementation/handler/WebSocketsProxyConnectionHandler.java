@@ -161,7 +161,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final List<Proxy> proxies = proxySelector.select(serviceUri);
         if (!isProxyAddressLegal(proxies)) {
-            throw new IllegalStateException(PROXY_SELECTOR_HAS_BEEN_MODIFIED);
+            throw logger.logExceptionAsError(new IllegalStateException(PROXY_SELECTOR_HAS_BEEN_MODIFIED));
         }
 
         final Proxy proxy = proxies.get(0);
