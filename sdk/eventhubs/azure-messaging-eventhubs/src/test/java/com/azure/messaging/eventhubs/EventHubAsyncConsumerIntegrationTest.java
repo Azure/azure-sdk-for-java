@@ -99,13 +99,14 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
                     EventPosition.fromEnqueuedTime(Instant.now()));
                 consumers[i] = consumer;
 
-                final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
-                        logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId);
-                    }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
-                    () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        countDownLatch.countDown();
-                    });
+                final Disposable subscription = consumer.receive().take(numberOfEvents)
+                    .subscribe(
+                        event -> logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId),
+                        error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                        () -> {
+                            logger.info("Disposing of consumer now that the receive is complete.");
+                            countDownLatch.countDown();
+                        });
 
                 subscriptions.add(subscription);
 
