@@ -106,7 +106,7 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryBlobServiceClient.listContainers(new ListContainersOptions()
-            .setDetails(new ContainerListDetails().setMetadata(true))
+            .setDetails(new ContainerListDetails().setRetrieveMetadata(true))
             .setPrefix("aaa" + containerPrefix), null)
             .iterator().next().getMetadata() == metadata
 
@@ -119,7 +119,7 @@ class ServiceAPITest extends APISpec {
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3
 
-        def containers = [] as Collection<ContainerClient>
+        def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
             containers << primaryBlobServiceClient.createContainer(generateContainerName())
         }
@@ -145,7 +145,7 @@ class ServiceAPITest extends APISpec {
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3
 
-        def containers = [] as Collection<ContainerClient>
+        def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
             containers << primaryBlobServiceClient.createContainer(generateContainerName())
         }

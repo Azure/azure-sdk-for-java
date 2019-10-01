@@ -31,14 +31,14 @@ class PageBlobAPITest extends APISpec {
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).asPageBlobClient()
-        bcAsync = ccAsync.getBlobAsyncClient(blobName).asPageBlobAsyncClient()
+        bc = cc.getBlobClient(blobName).getPageBlobClient()
+        bcAsync = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient()
         bc.create(PageBlobClient.PAGE_BYTES)
     }
 
     def "Create all null"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         def response = bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null)
@@ -281,7 +281,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Upload page error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -296,7 +296,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page from URL min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES)
         destURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -316,12 +316,12 @@ class PageBlobAPITest extends APISpec {
 
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4)
 
-        def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES * 4)
         sourceURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 4 - 1),
             new ByteArrayInputStream(data))
 
-        def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
@@ -345,7 +345,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page from URL MD5"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES)
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
@@ -362,7 +362,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page from URL MD5 fail"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         destURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -379,7 +379,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page from URL destination AC"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -417,7 +417,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
 
-        def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -457,7 +457,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page from URL source AC"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -485,7 +485,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page from URL source AC fail"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def sourceURL = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         sourceURL.create(PageBlobClient.PAGE_BYTES)
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
@@ -605,7 +605,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Clear page error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.clearPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1))
@@ -695,7 +695,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.getPageRanges(null)
@@ -801,7 +801,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.getPageRangesDiff(null, "snapshot")
@@ -898,7 +898,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Resize error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.resize(0)
@@ -982,7 +982,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Sequence number error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.updateSequenceNumber(SequenceNumberActionType.UPDATE, 0)
@@ -994,7 +994,7 @@ class PageBlobAPITest extends APISpec {
     def "Start incremental copy"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
-        def bc2 = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def bc2 = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         def snapId = bc.createSnapshot().getSnapshotId()
 
         def copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapId, null, null, null)
@@ -1022,7 +1022,7 @@ class PageBlobAPITest extends APISpec {
     def "Start incremental copy min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
-        def bc2 = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def bc2 = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         def snapshot = bc.createSnapshot().getSnapshotId()
 
         expect:
@@ -1033,7 +1033,7 @@ class PageBlobAPITest extends APISpec {
     def "Start incremental copy AC"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
-        def bu2 = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         def snapshot = bc.createSnapshot().getSnapshotId()
 
         def copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null)
@@ -1073,7 +1073,7 @@ class PageBlobAPITest extends APISpec {
     def "Start incremental copy AC fail"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
-        def bu2 = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         def snapshot = bc.createSnapshot().getSnapshotId()
         bu2.copyIncremental(bc.getBlobUrl(), snapshot)
         snapshot = bc.createSnapshot().getSnapshotId()
@@ -1100,7 +1100,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Start incremental copy error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
         bc.copyIncremental(new URL("https://www.error.com"), "snapshot")

@@ -59,19 +59,19 @@ public class BasicExample {
          * ContainerClient object that wraps the container's endpoint, credential and a request pipeline (inherited from storageClient).
          * Note that container names require lowercase.
          */
-        ContainerClient containerClient = storageClient.getContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
 
         /*
          * Create a container in Storage blob account.
          */
-        containerClient.create();
+        blobContainerClient.create();
 
         /*
          * Create a client that references a to-be-created blob in your Azure Storage account's container.
          * This returns a BlockBlobClient object that wraps the blob's endpoint, credential and a request pipeline
          * (inherited from containerClient). Note that blob names can be mixed case.
          */
-        BlockBlobClient blobClient = containerClient.getBlobClient("HelloWorld.txt").asBlockBlobClient();
+        BlockBlobClient blobClient = blobContainerClient.getBlobClient("HelloWorld.txt").getBlockBlobClient();
 
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
@@ -104,7 +104,7 @@ public class BasicExample {
         for (int i = 0; i < 3; i++) {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
-            containerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).asBlockBlobClient()
+            blobContainerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).getBlockBlobClient()
                 .upload(dataInBlobs, sampleData.length());
             dataInBlobs.close();
         }
@@ -112,7 +112,7 @@ public class BasicExample {
         /*
          * List the blob(s) in our container.
          */
-        containerClient.listBlobsFlat()
+        blobContainerClient.listBlobsFlat()
             .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
 
         /*
@@ -123,6 +123,6 @@ public class BasicExample {
         /*
          * Delete the container we created earlier.
          */
-        containerClient.delete();
+        blobContainerClient.delete();
     }
 }

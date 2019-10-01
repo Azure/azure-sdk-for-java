@@ -10,7 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -32,12 +32,12 @@ import java.util.Objects;
 
 /**
  * Client to an append blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the
- * method {@link BlobClient#asAppendBlobClient()}. This class does not hold any state about a particular blob, but is
+ * method {@link BlobClient#getAppendBlobClient()}. This class does not hold any state about a particular blob, but is
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
- * operations on the service are available on {@link BlobServiceClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link BlobContainerClient},
+ * and operations on the service are available on {@link BlobServiceClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure

@@ -13,7 +13,7 @@ import com.azure.storage.blob.BlobServiceClient;
  */
 public final class ContainerListDetails {
 
-    private boolean metadata;
+    private boolean retrieveMetadata;
 
     public ContainerListDetails() {
 
@@ -24,18 +24,18 @@ public final class ContainerListDetails {
      *
      * @return a flag indicating whether metadata should be returned in the listing
      */
-    public boolean getMetadata() {
-        return this.metadata;
+    public boolean getRetrieveMetadata() {
+        return this.retrieveMetadata;
     }
 
     /**
      * Whether metadata should be returned.
      *
-     * @param metadata Flag indicating whether metadata should be returned
+     * @param retrieveMetadata Flag indicating whether metadata should be returned
      * @return the updated ContainerListDetails object
      */
-    public ContainerListDetails setMetadata(boolean metadata) {
-        this.metadata = metadata;
+    public ContainerListDetails setRetrieveMetadata(boolean retrieveMetadata) {
+        this.retrieveMetadata = retrieveMetadata;
         return this;
     }
 
@@ -43,7 +43,7 @@ public final class ContainerListDetails {
      * @return the listing flags
      */
     public ListContainersIncludeType toIncludeType() {
-        if (this.metadata) {
+        if (this.retrieveMetadata) {
             return ListContainersIncludeType.METADATA;
         }
         return null;

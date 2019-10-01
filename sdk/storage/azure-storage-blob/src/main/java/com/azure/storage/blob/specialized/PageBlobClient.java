@@ -34,7 +34,7 @@ import java.util.Objects;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
- * {@link BlobClient#asPageBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * {@link BlobClient#getPageBlobClient()}. This class does not hold any state about a particular blob, but is instead a
  * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>

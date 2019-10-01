@@ -76,7 +76,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
      */
     public void getContainerClient() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.getContainerClient#String
-        ContainerClient containerClient = client.getContainerClient("containerName");
+        BlobContainerClient blobContainerClient = client.getContainerClient("containerName");
         // END: com.azure.storage.blob.BlobServiceClient.getContainerClient#String
     }
 
@@ -85,7 +85,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
      */
     public void createContainer() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.createContainer#String
-        ContainerClient containerClient = client.createContainer("containerName");
+        BlobContainerClient blobContainerClient = client.createContainer("containerName");
         // END: com.azure.storage.blob.BlobServiceClient.createContainer#String
     }
 
@@ -97,7 +97,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
         Context context = new Context("Key", "Value");
 
-        ContainerClient containerClient = client.createContainerWithResponse(
+        BlobContainerClient blobContainerClient = client.createContainerWithResponse(
             "containerName",
             metadata,
             PublicAccessType.CONTAINER,
@@ -142,7 +142,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.listContainers#ListContainersOptions-Duration
         ListContainersOptions options = new ListContainersOptions()
             .setPrefix("containerNamePrefixToMatch")
-            .setDetails(new ContainerListDetails().setMetadata(true));
+            .setDetails(new ContainerListDetails().setRetrieveMetadata(true));
 
         client.listContainers(options, timeout).forEach(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceClient.listContainers#ListContainersOptions-Duration

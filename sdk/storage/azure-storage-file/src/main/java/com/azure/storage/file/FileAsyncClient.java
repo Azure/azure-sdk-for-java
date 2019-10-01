@@ -1187,7 +1187,7 @@ public class FileAsyncClient {
         FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
-        FileServiceSASQueryParameters fileServiceSasQueryParameters =
+        FileServiceSasQueryParameters fileServiceSasQueryParameters =
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return fileServiceSasQueryParameters.encode();

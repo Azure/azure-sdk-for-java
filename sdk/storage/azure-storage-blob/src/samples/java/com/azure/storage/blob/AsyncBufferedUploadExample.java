@@ -39,11 +39,11 @@ public class AsyncBufferedUploadExample {
         BlobServiceAsyncClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
             .buildAsyncClient();
 
-        ContainerAsyncClient containerClient = storageClient.getContainerAsyncClient(containerName);
+        BlobContainerAsyncClient containerClient = storageClient.getContainerAsyncClient(containerName);
         containerClient.create().block();
 
         uploadSourceBlob(endpoint, credential, containerName);
-        BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("HelloWorld.txt").asBlockBlobAsyncClient();
+        BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("HelloWorld.txt").getBlockBlobAsyncClient();
 
 
         /*
@@ -86,6 +86,6 @@ public class AsyncBufferedUploadExample {
     private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, SharedKeyCredential credential,
         String containerName) {
         return new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildAsyncClient()
-            .getContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").asBlockBlobAsyncClient();
+            .getContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").getBlockBlobAsyncClient();
     }
 }

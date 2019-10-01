@@ -4,8 +4,8 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobSASPermission;
-import com.azure.storage.blob.ContainerSASPermission;
+import com.azure.storage.blob.BlobContainerSasPermission;
+import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 /**
  * BlobServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link BlobServiceSASQueryParameters}
+ * which can actually be applied to blob urls. Note: that both this class and {@link BlobServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
  * actual REST requests.
  * <p>
@@ -34,9 +34,8 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-
-public final class BlobServiceSASSignatureValues {
-    private final ClientLogger logger = new ClientLogger(BlobServiceSASSignatureValues.class);
+public final class BlobServiceSasSignatureValues {
+    private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -71,7 +70,7 @@ public final class BlobServiceSASSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    public BlobServiceSASSignatureValues() {
+    public BlobServiceSasSignatureValues() {
     }
 
     /**
@@ -80,7 +79,7 @@ public final class BlobServiceSASSignatureValues {
      * @param expiryTime Time the SAS becomes valid
      * @param permissions Permissions granted by the SAS
      */
-    BlobServiceSASSignatureValues(OffsetDateTime expiryTime, String permissions) {
+    BlobServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
         this.expiryTime = expiryTime;
         this.permissions = permissions;
     }
@@ -90,11 +89,11 @@ public final class BlobServiceSASSignatureValues {
      *
      * @param identifier Identifier for the SAS
      */
-    BlobServiceSASSignatureValues(String identifier) {
+    BlobServiceSasSignatureValues(String identifier) {
         this.identifier = identifier;
     }
 
-    public BlobServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    public BlobServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
@@ -128,7 +127,7 @@ public final class BlobServiceSASSignatureValues {
      * @param version Version to target
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setVersion(String version) {
+    public BlobServiceSasSignatureValues setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -146,7 +145,7 @@ public final class BlobServiceSASSignatureValues {
      * @param protocol Protocol for the SAS
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setProtocol(SASProtocol protocol) {
+    public BlobServiceSasSignatureValues setProtocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -164,7 +163,7 @@ public final class BlobServiceSASSignatureValues {
      * @param startTime When the SAS takes effect
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setStartTime(OffsetDateTime startTime) {
+    public BlobServiceSasSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -182,27 +181,27 @@ public final class BlobServiceSASSignatureValues {
      * @param expiryTime When the SAS will no longer work
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
+    public BlobServiceSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
 
     /**
-     * @return the permissions string allowed by the SAS. Please refer to either {@link ContainerSASPermission} or
-     * {@link BlobSASPermission} depending on the resource being accessed for help determining the permissions allowed.
+     * @return the permissions string allowed by the SAS. Please refer to either {@link BlobContainerSasPermission} or
+     * {@link BlobSasPermission} depending on the resource being accessed for help determining the permissions allowed.
      */
     public String getPermissions() {
         return permissions;
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link ContainerSASPermission} or {@link
-     * BlobSASPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the permissions string allowed by the SAS. Please refer to either {@link BlobContainerSasPermission} or
+     * {@link BlobSasPermission} depending on the resource being accessed for help constructing the permissions string.
      *
      * @param permissions Permissions string for the SAS
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setPermissions(String permissions) {
+    public BlobServiceSasSignatureValues setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -220,7 +219,7 @@ public final class BlobServiceSASSignatureValues {
      * @param ipRange Allowed IP range to set
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setIpRange(IPRange ipRange) {
+    public BlobServiceSasSignatureValues setIpRange(IPRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -238,7 +237,7 @@ public final class BlobServiceSASSignatureValues {
      * @param resource Allowed resources string to set
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setResource(String resource) {
+    public BlobServiceSasSignatureValues setResource(String resource) {
         this.resource = resource;
         return this;
     }
@@ -256,7 +255,7 @@ public final class BlobServiceSASSignatureValues {
      * @param canonicalName Canonical name of the object the SAS grants access
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setCanonicalName(String canonicalName) {
+    public BlobServiceSasSignatureValues setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
         return this;
     }
@@ -270,7 +269,7 @@ public final class BlobServiceSASSignatureValues {
      * @return the updated BlobServiceSASSignatureValues object
      * @throws RuntimeException If {@code urlString} is a malformed URL.
      */
-    public BlobServiceSASSignatureValues setCanonicalName(String urlString, String accountName) {
+    public BlobServiceSasSignatureValues setCanonicalName(String urlString, String accountName) {
         URL url;
         try {
             url = new URL(urlString);
@@ -295,7 +294,7 @@ public final class BlobServiceSASSignatureValues {
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setSnapshotId(String snapshotId) {
+    public BlobServiceSasSignatureValues setSnapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
         return this;
     }
@@ -317,7 +316,7 @@ public final class BlobServiceSASSignatureValues {
      * @param identifier Name of the access policy
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setIdentifier(String identifier) {
+    public BlobServiceSasSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -335,7 +334,7 @@ public final class BlobServiceSASSignatureValues {
      * @param cacheControl Cache-Control header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setCacheControl(String cacheControl) {
+    public BlobServiceSasSignatureValues setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -353,7 +352,7 @@ public final class BlobServiceSASSignatureValues {
      * @param contentDisposition Content-Disposition header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setContentDisposition(String contentDisposition) {
+    public BlobServiceSasSignatureValues setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -371,7 +370,7 @@ public final class BlobServiceSASSignatureValues {
      * @param contentEncoding Content-Encoding header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setContentEncoding(String contentEncoding) {
+    public BlobServiceSasSignatureValues setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -389,7 +388,7 @@ public final class BlobServiceSASSignatureValues {
      * @param contentLanguage Content-Language header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setContentLanguage(String contentLanguage) {
+    public BlobServiceSasSignatureValues setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -407,7 +406,7 @@ public final class BlobServiceSASSignatureValues {
      * @param contentType Content-Type header value
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSASSignatureValues setContentType(String contentType) {
+    public BlobServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -417,18 +416,18 @@ public final class BlobServiceSASSignatureValues {
      * parameters.
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
-     * @return {@link BlobServiceSASQueryParameters}
+     * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      */
-    public BlobServiceSASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public BlobServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK(false);
 
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign());
 
-        return new BlobServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.ipRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, null /* delegate */);
     }
@@ -437,18 +436,18 @@ public final class BlobServiceSASSignatureValues {
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
      *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @return {@link BlobServiceSASQueryParameters}
+     * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      */
-    public BlobServiceSASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
+    public BlobServiceSasQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);
         assertGenerateOK(true);
 
         // Signature is generated on the un-url-encoded values.
         String signature = Utility.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey));
 
-        return new BlobServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.ipRange, null /* identifier */, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, delegationKey);
     }

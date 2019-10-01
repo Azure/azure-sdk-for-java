@@ -36,11 +36,11 @@ public class Sample {
             .buildClient();
 
         // create 5 containers
-        ContainerClient containerClient = null;
+        BlobContainerClient blobContainerClient = null;
         for (int i = 0; i < 5; i++) {
             String name = "uxtesting" + UUID.randomUUID();
-            containerClient = serviceClient.getContainerClient(name);
-            containerClient.create();
+            blobContainerClient = serviceClient.getContainerClient(name);
+            blobContainerClient.create();
             System.out.println("Created container: " + name);
         }
         System.out.println();
@@ -54,7 +54,7 @@ public class Sample {
 
         // in the last container, create 5 blobs
         for (int i = 0; i < 5; i++) {
-            BlockBlobClient blobClient = containerClient.getBlobClient("testblob-" + i).asBlockBlobClient();
+            BlockBlobClient blobClient = blobContainerClient.getBlobClient("testblob-" + i).getBlockBlobClient();
             ByteArrayInputStream testdata = new ByteArrayInputStream(("test data" + i).getBytes(StandardCharsets.UTF_8));
 
             blobClient.upload(testdata, testdata.available());
@@ -64,17 +64,17 @@ public class Sample {
 
         // list blobs and download results
         System.out.println("Listing/downloading blobs:");
-        for (BlobItem item : containerClient.listBlobsFlat()) {
+        for (BlobItem item : blobContainerClient.listBlobsFlat()) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            containerClient.getBlobClient(item.getName()).download(stream);
+            blobContainerClient.getBlobClient(item.getName()).download(stream);
             System.out.println(item.getName() + ": " + new String(stream.toByteArray()));
         }
         System.out.println();
 
         // cleanup
         for (ContainerItem item : serviceClient.listContainers()) {
-            containerClient = serviceClient.getContainerClient(item.getName());
-            containerClient.delete();
+            blobContainerClient = serviceClient.getContainerClient(item.getName());
+            blobContainerClient.delete();
             System.out.println("Deleted container: " + item.getName());
         }
     }
@@ -88,7 +88,7 @@ public class Sample {
             .buildAsyncClient();
 
         // create 5 containers
-        ContainerAsyncClient containerClient = null;
+        BlobContainerAsyncClient containerClient = null;
         Mono<Void> createContainerTask = Mono.empty();
         for (int i = 0; i < 5; i++) {
             String name = "uxtesting" + UUID.randomUUID();
@@ -99,7 +99,7 @@ public class Sample {
                 return Mono.empty();
             })));
         }
-        ContainerAsyncClient finalContainerClient = containerClient; // final variable for lambda usage
+        BlobContainerAsyncClient finalContainerClient = containerClient; // final variable for lambda usage
 
         createContainerTask
             // list containers
@@ -115,7 +115,7 @@ public class Sample {
             .then(Mono.defer(() -> {
                 Mono<Void> finished = Mono.empty();
                 for (int i = 0; i < 5; i++) {
-                    BlockBlobAsyncClient blobClient = finalContainerClient.getBlobAsyncClient("testblob-" + i).asBlockBlobAsyncClient();
+                    BlockBlobAsyncClient blobClient = finalContainerClient.getBlobAsyncClient("testblob-" + i).getBlockBlobAsyncClient();
                     byte[] message = ("test data" + i).getBytes(StandardCharsets.UTF_8);
                     Flux<ByteBuffer> testdata = Flux.just(ByteBuffer.wrap(message));
 
@@ -166,11 +166,11 @@ public class Sample {
             .buildClient();
 
         // make container
-        ContainerClient containerClient = serviceClient.getContainerClient("uxstudy" + UUID.randomUUID());
-        containerClient.create();
+        BlobContainerClient blobContainerClient = serviceClient.getContainerClient("uxstudy" + UUID.randomUUID());
+        blobContainerClient.create();
 
         // upload data
-        BlockBlobClient blobClient = containerClient.getBlobClient("testblob_" + UUID.randomUUID()).asBlockBlobClient();
+        BlockBlobClient blobClient = blobContainerClient.getBlobClient("testblob_" + UUID.randomUUID()).getBlockBlobClient();
         blobClient.uploadFromFile(startFile.getAbsolutePath());
 
         // download data
@@ -196,12 +196,12 @@ public class Sample {
             .buildAsyncClient();
 
         // make container
-        ContainerAsyncClient containerClient = serviceClient.getContainerAsyncClient("uxstudy" + UUID.randomUUID());
+        BlobContainerAsyncClient containerClient = serviceClient.getContainerAsyncClient("uxstudy" + UUID.randomUUID());
         containerClient.create()
 
             // upload data
             .then(Mono.defer(() -> {
-                BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("testblob_" + UUID.randomUUID()).asBlockBlobAsyncClient();
+                BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("testblob_" + UUID.randomUUID()).getBlockBlobAsyncClient();
                 return blobClient.uploadFromFile(startFile.getAbsolutePath())
                     .then(Mono.just(blobClient));
             }))

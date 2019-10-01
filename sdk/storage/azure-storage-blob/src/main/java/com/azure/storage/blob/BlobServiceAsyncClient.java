@@ -52,8 +52,9 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  * requests to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient}
- * through {@link #getContainerAsyncClient(String)}, and operations on a blob are available on {@link BlobAsyncClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link
+ * BlobContainerAsyncClient} through {@link #getContainerAsyncClient(String)}, and operations on a blob are available on
+ * {@link BlobAsyncClient}.
  *
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
@@ -83,7 +84,7 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
-     * Initializes a {@link ContainerAsyncClient} object pointing to the specified container. This method does not
+     * Initializes a {@link BlobContainerAsyncClient} object pointing to the specified container. This method does not
      * create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
@@ -92,10 +93,10 @@ public final class BlobServiceAsyncClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String}
      *
      * @param containerName The name of the container to point to.
-     * @return A {@link ContainerAsyncClient} object pointing to the specified container
+     * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
-    public ContainerAsyncClient getContainerAsyncClient(String containerName) {
-        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
+    public BlobContainerAsyncClient getContainerAsyncClient(String containerName) {
+        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), customerProvidedKey);
@@ -120,9 +121,9 @@ public final class BlobServiceAsyncClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String}
      *
      * @param containerName Name of the container to create
-     * @return A {@link Mono} containing a {@link ContainerAsyncClient} used to interact with the container created.
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
      */
-    public Mono<ContainerAsyncClient> createContainer(String containerName) {
+    public Mono<BlobContainerAsyncClient> createContainer(String containerName) {
         return createContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -140,19 +141,19 @@ public final class BlobServiceAsyncClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * ContainerAsyncClient} used to interact with the container created.
+     * BlobContainerAsyncClient} used to interact with the container created.
      */
-    public Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
+    public Mono<Response<BlobContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
         PublicAccessType accessType) {
         return withContext(context -> createContainerWithResponse(containerName, metadata, accessType, context));
     }
 
-    Mono<Response<ContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
+    Mono<Response<BlobContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
         PublicAccessType accessType, Context context) {
-        ContainerAsyncClient containerAsyncClient = getContainerAsyncClient(containerName);
+        BlobContainerAsyncClient blobContainerAsyncClient = getContainerAsyncClient(containerName);
 
-        return containerAsyncClient.createWithResponse(metadata, accessType, context)
-            .map(response -> new SimpleResponse<>(response, containerAsyncClient));
+        return blobContainerAsyncClient.createWithResponse(metadata, accessType, context)
+            .map(response -> new SimpleResponse<>(response, blobContainerAsyncClient));
     }
 
     /**

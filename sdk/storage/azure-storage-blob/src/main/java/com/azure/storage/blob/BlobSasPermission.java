@@ -13,7 +13,7 @@ import java.util.Locale;
  * possible to construct the permissions string without this class, but the order of the permissions is particular and
  * this class guarantees correctness.
  */
-public final class BlobSASPermission {
+public final class BlobSasPermission {
 
     private boolean readPermission;
 
@@ -26,21 +26,21 @@ public final class BlobSASPermission {
     private boolean deletePermission;
 
     /**
-     * Initializes a {@code BlobSASPermission} object with all fields set to false.
+     * Initializes a {@code BlobSasPermission} object with all fields set to false.
      */
-    public BlobSASPermission() {
+    public BlobSasPermission() {
     }
 
     /**
-     * Creates a {@code BlobSASPermission} from the specified permissions string. This method will throw an
+     * Creates a {@code BlobSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code BlobSASPermission}.
-     * @return A {@code BlobSASPermission} generated from the given {@code String}.
+     * @param permString A {@code String} which represents the {@code BlobSasPermission}.
+     * @return A {@code BlobSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
      */
-    public static BlobSASPermission parse(String permString) {
-        BlobSASPermission permissions = new BlobSASPermission();
+    public static BlobSasPermission parse(String permString) {
+        BlobSasPermission permissions = new BlobSasPermission();
 
         for (int i = 0; i < permString.length(); i++) {
             char c = permString.charAt(i);
@@ -80,9 +80,9 @@ public final class BlobSASPermission {
      * Sets the read permission status.
      *
      * @param hasReadPermission Permission status to set
-     * @return the updated BlobSASPermission object.
+     * @return the updated BlobSasPermission object.
      */
-    public BlobSASPermission setReadPermission(boolean hasReadPermission) {
+    public BlobSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
         return this;
     }
@@ -98,9 +98,9 @@ public final class BlobSASPermission {
      * Sets the add permission status.
      *
      * @param hasAddPermission Permission status to set
-     * @return the updated BlobSASPermission object.
+     * @return the updated BlobSasPermission object.
      */
-    public BlobSASPermission setAddPermission(boolean hasAddPermission) {
+    public BlobSasPermission setAddPermission(boolean hasAddPermission) {
         this.addPermission = hasAddPermission;
         return this;
     }
@@ -116,9 +116,9 @@ public final class BlobSASPermission {
      * Sets the create permission status.
      *
      * @param hasCreatePermission Permission status to set
-     * @return the updated BlobSASPermission object.
+     * @return the updated BlobSasPermission object.
      */
-    public BlobSASPermission setCreatePermission(boolean hasCreatePermission) {
+    public BlobSasPermission setCreatePermission(boolean hasCreatePermission) {
         this.createPermission = hasCreatePermission;
         return this;
     }
@@ -134,9 +134,9 @@ public final class BlobSASPermission {
      * Sets the write permission status.
      *
      * @param hasWritePermission Permission status to set
-     * @return the updated BlobSASPermission object.
+     * @return the updated BlobSasPermission object.
      */
-    public BlobSASPermission setWritePermission(boolean hasWritePermission) {
+    public BlobSasPermission setWritePermission(boolean hasWritePermission) {
         this.writePermission = hasWritePermission;
         return this;
     }
@@ -152,9 +152,9 @@ public final class BlobSASPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission Permission status to set
-     * @return the updated BlobSASPermission object.
+     * @return the updated BlobSasPermission object.
      */
-    public BlobSASPermission setDeletePermission(boolean hasDeletePermission) {
+    public BlobSasPermission setDeletePermission(boolean hasDeletePermission) {
         this.deletePermission = hasDeletePermission;
         return this;
     }
@@ -163,7 +163,7 @@ public final class BlobSASPermission {
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code BlobSASPermission}.
+     * @return A {@code String} which represents the {@code BlobSasPermission}.
      */
     @Override
     public String toString() {

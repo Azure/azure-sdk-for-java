@@ -8,12 +8,11 @@ import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.specialized.BlobClientBase
 import spock.lang.Unroll
 
 class LeaseAPITest extends APISpec {
     private BlobClientBase createBlobClient() {
-        def bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         return bc
@@ -125,7 +124,7 @@ class LeaseAPITest extends APISpec {
 
     def "Acquire blob lease error"() {
         setup:
-        def bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         createLeaseClient(bc).acquireLease(20)
@@ -214,7 +213,7 @@ class LeaseAPITest extends APISpec {
 
     def "Renew blob lease error"() {
         setup:
-        def bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         createLeaseClient(bc, "id").renewLease()
@@ -295,7 +294,7 @@ class LeaseAPITest extends APISpec {
 
     def "Release blob lease error"() {
         setup:
-        def bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         createLeaseClient(bc, "id").releaseLease()
@@ -471,7 +470,7 @@ class LeaseAPITest extends APISpec {
 
     def "Change blob lease error"() {
         setup:
-        def bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         createLeaseClient(bc, "id").changeLease("id")

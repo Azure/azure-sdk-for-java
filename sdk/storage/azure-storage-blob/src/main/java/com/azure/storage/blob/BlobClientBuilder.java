@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
  * {@link BlobClient BlobClients} and {@link BlobAsyncClient BlobAsyncClients} when
- * {@link #buildBlobClient() buildBlobClient} and {@link #buildBlobAsyncClient() buildBlobAsyncClient} as called
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} as called
  * respectively.
  *
  * <p>
@@ -53,13 +53,13 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.buildBlobClient}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.buildClient}
      *
      * @return a {@link BlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
-    public BlobClient buildBlobClient() {
-        return new BlobClient(buildBlobAsyncClient());
+    public BlobClient buildClient() {
+        return new BlobClient(buildAsyncClient());
     }
 
     /**
@@ -69,12 +69,12 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.buildBlobAsyncClient}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.buildAsyncClient}
      *
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
-    public BlobAsyncClient buildBlobAsyncClient() {
+    public BlobAsyncClient buildAsyncClient() {
         Objects.requireNonNull(containerName, "'containerName' cannot be null.");
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
 

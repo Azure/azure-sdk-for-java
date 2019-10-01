@@ -100,7 +100,7 @@ sequence number and the timestamp of when it was enqueued.
 ### Create an instance of Storage container with SAS token
 ```java
 SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString("<SAS_TOKEN_WITH_WRITE_PERMISSION>");
-ContainerAsyncClient containerAsyncClient = new ContainerClientBuilder()
+ContainerAsyncClient blobContainerAsyncClient = new ContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")
     .credential(sasTokenCredential)
@@ -128,7 +128,7 @@ class Program {
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
             .consumerGroupName("<< CONSUMER GROUP NAME>>")
             .partitionProcessorFactory(SimplePartitionProcessor::new)
-            .partitionManager(new BlobPartitionManager(containerAsyncClient))
+            .partitionManager(new BlobPartitionManager(blobContainerAsyncClient))
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.

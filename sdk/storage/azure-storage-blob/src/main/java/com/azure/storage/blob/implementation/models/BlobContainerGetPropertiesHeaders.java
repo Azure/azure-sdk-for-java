@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Container-GetProperties-Headers")
 @Fluent
-public final class ContainerGetPropertiesHeaders {
+public final class BlobContainerGetPropertiesHeaders {
     /*
      * The metadata property.
      */
@@ -134,7 +134,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param metadata the metadata value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
+    public BlobContainerGetPropertiesHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -158,7 +158,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param eTag the eTag value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setETag(String eTag) {
+    public BlobContainerGetPropertiesHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -187,7 +187,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param lastModified the lastModified value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
+    public BlobContainerGetPropertiesHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -215,7 +215,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param leaseDuration the leaseDuration value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
+    public BlobContainerGetPropertiesHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -237,7 +237,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param leaseState the leaseState value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setLeaseState(LeaseStateType leaseState) {
+    public BlobContainerGetPropertiesHeaders setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
     }
@@ -259,7 +259,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param leaseStatus the leaseStatus value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
+    public BlobContainerGetPropertiesHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
     }
@@ -283,7 +283,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param clientRequestId the clientRequestId value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setClientRequestId(String clientRequestId) {
+    public BlobContainerGetPropertiesHeaders setClientRequestId(String clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }
@@ -305,7 +305,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param requestId the requestId value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setRequestId(String requestId) {
+    public BlobContainerGetPropertiesHeaders setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -329,7 +329,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param version the version value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setVersion(String version) {
+    public BlobContainerGetPropertiesHeaders setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -354,7 +354,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param dateProperty the dateProperty value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public BlobContainerGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -382,7 +382,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param blobPublicAccess the blobPublicAccess value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setBlobPublicAccess(PublicAccessType blobPublicAccess) {
+    public BlobContainerGetPropertiesHeaders setBlobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
         return this;
     }
@@ -404,7 +404,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
+    public BlobContainerGetPropertiesHeaders setHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         return this;
     }
@@ -426,7 +426,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param hasLegalHold the hasLegalHold value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setHasLegalHold(Boolean hasLegalHold) {
+    public BlobContainerGetPropertiesHeaders setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
         return this;
     }
@@ -446,7 +446,7 @@ public final class ContainerGetPropertiesHeaders {
      * @param errorCode the errorCode value to set.
      * @return the ContainerGetPropertiesHeaders object itself.
      */
-    public ContainerGetPropertiesHeaders setErrorCode(String errorCode) {
+    public BlobContainerGetPropertiesHeaders setErrorCode(String errorCode) {
         this.errorCode = errorCode;
         return this;
     }

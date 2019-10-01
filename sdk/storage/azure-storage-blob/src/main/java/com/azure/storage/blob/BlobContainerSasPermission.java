@@ -14,7 +14,7 @@ import java.util.Locale;
  * It is possible to construct the permissions string without this class, but the order of the permissions is
  * particular and this class guarantees correctness.
  */
-public final class ContainerSASPermission {
+public final class BlobContainerSasPermission {
     private boolean read;
 
     private boolean add;
@@ -28,21 +28,21 @@ public final class ContainerSASPermission {
     private boolean list;
 
     /**
-     * Initializes an {@code ContainerSASPermission} object with all fields set to false.
+     * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
      */
-    public ContainerSASPermission() {
+    public BlobContainerSasPermission() {
     }
 
     /**
-     * Creates an {@code ContainerSASPermission} from the specified permissions string. This method will throw an
+     * Creates an {@code BlobContainerSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code ContainerSASPermission}.
-     * @return A {@code ContainerSASPermission} generated from the given {@code String}.
+     * @param permString A {@code String} which represents the {@code BlobContainerSasPermission}.
+     * @return A {@code BlobContainerSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
      */
-    public static ContainerSASPermission parse(String permString) {
-        ContainerSASPermission permissions = new ContainerSASPermission();
+    public static BlobContainerSasPermission parse(String permString) {
+        BlobContainerSasPermission permissions = new BlobContainerSasPermission();
 
         for (int i = 0; i < permString.length(); i++) {
             char c = permString.charAt(i);
@@ -85,9 +85,9 @@ public final class ContainerSASPermission {
      * Sets the read permission status.
      *
      * @param read Permission status to set
-     * @return the updated ContainerSASPermission object
+     * @return the updated BlobContainerSasPermission object
      */
-    public ContainerSASPermission setRead(boolean read) {
+    public BlobContainerSasPermission setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -103,9 +103,9 @@ public final class ContainerSASPermission {
      * Sets the add permission status.
      *
      * @param add Permission status to set
-     * @return the updated ContainerSASPermission object
+     * @return the updated BlobContainerSasPermission object
      */
-    public ContainerSASPermission setAdd(boolean add) {
+    public BlobContainerSasPermission setAdd(boolean add) {
         this.add = add;
         return this;
     }
@@ -121,9 +121,9 @@ public final class ContainerSASPermission {
      * Sets the create permission status.
      *
      * @param create Permission status to set
-     * @return the updated ContainerSASPermission object
+     * @return the updated BlobContainerSasPermission object
      */
-    public ContainerSASPermission setCreate(boolean create) {
+    public BlobContainerSasPermission setCreate(boolean create) {
         this.create = create;
         return this;
     }
@@ -139,9 +139,9 @@ public final class ContainerSASPermission {
      * Sets the write permission status.
      *
      * @param write Permission status to set
-     * @return the updated ContainerSASPermission object
+     * @return the updated BlobContainerSasPermission object
      */
-    public ContainerSASPermission setWrite(boolean write) {
+    public BlobContainerSasPermission setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -157,9 +157,9 @@ public final class ContainerSASPermission {
      * Sets the delete permission status.
      *
      * @param delete Permission status to set
-     * @return the updated ContainerSASPermission object
+     * @return the updated BlobContainerSasPermission object
      */
-    public ContainerSASPermission setDelete(boolean delete) {
+    public BlobContainerSasPermission setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -175,9 +175,9 @@ public final class ContainerSASPermission {
      * Sets the list permission status.
      *
      * @param list Permission status to set
-     * @return the updated ContainerSASPermission object
+     * @return the updated BlobContainerSasPermission object
      */
-    public ContainerSASPermission setList(boolean list) {
+    public BlobContainerSasPermission setList(boolean list) {
         this.list = list;
         return this;
     }
@@ -186,7 +186,7 @@ public final class ContainerSASPermission {
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code ContainerSASPermission}.
+     * @return A {@code String} which represents the {@code BlobContainerSasPermission}.
      */
     @Override
     public String toString() {

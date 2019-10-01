@@ -73,7 +73,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      */
     public void getContainerClient() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String
-        ContainerAsyncClient containerAsyncClient = client.getContainerAsyncClient("containerName");
+        BlobContainerAsyncClient blobContainerAsyncClient = client.getContainerAsyncClient("containerName");
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String
     }
 
@@ -82,7 +82,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      */
     public void createContainer() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String
-        ContainerAsyncClient containerAsyncClient =
+        BlobContainerAsyncClient blobContainerAsyncClient =
             client.createContainer("containerName").block();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String
     }
@@ -94,7 +94,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType
         Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
 
-        ContainerAsyncClient containerClient =
+        BlobContainerAsyncClient containerClient =
             client.createContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType
     }
@@ -133,7 +133,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions
         ListContainersOptions options = new ListContainersOptions()
             .setPrefix("containerNamePrefixToMatch")
-            .setDetails(new ContainerListDetails().setMetadata(true));
+            .setDetails(new ContainerListDetails().setRetrieveMetadata(true));
 
         client.listContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions

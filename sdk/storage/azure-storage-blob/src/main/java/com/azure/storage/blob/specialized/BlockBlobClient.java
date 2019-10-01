@@ -36,7 +36,7 @@ import java.util.Objects;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
- * {@link BlobClient#asBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead a
+ * {@link BlobClient#getBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead a
  * convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>

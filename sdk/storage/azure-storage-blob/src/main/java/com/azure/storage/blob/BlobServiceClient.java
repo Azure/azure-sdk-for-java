@@ -36,8 +36,8 @@ import java.time.OffsetDateTime;
  * requests to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient} through
- * {@link #getContainerClient(String)}, and operations on a blob are available on {@link BlobClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link BlobContainerClient}
+ * through {@link #getContainerClient(String)}, and operations on a blob are available on {@link BlobClient}.
  *
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
@@ -57,18 +57,18 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Initializes a {@link ContainerClient} object pointing to the specified container. This method does not create a
-     * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
+     * Initializes a {@link BlobContainerClient} object pointing to the specified container. This method does not create
+     * a container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.getContainerClient#String}
      *
      * @param containerName The name of the container to point to.
-     * @return A {@link ContainerClient} object pointing to the specified container
+     * @return A {@link BlobContainerClient} object pointing to the specified container
      */
-    public ContainerClient getContainerClient(String containerName) {
-        return new ContainerClient(blobServiceAsyncClient.getContainerAsyncClient(containerName));
+    public BlobContainerClient getContainerClient(String containerName) {
+        return new BlobContainerClient(blobServiceAsyncClient.getContainerAsyncClient(containerName));
     }
 
     /**
@@ -90,9 +90,9 @@ public final class BlobServiceClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainer#String}
      *
      * @param containerName Name of the container to create
-     * @return The {@link ContainerClient} used to interact with the container created.
+     * @return The {@link BlobContainerClient} used to interact with the container created.
      */
-    public ContainerClient createContainer(String containerName) {
+    public BlobContainerClient createContainer(String containerName) {
         return createContainerWithResponse(containerName, null, null, Context.NONE).getValue();
     }
 
@@ -110,12 +110,12 @@ public final class BlobServiceClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ContainerClient} used to
-     * interact with the container created.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
+     * to interact with the container created.
      */
-    public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata,
+    public Response<BlobContainerClient> createContainerWithResponse(String containerName, Metadata metadata,
         PublicAccessType accessType, Context context) {
-        ContainerClient client = getContainerClient(containerName);
+        BlobContainerClient client = getContainerClient(containerName);
 
         return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
     }
