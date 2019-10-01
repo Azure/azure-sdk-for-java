@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.ContainerListDetails
 import com.azure.storage.blob.models.CorsRule
 import com.azure.storage.blob.models.ListContainersOptions
 import com.azure.storage.blob.models.Logging
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.Metrics
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StaticWebsite

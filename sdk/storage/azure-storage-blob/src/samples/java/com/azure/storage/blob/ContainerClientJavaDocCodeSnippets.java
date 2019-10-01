@@ -10,7 +10,6 @@ import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
@@ -26,6 +25,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings({"unused"})
 public class ContainerClientJavaDocCodeSnippets {
@@ -156,16 +156,16 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerClient#createWithResponse(Metadata, PublicAccessType, Duration, Context)}
+     * Code snippet for {@link ContainerClient#createWithResponse(Map, PublicAccessType, Duration, Context)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Metadata-PublicAccessType-Duration-Context
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
         System.out.printf("Create completed with status %d%n",
             client.createWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Metadata-PublicAccessType-Duration-Context
+        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
     }
 
     /**
@@ -231,11 +231,11 @@ public class ContainerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setMetadata(Metadata)}
+     * Code snippet for {@link ContainerClient#setMetadata(Map)}
      */
     public void setMetadata() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.setMetadata#Metadata
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
         try {
             client.setMetadata(metadata);
@@ -243,16 +243,16 @@ public class ContainerClientJavaDocCodeSnippets {
         } catch (UnsupportedOperationException error) {
             System.out.printf("Fail while setting metadata %n");
         }
-        // END: com.azure.storage.blob.ContainerClient.setMetadata#Metadata
+        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setMetadataWithResponse(Metadata, ContainerAccessConditions, Duration,
+     * Code snippet for {@link ContainerClient#setMetadataWithResponse(Map, ContainerAccessConditions, Duration,
      * Context)}
      */
     public void setMetadata2() {
         // BEGIN: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ContainerAccessConditions accessConditions = new ContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
