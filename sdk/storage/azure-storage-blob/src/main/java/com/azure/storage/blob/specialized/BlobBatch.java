@@ -5,7 +5,10 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -21,6 +24,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -34,10 +38,13 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class BlobBatch {
+    private static final String BATCH_REQUEST_CONTENT_ID = "Batch-Request-Content-Id";
+    private static final String CONTENT_ID = "Content-Id";
+    private static final String X_MS_VERSION = "x-ms-version";
     private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
     private static final String CONTENT_TYPE = "Content-Type: application/http";
     private static final String CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
-    private static final String CONTENT_ID_TEMPLATE = "Content-ID: %d";
+    private static final String CONTENT_ID_TEMPLATE = "Content-ID: %s";
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
@@ -47,7 +54,7 @@ public final class BlobBatch {
     private final URL accountUrl;
     private final HttpPipeline batchPipeline;
 
-    private final Deque<BlobBatchOperationResponse> batchOperationQueue;
+    private final Deque<Mono<? extends Response>> batchOperationQueue;
     private final List<ByteBuffer> batchRequest;
 
     private final AtomicInteger contentId;
@@ -80,6 +87,8 @@ public final class BlobBatch {
             policies.add(pipeline.getPolicy(i));
         }
 
+        policies.add(new ContentIdPolicy());
+
         this.batchPipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(new BatchClient(this::sendCallback))
@@ -94,7 +103,8 @@ public final class BlobBatch {
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
         appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
         appendWithNewline(batchRequestBuilder, CONTENT_TRANSFER_ENCODING);
-        appendWithNewline(batchRequestBuilder, String.format(CONTENT_ID_TEMPLATE, contentId.getAndIncrement()));
+        appendWithNewline(batchRequestBuilder,
+            String.format(CONTENT_ID_TEMPLATE, request.getHeaders().getValue(CONTENT_ID)));
         batchRequestBuilder.append("\n");
 
         String method = request.getHttpMethod().toString();
@@ -102,7 +112,8 @@ public final class BlobBatch {
         appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
         request.getHeaders().stream()
-            .filter(header -> !"x-ms-version".equalsIgnoreCase(header.getName()) &&
+            .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()) &&
+                !CONTENT_ID.equalsIgnoreCase(header.getName()) &&
                 !ImplUtils.isNullOrEmpty(header.getValue()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
@@ -116,9 +127,8 @@ public final class BlobBatch {
 
     public Flux<ByteBuffer> getBody() {
         while (!batchOperationQueue.isEmpty()) {
-            BlobBatchOperationResponse batchOperation = batchOperationQueue.pop();
-            batchOperation.setContentId(contentId.get());
-            batchOperation.getResponse().block();
+            Mono<? extends Response> batchOperation = batchOperationQueue.pop();
+            batchOperation.block();
         }
 
         this.batchRequest.add(ByteBuffer.wrap(String.format("--%s--", batchBoundary).getBytes(StandardCharsets.UTF_8)));
@@ -226,9 +236,9 @@ public final class BlobBatch {
     }
 
     private <T> Response<T> createAndReturnBatchOperation(Mono<Response<T>> response) {
-        BlobBatchOperationResponse<T> batchOperation = new BlobBatchOperationResponse<>(response);
-        this.batchOperationQueue.push(batchOperation);
-        return batchOperation;
+        int contentId = this.contentId.getAndIncrement();
+        this.batchOperationQueue.push(response.subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, contentId)));
+        return new BlobBatchOperationResponse<>(contentId);
     }
 
     private BlobAsyncClientBase buildClient(String containerName, String blobName) {
@@ -249,6 +259,14 @@ public final class BlobBatch {
 
     private enum BlobBatchType {
         DELETE,
-        SET_TIER;
+        SET_TIER
+    }
+
+    private static class ContentIdPolicy implements HttpPipelinePolicy {
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            context.getHttpRequest().setHeader(CONTENT_ID, context.getData(BATCH_REQUEST_CONTENT_ID).get().toString());
+            return next.process();
+        }
     }
 }

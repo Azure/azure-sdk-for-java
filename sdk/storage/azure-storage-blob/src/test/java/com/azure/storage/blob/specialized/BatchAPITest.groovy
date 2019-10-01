@@ -68,12 +68,12 @@ class BatchAPITest extends APISpec {
         def batch = new BlobBatch(primaryBlobServiceClient)
 
         when:
-        def operation1 = batch.delete("container", "blob", null, null)
-        def result = primaryBlobServiceClient.submitBatch(batch)
+        def response1 = batch.delete("container", "blob", null, null)
+        primaryBlobServiceClient.submitBatch(batch)
 
         then:
         notThrown(StorageException)
-        result.getRawResponse(operation1).getStatusCode() == 202
+        response1.getStatusCode() == 202
     }
 
     def "Set tier some succeed"() {
