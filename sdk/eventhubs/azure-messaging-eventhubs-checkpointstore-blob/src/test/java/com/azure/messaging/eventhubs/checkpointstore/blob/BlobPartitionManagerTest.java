@@ -96,7 +96,8 @@ public class BlobPartitionManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
-        when(blobAsyncClient.setMetadataWithResponse(any(Map.class), any(BlobAccessConditions.class)))
+        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(),
+            any(BlobAccessConditions.class)))
             .thenReturn(Mono.just(new SimpleResponse<>(null, 200, new HttpHeaders(headers), null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
@@ -157,7 +158,8 @@ public class BlobPartitionManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
         when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
-        when(blobAsyncClient.setMetadataWithResponse(any(Map.class), any(BlobAccessConditions.class)))
+        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(),
+            any(BlobAccessConditions.class)))
             .thenReturn(Mono.error(new SocketTimeoutException()));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
@@ -174,7 +176,7 @@ public class BlobPartitionManagerTest {
         when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.asBlockBlobAsyncClient()).thenReturn(blockBlobAsyncClient);
         when(blockBlobAsyncClient.uploadWithResponse(ArgumentMatchers.<Flux<ByteBuffer>>any(), eq(0L),
-            isNull(), any(Map.class), isNull(), any(BlobAccessConditions.class)))
+            isNull(), ArgumentMatchers.<Map<String, String>>any(), isNull(), any(BlobAccessConditions.class)))
             .thenReturn(Mono.error(new ResourceModifiedException("Etag did not match", null)));
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
         StepVerifier.create(blobPartitionManager.claimOwnership(po)).verifyComplete();
