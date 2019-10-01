@@ -96,12 +96,12 @@ public class ShareAsyncClient {
      * @throws RuntimeException If the share is using a malformed URL.
      */
     public URL getShareUrl() {
-        String shareURLString = String.format("%s/%s", azureFileStorageClient.getUrl(), shareName);
+        StringBuilder shareURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
         if (snapshot != null) {
-            shareURLString = String.format("%s?snapshot=%s", shareURLString, snapshot);
+            shareURLString.append("?snapshot=").append(snapshot);
         }
         try {
-            return new URL(shareURLString);
+            return new URL(shareURLString.toString());
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
                 String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), shareURLString), e));
