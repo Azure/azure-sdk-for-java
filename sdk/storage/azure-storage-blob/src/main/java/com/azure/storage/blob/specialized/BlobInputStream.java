@@ -179,9 +179,9 @@ public final class BlobInputStream extends InputStream {
      */
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
-            this.currentBuffer = this.blobClient.download(new BlobRange(this.currentAbsoluteReadPosition,
-                (long) readLength), this.accessCondition, false)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.body(null)).map(ByteBuffer::wrap))
+            this.currentBuffer = this.blobClient.downloadWithResponse(new BlobRange(this.currentAbsoluteReadPosition,
+                (long) readLength), null, this.accessCondition, false)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 
             this.bufferSize = readLength;
