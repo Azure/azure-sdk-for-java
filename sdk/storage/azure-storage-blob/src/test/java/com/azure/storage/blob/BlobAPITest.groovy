@@ -512,7 +512,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata min"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -525,7 +525,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set metadata metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -625,7 +625,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Snapshot metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -742,7 +742,7 @@ class BlobAPITest extends APISpec {
     def "Copy metadata"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -1032,7 +1032,7 @@ class BlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }

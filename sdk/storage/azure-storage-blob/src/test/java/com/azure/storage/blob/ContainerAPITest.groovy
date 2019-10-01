@@ -55,7 +55,7 @@ class ContainerAPITest extends APISpec {
     def "Create metadata"() {
         setup:
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -157,7 +157,7 @@ class ContainerAPITest extends APISpec {
     def "Set metadata"() {
         setup:
         cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("key", "value")
         cc.createWithResponse(metadata, null, null, null)
 
@@ -172,7 +172,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata min"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -185,7 +185,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -632,7 +632,7 @@ class ContainerAPITest extends APISpec {
         }
 
         def metadataBlob = cc.getBlobClient(metadataName).asPageBlobClient()
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         metadataBlob.createWithResponse(512, null, null, metadata, null, null, null)
 

@@ -100,7 +100,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers details"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
 

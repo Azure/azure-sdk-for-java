@@ -199,7 +199,7 @@ class CPKTest extends APISpec {
 
     def "Set blob metadata with CPK"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -234,7 +234,7 @@ class CPKTest extends APISpec {
 
     def "Snapshot blob with CPK"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
