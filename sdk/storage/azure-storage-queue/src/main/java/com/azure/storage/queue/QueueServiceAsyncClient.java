@@ -11,18 +11,12 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.AccountSASSignatureValues;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
+import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageException;
@@ -33,7 +27,6 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -432,52 +425,5 @@ public final class QueueServiceAsyncClient {
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
-            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
-     *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        IPRange ipRange, SASProtocol sasProtocol) {
-
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.client.getHttpPipeline());
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
-            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
-
     }
 }

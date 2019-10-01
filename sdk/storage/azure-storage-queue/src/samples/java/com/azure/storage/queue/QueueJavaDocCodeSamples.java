@@ -3,9 +3,6 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -16,6 +13,7 @@ import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.UpdatedMessage;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -441,31 +439,6 @@ public class QueueJavaDocCodeSamples {
         Response<Void> response = client.clearMessagesWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Clearing messages completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context
-    }
-
-    /**
-     * Code snippet for {@link QueueClient#generateSAS(String, QueueSASPermission, OffsetDateTime, OffsetDateTime,
-     * String, SASProtocol, IPRange)}
-     */
-    public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.queue.queueClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
-        QueueSASPermission permissions = new QueueSASPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setUpdatePermission(true)
-            .setProcessPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String identifier = "";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.queue.queueClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange
     }
 
     /**

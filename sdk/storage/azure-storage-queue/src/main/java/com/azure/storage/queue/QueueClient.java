@@ -6,8 +6,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -22,7 +20,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -657,52 +654,6 @@ public final class QueueClient {
         Context context) {
         Mono<Response<Void>> response = client.deleteMessageWithResponse(messageId, popReceipt, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param permissions The {@code QueueSASPermission} permission for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(OffsetDateTime expiryTime, QueueSASPermission permissions) {
-        return this.client.generateSAS(permissions, expiryTime);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier) {
-        return this.client.generateSAS(identifier);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
-     * @param permissions The {@code QueueSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange);
     }
 
     /**
