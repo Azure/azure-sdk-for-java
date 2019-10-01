@@ -48,7 +48,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname,
                                             ProxyConfiguration proxyConfiguration) {
         super(connectionId, amqpHostname);
-        this.amqpHostname = amqpHostname;
+        this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
         this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' is required.");
     }
 
