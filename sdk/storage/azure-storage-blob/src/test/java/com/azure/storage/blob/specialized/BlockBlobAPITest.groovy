@@ -804,7 +804,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            assert collectBytesInBuffer(bac.download().block()).block() == data
+            assert collectBytesInBuffer(bac.download()).block() == data
         }
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
@@ -847,7 +847,7 @@ class BlockBlobAPITest extends APISpec {
         bac.upload(Flux.fromIterable(dataList), bufferSize, numBuffers).block()
 
         expect:
-        compareListToBuffer(dataList, collectBytesInBuffer(bac.download().block()).block())
+        compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
         bac.listBlocks(BlockListType.ALL).block().getCommittedBlocks().size() == blockCount
 
         where:

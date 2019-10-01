@@ -24,18 +24,33 @@ class BatchAPITest extends APISpec {
     }
 
     def "Mixed batch"() {
+        when:
+        def batch = new BlobBatch(primaryBlobServiceAsyncClient)
+        batch.delete("container", "blob", null, null)
+        batch.setTier("container", "blob2", null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        batch = new BlobBatch(primaryBlobServiceAsyncClient)
+        batch.setTier("container", "blob", null, null)
+        batch.delete("container", "blob2", null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
     }
 
     def "Incorrect content length"() {
         setup:
         def httpPipeline = cc.getHttpPipeline()
 
-        def pipline = new HttpPipelineBuilder()
+        def pipeline = new HttpPipelineBuilder()
             .policies(setupCustomPolicy(httpPipeline, null)) // replace null with custom policy
             .httpClient(httpPipeline.getHttpClient())
             .build()
 
-        def batch = new BlobBatch(null, pipline)
+        def batch = new BlobBatch(null, pipeline)
 
         // Needs to use a custom pipeline policy
     }

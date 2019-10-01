@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -27,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -40,6 +42,8 @@ public final class BlobBatch {
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
 
+    private final ClientLogger logger = new ClientLogger(BlobBatch.class);
+
     private final URL accountUrl;
     private final HttpPipeline batchPipeline;
 
@@ -48,6 +52,8 @@ public final class BlobBatch {
 
     private final AtomicInteger contentId;
     private final String batchBoundary;
+
+    private BlobBatchType batchType;
 
     public BlobBatch(BlobServiceClient client) {
         this(client.getAccountUrl(), client.getHttpPipeline());
@@ -143,6 +149,7 @@ public final class BlobBatch {
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> delete(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
@@ -157,6 +164,7 @@ public final class BlobBatch {
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> delete(URL blobUrl, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
@@ -165,6 +173,13 @@ public final class BlobBatch {
 
     private Response<Void> deleteHelper(BlobAsyncClientBase client, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
+        if (this.batchType == null) {
+            this.batchType = BlobBatchType.DELETE;
+        } else if (this.batchType != BlobBatchType.DELETE) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
+                "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
+        }
+
         return createAndReturnBatchOperation(client.deleteWithResponse(deleteOptions, blobAccessConditions));
     }
 
@@ -177,6 +192,7 @@ public final class BlobBatch {
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
@@ -191,14 +207,21 @@ public final class BlobBatch {
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
-    public Response<Void> setTier(URL blobUrl, AccessTier accessTier,
-        LeaseAccessConditions leaseAccessConditions) {
+    public Response<Void> setTier(URL blobUrl, AccessTier accessTier, LeaseAccessConditions leaseAccessConditions) {
         return setTierHelper(buildClient(blobUrl), accessTier, leaseAccessConditions);
     }
 
     private Response<Void> setTierHelper(BlobAsyncClientBase client, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
+        if (this.batchType == null) {
+            this.batchType = BlobBatchType.SET_TIER;
+        } else if (this.batchType != BlobBatchType.SET_TIER) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
+                "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
+        }
+
         return createAndReturnBatchOperation(client.setTierWithResponse(accessTier, null, leaseAccessConditions));
     }
 
@@ -222,5 +245,10 @@ public final class BlobBatch {
             .endpoint(blobUrl.toString())
             .pipeline(batchPipeline)
             .buildBlobAsyncClient();
+    }
+
+    private enum BlobBatchType {
+        DELETE,
+        SET_TIER;
     }
 }
