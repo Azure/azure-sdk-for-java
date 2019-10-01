@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import reactor.core.publisher.Flux
 import spock.lang.Requires
 
@@ -35,7 +35,7 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > 30 })
     }
 
-    @Requires({ APISpec.liveMode() })
+    @Requires({ liveMode() })
     def "Report progress sequential network test"() {
         setup:
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)

@@ -5,13 +5,9 @@ package com.azure.storage.file
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryClient
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileSmbProperties
-import com.azure.storage.file.ShareClient
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.ShareSnapshotInfo
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
@@ -40,10 +36,26 @@ class ShareAPITests extends APISpec {
     def "Get share URL"() {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
 
         when:
         def shareURL = primaryShareClient.getShareUrl().toString()
+
+        then:
+        expectURL.equals(shareURL)
+    }
+
+    def "Get share snapshot URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
+        primaryShareClient.create()
+        when:
+        ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot()
+        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+                .buildClient()
+        def shareURL = newShareClient.getShareUrl().toString()
 
         then:
         expectURL.equals(shareURL)
@@ -366,11 +378,11 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg)
 
         where:
-        fileName    | maxSize | httpHeaders                                       | metadata                              | errMsg
-        "testfile:" | 1024    | null                                              | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null                                              | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
+        fileName    | maxSize | httpHeaders                                          | metadata                              | errMsg
+        "testfile:" | 1024    | null                                                 | testMetadata                          | StorageErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                                 | testMetadata                          | StorageErrorCode.OUT_OF_RANGE_INPUT
         "fileName"  | 1024    | new FileHTTPHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | StorageErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null                                              | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
+        "fileName"  | 1024    | null                                                 | Collections.singletonMap("", "value") | StorageErrorCode.EMPTY_METADATA_KEY
     }
 
     def "Delete directory"() {

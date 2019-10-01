@@ -4,6 +4,8 @@
 package com.azure.storage.queue
 
 
+import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.queue.QueueAsyncClient
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
@@ -21,13 +23,24 @@ class QueueAysncAPITests extends APISpec {
 
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
-
-    String queueName
+    def queueName
 
     def setup() {
         queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceAsyncClient = queueServiceBuilderHelper(interceptorManager).buildAsyncClient()
         queueAsyncClient = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
+    }
+
+    def "Get queue URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.queue.core.windows.net/%s", accoutName, queueName)
+
+        when:
+        def queueURL = queueAsyncClient.getQueueUrl().toString()
+
+        then:
+        expectURL.equals(queueURL)
     }
 
     def "Create queue with shared key"() {
@@ -136,7 +149,6 @@ class QueueAysncAPITests extends APISpec {
         }
         where:
         invalidKey     | statusCode | errMessage
-        "invalidMeta"  | 403        | StorageErrorCode.AUTHENTICATION_FAILED
         "invalid-meta" | 400        | StorageErrorCode.INVALID_METADATA
         "12345"        | 400        | StorageErrorCode.INVALID_METADATA
         ""             | 400        | StorageErrorCode.EMPTY_METADATA_KEY

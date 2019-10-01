@@ -3,12 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -20,28 +20,28 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.models.FileGetPropertiesHeaders;
+import com.azure.storage.file.implementation.models.FileRangeWriteType;
+import com.azure.storage.file.implementation.models.FileUploadRangeFromURLHeaders;
+import com.azure.storage.file.implementation.models.FileUploadRangeHeaders;
+import com.azure.storage.file.implementation.models.FilesCreateResponse;
+import com.azure.storage.file.implementation.models.FilesDownloadResponse;
+import com.azure.storage.file.implementation.models.FilesGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.FilesSetHTTPHeadersResponse;
+import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
+import com.azure.storage.file.implementation.models.FilesStartCopyResponse;
+import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLResponse;
+import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
-import com.azure.storage.file.models.FileGetPropertiesHeaders;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
-import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
-import com.azure.storage.file.models.FileUploadRangeFromURLHeaders;
 import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
-import com.azure.storage.file.models.FileUploadRangeHeaders;
-import com.azure.storage.file.models.FilesCreateResponse;
-import com.azure.storage.file.models.FilesDownloadResponse;
-import com.azure.storage.file.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.models.FilesSetHTTPHeadersResponse;
-import com.azure.storage.file.models.FilesSetMetadataResponse;
-import com.azure.storage.file.models.FilesStartCopyResponse;
-import com.azure.storage.file.models.FilesUploadRangeFromURLResponse;
-import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.Exceptions;
@@ -128,12 +128,16 @@ public class FileAsyncClient {
      * @throws RuntimeException If the file is using a malformed URL.
      */
     public URL getFileUrl() {
+        StringBuilder fileURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(filePath);
+        if (snapshot != null) {
+            fileURLString.append("?snapshot=").append(snapshot);
+        }
         try {
-            return new URL(azureFileStorageClient.getUrl());
+            return new URL(fileURLString.toString());
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                    azureFileStorageClient.getUrl()), e));
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), fileURLString), e));
         }
     }
 
@@ -319,8 +323,8 @@ public class FileAsyncClient {
      * @param downloadFilePath The path where store the downloaded file
      * @return An empty response.
      */
-    public Mono<Void> downloadToFile(String downloadFilePath) {
-        return downloadToFile(downloadFilePath, null);
+    public Mono<FileProperties> downloadToFile(String downloadFilePath) {
+        return downloadToFileWithResponse(downloadFilePath, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -333,7 +337,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -342,19 +346,43 @@ public class FileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
-    public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
+    public Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
+        return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
+    }
+
+    Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+                                                                Context context) {
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-            channel -> sliceFileRange(range)
-                .flatMap(chunk -> downloadWithPropertiesWithResponse(chunk, false)
-                    .map(dar -> dar.getValue().getBody())
+            channel -> getPropertiesWithResponse(context).flatMap(response ->
+                downloadResponseInChunk(response, channel, range, context)), this::channelCleanUp);
+    }
+
+    private Mono<Response<FileProperties>> downloadResponseInChunk(Response<FileProperties> response,
+                                                                   AsynchronousFileChannel channel,
+                                                                   FileRange range, Context context) {
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new FileRange(0, response.getValue()
+            .getContentLength())))
+            .map(currentRange -> {
+                List<FileRange> chunks = new ArrayList<>();
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = FILE_DEFAULT_BLOCK_SIZE;
+                    if (pos + count > currentRange.getEnd()) {
+                        count = currentRange.getEnd() - pos;
+                    }
+                    chunks.add(new FileRange(pos, pos + count - 1));
+                }
+                return chunks;
+            }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
+                downloadWithPropertiesWithResponse(chunk, false, context)
+                .map(dar -> dar.getValue().getBody())
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(fbb -> FluxUtil
+                    .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(fbb -> FluxUtil
-                        .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                        .subscribeOn(Schedulers.elastic())
-                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3, throwable -> throwable instanceof IOException
-                            || throwable instanceof TimeoutException)))
-                .then(), this::channelCleanUp);
+                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
+                    .retry(3, throwable -> throwable instanceof IOException
+                        || throwable instanceof TimeoutException)))
+            .then(Mono.just(response));
     }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
@@ -371,30 +399,6 @@ public class FileAsyncClient {
         } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
         }
-    }
-
-    private Flux<FileRange> sliceFileRange(FileRange fileRange) {
-        long offset = fileRange == null ? 0L : fileRange.getStart();
-        Mono<Long> end;
-        if (fileRange != null) {
-            end = Mono.just(fileRange.getEnd());
-        } else {
-            end = Mono.empty();
-        }
-        end = end.switchIfEmpty(getProperties().map(FileProperties::getContentLength));
-        return end
-            .map(e -> {
-                List<FileRange> chunks = new ArrayList<>();
-                for (long pos = offset; pos < e; pos += FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = FILE_DEFAULT_BLOCK_SIZE;
-                    if (pos + count > e) {
-                        count = e - pos;
-                    }
-                    chunks.add(new FileRange(pos, pos + count - 1));
-                }
-                return chunks;
-            })
-            .flatMapMany(Flux::fromIterable);
     }
 
     /**

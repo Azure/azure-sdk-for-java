@@ -21,6 +21,7 @@ import com.microsoft.azure.management.storage.v2019_04_01.Encryption;
 import com.microsoft.azure.management.storage.v2019_04_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2019_04_01.Identity;
 import com.microsoft.azure.management.storage.v2019_04_01.Kind;
+import com.microsoft.azure.management.storage.v2019_04_01.LargeFileSharesState;
 import com.microsoft.azure.management.storage.v2019_04_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_04_01.Endpoints;
 import com.microsoft.azure.management.storage.v2019_04_01.ProvisioningState;
@@ -136,6 +137,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public Kind kind() {
         return this.inner().kind();
+    }
+
+    @Override
+    public LargeFileSharesState largeFileSharesState() {
+        return this.inner().largeFileSharesState();
     }
 
     @Override
@@ -275,6 +281,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
             this.createParameter.withIdentity(identity);
         } else {
             this.updateParameter.withIdentity(identity);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+        if (isInCreateMode()) {
+            this.createParameter.withLargeFileSharesState(largeFileSharesState);
+        } else {
+            this.updateParameter.withLargeFileSharesState(largeFileSharesState);
         }
         return this;
     }

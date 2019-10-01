@@ -49,7 +49,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
                     this.amqpReceiver.onOpenComplete(null);
                 }
             } else {
-                TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteTarget:{}, remoteTarget:{}, action:{}", receiver.getName(), null, null, "waitingForError");
+                TRACE_LOGGER.debug("onLinkRemoteOpen: linkName:{}, remoteSource:{}, remoteTarget:{}, action:{}", receiver.getName(), null, null, "waitingForError");
             }
         }
     }

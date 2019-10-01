@@ -23,20 +23,6 @@ final class JavaDocCodeSnippetsHelpers {
         return new BlobClient(getBlobAsyncClient(blobName));
     }
 
-    static PageBlobClient getPageBlobClient(String blobName, String containerName) {
-        return new BlobClientBuilder()
-            .blobName(blobName)
-            .containerName(containerName)
-            .buildPageBlobClient();
-    }
-
-    static PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String containerName) {
-        return new BlobClientBuilder()
-            .blobName(blobName)
-            .containerName(containerName)
-            .buildPageBlobAsyncClient();
-    }
-
     static BlobServiceAsyncClient getBlobServiceAsyncClient() {
         return new BlobServiceClientBuilder().buildAsyncClient();
     }

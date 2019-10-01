@@ -13,7 +13,6 @@ import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.BlockBlobAsyncClient;
 import com.azure.storage.blob.BlockBlobClient;
-import com.azure.storage.blob.URLParser;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
