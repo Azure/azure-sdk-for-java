@@ -26,6 +26,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -512,7 +513,7 @@ public class BlobAsyncClientBase {
      * @return An empty response
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
+        return downloadToFileWithResponse(filePath, null, null,
             null, null, false).flatMap(FluxUtil::toMono);
     }
 
@@ -530,14 +531,15 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
-     * @param blockSize the size of a chunk to download at a time, in bytes
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     *        transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param accessConditions {@link BlobAccessConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
@@ -546,23 +548,24 @@ public class BlobAsyncClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
-            Integer blockSize, ReliableDownloadOptions options, BlobAccessConditions accessConditions,
-            boolean rangeGetContentMD5) {
-        return withContext(context -> downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
-            rangeGetContentMD5, context));
+        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
+        return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
+            accessConditions, rangeGetContentMD5, context));
     }
 
-    Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
-        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
-        Context context) {
-        if (blockSize != null) {
-            Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
-        }
+    // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
+    Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
+        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
+        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+            ? new ParallelTransferOptions()
+            : parallelTransferOptions;
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
             channel -> getPropertiesWithResponse(accessConditions).flatMap(response -> processInRange(channel, response,
-                range, blockSize, options, accessConditions, rangeGetContentMD5, context)),
-            this::downloadToFileCleanup);
+                range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMD5,
+                context)), this::downloadToFileCleanup);
 
     }
 
@@ -856,7 +859,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -864,8 +867,8 @@ public class BlobAsyncClientBase {
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setTier(AccessTier tier) {
-        return setTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setAccessTier(AccessTier tier) {
+        return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -876,7 +879,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -887,7 +890,7 @@ public class BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
     }
