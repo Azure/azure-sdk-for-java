@@ -22,7 +22,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
-import com.azure.storage.queue.models.ListQueuesIncludeType;
+import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageException;

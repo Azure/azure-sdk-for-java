@@ -66,6 +66,7 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
+
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
@@ -408,8 +409,9 @@ public class BlobAsyncClientBase {
      *
      * @return A reactive response containing the blob data.
      */
-    public Mono<Flux<ByteBuffer>> download() {
-        return downloadWithResponse(null, null, null, false).flatMap(FluxUtil::toMono);
+    public Flux<ByteBuffer> download() {
+        return downloadWithResponse(null, null, null, false)
+            .flatMapMany(Response::getValue);
     }
 
     /**
@@ -509,8 +511,9 @@ public class BlobAsyncClientBase {
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @return An empty response
      */
-    public Mono<Void> downloadToFile(String filePath) {
-        return downloadToFile(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, null, false);
+    public Mono<BlobProperties> downloadToFile(String filePath) {
+        return downloadToFileWithResponse(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE,
+            null, null, false).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -527,7 +530,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -542,27 +545,39 @@ public class BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize,
-        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
-        return withContext(context -> downloadToFile(filePath, range, blockSize, options, accessConditions,
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+            Integer blockSize, ReliableDownloadOptions options, BlobAccessConditions accessConditions,
+            boolean rangeGetContentMD5) {
+        return withContext(context -> downloadToFileWithResponse(filePath, range, blockSize, options, accessConditions,
             rangeGetContentMD5, context));
     }
 
-    Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
+    Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range, Integer blockSize,
+        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
+        Context context) {
         if (blockSize != null) {
             Utility.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_DOWNLOAD_BLOCK_SIZE);
         }
 
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
-            channel -> Mono.justOrEmpty(range)
-                .switchIfEmpty(getFullBlobRange(accessConditions))
-                .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
-                .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
-                    .subscribeOn(Schedulers.elastic())
-                    .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
-                        chunk.getOffset() - (range == null ? 0 : range.getOffset()))))
-                .then(), this::downloadToFileCleanup);
+            channel -> getPropertiesWithResponse(accessConditions).flatMap(response -> processInRange(channel, response,
+                range, blockSize, options, accessConditions, rangeGetContentMD5, context)),
+            this::downloadToFileCleanup);
+
+    }
+
+    private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
+                Response<BlobProperties> blobPropertiesResponse, BlobRange range, Integer blockSize,
+                ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
+                Context context) {
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
+            blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->
+            Flux.fromIterable(sliceBlobRange(rg, blockSize)))
+            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(dar -> FluxUtil.writeFile(dar.body(options), channel,
+                    chunk.getOffset() - ((range == null) ? 0 : range.getOffset()))
+                )).then(Mono.just(blobPropertiesResponse));
     }
 
     private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
@@ -580,10 +595,6 @@ public class BlobAsyncClientBase {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
-    }
-
-    private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions) {
-        return getPropertiesWithResponse(accessConditions).map(rb -> new BlobRange(0, rb.getValue().getBlobSize()));
     }
 
     private List<BlobRange> sliceBlobRange(BlobRange blobRange, Integer blockSize) {

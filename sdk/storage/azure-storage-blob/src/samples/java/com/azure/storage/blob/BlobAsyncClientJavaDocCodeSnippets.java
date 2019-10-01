@@ -30,6 +30,7 @@ import java.util.Collections;
  */
 @SuppressWarnings("unused")
 public class BlobAsyncClientJavaDocCodeSnippets {
+
     private BlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName");
     private String leaseId = "leaseId";
     private String copyId = "copyId";
@@ -80,18 +81,24 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      */
     public void downloadCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download
-        client.download().subscribe(response -> {
-            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-            response.subscribe(piece -> {
-                try {
-                    downloadData.write(piece.array());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            });
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+        client.download().subscribe(piece -> {
+            try {
+                downloadData.write(piece.array());
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
         });
         // END: com.azure.storage.blob.BlobAsyncClient.download
+    }
 
+    /**
+     * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
+     * BlobAccessConditions, boolean)}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
@@ -110,7 +117,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClient#downloadToFile(String,
+     * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClient#downloadToFileWithResponse(String,
      * BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean)}
      */
     public void downloadToFileCodeSnippet() {
@@ -118,13 +125,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.downloadToFile(file).subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFile(file, range, null, options, null, false)
-            .subscribe(response -> System.out.println("Completed download to file"));
-        // END: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        client.downloadToFileWithResponse(file, range, null, options, null, false)
+            .subscribe(response -> System.out.println("Completed download to file with status code "
+                + response.getStatusCode()));
+        // END: com.azure.storage.blob.BlobAsyncClient.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
     }
 
     /**
@@ -241,7 +249,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
-            .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
+            .subscribe(
+                response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
     }
 
@@ -340,7 +349,8 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.setMetadataWithResponse(new Metadata(Collections.singletonMap("metadata", "value")), accessConditions)
-            .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
+            .subscribe(
+                response -> System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
     }
 

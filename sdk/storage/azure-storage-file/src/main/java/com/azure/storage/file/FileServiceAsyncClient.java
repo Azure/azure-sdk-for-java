@@ -23,10 +23,10 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.models.CorsRule;
-import com.azure.storage.file.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
@@ -188,11 +188,11 @@ public final class FileServiceAsyncClient {
 
         if (options != null) {
             if (options.isIncludeMetadata()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
+                include.add(ListSharesIncludeType.METADATA);
             }
 
             if (options.isIncludeSnapshots()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
+                include.add(ListSharesIncludeType.SNAPSHOTS);
             }
         }
 
@@ -442,7 +442,7 @@ public final class FileServiceAsyncClient {
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
         if (ImplUtils.isNullOrEmpty(snapshot)) {
-            deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
+            deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))

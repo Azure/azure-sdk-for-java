@@ -138,7 +138,6 @@ public class Sample {
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.getName())
                     .download()
-                    .flatMapMany(flux -> flux)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.getName() + ": " + string)))
             // cleanup
