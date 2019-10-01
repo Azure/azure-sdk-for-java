@@ -15,6 +15,8 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.engine.Session;
@@ -22,14 +24,23 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 /**
  * An AMQP session for Event Hubs.
  */
 class EventHubReactorSession extends ReactorSession implements EventHubSession {
-    private static final Symbol EPOCH = Symbol.valueOf(AmqpConstants.VENDOR + ":epoch");
-    private static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
+    private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
+    private static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(VENDOR + ":receiver-name");
+    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
+        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -40,8 +51,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link CBSNode}.
-     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing operations
-     *      on the message broker.
+     * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
+     *     operations on the message broker.
      * @param openTimeout Timeout to wait for the session operation to complete.
      */
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
@@ -57,8 +68,13 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout, RetryPolicy retry,
-                                                String eventPositionExpression, Long ownerLevel,
-                                                String consumerIdentifier) {
+                                                EventPosition eventPosition, EventHubConsumerOptions options) {
+        Objects.requireNonNull(linkName, "'linkName' cannot be null.");
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        Objects.requireNonNull(retry, "'retry' cannot be null.");
+        Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
         //TODO (conniey): support creating a filter when we've already received some events. I believe this in
         // the cause of recreating a failing link.
@@ -67,27 +83,59 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         // if (filterMap != null) {
         //    source.setFilter(filterMap);
         // }
-        Map<Symbol, UnknownDescribedType> filter = null;
-        if (!ImplUtils.isNullOrEmpty(eventPositionExpression)) {
-            filter = new HashMap<>();
-            filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-                eventPositionExpression));
-        }
+        final String eventPositionExpression = getExpression(eventPosition);
+        final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
+        filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
+            eventPositionExpression));
 
         final Map<Symbol, Object> properties = new HashMap<>();
-        if (ownerLevel != null) {
-            properties.put(EPOCH, ownerLevel);
+        if (options.getOwnerLevel() != null) {
+            properties.put(EPOCH, options.getOwnerLevel());
         }
-        if (!ImplUtils.isNullOrEmpty(consumerIdentifier)) {
-            properties.put(RECEIVER_IDENTIFIER_NAME, consumerIdentifier);
+        if (!ImplUtils.isNullOrEmpty(options.getIdentifier())) {
+            properties.put(RECEIVER_IDENTIFIER_NAME, options.getIdentifier());
         }
 
-        //TODO (conniey): After preview 1 feature to enable keeping partition information updated.
-        // static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(VENDOR +
-        // ":enable-receiver-runtime-metric");
-        // if (keepPartitionInformationUpdated) {
-        //    receiver.setDesiredCapabilities(new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME});
-        // }
-        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, null);
+        final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
+            ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
+            : null;
+
+        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities);
+    }
+
+    private String getExpression(EventPosition eventPosition) {
+        final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
+
+        // order of preference
+        if (eventPosition.getOffset() != null) {
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.getOffset());
+        }
+
+        if (eventPosition.getSequenceNumber() != null) {
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                eventPosition.getSequenceNumber());
+        }
+
+        if (eventPosition.getEnqueuedDateTime() != null) {
+            String ms;
+            try {
+                ms = Long.toString(eventPosition.getEnqueuedDateTime().toEpochMilli());
+            } catch (ArithmeticException ex) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
+                    "Event position for enqueued DateTime could not be parsed. Value: '%s'",
+                    eventPosition.getEnqueuedDateTime()), ex));
+            }
+
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
+        }
+
+        throw logger.logExceptionAsError(new IllegalArgumentException("No starting position was set."));
     }
 }
