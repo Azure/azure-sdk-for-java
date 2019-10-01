@@ -26,7 +26,9 @@ public class TracerJavaDocCodeSnippets {
         // pass the current tracing span context to the calling method
         Context traceContext = new Context(OPENCENSUS_SPAN_KEY, "<user-current-span>");
         // start a new tracing span with the given method name and explicit parent span
-        tracer.start("azure.keyvault.secrets/setsecret", traceContext);
+        Context updatedContext = tracer.start("azure.keyvault.secrets/setsecret", traceContext);
+        System.out.printf("Span returned in the context object: %s%n",
+            updatedContext.getData(OPENCENSUS_SPAN_KEY).get().getClass());
         // END: com.azure.core.util.tracing.start#string-context
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-SEND
@@ -36,14 +38,17 @@ public class TracerJavaDocCodeSnippets {
 
         // start a new tracing span with explicit parent, sets the request attributes on the span and sets the span
         // kind to client when process kind SEND
-        tracer.start("azure.eventhubs.send", sendContext, ProcessKind.SEND);
+        Context updatedSendContext = tracer.start("azure.eventhubs.send", sendContext, ProcessKind.SEND);
+        System.out.printf("Span returned in the context object: %s%n",
+            updatedSendContext.getData(OPENCENSUS_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-SEND
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-RECEIVE
         // start a new tracing span with explicit parent, sets the diagnostic Id (traceparent headers) on the current
         // context when process kind RECEIVE
-        Context updatedContext = tracer.start("azure.eventhubs.receive", traceContext, ProcessKind.RECEIVE);
-        System.out.printf("Diagnostic Id: {} %s%n", (String) updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
+        Context updatedReceiveContext = tracer.start("azure.eventhubs.receive", traceContext,
+            ProcessKind.RECEIVE);
+        System.out.printf("Diagnostic Id: {} %s%n", (String) updatedReceiveContext.getData(DIAGNOSTIC_ID_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-RECEIVE
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
@@ -51,7 +56,9 @@ public class TracerJavaDocCodeSnippets {
         // when process kind PROCESS
         Context processContext = new Context(OPENCENSUS_SPAN_KEY, "<user-current-span>")
             .addData(SPAN_CONTEXT, "<user-current-span-context>");
-        tracer.start("azure.eventhubs.process", processContext, ProcessKind.PROCESS);
+        Context updatedProcessContext = tracer.start("azure.eventhubs.process", processContext,
+            ProcessKind.PROCESS);
+        System.out.printf("Scope: {} %s%n", updatedProcessContext.getData("scope").get().getClass());
         // END: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
     }
 
@@ -113,7 +120,7 @@ public class TracerJavaDocCodeSnippets {
     }
 
     //Noop Tracer
-    private class TracerImplementation implements Tracer {
+    private static final class TracerImplementation implements Tracer {
         @Override
         public Context start(String methodName, Context context) {
             return null;
