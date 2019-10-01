@@ -25,13 +25,13 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
@@ -100,8 +100,8 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
                 consumers[i] = consumer;
 
                 final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
-                    logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId);
-                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                        logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId);
+                    }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
                     () -> {
                         logger.info("Disposing of consumer now that the receive is complete.");
                         countDownLatch.countDown();
@@ -188,68 +188,51 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             .setTrackLastEnqueuedEventProperties(true);
         final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
             EventPosition.latest(), options);
-        final List<EventData> consumedEvents = new ArrayList<>();
-        final List<LastEnqueuedEventProperties> properties = new ArrayList<>();
+        final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
+            new LastEnqueuedEventProperties(null, null, null, null));
 
         // Act & Assert
         try {
-            StepVerifier.create(consumer.receive().take(5))
-                .assertNext(event -> {
-                    consumedEvents.add(event);
-                    properties.add(consumer.getLastEnqueuedEventProperties());
-                })
-                .assertNext(event -> {
-                    consumedEvents.add(event);
-                    properties.add(consumer.getLastEnqueuedEventProperties());
-                })
-                .assertNext(event -> {
-                    consumedEvents.add(event);
-                    properties.add(consumer.getLastEnqueuedEventProperties());
-                })
-                .assertNext(event -> {
-                    consumedEvents.add(event);
-                    properties.add(consumer.getLastEnqueuedEventProperties());
-                })
-                .assertNext(event -> {
-                    consumedEvents.add(event);
-                    properties.add(consumer.getLastEnqueuedEventProperties());
-                })
+            StepVerifier.create(consumer.receive().take(10))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), true))
+                .expectNextCount(5)
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
                 .verifyComplete();
 
-            final LastEnqueuedEventProperties lastEnqueuedEventProperties = consumer.getLastEnqueuedEventProperties();
-            Assert.assertNull("'lastEnqueuedEventProperties' should be null.", lastEnqueuedEventProperties);
+            Assert.assertNotNull("'lastEnqueuedEventProperties' should be not be null.",
+                consumer.getLastEnqueuedEventProperties());
         } finally {
             isActive.set(false);
             producerEvents.dispose();
             consumer.close();
         }
+    }
 
-        consumedEvents.sort(Comparator.comparing(EventData::getSequenceNumber));
+    private static void verifyLastRetrieved(AtomicReference<LastEnqueuedEventProperties> atomicReference,
+                                            LastEnqueuedEventProperties current, boolean isFirst) {
+        Assert.assertNotNull(current);
+        final LastEnqueuedEventProperties previous = atomicReference.get();
 
-        properties.sort((first, second) -> {
-            if (first.getEnqueuedTime() != null && second.getEnqueuedTime() != null) {
-                return first.getEnqueuedTime().compareTo(second.getEnqueuedTime());
-            }
+        // Update the atomic reference to the new one now.
+        atomicReference.set(current);
 
-            if (first.getEnqueuedTime() == null && second.getEnqueuedTime() != null) {
-                return -1;
-            } else if (second.getEnqueuedTime() == null && first.getEnqueuedTime() != null) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        for (int i = 0; i < properties.size(); i++) {
-            LastEnqueuedEventProperties e = properties.get(i);
-
-            if (e == null) {
-                System.out.printf("Index %s is null.%n", i);
-            } else {
-                System.out.printf("SQ: %s\tTime:%s\tOffset:%s\tRetrievalTime:%s%n",
-                    e.getSequenceNumber(), e.getEnqueuedTime(), e.getOffset(), e.getRetrievalTime());
-            }
+        // The first time we step through this, the retrieval time will not be set for the previous event.
+        if (isFirst) {
+            return;
         }
+
+        Assert.assertNotNull("This is not the first event, should have a retrieval time.", previous.getRetrievalTime());
+
+        final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
+        final int comparedSequenceNumber = previous.getOffset().compareTo(current.getOffset());
+        Assert.assertTrue(String.format("Expected retrieval time previous '%s' to be before or equal to current '%s'",
+            previous.getRetrievalTime(), current.getRetrievalTime()), compared <= 0);
+
+        Assert.assertTrue(String.format("Expected offset previous '%s' to be before or equal to current '%s'",
+            previous.getRetrievalTime(), current.getRetrievalTime()), comparedSequenceNumber <= 0);
     }
 
     /**
