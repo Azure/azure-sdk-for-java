@@ -518,7 +518,7 @@ class PageBlobAPITest extends APISpec {
         def response = bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), null, null, null)
 
         then:
-        bc.getPageRanges(new BlobRange(0)).getPageRange().size() == 0
+        bc.getPageRanges(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)).getPageRange().size() == 0
         validateBasicHeaders(response.getHeaders())
         response.getValue().getContentMD5() == null
         response.getValue().getBlobSequenceNumber() == 0
@@ -620,7 +620,7 @@ class PageBlobAPITest extends APISpec {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         when:
-        def response = bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), null, null, null)
+        def response = bc.getPageRangesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES), null, null, null)
 
         then:
         response.getStatusCode() == 200
@@ -652,7 +652,7 @@ class PageBlobAPITest extends APISpec {
 
 
         when:
-        bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
+        bc.getPageRangesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES), bac, null, null)
 
         then:
         notThrown(StorageException)
@@ -679,7 +679,7 @@ class PageBlobAPITest extends APISpec {
                 .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
+        bc.getPageRangesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES), bac, null, null)
 
         then:
         thrown(StorageException)
@@ -719,7 +719,7 @@ class PageBlobAPITest extends APISpec {
         bc.clearPages(new PageRange().setStart(PageBlobClient.PAGE_BYTES).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1))
 
         when:
-        def response = bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES * 2), snapId, null, null, null)
+        def response = bc.getPageRangesDiffWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2), snapId, null, null, null)
 
         then:
         response.getValue().getPageRange().size() == 1
@@ -756,7 +756,7 @@ class PageBlobAPITest extends APISpec {
                 .setIfNoneMatch(noneMatch))
 
         when:
-        bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
+        bc.getPageRangesDiffWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
 
         then:
         notThrown(StorageException)
@@ -785,7 +785,7 @@ class PageBlobAPITest extends APISpec {
                 .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
+        bc.getPageRangesDiffWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
 
         then:
         thrown(StorageException)

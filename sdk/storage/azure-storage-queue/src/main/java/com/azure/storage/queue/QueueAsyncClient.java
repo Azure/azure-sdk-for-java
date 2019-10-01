@@ -88,7 +88,6 @@ public final class QueueAsyncClient {
         try {
             return new URL(client.getUrl());
         } catch (MalformedURLException ex) {
-            logger.error("Queue URL is malformed");
             throw logger.logExceptionAsError(new RuntimeException("Queue URL is malformed"));
         }
     }
