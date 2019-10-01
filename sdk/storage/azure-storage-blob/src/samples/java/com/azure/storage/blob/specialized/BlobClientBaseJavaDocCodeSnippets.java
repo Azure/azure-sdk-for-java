@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -102,7 +103,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClientBase#downloadToFile(String)} and
-     * {@link BlobClientBase#downloadToFileWithResponse(String, BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions,
+     * {@link BlobClientBase#downloadToFileWithResponse(String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobAccessConditions,
      * boolean, Duration, Context)}
      */
     public void downloadToFile() {
@@ -111,14 +112,14 @@ public class BlobClientBaseJavaDocCodeSnippets {
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
-        client.downloadToFileWithResponse(file, range, 4 * Constants.MB, options, null, false,
-            timeout, new Context(key2, value2));
+        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions().setBlockSize(4 * Constants.MB), options, null,
+            false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
-        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context
     }
 
     /**
