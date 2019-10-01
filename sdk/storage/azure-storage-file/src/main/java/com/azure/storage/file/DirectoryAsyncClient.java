@@ -17,14 +17,14 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.models.DirectorysCreateResponse;
+import com.azure.storage.file.implementation.models.DirectorysGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.DirectorysListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.implementation.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.implementation.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
-import com.azure.storage.file.models.DirectorysCreateResponse;
-import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
-import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.models.DirectorysSetMetadataResponse;
-import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
@@ -101,12 +101,16 @@ public class DirectoryAsyncClient {
      * @throws RuntimeException If the directory is using a malformed URL.
      */
     public URL getDirectoryUrl() {
+        StringBuilder directoryURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(directoryPath);
+        if (snapshot != null) {
+            directoryURLString.append("?snapshot=").append(snapshot);
+        }
         try {
-            return new URL(azureFileStorageClient.getUrl());
+            return new URL(directoryURLString.toString());
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                    azureFileStorageClient.getUrl()), e));
+                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), directoryURLString), e));
         }
     }
 

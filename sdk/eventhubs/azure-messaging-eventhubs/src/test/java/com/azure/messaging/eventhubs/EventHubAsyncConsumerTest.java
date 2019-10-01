@@ -6,10 +6,11 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
 import org.junit.Assert;
@@ -25,6 +26,7 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -32,8 +34,6 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -59,9 +59,9 @@ public class EventHubAsyncConsumerTest {
 
     private final ClientLogger logger = new ClientLogger(EventHubAsyncConsumerTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
+    private final Flux<Throwable> errorProcessor = Flux.never();
+    private final Flux<AmqpEndpointState> endpointProcessor = Flux.never();
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
-    private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
 
     @Mock
@@ -71,34 +71,62 @@ public class EventHubAsyncConsumerTest {
     private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
-    private Mono<AmqpReceiveLink> receiveLinkMono;
-    private List<Message> messages = new ArrayList<>();
-    private EventHubConsumerOptions options;
     private EventHubAsyncConsumer consumer;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
+        Mono<AmqpReceiveLink> receiveLinkMono = Mono.just(amqpReceiveLink);
 
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
         when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
-        options = new EventHubConsumerOptions()
+        EventHubConsumerOptions options = new EventHubConsumerOptions()
             .setIdentifier("an-identifier")
             .setPrefetchCount(PREFETCH)
             .setRetry(new RetryOptions())
-            .setScheduler(Schedulers.elastic());
+            .setScheduler(Schedulers.single());
         consumer = new EventHubAsyncConsumer(receiveLinkMono, messageSerializer, options);
     }
 
     @After
     public void teardown() throws IOException {
-        messages.clear();
         Mockito.framework().clearInlineMocks();
         consumer.close();
+    }
+
+    /**
+     * Verify that by default, lastEnqueuedInformation is null if
+     * {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} is not set.
+     */
+    @Test
+    public void lastEnqueuedEventInformationIsNull() {
+        // Assert
+        Assert.assertNull(consumer.getLastEnqueuedEventProperties());
+    }
+
+    /**
+     * Verify that the default information is set and is null because no information has been received.
+     */
+    @Test
+    public void lastEnqueuedEventInformationCreated() {
+        // Arrange
+        final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+            Mono.just(amqpReceiveLink),
+            messageSerializer,
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+
+        // Act
+        final LastEnqueuedEventProperties lastEnqueuedEventProperties = runtimeConsumer.getLastEnqueuedEventProperties();
+
+        // Assert
+        Assert.assertNotNull(lastEnqueuedEventProperties);
+        Assert.assertNull(lastEnqueuedEventProperties.getOffset());
+        Assert.assertNull(lastEnqueuedEventProperties.getSequenceNumber());
+        Assert.assertNull(lastEnqueuedEventProperties.getRetrievalTime());
+        Assert.assertNull(lastEnqueuedEventProperties.getEnqueuedTime());
     }
 
     /**

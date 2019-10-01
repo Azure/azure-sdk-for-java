@@ -423,7 +423,8 @@
               </group>
               <group>
                 <title>Azure Telemetry</title>
-                <packages>com.azure.tracing.opentelemetry*</packages>
+                <title>Azure Telemetry - OpenCensus</title>
+                <packages>com.azure.core.tracing*</packages>
               </group>
             </groups>
             <links>
@@ -869,6 +870,6 @@
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
-    <module>sdk/tracing/tracing-opentelemetry</module>
+    <module>sdk/tracing/azure-core-tracing-opencensus</module>
   </modules>
 </project>

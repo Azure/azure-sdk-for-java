@@ -465,7 +465,7 @@ public final class BlobServiceSASSignatureValues {
         if (usingUserDelegation || identifier == null) {
             Utility.assertNotNull("expiryTime", this.expiryTime);
             Utility.assertNotNull("permissions", this.permissions);
-        } else if (!usingUserDelegation) {
+        } else {
             // Otherwise a SignedIdentifier must be used.
             Utility.assertNotNull("identifier", this.identifier);
         }

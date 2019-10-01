@@ -18,15 +18,15 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.models.MessageIdUpdateHeaders;
-import com.azure.storage.queue.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.models.PeekedMessage;
-import com.azure.storage.queue.models.QueueGetPropertiesHeaders;
 import com.azure.storage.queue.models.QueueMessage;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
@@ -86,9 +86,8 @@ public final class QueueAsyncClient {
      */
     public URL getQueueUrl() {
         try {
-            return new URL(client.getUrl());
+            return new URL(String.format("%s/%s", client.getUrl(), queueName));
         } catch (MalformedURLException ex) {
-            logger.error("Queue URL is malformed");
             throw logger.logExceptionAsError(new RuntimeException("Queue URL is malformed"));
         }
     }

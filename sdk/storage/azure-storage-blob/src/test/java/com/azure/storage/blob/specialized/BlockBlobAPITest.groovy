@@ -17,7 +17,6 @@ import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlockItem
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.Metadata
@@ -199,12 +198,11 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         destURL.stageBlockFromURL(getBlockID(), bc.getBlobUrl(), new BlobRange(2, 3))
-        Iterator<BlockItem> uncommittedBlock = destURL.listBlocks(BlockListType.UNCOMMITTED).iterator()
+        def blockList = destURL.listBlocks(BlockListType.UNCOMMITTED)
 
         then:
-        uncommittedBlock.hasNext()
-        uncommittedBlock.hasNext()
-        uncommittedBlock.hasNext()
+        blockList.getCommittedBlocks().size() == 0
+        blockList.getUncommittedBlocks().size() == 1
     }
 
     def "Stage block from URL MD5"() {
@@ -1034,7 +1032,7 @@ class BlockBlobAPITest extends APISpec {
          buffering properly to allow for retries even given this source behavior.
          */
         bac.upload(Flux.just(defaultData), defaultDataSize).block()
-        def nonReplayableFlux = bac.download().block()
+        def nonReplayableFlux = bac.download()
 
         // Mock a response that will always be retried.
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))

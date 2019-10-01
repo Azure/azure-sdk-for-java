@@ -21,16 +21,16 @@ public class SimpleTokenCache {
     private AccessToken cache;
     private final ReplayProcessor<AccessToken> emitterProcessor = ReplayProcessor.create(1);
     private final FluxSink<AccessToken> sink = emitterProcessor.sink(OverflowStrategy.BUFFER);
-    private final Supplier<Mono<AccessToken>> getNew;
+    private final Supplier<Mono<AccessToken>> tokenSupplier;
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
-     * @param getNew a method to get a new token
+     * @param tokenSupplier a method to get a new token
      */
-    public SimpleTokenCache(Supplier<Mono<AccessToken>> getNew) {
+    public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
         this.wip = new AtomicBoolean(false);
-        this.getNew = getNew;
+        this.tokenSupplier = tokenSupplier;
     }
 
     /**
@@ -43,7 +43,7 @@ public class SimpleTokenCache {
         }
         return Mono.defer(() -> {
             if (!wip.getAndSet(true)) {
-                return getNew.get().doOnNext(ac -> cache = ac)
+                return tokenSupplier.get().doOnNext(ac -> cache = ac)
                     .doOnNext(sink::next)
                     .doOnError(sink::error)
                     .doOnTerminate(() -> wip.set(false));

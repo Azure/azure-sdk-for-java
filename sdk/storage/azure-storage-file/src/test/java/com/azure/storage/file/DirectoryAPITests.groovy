@@ -9,8 +9,10 @@ import com.azure.storage.file.DirectoryClient
 import com.azure.storage.file.FileClient
 import com.azure.storage.file.FileSmbProperties
 import com.azure.storage.file.ShareClient
+import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.ShareSnapshotInfo
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
@@ -43,13 +45,29 @@ class DirectoryAPITests extends APISpec {
     def "Get directory URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
         def directoryURL = primaryDirectoryClient.getDirectoryUrl().toString()
 
         then:
         expectURL == directoryURL
+    }
+
+    def "Get share snapshot URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accoutName, shareName, directoryPath)
+
+        when:
+        ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
+        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        DirectoryClient newDirClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+            .buildClient().getDirectoryClient(directoryPath)
+        def directoryURL = newDirClient.getDirectoryUrl().toString()
+
+        then:
+        expectURL.equals(directoryURL)
     }
 
     def "Get sub directory client"() {

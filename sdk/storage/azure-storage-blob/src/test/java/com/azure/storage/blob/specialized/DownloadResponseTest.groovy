@@ -9,9 +9,6 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HTTPGetterInfo
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageErrorException
-import com.azure.storage.blob.specialized.BlockBlobClient
-import com.azure.storage.blob.specialized.DownloadAsyncResponse
-import com.azure.storage.blob.specialized.DownloadResponseMockFlux
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {
