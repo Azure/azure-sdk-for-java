@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
@@ -66,7 +67,10 @@ public class AsyncBufferedUploadExample {
          */
         int blockSize = 10 * 1024;
         int numBuffers = 5;
-        blobClient.upload(sourceData, blockSize, numBuffers).block();
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setNumBuffers(numBuffers)
+            .setBlockSize(blockSize);
+        blobClient.upload(sourceData, parallelTransferOptions).block();
     }
 
     @SuppressWarnings("cast")
