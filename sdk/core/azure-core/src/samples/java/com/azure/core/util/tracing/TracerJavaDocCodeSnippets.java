@@ -3,7 +3,6 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
 
 import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_NAME_KEY;
@@ -16,7 +15,6 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 /**
  * Contains code snippets when generating javadocs through doclets for {@link Tracer}.
  */
-
 public class TracerJavaDocCodeSnippets {
     final Tracer tracer = new TracerImplementation();
 
@@ -114,6 +112,7 @@ public class TracerJavaDocCodeSnippets {
         // END: com.azure.core.util.tracing.extractContext#string-context
     }
 
+    //Noop Tracer
     private class TracerImplementation implements Tracer {
         @Override
         public Context start(String methodName, Context context) {

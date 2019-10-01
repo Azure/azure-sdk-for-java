@@ -3,7 +3,6 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
 
 /**
@@ -59,7 +58,7 @@ public interface Tracer {
      * start calls will use the created span as the parent.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Starts a tracing span with provided method name and remote parent span</p>
+     * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context}
      *
      * @param methodName Name of the method triggering the span creation.

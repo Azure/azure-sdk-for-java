@@ -3,7 +3,7 @@
 
 package com.azure.core.tracing.opencensus;
 
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.tracing.opencensus.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.tracing.opencensus.implementation.AmqpTraceUtil;
