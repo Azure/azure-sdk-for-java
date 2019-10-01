@@ -64,7 +64,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting addSetting(String key, String value, String label) {
-        return addSetting(new ConfigurationSetting().setKey(key).setValue(value).setLabel(label), Context.NONE).getValue();
+        return addSetting(new ConfigurationSetting().setKey(key).setValue(value).setLabel(label), Context.NONE)
+            .getValue();
     }
 
     /**
