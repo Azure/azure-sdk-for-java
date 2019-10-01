@@ -55,7 +55,7 @@ public class DocumentQueryExecutionContextFactory {
 
         // return proxy
         Flux<DocumentCollection> collectionObs = Flux.empty();
-        
+
         if (resourceTypeEnum.isCollectionChild()) {
             collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
         }
@@ -108,10 +108,12 @@ public class DocumentQueryExecutionContextFactory {
 
         int initialPageSize = Utils.getValueOrDefault(feedOptions.maxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
 
-        BadRequestException validationError = Utils.checkRequestOrReturnException
+        if (initialPageSize != -1) {
+            BadRequestException validationError = Utils.checkRequestOrReturnException
                 (initialPageSize > 0, "MaxItemCount", "INVALID MaxItemCount %s", initialPageSize);
-        if (validationError != null) {
-            return Flux.error(validationError);
+            if (validationError != null) {
+                return Flux.error(validationError);
+            }
         }
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
@@ -144,7 +146,7 @@ public class DocumentQueryExecutionContextFactory {
             //                initialPageSize = Math.Min(
             //                    (int)Math.Ceiling(initialPageSize / (double)targetRanges.Count) * PageSizeFactorForTop,
             //                    initialPageSize);
-            //            } 
+            //            }
         }
 
         return PipelinedDocumentQueryExecutionContext.createAsync(
@@ -160,6 +162,6 @@ public class DocumentQueryExecutionContextFactory {
                 initialPageSize,
                 isContinuationExpected,
                 getLazyFeedResponse,
-                correlatedActivityId);           
+                correlatedActivityId);
     }
 }
