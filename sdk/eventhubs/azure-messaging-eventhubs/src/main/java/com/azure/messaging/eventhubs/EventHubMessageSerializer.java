@@ -32,12 +32,19 @@ import java.util.Objects;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC;
+import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC;
 
 /**
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
     private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
+    private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
+        Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
+    private static final Symbol LAST_ENQUEUED_OFFSET = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
+    private static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
+    private static final Symbol RETRIEVAL_TIME_UTC =
+        Symbol.getSymbol(MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC);
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -171,12 +178,13 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final Map<Symbol, Object> deliveryAnnotations = annotations.getValue();
+        final Long lastSequenceNumber = getValue(deliveryAnnotations, LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
+        final String lastEnqueuedOffset = getValue(deliveryAnnotations, LAST_ENQUEUED_OFFSET, String.class);
+        final Instant lastEnqueuedTime = getValue(deliveryAnnotations, LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
+        final Instant retrievalTime = getValue(deliveryAnnotations, RETRIEVAL_TIME_UTC, Date.class).toInstant();
 
-        return new LastEnqueuedEventProperties(
-            getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
-            getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, Long.class),
-            getDate(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
-            Instant.now());
+        return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
+            retrievalTime);
     }
 
     private EventData deserializeEventData(Message message) {
@@ -246,14 +254,26 @@ class EventHubMessageSerializer implements MessageSerializer {
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class));
     }
 
-    @SuppressWarnings("unchecked")
     private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
             throw logger.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
-        final Object value = amqpBody.get(key);
+        return getValue(amqpBody.get(key), key, clazz);
+    }
+
+    private <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz) {
+        if (!amqpBody.containsKey(key)) {
+            throw logger.logExceptionAsError(new AzureException(
+                String.format("AMQP body did not contain expected field '%s'.", key)));
+        }
+
+        return getValue(amqpBody.get(key), key, clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getValue(Object value, Object key, Class<T> clazz) {
         if (value == null) {
             throw logger.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain a value for key '%s'.", key)));
