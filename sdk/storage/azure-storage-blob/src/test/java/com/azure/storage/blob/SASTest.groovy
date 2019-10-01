@@ -192,13 +192,13 @@ class SASTest extends APISpec {
 
         // Check containerSASPermissions
         def permissions = new ContainerSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setList(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setListPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -401,12 +401,12 @@ class SASTest extends APISpec {
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new ContainerSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -721,12 +721,12 @@ class SASTest extends APISpec {
     def "ContainerSASPermissions toString"() {
         setup:
         def perms = new ContainerSASPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setCreate(create)
-            .setAdd(add)
-            .setList(list)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setCreatePermission(create)
+            .setAddPermission(add)
+            .setListPermission(list)
 
         expect:
         perms.toString() == expectedString
@@ -748,12 +748,12 @@ class SASTest extends APISpec {
         def perms = ContainerSASPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getCreate() == create
-        perms.getAdd() == add
-        perms.getList() == list
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getAddPermission() == add
+        perms.getListPermission() == list
 
         where:
         permString || read  | write | delete | create | add   | list

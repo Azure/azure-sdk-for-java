@@ -15,17 +15,17 @@ import java.util.Locale;
  * particular and this class guarantees correctness.
  */
 public final class ContainerSASPermission {
-    private boolean read;
+    private boolean readPermission;
 
-    private boolean add;
+    private boolean addPermission;
 
-    private boolean create;
+    private boolean createPermission;
 
-    private boolean write;
+    private boolean writePermission;
 
-    private boolean delete;
+    private boolean deletePermission;
 
-    private boolean list;
+    private boolean listPermission;
 
     /**
      * Initializes an {@code ContainerSASPermission} object with all fields set to false.
@@ -48,22 +48,22 @@ public final class ContainerSASPermission {
             char c = permString.charAt(i);
             switch (c) {
                 case 'r':
-                    permissions.read = true;
+                    permissions.readPermission = true;
                     break;
                 case 'a':
-                    permissions.add = true;
+                    permissions.addPermission = true;
                     break;
                 case 'c':
-                    permissions.create = true;
+                    permissions.createPermission = true;
                     break;
                 case 'w':
-                    permissions.write = true;
+                    permissions.writePermission = true;
                     break;
                 case 'd':
-                    permissions.delete = true;
+                    permissions.deletePermission = true;
                     break;
                 case 'l':
-                    permissions.list = true;
+                    permissions.listPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -77,108 +77,108 @@ public final class ContainerSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean getRead() {
-        return read;
+    public boolean getReadPermission() {
+        return readPermission;
     }
 
     /**
      * Sets the read permission status.
      *
-     * @param read Permission status to set
+     * @param readPermission Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission setRead(boolean read) {
-        this.read = read;
+    public ContainerSASPermission setReadPermission(boolean readPermission) {
+        this.readPermission = readPermission;
         return this;
     }
 
     /**
      * @return the add permission status
      */
-    public boolean getAdd() {
-        return add;
+    public boolean getAddPermission() {
+        return addPermission;
     }
 
     /**
      * Sets the add permission status.
      *
-     * @param add Permission status to set
+     * @param addPermission Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission setAdd(boolean add) {
-        this.add = add;
+    public ContainerSASPermission setAddPermission(boolean addPermission) {
+        this.addPermission = addPermission;
         return this;
     }
 
     /**
      * @return the create permission status
      */
-    public boolean getCreate() {
-        return create;
+    public boolean getCreatePermission() {
+        return createPermission;
     }
 
     /**
      * Sets the create permission status.
      *
-     * @param create Permission status to set
+     * @param createPermission Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission setCreate(boolean create) {
-        this.create = create;
+    public ContainerSASPermission setCreatePermission(boolean createPermission) {
+        this.createPermission = createPermission;
         return this;
     }
 
     /**
      * @return the write permission status
      */
-    public boolean getWrite() {
-        return write;
+    public boolean getWritePermission() {
+        return writePermission;
     }
 
     /**
      * Sets the write permission status.
      *
-     * @param write Permission status to set
+     * @param writePermission Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission setWrite(boolean write) {
-        this.write = write;
+    public ContainerSASPermission setWritePermission(boolean writePermission) {
+        this.writePermission = writePermission;
         return this;
     }
 
     /**
      * @return the delete permission status
      */
-    public boolean getDelete() {
-        return delete;
+    public boolean getDeletePermission() {
+        return deletePermission;
     }
 
     /**
      * Sets the delete permission status.
      *
-     * @param delete Permission status to set
+     * @param deletePermission Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission setDelete(boolean delete) {
-        this.delete = delete;
+    public ContainerSASPermission setDeletePermission(boolean deletePermission) {
+        this.deletePermission = deletePermission;
         return this;
     }
 
     /**
      * @return the list permission status
      */
-    public boolean getList() {
-        return list;
+    public boolean getListPermission() {
+        return listPermission;
     }
 
     /**
      * Sets the list permission status.
      *
-     * @param list Permission status to set
+     * @param listPermission Permission status to set
      * @return the updated ContainerSASPermission object
      */
-    public ContainerSASPermission setList(boolean list) {
-        this.list = list;
+    public ContainerSASPermission setListPermission(boolean listPermission) {
+        this.listPermission = listPermission;
         return this;
     }
 
@@ -194,27 +194,27 @@ public final class ContainerSASPermission {
         // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
         final StringBuilder builder = new StringBuilder();
 
-        if (this.read) {
+        if (this.readPermission) {
             builder.append('r');
         }
 
-        if (this.add) {
+        if (this.addPermission) {
             builder.append('a');
         }
 
-        if (this.create) {
+        if (this.createPermission) {
             builder.append('c');
         }
 
-        if (this.write) {
+        if (this.writePermission) {
             builder.append('w');
         }
 
-        if (this.delete) {
+        if (this.deletePermission) {
             builder.append('d');
         }
 
-        if (this.list) {
+        if (this.listPermission) {
             builder.append('l');
         }
 
