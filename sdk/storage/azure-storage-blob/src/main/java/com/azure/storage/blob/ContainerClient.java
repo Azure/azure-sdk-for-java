@@ -266,7 +266,7 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Map}
      *
      * @param metadata Metadata to associate with the container.
      */

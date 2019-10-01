@@ -234,7 +234,7 @@ public class ContainerClientJavaDocCodeSnippets {
      * Code snippet for {@link ContainerClient#setMetadata(Map)}
      */
     public void setMetadata() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
+        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Map
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
         try {
@@ -243,7 +243,7 @@ public class ContainerClientJavaDocCodeSnippets {
         } catch (UnsupportedOperationException error) {
             System.out.printf("Fail while setting metadata %n");
         }
-        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
+        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Map
     }
 
     /**

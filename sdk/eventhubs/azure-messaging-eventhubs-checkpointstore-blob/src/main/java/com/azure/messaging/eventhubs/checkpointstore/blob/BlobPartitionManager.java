@@ -23,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -102,7 +103,7 @@ public class BlobPartitionManager implements PartitionManager {
 
             BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-            Metadata metadata = new Metadata();
+            Map<String, String> metadata = new HashMap<>();
             metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
             Long offset = partitionOwnership.getOffset();
             metadata.put(OFFSET, offset == null ? null : String.valueOf(offset));
@@ -155,7 +156,7 @@ public class BlobPartitionManager implements PartitionManager {
             blobClients.put(blobName, containerAsyncClient.getBlobAsyncClient(blobName));
         }
 
-        Metadata metadata = new Metadata();
+        Map<String, String> metadata = new HashMap<>();
         String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
             : String.valueOf(checkpoint.getSequenceNumber());
 
