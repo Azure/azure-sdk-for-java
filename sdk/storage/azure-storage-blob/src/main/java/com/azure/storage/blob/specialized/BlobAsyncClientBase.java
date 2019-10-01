@@ -856,7 +856,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -864,8 +864,8 @@ public class BlobAsyncClientBase {
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setTier(AccessTier tier) {
-        return setTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setAccessTier(AccessTier tier) {
+        return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -876,7 +876,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -887,7 +887,7 @@ public class BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
     }
