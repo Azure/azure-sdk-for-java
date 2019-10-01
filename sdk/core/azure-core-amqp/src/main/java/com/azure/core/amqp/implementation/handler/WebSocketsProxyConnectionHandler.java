@@ -141,7 +141,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         super.addTransportLayers(event, transport);
 
-        final ProxyImpl proxy = proxyConfiguration != null
+        // Checking that the proxy configuration is not null and not equal to the system defaults option.
+        final ProxyImpl proxy = proxyConfiguration != null && !(proxyConfiguration == ProxyConfiguration.SYSTEM_DEFAULTS)
             ? new ProxyImpl(getProtonConfiguration())
             : new ProxyImpl();
 
