@@ -21,8 +21,8 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  *
  * <p>
  * For operations on a specific blob type (i.e append, block, or page) use
- * {@link #getAppendBlobClient() asAppendBlobClient}, {@link #getBlockBlobClient() asBlockBlobClient}, or
- * {@link #getPageBlobClient() asPageBlobClient} to construct a client that allows blob specific operations.
+ * {@link #getAppendBlobClient() getAppendBlobClient}, {@link #getBlockBlobClient() getBlockBlobClient}, or
+ * {@link #getPageBlobClient() getPageBlobClient} to construct a client that allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
