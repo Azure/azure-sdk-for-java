@@ -721,7 +721,8 @@ public class StoreReader {
                     /* itemLSN: */ itemLSN,
                     /* sessionToken: */ sessionToken);
         } else {
-            CosmosClientException cosmosClientException = Utils.as(responseException, CosmosClientException.class);
+            Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
+            CosmosClientException cosmosClientException = Utils.as(unwrappedResponseExceptions, CosmosClientException.class);
             if (cosmosClientException != null) {
                 StoreReader.verifyCanContinueOnException(cosmosClientException);
                 long quorumAckedLSN = -1;

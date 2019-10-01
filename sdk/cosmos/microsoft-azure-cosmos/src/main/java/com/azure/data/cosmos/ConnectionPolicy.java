@@ -18,7 +18,7 @@ public final class ConnectionPolicy {
     private static final int DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS = 300 * 1000;
     private static final int DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS = 60 * 1000;
 
-    private static final int DEFAULT_MAX_POOL_SIZE = 500;
+    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
     private static ConnectionPolicy default_policy = null;
     private int requestTimeoutInMillis;
