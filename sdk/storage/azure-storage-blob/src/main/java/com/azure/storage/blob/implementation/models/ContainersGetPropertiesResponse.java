@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the getProperties operation.
  */
-public final class ContainersGetPropertiesResponse extends ResponseBase<BlobContainerGetPropertiesHeaders, Void> {
+public final class ContainersGetPropertiesResponse extends ResponseBase<ContainerGetPropertiesHeaders, Void> {
     /**
      * Creates an instance of ContainersGetPropertiesResponse.
      *
@@ -21,7 +21,7 @@ public final class ContainersGetPropertiesResponse extends ResponseBase<BlobCont
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ContainersGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobContainerGetPropertiesHeaders headers) {
+    public ContainersGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainerGetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

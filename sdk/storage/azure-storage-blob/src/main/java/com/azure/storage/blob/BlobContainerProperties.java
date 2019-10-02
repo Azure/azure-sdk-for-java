@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.implementation.models.BlobContainerGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
@@ -24,7 +24,7 @@ public final class BlobContainerProperties {
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
 
-    BlobContainerProperties(BlobContainerGetPropertiesHeaders generatedResponseHeaders) {
+    BlobContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
         this.metadata = generatedResponseHeaders.getMetadata();
         this.eTag = generatedResponseHeaders.getETag();
         this.lastModified = generatedResponseHeaders.getLastModified();
