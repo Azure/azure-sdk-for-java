@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for ListContainersIncludeType.
  */
-public enum ListContainersIncludeType {
+public enum ListBlobContainersIncludeType {
     /**
      * Enum value metadata.
      */
@@ -21,7 +21,7 @@ public enum ListContainersIncludeType {
      */
     private final String value;
 
-    ListContainersIncludeType(String value) {
+    ListBlobContainersIncludeType(String value) {
         this.value = value;
     }
 
@@ -32,9 +32,9 @@ public enum ListContainersIncludeType {
      * @return the parsed ListContainersIncludeType object, or null if unable to parse.
      */
     @JsonCreator
-    public static ListContainersIncludeType fromString(String value) {
-        ListContainersIncludeType[] items = ListContainersIncludeType.values();
-        for (ListContainersIncludeType item : items) {
+    public static ListBlobContainersIncludeType fromString(String value) {
+        ListBlobContainersIncludeType[] items = ListBlobContainersIncludeType.values();
+        for (ListBlobContainersIncludeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

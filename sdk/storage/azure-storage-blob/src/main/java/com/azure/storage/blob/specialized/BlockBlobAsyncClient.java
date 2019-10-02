@@ -52,7 +52,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
- * {@link BlobAsyncClient#asBlockBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * {@link BlobAsyncClient#getBlockBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>

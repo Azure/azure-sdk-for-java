@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -409,12 +409,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSAS(UserDelegationKey, String, BlobSasPermission,
      * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        BlobSasPermission permissions = new BlobSasPermission()
             .setAddPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
@@ -442,12 +442,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClientBase#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
+     * Code snippet for {@link BlobAsyncClientBase#generateSAS(String, BlobSasPermission, OffsetDateTime, OffsetDateTime,
      * String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)

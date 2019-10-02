@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 /**
  * FileServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to file urls. Note: that both this class and {@link FileServiceSASQueryParameters}
+ * which can actually be applied to file urls. Note: that both this class and {@link FileServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
  * actual REST requests.
  * <p>
@@ -395,7 +395,7 @@ final class FileServiceSASSignatureValues {
      * parameters.
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
-     * @return {@link FileServiceSASQueryParameters}
+     * @return {@link FileServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      * @throws NullPointerException If {@code sharedKeyCredentials} is null. Or when any of {@code version},
@@ -403,14 +403,14 @@ final class FileServiceSASSignatureValues {
      * {@code expiryTime} or {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} are not set
      * and {@code identifier} is null
      */
-    public FileServiceSASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public FileServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign());
 
-        return new FileServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new FileServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.ipRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType);
     }

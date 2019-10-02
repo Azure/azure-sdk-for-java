@@ -386,12 +386,12 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * Code snippet for {@link BlobClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSasPermission,
      * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
@@ -419,12 +419,12 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime, String,
+     * Code snippet for {@link BlobClient#generateSAS(String, BlobSasPermission, OffsetDateTime, OffsetDateTime, String,
      * SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)

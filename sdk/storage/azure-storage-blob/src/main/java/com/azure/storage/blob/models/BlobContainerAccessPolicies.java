@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * This class contains values which correlate to the access polices set on a specific container.
  */
-public class ContainerAccessPolicies {
+public class BlobContainerAccessPolicies {
     private final PublicAccessType blobAccessType;
     private final List<SignedIdentifier> identifiers;
 
-    public ContainerAccessPolicies(PublicAccessType blobAccessType, List<SignedIdentifier> identifiers) {
+    public BlobContainerAccessPolicies(PublicAccessType blobAccessType, List<SignedIdentifier> identifiers) {
         this.blobAccessType = blobAccessType;
         this.identifiers = identifiers;
     }

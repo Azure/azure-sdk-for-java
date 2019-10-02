@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /**
  * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all
  * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
- * can actually be applied to blob urls. Note: that both this class and {@link AccountSASQueryParameters} exist because
+ * can actually be applied to blob urls. Note: that both this class and {@link AccountSasQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  * <p>
@@ -87,7 +87,7 @@ public final class AccountSASSignatureValues {
         values.setIpRange(ipRange);
         values.setProtocol(sasProtocol);
 
-        AccountSASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        AccountSasQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
         return sasQueryParameters.encode();
     }
@@ -244,16 +244,16 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Generates a {@link AccountSASQueryParameters} object which contains all SAS query parameters needed to make an
+     * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters needed to make an
      * actual REST request.
      *
      * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
-     * @return {@link AccountSASQueryParameters}
+     * @return {@link AccountSasQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public AccountSASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public AccountSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
@@ -264,7 +264,7 @@ public final class AccountSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
 
-        return new AccountSASQueryParameters(this.version, this.services, resourceTypes,
+        return new AccountSasQueryParameters(this.version, this.services, resourceTypes,
             this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
     }
 

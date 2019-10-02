@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
  */
 @JacksonXmlRootElement(localName = "ContainerProperties")
 @Fluent
-public final class ContainerProperties {
+public final class BlobContainerProperties {
     /*
      * The lastModified property.
      */
@@ -83,7 +83,7 @@ public final class ContainerProperties {
      * @param lastModified the lastModified value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setLastModified(OffsetDateTime lastModified) {
+    public BlobContainerProperties setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -107,7 +107,7 @@ public final class ContainerProperties {
      * @param etag the etag value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setEtag(String etag) {
+    public BlobContainerProperties setEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -129,7 +129,7 @@ public final class ContainerProperties {
      * @param leaseStatus the leaseStatus value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setLeaseStatus(LeaseStatusType leaseStatus) {
+    public BlobContainerProperties setLeaseStatus(LeaseStatusType leaseStatus) {
         this.leaseStatus = leaseStatus;
         return this;
     }
@@ -151,7 +151,7 @@ public final class ContainerProperties {
      * @param leaseState the leaseState value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setLeaseState(LeaseStateType leaseState) {
+    public BlobContainerProperties setLeaseState(LeaseStateType leaseState) {
         this.leaseState = leaseState;
         return this;
     }
@@ -173,7 +173,7 @@ public final class ContainerProperties {
      * @param leaseDuration the leaseDuration value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setLeaseDuration(LeaseDurationType leaseDuration) {
+    public BlobContainerProperties setLeaseDuration(LeaseDurationType leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -195,7 +195,7 @@ public final class ContainerProperties {
      * @param publicAccess the publicAccess value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setPublicAccess(PublicAccessType publicAccess) {
+    public BlobContainerProperties setPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
         return this;
     }
@@ -217,7 +217,7 @@ public final class ContainerProperties {
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
+    public BlobContainerProperties setHasImmutabilityPolicy(Boolean hasImmutabilityPolicy) {
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         return this;
     }
@@ -237,7 +237,7 @@ public final class ContainerProperties {
      * @param hasLegalHold the hasLegalHold value to set.
      * @return the ContainerProperties object itself.
      */
-    public ContainerProperties setHasLegalHold(Boolean hasLegalHold) {
+    public BlobContainerProperties setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
         return this;
     }

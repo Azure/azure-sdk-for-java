@@ -160,18 +160,18 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .buildClient();
 ```
 
-### Create ContainerClient
+### Create BlobContainerClient
 
-Create a ContainerClient if a BlobServiceClient exists.
+Create a BlobContainerClient if a BlobServiceClient exists.
 ```java
-ContainerClient containerClient = blobServiceClient.getContainerClient("mycontainer");
+BlobContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
 ```
 
 or
 
-Create the ContainerClient from the builder [`sasToken`](#get-credentials) generated above.
+Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
-ContainerClient containerClient = new ContainerClientBuilder()
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
          .endpoint("<your-storage-blob-url>")
          .credential("<your-sasToken>")
          .containerName("mycontainer")
@@ -182,7 +182,7 @@ ContainerClient containerClient = new ContainerClientBuilder()
 
 Create a BlobClient if container client exists.
 ```java
-BlobClient blobClient = containerClient.getBlobClient("myblob");
+BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
 ```
 
 or
@@ -206,14 +206,14 @@ blobServiceClient.createContainer("mycontainer");
 
 or
 
-Create a container using ContainerClient.
+Create a container using BlobContainerClient.
 ```java
-containerClient.create();
+blobContainerClient.create();
 ```
 
 ### Uploading a blob from a stream
 
-Upload data stream to a blob using BlockBlobClient generated from a ContainerClient.
+Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
 
 ```java
 BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").asBlockBlobClient();
@@ -225,9 +225,10 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 ### Uploading a blob from `File`
 
-Upload a file to a blob using BlockBlobClient generated from ContainerClient.
+Upload a file to a blob using BlockBlobClient generated from BlobContainerClient.
 
 ```java
+
 BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").asBlockBlobClient();
 blockBlobClient.uploadFromFile("local-file.jpg");
 ```
@@ -251,9 +252,9 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 ### Enumerating blobs
 
-Enumerating all blobs using ContainerClient
+Enumerating all blobs using BlobContainerClient
 ```java
-containerClient.listBlobsFlat()
+blobContainerClient.listBlobsFlat()
         .forEach(
             blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
         );

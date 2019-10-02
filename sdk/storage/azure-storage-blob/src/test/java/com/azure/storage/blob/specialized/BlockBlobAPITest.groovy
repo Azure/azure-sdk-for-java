@@ -44,9 +44,9 @@ class BlockBlobAPITest extends APISpec {
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).asBlockBlobClient()
+        bc = cc.getBlobClient(blobName).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
-        bac = ccAsync.getBlobAsyncClient(generateBlobName()).asBlockBlobAsyncClient()
+        bac = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         bac.upload(defaultFlux, defaultDataSize)
     }
 
@@ -129,7 +129,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         bc.stageBlock("id", defaultInputStream.get(), defaultDataSize)
@@ -141,11 +141,11 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block from url"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def blockID = getBlockID()
 
         when:
-        def headers = bu2.stageBlockFromURLWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+        def headers = bu2.stageBlockFromURLWithResponse(blockID, new URL(bc.getBlobUrl()), null, null, null, null, null, null).getHeaders()
 
         then:
         headers.getValue("x-ms-request-id") != null
@@ -170,11 +170,11 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block from url min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def blockID = getBlockID()
 
         expect:
-        bu2.stageBlockFromURLWithResponse(blockID, bc.getBlobUrl(), null, null, null, null, null, null).getStatusCode() == 201
+        bu2.stageBlockFromURLWithResponse(blockID, new URL(bc.getBlobUrl()), null, null, null, null, null, null).getStatusCode() == 201
     }
 
     @Unroll
@@ -195,10 +195,10 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block from URL range"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bc.getBlobUrl(), new BlobRange(2, 3))
+        destURL.stageBlockFromURL(getBlockID(), new URL(bc.getBlobUrl()), new BlobRange(2, 3))
         def blockList = destURL.listBlocks(BlockListType.UNCOMMITTED)
 
         then:
@@ -209,10 +209,10 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block from URL MD5"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromURLWithResponse(getBlockID(), bc.getBlobUrl(), null,
+        destURL.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null,
             MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
 
         then:
@@ -222,10 +222,10 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block from URL MD5 fail"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def destURL = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        destURL.stageBlockFromURLWithResponse(getBlockID(), bc.getBlobUrl(), null, "garbage".getBytes(),
+        destURL.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, "garbage".getBytes(),
             null, null, null, null)
 
         then:
@@ -238,7 +238,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().setLeaseId(setupBlobLeaseCondition(bc, receivedLeaseID))
 
         when:
-        bc.stageBlockFromURLWithResponse(getBlockID(), bc.getBlobUrl(), null, null, lease, null, null, null)
+        bc.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, null, lease, null, null, null)
 
         then:
         notThrown(StorageException)
@@ -250,7 +250,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().setLeaseId("garbage")
 
         when:
-        bc.stageBlockFromURLWithResponse(getBlockID(), bc.getBlobUrl(), null, null, lease, null, null, null)
+        bc.stageBlockFromURLWithResponse(getBlockID(), new URL(bc.getBlobUrl()), null, null, lease, null, null, null)
 
         then:
         thrown(StorageException)
@@ -258,12 +258,12 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block from URL error"() {
         setup:
-        bc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        bc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
             .getBlobClient(generateBlobName())
-            .asBlockBlobClient()
+            .getBlockBlobClient()
 
         when:
-        bc.stageBlockFromURL(getBlockID(), bc.getBlobUrl(), null)
+        bc.stageBlockFromURL(getBlockID(), new URL(bc.getBlobUrl()), null)
 
         then:
         thrown(StorageException)
@@ -275,7 +275,7 @@ class BlockBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def blockID = getBlockID()
 
-        def sourceURL = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         sourceURL.upload(defaultInputStream.get(), defaultDataSize)
 
         sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
@@ -286,7 +286,7 @@ class BlockBlobAPITest extends APISpec {
             .setSourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bc.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.stageBlockFromURLWithResponse(blockID, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -303,7 +303,7 @@ class BlockBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def blockID = getBlockID()
 
-        def sourceURL = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def sourceURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         sourceURL.upload(defaultInputStream.get(), defaultDataSize)
 
         def smac = new SourceModifiedAccessConditions()
@@ -313,7 +313,7 @@ class BlockBlobAPITest extends APISpec {
             .setSourceIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
 
         when:
-        bc.stageBlockFromURLWithResponse(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).getStatusCode() == 201
+        bc.stageBlockFromURLWithResponse(blockID, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null).getStatusCode() == 201
 
         then:
         thrown(StorageException)
@@ -470,7 +470,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Commit block list error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         bc.commitBlockListWithResponse(new ArrayList<String>(), null, null, null,
@@ -566,7 +566,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         bc.listBlocks(BlockListType.ALL).iterator().hasNext()
@@ -771,7 +771,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload error"() {
         setup:
-        bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
@@ -784,7 +784,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload with tier"() {
         setup:
-        def bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, AccessTier.COOL, null, null, null)
@@ -1078,7 +1078,7 @@ class BlockBlobAPITest extends APISpec {
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
-            .getContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName()).asBlockBlobAsyncClient()
+            .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.

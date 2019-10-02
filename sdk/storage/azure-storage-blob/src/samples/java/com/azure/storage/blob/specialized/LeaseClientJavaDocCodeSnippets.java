@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 
 public class LeaseClientJavaDocCodeSnippets {
     private LeaseClient client = new LeaseClientBuilder()
-        .blobClient(new BlobClientBuilder().blobName("blob").buildBlobClient())
+        .blobClient(new BlobClientBuilder().blobName("blob").buildClient())
         .buildClient();
     private Duration timeout = Duration.ofSeconds(30);
     private String key = "key";

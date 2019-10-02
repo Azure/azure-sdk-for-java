@@ -40,7 +40,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file</artifactId>
-      <version>12.0.0-preview.5</version>
+      <version>12.0.0-preview.4</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
