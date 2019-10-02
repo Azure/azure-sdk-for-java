@@ -276,13 +276,14 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         }).map(RxDocumentServiceResponse::new)
                .onErrorResume(throwable -> {
-                   if (!(throwable instanceof Exception)) {
+                   Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+                   if (!(unwrappedException instanceof Exception)) {
                        // fatal error
-                       logger.error("Unexpected failure {}", throwable.getMessage(), throwable);
-                       return Mono.error(throwable);
+                       logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                       return Mono.error(unwrappedException);
                    }
 
-                   Exception exception = (Exception) throwable;
+                   Exception exception = (Exception) unwrappedException;
                    if (!(exception instanceof CosmosClientException)) {
                        // wrap in CosmosClientException
                        logger.error("Network failure", exception);
