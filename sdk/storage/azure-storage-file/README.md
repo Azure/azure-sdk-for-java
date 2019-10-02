@@ -40,7 +40,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file</artifactId>
-      <version>12.0.0-preview.3</version>
+      <version>12.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -53,7 +53,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.5</version>
 </dependency>
 ```
 
@@ -144,8 +144,14 @@ https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
 
 ### Handling Exceptions
+Suppose you have the `fileServiceClient` already
+
 ```java
-// TODO
+try {
+    fileServiceClient.createShare("myShare");
+} catch (StorageException e) {
+    logger.error("Failed to create a share with error code: " + e.getErrorCode());
+}
 ```
 
 ### Resource Names
@@ -325,7 +331,7 @@ Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```Java
 String dirName = "testdir";
-shareClient.deleteDirectory(dirName)
+shareClient.deleteDirectory(dirName);
 ```
 
 ### Delete a subdirectory
@@ -333,7 +339,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.deleteSubDirectory(subDirName)
+directoryClient.deleteSubDirectory(subDirName);
 ```
 
 ### Delete a file
@@ -341,7 +347,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String fileName = "testfile";
-directoryClient.deleteFile(fileName)
+directoryClient.deleteFile(fileName);
 ```
 
 ### Copy a file
@@ -364,8 +370,9 @@ fileClient.abortCopy(copyId);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with data of "default" .
 
 ```Java
-ByteBuffer data = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-fileClient.upload(data, data.readableBytes());
+String uploadText = "default";
+ByteBuffer data = ByteBuffer.wrap(uploadText.getBytes(StandardCharsets.UTF_8));
+fileClient.upload(data, uploadText.length());
 ```
 
 ### Upload file to storage
@@ -378,8 +385,8 @@ fileClient.uploadFromFile(filePath);
 ### Download data from file range
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
-FileRange fileRange = new FileRange(1024, 2047);
-fileClient.downloadWithProperties(fileRange, false, null);
+FileRange fileRange = new FileRange(1024L, 2047L);
+fileClient.downloadWithPropertiesWithResponse(fileRange, false, null, Context.NONE);
 ```
 
 ### Download file from storage
@@ -402,8 +409,8 @@ Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-service
 ```Java
 FileServiceProperties properties = fileServiceClient.getProperties();
 
-properties.minuteMetrics().enabled(true);
-properties.hourMetrics().enabled(true);
+properties.getMinuteMetrics().setEnabled(true);
+properties.getHourMetrics().setEnabled(true);
 
 fileServiceClient.setProperties(properties);
 ```
@@ -427,11 +434,11 @@ shareClient.getAccessPolicy();
 Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```java
-AccessPolicy accessPolicy = new AccessPolicy().permission("r")
-            .start(OffsetDateTime.now(ZoneOffset.UTC))
-            .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
+    .setStart(OffsetDateTime.now(ZoneOffset.UTC))
+    .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
+SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 shareClient.setAccessPolicy(Collections.singletonList(permission));
 ```
 
@@ -439,15 +446,15 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-Iterable<HandleItem> handleItems = directoryClient.listHandles(null, true);
+PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Force close handles on handle id
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) and the handle id returned above `${handleId}=[handleItems](#Get-handles-on-directory-file)`
 
 ```Java
-String handleId = result.iterator().next().handleId();
-directoryClient.forceCloseHandles(handleId);
+String handleId = handleItems.iterator().next().getHandleId();
+directoryClient.forceCloseHandles(handleId, true, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Set quota on share
@@ -462,7 +469,7 @@ shareClient.setQuota(quotaOnGB);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
-FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
+FileHTTPHeaders httpHeaders = new FileHTTPHeaders().setFileContentType("text/plain");
 long newFileSize = 1024;
 fileClient.setHttpHeaders(newFileSize, httpHeaders);
 ```
