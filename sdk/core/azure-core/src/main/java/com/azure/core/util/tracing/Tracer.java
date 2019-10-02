@@ -8,7 +8,6 @@ import com.azure.core.util.Context;
 /**
  * Contract that all tracers must implement to be plug-able into the SDK.
  *
- * @see Tracer
  */
 public interface Tracer {
     /**
@@ -77,9 +76,12 @@ public interface Tracer {
      * new span will be added as a child. Otherwise the span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
-     * Sets additional request attributes on the created span for the given {@link ProcessKind} SEND.
-     * Returns the diagnostic Id and span context of the returned span for the given {@link ProcessKind} RECEIVE.
-     * Creates a new tracing span with remote parent and returns that scope when the given {@link ProcessKind} PROCESS.
+     * Sets additional request attributes on the created span when {@code processKind} is
+     * {@link ProcessKind#SEND ProcessKind.SEND}.
+     * Returns the diagnostic Id and span context of the returned span when {@code processKind} is
+     * {@link ProcessKind#RECEIVE ProcessKind.RECEIVE}.
+     * Creates a new tracing span with remote parent and returns that scope when the given when {@code processKind}
+     * is {@link ProcessKind#PROCESS ProcessKind.PROCESS}.
      *
      * <p><strong>Code samples</strong></p>
      *
