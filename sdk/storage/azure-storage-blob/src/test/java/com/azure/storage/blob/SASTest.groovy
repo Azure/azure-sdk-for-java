@@ -167,9 +167,12 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
+        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl().toString(),
+            blobName, snapshotId).getBlockBlobClient()
+
 
         def os = new ByteArrayOutputStream()
         client.download(os)

@@ -653,6 +653,17 @@ class HelperTest extends APISpec {
         splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig & se
     }
 
+    def "BlobURLParts implicit root"() {
+        when:
+        def bup = new BlobURLParts()
+            .setScheme("http")
+            .setHost("host")
+            .setBlobName("blob")
+
+        then:
+        BlobURLParts.parse(bup.toURL()).getContainerName() == ContainerAsyncClient.ROOT_CONTAINER_NAME
+    }
+
     def "URLParser"() {
         when:
         BlobURLParts parts = BlobURLParts.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))

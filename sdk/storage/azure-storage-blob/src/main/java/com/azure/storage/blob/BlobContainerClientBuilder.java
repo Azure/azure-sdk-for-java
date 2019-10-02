@@ -64,7 +64,13 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(containerName);
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        if (Objects.isNull(containerName) || containerName.isEmpty()) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
 
         HttpPipeline pipeline = super.getPipeline();
         if (pipeline == null) {
@@ -117,7 +123,8 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.containerName#String}
      *
-     * @param containerName the name of the container
+     * @param containerName the name of the container. If the value is set to null or empty, it will be interpreted as
+     *                      the root container, and "$root" will be inserted as the container name.
      * @return the updated ContainerClientBuilder object
      */
     public BlobContainerClientBuilder containerName(String containerName) {
