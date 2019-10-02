@@ -82,7 +82,7 @@ public class ClientLogger {
      *
      * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging a message at verbose log level
+     * Logging a message at verbose log level.
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
      *
      * @param format The formattable message to log.
@@ -97,7 +97,7 @@ public class ClientLogger {
      *
      * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging a message at informational log level
+     * Logging a message at informational log level.
      * {@codesnippet com.azure.core.util.logging.clientlogger.info}
      *
      * @param format The formattable message to log
@@ -112,7 +112,7 @@ public class ClientLogger {
      *
      * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging a message at warning log level
+     * Logging a message at warning log level.
      * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
      *
      * @param format The formattable message to log.
@@ -127,7 +127,7 @@ public class ClientLogger {
      *
      * <p><strong>Code samples</strong></p>
      * <p>
-     * Logging an error with stack trace
+     * Logging an error with stack trace.
      * {@codesnippet com.azure.core.util.logging.clientlogger.error}
      *
      * @param format The formattable message to log.
