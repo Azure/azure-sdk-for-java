@@ -2,7 +2,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -199,7 +199,7 @@ class CPKTest extends APISpec {
 
     def "Set blob metadata with CPK"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -234,7 +234,7 @@ class CPKTest extends APISpec {
 
     def "Snapshot blob with CPK"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:

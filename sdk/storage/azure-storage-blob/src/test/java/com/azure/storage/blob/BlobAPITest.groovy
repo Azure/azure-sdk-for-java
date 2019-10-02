@@ -16,7 +16,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
@@ -512,7 +512,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata min"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -525,7 +525,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set metadata metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -625,7 +625,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Snapshot metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -742,7 +742,7 @@ class BlobAPITest extends APISpec {
     def "Copy metadata"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -1032,7 +1032,7 @@ class BlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
