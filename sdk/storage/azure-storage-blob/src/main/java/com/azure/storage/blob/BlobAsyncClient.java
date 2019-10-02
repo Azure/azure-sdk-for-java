@@ -20,12 +20,13 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  *
  * <p>
  * This client is instantiated through {@link BlobClientBuilder} or retrieved via
- * {@link ContainerAsyncClient#getBlobAsyncClient(String) getBlobClient}.
+ * {@link BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
  *
  * <p>
  * For operations on a specific blob type (i.e append, block, or page) use
- * {@link #asAppendBlobAsyncClient() asAppendBlobAsyncClient}, {@link #asBlockBlobAsyncClient() asBlockBlobAsyncClient},
- * or {@link #asPageBlobAsyncClient() asPageBlobAsyncClient} to construct a client that allows blob specific operations.
+ * {@link #getAppendBlobAsyncClient() getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient()
+ * getBlockBlobAsyncClient}, or {@link #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that
+ * allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -60,7 +61,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return a {@link AppendBlobAsyncClient} associated to this blob.
      */
-    public AppendBlobAsyncClient asAppendBlobAsyncClient() {
+    public AppendBlobAsyncClient getAppendBlobAsyncClient() {
         return prepareBuilder().buildAppendBlobAsyncClient();
     }
 
@@ -69,7 +70,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return a {@link BlockBlobAsyncClient} associated to this blob.
      */
-    public BlockBlobAsyncClient asBlockBlobAsyncClient() {
+    public BlockBlobAsyncClient getBlockBlobAsyncClient() {
         return prepareBuilder().buildBlockBlobAsyncClient();
     }
 
@@ -78,7 +79,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * @return a {@link PageBlobAsyncClient} associated to this blob.
      */
-    public PageBlobAsyncClient asPageBlobAsyncClient() {
+    public PageBlobAsyncClient getPageBlobAsyncClient() {
         return prepareBuilder().buildPageBlobAsyncClient();
     }
 

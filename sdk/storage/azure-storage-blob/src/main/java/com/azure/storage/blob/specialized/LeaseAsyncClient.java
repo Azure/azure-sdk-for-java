@@ -13,7 +13,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -28,7 +28,7 @@ import java.net.URL;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
- * This class provides a client that contains all the leasing operations for {@link ContainerAsyncClient containers}
+ * This class provides a client that contains all the leasing operations for {@link BlobContainerAsyncClient containers}
  * and {@link BlobAsyncClient blobs}. This client acts as a supplement to those clients and only handles leasing
  * operations.
  *

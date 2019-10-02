@@ -12,7 +12,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
-import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.HTTPGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -133,7 +133,7 @@ public class BlobAsyncClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**
@@ -863,6 +863,7 @@ public class BlobAsyncClientBase {
      *
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Void> setAccessTier(AccessTier tier) {
         return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
@@ -886,6 +887,7 @@ public class BlobAsyncClientBase {
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
@@ -987,7 +989,7 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobSASPermission permissions, OffsetDateTime expiryTime) {
+        BlobSasPermission permissions, OffsetDateTime expiryTime) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null /*
         startTime */, null /* version */, null /*sasProtocol */, null /* ipRange */, null /* cacheControl */, null
             /*contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1007,7 +1009,7 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
@@ -1041,18 +1043,18 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
 
-        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version,
+        BlobServiceSasSignatureValues blobServiceSASSignatureValues = new BlobServiceSasSignatureValues(version,
             sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
             null /* identifier*/, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
-        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
+        BlobServiceSasSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
             accountName);
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
+        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
             values.generateSASQueryParameters(userDelegationKey);
 
         return blobServiceSasQueryParameters.encode();
@@ -1064,8 +1066,9 @@ public class BlobAsyncClientBase {
      * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(BlobSASPermission permissions, OffsetDateTime expiryTime) {
+    public String generateSAS(BlobSasPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1076,6 +1079,7 @@ public class BlobAsyncClientBase {
      *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(String identifier) {
         return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
@@ -1094,8 +1098,9 @@ public class BlobAsyncClientBase {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
@@ -1125,12 +1130,13 @@ public class BlobAsyncClientBase {
      * @param contentLanguage An optional {@code String} content-language header for the SAS.
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
-        BlobServiceSASSignatureValues blobServiceSASSignatureValues = new BlobServiceSASSignatureValues(version,
+        BlobServiceSasSignatureValues blobServiceSASSignatureValues = new BlobServiceSasSignatureValues(version,
             sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
             identifier, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -1139,10 +1145,10 @@ public class BlobAsyncClientBase {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        BlobServiceSASSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
+        BlobServiceSasSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
+        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return blobServiceSasQueryParameters.encode();
@@ -1151,8 +1157,8 @@ public class BlobAsyncClientBase {
     /**
      * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
      */
-    private BlobServiceSASSignatureValues configureServiceSASSignatureValues(
-        BlobServiceSASSignatureValues blobServiceSASSignatureValues, String accountName) {
+    private BlobServiceSasSignatureValues configureServiceSASSignatureValues(
+        BlobServiceSasSignatureValues blobServiceSASSignatureValues, String accountName) {
 
         // Set canonical name
         blobServiceSASSignatureValues.setCanonicalName(this.azureBlobStorage.getUrl(), accountName);

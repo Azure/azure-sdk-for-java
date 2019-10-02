@@ -12,7 +12,7 @@ class BlobOutputStreamTest extends APISpec {
     def "BlockBlob output stream"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)
-        def blockBlobClient = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
         def outputStream = blockBlobClient.getBlobOutputStream()
@@ -28,7 +28,7 @@ class BlobOutputStreamTest extends APISpec {
     def "PageBlob output stream"() {
         setup:
         def data = getRandomByteArray(16 * Constants.MB - 512)
-        def pageBlobClient = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+        def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         pageBlobClient.create(data.length)
 
 
@@ -45,7 +45,7 @@ class BlobOutputStreamTest extends APISpec {
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)
-        def appendBlobClient = cc.getBlobClient(generateBlobName()).asAppendBlobClient()
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         appendBlobClient.create()
 
         when:
