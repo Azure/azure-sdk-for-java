@@ -15,6 +15,7 @@ public class JsonWrapper {
 
     /**
      * Create new instance of JsonApi
+     * 
      * @return JsonApi
      */
     public static JsonApi newInstance() {
@@ -28,25 +29,19 @@ public class JsonWrapper {
 
     /**
      * Create new instance of JsonApi
+     * 
      * @param type type of instance to create
      * @return JsonAPI instance
+     * @throws ClassNotFoundException if the class type is invalid
      */
-    public static JsonApi newInstance(String type) {
-        try {
-            Class<? extends JsonApi> cls = (Class<? extends JsonApi>) Class.forName(type);
-            JsonApi jsonApi = newInstance(cls);
-            jsonApi.configure(Config.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            jsonApi.configureTimezone();
-
-            return jsonApi;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static JsonApi newInstance(String type) throws ClassNotFoundException {
+        Class<? extends JsonApi> cls = (Class<? extends JsonApi>) Class.forName(type);
+        return newInstance(cls);
     }
 
     /**
      * Create new instance of JsonApi
+     * 
      * @param type type of JsonApi
      * @return JsonApi instance
      */

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.data.common.jsonwrapper.api;
 
+import java.util.List;
+
 public interface Node {
 
     /**
@@ -52,4 +54,10 @@ public interface Node {
      * @return boolean value
      */
     boolean isJsonPrimitive();
+
+    /**
+     * return the list of elements constructing a nested node
+     * @return List of nodes
+     */
+    List<Node> getElements();
 }

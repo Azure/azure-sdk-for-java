@@ -5,6 +5,9 @@ package com.azure.search.data.common.jsonwrapper.jacksonwrapper;
 import com.azure.search.data.common.jsonwrapper.api.Node;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JacksonNode implements Node {
     private final JsonNode node;
 
@@ -54,6 +57,13 @@ public class JacksonNode implements Node {
     @Override
     public boolean isJsonPrimitive() {
         return node.isBoolean() || node.isDouble() || node.isFloat() || node.isInt() || node.isLong() || node.isShort();
+    }
+
+    @Override
+    public List<Node> getElements() {
+        List<Node> result = new ArrayList<>();
+        node.forEach(jsonNode -> result.add(new JacksonNode(jsonNode)));
+        return result;
     }
 }
 
