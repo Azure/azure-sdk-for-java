@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
@@ -22,6 +21,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code snippets for {@link BlobContainerAsyncClient}
@@ -162,15 +162,14 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#createWithResponse(Metadata, PublicAccessType)}
+     * Code snippet for {@link BlobContainerAsyncClient#createWithResponse(Map, PublicAccessType)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Metadata-PublicAccessType
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         client.createWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response ->
             System.out.printf("Create completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Metadata-PublicAccessType
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Map-PublicAccessType
     }
 
     /**
@@ -228,24 +227,23 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#setMetadata(Metadata)}
+     * Code snippet for {@link BlobContainerAsyncClient#setMetadata(Map)}
      */
     public void setMetadata() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Metadata
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Map
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         client.setMetadata(metadata).subscribe(
             response -> System.out.printf("Set metadata completed%n"),
             error -> System.out.printf("Set metadata failed: %s%n", error));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Metadata
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Map
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#setMetadataWithResponse(Metadata, BlobContainerAccessConditions)}
+     * Code snippet for {@link BlobContainerAsyncClient#setMetadataWithResponse(Map, BlobContainerAccessConditions)}
      */
     public void setMetadata2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Metadata-BlobContainerAccessConditions
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Map-BlobContainerAccessConditions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -253,7 +251,7 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
 
         client.setMetadataWithResponse(metadata, accessConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Metadata-BlobContainerAccessConditions
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Map-BlobContainerAccessConditions
     }
 
     /**

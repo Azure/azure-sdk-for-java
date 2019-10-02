@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PageBlobAccessConditions
 import com.azure.storage.blob.models.PageRange
@@ -93,7 +93,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
         }

@@ -12,7 +12,6 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageBlobItem;
@@ -30,6 +29,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -118,21 +118,21 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions-Duration-Context}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
-        Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
             metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);

@@ -17,7 +17,6 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
@@ -33,6 +32,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -129,13 +129,13 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -146,7 +146,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
+        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
         Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
@@ -181,20 +181,20 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout) {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
             filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
@@ -381,11 +381,11 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -393,7 +393,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
             base64BlockIDs, headers, metadata, tier, accessConditions, context);

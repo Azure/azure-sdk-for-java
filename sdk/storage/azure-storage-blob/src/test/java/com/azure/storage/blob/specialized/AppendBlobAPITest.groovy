@@ -12,7 +12,7 @@ import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
@@ -85,7 +85,7 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Create metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
         }

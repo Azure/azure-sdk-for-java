@@ -21,7 +21,6 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
@@ -40,6 +39,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -135,27 +135,26 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
             context));
     }
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
-        metadata = metadata == null ? new Metadata() : metadata;
+        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
@@ -224,21 +223,21 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions, BlobHTTPHeaders headers, Metadata metadata, AccessTier tier,
-        BlobAccessConditions accessConditions) {
+            ParallelTransferOptions parallelTransferOptions, BlobHTTPHeaders headers, Map<String, String> metadata,
+            AccessTier tier, BlobAccessConditions accessConditions) {
         // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
         Objects.requireNonNull(data, "data must not be null");
@@ -326,13 +325,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return An empty response
@@ -341,7 +340,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions()
             : parallelTransferOptions;
@@ -602,25 +601,24 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the block blob.
      */
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
             accessConditions, context));
     }
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Context context) {
-        metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(

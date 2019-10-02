@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -15,6 +14,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs using the Azure
@@ -56,7 +56,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Setup containerMetadata for container.
          */
-        Metadata containerMetadata = new Metadata(Collections.singletonMap("mycontainermetadata", "sample"));
+        Map<String, String> containerMetadata = Collections.singletonMap("mycontainermetadata", "sample");
 
         /*
          * Create a container with the containerMetadata above.
@@ -71,7 +71,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a blob with blob's blobMetadata and BlobHttpHeaders.
          */
-        Metadata blobMetadata = new Metadata(Collections.singletonMap("myblobmetadata", "sample"));
+        Map<String, String> blobMetadata = Collections.singletonMap("myblobmetadata", "sample");
         BlobHTTPHeaders blobHTTPHeaders = new BlobHTTPHeaders().setBlobContentDisposition("attachment")
             .setBlobContentType("text/html; charset=utf-8");
 

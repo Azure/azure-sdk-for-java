@@ -24,7 +24,6 @@ import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
@@ -47,6 +46,7 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -244,20 +244,23 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+<<<<<<< HEAD:sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/BlobContainerAsyncClient.java
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Metadata-PublicAccessType}
+=======
+     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Map-PublicAccessType}
+>>>>>>> Removes Metadata Class from Azure Blobs (#5627):sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/ContainerAsyncClient.java
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> createWithResponse(Metadata metadata, PublicAccessType accessType) {
+    public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         return withContext(context -> createWithResponse(metadata, accessType, context));
     }
 
-    Mono<Response<Void>> createWithResponse(Metadata metadata, PublicAccessType accessType, Context context) {
-        metadata = metadata == null ? new Metadata() : metadata;
-
+    Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+        Context context) {
         return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
             null, null, metadata, accessType, null, context))
             .map(response -> new SimpleResponse<>(response, null));
@@ -356,13 +359,13 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Metadata}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Map}
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains signalling
      * completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata) {
+    public Mono<Void> setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
     }
 
@@ -374,20 +377,19 @@ public final class BlobContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Metadata-BlobContainerAccessConditions}
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @param accessConditions {@link BlobContainerAccessConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If {@link BlobContainerAccessConditions#getModifiedAccessConditions()} has
      * anything set other than {@link ModifiedAccessConditions#getIfModifiedSince()}.
      */
-    public Mono<Response<Void>> setMetadataWithResponse(Metadata metadata,
+    public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobContainerAccessConditions accessConditions) {
         return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, BlobContainerAccessConditions accessConditions,
+    Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobContainerAccessConditions accessConditions,
         Context context) {
-        metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())
             || accessConditions.getModifiedAccessConditions().getIfUnmodifiedSince() != null) {

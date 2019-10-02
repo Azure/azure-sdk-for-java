@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.CorsRule
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.Logging
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.Metrics
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StaticWebsite
@@ -100,7 +100,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers details"() {
         setup:
-        Metadata metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         cc = primaryBlobServiceClient.createBlobContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
 

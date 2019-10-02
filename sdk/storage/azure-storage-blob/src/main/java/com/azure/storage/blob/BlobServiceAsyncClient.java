@@ -21,7 +21,6 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
@@ -41,6 +40,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -134,22 +134,22 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Metadata-PublicAccessType}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType}
      *
      * @param containerName Name of the container to create
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the container created.
      */
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
-        Metadata metadata, PublicAccessType accessType) {
+        Map<String, String> metadata, PublicAccessType accessType) {
         return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
     }
 
-    Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName, Metadata metadata,
-        PublicAccessType accessType, Context context) {
+    Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
+        Map<String, String> metadata, PublicAccessType accessType, Context context) {
         BlobContainerAsyncClient blobContainerAsyncClient = getBlobContainerAsyncClient(containerName);
 
         return blobContainerAsyncClient.createWithResponse(metadata, accessType, context)

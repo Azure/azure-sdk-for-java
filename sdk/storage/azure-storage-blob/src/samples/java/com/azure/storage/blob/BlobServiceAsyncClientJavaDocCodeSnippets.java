@@ -4,24 +4,22 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-
+import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.Logging;
+import com.azure.storage.blob.models.Metrics;
+import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.RetentionPolicy;
+import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.storage.blob.models.BlobContainerListDetails;
-import com.azure.storage.blob.models.Logging;
-import com.azure.storage.blob.models.Metadata;
-import com.azure.storage.blob.models.Metrics;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.RetentionPolicy;
-import com.azure.storage.blob.models.StorageServiceProperties;
-
-import java.util.Collections;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link BlobServiceAsyncClient}
@@ -88,12 +86,11 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#createBlobContainerWithResponse(String, Metadata, PublicAccessType)}
+     * Code snippet for {@link BlobServiceAsyncClient#createBlobContainerWithResponse(String, Map, PublicAccessType)}
      */
     public void createContainerWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Metadata-PublicAccessType
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobContainerAsyncClient containerClient =
             client.createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Metadata-PublicAccessType
