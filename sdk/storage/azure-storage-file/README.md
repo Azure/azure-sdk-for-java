@@ -144,7 +144,7 @@ https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
 
 ### Handling Exceptions
-Suppose you have the `fileServiceClient` already
+Uses the `fileServiceClient` generated from [File Service Client](#file-service) section below.
 
 ```java
 try {
