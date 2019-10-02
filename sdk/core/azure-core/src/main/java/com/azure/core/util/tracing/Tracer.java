@@ -53,11 +53,12 @@ public interface Tracer {
     /**
      * Creates a new tracing span.
      *
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found, the
-     * new span will be added as a child. Otherwise the parent span will be created and added to the {@code context}
+     * The {@code context} will be checked for containing information about a parent span. If a parent span is found,
+     * the new span will be added as a child. Otherwise the parent span will be created and added to the {@code context}
      * and any downstream {@code start()} calls will use the created span as the parent.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context}
      *
@@ -81,6 +82,7 @@ public interface Tracer {
      * Creates a new tracing span with remote parent and returns that scope when the given {@link ProcessKind} PROCESS.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
      * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-SEND}
      *
@@ -103,6 +105,7 @@ public interface Tracer {
      * Completes the current tracing span.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Completes the tracing span present in the context, with the corresponding OpenCensus status for the given
      * response status code</p>
      * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
@@ -118,10 +121,12 @@ public interface Tracer {
      * Completes the current tracing span.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Completes the tracing span with the corresponding OpenCensus status for the given status message</p>
      * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
      *
-     * @param statusMessage the error or success message hat occurred during the call, or {@code null} if no error occurred.
+     * @param statusMessage the error or success message that occurred during the call, or {@code null} if no error
+     * occurred.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
@@ -143,6 +148,7 @@ public interface Tracer {
      * Sets the name for spans that are created.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Retrieve the span name of the returned span</p>
      * {@codesnippet com.azure.core.util.tracing.setSpanName#string-context}
      *
@@ -159,6 +165,7 @@ public interface Tracer {
      * Used in batching operations to relate multiple requests under a single batch.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Link multiple spans using their span context information</p>
      * {@codesnippet com.azure.core.util.tracing.addLink#context}
      *
@@ -171,6 +178,7 @@ public interface Tracer {
      * Extracts the span's context as {@link Context} from upstream.
      *
      * <p><strong>Code samples</strong></p>
+     *
      * <p>Extracts the corresponding span context information from a valid diagnostic id</p>
      * {@codesnippet com.azure.core.util.tracing.extractContext#string-context}
      *
