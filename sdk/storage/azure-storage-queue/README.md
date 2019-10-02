@@ -132,9 +132,14 @@ https://myaccount.queue.core.windows.net/myqueue
 ```
 
 ### Handling Exceptions
+Suppose you have the `queueServiceClient` already
 
 ```java
-TODO
+try {
+    queueServiceClient.createQueue("myQueue");
+} catch (StorageException e) {
+    logger.error("Failed to create a queue with error code: " + e.getErrorCode());
+}
 ```
 
 ### Queue Names
@@ -153,7 +158,7 @@ The client performs the interactions with the Queue service, create or delete a 
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${SASToken}`.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName)
-QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).credential(SASToken).build();
+QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 
 QueueClient newQueueClient = queueServiceClient.createQueue("myqueue");
 ```
@@ -184,7 +189,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${queueName}`, `${SASToken}`.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).credential(SASToken).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential(SASToken).buildClient();
 // metadata is map of key-value pair
 queueClient.createWithResponse(metadata, null);
 ```
@@ -193,7 +198,7 @@ or
 
 ```Java
 String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueAsyncName, sasToken)
-QueueAsyncClient queueAsyncClient = QueueAsyncClient.builder().endpoint(queueAsyncURL).build();
+QueueAsyncClient queueAsyncClient = new QueueAsyncClientBuilder().endpoint(queueAsyncURL).buildAsyncClient();
 queueAsyncClient.createWithResponse(metadata).subscribe(
     result -> {
       // do something when new queue created
@@ -272,9 +277,11 @@ String queueServiceURL = String.format("https://%s.queue.core.windows.net", acco
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 // @param marker: Starting point to list the queues
 // @param options: Filter for queue selection
-queueServiceClient.listQueuesSegment(marker, options).forEach{
-    queueItem -> {//do something}
-};
+// @param timeout: An optional timeout applied to the operation.
+// @param context: Additional context that is passed through the Http pipeline during the service call.
+queueServiceClient.listQueues(markers, options, timeout, context).stream().forEach(
+    queueItem -> {System.out.printf("Queue %s exists in the account.", queueItem.getName());}
+);
 ```
 
 ### Get properties in queue account
@@ -298,13 +305,8 @@ Use `${SASToken}` as credential.
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
 
-StorageServiceProperties properties = new StorageServiceProperties() {
-    // logging: some logging;
-    // HourMetrics: some metrics
-    // MinuteMetrics: some metrics
-    // Cors: some cors
-}
-
+StorageServiceProperties properties = queueServiceClient.getProperties();
+properties.setCors(Collections.emptyList());
 queueServiceClient.setProperties(properties);
 ```
 
@@ -349,7 +351,7 @@ The operation retrieves one or more messages from the front of the queue. Use `$
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
 QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential(SASToken).queueName("myqueue").buildClient();
 
-queueClient.peekMessages().forEach(message-> {print message.messageText();});
+queueClient.peekMessages().forEach(message-> {System.out.println(message.getMessageText());});
 ```
 
 
