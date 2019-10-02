@@ -28,7 +28,7 @@ public final class PollerJavaDocCodeSnippets {
         // Create poller instance
         Poller<String> poller = new Poller<>(Duration.ofMillis(100),
             // Define your custom poll operation
-            prePollResponse -> {
+            perPollResponse -> {
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                     System.out.println("Returning intermediate response.");
                     return Mono.just(new PollResponse<>(OperationStatus.IN_PROGRESS, "Operation in progress."));
