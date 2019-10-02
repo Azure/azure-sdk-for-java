@@ -27,7 +27,6 @@ import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import spock.lang.Unroll
-import sun.jvm.hotspot.oops.Metadata
 
 import java.nio.ByteBuffer
 import java.nio.file.FileAlreadyExistsException
