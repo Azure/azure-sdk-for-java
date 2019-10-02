@@ -216,7 +216,7 @@ containerClient.create();
 Upload data stream to a blob using BlockBlobClient generated from a ContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("myblockblob");
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").asBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
@@ -228,7 +228,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 Upload a file to a blob using BlockBlobClient generated from ContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("myblockblob");
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").asBlockBlobClient();
 blockBlobClient.uploadFromFile("local-file.jpg");
 ```
 
