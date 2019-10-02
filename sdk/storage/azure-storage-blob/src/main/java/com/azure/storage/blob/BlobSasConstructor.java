@@ -72,17 +72,11 @@ public class BlobSasConstructor {
      */
     public String constructBlobSasToken(SharedKeyCredential credential, BlobSASPermission permission,
         String snapshotId) {
-        assertGenerateOK(false, permission);
-
         String resource = (snapshotId == null)
             ? Constants.UrlConstants.SAS_BLOB_CONSTANT
             : Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
-        String permissionString = permission.toString();
 
-        // Signature is generated on the un-url-encoded values.
-        String signature = credential.computeHmac256(stringToSign(permissionString, resource, snapshotId));
-
-        return construct(null, resource, permissionString, signature);
+        return construct(credential, permission.toString(), resource, snapshotId);
     }
 
     /**
@@ -94,17 +88,11 @@ public class BlobSasConstructor {
      * @return a signed SAS token with the requested permissions.
      */
     public String constructBlobSasToken(UserDelegationKey key, BlobSASPermission permission, String snapshotId) {
-        assertGenerateOK(true, permission);
-
         String resource = (snapshotId == null)
             ? Constants.UrlConstants.SAS_BLOB_CONSTANT
             : Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
-        String permissionString = permission.toString();
 
-        // Signature is generated on the un-url-encoded values.
-        String signature = Utility.computeHMac256(key.getValue(), stringToSign(key, resource, permissionString, null));
-
-        return construct(key, resource, permissionString, signature);
+        return construct(key, permission.toString(), resource, snapshotId);
     }
 
     /**
@@ -115,15 +103,7 @@ public class BlobSasConstructor {
      * @return a signed SAS token with the requested permissions.
      */
     public String constructContainerSasToken(SharedKeyCredential credential, ContainerSASPermission permission) {
-        assertGenerateOK(false, permission);
-
-        String resource = Constants.UrlConstants.SAS_CONTAINER_CONSTANT;
-        String permissionString = permission.toString();
-
-        // Signature is generated on the un-url-encoded values.
-        String signature = credential.computeHmac256(stringToSign(permissionString, resource, null));
-
-        return construct(null, resource, permissionString, signature);
+        return construct(credential, permission.toString(), Constants.UrlConstants.SAS_CONTAINER_CONSTANT, null);
     }
 
     /**
@@ -134,15 +114,19 @@ public class BlobSasConstructor {
      * @return a signed SAS token with the requested permissions.
      */
     public String constructContainerSasToken(UserDelegationKey key, ContainerSASPermission permission) {
-        assertGenerateOK(true, permission);
+        return construct(key, permission.toString(), Constants.UrlConstants.SAS_CONTAINER_CONSTANT, null);
+    }
 
-        String resource = Constants.UrlConstants.SAS_CONTAINER_CONSTANT;
-        String permissionString = permission.toString();
+    private String construct(SharedKeyCredential credential, String permissions, String resource, String snapshotId) {
+        assertGenerateOK(false, permissions);
+        String signature = credential.computeHmac256(stringToSign(resource, permissions, snapshotId));
+        return generateSasToken(null, resource, permissions, signature);
+    }
 
-        // Signature is generated on the un-url-encoded values.
-        String signature = Utility.computeHMac256(key.getValue(), stringToSign(key, resource, permissionString, null));
-
-        return construct(key, resource, permissionString, signature);
+    private String construct(UserDelegationKey key, String permissions, String resource, String snapshotId) {
+        assertGenerateOK(true, permissions);
+        String signature = Utility.computeHMac256(key.getValue(), stringToSign(key, resource, permissions, snapshotId));
+        return generateSasToken(key, resource, permissions, signature);
     }
 
     /**
@@ -447,7 +431,7 @@ public class BlobSasConstructor {
         );
     }
 
-    private String construct(UserDelegationKey key, String resource, String permissions, String signature) {
+    private String generateSasToken(UserDelegationKey key, String resource, String permissions, String signature) {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to
          themselves, we cheat except for the signature value.
@@ -494,10 +478,6 @@ public class BlobSasConstructor {
     }
 
     private String formatQueryDate(OffsetDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        } else {
-            return Utility.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
-        }
+        return (dateTime == null) ? null : Utility.ISO_8601_UTC_DATE_FORMATTER.format(dateTime);
     }
 }
