@@ -21,7 +21,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.Key;
 
-import java.net.URI;
 
 /**
  * The CryptographyClient provides synchronous methods to perform cryptographic operations using asymmetric and

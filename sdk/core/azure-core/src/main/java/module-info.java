@@ -137,6 +137,7 @@ module com.azure.core {
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;
+    exports com.azure.core.cryptography;
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;

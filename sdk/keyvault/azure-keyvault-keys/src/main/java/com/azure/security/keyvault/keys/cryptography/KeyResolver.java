@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credentials.TokenCredential;
@@ -12,7 +15,7 @@ import com.azure.core.util.Configuration;
  * An object capable of synchronously retrieving key encryption keys from a provided key identifier.
  */
 public class KeyResolver implements com.azure.core.cryptography.KeyEncryptionKeyResolver {
-    private CryptographyClientBuilder cryptographyClientBuilder;
+    private final CryptographyClientBuilder cryptographyClientBuilder;
 
     /**
      * Creates an instance of Key Resolver.

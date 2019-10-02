@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 module com.azure.security.keyvault.keys {
-    requires transitive com.azure.core;
 
     requires commons.codec;
+    requires java.xml.crypto;
+    requires com.azure.core;
 
     exports com.azure.security.keyvault.keys.cryptography;
     exports com.azure.security.keyvault.keys.cryptography.models;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credentials.TokenCredential;
@@ -15,7 +18,7 @@ import reactor.core.publisher.Mono;
  * An object capable of asynchronously retrieving key encryption keys from a provided key identifier.
  */
 public class AsyncKeyResolver implements AsyncKeyEncryptionKeyResolver {
-    private CryptographyClientBuilder cryptographyClientBuilder;
+    private final CryptographyClientBuilder cryptographyClientBuilder;
 
     /**
      * Creates an instance of Async Key Resolver.
