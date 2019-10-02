@@ -3,16 +3,15 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.ContainerItem;
-import com.azure.storage.blob.models.ListContainersOptions;
-import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
@@ -26,9 +25,9 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -36,8 +35,8 @@ import java.time.OffsetDateTime;
  * requests to the resource on the service. It may also be used to construct URLs to blobs and containers.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient} through
- * {@link #getContainerClient(String)}, and operations on a blob are available on {@link BlobClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link BlobContainerClient}
+ * through {@link #getBlobContainerClient(String)}, and operations on a blob are available on {@link BlobClient}.
  *
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
@@ -57,18 +56,18 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Initializes a {@link ContainerClient} object pointing to the specified container. This method does not create a
-     * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
+     * Initializes a {@link BlobContainerClient} object pointing to the specified container. This method does not create
+     * a container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getContainerClient#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getBlobContainerClient#String}
      *
      * @param containerName The name of the container to point to.
-     * @return A {@link ContainerClient} object pointing to the specified container
+     * @return A {@link BlobContainerClient} object pointing to the specified container
      */
-    public ContainerClient getContainerClient(String containerName) {
-        return new ContainerClient(blobServiceAsyncClient.getContainerAsyncClient(containerName));
+    public BlobContainerClient getBlobContainerClient(String containerName) {
+        return new BlobContainerClient(blobServiceAsyncClient.getBlobContainerAsyncClient(containerName));
     }
 
     /**
@@ -87,13 +86,13 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainer#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createBlobContainer#String}
      *
      * @param containerName Name of the container to create
-     * @return The {@link ContainerClient} used to interact with the container created.
+     * @return The {@link BlobContainerClient} used to interact with the container created.
      */
-    public ContainerClient createContainer(String containerName) {
-        return createContainerWithResponse(containerName, null, null, Context.NONE).getValue();
+    public BlobContainerClient createBlobContainer(String containerName) {
+        return createBlobContainerWithResponse(containerName, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -103,20 +102,19 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Metadata-PublicAccessType-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context}
      *
      * @param containerName Name of the container to create
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ContainerClient} used to
-     * interact with the container created.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
+     * to interact with the container created.
      */
-    public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata,
-        PublicAccessType accessType, Context context) {
-        ContainerClient client = getContainerClient(containerName);
-
+    public Response<BlobContainerClient> createBlobContainerWithResponse(String containerName,
+        Map<String, String> metadata, PublicAccessType accessType, Context context) {
+        BlobContainerClient client = getBlobContainerClient(containerName);
         return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
     }
 
@@ -127,12 +125,12 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.deleteContainer#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String}
      *
      * @param containerName Name of the container to delete
      */
-    public void deleteContainer(String containerName) {
-        deleteContainerWithResponse(containerName, Context.NONE);
+    public void deleteBlobContainer(String containerName) {
+        deleteBlobContainerWithResponse(containerName, Context.NONE);
     }
 
     /**
@@ -144,8 +142,8 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteContainerWithResponse(String containerName, Context context) {
-        return blobServiceAsyncClient.deleteContainerWithResponse(containerName).block();
+    public Response<Void> deleteBlobContainerWithResponse(String containerName, Context context) {
+        return blobServiceAsyncClient.deleteBlobContainerWithResponse(containerName).block();
     }
 
     /**
@@ -153,7 +151,7 @@ public final class BlobServiceClient {
      *
      * @return the URL.
      */
-    public URL getAccountUrl() {
+    public String getAccountUrl() {
         return blobServiceAsyncClient.getAccountUrl();
     }
 
@@ -164,12 +162,12 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listContainers}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers}
      *
      * @return The list of containers.
      */
-    public PagedIterable<ContainerItem> listContainers() {
-        return this.listContainers(new ListContainersOptions(), null);
+    public PagedIterable<BlobContainerItem> listBlobContainers() {
+        return this.listBlobContainers(new ListBlobContainersOptions(), null);
     }
 
     /**
@@ -179,14 +177,14 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listContainers#ListContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
      *
-     * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListBlobContainersOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of containers.
      */
-    public PagedIterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
-        return new PagedIterable<>(blobServiceAsyncClient.listContainersWithOptionalTimeout(options, timeout));
+    public PagedIterable<BlobContainerItem> listBlobContainers(ListBlobContainersOptions options, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.listBlobContainersWithOptionalTimeout(options, timeout));
     }
 
     /**

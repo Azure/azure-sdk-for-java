@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -19,20 +18,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.file.models.DeleteSnapshotsOptionType;
-import com.azure.storage.file.models.SharePermission;
-import com.azure.storage.file.models.SharesCreatePermissionResponse;
-import com.azure.storage.file.models.SharesCreateResponse;
-import com.azure.storage.file.models.SharesCreateSnapshotResponse;
-import com.azure.storage.file.models.SharesDeleteResponse;
-import com.azure.storage.file.models.SharesGetAccessPolicyResponse;
-import com.azure.storage.file.models.SharesGetPermissionResponse;
-import com.azure.storage.file.models.SharesGetPropertiesResponse;
-import com.azure.storage.file.models.SharesGetStatisticsResponse;
-import com.azure.storage.file.models.SharesSetAccessPolicyResponse;
-import com.azure.storage.file.models.SharesSetMetadataResponse;
-import com.azure.storage.file.models.SharesSetQuotaResponse;
+import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.implementation.models.SharePermission;
+import com.azure.storage.file.implementation.models.SharesCreatePermissionResponse;
+import com.azure.storage.file.implementation.models.SharesCreateResponse;
+import com.azure.storage.file.implementation.models.SharesCreateSnapshotResponse;
+import com.azure.storage.file.implementation.models.SharesDeleteResponse;
+import com.azure.storage.file.implementation.models.SharesGetAccessPolicyResponse;
+import com.azure.storage.file.implementation.models.SharesGetPermissionResponse;
+import com.azure.storage.file.implementation.models.SharesGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.SharesGetStatisticsResponse;
+import com.azure.storage.file.implementation.models.SharesSetAccessPolicyResponse;
+import com.azure.storage.file.implementation.models.SharesSetMetadataResponse;
+import com.azure.storage.file.implementation.models.SharesSetQuotaResponse;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
 import java.util.List;
@@ -299,13 +299,13 @@ public final class SharesImpl {
      * Returns the permission (security descriptor) for a given key.
      *
      * @param shareName The name of the target share.
+     * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(String shareName, Context context) {
-        final String filePermissionKey = null;
+    public Mono<SharesGetPermissionResponse> getPermissionWithRestResponseAsync(String shareName, String filePermissionKey, Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "filepermission";
@@ -316,7 +316,7 @@ public final class SharesImpl {
      * Returns the permission (security descriptor) for a given key.
      *
      * @param shareName The name of the target share.
-     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -3,10 +3,10 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -21,7 +21,6 @@ import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
@@ -59,9 +58,8 @@ public class DirectoryClient {
      * Get the url of the storage directory client.
      *
      * @return the URL of the storage directory client.
-     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getDirectoryUrl() {
+    public String getDirectoryUrl() {
         return directoryAsyncClient.getDirectoryUrl();
     }
 

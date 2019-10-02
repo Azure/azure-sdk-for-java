@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -20,7 +20,6 @@ import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -57,9 +56,8 @@ public final class QueueClient {
 
     /**
      * @return the URL of the storage queue.
-     * @throws RuntimeException If the queue is using a malformed URL.
      */
-    public URL getQueueUrl() {
+    public String getQueueUrl() {
         return client.getQueueUrl();
     }
 

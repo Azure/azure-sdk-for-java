@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
@@ -23,7 +23,6 @@ import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -60,7 +59,7 @@ public final class QueueServiceClient {
     /**
      * @return the URL of the storage queue
      */
-    public URL getQueueServiceUrl() {
+    public String getQueueServiceUrl() {
         return client.getQueueServiceUrl();
     }
 

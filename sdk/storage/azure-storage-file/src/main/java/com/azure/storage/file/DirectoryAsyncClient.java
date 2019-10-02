@@ -3,12 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -17,22 +17,20 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.models.DirectorysCreateResponse;
+import com.azure.storage.file.implementation.models.DirectorysGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.DirectorysListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.implementation.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.implementation.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
-import com.azure.storage.file.models.DirectorysCreateResponse;
-import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
-import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.models.DirectorysSetMetadataResponse;
-import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -98,16 +96,14 @@ public class DirectoryAsyncClient {
      * Get the url of the storage directory client.
      *
      * @return the URL of the storage directory client
-     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getDirectoryUrl() {
-        try {
-            return new URL(azureFileStorageClient.getUrl());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                    azureFileStorageClient.getUrl()), e));
+    public String getDirectoryUrl() {
+        StringBuilder directoryURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(directoryPath);
+        if (snapshot != null) {
+            directoryURLString.append("?snapshot=").append(snapshot);
         }
+        return directoryURLString.toString();
     }
 
     /**

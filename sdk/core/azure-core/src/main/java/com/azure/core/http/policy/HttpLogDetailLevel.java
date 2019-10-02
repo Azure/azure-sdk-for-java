@@ -37,7 +37,7 @@ public enum HttpLogDetailLevel {
     /**
      * @return a value indicating whether a request's URL should be logged.
      */
-    public boolean shouldLogURL() {
+    public boolean shouldLogUrl() {
         return this != NONE;
     }
 

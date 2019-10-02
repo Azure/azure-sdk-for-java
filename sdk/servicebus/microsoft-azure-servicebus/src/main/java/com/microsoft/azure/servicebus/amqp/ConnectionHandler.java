@@ -102,11 +102,11 @@ public class ConnectionHandler extends BaseHandler {
                 SSLContext strictTlsContext = new StrictTLSContext(strictTlsContextSpi, defaultContext.getProvider(), defaultContext.getProtocol());
                 domain.setSslContext(strictTlsContext);
                 domain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER_NAME);
-                SslPeerDetails peerDetails = Proton.sslPeerDetails(this.getOutboundSocketHostName(), this.getOutboundSocketPort());
+                SslPeerDetails peerDetails = Proton.sslPeerDetails(this.messagingFactory.getHostName(), this.getProtocolPort());
                 transport.ssl(domain, peerDetails);
             } catch (NoSuchAlgorithmException e) {
                 // Should never happen
-                TRACE_LOGGER.error("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
+                TRACE_LOGGER.info("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
 //                this.messagingFactory.onConnectionError(new ErrorCondition(AmqpErrorCode.InternalError, e.getMessage()));
             }
         } else if (VERIFY_MODE == SslDomain.VerifyMode.VERIFY_PEER) {
@@ -118,7 +118,7 @@ public class ConnectionHandler extends BaseHandler {
                 transport.ssl(domain);
             } catch (NoSuchAlgorithmException e) {
                 // Should never happen
-                TRACE_LOGGER.error("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
+                TRACE_LOGGER.info("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
 //                this.messagingFactory.onConnectionError(new ErrorCondition(AmqpErrorCode.InternalError, e.getMessage()));
             }
 
@@ -162,9 +162,9 @@ public class ConnectionHandler extends BaseHandler {
     public void onTransportError(Event event) {
         ErrorCondition condition = event.getTransport().getCondition();
         if (condition != null) {
-            TRACE_LOGGER.warn("Connection.onTransportError: hostname:{}, error:{}", event.getConnection().getHostname(), condition.getDescription());
+            TRACE_LOGGER.info("Connection.onTransportError: hostname:{}, error:{}", event.getConnection().getHostname(), condition.getDescription());
         } else {
-            TRACE_LOGGER.warn("Connection.onTransportError: hostname:{}. error:{}", event.getConnection().getHostname(), "no description returned");
+            TRACE_LOGGER.info("Connection.onTransportError: hostname:{}. error:{}", event.getConnection().getHostname(), "no description returned");
         }
 
         this.messagingFactory.onConnectionError(condition);

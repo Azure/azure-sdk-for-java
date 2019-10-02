@@ -37,6 +37,7 @@
     <azure-storage-blob.version>12.0.0-preview.4</azure-storage-blob.version>
     <azure-storage-blob-cryptography.version>12.0.0-preview.4</azure-storage-blob-cryptography.version>
     <azure-storage-file.version>12.0.0-preview.4</azure-storage-file.version>
+    <azure-storage-file-datalake.version>12.0.0-preview.4</azure-storage-file-datalake.version>
     <azure-storage-queue.version>12.0.0-preview.4</azure-storage-queue.version>
     <azure-storage-queue-cryptography.version>12.0.0-preview.4</azure-storage-queue-cryptography.version>
     <project.automatic.module.name>com.azure.eng.jacoco.test.coverage</project.automatic.module.name>
@@ -125,6 +126,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file</artifactId>
       <version>${azure-storage-file.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-datalake</artifactId>
+      <version>${azure-storage-file-datalake.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

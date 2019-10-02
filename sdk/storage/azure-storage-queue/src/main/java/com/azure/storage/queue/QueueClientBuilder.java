@@ -183,4 +183,9 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
         this.queueName = Objects.requireNonNull(queueName);
         return this;
     }
+
+    @Override
+    protected Class<QueueClientBuilder> getClazz() {
+        return QueueClientBuilder.class;
+    }
 }

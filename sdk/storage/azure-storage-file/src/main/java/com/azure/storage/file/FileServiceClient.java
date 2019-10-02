@@ -3,10 +3,10 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
@@ -23,7 +23,6 @@ import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -61,9 +60,8 @@ public final class FileServiceClient {
      * Get the url of the storage file service client.
      *
      * @return the url of the Storage File service.
-     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getFileServiceUrl() {
+    public String getFileServiceUrl() {
         return fileServiceAsyncClient.getFileServiceUrl();
     }
 

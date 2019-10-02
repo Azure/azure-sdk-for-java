@@ -5,7 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
@@ -14,17 +14,18 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 
 /**
- * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs
- * using the Azure Storage Blob SDK for Java.
+ * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs using the Azure
+ * Storage Blob SDK for Java.
  */
 public class SetMetadataAndHTTPHeadersExample {
 
     /**
      * Entry point into the setting metadata examples for Storage blobs.
-     * @param args Unused. Arguments to the program.
      *
+     * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
@@ -50,27 +51,27 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container client from storageClient.
          */
-        ContainerClient containerClient = storageClient.getContainerClient("mycontainer" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("mycontainer" + System.currentTimeMillis());
 
         /*
          * Setup containerMetadata for container.
          */
-        Metadata containerMetadata = new Metadata(Collections.singletonMap("mycontainermetadata", "sample"));
+        Map<String, String> containerMetadata = Collections.singletonMap("mycontainermetadata", "sample");
 
         /*
          * Create a container with the containerMetadata above.
          */
-        containerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
+        blobContainerClient.createWithResponse(containerMetadata, null, null, new Context("key1", "value1"));
 
         /*
          * Create a blob client.
          */
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient("myblob" + System.currentTimeMillis());
+        BlockBlobClient blobClient = blobContainerClient.getBlobClient("myblob" + System.currentTimeMillis()).getBlockBlobClient();
 
         /*
          * Create a blob with blob's blobMetadata and BlobHttpHeaders.
          */
-        Metadata blobMetadata = new Metadata(Collections.singletonMap("myblobmetadata", "sample"));
+        Map<String, String> blobMetadata = Collections.singletonMap("myblobmetadata", "sample");
         BlobHTTPHeaders blobHTTPHeaders = new BlobHTTPHeaders().setBlobContentDisposition("attachment")
             .setBlobContentType("text/html; charset=utf-8");
 
@@ -85,6 +86,6 @@ public class SetMetadataAndHTTPHeadersExample {
          * Clean up the container and blob.
          */
         blobClient.delete();
-        containerClient.delete();
+        blobContainerClient.delete();
     }
 }
