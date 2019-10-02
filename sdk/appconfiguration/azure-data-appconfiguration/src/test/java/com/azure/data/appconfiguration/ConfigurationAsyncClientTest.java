@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);
-
+    private static final String NO_LABEL = null;
     private ConfigurationAsyncClient client;
 
     @Override
@@ -156,7 +156,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
     public void setSettingEmptyKey() {
-        StepVerifier.create(client.setSetting("", null, "A value"))
+        StepVerifier.create(client.setSetting("", NO_LABEL, "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
@@ -166,7 +166,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void setSettingEmptyValue() {
         setSettingEmptyValueRunner((setting) -> {
-            StepVerifier.create(client.setSetting(setting.getKey(), null, setting.getValue()))
+            StepVerifier.create(client.setSetting(setting.getKey(), NO_LABEL, setting.getValue()))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
@@ -180,7 +180,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void setSettingNullKey() {
-        assertRunnableThrowsException(() -> client.setSetting(null, null, "A Value").block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.setSetting(null, NO_LABEL, "A Value").block(), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.setSettingWithResponse(null, false).block(), NullPointerException.class);
     }
 

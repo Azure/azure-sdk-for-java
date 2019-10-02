@@ -200,7 +200,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The configuration setting to create or update.
-     * @param onlyIfUnchanged A boolean indicates if using setting's ETag as If-Match's value.
+     * @param ifUnchanged A boolean indicates if using setting's ETag as If-Match's value.
      * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an
      * invalid value, the setting is locked, or an etag was provided but does not match the service's current etag value
      * (which will also throw HttpResponseException described below).
@@ -213,16 +213,16 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting,
-                                                                       boolean onlyIfUnchanged) {
-        return withContext(context -> setSetting(setting, onlyIfUnchanged, context));
+                                                                       boolean ifUnchanged) {
+        return withContext(context -> setSetting(setting, ifUnchanged, context));
     }
 
-    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, boolean onlyIfUnchanged,
+    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, boolean ifUnchanged,
                                                     Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        final String ifMatchETag = onlyIfUnchanged ? getETagValue(setting.getETag()) : "*";
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         // This service method call is similar to addSetting except it will create or update a configuration setting.
         // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
         // service has a matching etag then it matches, then its value is updated with what the user passed in.

@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class ConfigurationAsyncClientJavaDocCodeSnippets {
 
+    private static final String NO_LABEL = null;
     private String key1 = "key1";
     private String key2 = "key2";
     private String value1 = "val1";
@@ -65,11 +66,11 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     public void setSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string
-        client.setSetting("prodDBConnection", null, "db_connection")
+        client.setSetting("prodDBConnection", NO_LABEL, "db_connection")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
         // Update the value of the setting to "updated_db_connection"
-        client.setSetting("prodDBConnection", null, "updated_db_connection")
+        client.setSetting("prodDBConnection", NO_LABEL, "updated_db_connection")
             .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string
 
