@@ -4,7 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-
+import com.azure.storage.blob.models.ContainerListDetails;
+import com.azure.storage.blob.models.ListContainersOptions;
+import com.azure.storage.blob.models.Logging;
+import com.azure.storage.blob.models.Metrics;
+import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.RetentionPolicy;
+import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -12,19 +19,10 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 
-import com.azure.storage.blob.models.ContainerListDetails;
-import com.azure.storage.blob.models.ListContainersOptions;
-import com.azure.storage.blob.models.Logging;
-import com.azure.storage.blob.models.Metadata;
-import com.azure.storage.blob.models.Metrics;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.RetentionPolicy;
-import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageServiceProperties;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link BlobServiceClient}
@@ -90,11 +88,11 @@ public class BlobServiceClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobServiceClient#createContainerWithResponse(String, Metadata, PublicAccessType, Context)}
+     * Code snippet for {@link BlobServiceClient#createContainerWithResponse(String, Map, PublicAccessType, Context)}
      */
     public void createContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Metadata-PublicAccessType-Context
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Map-PublicAccessType-Context
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
         ContainerClient containerClient = client.createContainerWithResponse(
@@ -102,7 +100,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
             metadata,
             PublicAccessType.CONTAINER,
             context).getValue();
-        // END: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Metadata-PublicAccessType-Context
+        // END: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Map-PublicAccessType-Context
     }
 
     /**
