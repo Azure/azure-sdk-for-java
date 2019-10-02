@@ -5,12 +5,13 @@ package com.azure.messaging.eventhubs.proxy;
 
 import com.azure.core.amqp.TransportType;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubAsyncConsumer;
+import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.TestUtils;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.IntegrationTestEventData;
 import com.azure.messaging.eventhubs.jproxy.ProxyServer;
 import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -20,6 +21,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -28,27 +30,23 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.util.ArrayList;
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.UUID;
 
-/**
- * Verify we can use jproxy hosted locally to receive messages.
- */
-public class ProxyReceiveTest extends IntegrationTestBase {
+public class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8899;
     private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
-    private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static final String PARTITION_ID = "0";
+    private static final String PARTITION_ID = "1";
     private static final int NUMBER_OF_EVENTS = 25;
 
-    private static IntegrationTestEventData testData;
     private static ProxyServer proxyServer;
     private static ProxySelector defaultProxySelector;
     private EventHubAsyncClient client;
 
-    public ProxyReceiveTest() {
-        super(new ClientLogger(ProxyReceiveTest.class));
+    public ProxySendTest() {
+        super(new ClientLogger(ProxySendTest.class));
     }
 
     @Rule
@@ -60,7 +58,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     }
 
     @BeforeClass
-    public static void setup() throws IOException {
+    public static void initialize() throws Exception {
         proxyServer = new SimpleProxy(SIMPLE_PROXY_ADDRESS.getHostName(), SIMPLE_PROXY_ADDRESS.getPort());
         proxyServer.start(t -> {
         });
@@ -69,9 +67,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
-                List<Proxy> proxies = new ArrayList<>();
-                proxies.add(new Proxy(Proxy.Type.HTTP, SIMPLE_PROXY_ADDRESS));
-                return proxies;
+                return Collections.singletonList(new Proxy(Proxy.Type.HTTP, SIMPLE_PROXY_ADDRESS));
             }
 
             @Override
@@ -81,8 +77,8 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         });
     }
 
-    @AfterClass()
-    public static void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanupClient() throws Exception {
         if (proxyServer != null) {
             proxyServer.stop();
         }
@@ -96,13 +92,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .transportType(TransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString())
             .buildAsyncClient();
-
-        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
-        } else {
-            final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client, NUMBER_OF_EVENTS, options);
-        }
     }
 
     @Override
@@ -110,15 +99,27 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         dispose(client);
     }
 
-    @Test()
-    public void testReceiverStartOfStreamFilters() {
+    /**
+     * Verifies that we can send some number of events.
+     */
+    @Test
+    public void sendEvents() {
         // Arrange
-        final EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()));
+        final String messageId = UUID.randomUUID().toString();
+        final EventHubProducerOptions options = new EventHubProducerOptions().setPartitionId(PARTITION_ID);
+        final EventHubAsyncProducer producer = client.createProducer(options);
+        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
+        final Instant sendTime = Instant.now();
 
-        // Act & Assert
-        StepVerifier.create(consumer.receive()
-            .filter(x -> TestUtils.isMatchingEvent(x, testData.getMessageTrackingId())).take(NUMBER_OF_EVENTS))
+        // Act
+        StepVerifier.create(producer.send(events))
+            .verifyComplete();
+
+        // Assert
+        final EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
+            PARTITION_ID, EventPosition.fromEnqueuedTime(sendTime));
+
+        StepVerifier.create(consumer.receive().filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .verifyComplete();
     }

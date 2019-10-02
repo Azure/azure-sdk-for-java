@@ -108,8 +108,8 @@ class ProxyNegotiationHandler {
                             readBuffer.get(connectRequest, 0, bytesToRead);
                             readBuffer.compact();
 
-                            final String[] hostNamePortParts = extractHostNamePort(connectRequest);
                             proxyConnectionState = ProxyConnectionState.PROXY_INITIATED;
+                            final String[] hostNamePortParts = extractHostNamePort(connectRequest);
                             final InetSocketAddress serviceAddress = new InetSocketAddress(
                                 hostNamePortParts[0], Integer.parseInt(hostNamePortParts[1]));
                             readWriteState.serviceAddress = serviceAddress.toString();
