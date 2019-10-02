@@ -12,6 +12,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.security.GeneralSecurityException;
+import java.time.OffsetDateTime;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
@@ -177,32 +178,32 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#getSetting(String)}
+     * Generates code sample for using {@link ConfigurationClient#getSetting(String, String, OffsetDateTime)}
      */
     public void getSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#string
-        ConfigurationSetting result = configurationClient.getSetting("prodDBConnection");
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime
+        ConfigurationSetting result = configurationClient.getSetting("prodDBConnection", null, null);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getSetting#string
+        // END: com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime
 
-    /*
-      Generates code sample for using {@link ConfigurationClient#getSetting(ConfigurationSetting)}
+    /**
+      Generates code sample for using {@link ConfigurationClient#getSetting(ConfigurationSetting, boolean)}
      */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting-boolean
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         ConfigurationSetting resultSetting = configurationClient
-            .getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+            .getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false);
         System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting
+        // END: com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting-boolean
 
-    /*
+    /**
       Generates code sample for using {@link ConfigurationClient#getSettingWithResponse(ConfigurationSetting, Context)}
      */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         Response<ConfigurationSetting> responseResultSetting = configurationClient
-            .getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
+            .getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
                 new Context(key1, value1));
         System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
             responseResultSetting.getValue().getValue());

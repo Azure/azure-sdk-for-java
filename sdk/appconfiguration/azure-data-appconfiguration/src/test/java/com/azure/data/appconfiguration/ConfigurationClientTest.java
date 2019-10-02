@@ -82,7 +82,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void addSettingEmptyValue() {
         addSettingEmptyValueRunner((setting) -> {
             assertConfigurationEquals(setting, client.addSetting(setting.getKey(), setting.getValue()));
-            assertConfigurationEquals(setting, client.getSetting(setting.getKey()));
+            assertConfigurationEquals(setting, client.getSetting(setting, false));
         });
     }
 
@@ -126,7 +126,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             assertConfigurationEquals(update, client.setSetting(update.setETag(etag)));
             assertRestException(() -> client.setSetting(initial), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
-            assertConfigurationEquals(update, client.getSetting(update));
+            assertConfigurationEquals(update, client.getSetting(update, false));
         });
     }
 
@@ -144,7 +144,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setSettingEmptyValue() {
         setSettingEmptyValueRunner((setting) -> {
             assertConfigurationEquals(setting, client.setSetting(setting.getKey(), setting.getValue()));
-            assertConfigurationEquals(setting, client.getSetting(setting.getKey()));
+            assertConfigurationEquals(setting, client.getSetting(setting, false));
         });
     }
 
@@ -203,9 +203,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 ResourceNotFoundException.class,
                 HttpURLConnection.HTTP_PRECON_FAILED);
 
-            assertConfigurationEquals(update, client.getSetting(update));
+            assertConfigurationEquals(update, client.getSetting(update, false));
             assertConfigurationEquals(last, client.updateSetting(new ConfigurationSetting().setKey(last.getKey()).setLabel(last.getLabel()).setValue(last.getValue()).setETag(updateEtag)));
-            assertConfigurationEquals(last, client.getSetting(last));
+            assertConfigurationEquals(last, client.getSetting(last, false));
 
             assertRestException(() -> client.updateSetting(new ConfigurationSetting().setKey(initial.getKey()).setLabel(initial.getLabel()).setValue(initial.getValue()).setETag(updateEtag)),
                 ResourceNotFoundException.class,
@@ -227,7 +227,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void getSetting() {
         getSettingRunner((expected) -> {
             client.addSetting(expected);
-            assertConfigurationEquals(expected, client.getSetting(expected));
+            assertConfigurationEquals(expected, client.getSetting(expected, false));
         });
     }
 
@@ -241,8 +241,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverRetrievedConfiguration, client.addSetting(neverRetrievedConfiguration));
 
-        assertRestException(() -> client.getSetting("myNonExistentKey"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
-        assertRestException(() -> client.getSetting(nonExistentLabel), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getSetting("myNonExistentKey", null, null), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> client.getSetting(nonExistentLabel, false), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -253,10 +253,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void deleteSetting() {
         deleteSettingRunner((expected) -> {
             client.addSetting(expected);
-            assertConfigurationEquals(expected, client.getSetting(expected));
+            assertConfigurationEquals(expected, client.getSetting(expected, false));
 
             assertConfigurationEquals(expected, client.deleteSetting(expected));
-            assertRestException(() -> client.getSetting(expected), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            assertRestException(() -> client.getSetting(expected, false), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 
@@ -273,7 +273,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"));
         assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpURLConnection.HTTP_NO_CONTENT);
 
-        assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation.getKey()));
+        assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation, false));
     }
 
     /**
@@ -285,10 +285,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial);
             final ConfigurationSetting updatedConfig = client.updateSetting(update);
 
-            assertConfigurationEquals(update, client.getSetting(initial));
+            assertConfigurationEquals(update, client.getSetting(initial, false));
             assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.deleteSetting(updatedConfig));
-            assertRestException(() -> client.getSetting(initial), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            assertRestException(() -> client.getSetting(initial, false), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
 

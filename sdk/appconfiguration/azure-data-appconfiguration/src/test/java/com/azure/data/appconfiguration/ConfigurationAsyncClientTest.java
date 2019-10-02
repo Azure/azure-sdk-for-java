@@ -92,7 +92,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(setting.getKey()))
+            StepVerifier.create(client.getSetting(setting.getKey(), setting.getLabel(), null))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
         });
@@ -146,7 +146,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.setSetting(initial))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            StepVerifier.create(client.getSetting(update))
+            StepVerifier.create(client.getSettingWithResponse(update, false))
                     .assertNext(response -> assertConfigurationEquals(update, response))
                     .verifyComplete();
         });
@@ -170,7 +170,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(setting.getKey()))
+            StepVerifier.create(client.getSetting(setting.getKey(), setting.getLabel(), null))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
         });
@@ -246,7 +246,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().setKey(last.getKey()).setLabel(last.getLabel()).setValue(last.getValue()).setETag(initialEtag)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            StepVerifier.create(client.getSetting(update))
+            StepVerifier.create(client.getSettingWithResponse(update, true))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
@@ -254,7 +254,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(last))
+            StepVerifier.create(client.getSettingWithResponse(last, true))
                 .assertNext(response -> assertConfigurationEquals(last, response))
                 .verifyComplete();
 
@@ -268,7 +268,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void getSetting() {
         getSettingRunner((expected) ->
-            StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
+            StepVerifier.create(client.addSetting(expected).then(client.getSettingWithResponse(expected, false)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
@@ -285,11 +285,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
             .verifyComplete();
 
-        StepVerifier.create(client.getSetting("myNonExistentKey"))
+        StepVerifier.create(client.getSetting("myNonExistentKey", null, null))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
 
 
-        StepVerifier.create(client.getSetting(nonExistentLabel))
+        StepVerifier.create(client.getSettingWithResponse(nonExistentLabel, false))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
@@ -300,7 +300,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSetting() {
         deleteSettingRunner((expected) -> {
-            StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
+            StepVerifier.create(client.addSetting(expected).then(client.getSettingWithResponse(expected, false)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -308,7 +308,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(expected))
+            StepVerifier.create(client.getSettingWithResponse(expected, false))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
@@ -332,7 +332,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
-        StepVerifier.create(client.getSetting(neverDeletedConfiguration.getKey()))
+        StepVerifier.create(client.getSetting(neverDeletedConfiguration.getKey(), neverDeletedConfiguration.getLabel(), null))
             .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
     }
@@ -346,7 +346,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block();
             final ConfigurationSetting updatedConfig = client.updateSetting(update).block();
 
-            StepVerifier.create(client.getSetting(initial))
+            StepVerifier.create(client.getSettingWithResponse(initial, false))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
@@ -357,7 +357,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.getSetting(initial))
+            StepVerifier.create(client.getSettingWithResponse(initial, false))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }

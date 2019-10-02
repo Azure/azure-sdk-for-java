@@ -26,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -360,15 +361,18 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Attempts to get a ConfigurationSetting that matches the {@code key}.
+     * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} as optional, and the
+     * {@code acceptDateTime} as optional.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the setting with the key "prodDBConnection".</p>
+     * <p>Retrieve the setting with the key "prodDBConnection" and a time that one minute before now at UTC-Zone</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
+     * @param label Optional, the label of the setting to retrieve.
+     * @param acceptDateTime Optional, to access a past state of the configuration setting.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
      * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -376,32 +380,9 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(String key) {
-        return withContext(
-            context -> getSetting(new ConfigurationSetting().setKey(key), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting}
-     *
-     * @param setting The setting to retrieve based on its key and optional label combination.
-     * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
-     * key is an invalid value (which will also throw HttpResponseException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
-     * @throws HttpResponseException If the {@code} key is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return withContext(context -> getSetting(setting, context))
+    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime acceptDateTime) {
+        return withContext(context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime,
+                false, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -415,6 +396,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param onlyIfChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
      * value does not exist or the key is an invalid value (which will also throw HttpResponseException described
      * below).
@@ -424,16 +406,19 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> getSetting(setting, context));
+    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting,
+                                                                       boolean onlyIfChanged) {
+        return withContext(context -> getSetting(setting, null, onlyIfChanged, context));
     }
 
-    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime acceptDateTime,
+                                                    boolean onlyIfChanged, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
-        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null, null, null, null,
-            context)
+        final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
+        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
+            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));

@@ -16,6 +16,8 @@ import com.azure.data.appconfiguration.credentials.ConfigurationClientCredential
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
+import java.time.OffsetDateTime;
+
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
@@ -295,9 +297,11 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
+     * @param label Optional, the label of the setting to retrieve.
+     * @param acceptDateTime Optional, to access a past state of the configuration setting.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -305,20 +309,22 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(String key) {
-        return getSetting(new ConfigurationSetting().setKey(key), Context.NONE).getValue();
+    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime acceptDateTime) {
+        return client.getSetting(new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime,
+            false, Context.NONE).block().getValue();
     }
 
     /**
-     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
+     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label} and {@code onlyIfChanged}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the setting with the key "prodDBConnection".</p>
+     * <p>Retrieve the setting with the key "prodDBConnection", label "westUS"</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting-boolean}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param onlyIfChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -327,8 +333,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE).getValue();
+    public ConfigurationSetting getSetting(ConfigurationSetting setting, boolean onlyIfChanged) {
+        return getSettingWithResponse(setting, onlyIfChanged, Context.NONE).getValue();
     }
 
     /**
@@ -341,6 +347,7 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
+     * @param onlyIfChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containg the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
      * configuration value does not exist or the key is an invalid value (which will also throw ServiceRequestException
@@ -351,12 +358,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return getSetting(setting, context);
-    }
-
-    private Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
-        return client.getSetting(setting, context).block();
+    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting, boolean onlyIfChanged,
+                                                                 Context context) {
+        return client.getSetting(setting, null, onlyIfChanged, context).block();
     }
 
     /**
