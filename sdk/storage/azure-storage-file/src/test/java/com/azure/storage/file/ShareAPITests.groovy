@@ -7,6 +7,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.ShareSnapshotInfo
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
@@ -35,10 +36,26 @@ class ShareAPITests extends APISpec {
     def "Get share URL"() {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
 
         when:
         def shareURL = primaryShareClient.getShareUrl().toString()
+
+        then:
+        expectURL.equals(shareURL)
+    }
+
+    def "Get share snapshot URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
+        primaryShareClient.create()
+        when:
+        ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot()
+        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+                .buildClient()
+        def shareURL = newShareClient.getShareUrl().toString()
 
         then:
         expectURL.equals(shareURL)

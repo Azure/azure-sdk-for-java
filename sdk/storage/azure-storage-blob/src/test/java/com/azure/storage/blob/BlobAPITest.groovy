@@ -16,7 +16,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
@@ -512,7 +512,7 @@ class BlobAPITest extends APISpec {
 
     def "Set metadata min"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -525,7 +525,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set metadata metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -625,7 +625,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Snapshot metadata"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -742,7 +742,7 @@ class BlobAPITest extends APISpec {
     def "Copy metadata"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -1032,7 +1032,7 @@ class BlobAPITest extends APISpec {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         def bu2 = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         if (key1 != null && value1 != null) {
             metadata.put(key1, value1)
         }
@@ -1283,7 +1283,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultData.remaining())
 
         when:
-        def initialResponse = bc.setTierWithResponse(tier, null, null, null, null)
+        def initialResponse = bc.setAccessTierWithResponse(tier, null, null, null, null)
         def headers = initialResponse.getHeaders()
 
         then:
@@ -1312,7 +1312,7 @@ class BlobAPITest extends APISpec {
         bc.create(512)
 
         when:
-        bc.setTier(tier)
+        bc.setAccessTier(tier)
 
         then:
         bc.getProperties().getAccessTier() == tier
@@ -1339,7 +1339,7 @@ class BlobAPITest extends APISpec {
         bu.upload(defaultInputStream.get(), defaultData.remaining())
 
         when:
-        def statusCode = bc.setTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode()
+        def statusCode = bc.setAccessTierWithResponse(AccessTier.HOT, null, null, null, null).getStatusCode()
 
         then:
         statusCode == 200 || statusCode == 202
@@ -1358,7 +1358,7 @@ class BlobAPITest extends APISpec {
         def inferred1 = bc.getProperties().isAccessTierInferred()
         def inferredList1 = cc.listBlobsFlat().iterator().next().getProperties().isAccessTierInferred()
 
-        bc.setTier(AccessTier.HOT)
+        bc.setAccessTier(AccessTier.HOT)
 
         def inferred2 = bc.getProperties().isAccessTierInferred()
         def inferredList2 = cc.listBlobsFlat().iterator().next().getProperties().isAccessTierInferred()
@@ -1378,8 +1378,8 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setTier(sourceTier)
-        bc.setTier(destTier)
+        bc.setAccessTier(sourceTier)
+        bc.setAccessTier(destTier)
 
         then:
         bc.getProperties().getArchiveStatus() == status
@@ -1399,7 +1399,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setTier(AccessTier.fromString("garbage"))
+        bc.setAccessTier(AccessTier.fromString("garbage"))
 
         then:
         def e = thrown(StorageException)
@@ -1411,7 +1411,7 @@ class BlobAPITest extends APISpec {
 
     def "Set tier illegal argument"() {
         when:
-        bc.setTier(null)
+        bc.setAccessTier(null)
 
         then:
         thrown(IllegalArgumentException)
@@ -1426,7 +1426,7 @@ class BlobAPITest extends APISpec {
         def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
 
         when:
-        bc.setTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId(leaseID), null, null)
+        bc.setAccessTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId(leaseID), null, null)
 
         then:
         notThrown(StorageException)
@@ -1442,7 +1442,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId("garbage"), null, null)
+        bc.setAccessTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId("garbage"), null, null)
 
         then:
         thrown(StorageException)

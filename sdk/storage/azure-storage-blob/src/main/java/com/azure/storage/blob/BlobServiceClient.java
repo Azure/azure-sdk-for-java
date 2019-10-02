@@ -12,7 +12,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.ListContainersOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
@@ -31,6 +30,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -105,17 +105,17 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Metadata-PublicAccessType-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Map-PublicAccessType-Context}
      *
      * @param containerName Name of the container to create
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ContainerClient} used to
      * interact with the container created.
      */
-    public Response<ContainerClient> createContainerWithResponse(String containerName, Metadata metadata,
+    public Response<ContainerClient> createContainerWithResponse(String containerName, Map<String, String> metadata,
         PublicAccessType accessType, Context context) {
         ContainerClient client = getContainerClient(containerName);
 

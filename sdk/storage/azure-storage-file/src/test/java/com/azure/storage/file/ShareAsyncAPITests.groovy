@@ -35,7 +35,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Get share URL"() {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
         when:
         def shareURL = primaryShareAsyncClient.getShareUrl().toString()
         then:
