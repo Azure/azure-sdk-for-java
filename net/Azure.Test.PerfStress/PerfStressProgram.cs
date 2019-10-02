@@ -128,7 +128,7 @@ namespace Azure.Test.PerfStress
 
         static async Task PrintStatusAsync(CancellationToken token)
         {
-            Console.WriteLine("=== Progresss ===");
+            Console.WriteLine("=== Progress ===");
 
             while (!token.IsCancellationRequested)
             {
