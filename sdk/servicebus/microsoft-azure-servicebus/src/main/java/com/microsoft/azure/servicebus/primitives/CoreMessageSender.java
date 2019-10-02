@@ -618,14 +618,15 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         Timer.schedule(
             () -> {
                 if (!CoreMessageSender.this.linkFirstOpen.isDone()) {
-                    CoreMessageSender.this.closeInternals(false);
-                    CoreMessageSender.this.setClosed();
-
                     Exception operationTimedout = new TimeoutException(
                             String.format(Locale.US, "Open operation on SendLink(%s) on Entity(%s) timed out at %s.", CoreMessageSender.this.sendLink.getName(), CoreMessageSender.this.getSendPath(), ZonedDateTime.now().toString()),
                             CoreMessageSender.this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS)) ? CoreMessageSender.this.lastKnownLinkError : null);
                     TRACE_LOGGER.info(operationTimedout.getMessage());
                     ExceptionUtil.completeExceptionally(CoreMessageSender.this.linkFirstOpen, operationTimedout, CoreMessageSender.this, true);
+                    
+                	CoreMessageSender.this.setClosing();
+                    CoreMessageSender.this.closeInternals(false);
+                    CoreMessageSender.this.setClosed();
                 }
             },
             timeout.remaining(),

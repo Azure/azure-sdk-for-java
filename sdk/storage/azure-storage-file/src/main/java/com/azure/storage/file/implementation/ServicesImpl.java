@@ -4,8 +4,6 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.implementation.CollectionFormat;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -18,13 +16,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.CollectionFormat;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.storage.file.implementation.models.ListSharesIncludeType;
+import com.azure.storage.file.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.ServicesListSharesSegmentResponse;
+import com.azure.storage.file.implementation.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.ListSharesIncludeType;
-import com.azure.storage.file.models.ServicesGetPropertiesResponse;
-import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
-import com.azure.storage.file.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
 import java.util.List;
 import reactor.core.publisher.Mono;

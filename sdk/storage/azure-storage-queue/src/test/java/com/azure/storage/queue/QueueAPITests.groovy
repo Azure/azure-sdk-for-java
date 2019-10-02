@@ -5,7 +5,7 @@ package com.azure.storage.queue
 
 
 import com.azure.core.util.Context
-import com.azure.storage.queue.QueueClient
+import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
@@ -23,11 +23,23 @@ class QueueAPITests extends APISpec {
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
     String queueName
-
+  
     def setup() {
         queueName = testResourceName.randomName(methodName, 60)
         primaryQueueServiceClient = queueServiceBuilderHelper(interceptorManager).buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
+    }
+
+    def "Get queue URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.queue.core.windows.net/%s", accoutName, queueName)
+
+        when:
+        def queueURL = queueClient.getQueueUrl()
+
+        then:
+        expectURL.equals(queueURL)
     }
 
     def "Create queue with shared key"() {

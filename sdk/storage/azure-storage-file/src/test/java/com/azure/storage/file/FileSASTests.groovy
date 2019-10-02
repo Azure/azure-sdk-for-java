@@ -178,7 +178,7 @@ class FileSASTests extends APISpec {
 
         when:
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
-            .endpoint(primaryFileClient.getFileUrl().toString())
+            .endpoint(primaryFileClient.getFileUrl())
             .credential(SASTokenCredential.fromSASTokenString(sas))
             .buildFileClient()
 
@@ -221,7 +221,7 @@ class FileSASTests extends APISpec {
         def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
-            .endpoint(primaryFileClient.getFileUrl().toString())
+            .endpoint(primaryFileClient.getFileUrl())
             .credential(SASTokenCredential.fromSASTokenString(sas))
             .buildFileClient()
 
@@ -260,7 +260,7 @@ class FileSASTests extends APISpec {
         String sasWithId = primaryShareClient.generateSAS(identifier.getId())
 
         ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
-            .endpoint(primaryShareClient.getShareUrl().toString())
+            .endpoint(primaryShareClient.getShareUrl())
             .credential(SASTokenCredential.fromSASTokenString(sasWithId))
             .buildClient()
 
@@ -270,7 +270,7 @@ class FileSASTests extends APISpec {
         String sasWithPermissions = primaryShareClient.generateSAS(expiryTime, permissions)
 
         def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
-            .endpoint(primaryFileClient.getFileUrl().toString())
+            .endpoint(primaryFileClient.getFileUrl())
             .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
             .buildClient()
 
@@ -303,7 +303,7 @@ class FileSASTests extends APISpec {
 
         when:
         def scBuilder = fileServiceBuilderHelper(interceptorManager)
-        scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl().toString())
+        scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
             .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createShare("create")

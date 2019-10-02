@@ -22,7 +22,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
-import com.azure.storage.queue.models.ListQueuesIncludeType;
+import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageException;
@@ -30,8 +30,6 @@ import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -75,15 +73,9 @@ public final class QueueServiceAsyncClient {
 
     /**
      * @return the URL of the storage queue
-     * @throws RuntimeException If the queue service is using a malformed URL.
      */
-    public URL getQueueServiceUrl() {
-        try {
-            return new URL(client.getUrl());
-        } catch (MalformedURLException ex) {
-            logger.error("Queue Service URL is malformed");
-            throw logger.logExceptionAsError(new RuntimeException("Storage account URL is malformed"));
-        }
+    public String getQueueServiceUrl() {
+        return client.getUrl();
     }
 
     /**
@@ -442,6 +434,7 @@ public final class QueueServiceAsyncClient {
      * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredential} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
@@ -468,6 +461,7 @@ public final class QueueServiceAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredential} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,

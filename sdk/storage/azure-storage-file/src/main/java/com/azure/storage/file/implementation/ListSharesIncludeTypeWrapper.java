@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.storage.file.models.ListSharesIncludeType;
+import com.azure.storage.file.implementation.models.ListSharesIncludeType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

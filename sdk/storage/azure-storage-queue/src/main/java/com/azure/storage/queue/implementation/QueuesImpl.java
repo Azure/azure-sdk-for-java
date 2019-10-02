@@ -4,7 +4,6 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -19,13 +18,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.QueuesCreateResponse;
-import com.azure.storage.queue.models.QueuesDeleteResponse;
-import com.azure.storage.queue.models.QueuesGetAccessPolicyResponse;
-import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
-import com.azure.storage.queue.models.QueuesSetAccessPolicyResponse;
-import com.azure.storage.queue.models.QueuesSetMetadataResponse;
+import com.azure.storage.queue.implementation.models.QueuesCreateResponse;
+import com.azure.storage.queue.implementation.models.QueuesDeleteResponse;
+import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyResponse;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
+import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyResponse;
+import com.azure.storage.queue.implementation.models.QueuesSetMetadataResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageErrorException;
 import java.util.List;
