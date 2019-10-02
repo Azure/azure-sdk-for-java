@@ -265,7 +265,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadata#Map>}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadata#Map}
      *
      * @param metadata Metadata to associate with the container.
      */

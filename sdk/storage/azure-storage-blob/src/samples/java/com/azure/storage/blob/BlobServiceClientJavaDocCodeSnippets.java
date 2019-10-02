@@ -72,25 +72,25 @@ public class BlobServiceClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobServiceClient#getBlobContainerClient(String)}
      */
     public void getContainerClient() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.getContainerClient#String
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.getBlobContainerClient#String
         BlobContainerClient blobContainerClient = client.getBlobContainerClient("containerName");
-        // END: com.azure.storage.blob.BlobServiceClient.getContainerClient#String
+        // END: com.azure.storage.blob.BlobServiceClient.getBlobContainerClient#String
     }
 
     /**
      * Code snippet for {@link BlobServiceClient#createBlobContainer(String)}
      */
     public void createContainer() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.createContainer#String
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.createBlobContainer#String
         BlobContainerClient blobContainerClient = client.createBlobContainer("containerName");
-        // END: com.azure.storage.blob.BlobServiceClient.createContainer#String
+        // END: com.azure.storage.blob.BlobServiceClient.createBlobContainer#String
     }
 
     /**
      * Code snippet for {@link BlobServiceClient#createBlobContainerWithResponse(String, Map, PublicAccessType, Context)}
      */
     public void createContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Map-PublicAccessType-Context
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
@@ -99,32 +99,32 @@ public class BlobServiceClientJavaDocCodeSnippets {
             metadata,
             PublicAccessType.CONTAINER,
             context).getValue();
-        // END: com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Map-PublicAccessType-Context
+        // END: com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context
     }
 
     /**
      * Code snippet for {@link BlobServiceClient#deleteBlobContainer(String)}
      */
     public void deleteContainer() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteContainer#String
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String
         try {
             client.deleteBlobContainer("container Name");
             System.out.printf("Delete container completed with status %n");
         } catch (UnsupportedOperationException error) {
             System.out.printf("Delete container failed: %s%n", error);
         }
-        // END: com.azure.storage.blob.BlobServiceClient.deleteContainer#String
+        // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String
     }
 
     /**
      * Code snippet for {@link BlobServiceClient#deleteBlobContainerWithResponse(String, Context)}
      */
     public void deleteContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteContainerWithResponse#String-Context
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerWithResponse#String-Context
         Context context = new Context("Key", "Value");
         System.out.printf("Delete container completed with status %d%n",
             client.deleteBlobContainerWithResponse("containerName", context).getStatusCode());
-        // END: com.azure.storage.blob.BlobServiceClient.deleteContainerWithResponse#String-Context
+        // END: com.azure.storage.blob.BlobServiceClient.deleteBlobContainerWithResponse#String-Context
     }
 
     /**
@@ -132,17 +132,17 @@ public class BlobServiceClientJavaDocCodeSnippets {
      * {@link BlobServiceClient#listBlobContainers(ListBlobContainersOptions, Duration)}
      */
     public void listContainers() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.listContainers
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.listBlobContainers
         client.listBlobContainers().forEach(container -> System.out.printf("Name: %s%n", container.getName()));
-        // END: com.azure.storage.blob.BlobServiceClient.listContainers
+        // END: com.azure.storage.blob.BlobServiceClient.listBlobContainers
 
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.listContainers#ListContainersOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration
         ListBlobContainersOptions options = new ListBlobContainersOptions()
             .setPrefix("containerNamePrefixToMatch")
             .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true));
 
         client.listBlobContainers(options, timeout).forEach(container -> System.out.printf("Name: %s%n", container.getName()));
-        // END: com.azure.storage.blob.BlobServiceClient.listContainers#ListContainersOptions-Duration
+        // END: com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration
     }
 
     /**

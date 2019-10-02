@@ -89,11 +89,11 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobServiceAsyncClient#createBlobContainerWithResponse(String, Map, PublicAccessType)}
      */
     public void createContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Metadata-PublicAccessType
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobContainerAsyncClient containerClient =
             client.createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Metadata-PublicAccessType
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
     }
 
     /**

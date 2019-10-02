@@ -103,11 +103,7 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-<<<<<<< HEAD
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context}
-=======
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createContainerWithResponse#String-Map-PublicAccessType-Context}
->>>>>>> master
      *
      * @param containerName Name of the container to create
      * @param metadata Metadata to associate with the container.

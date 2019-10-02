@@ -244,15 +244,7 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-<<<<<<< HEAD:sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/BlobContainerAsyncClient.java
-<<<<<<< HEAD:sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/BlobContainerAsyncClient.java
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Metadata-PublicAccessType}
-=======
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Map-PublicAccessType}
->>>>>>> Removes Metadata Class from Azure Blobs (#5627):sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/ContainerAsyncClient.java
-=======
-     * {@codesnippet com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Map-PublicAccessType}
->>>>>>> master:sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/ContainerAsyncClient.java
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Map-PublicAccessType}
      *
      * @param metadata Metadata to associate with the container.
      * @param accessType Specifies how the data in this container is available to the public. See the

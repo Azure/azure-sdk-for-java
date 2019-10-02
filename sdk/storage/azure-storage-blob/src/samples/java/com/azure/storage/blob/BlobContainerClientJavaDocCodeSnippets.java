@@ -188,7 +188,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobContainerClient#deleteWithResponse(BlobContainerAccessConditions, Duration, Context)}
      */
     public void delete2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context
         BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -197,7 +197,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
             accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context
     }
 
     /**
