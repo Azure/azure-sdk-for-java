@@ -6,6 +6,7 @@ import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.Constants
@@ -92,8 +93,14 @@ class CPKTest extends APISpec {
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+        def sas = new BlobServiceSASSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSASPermission().setReadPermission(true))
+            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
+
+        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
             null, null, null, null, null, null)
 
         then:
@@ -141,9 +148,15 @@ class CPKTest extends APISpec {
         cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         when:
+        def sas = new BlobServiceSASSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSASPermission().setReadPermission(true))
+            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
+
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
-            null, null, null, null, null, null)
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sas), null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -186,8 +199,13 @@ class CPKTest extends APISpec {
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))),
+        def sas = new BlobServiceSASSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSASPermission().setReadPermission(true))
+            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
+        def response = cpkAppendBlob.appendBlockFromUrlWithResponse(new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
             null, null, null, null, null, null)
 
         then:

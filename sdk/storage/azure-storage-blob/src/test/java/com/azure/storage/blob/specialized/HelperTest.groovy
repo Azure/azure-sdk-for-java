@@ -88,9 +88,9 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSASPermission().setReadPermission(true).toString())
+            v.setPermissions(new BlobSASPermission().setReadPermission(true))
         } else {
-            v.setPermissions("")
+            v.setPermissions(new BlobSASPermission())
         }
 
         if (snapId != null) {
@@ -164,9 +164,9 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSASPermission().setReadPermission(true).toString())
+            v.setPermissions(new BlobSASPermission().setReadPermission(true))
         } else {
-            v.setPermissions("")
+            v.setPermissions(new BlobSASPermission())
         }
 
         v.setStartTime(startTime)
@@ -241,7 +241,7 @@ class HelperTest extends APISpec {
         setup:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
             .setExpiryTime(expiryTime)
-            .setPermissions(new BlobSASPermission().toString())
+            .setPermissions(new BlobSASPermission())
             .setResource(expectedResource)
             .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.getAccountName(), containerName))
             .setSnapshotId(snapId)
@@ -273,7 +273,7 @@ class HelperTest extends APISpec {
     def "serviceSasSignatureValues IA"() {
         setup:
         BlobServiceSASSignatureValues v = new BlobServiceSASSignatureValues()
-            .setPermissions(new AccountSASPermission().toString())
+            .setPermissions(new BlobSASPermission())
             .setExpiryTime(OffsetDateTime.now())
             .setResource(containerName)
             .setCanonicalName(blobName)
@@ -635,7 +635,7 @@ class HelperTest extends APISpec {
 
         BlobServiceSASSignatureValues sasValues = new BlobServiceSASSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
-            .setPermissions("r")
+            .setPermissions(new BlobSASPermission().setReadPermission(true))
             .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
             .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 

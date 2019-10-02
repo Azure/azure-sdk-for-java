@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlobServiceSASSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import spock.lang.Unroll
 
@@ -1456,7 +1457,13 @@ class BlobAPITest extends APISpec {
         def bcCopy = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
 
         when:
-        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setReadPermission(true))), null, tier2, null, null, null, null)
+        def sas = new BlobServiceSASSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSASPermission().setReadPermission(true))
+            .setCanonicalName(bc.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
+        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + sas), null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2
