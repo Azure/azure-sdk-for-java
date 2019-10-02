@@ -384,8 +384,8 @@ public final class BlobContainerAsyncClient {
         return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobContainerAccessConditions accessConditions,
-        Context context) {
+    Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
+        BlobContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())
             || accessConditions.getModifiedAccessConditions().getIfUnmodifiedSince() != null) {

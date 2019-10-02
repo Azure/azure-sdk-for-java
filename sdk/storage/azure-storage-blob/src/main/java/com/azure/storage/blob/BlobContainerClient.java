@@ -183,8 +183,8 @@ public final class BlobContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType, Duration timeout,
-        Context context) {
+    public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+        Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.createWithResponse(metadata, accessType, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
