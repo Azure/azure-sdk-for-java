@@ -139,7 +139,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
-        endpoint(blobClient.getBlobUrl().toString());
+        endpoint(blobClient.getBlobUrl());
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
@@ -153,7 +153,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
-        endpoint(blobAsyncClient.getBlobUrl().toString());
+        endpoint(blobAsyncClient.getBlobUrl());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
@@ -168,7 +168,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
-        endpoint(blobContainerClient.getBlobContainerUrl().toString());
+        endpoint(blobContainerClient.getBlobContainerUrl());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
@@ -185,7 +185,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     public SpecializedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient,
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
-        endpoint(blobContainerAsyncClient.getBlobContainerUrl().toString());
+        endpoint(blobContainerAsyncClient.getBlobContainerUrl());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;

@@ -23,7 +23,6 @@ import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -102,7 +101,7 @@ public final class BlobContainerClient {
      *
      * @return the URL.
      */
-    public URL getBlobContainerUrl() {
+    public String getBlobContainerUrl() {
         return blobContainerAsyncClient.getBlobContainerUrl();
     }
 

@@ -51,7 +51,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     @Override
     public BlobAsyncClient getSnapshotClient(String snapshot) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(getBlobUrl().toString())
+            .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), getSnapshotId(), getCustomerProvidedKey());
     }
@@ -86,7 +86,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private SpecializedBlobClientBuilder prepareBuilder() {
         SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
-            .endpoint(getBlobUrl().toString())
+            .endpoint(getBlobUrl())
             .snapshot(getSnapshotId());
 
         CpkInfo cpk = getCustomerProvidedKey();
