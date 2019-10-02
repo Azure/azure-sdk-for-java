@@ -34,7 +34,7 @@ public final class PollerJavaDocCodeSnippets {
                     return Mono.just(new PollResponse<>(OperationStatus.IN_PROGRESS, "Operation in progress."));
                 } else {
                     System.out.println("Returning final response.");
-                    return Mono.just(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, "Operation Completed."));
+                    return Mono.just(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, "Operation completed."));
                 }
             });
 

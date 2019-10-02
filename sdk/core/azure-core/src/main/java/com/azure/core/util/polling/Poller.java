@@ -114,7 +114,7 @@ public class Poller<T> {
      * <p><strong>Create poller object</strong></p>
      * {@codesnippet com.azure.core.util.polling.poller.initialize.interval.polloperation}
      *
-     * @param pollInterval Not-null and greater than zero poll interval.
+     * @param pollInterval Non null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This must never return
      *     {@code null} and always have a non-null {@link OperationStatus}. {@link Mono} returned from poll operation
      *     should never return {@link Mono#error(Throwable)}. If an unexpected scenario happens during the poll
@@ -129,12 +129,12 @@ public class Poller<T> {
     }
 
     /**
-     * Create a {@link Poller} instance with poll interval, poll operation and cancel operation. The polling starts
-     * immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value in
+     * Creates a {@link Poller} instance with poll interval, poll operation, and optional cancel operation. Polling
+     * starts immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value in
      * {@link PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use
      * {@code pollInterval}.
      *
-     * @param pollInterval Not-null and greater than zero poll interval.
+     * @param pollInterval Non null and greater than zero poll interval.
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This must never return
      *     {@code null} and always have a non-null {@link OperationStatus}. {@link Mono} returned from poll operation
      *     should never return {@link Mono#error(Throwable)}. If an unexpected scenario happens during the poll
@@ -208,15 +208,14 @@ public class Poller<T> {
     }
 
     /**
-     * Enable user to take control of polling and trigger manual poll operation. It will call poll operation once.
+     * Enables user to take control of polling and trigger manual poll operation. It will call poll operation once.
      * This will not turn off auto polling.
      *
      * <p><strong>Manual polling</strong></p>
      * <p>
      * {@codesnippet com.azure.core.util.polling.poller.poll-indepth}
      *
-     * @return a Mono of {@link PollResponse} This will call poll operation once. The {@link Mono} returned here could
-     *     be subscribed for receiving {@link PollResponse} in async manner.
+     * @return A {@link Mono} that returns {@link PollResponse}. This will call poll operation once.
      */
     public Mono<PollResponse<T>> poll() {
         return this.pollOperation.apply(this.pollResponse)
@@ -229,11 +228,11 @@ public class Poller<T> {
 
     /**
      * Blocks execution and wait for polling to complete. The polling is considered complete based on the status defined
-     *  in {@link OperationStatus}.
+     * in {@link OperationStatus}.
      *
-     * <p>It will enable auto-polling if it was disable by user.
+     * <p>It will enable auto-polling if it was disabled by the user.
      *
-     * @return returns final {@link PollResponse} when polling is complete as defined in {@link OperationStatus}.
+     * @return A {@link PollResponse} when polling is complete.
      */
     public PollResponse<T> block() {
         if (!isAutoPollingEnabled()) {
@@ -245,9 +244,8 @@ public class Poller<T> {
     /**
      * Blocks indefinitely until given {@link OperationStatus} is received.
      *
-     * @param statusToBlockFor The desired {@link OperationStatus} to block for and it can be any valid
-     *     {@link OperationStatus} value.
-     * @return {@link PollResponse} for matching desired status.
+     * @param statusToBlockFor The desired {@link OperationStatus} to block for.
+     * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToBlockFor}.
      * @throws IllegalArgumentException If {@code statusToBlockFor} is {@code null}.
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor) {
@@ -390,7 +388,7 @@ public class Poller<T> {
      * Indicates if auto polling is enabled. Refer to the {@link Poller} class-level JavaDoc for more details on
      * auto-polling.
      *
-     * @return A boolean value representing if auto-polling is enabled or not..
+     * @return {@code true} if auto-polling is enabled and {@code false} otherwise.
      */
     public boolean isAutoPollingEnabled() {
         return this.autoPollingEnabled;
@@ -399,7 +397,7 @@ public class Poller<T> {
     /**
      * Current known status as a result of last poll event or last response from a manual polling.
      *
-     * @return current status or {@code null} if no status is available.
+     * @return Current status or {@code null} if no status is available.
      */
     public OperationStatus getStatus() {
         return this.pollResponse != null ? this.pollResponse.getStatus() : null;
