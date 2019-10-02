@@ -20,7 +20,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  *
  * <p>
  * This client is instantiated through {@link BlobClientBuilder} or retrieved via
- * {@link BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobClient}.
+ * {@link BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
  *
  * <p>
  * For operations on a specific blob type (i.e append, block, or page) use
