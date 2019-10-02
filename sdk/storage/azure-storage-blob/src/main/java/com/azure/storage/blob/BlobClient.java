@@ -17,12 +17,12 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  *
  * <p>
  * This client is instantiated through {@link BlobClientBuilder} or retrieved via
- * {@link ContainerClient#getBlobClient(String) getBlobClient}.
+ * {@link BlobContainerClient#getBlobClient(String) getBlobClient}.
  *
  * <p>
  * For operations on a specific blob type (i.e append, block, or page) use
- * {@link #asAppendBlobClient() asAppendBlobClient}, {@link #asBlockBlobClient() asBlockBlobClient}, or
- * {@link #asPageBlobClient() asPageBlobClient} to construct a client that allows blob specific operations.
+ * {@link #getAppendBlobClient() getAppendBlobClient}, {@link #getBlockBlobClient() getBlockBlobClient}, or
+ * {@link #getPageBlobClient() getPageBlobClient} to construct a client that allows blob specific operations.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -58,7 +58,7 @@ public class BlobClient extends BlobClientBase {
      *
      * @return a {@link AppendBlobClient} associated to this blob.
      */
-    public AppendBlobClient asAppendBlobClient() {
+    public AppendBlobClient getAppendBlobClient() {
         return new SpecializedBlobClientBuilder()
             .blobClient(this)
             .buildAppendBlobClient();
@@ -69,7 +69,7 @@ public class BlobClient extends BlobClientBase {
      *
      * @return a {@link BlockBlobClient} associated to this blob.
      */
-    public BlockBlobClient asBlockBlobClient() {
+    public BlockBlobClient getBlockBlobClient() {
         return new SpecializedBlobClientBuilder()
             .blobClient(this)
             .buildBlockBlobClient();
@@ -80,7 +80,7 @@ public class BlobClient extends BlobClientBase {
      *
      * @return a {@link PageBlobClient} associated to this blob.
      */
-    public PageBlobClient asPageBlobClient() {
+    public PageBlobClient getPageBlobClient() {
         return new SpecializedBlobClientBuilder()
             .blobClient(this)
             .buildPageBlobClient();

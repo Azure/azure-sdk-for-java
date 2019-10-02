@@ -6,9 +6,9 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobURLParts;
-import com.azure.storage.blob.ContainerAsyncClient;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -160,34 +160,34 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     }
 
     /**
-     * Configures the builder based on the {@link ContainerClient} and appends the blob name to the container's URL.
+     * Configures the builder based on the {@link BlobContainerClient} and appends the blob name to the container's URL.
      *
-     * @param containerClient The {@code ContainerClient} used to configure this builder.
+     * @param blobContainerClient The {@code ContainerClient} used to configure this builder.
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object.
      */
-    public SpecializedBlobClientBuilder containerClient(ContainerClient containerClient, String blobName) {
-        pipeline(containerClient.getHttpPipeline());
-        endpoint(containerClient.getContainerUrl().toString());
+    public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
+        pipeline(blobContainerClient.getHttpPipeline());
+        endpoint(blobContainerClient.getBlobContainerUrl().toString());
         blobName(blobName);
-        this.customerProvidedKey = containerClient.getCustomerProvidedKey();
+        this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
     }
 
     /**
-     * Configures the builder based on the {@link ContainerAsyncClient} and appends the blob name to the container's
+     * Configures the builder based on the {@link BlobContainerAsyncClient} and appends the blob name to the container's
      * URL.
      *
-     * @param containerAsyncClient The {@code ContainerAsyncClient} used to configure this builder.
+     * @param blobContainerAsyncClient The {@code ContainerAsyncClient} used to configure this builder.
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object.
      */
-    public SpecializedBlobClientBuilder containerAsyncClient(ContainerAsyncClient containerAsyncClient,
+    public SpecializedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient,
         String blobName) {
-        pipeline(containerAsyncClient.getHttpPipeline());
-        endpoint(containerAsyncClient.getContainerUrl().toString());
+        pipeline(blobContainerAsyncClient.getHttpPipeline());
+        endpoint(blobContainerAsyncClient.getBlobContainerUrl().toString());
         blobName(blobName);
-        this.customerProvidedKey = containerAsyncClient.getCustomerProvidedKey();
+        this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;
     }
 
@@ -205,7 +205,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
             BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
-            this.containerName = parts.getContainerName();
+            this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 

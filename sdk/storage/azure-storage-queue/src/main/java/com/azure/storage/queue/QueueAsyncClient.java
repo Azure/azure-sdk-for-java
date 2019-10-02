@@ -816,7 +816,7 @@ public final class QueueAsyncClient {
         QueueServiceSASSignatureValues values = queueServiceSASSignatureValues
             .setCanonicalName(this.queueName, sharedKeyCredential.getAccountName());
 
-        QueueServiceSASQueryParameters queueServiceSasQueryParameters = values
+        QueueServiceSasQueryParameters queueServiceSasQueryParameters = values
             .generateSASQueryParameters(sharedKeyCredential);
 
         return queueServiceSasQueryParameters.encode();

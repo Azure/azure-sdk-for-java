@@ -13,8 +13,9 @@ import java.net.URL;
 import java.util.Objects;
 
 /**
- * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient} using
- * {@link ContainerClientBuilder#buildClient()} or {@link ContainerClientBuilder#buildAsyncClient()} respectively.
+ * Fluent ContainerClientBuilder for instantiating a {@link BlobContainerClient} or {@link BlobContainerAsyncClient}
+ * using {@link BlobContainerClientBuilder#buildClient()} or {@link BlobContainerClientBuilder#buildAsyncClient()}
+ * respectively.
  *
  * <p>
  * The following information must be provided on this builder:
@@ -27,42 +28,42 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a {@link ContainerClient}
- * or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
+ * Once all the configurations are set on this builder, call {@code .buildClient()} to create a {@link
+ * BlobContainerClient} or {@code .buildAsyncClient()} to create a {@link BlobContainerAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = {ContainerClient.class, ContainerAsyncClient.class})
-public final class ContainerClientBuilder extends BaseBlobClientBuilder<ContainerClientBuilder> {
+@ServiceClientBuilder(serviceClients = {BlobContainerClient.class, BlobContainerAsyncClient.class})
+public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<BlobContainerClientBuilder> {
 
-    private final ClientLogger logger = new ClientLogger(ContainerClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String containerName;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients} and
-     * {@link ContainerAsyncClient ContainerAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
+     * and {@link BlobContainerAsyncClient ContainerAsyncClients}.
      */
-    public ContainerClientBuilder() {
+    public BlobContainerClientBuilder() {
     }
 
     /**
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.buildClient}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildClient}
      *
-     * @return a {@link ContainerClient} created from the configurations in this builder.
+     * @return a {@link BlobContainerClient} created from the configurations in this builder.
      */
-    public ContainerClient buildClient() {
-        return new ContainerClient(buildAsyncClient());
+    public BlobContainerClient buildClient() {
+        return new BlobContainerClient(buildAsyncClient());
     }
 
     /**
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.buildAsyncClient}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient}
      *
-     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      */
-    public ContainerAsyncClient buildAsyncClient() {
+    public BlobContainerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(containerName);
 
         HttpPipeline pipeline = super.getPipeline();
@@ -70,7 +71,7 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
             pipeline = super.buildPipeline();
         }
 
-        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
+        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline)
             .build(), customerProvidedKey);
@@ -81,20 +82,20 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.endpoint#String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.endpoint#String}
      *
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     @Override
-    public ContainerClientBuilder endpoint(String endpoint) {
+    public BlobContainerClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
             BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
-            this.containerName = parts.getContainerName();
+            this.containerName = parts.getBlobContainerName();
 
             SASTokenCredential sasTokenCredential = SASTokenCredential
                 .fromSASTokenString(parts.getSasQueryParameters().encode());
@@ -114,19 +115,19 @@ public final class ContainerClientBuilder extends BaseBlobClientBuilder<Containe
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClientBuilder.containerName#String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.containerName#String}
      *
      * @param containerName the name of the container
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder containerName(String containerName) {
+    public BlobContainerClientBuilder containerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
 
     @Override
-    protected Class<ContainerClientBuilder> getClazz() {
-        return ContainerClientBuilder.class;
+    protected Class<BlobContainerClientBuilder> getClazz() {
+        return BlobContainerClientBuilder.class;
     }
 
     String endpoint() {
