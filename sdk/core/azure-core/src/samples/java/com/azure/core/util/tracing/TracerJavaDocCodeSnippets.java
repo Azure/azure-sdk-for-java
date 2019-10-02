@@ -28,7 +28,7 @@ public class TracerJavaDocCodeSnippets {
         // start a new tracing span with the given method name and explicit parent span
         Context updatedContext = tracer.start("azure.keyvault.secrets/setsecret", traceContext);
         System.out.printf("Span returned in the context object: %s%n",
-            updatedContext.getData(OPENCENSUS_SPAN_KEY).get().getClass());
+            updatedContext.getData(OPENCENSUS_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-SEND
@@ -48,7 +48,7 @@ public class TracerJavaDocCodeSnippets {
         // context when process kind RECEIVE
         Context updatedReceiveContext = tracer.start("azure.eventhubs.receive", traceContext,
             ProcessKind.RECEIVE);
-        System.out.printf("Diagnostic Id: {} %s%n", (String) updatedReceiveContext.getData(DIAGNOSTIC_ID_KEY).get());
+        System.out.printf("Diagnostic Id: %s%n", updatedReceiveContext.getData(DIAGNOSTIC_ID_KEY).get().toString());
         // END: com.azure.core.util.tracing.start#string-context-processKind-RECEIVE
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
@@ -58,7 +58,7 @@ public class TracerJavaDocCodeSnippets {
             .addData(SPAN_CONTEXT, "<user-current-span-context>");
         Context updatedProcessContext = tracer.start("azure.eventhubs.process", processContext,
             ProcessKind.PROCESS);
-        System.out.printf("Scope: {} %s%n", updatedProcessContext.getData("scope").get().getClass());
+        System.out.printf("Scope: %s%n", updatedProcessContext.getData("scope").get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
     }
 
@@ -88,7 +88,7 @@ public class TracerJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.tracing.setSpanName#string-context
         // Sets the span name of the returned span on the context object, with key OPENCENSUS_SPAN_NAME_KEY
         Context context = tracer.setSpanName("test-span-method", Context.NONE);
-        System.out.printf("Span name: %s%n", (String) context.getData(OPENCENSUS_SPAN_NAME_KEY).get());
+        System.out.printf("Span name: %s%n", context.getData(OPENCENSUS_SPAN_NAME_KEY).get().toString());
         // END: com.azure.core.util.tracing.setSpanName#string-context
     }
 

@@ -282,7 +282,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
             return "";
         }
 
-        return (String) value;
+        return value.toString();
     }
 
     /**
@@ -330,7 +330,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
             return null;
         }
 
-        return (String) value;
+        return value.toString();
     }
 
     /**
