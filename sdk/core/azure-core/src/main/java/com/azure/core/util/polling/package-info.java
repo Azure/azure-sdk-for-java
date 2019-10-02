@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing API for Long Running Operations.
+ * Package containing API for long running operations.
  */
 package com.azure.core.util.polling;
