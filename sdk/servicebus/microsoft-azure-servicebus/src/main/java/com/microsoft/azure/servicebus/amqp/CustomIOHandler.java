@@ -19,6 +19,8 @@ public class CustomIOHandler extends IOHandler {
         }
 
         Transport transport = Proton.transport();
+        // To fix connection drops that the client recognizes only with a delay of 15 or 20 minutes
+        transport.setIdleTimeout(60000);
         transport.sasl();
         transport.setEmitFlowEventOnSend(false);
         transport.bind(connection);
