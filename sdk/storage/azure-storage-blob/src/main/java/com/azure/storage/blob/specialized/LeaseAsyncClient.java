@@ -69,7 +69,7 @@ public final class LeaseAsyncClient {
      *
      * @return URL of the lease client.
      */
-    public String getLeaseUrl() {
+    public String getResourceUrl() {
         return this.client.getUrl();
     }
 
