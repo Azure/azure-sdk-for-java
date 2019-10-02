@@ -111,22 +111,14 @@ public class BlobAsyncClientBase {
         if (!this.isSnapshot()) {
             return azureBlobStorage.getUrl();
         } else {
-            return String.format("%s?snapshot=%s", azureBlobStorage.getUrl(), snapshot);
+            if (azureBlobStorage.getUrl().contains("?")) {
+                return String.format("%s&snapshot=%s", azureBlobStorage.getUrl(), snapshot);
+            }
+            else {
+                return String.format("%s?snapshot=%s", azureBlobStorage.getUrl(), snapshot);
+            }
         }
     }
-
-    // public String getBlobUrl() {
-    //     try {
-    //         UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.getUrl());
-    //         if (snapshot != null) {
-    //             urlBuilder.setQuery("snapshot=" + snapshot);
-    //         }
-    //         return urlBuilder.toURL().toString();
-    //     } catch (MalformedURLException e) {
-    //         throw logger.logExceptionAsError(new RuntimeException(
-    //             String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
-    //     }
-    // }
 
     /**
      * Get the container name.

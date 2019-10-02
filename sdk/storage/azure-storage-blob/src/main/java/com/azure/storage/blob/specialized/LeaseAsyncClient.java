@@ -58,7 +58,7 @@ public final class LeaseAsyncClient {
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
-            .url(url.toString())
+            .url(url)
             .build();
     }
 
