@@ -86,7 +86,8 @@ public class ClientLogger {
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
      *
      * @param format The formattable message to log.
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void verbose(String format, Object... args) {
         log(VERBOSE_LEVEL, format, args);
@@ -101,7 +102,8 @@ public class ClientLogger {
      * {@codesnippet com.azure.core.util.logging.clientlogger.info}
      *
      * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void info(String format, Object... args) {
         log(INFORMATIONAL_LEVEL, format, args);
@@ -116,7 +118,8 @@ public class ClientLogger {
      * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
      *
      * @param format The formattable message to log.
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void warning(String format, Object... args) {
         log(WARNING_LEVEL, format, args);
@@ -131,7 +134,8 @@ public class ClientLogger {
      * {@codesnippet com.azure.core.util.logging.clientlogger.error}
      *
      * @param format The formattable message to log.
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args Arguments for the message. If an exception is being logged, the last argument should be the
+     *     {@link Throwable}.
      */
     public void error(String format, Object... args) {
         log(ERROR_LEVEL, format, args);
