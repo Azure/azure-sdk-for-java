@@ -134,7 +134,11 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+<<<<<<< HEAD
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType}
+=======
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Map-PublicAccessType}
+>>>>>>> master
      *
      * @param containerName Name of the container to create
      * @param metadata Metadata to associate with the container

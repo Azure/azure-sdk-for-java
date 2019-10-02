@@ -4,14 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.Logging;
@@ -26,7 +18,6 @@ import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;

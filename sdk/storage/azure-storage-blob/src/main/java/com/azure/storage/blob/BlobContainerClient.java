@@ -265,11 +265,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-<<<<<<< HEAD:sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/BlobContainerClient.java
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadata#Metadata}
-=======
-     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Map}
->>>>>>> Removes Metadata Class from Azure Blobs (#5627):sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/ContainerClient.java
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadata#Map>}
      *
      * @param metadata Metadata to associate with the container.
      */

@@ -96,6 +96,7 @@ public class BlobPartitionManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
 <<<<<<< HEAD
+<<<<<<< HEAD
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.setMetadataWithResponse(any(Metadata.class), any(BlobAccessConditions.class)))
 =======
@@ -103,6 +104,11 @@ public class BlobPartitionManagerTest {
         when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(),
             any(BlobAccessConditions.class)))
 >>>>>>> Removes Metadata Class from Azure Blobs (#5627)
+=======
+        when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(),
+            any(BlobAccessConditions.class)))
+>>>>>>> master
             .thenReturn(Mono.just(new SimpleResponse<>(null, 200, new HttpHeaders(headers), null)));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
@@ -163,6 +169,7 @@ public class BlobPartitionManagerTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("eTag", "etag2");
 <<<<<<< HEAD
+<<<<<<< HEAD
         when(blobContainerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.setMetadataWithResponse(any(Metadata.class), any(BlobAccessConditions.class)))
 =======
@@ -170,6 +177,11 @@ public class BlobPartitionManagerTest {
         when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(),
             any(BlobAccessConditions.class)))
 >>>>>>> Removes Metadata Class from Azure Blobs (#5627)
+=======
+        when(containerAsyncClient.getBlobAsyncClient("eh/cg/0")).thenReturn(blobAsyncClient);
+        when(blobAsyncClient.setMetadataWithResponse(ArgumentMatchers.<Map<String, String>>any(),
+            any(BlobAccessConditions.class)))
+>>>>>>> master
             .thenReturn(Mono.error(new SocketTimeoutException()));
 
         BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
