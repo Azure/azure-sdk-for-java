@@ -119,15 +119,16 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key.
+     * Creates or updates a configuration value in the service with the given key, optional {@code label}
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String-String}
      *
      * @param key The key of the configuration setting to create or update.
+     * @param label Optional, the label of the configuration setting to create or update.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value (which will also throw ServiceRequestException described below).
@@ -136,8 +137,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting setSetting(String key, String value) {
-        return setSettingWithResponse(new ConfigurationSetting().setKey(key).setValue(value), Context.NONE).getValue();
+    public ConfigurationSetting setSetting(String key, String label, String value) {
+        return setSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
+            false, Context.NONE).getValue();
     }
 
     /**
@@ -152,9 +154,10 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection". <p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting-boolean}
      *
      * @param setting The configuration setting to create or update.
+     * @param onlyIfUnchanged A boolean indicates if using setting's ETag as If-Match's value.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
      * will also throw ServiceRequestException described below).
@@ -166,8 +169,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting setSetting(ConfigurationSetting setting) {
-        return setSettingWithResponse(setting, Context.NONE).getValue();
+    public ConfigurationSetting setSetting(ConfigurationSetting setting, boolean onlyIfUnchanged) {
+        return setSettingWithResponse(setting, onlyIfUnchanged, Context.NONE).getValue();
     }
 
     /**
@@ -182,9 +185,10 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-boolean-Context}
      *
      * @param setting The configuration setting to create or update.
+     * @param onlyIfUnchanged A boolean indicates if using setting's ETag as If-Match's value.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
@@ -196,96 +200,9 @@ public final class ConfigurationClient {
      * locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Response<ConfigurationSetting> setSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return client.setSetting(setting, context).block();
-    }
-    /**
-     * Updates an existing configuration value in the service with the given key. The setting must already exist.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.updateSetting#String-String}
-     *
-     * @param key The key of the configuration setting to update.
-     * @param value The updated value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
-     * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described
-     * below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration value is
-     * locked.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().setKey(key).setValue(value), Context.NONE).getValue();
-    }
-
-    /**
-     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
-     * supported, the entire configuration value is replaced.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it
-     * matches.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value
-     * "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSetting#ConfigurationSetting}
-     *
-     * @param setting The setting to add or update in the service.
-     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
-     * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described
-     * below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     * setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
-     * value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, Context.NONE).getValue();
-    }
-
-    /**
-     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
-     * supported, the entire configuration value is replaced.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it
-     * matches.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value
-     * "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context}
-     *
-     * @param setting The setting to add or update in the service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the {@link ConfigurationSetting} that was updated, or {@code null}, if the
-     * configuration value does not exist, is locked, or the key is an invalid value (which will also throw
-     * ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     * setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
-     * value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> updateSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return updateSetting(setting, context);
-    }
-
-    private Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
-        return client.updateSetting(setting, context).block();
+    public Response<ConfigurationSetting> setSettingWithResponse(ConfigurationSetting setting, boolean onlyIfUnchanged,
+                                                                 Context context) {
+        return client.setSetting(setting, onlyIfUnchanged, context).block();
     }
 
     /**

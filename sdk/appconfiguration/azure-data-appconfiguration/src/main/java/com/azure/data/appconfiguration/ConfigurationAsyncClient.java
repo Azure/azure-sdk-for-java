@@ -166,9 +166,10 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string}
      *
      * @param key The key of the configuration setting to create or update.
+     * @param label Optional, the label of the setting to create or update.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value (which will
      * also throw HttpResponseException described below).
@@ -177,9 +178,10 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> setSetting(String key, String value) {
+    public Mono<ConfigurationSetting> setSetting(String key, String label, String value) {
         return withContext(
-            context -> setSetting(new ConfigurationSetting().setKey(key).setValue(value), context))
+            context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
+                false, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -195,40 +197,10 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The configuration setting to create or update.
-     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value, the setting
-     * is locked, or an etag was provided but does not match the service's current etag value (which will also throw
-     * HttpResponseException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
-     * wildcard character, and the current configuration value's etag does not match, or the setting exists and is
-     * locked.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return withContext(context -> setSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
-     * configuration setting is updated.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is updated if the current
-     * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting will
-     * always be updated.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting}
-     *
-     * @param setting The configuration setting to create or update.
+     * @param onlyIfUnchanged A boolean indicates if using setting's ETag as If-Match's value.
      * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an
      * invalid value, the setting is locked, or an etag was provided but does not match the service's current etag value
      * (which will also throw HttpResponseException described below).
@@ -240,14 +212,17 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> setSetting(setting, context));
+    public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting,
+                                                                       boolean onlyIfUnchanged) {
+        return withContext(context -> setSetting(setting, onlyIfUnchanged, context));
     }
 
-    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, boolean onlyIfUnchanged,
+                                                    Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
+        final String ifMatchETag = onlyIfUnchanged ? getETagValue(setting.getETag()) : "*";
         // This service method call is similar to addSetting except it will create or update a configuration setting.
         // If the user provides an etag value, it is passed in as If-Match = "{etag value}". If the current value in the
         // service has a matching etag then it matches, then its value is updated with what the user passed in.
@@ -255,108 +230,10 @@ public final class ConfigurationAsyncClient {
         // old value locally.
         // If no etag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting,
-            getETagValue(setting.getETag()), null, context)
+            ifMatchETag, null, context)
             .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
-    }
-
-    /**
-     * Updates an existing configuration value in the service with the given key. The setting must already exist.
-     *
-     * <strong>Code Samples</strong></p>
-     *
-     * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#string-string}
-     *
-     * @param key The key of the configuration setting to update.
-     * @param value The updated value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not exist, is locked,
-     * or the key is an invalid value (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration value is
-     * locked.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> updateSetting(String key, String value) {
-        return withContext(
-            context -> updateSetting(new ConfigurationSetting().setKey(key).setValue(value), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
-     * supported, the entire configuration value is replaced.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it
-     * matches.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value
-     * "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting}
-     *
-     * @param setting The setting to add or update in the service.
-     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not exist, is locked,
-     * or the key is an invalid value (which will also throw HttpResponseException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     * setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
-     * value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return withContext(context -> updateSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
-     * supported, the entire configuration value is replaced.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified, the configuration value is only updated if it
-     * matches.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value
-     * "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting}
-     *
-     * @param setting The setting to add or update in the service.
-     * @return A REST response containing the {@link ConfigurationSetting} that was updated, if the configuration value
-     * does not exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described
-     * below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not exist, the
-     * setting is locked, or {@link ConfigurationSetting#getETag() etag} is specified but does not match the current
-     * value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> updateSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> updateSetting(setting, context));
-    }
-
-    Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-
-        String etag = setting.getETag() == null ? ETAG_ANY : setting.getETag();
-
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, getETagValue(etag),
-            null, context)
-            .doOnRequest(ignoredValue -> logger.info("Updating ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Updated ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to update ConfigurationSetting - {}", setting, error));
     }
 
     /**
