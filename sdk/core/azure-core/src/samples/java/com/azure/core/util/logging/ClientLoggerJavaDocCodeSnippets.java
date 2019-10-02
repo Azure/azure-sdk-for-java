@@ -19,26 +19,27 @@ public class ClientLoggerJavaDocCodeSnippets {
         ClientLogger logger = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class);
         String name = getName();
 
-        // BEGIN: com.azure.core.implementation.util.clientlogger.verbose
+        // BEGIN: com.azure.core.util.logging.clientlogger.verbose
         logger.verbose("A formattable message. Hello, {}", name);
-        // END: com.azure.core.implementation.util.clientlogger.verbose
+        // END: com.azure.core.util.logging.clientlogger.verbose
 
-        // BEGIN: com.azure.core.implementation.util.clientlogger.info
+        // BEGIN: com.azure.core.util.logging.clientlogger.info
         logger.info("A formattable message. Hello, {}", name);
-        // END: com.azure.core.implementation.util.clientlogger.info
+        // END: com.azure.core.util.logging.clientlogger.info
 
-        // BEGIN: com.azure.core.implementation.util.clientlogger.warning
-        logger.warning("A formattable message. Hello, {}", name);
-        // END: com.azure.core.implementation.util.clientlogger.warning
+        // BEGIN: com.azure.core.util.logging.clientlogger.warning
+        Throwable exception = new IllegalArgumentException("An invalid argument was encountered.");
+        logger.warning("A formattable message. Hello, {}", name, exception);
+        // END: com.azure.core.util.logging.clientlogger.warning
 
         File resource = getFile();
-        // BEGIN: com.azure.core.implementation.util.clientlogger.error
+        // BEGIN: com.azure.core.util.logging.clientlogger.error
         try {
             upload(resource);
         } catch (IOException ex) {
             logger.error("A formattable message. Hello, {}", name, ex);
         }
-        // END: com.azure.core.implementation.util.clientlogger.error
+        // END: com.azure.core.util.logging.clientlogger.error
     }
 
     /**

@@ -83,7 +83,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      * <p>
      * Logging a message at verbose log level
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.verbose}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
@@ -98,7 +98,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      * <p>
      * Logging a message at informational log level
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.info}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
      *
      * @param format The formattable message to log
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
@@ -113,7 +113,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      * <p>
      * Logging a message at warning log level
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.warning}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
@@ -128,7 +128,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      * <p>
      * Logging an error with stack trace
-     * {@codesnippet com.azure.core.implementation.util.clientlogger.error}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
