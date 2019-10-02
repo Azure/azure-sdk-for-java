@@ -44,12 +44,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
-            .setList(true);
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()
@@ -78,12 +78,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
-            .setList(true);
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         IPRange ipRange = new IPRange()

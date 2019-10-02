@@ -65,6 +65,8 @@ public final class AccountSASSignatureValues {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
+     * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
     public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService
         accountSASService, AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
@@ -248,6 +250,8 @@ public final class AccountSASSignatureValues {
      * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
      * @return {@link AccountSasQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
+     * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
+     * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
     public AccountSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);

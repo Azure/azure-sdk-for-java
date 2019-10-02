@@ -15,17 +15,17 @@ import java.util.Locale;
  * particular and this class guarantees correctness.
  */
 public final class BlobContainerSasPermission {
-    private boolean read;
+    private boolean readPermission;
 
-    private boolean add;
+    private boolean addPermission;
 
-    private boolean create;
+    private boolean createPermission;
 
-    private boolean write;
+    private boolean writePermission;
 
-    private boolean delete;
+    private boolean deletePermission;
 
-    private boolean list;
+    private boolean listPermission;
 
     /**
      * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
@@ -48,22 +48,22 @@ public final class BlobContainerSasPermission {
             char c = permString.charAt(i);
             switch (c) {
                 case 'r':
-                    permissions.read = true;
+                    permissions.readPermission = true;
                     break;
                 case 'a':
-                    permissions.add = true;
+                    permissions.addPermission = true;
                     break;
                 case 'c':
-                    permissions.create = true;
+                    permissions.createPermission = true;
                     break;
                 case 'w':
-                    permissions.write = true;
+                    permissions.writePermission = true;
                     break;
                 case 'd':
-                    permissions.delete = true;
+                    permissions.deletePermission = true;
                     break;
                 case 'l':
-                    permissions.list = true;
+                    permissions.listPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -77,108 +77,108 @@ public final class BlobContainerSasPermission {
     /**
      * @return the read permission status
      */
-    public boolean getRead() {
-        return read;
+    public boolean getReadPermission() {
+        return readPermission;
     }
 
     /**
      * Sets the read permission status.
      *
-     * @param read Permission status to set
+     * @param hasReadPermission Permission status to set
      * @return the updated BlobContainerSasPermission object
      */
-    public BlobContainerSasPermission setRead(boolean read) {
-        this.read = read;
+    public BlobContainerSasPermission setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
     /**
      * @return the add permission status
      */
-    public boolean getAdd() {
-        return add;
+    public boolean getAddPermission() {
+        return addPermission;
     }
 
     /**
      * Sets the add permission status.
      *
-     * @param add Permission status to set
+     * @param hasAddPermission Permission status to set
      * @return the updated BlobContainerSasPermission object
      */
-    public BlobContainerSasPermission setAdd(boolean add) {
-        this.add = add;
+    public BlobContainerSasPermission setAddPermission(boolean hasAddPermission) {
+        this.addPermission = hasAddPermission;
         return this;
     }
 
     /**
      * @return the create permission status
      */
-    public boolean getCreate() {
-        return create;
+    public boolean getCreatePermission() {
+        return createPermission;
     }
 
     /**
      * Sets the create permission status.
      *
-     * @param create Permission status to set
+     * @param hasCreatePermission Permission status to set
      * @return the updated BlobContainerSasPermission object
      */
-    public BlobContainerSasPermission setCreate(boolean create) {
-        this.create = create;
+    public BlobContainerSasPermission setCreatePermission(boolean hasCreatePermission) {
+        this.createPermission = hasCreatePermission;
         return this;
     }
 
     /**
      * @return the write permission status
      */
-    public boolean getWrite() {
-        return write;
+    public boolean getWritePermission() {
+        return writePermission;
     }
 
     /**
      * Sets the write permission status.
      *
-     * @param write Permission status to set
+     * @param hasWritePermission Permission status to set
      * @return the updated BlobContainerSasPermission object
      */
-    public BlobContainerSasPermission setWrite(boolean write) {
-        this.write = write;
+    public BlobContainerSasPermission setWritePermission(boolean hasWritePermission) {
+        this.writePermission = hasWritePermission;
         return this;
     }
 
     /**
      * @return the delete permission status
      */
-    public boolean getDelete() {
-        return delete;
+    public boolean getDeletePermission() {
+        return deletePermission;
     }
 
     /**
      * Sets the delete permission status.
      *
-     * @param delete Permission status to set
+     * @param hasDeletePermission Permission status to set
      * @return the updated BlobContainerSasPermission object
      */
-    public BlobContainerSasPermission setDelete(boolean delete) {
-        this.delete = delete;
+    public BlobContainerSasPermission setDeletePermission(boolean hasDeletePermission) {
+        this.deletePermission = hasDeletePermission;
         return this;
     }
 
     /**
      * @return the list permission status
      */
-    public boolean getList() {
-        return list;
+    public boolean getListPermission() {
+        return listPermission;
     }
 
     /**
      * Sets the list permission status.
      *
-     * @param list Permission status to set
+     * @param hasListPermission Permission status to set
      * @return the updated BlobContainerSasPermission object
      */
-    public BlobContainerSasPermission setList(boolean list) {
-        this.list = list;
+    public BlobContainerSasPermission setListPermission(boolean hasListPermission) {
+        this.listPermission = hasListPermission;
         return this;
     }
 
@@ -194,27 +194,27 @@ public final class BlobContainerSasPermission {
         // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
         final StringBuilder builder = new StringBuilder();
 
-        if (this.read) {
+        if (this.readPermission) {
             builder.append('r');
         }
 
-        if (this.add) {
+        if (this.addPermission) {
             builder.append('a');
         }
 
-        if (this.create) {
+        if (this.createPermission) {
             builder.append('c');
         }
 
-        if (this.write) {
+        if (this.writePermission) {
             builder.append('w');
         }
 
-        if (this.delete) {
+        if (this.deletePermission) {
             builder.append('d');
         }
 
-        if (this.list) {
+        if (this.listPermission) {
             builder.append('l');
         }
 

@@ -258,6 +258,9 @@ final class QueueServiceSASSignatureValues {
      * @return {@link QueueServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
+     * @throws NullPointerException If {@code sharedKeyCredential} is null. Or if any of {@code version} or
+     * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
+     * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
      */
     public QueueServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);

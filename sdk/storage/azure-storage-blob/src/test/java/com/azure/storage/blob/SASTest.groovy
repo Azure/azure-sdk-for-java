@@ -193,13 +193,13 @@ class SASTest extends APISpec {
 
         // Check containerSASPermissions
         def permissions = new BlobContainerSasPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setList(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setListPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -402,12 +402,12 @@ class SASTest extends APISpec {
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setAdd(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
 
         def expiryTime = getUTCNow().plusDays(1)
 
@@ -655,7 +655,7 @@ class SASTest extends APISpec {
         v.generateSASQueryParameters((SharedKeyCredential) creds)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(NullPointerException)
         e.getMessage().contains(parameter)
 
         where:
@@ -722,12 +722,12 @@ class SASTest extends APISpec {
     def "ContainerSASPermissions toString"() {
         setup:
         def perms = new BlobContainerSasPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setCreate(create)
-            .setAdd(add)
-            .setList(list)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setCreatePermission(create)
+            .setAddPermission(add)
+            .setListPermission(list)
 
         expect:
         perms.toString() == expectedString
@@ -749,12 +749,12 @@ class SASTest extends APISpec {
         def perms = BlobContainerSasPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getCreate() == create
-        perms.getAdd() == add
-        perms.getList() == list
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getAddPermission() == add
+        perms.getListPermission() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -840,7 +840,7 @@ class SASTest extends APISpec {
 
         then:
 
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
 
         where:
         usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                   | identifier | resource | snapshotId
@@ -903,7 +903,7 @@ class SASTest extends APISpec {
         v.generateSASQueryParameters(creds)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(NullPointerException)
         e.getMessage().contains(parameter)
 
         where:

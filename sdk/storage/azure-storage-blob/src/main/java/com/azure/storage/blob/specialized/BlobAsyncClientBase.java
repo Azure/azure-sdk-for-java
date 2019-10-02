@@ -863,6 +863,7 @@ public class BlobAsyncClientBase {
      *
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Void> setAccessTier(AccessTier tier) {
         return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
@@ -886,6 +887,7 @@ public class BlobAsyncClientBase {
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
@@ -1064,6 +1066,7 @@ public class BlobAsyncClientBase {
      * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(BlobSasPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
@@ -1076,6 +1079,7 @@ public class BlobAsyncClientBase {
      *
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(String identifier) {
         return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
@@ -1094,6 +1098,7 @@ public class BlobAsyncClientBase {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
@@ -1125,6 +1130,7 @@ public class BlobAsyncClientBase {
      * @param contentLanguage An optional {@code String} content-language header for the SAS.
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
+     * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,

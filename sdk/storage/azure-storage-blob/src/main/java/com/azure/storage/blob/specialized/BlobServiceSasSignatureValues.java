@@ -419,6 +419,8 @@ public final class BlobServiceSasSignatureValues {
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
+     * @throws NullPointerException if {@code sharedKeyCredentials} is null. Or if any of {@code version},
+     * {@code canonicalName}, {@code resource} or {@code identifier} are null.
      */
     public BlobServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
@@ -439,6 +441,8 @@ public final class BlobServiceSasSignatureValues {
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
+     * @throws NullPointerException if {@code delegationKey} is null. Or if any of {@code version},
+     * {@code canonicalName}, {@code resource}, {@code expiryTime} or {@code permissions} are null.
      */
     public BlobServiceSasQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);

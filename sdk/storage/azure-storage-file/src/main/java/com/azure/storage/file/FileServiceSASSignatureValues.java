@@ -398,6 +398,10 @@ final class FileServiceSASSignatureValues {
      * @return {@link FileServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null. Or when any of {@code version},
+     * {@code canonicalName} or {@code resource} is null. Or if {@code identifier} is not set and any of
+     * {@code expiryTime} or {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} are not set
+     * and {@code identifier} is null
      */
     public FileServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);

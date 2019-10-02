@@ -284,7 +284,7 @@ class HelperTest extends APISpec {
         v.generateSASQueryParameters((SharedKeyCredential)creds)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(NullPointerException)
         e.getMessage().contains(parameter)
 
         where:
@@ -352,12 +352,12 @@ class HelperTest extends APISpec {
     def "ContainerSASPermissions toString"() {
         setup:
         BlobContainerSasPermission perms = new BlobContainerSasPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setCreate(create)
-            .setAdd(add)
-            .setList(list)
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setCreatePermission(create)
+            .setAddPermission(add)
+            .setListPermission(list)
 
         expect:
         perms.toString() == expectedString
@@ -379,12 +379,12 @@ class HelperTest extends APISpec {
         BlobContainerSasPermission perms = BlobContainerSasPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getCreate() == create
-        perms.getAdd() == add
-        perms.getList() == list
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getAddPermission() == add
+        perms.getListPermission() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -499,7 +499,7 @@ class HelperTest extends APISpec {
         v.generateSASQueryParameters(creds)
 
         then:
-        def e = thrown(IllegalArgumentException)
+        def e = thrown(NullPointerException)
         e.getMessage().contains(parameter)
 
         where:
