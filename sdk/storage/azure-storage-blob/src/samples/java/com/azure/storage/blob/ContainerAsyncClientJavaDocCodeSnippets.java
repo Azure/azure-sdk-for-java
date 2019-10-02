@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
@@ -18,6 +17,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Code snippets for {@link ContainerAsyncClient}
@@ -90,15 +90,15 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerAsyncClient#createWithResponse(Metadata, PublicAccessType)}
+     * Code snippet for {@link ContainerAsyncClient#createWithResponse(Map, PublicAccessType)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Metadata-PublicAccessType
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
         client.createWithResponse(metadata, PublicAccessType.CONTAINER).subscribe(response ->
             System.out.printf("Create completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Metadata-PublicAccessType
+        // END: com.azure.storage.blob.ContainerAsyncClient.createWithResponse#Map-PublicAccessType
     }
 
     /**
@@ -156,24 +156,24 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link ContainerAsyncClient#setMetadata(Metadata)}
+     * Code snippet for {@link ContainerAsyncClient#setMetadata(Map)}
      */
     public void setMetadata() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.setMetadata#Metadata
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.setMetadata#Map
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
         client.setMetadata(metadata).subscribe(
             response -> System.out.printf("Set metadata completed%n"),
             error -> System.out.printf("Set metadata failed: %s%n", error));
-        // END: com.azure.storage.blob.ContainerAsyncClient.setMetadata#Metadata
+        // END: com.azure.storage.blob.ContainerAsyncClient.setMetadata#Map
     }
 
     /**
-     * Code snippet for {@link ContainerAsyncClient#setMetadataWithResponse(Metadata, ContainerAccessConditions)}
+     * Code snippet for {@link ContainerAsyncClient#setMetadataWithResponse(Map, ContainerAccessConditions)}
      */
     public void setMetadata2() {
-        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.setMetadataWithResponse#Metadata-ContainerAccessConditions
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.ContainerAsyncClient.setMetadataWithResponse#Map-ContainerAccessConditions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ContainerAccessConditions accessConditions = new ContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -181,7 +181,7 @@ public class ContainerAsyncClientJavaDocCodeSnippets {
 
         client.setMetadataWithResponse(metadata, accessConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.ContainerAsyncClient.setMetadataWithResponse#Metadata-ContainerAccessConditions
+        // END: com.azure.storage.blob.ContainerAsyncClient.setMetadataWithResponse#Map-ContainerAccessConditions
     }
 
     /**

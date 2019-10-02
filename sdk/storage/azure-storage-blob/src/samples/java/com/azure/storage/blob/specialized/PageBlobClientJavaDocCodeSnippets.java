@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageBlobItem;
@@ -26,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link PageBlobClient}
@@ -33,7 +33,7 @@ import java.util.Collections;
 @SuppressWarnings("unused")
 public class PageBlobClientJavaDocCodeSnippets {
     private PageBlobClient client = new SpecializedBlobClientBuilder().buildPageBlobClient();
-    private Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+    private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
     private String leaseId = "leaseId";
     private Duration timeout = Duration.ofSeconds(30);
     private long size = 1024;
@@ -62,11 +62,10 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#createWithResponse(long, Long, BlobHTTPHeaders, Metadata,
-     * BlobAccessConditions, Duration, Context)}
+     * Code snippets for {@link PageBlobClient#createWithResponse(long, Long, BlobHTTPHeaders, Map, BlobAccessConditions, Duration, Context)}
      */
     public void createWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions-Duration-Context
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
@@ -79,7 +78,7 @@ public class PageBlobClientJavaDocCodeSnippets {
             .getValue();
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions-Duration-Context
     }
 
     /**

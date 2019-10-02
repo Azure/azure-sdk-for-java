@@ -12,9 +12,9 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
-import com.azure.storage.blob.models.Metadata;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 public final class BlobProperties {
     private final OffsetDateTime creationTime;
@@ -46,7 +46,7 @@ public final class BlobProperties {
     private final ArchiveStatus archiveStatus;
     private final String encryptionKeySha256;
     private final OffsetDateTime accessTierChangeTime;
-    private final Metadata metadata;
+    private final Map<String, String> metadata;
     private final Integer committedBlockCount;
 
     public BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
@@ -79,7 +79,7 @@ public final class BlobProperties {
         this.archiveStatus = ArchiveStatus.fromString(generatedHeaders.getArchiveStatus());
         this.encryptionKeySha256 = generatedHeaders.getEncryptionKeySha256();
         this.accessTierChangeTime = generatedHeaders.getAccessTierChangeTime();
-        this.metadata = new Metadata(generatedHeaders.getMetadata());
+        this.metadata = generatedHeaders.getMetadata();
         this.committedBlockCount = generatedHeaders.getBlobCommittedBlockCount();
     }
 
@@ -300,7 +300,7 @@ public final class BlobProperties {
     /**
      * @return the metadata associated to this blob
      */
-    public Metadata getMetadata() {
+    public Map<String, String> getMetadata() {
         return metadata;
     }
 

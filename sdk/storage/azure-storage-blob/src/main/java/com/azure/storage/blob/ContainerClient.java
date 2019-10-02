@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -24,6 +23,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
@@ -184,17 +184,17 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Metadata-PublicAccessType-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context}
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> createWithResponse(Metadata metadata, PublicAccessType accessType, Duration timeout,
-        Context context) {
+    public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+        Duration timeout, Context context) {
         Mono<Response<Void>> response = containerAsyncClient.createWithResponse(metadata, accessType, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -276,11 +276,11 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadata#Metadata}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.createWithResponse#Map}
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      */
-    public void setMetadata(Metadata metadata) {
+    public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
 
@@ -290,15 +290,15 @@ public final class ContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Map-ContainerAccessConditions-Duration-Context}
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the container.
      * @param accessConditions {@link ContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> setMetadataWithResponse(Metadata metadata,
+    public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         ContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = containerAsyncClient.setMetadataWithResponse(metadata, accessConditions,
             context);
