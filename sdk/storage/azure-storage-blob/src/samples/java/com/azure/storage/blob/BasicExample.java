@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.ByteArrayInputStream;
@@ -20,6 +21,7 @@ public class BasicExample {
 
     /**
      * Entry point into the basic examples for Storage blobs.
+     *
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
      * @throws RuntimeException If the downloaded data doesn't match the uploaded data
@@ -57,19 +59,19 @@ public class BasicExample {
          * ContainerClient object that wraps the container's endpoint, credential and a request pipeline (inherited from storageClient).
          * Note that container names require lowercase.
          */
-        ContainerClient containerClient = storageClient.getContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
 
         /*
          * Create a container in Storage blob account.
          */
-        containerClient.create();
+        blobContainerClient.create();
 
         /*
          * Create a client that references a to-be-created blob in your Azure Storage account's container.
          * This returns a BlockBlobClient object that wraps the blob's endpoint, credential and a request pipeline
          * (inherited from containerClient). Note that blob names can be mixed case.
          */
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient("HelloWorld.txt");
+        BlockBlobClient blobClient = blobContainerClient.getBlobClient("HelloWorld.txt").getBlockBlobClient();
 
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
@@ -102,15 +104,15 @@ public class BasicExample {
         for (int i = 0; i < 3; i++) {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
-            containerClient.getBlockBlobClient("myblobsforlisting" + System.currentTimeMillis())
-                    .upload(dataInBlobs, sampleData.length());
+            blobContainerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).getBlockBlobClient()
+                .upload(dataInBlobs, sampleData.length());
             dataInBlobs.close();
         }
 
         /*
          * List the blob(s) in our container.
          */
-        containerClient.listBlobsFlat()
+        blobContainerClient.listBlobsFlat()
             .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
 
         /*
@@ -121,6 +123,6 @@ public class BasicExample {
         /*
          * Delete the container we created earlier.
          */
-        containerClient.delete();
+        blobContainerClient.delete();
     }
 }

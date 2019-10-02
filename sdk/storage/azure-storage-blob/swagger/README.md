@@ -33,6 +33,9 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+models-subpackage: implementation.models
+custom-types: AccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobItem,BlobProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,ContainerItem,ContainerProperties,CopyStatusType,CorsRule,CpkInfo,CustomerProvidedKeyInfo,DataLakeStorageError,DataLakeStorageErrorError,DataLakeStorageErrorException,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobsIncludeItem,ListContainersIncludeType,Logging,Metrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,RetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,SignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,StorageError,StorageErrorCode,StorageErrorException,StorageServiceProperties,StorageServiceStats,SyncCopyStatusType,UserDelegationKey
+custom-types-subpackage: models
 ```
 
 ### /{containerName}?restype=container
@@ -760,20 +763,6 @@ directive:
     if ($["x-ms-parameter-location"]) {
       delete $["x-ms-parameter-location"];
     }
-```
-
-### Make AccessTier Unique
-autorest.python complains that the same enum has different values
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.AccessTierRequired
-  transform: >
-    $["x-ms-enum"].name = "AccessTierRequired";
-- from: swagger-document
-  where: $.parameters.AccessTierOptional
-  transform: >
-    $["x-ms-enum"].name = "AccessTierOptional";
 ```
 
 ### Extra parameters

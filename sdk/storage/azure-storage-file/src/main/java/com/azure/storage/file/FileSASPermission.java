@@ -15,13 +15,13 @@ import java.util.Locale;
  * order of the permissions is particular and this class guarantees correctness.
  */
 public final class FileSASPermission {
-    private boolean read;
+    private boolean readPermission;
 
-    private boolean create;
+    private boolean createPermission;
 
-    private boolean write;
+    private boolean writePermission;
 
-    private boolean delete;
+    private boolean deletePermission;
 
     /**
      * Initializes an {@code FileSASPermission} object with all fields set to false.
@@ -44,16 +44,16 @@ public final class FileSASPermission {
             char c = permString.charAt(i);
             switch (c) {
                 case 'r':
-                    permissions.read = true;
+                    permissions.readPermission = true;
                     break;
                 case 'c':
-                    permissions.create = true;
+                    permissions.createPermission = true;
                     break;
                 case 'w':
-                    permissions.write = true;
+                    permissions.writePermission = true;
                     break;
                 case 'd':
-                    permissions.delete = true;
+                    permissions.deletePermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -67,72 +67,72 @@ public final class FileSASPermission {
     /**
      * @return the read permission status
      */
-    public boolean getRead() {
-        return read;
+    public boolean getReadPermission() {
+        return readPermission;
     }
 
     /**
      * Sets the read permission status.
      *
-     * @param read Permission status to set
+     * @param hasReadPermission Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setRead(boolean read) {
-        this.read = read;
+    public FileSASPermission setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
     /**
      * @return the create permission status
      */
-    public boolean getCreate() {
-        return create;
+    public boolean getCreatePermission() {
+        return createPermission;
     }
 
     /**
      * Sets the create permission status.
      *
-     * @param create Permission status to set
+     * @param hasCreatePermission Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setCreate(boolean create) {
-        this.create = create;
+    public FileSASPermission setCreatePermission(boolean hasCreatePermission) {
+        this.createPermission = hasCreatePermission;
         return this;
     }
 
     /**
      * @return the write permission status
      */
-    public boolean getWrite() {
-        return write;
+    public boolean getWritePermission() {
+        return writePermission;
     }
 
     /**
      * Sets the write permission status.
      *
-     * @param write Permission status to set
+     * @param hasWritePermission Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setWrite(boolean write) {
-        this.write = write;
+    public FileSASPermission setWritePermission(boolean hasWritePermission) {
+        this.writePermission = hasWritePermission;
         return this;
     }
 
     /**
      * @return the delete permission status
      */
-    public boolean getDelete() {
-        return delete;
+    public boolean getDeletePermission() {
+        return deletePermission;
     }
 
     /**
      * Sets the delete permission status.
      *
-     * @param delete Permission status to set
+     * @param hasDeletePermission Permission status to set
      * @return the updated FileSASPermission object
      */
-    public FileSASPermission setDelete(boolean delete) {
-        this.delete = delete;
+    public FileSASPermission setDeletePermission(boolean hasDeletePermission) {
+        this.deletePermission = hasDeletePermission;
         return this;
     }
 
@@ -148,19 +148,19 @@ public final class FileSASPermission {
         // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
         final StringBuilder builder = new StringBuilder();
 
-        if (this.read) {
+        if (this.readPermission) {
             builder.append('r');
         }
 
-        if (this.create) {
+        if (this.createPermission) {
             builder.append('c');
         }
 
-        if (this.write) {
+        if (this.writePermission) {
             builder.append('w');
         }
 
-        if (this.delete) {
+        if (this.deletePermission) {
             builder.append('d');
         }
 

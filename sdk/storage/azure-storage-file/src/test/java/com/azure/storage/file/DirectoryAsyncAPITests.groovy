@@ -6,10 +6,6 @@ package com.azure.storage.file
 
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryAsyncClient
-import com.azure.storage.file.FileAsyncClient
-import com.azure.storage.file.FileSmbProperties
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
@@ -44,7 +40,7 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Get directory URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
         when:
         def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl().toString()
         then:
@@ -90,17 +86,6 @@ class DirectoryAsyncAPITests extends APISpec {
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
-    }
-
-    def "Create directory error with metadata"() {
-        given:
-        def errorMetadata = Collections.singletonMap("testMeta", "value")
-        when:
-        def createMetadataErrorVerifier = StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, null, errorMetadata))
-        then:
-        createMetadataErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 403, StorageErrorCode.AUTHENTICATION_FAILED)
-        }
     }
 
     def "Create directory with file permission"() {

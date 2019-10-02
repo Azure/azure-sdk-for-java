@@ -1,5 +1,5 @@
 # Instructions for CODEOWNERS file format and automatic build failure notifications:
-# https://github.com/Azure/azure-sdk/blob/master/docs/engineering-system/codeowners.md
+# https://github.com/Azure/azure-sdk/blob/master/docs/policies/opensource.md#codeowners
 
 ###########
 # SDK
@@ -27,10 +27,10 @@
 ###########
 # Eng Sys
 ###########
-/eng/   @weshaggard @mitchdenny @danieljurek
-/eng/code-quality-reports/ @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/ @srnagar @JonathanGiles
-/eng/spotbugs-aggregate-report/ @srnagar @JonathanGiles
+/eng/                               @JimSuplizio @mitchdenny @weshaggard @danieljurek
+/eng/code-quality-reports/          @mssfang @JonathanGiles
+/eng/jacoco-test-coverage/          @srnagar @JonathanGiles
+/eng/spotbugs-aggregate-report/     @srnagar @JonathanGiles
 
 /**/tests.yml   @danieljurek
 /**/ci.yml      @mitchdenny

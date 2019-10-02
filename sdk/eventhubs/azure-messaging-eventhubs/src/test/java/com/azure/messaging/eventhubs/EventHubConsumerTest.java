@@ -6,10 +6,11 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.IterableStream;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
 import org.junit.Assert;
@@ -79,6 +80,38 @@ public class EventHubConsumerTest {
     public void teardown() throws IOException {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+    }
+
+    /**
+     * Verify that by default, lastEnqueuedInformation is null if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}
+     * is not set.
+     */
+    @Test
+    public void lastEnqueuedEventInformationIsNull() {
+        // Assert
+        Assert.assertNull(consumer.getLastEnqueuedEventProperties());
+    }
+
+    /**
+     * Verify that the default information is set and is null because no information has been received.
+     */
+    @Test
+    public void lastEnqueuedEventInformationCreated() {
+        // Arrange
+        final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+            Mono.just(amqpReceiveLink),
+            serializer,
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+
+        // Act
+        final LastEnqueuedEventProperties lastEnqueuedEventProperties = runtimeConsumer.getLastEnqueuedEventProperties();
+
+        // Assert
+        Assert.assertNotNull(lastEnqueuedEventProperties);
+        Assert.assertNull(lastEnqueuedEventProperties.getOffset());
+        Assert.assertNull(lastEnqueuedEventProperties.getSequenceNumber());
+        Assert.assertNull(lastEnqueuedEventProperties.getRetrievalTime());
+        Assert.assertNull(lastEnqueuedEventProperties.getEnqueuedTime());
     }
 
     /**

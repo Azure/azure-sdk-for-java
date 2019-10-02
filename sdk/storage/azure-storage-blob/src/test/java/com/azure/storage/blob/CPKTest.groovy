@@ -2,8 +2,12 @@ package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.Metadata
+
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.Constants
 
 import java.time.OffsetDateTime
@@ -11,16 +15,16 @@ import java.time.OffsetDateTime
 class CPKTest extends APISpec {
 
     CustomerProvidedKey key
-    ContainerClient cpkContainer
+    BlobContainerClient cpkContainer
     BlockBlobClient cpkBlockBlob
     PageBlobClient cpkPageBlob
     AppendBlobClient cpkAppendBlob
-    BlobClient cpkExistingBlob
+    BlobClientBase cpkExistingBlob
 
     def setup() {
         key = new CustomerProvidedKey(getRandomKey())
-        def builder = new ContainerClientBuilder()
-            .endpoint(cc.getContainerUrl().toString())
+        def builder = new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -29,11 +33,11 @@ class CPKTest extends APISpec {
         addOptionalRecording(builder)
 
         cpkContainer = builder.buildClient()
-        cpkBlockBlob = cpkContainer.getBlockBlobClient(generateBlobName())
-        cpkPageBlob = cpkContainer.getPageBlobClient(generateBlobName())
-        cpkAppendBlob = cpkContainer.getAppendBlobClient(generateBlobName())
+        cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
+        cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).getPageBlobClient()
+        cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient()
 
-        def existingBlobSetup = cpkContainer.getBlockBlobClient(generateBlobName())
+        def existingBlobSetup = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
         existingBlobSetup.upload(defaultInputStream.get(), defaultDataSize)
         cpkExistingBlob = existingBlobSetup
     }
@@ -84,12 +88,12 @@ class CPKTest extends APISpec {
 
     def "Put block from URL with CPK"() {
         setup:
-        def sourceBlob = cc.getBlockBlobClient(generateBlobName())
+        def sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -115,7 +119,7 @@ class CPKTest extends APISpec {
 
     def "Put page with CPK"() {
         setup:
-        cpkPageBlob.setCreate(PageBlobClient.PAGE_BYTES)
+        cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         when:
         def response = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -129,16 +133,16 @@ class CPKTest extends APISpec {
 
     def "Put page from URL wih CPK"() {
         setup:
-        def sourceBlob = cc.getPageBlobClient(generateBlobName())
-        sourceBlob.setCreate(PageBlobClient.PAGE_BYTES)
+        def sourceBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+        sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
 
-        cpkPageBlob.setCreate(PageBlobClient.PAGE_BYTES)
+        cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
         when:
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -150,7 +154,7 @@ class CPKTest extends APISpec {
 
     def "Put multiple pages with CPK"() {
         setup:
-        cpkPageBlob.setCreate(PageBlobClient.PAGE_BYTES * 2)
+        cpkPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
 
         when:
         def response = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
@@ -178,12 +182,12 @@ class CPKTest extends APISpec {
     def "Append block from URL with CPK"() {
         setup:
         cpkAppendBlob.create()
-        def sourceBlob = cc.getBlockBlobClient(generateBlobName())
+        def sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSASPermission().setRead(true))),
+            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -195,7 +199,7 @@ class CPKTest extends APISpec {
 
     def "Set blob metadata with CPK"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:
@@ -230,7 +234,7 @@ class CPKTest extends APISpec {
 
     def "Snapshot blob with CPK"() {
         setup:
-        def metadata = new Metadata()
+        def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
 
         when:

@@ -3,11 +3,11 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
@@ -23,10 +23,10 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.models.CorsRule;
-import com.azure.storage.file.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
@@ -188,11 +188,11 @@ public final class FileServiceAsyncClient {
 
         if (options != null) {
             if (options.isIncludeMetadata()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
+                include.add(ListSharesIncludeType.METADATA);
             }
 
             if (options.isIncludeSnapshots()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
+                include.add(ListSharesIncludeType.SNAPSHOTS);
             }
         }
 
@@ -442,7 +442,7 @@ public final class FileServiceAsyncClient {
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
         if (ImplUtils.isNullOrEmpty(snapshot)) {
-            deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
+            deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
@@ -457,6 +457,7 @@ public final class FileServiceAsyncClient {
      * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
@@ -483,6 +484,7 @@ public final class FileServiceAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,

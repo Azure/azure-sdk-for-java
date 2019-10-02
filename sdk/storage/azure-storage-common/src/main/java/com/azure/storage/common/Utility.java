@@ -278,11 +278,11 @@ public final class Utility {
      *
      * @param param Name of the parameter
      * @param value Value of the parameter
-     * @throws IllegalArgumentException If {@code value} is {@code null}
+     * @throws NullPointerException If {@code value} is {@code null}
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
+            throw new NullPointerException(String.format(Locale.ROOT,
                 Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
@@ -514,9 +514,9 @@ public final class Utility {
                 byte[] cache = new byte[(int) count];
                 int lastIndex = data.read(cache);
                 currentTotalLength[0] += lastIndex;
-                if (currentTotalLength[0] < count) {
+                if (lastIndex < count) {
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                        String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
                 }
                 return ByteBuffer.wrap(cache);
@@ -524,9 +524,9 @@ public final class Utility {
             .doOnComplete(() -> {
                 try {
                     if (data.available() > 0) {
-                        Long totalLength = currentTotalLength[0] + data.available();
+                        long totalLength = currentTotalLength[0] + data.available();
                         throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
                                 totalLength, length), totalLength, length));
                     }
                 } catch (IOException e) {
