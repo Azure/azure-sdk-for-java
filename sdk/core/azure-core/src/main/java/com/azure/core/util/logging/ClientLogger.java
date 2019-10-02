@@ -11,15 +11,15 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
+ * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
- * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a throwable is the last
- * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose}
- * logging the stack trace for the throwable will be included in the log message.</p>
+ * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
+ * is the last argument of the format varargs and the logger is enabled for
+ * {@link ClientLogger#verbose(String, Object...) verbose}, the stack trace for the throwable is logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
- * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration, by default logging is
- * disabled.</p>
+ * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
+ * <b>disabled</b>.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
@@ -78,14 +78,14 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
      * Logging a message at verbose log level
      * {@codesnippet com.azure.core.implementation.util.clientlogger.verbose}
      *
-     * @param format The formattable message to log
+     * @param format The formattable message to log.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     public void verbose(String format, Object... args) {
@@ -93,9 +93,9 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
      * Logging a message at informational log level
      * {@codesnippet com.azure.core.implementation.util.clientlogger.info}
@@ -108,14 +108,14 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
      * Logging a message at warning log level
      * {@codesnippet com.azure.core.implementation.util.clientlogger.warning}
      *
-     * @param format The formattable message to log
+     * @param format The formattable message to log.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     public void warning(String format, Object... args) {
@@ -123,14 +123,14 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      * <p>
      * Logging an error with stack trace
      * {@codesnippet com.azure.core.implementation.util.clientlogger.error}
      *
-     * @param format The formattable message to log
+     * @param format The formattable message to log.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     public void error(String format, Object... args) {
@@ -151,10 +151,10 @@ public class ClientLogger {
     }
 
     /**
-     * Attempts to log the {@link RuntimeException} at the warning level and returns it to be thrown.
+     * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return the passed {@code RuntimeException}
+     * @return The passed {@code RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
@@ -162,10 +162,10 @@ public class ClientLogger {
     }
 
     /**
-     * Attempts to log the {@link RuntimeException} at the error level and returns it to be thrown.
+     * Logs the {@link RuntimeException} at the error level and returns it to be thrown.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return the passed {@code RuntimeException}
+     * @return The passed {@code RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
