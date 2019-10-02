@@ -194,7 +194,7 @@ public final class BlobURLParts {
         StringBuilder path = new StringBuilder();
 
         if ((this.containerName == null || this.containerName.isEmpty()) && this.blobName != null) {
-            this.containerName = ContainerAsyncClient.ROOT_CONTAINER_NAME;
+            this.containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
         if (this.containerName != null) {

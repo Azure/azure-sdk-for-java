@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
@@ -1179,7 +1179,7 @@ class ContainerAPITest extends APISpec {
 
     def "BlobClientBuilder Root implicit"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cc.exists()) {
             cc.create()
@@ -1190,7 +1190,7 @@ class ContainerAPITest extends APISpec {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .blobName("rootblob")
             .httpClient(getHttpClient())
-            .buildBlobClient().asAppendBlobClient()
+            .buildClient().getAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null)
@@ -1205,14 +1205,14 @@ class ContainerAPITest extends APISpec {
 
     def "ContainerClientBuilder root implicit"(){
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cc.exists()) {
             cc.create()
         }
 
         when:
-        cc = new ContainerClientBuilder()
+        cc = new BlobContainerClientBuilder()
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .containerName(null)
@@ -1220,20 +1220,22 @@ class ContainerAPITest extends APISpec {
 
         then:
         cc.getProperties() != null
-        cc.getContainerName() == ContainerAsyncClient.ROOT_CONTAINER_NAME
+        cc.getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
 
         when:
-        def bc = cc.getBlobClient("rootblob").asAppendBlobClient()
+        def bc = cc.getBlobClient("rootblob").getAppendBlobClient()
         bc.create()
 
         then:
         bc.exists()
     }
 
-    def "ServiceClient implict root"() {
+    def "ServiceClient implicit root"() {
         expect:
-        primaryBlobServiceClient.getContainerClient(null).getContainerName() == ContainerAsyncClient.ROOT_CONTAINER_NAME
-        primaryBlobServiceClient.getContainerClient("").getContainerName() == ContainerAsyncClient.ROOT_CONTAINER_NAME
+        primaryBlobServiceClient.getBlobContainerClient(null).getBlobContainerName() ==
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        primaryBlobServiceClient.getBlobContainerClient("").getBlobContainerName() ==
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME
     }
 
     def "Web container"() {
