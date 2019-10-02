@@ -49,7 +49,7 @@ public final class LeaseClient {
      *
      * @return URL of the lease client.
      */
-    public URL getLeaseUrl() {
+    public String getLeaseUrl() {
         return client.getLeaseUrl();
     }
 

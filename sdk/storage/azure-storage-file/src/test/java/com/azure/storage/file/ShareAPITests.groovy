@@ -39,7 +39,7 @@ class ShareAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
 
         when:
-        def shareURL = primaryShareClient.getShareUrl().toString()
+        def shareURL = primaryShareClient.getShareUrl()
 
         then:
         expectURL.equals(shareURL)
@@ -55,7 +55,7 @@ class ShareAPITests extends APISpec {
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
         ShareClient newShareClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
                 .buildClient()
-        def shareURL = newShareClient.getShareUrl().toString()
+        def shareURL = newShareClient.getShareUrl()
 
         then:
         expectURL.equals(shareURL)

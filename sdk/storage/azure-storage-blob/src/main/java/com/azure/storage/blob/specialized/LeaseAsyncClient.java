@@ -22,7 +22,6 @@ import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -54,7 +53,7 @@ public final class LeaseAsyncClient {
     private final String leaseId;
     private final AzureBlobStorageImpl client;
 
-    LeaseAsyncClient(HttpPipeline pipeline, URL url, String leaseId, boolean isBlob) {
+    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
@@ -70,12 +69,8 @@ public final class LeaseAsyncClient {
      *
      * @return URL of the lease client.
      */
-    public URL getLeaseUrl() {
-        try {
-            return new URL(this.client.getUrl());
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new RuntimeException("Unable to parse URL"));
-        }
+    public String getLeaseUrl() {
+        return this.client.getUrl();
     }
 
     /**

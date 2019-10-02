@@ -42,7 +42,7 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = { LeaseClient.class, LeaseAsyncClient.class })
 public final class LeaseClientBuilder {
     private HttpPipeline pipeline;
-    private URL url;
+    private String url;
     private String leaseId;
     private boolean isBlob;
 

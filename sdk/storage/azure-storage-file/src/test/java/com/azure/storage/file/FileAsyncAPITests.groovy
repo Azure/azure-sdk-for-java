@@ -54,7 +54,7 @@ class FileAsyncAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
-        def fileURL = primaryFileAsyncClient.getFileUrl().toString()
+        def fileURL = primaryFileAsyncClient.getFileUrl()
 
         then:
         expectURL == fileURL
@@ -408,7 +408,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
-        def sourceURL = primaryFileAsyncClient.getFileUrl().toString()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
         def copyInfoVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse(sourceURL, null))

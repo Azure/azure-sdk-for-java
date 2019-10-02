@@ -76,7 +76,7 @@ public class BlobClientBase {
      *
      * @return the URL.
      */
-    public URL getBlobUrl() {
+    public String getBlobUrl() {
         return client.getBlobUrl();
     }
 
