@@ -1,5 +1,30 @@
 # Change Log azure-storage-blob
 
+## Version 12.0.0-preview.4 (2019-10-8)
+For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.4/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.4/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Moves the specialized `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`, into the `specialized` package within Azure Storage Blobs. Additionally, moved any model classes that are tied to a specific specialized client.
+- Adds a `BlobClientBase` which is now the super class for `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`.
+- Uses JavaBeans getters and setters
+- Added `getName` for fetching the resource names.
+- Added full Java module support.
+- Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
+- Fixed metadata does not allow capital letter issue.
+- Returns `FileProperties` over `downloadToFile` sync API and `Mono<FileProperies>` over async API.
+- GetURL API now returns URL with scheme, host, resource name and snapshot if any.
+- Added `LeaseClient` and `LeaseAsyncClient` to the specialized package and removed the leasing methods from `BlobClient`, `BlobAsyncClient`, `ContainerClient`, and `ContainerAsyncClient`.
+- Addied `blocksize` parameter to sync `blockBlobClient`.
+- Use Primitives for `exist` API return type.
+- Removed a `create` and `appendBlockFromUrl` middle overload API in `AppendBlob`. Fixed `create` method name in PageBlob.
+- Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
+- Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.
+- Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
+
 ## Version 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 

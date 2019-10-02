@@ -1,5 +1,21 @@
 # Release History
 
+## Version 12.0.0-preview.4 (2019-10-8)
+For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.4/sdk/storage/azure-storage-file/src/samples/java/com/azure/storage/file)
+
+- Uses JavaBeans getters and setters
+- Added getName for fetching the resource names.
+- Added full Java module support.
+- Changed VoidResponse to Response<Void> on sync API, and Mono<VoidResponse> to Mono<Response<Void>> on async API.
+- Fixed metadata does not allow capital letter issue.
+- Returns FileProperties over downloadToFile sync API and Mono<FileProperies> over async API.
+- GetURL API now returns URL with scheme, host, resource name and snapshot if any.
+
 ## Version 12.0.0-preview.3 (2019-09-10):
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
