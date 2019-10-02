@@ -119,7 +119,7 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key, optional {@code label}
+     * Creates or updates a configuration value in the service with the given key and optional {@code label}.
      *
      * <p><strong>Code Samples</strong></p>
      *
