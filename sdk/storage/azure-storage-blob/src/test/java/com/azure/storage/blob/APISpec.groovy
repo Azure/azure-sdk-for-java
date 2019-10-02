@@ -22,10 +22,10 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
-import com.azure.storage.blob.models.ContainerItem
+import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.ListContainersOptions
+import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
@@ -159,15 +159,15 @@ class APISpec extends Specification {
         premiumBlobServiceClient = setClient(premiumCredential)
 
         containerName = generateContainerName()
-        cc = primaryBlobServiceClient.getContainerClient(containerName)
-        ccAsync = primaryBlobServiceAsyncClient.getContainerAsyncClient(containerName)
+        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
         cc.create()
     }
 
     def cleanup() {
-        def options = new ListContainersOptions().setPrefix(containerPrefix + testName)
-        for (ContainerItem container : primaryBlobServiceClient.listContainers(options, Duration.ofSeconds(120))) {
-            BlobContainerClient containerClient = primaryBlobServiceClient.getContainerClient(container.getName())
+        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
+        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)

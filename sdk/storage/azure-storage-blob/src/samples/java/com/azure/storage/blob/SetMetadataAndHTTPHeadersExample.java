@@ -51,7 +51,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Create a container client from storageClient.
          */
-        BlobContainerClient blobContainerClient = storageClient.getContainerClient("mycontainer" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("mycontainer" + System.currentTimeMillis());
 
         /*
          * Setup containerMetadata for container.

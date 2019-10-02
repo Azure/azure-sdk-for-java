@@ -67,7 +67,7 @@ public class FileTransferExample {
          * ContainerClient uses the same endpoint, credential and pipeline from storageClient.
          * Note that container names require lowercase.
          */
-        BlobContainerClient blobContainerClient = storageClient.getContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
 
         /*
          * Create a container in Storage blob account.

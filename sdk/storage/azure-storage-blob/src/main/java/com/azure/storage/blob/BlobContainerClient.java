@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobContainerAccessConditions;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ContainerAccessConditions;
-import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -31,9 +31,9 @@ import java.util.List;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
- * {@link BlobServiceClient#getContainerClient(String)}. This class does not hold any state about a particular container
- * but is instead a convenient way of sending off appropriate requests to the resource on the service. It may also be
- * used to construct URLs to blobs.
+ * {@link BlobServiceClient#getBlobContainerClient(String)}. This class does not hold any state about a particular
+ * container but is instead a convenient way of sending off appropriate requests to the resource on the service. It may
+ * also be used to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobClient} through
@@ -102,8 +102,8 @@ public final class BlobContainerClient {
      *
      * @return the URL.
      */
-    public URL getContainerUrl() {
-        return blobContainerAsyncClient.getContainerUrl();
+    public URL getBlobContainerUrl() {
+        return blobContainerAsyncClient.getBlobContainerUrl();
     }
 
     /**
@@ -210,14 +210,14 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context}
      *
-     * @param accessConditions {@link ContainerAccessConditions}
+     * @param accessConditions {@link BlobContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
-    public Response<Void> deleteWithResponse(ContainerAccessConditions accessConditions, Duration timeout,
+    public Response<Void> deleteWithResponse(BlobContainerAccessConditions accessConditions, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.deleteWithResponse(accessConditions, context);
 
@@ -280,16 +280,16 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Metadata-ContainerAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Metadata-BlobContainerAccessConditions-Duration-Context}
      *
      * @param metadata {@link Metadata}
-     * @param accessConditions {@link ContainerAccessConditions}
+     * @param accessConditions {@link BlobContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> setMetadataWithResponse(Metadata metadata,
-        ContainerAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.setMetadataWithResponse(metadata, accessConditions,
             context);
 
@@ -307,7 +307,7 @@ public final class BlobContainerClient {
      *
      * @return The container access policy.
      */
-    public ContainerAccessPolicies getAccessPolicy() {
+    public BlobContainerAccessPolicies getAccessPolicy() {
         return getAccessPolicyWithResponse(null, null, Context.NONE).getValue();
     }
 
@@ -326,9 +326,10 @@ public final class BlobContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The container access policy.
      */
-    public Response<ContainerAccessPolicies> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
+    public Response<BlobContainerAccessPolicies> getAccessPolicyWithResponse(
+        LeaseAccessConditions leaseAccessConditions,
         Duration timeout, Context context) {
-        Mono<Response<ContainerAccessPolicies>> response = blobContainerAsyncClient
+        Mono<Response<BlobContainerAccessPolicies>> response = blobContainerAsyncClient
             .getAccessPolicyWithResponse(leaseAccessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -364,7 +365,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions-Duration-Context}
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -372,13 +373,13 @@ public final class BlobContainerClient {
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
-     * @param accessConditions {@link ContainerAccessConditions}
+     * @param accessConditions {@link BlobContainerAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
+        List<SignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient
             .setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
@@ -681,11 +682,11 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getContainerName}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobContainerName}
      *
      * @return The name of container.
      */
-    public String getContainerName() {
-        return this.blobContainerAsyncClient.getContainerName();
+    public String getBlobContainerName() {
+        return this.blobContainerAsyncClient.getBlobContainerName();
     }
 }

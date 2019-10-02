@@ -18,9 +18,9 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ContainerAccessConditions;
-import com.azure.storage.blob.models.ContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -56,9 +56,9 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
- * {@link BlobServiceAsyncClient#getContainerAsyncClient(String)}. This class does not hold any state about a particular
- * blob but is instead a convenient way of sending off appropriate requests to the resource on the service. It may also
- * be used to construct URLs to blobs.
+ * {@link BlobServiceAsyncClient#getBlobContainerAsyncClient(String)}. This class does not hold any state about a
+ * particular blob but is instead a convenient way of sending off appropriate requests to the resource on the service.
+ * It may also be used to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobAsyncClient} through
@@ -129,7 +129,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+            .url(Utility.appendToURLPath(getBlobContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), snapshot, customerProvidedKey);
     }
@@ -140,7 +140,7 @@ public final class BlobContainerAsyncClient {
      * @return the URL.
      * @throws RuntimeException If the container has a malformed URL.
      */
-    public URL getContainerUrl() {
+    public URL getBlobContainerUrl() {
         try {
             return new URL(azureBlobStorage.getUrl());
         } catch (MalformedURLException e) {
@@ -154,12 +154,12 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.getContainerName}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.getBlobContainerName}
      *
      * @return The name of container.
      */
-    public String getContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+    public String getBlobContainerName() {
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**
@@ -285,19 +285,19 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.deleteWithResponse#ContainerAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.deleteWithResponse#BlobContainerAccessConditions}
      *
-     * @param accessConditions {@link ContainerAccessConditions}
+     * @param accessConditions {@link BlobContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
+     * @throws UnsupportedOperationException If {@link BlobContainerAccessConditions#getModifiedAccessConditions()} has
      * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
-    public Mono<Response<Void>> deleteWithResponse(ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> deleteWithResponse(BlobContainerAccessConditions accessConditions) {
         return withContext(context -> deleteWithResponse(accessConditions, context));
     }
 
-    Mono<Response<Void>> deleteWithResponse(ContainerAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
+    Mono<Response<Void>> deleteWithResponse(BlobContainerAccessConditions accessConditions, Context context) {
+        accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -372,22 +372,23 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Metadata-ContainerAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Metadata-BlobContainerAccessConditions}
      *
      * @param metadata {@link Metadata}
-     * @param accessConditions {@link ContainerAccessConditions}
+     * @param accessConditions {@link BlobContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
+     * @throws UnsupportedOperationException If {@link BlobContainerAccessConditions#getModifiedAccessConditions()} has
      * anything set other than {@link ModifiedAccessConditions#getIfModifiedSince()}.
      */
-    public Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions) {
+    public Mono<Response<Void>> setMetadataWithResponse(Metadata metadata,
+        BlobContainerAccessConditions accessConditions) {
         return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
     }
 
-    Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, ContainerAccessConditions accessConditions,
+    Mono<Response<Void>> setMetadataWithResponse(Metadata metadata, BlobContainerAccessConditions accessConditions,
         Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
-        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
+        accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())
             || accessConditions.getModifiedAccessConditions().getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -412,7 +413,7 @@ public final class BlobContainerAsyncClient {
      *
      * @return A reactive response containing the container access policy.
      */
-    public Mono<ContainerAccessPolicies> getAccessPolicy() {
+    public Mono<BlobContainerAccessPolicies> getAccessPolicy() {
         return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
@@ -429,16 +430,16 @@ public final class BlobContainerAsyncClient {
      * not match the active lease on the blob.
      * @return A reactive response containing the container access policy.
      */
-    public Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(
+    public Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(
         LeaseAccessConditions leaseAccessConditions) {
         return withContext(context -> getAccessPolicyWithResponse(leaseAccessConditions, context));
     }
 
-    Mono<Response<ContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
+    Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
         Context context) {
         return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null,
             null, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response,
-            new ContainerAccessPolicies(response.getDeserializedHeaders().getBlobPublicAccess(),
+            new BlobContainerAccessPolicies(response.getDeserializedHeaders().getBlobPublicAccess(),
                 response.getValue()))));
     }
 
@@ -473,7 +474,7 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions}
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -481,19 +482,19 @@ public final class BlobContainerAsyncClient {
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
-     * @param accessConditions {@link ContainerAccessConditions}
+     * @param accessConditions {@link BlobContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#getModifiedAccessConditions()} has
+     * @throws UnsupportedOperationException If {@link BlobContainerAccessConditions#getModifiedAccessConditions()} has
      * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
+        List<SignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions) {
         return withContext(context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
     }
 
     Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers,
-        ContainerAccessConditions accessConditions, Context context) {
-        accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
+        BlobContainerAccessConditions accessConditions, Context context) {
+        accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until

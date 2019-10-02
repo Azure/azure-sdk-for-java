@@ -59,7 +59,7 @@ public class BasicExample {
          * ContainerClient object that wraps the container's endpoint, credential and a request pipeline (inherited from storageClient).
          * Note that container names require lowercase.
          */
-        BlobContainerClient blobContainerClient = storageClient.getContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
 
         /*
          * Create a container in Storage blob account.

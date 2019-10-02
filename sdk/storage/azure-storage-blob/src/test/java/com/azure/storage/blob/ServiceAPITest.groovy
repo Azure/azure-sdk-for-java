@@ -5,10 +5,10 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.ContainerItem
-import com.azure.storage.blob.models.ContainerListDetails
+import com.azure.storage.blob.models.BlobContainerItem
+import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.CorsRule
-import com.azure.storage.blob.models.ListContainersOptions
+import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.Logging
 import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.Metrics
@@ -60,10 +60,10 @@ class ServiceAPITest extends APISpec {
     def "List containers"() {
         when:
         def response =
-            primaryBlobServiceClient.listContainers(new ListContainersOptions().setPrefix(containerPrefix + testName), null)
+            primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setPrefix(containerPrefix + testName), null)
 
         then:
-        for (ContainerItem c : response) {
+        for (BlobContainerItem c : response) {
             assert c.getName().startsWith(containerPrefix)
             assert c.getProperties().getLastModified() != null
             assert c.getProperties().getEtag() != null
@@ -78,7 +78,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers min"() {
         when:
-        primaryBlobServiceClient.listContainers().iterator().hasNext()
+        primaryBlobServiceClient.listBlobContainers().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -87,10 +87,10 @@ class ServiceAPITest extends APISpec {
     def "List containers marker"() {
         setup:
         for (int i = 0; i < 10; i++) {
-            primaryBlobServiceClient.createContainer(generateContainerName())
+            primaryBlobServiceClient.createBlobContainer(generateContainerName())
         }
 
-        Iterator<ContainerItem> listResponse = primaryBlobServiceClient.listContainers().iterator()
+        Iterator<BlobContainerItem> listResponse = primaryBlobServiceClient.listBlobContainers().iterator()
         String firstContainerName = listResponse.next().getName()
 
         expect:
@@ -102,11 +102,11 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cc = primaryBlobServiceClient.createContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
+        cc = primaryBlobServiceClient.createBlobContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
 
         expect:
-        primaryBlobServiceClient.listContainers(new ListContainersOptions()
-            .setDetails(new ContainerListDetails().setRetrieveMetadata(true))
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
+            .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
             .setPrefix("aaa" + containerPrefix), null)
             .iterator().next().getMetadata() == metadata
 
@@ -121,11 +121,11 @@ class ServiceAPITest extends APISpec {
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createContainer(generateContainerName())
+            containers << primaryBlobServiceClient.createBlobContainer(generateContainerName())
         }
 
         expect:
-        primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), null)
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResults(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
@@ -134,7 +134,7 @@ class ServiceAPITest extends APISpec {
 
     def "List containers error"() {
         when:
-        primaryBlobServiceClient.listContainers().streamByPage("garbage continuation token").count()
+        primaryBlobServiceClient.listBlobContainers().streamByPage("garbage continuation token").count()
 
         then:
         thrown(StorageException)
@@ -147,11 +147,11 @@ class ServiceAPITest extends APISpec {
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createContainer(generateContainerName())
+            containers << primaryBlobServiceClient.createBlobContainer(generateContainerName())
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.listContainers(new ListContainersOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)

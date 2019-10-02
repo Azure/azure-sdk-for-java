@@ -55,8 +55,8 @@ public class BlobPartitionManager implements PartitionManager {
     /**
      * Creates an instance of BlobPartitionManager.
      *
-     * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update blobs in
-     * the storage container.
+     * @param blobContainerAsyncClient The {@link BlobContainerAsyncClient} this instance will use to read and update
+     * blobs in the storage container.
      */
     public BlobPartitionManager(BlobContainerAsyncClient blobContainerAsyncClient) {
         this.blobContainerAsyncClient = blobContainerAsyncClient;

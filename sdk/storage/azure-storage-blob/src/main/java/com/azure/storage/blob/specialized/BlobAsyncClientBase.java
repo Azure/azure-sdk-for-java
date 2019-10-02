@@ -132,7 +132,7 @@ public class BlobAsyncClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**

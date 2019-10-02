@@ -24,7 +24,7 @@ class CPKTest extends APISpec {
     def setup() {
         key = new CustomerProvidedKey(getRandomKey())
         def builder = new BlobContainerClientBuilder()
-            .endpoint(cc.getContainerUrl().toString())
+            .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)

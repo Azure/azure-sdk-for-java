@@ -4,8 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
+import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -39,7 +39,7 @@ public class Sample {
         BlobContainerClient blobContainerClient = null;
         for (int i = 0; i < 5; i++) {
             String name = "uxtesting" + UUID.randomUUID();
-            blobContainerClient = serviceClient.getContainerClient(name);
+            blobContainerClient = serviceClient.getBlobContainerClient(name);
             blobContainerClient.create();
             System.out.println("Created container: " + name);
         }
@@ -47,7 +47,7 @@ public class Sample {
 
         // list containers in account
         System.out.println("Listing containers in account:");
-        for (ContainerItem item : serviceClient.listContainers()) {
+        for (BlobContainerItem item : serviceClient.listBlobContainers()) {
             System.out.println(item.getName());
         }
         System.out.println();
@@ -72,8 +72,8 @@ public class Sample {
         System.out.println();
 
         // cleanup
-        for (ContainerItem item : serviceClient.listContainers()) {
-            blobContainerClient = serviceClient.getContainerClient(item.getName());
+        for (BlobContainerItem item : serviceClient.listBlobContainers()) {
+            blobContainerClient = serviceClient.getBlobContainerClient(item.getName());
             blobContainerClient.delete();
             System.out.println("Deleted container: " + item.getName());
         }
@@ -92,7 +92,7 @@ public class Sample {
         Mono<Void> createContainerTask = Mono.empty();
         for (int i = 0; i < 5; i++) {
             String name = "uxtesting" + UUID.randomUUID();
-            containerClient = serviceClient.getContainerAsyncClient(name);
+            containerClient = serviceClient.getBlobContainerAsyncClient(name);
 
             createContainerTask = createContainerTask.and(containerClient.create().then(Mono.defer(() -> {
                 System.out.println("Created container: " + name);
@@ -105,7 +105,7 @@ public class Sample {
             // list containers
             .thenMany(Flux.defer(() -> {
                 System.out.println("Listing containers in account:");
-                return serviceClient.listContainers()
+                return serviceClient.listBlobContainers()
                     .flatMap(containerItem -> {
                         System.out.println(containerItem.getName());
                         return Mono.empty();
@@ -141,9 +141,9 @@ public class Sample {
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.getName() + ": " + string)))
             // cleanup
-            .thenMany(serviceClient.listContainers())
+            .thenMany(serviceClient.listBlobContainers())
             .flatMap(containerItem -> serviceClient
-                .getContainerAsyncClient(containerItem.getName())
+                .getBlobContainerAsyncClient(containerItem.getName())
                 .delete())
             .blockLast();
     }
@@ -166,7 +166,7 @@ public class Sample {
             .buildClient();
 
         // make container
-        BlobContainerClient blobContainerClient = serviceClient.getContainerClient("uxstudy" + UUID.randomUUID());
+        BlobContainerClient blobContainerClient = serviceClient.getBlobContainerClient("uxstudy" + UUID.randomUUID());
         blobContainerClient.create();
 
         // upload data
@@ -196,7 +196,7 @@ public class Sample {
             .buildAsyncClient();
 
         // make container
-        BlobContainerAsyncClient containerClient = serviceClient.getContainerAsyncClient("uxstudy" + UUID.randomUUID());
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient("uxstudy" + UUID.randomUUID());
         containerClient.create()
 
             // upload data

@@ -168,7 +168,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
-        endpoint(blobContainerClient.getContainerUrl().toString());
+        endpoint(blobContainerClient.getBlobContainerUrl().toString());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
@@ -185,7 +185,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     public SpecializedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient,
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
-        endpoint(blobContainerAsyncClient.getContainerUrl().toString());
+        endpoint(blobContainerAsyncClient.getBlobContainerUrl().toString());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;
@@ -205,7 +205,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
             BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
-            this.containerName = parts.getContainerName();
+            this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 

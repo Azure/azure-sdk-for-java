@@ -84,7 +84,7 @@ public final class BlobURLParts {
      *
      * @return the container name.
      */
-    public String getContainerName() {
+    public String getBlobContainerName() {
         return containerName;
     }
 

@@ -107,7 +107,7 @@ public final class LeaseClientBuilder {
     public LeaseClientBuilder containerClient(BlobContainerClient blobContainerClient) {
         Objects.requireNonNull(blobContainerClient);
         this.pipeline = blobContainerClient.getHttpPipeline();
-        this.url = blobContainerClient.getContainerUrl();
+        this.url = blobContainerClient.getBlobContainerUrl();
         this.isBlob = false;
         return this;
     }
@@ -123,7 +123,7 @@ public final class LeaseClientBuilder {
     public LeaseClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
         Objects.requireNonNull(blobContainerAsyncClient);
         this.pipeline = blobContainerAsyncClient.getHttpPipeline();
-        this.url = blobContainerAsyncClient.getContainerUrl();
+        this.url = blobContainerAsyncClient.getBlobContainerUrl();
         this.isBlob = false;
         return this;
     }

@@ -17,10 +17,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
-import com.azure.storage.blob.models.ListContainersOptions;
+import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -53,8 +53,8 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  *
  * <p>
  * This client contains operations on a blob. Operations on a container are available on {@link
- * BlobContainerAsyncClient} through {@link #getContainerAsyncClient(String)}, and operations on a blob are available on
- * {@link BlobAsyncClient}.
+ * BlobContainerAsyncClient} through {@link #getBlobContainerAsyncClient(String)}, and operations on a blob are
+ * available on {@link BlobAsyncClient}.
  *
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
@@ -90,12 +90,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String}
      *
      * @param containerName The name of the container to point to.
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
-    public BlobContainerAsyncClient getContainerAsyncClient(String containerName) {
+    public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
@@ -118,13 +118,13 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String}
      *
      * @param containerName Name of the container to create
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
      */
-    public Mono<BlobContainerAsyncClient> createContainer(String containerName) {
-        return createContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+    public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
+        return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -134,7 +134,7 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Metadata-PublicAccessType}
      *
      * @param containerName Name of the container to create
      * @param metadata {@link Metadata}
@@ -143,14 +143,14 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the container created.
      */
-    public Mono<Response<BlobContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
-        PublicAccessType accessType) {
-        return withContext(context -> createContainerWithResponse(containerName, metadata, accessType, context));
+    public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
+        Metadata metadata, PublicAccessType accessType) {
+        return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
     }
 
-    Mono<Response<BlobContainerAsyncClient>> createContainerWithResponse(String containerName, Metadata metadata,
+    Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName, Metadata metadata,
         PublicAccessType accessType, Context context) {
-        BlobContainerAsyncClient blobContainerAsyncClient = getContainerAsyncClient(containerName);
+        BlobContainerAsyncClient blobContainerAsyncClient = getBlobContainerAsyncClient(containerName);
 
         return blobContainerAsyncClient.createWithResponse(metadata, accessType, context)
             .map(response -> new SimpleResponse<>(response, blobContainerAsyncClient));
@@ -162,13 +162,13 @@ public final class BlobServiceAsyncClient {
      * Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteContainer#String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String}
      *
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Void> deleteContainer(String containerName) {
-        return deleteContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteBlobContainer(String containerName) {
+        return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -178,17 +178,17 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context}
      *
      * @param containerName Name of the container to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
-    public Mono<Response<Void>> deleteContainerWithResponse(String containerName) {
-        return withContext(context -> deleteContainerWithResponse(containerName, context));
+    public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
+        return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
     }
 
-    Mono<Response<Void>> deleteContainerWithResponse(String containerName, Context context) {
-        return getContainerAsyncClient(containerName).deleteWithResponse(null, context);
+    Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
+        return getBlobContainerAsyncClient(containerName).deleteWithResponse(null, context);
     }
 
     /**
@@ -212,12 +212,12 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listContainers}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers}
      *
      * @return A reactive response emitting the list of containers.
      */
-    public PagedFlux<ContainerItem> listContainers() {
-        return this.listContainers(new ListContainersOptions());
+    public PagedFlux<BlobContainerItem> listBlobContainers() {
+        return this.listBlobContainers(new ListBlobContainersOptions());
     }
 
     /**
@@ -226,18 +226,19 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions}
      *
-     * @param options A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     * @param options A {@link ListBlobContainersOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of containers.
      */
-    public PagedFlux<ContainerItem> listContainers(ListContainersOptions options) {
-        return listContainersWithOptionalTimeout(options, null);
+    public PagedFlux<BlobContainerItem> listBlobContainers(ListBlobContainersOptions options) {
+        return listBlobContainersWithOptionalTimeout(options, null);
     }
 
-    PagedFlux<ContainerItem> listContainersWithOptionalTimeout(ListContainersOptions options, Duration timeout) {
-        Function<String, Mono<PagedResponse<ContainerItem>>> func =
-            marker -> listContainersSegment(marker, options, timeout)
+    PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
+        Duration timeout) {
+        Function<String, Mono<PagedResponse<BlobContainerItem>>> func =
+            marker -> listBlobContainersSegment(marker, options, timeout)
                 .map(response -> new PagedResponseBase<>(
                     response.getRequest(),
                     response.getStatusCode(),
@@ -249,9 +250,9 @@ public final class BlobServiceAsyncClient {
         return new PagedFlux<>(() -> func.apply(null), func);
     }
 
-    private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker,
-        ListContainersOptions options, Duration timeout) {
-        options = options == null ? new ListContainersOptions() : options;
+    private Mono<ServicesListContainersSegmentResponse> listBlobContainersSegment(String marker,
+        ListBlobContainersOptions options, Duration timeout) {
+        options = options == null ? new ListBlobContainersOptions() : options;
 
         return postProcessResponse(Utility.applyOptionalTimeout(
             this.azureBlobStorage.services().listContainersSegmentWithRestResponseAsync(

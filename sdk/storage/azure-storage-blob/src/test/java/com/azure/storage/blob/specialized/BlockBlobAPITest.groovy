@@ -257,7 +257,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block from URL error"() {
         setup:
-        bc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        bc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
             .getBlobClient(generateBlobName())
             .getBlockBlobClient()
 
@@ -1061,7 +1061,7 @@ class BlockBlobAPITest extends APISpec {
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
-            .getContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
+            .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.

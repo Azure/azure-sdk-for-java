@@ -660,7 +660,7 @@ class HelperTest extends APISpec {
         then:
         parts.getScheme() == "http"
         parts.getHost() == "host"
-        parts.getContainerName() == "container"
+        parts.getBlobContainerName() == "container"
         parts.getBlobName() == "blob"
         parts.getSnapshot() == "snapshot"
         parts.getSasQueryParameters().getPermissions() == "r"

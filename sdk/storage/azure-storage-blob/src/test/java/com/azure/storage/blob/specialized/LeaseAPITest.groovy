@@ -575,7 +575,7 @@ class LeaseAPITest extends APISpec {
 
     def "Acquire container lease error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         createLeaseClient(cc).acquireLease(50)
@@ -658,7 +658,7 @@ class LeaseAPITest extends APISpec {
 
     def "Renew container lease error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         createLeaseClient(cc, "id").renewLease()
@@ -739,7 +739,7 @@ class LeaseAPITest extends APISpec {
 
     def "Release container lease error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         createLeaseClient(cc, "id").releaseLease()
@@ -835,7 +835,7 @@ class LeaseAPITest extends APISpec {
 
     def "Break container lease error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         createLeaseClient(cc).breakLease()
@@ -917,7 +917,7 @@ class LeaseAPITest extends APISpec {
 
     def "Change container lease error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         createLeaseClient(cc, "id").changeLease("id")
