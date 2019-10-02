@@ -514,9 +514,9 @@ public final class Utility {
                 byte[] cache = new byte[(int) count];
                 int lastIndex = data.read(cache);
                 currentTotalLength[0] += lastIndex;
-                if (currentTotalLength[0] < count) {
+                if (lastIndex < count) {
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                        String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
                 }
                 return ByteBuffer.wrap(cache);
@@ -526,7 +526,7 @@ public final class Utility {
                     if (data.available() > 0) {
                         long totalLength = currentTotalLength[0] + data.available();
                         throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
                                 totalLength, length), totalLength, length));
                     }
                 } catch (IOException e) {
