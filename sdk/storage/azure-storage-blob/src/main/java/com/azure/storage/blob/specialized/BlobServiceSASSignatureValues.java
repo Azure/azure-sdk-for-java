@@ -198,8 +198,9 @@ public final class BlobServiceSASSignatureValues {
     /**
      * Sets the Blob permissions allowed by the SAS.
      *
-     * <p>this will set the {@link #resource} to {@link Constants.UrlConstants#SAS_BLOB_CONSTANT} or
-     * {@link Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of {@link #getSnapshotId()}.</p>
+     * <p>this will set the {@link #resource} to {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}
+     * or {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of
+     * {@link #getSnapshotId()}.</p>
      *
      * @param permissions {@link BlobSASPermission}
      * @return the updated BlobServiceSASSignatureValues object
@@ -213,7 +214,7 @@ public final class BlobServiceSASSignatureValues {
     /**
      * Sets the Container permissions allowed by the SAS.
      *
-     * <p>this will set the {@link #resource} to {@link Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
+     * <p>this will set the {@link #resource} to {@link com.azure.storage.common.Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
      *
      * @param permissions {@link ContainerSASPermission}
      * @return the updated BlobServiceSASSignatureValues object
@@ -309,9 +310,9 @@ public final class BlobServiceSASSignatureValues {
     /**
      * Sets the specific snapshot the SAS user may access.
      *
-     * <p>{@link #resource} will be set to {@link Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} if the passed
-     * {@code snapshotId} isn't {@code null} and {@link #resource} is set to
-     * {@link Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
+     * <p>{@link #resource} will be set to {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT}
+     * if the passed {@code snapshotId} isn't {@code null} and {@link #resource} is set to {@link
+     * com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
      *
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object

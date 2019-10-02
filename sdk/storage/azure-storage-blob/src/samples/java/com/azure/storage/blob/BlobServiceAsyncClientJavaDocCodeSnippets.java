@@ -11,12 +11,6 @@ import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageServiceProperties;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
