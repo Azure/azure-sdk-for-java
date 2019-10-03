@@ -8,7 +8,7 @@ Licensed under the MIT License.
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.2.0</version>
-    <relativePath>../../pom.data.xml</relativePath>
+    <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
