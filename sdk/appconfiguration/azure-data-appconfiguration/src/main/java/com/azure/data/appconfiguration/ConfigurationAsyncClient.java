@@ -241,8 +241,31 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
+     * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} as optional
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the setting with the key "prodDBConnection" and a time that one minute before now at UTC-Zone</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime}
+     *
+     * @param key The key of the setting to retrieve.
+     * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
+     * label is desired.
+     * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
+     * key is an invalid value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> getSetting(String key, String label) {
+        return getSetting(key, label, null);
+    }
+
+    /**
      * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} as optional, and the
-     * {@code acceptDateTime} as optional.
+     * {@code asOfDateTime} as optional.
      *
      * <p><strong>Code Samples</strong></p>
      *

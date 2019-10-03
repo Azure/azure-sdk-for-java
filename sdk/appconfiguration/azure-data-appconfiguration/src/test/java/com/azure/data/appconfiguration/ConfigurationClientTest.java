@@ -245,9 +245,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setReadOnly() {
         final String key = getKey();
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
-        client.addSetting(setting);
+        client.addSettingWithResponse(setting, Context.NONE);
         client.setReadOnly(setting);
-        assertConfigurationEquals(setting, client.getSetting(setting));
+        assertConfigurationEquals(setting, client.getSettingWithResponse(setting, false, Context.NONE).getValue());
         assertRestException(() -> client.deleteSettingWithResponse(setting, false, Context.NONE), ResourceModifiedException.class, 409);
     }
 
@@ -257,7 +257,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void clearReadOnly() {
         final String key = getKey();
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
-        client.addSetting(setting);
+        client.addSettingWithResponse(setting, Context.NONE);
         client.setReadOnly(setting);
         client.clearReadOnly(setting);
         assertConfigurationEquals(setting, client.deleteSettingWithResponse(setting, false, Context.NONE)
@@ -271,9 +271,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String key = getKey();
         final String value = "myValue";
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(value);
-        client.addSetting(setting);
+        client.addSettingWithResponse(setting, Context.NONE);
         client.setReadOnly(key, null);
-        assertConfigurationEquals(setting, client.getSetting(setting));
+        assertConfigurationEquals(setting, client.getSettingWithResponse(setting, false, Context.NONE));
         assertRestException(() -> client.deleteSettingWithResponse(setting, false, Context.NONE).getValue(),
             ResourceModifiedException.class, 409);
     }
@@ -285,7 +285,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String key = getKey();
         final String value = "myValue";
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(value);
-        client.addSetting(setting);
+        client.addSettingWithResponse(setting, Context.NONE);
         client.setReadOnly(setting);
         client.clearReadOnly(key, null);
         assertConfigurationEquals(

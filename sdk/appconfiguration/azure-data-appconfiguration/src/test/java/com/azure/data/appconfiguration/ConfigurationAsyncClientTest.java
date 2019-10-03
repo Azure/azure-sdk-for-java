@@ -307,7 +307,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(setting, response))
             .verifyComplete();
 
-        StepVerifier.create(client.getSetting(setting.getKey()))
+        StepVerifier.create(client.getSetting(setting.getKey(), setting.getLabel()))
             .assertNext(response -> assertConfigurationEquals(setting, response))
             .verifyComplete();
 
@@ -357,7 +357,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(setting, response))
             .verifyComplete();
 
-        StepVerifier.create(client.getSetting(setting.getKey()))
+        StepVerifier.create(client.getSetting(setting.getKey(), setting.getLabel()))
             .assertNext(response -> assertConfigurationEquals(setting, response))
             .verifyComplete();
 
