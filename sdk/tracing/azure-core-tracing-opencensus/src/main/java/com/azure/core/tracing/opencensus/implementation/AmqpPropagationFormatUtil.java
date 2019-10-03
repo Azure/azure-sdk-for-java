@@ -11,6 +11,8 @@ import io.opencensus.trace.TraceId;
 import io.opencensus.trace.TraceOptions;
 import io.opencensus.trace.Tracestate;
 
+import java.util.Objects;
+
 public class AmqpPropagationFormatUtil {
 
     private AmqpPropagationFormatUtil() { }
@@ -33,11 +35,13 @@ public class AmqpPropagationFormatUtil {
      * for more information on the conversion of these fields to Span Context format.
      *
      * @param spanContext is a specification defines an agreed-upon format for the exchange of trace context propagation
-     * data
-     * @retrun The dignostic Id providing an unique identifier for individual traces and requests,
+     * data.
+     * @return  The dignostic Id providing an unique identifier for individual traces and requests,
      * allowing trace data of multiple providers to be linked together.
+     * @throws NullPointerException if {@code spanContext} is {@code null}.
      */
     public static String getDiagnosticId(SpanContext spanContext) {
+        Objects.requireNonNull(spanContext, "'spanContext' cannot be null");
         char[] chars = new char[55];
         chars[0] = '0';
         chars[1] = '0';
