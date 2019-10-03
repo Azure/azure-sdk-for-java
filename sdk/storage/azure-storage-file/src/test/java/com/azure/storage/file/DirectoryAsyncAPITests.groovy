@@ -40,9 +40,9 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Get directory URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
         when:
-        def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl().toString()
+        def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl()
         then:
         expectURL.equals(directoryURL)
     }

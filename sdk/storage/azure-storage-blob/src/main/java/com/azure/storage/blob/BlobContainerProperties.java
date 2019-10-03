@@ -7,14 +7,14 @@ import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeader
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-public final class ContainerProperties {
+public final class BlobContainerProperties {
 
-    private final Metadata metadata;
+    private final Map<String, String> metadata;
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final LeaseDurationType leaseDuration;
@@ -24,8 +24,8 @@ public final class ContainerProperties {
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
 
-    ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
-        this.metadata = new Metadata(generatedResponseHeaders.getMetadata());
+    BlobContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
+        this.metadata = generatedResponseHeaders.getMetadata();
         this.eTag = generatedResponseHeaders.getETag();
         this.lastModified = generatedResponseHeaders.getLastModified();
         this.leaseDuration = generatedResponseHeaders.getLeaseDuration();
@@ -39,7 +39,7 @@ public final class ContainerProperties {
     /**
      * @return the metadata associated with the container
      */
-    public Metadata getMetadata() {
+    public Map<String, String> getMetadata() {
         return metadata;
     }
 

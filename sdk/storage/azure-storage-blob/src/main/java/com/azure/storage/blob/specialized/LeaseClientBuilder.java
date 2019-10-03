@@ -7,8 +7,8 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.ContainerAsyncClient;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClient;
 
 import java.net.URL;
 import java.util.Objects;
@@ -42,7 +42,7 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = { LeaseClient.class, LeaseAsyncClient.class })
 public final class LeaseClientBuilder {
     private HttpPipeline pipeline;
-    private URL url;
+    private String url;
     private String leaseId;
     private boolean isBlob;
 
@@ -97,33 +97,33 @@ public final class LeaseClientBuilder {
     }
 
     /**
-     * Configures the builder based on the passed {@link ContainerClient}. This will set the {@link HttpPipeline} and
-     * {@link URL} that are used to interact with the service.
+     * Configures the builder based on the passed {@link BlobContainerClient}. This will set the {@link HttpPipeline}
+     * and {@link URL} that are used to interact with the service.
      *
-     * @param containerClient ContainerClient used to configure the builder.
+     * @param blobContainerClient ContainerClient used to configure the builder.
      * @return the updated LeaseClientBuilder object
      * @throws NullPointerException If {@code containerClient} is {@code null}.
      */
-    public LeaseClientBuilder containerClient(ContainerClient containerClient) {
-        Objects.requireNonNull(containerClient);
-        this.pipeline = containerClient.getHttpPipeline();
-        this.url = containerClient.getContainerUrl();
+    public LeaseClientBuilder containerClient(BlobContainerClient blobContainerClient) {
+        Objects.requireNonNull(blobContainerClient);
+        this.pipeline = blobContainerClient.getHttpPipeline();
+        this.url = blobContainerClient.getBlobContainerUrl();
         this.isBlob = false;
         return this;
     }
 
     /**
-     * Configures the builder based on the passed {@link ContainerAsyncClient}. This will set the {@link HttpPipeline}
-     * and {@link URL} that are used to interact with the service.
+     * Configures the builder based on the passed {@link BlobContainerAsyncClient}. This will set the {@link
+     * HttpPipeline} and {@link URL} that are used to interact with the service.
      *
-     * @param containerAsyncClient ContainerAsyncClient used to configure the builder.
+     * @param blobContainerAsyncClient ContainerAsyncClient used to configure the builder.
      * @return the updated LeaseClientBuilder object
      * @throws NullPointerException If {@code containerAsyncClient} is {@code null}.
      */
-    public LeaseClientBuilder containerAsyncClient(ContainerAsyncClient containerAsyncClient) {
-        Objects.requireNonNull(containerAsyncClient);
-        this.pipeline = containerAsyncClient.getHttpPipeline();
-        this.url = containerAsyncClient.getContainerUrl();
+    public LeaseClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient) {
+        Objects.requireNonNull(blobContainerAsyncClient);
+        this.pipeline = blobContainerAsyncClient.getHttpPipeline();
+        this.url = blobContainerAsyncClient.getBlobContainerUrl();
         this.isBlob = false;
         return this;
     }
