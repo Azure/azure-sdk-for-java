@@ -49,8 +49,8 @@ public final class LeaseClient {
      *
      * @return URL of the lease client.
      */
-    public URL getLeaseUrl() {
-        return client.getLeaseUrl();
+    public String getResourceUrl() {
+        return client.getResourceUrl();
     }
 
     /**

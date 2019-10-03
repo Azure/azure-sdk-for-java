@@ -23,17 +23,15 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     private String value2 = "val2";
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#addSetting(String, String)}
+     * Code snippets for {@link ConfigurationAsyncClient#addSetting(String, String, String)}
      */
     public void addSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string
-        client.addSetting("prodDBConnection", "db_connection")
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string
+        client.addSetting("prodDBConnection", "db_connection", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string
 
         /**
          * Code snippets for {@link ConfigurationAsyncClient#addSettins(ConfigurationSetting)}

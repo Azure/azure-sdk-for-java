@@ -36,8 +36,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -195,15 +193,9 @@ public final class BlobServiceAsyncClient {
      * Gets the URL of the storage account represented by this client.
      *
      * @return the URL.
-     * @throws RuntimeException If the account URL is malformed.
      */
-    public URL getAccountUrl() {
-        try {
-            return new URL(azureBlobStorage.getUrl());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
-        }
+    public String getAccountUrl() {
+        return azureBlobStorage.getUrl();
     }
 
     /**

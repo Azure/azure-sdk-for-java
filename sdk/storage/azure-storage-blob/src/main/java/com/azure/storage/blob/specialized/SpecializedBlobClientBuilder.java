@@ -73,9 +73,9 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
 
     /**
      * Creates a {@link BlockBlobClient} based on options set in the Builder. BlockBlobClients are used to perform
-     * generic upload operations such as {@link BlockBlobClient#uploadFromFile(String) upload from file} and block blob
-     * specific operations such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and {@link
-     * BlockBlobClient#commitBlockList(List)}, only use this when the blob is known to be a block blob.
+     * generic upload operations such as {@link BlockBlobClient#upload(InputStream, long) upload from file} and block
+     * blob specific operations such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and
+     * {@link BlockBlobClient#commitBlockList(List)}, only use this when the blob is known to be a block blob.
      *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -86,7 +86,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
 
     /**
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
-     * perform generic upload operations such as {@link BlockBlobAsyncClient#uploadFromFile(String) upload from file}
+     * perform generic upload operations such as {@link BlockBlobAsyncClient#upload(Flux, long) upload from file}
      * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long,
      * LeaseAccessConditions) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list},
      * only use this when the blob is known to be a block blob.
@@ -139,7 +139,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
-        endpoint(blobClient.getBlobUrl().toString());
+        endpoint(blobClient.getBlobUrl());
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
@@ -153,7 +153,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
-        endpoint(blobAsyncClient.getBlobUrl().toString());
+        endpoint(blobAsyncClient.getBlobUrl());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
@@ -168,7 +168,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
-        endpoint(blobContainerClient.getBlobContainerUrl().toString());
+        endpoint(blobContainerClient.getBlobContainerUrl());
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
@@ -185,7 +185,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     public SpecializedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient,
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
-        endpoint(blobContainerAsyncClient.getBlobContainerUrl().toString());
+        endpoint(blobContainerAsyncClient.getBlobContainerUrl());
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;

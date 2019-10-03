@@ -79,7 +79,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
     public void addSettingEmptyKey() {
-        StepVerifier.create(client.addSetting("", "A value"))
+        StepVerifier.create(client.addSetting("", "A value", null))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
@@ -88,7 +88,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void addSettingEmptyValue() {
         addSettingEmptyValueRunner((setting) -> {
-            StepVerifier.create(client.addSetting(setting.getKey(), setting.getValue()))
+            StepVerifier.create(client.addSetting(setting.getKey(), setting.getValue(), setting.getLabel()))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
@@ -102,7 +102,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void addSettingNullKey() {
-        assertRunnableThrowsException(() -> client.addSetting(null, "A Value").block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.addSetting(null, "A Value", null).block(), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.addSetting(null).block(), NullPointerException.class);
     }
 

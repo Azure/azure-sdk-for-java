@@ -31,8 +31,6 @@ import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -98,20 +96,14 @@ public class DirectoryAsyncClient {
      * Get the url of the storage directory client.
      *
      * @return the URL of the storage directory client
-     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getDirectoryUrl() {
+    public String getDirectoryUrl() {
         StringBuilder directoryURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(directoryPath);
         if (snapshot != null) {
             directoryURLString.append("?snapshot=").append(snapshot);
         }
-        try {
-            return new URL(directoryURLString.toString());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), directoryURLString), e));
-        }
+        return directoryURLString.toString();
     }
 
     /**

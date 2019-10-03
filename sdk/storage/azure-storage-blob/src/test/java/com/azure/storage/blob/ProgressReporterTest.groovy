@@ -44,7 +44,7 @@ class ProgressReporterTest extends APISpec {
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
-        BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cc.getBlobContainerUrl().toString(), generateBlobName())
+        BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cc.getBlobContainerUrl(), generateBlobName())
             .getBlockBlobAsyncClient()
 
         bu.upload(data, buffer.remaining()).block()

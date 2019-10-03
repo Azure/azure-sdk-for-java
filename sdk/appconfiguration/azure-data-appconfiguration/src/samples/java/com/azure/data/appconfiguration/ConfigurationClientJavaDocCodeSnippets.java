@@ -90,15 +90,15 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#addSetting(String, String)}
+     * Generates code sample for using {@link ConfigurationClient#addSetting(String, String, String)}
      */
     public void addSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String
+        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String-String
         ConfigurationSetting result = configurationClient
-            .addSetting("prodDBConnection", "db_connection");
+            .addSetting("prodDBConnection", "db_connection", null);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String
+        // END: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String-String
 
     /*
       Generates code sample for using {@link ConfigurationClient#addSetting(ConfigurationSetting)}

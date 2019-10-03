@@ -8,6 +8,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -17,7 +18,6 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
@@ -150,57 +150,13 @@ public final class BlockBlobClient extends BlobClientBase {
         Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
             .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier,
                 accessConditions, context);
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
-        }
-    }
-
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String}
-     *
-     * @param filePath Path of the file to upload
-     * @throws IOException If an I/O error occurs
-     */
-    public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, null, null, null, null, null, null);
-    }
-
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
-     *
-     * @param filePath Path of the file to upload
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
-     *        transfers parameter is ignored.
-     * @param headers {@link BlobHTTPHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tier {@link AccessTier} for the uploaded blob
-     * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @throws UncheckedIOException If an I/O error occurs
-     */
-    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
-        Duration timeout) {
-        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(
-            filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
-
-        try {
-            Utility.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -251,7 +207,7 @@ public final class BlockBlobClient extends BlobClientBase {
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
         Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockWithResponse(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions, context);

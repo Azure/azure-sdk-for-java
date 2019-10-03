@@ -93,7 +93,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
+            new URL(sourceBlob.getBlobUrl() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -142,7 +142,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
+            new URL(sourceBlob.getBlobUrl() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:
@@ -187,7 +187,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(
-            new URL(sourceBlob.getBlobUrl().toString() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
+            new URL(sourceBlob.getBlobUrl() + "?" + sourceBlob.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))),
             null, null, null, null, null, null)
 
         then:

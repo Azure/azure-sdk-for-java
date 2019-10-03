@@ -435,7 +435,7 @@ public final class Utility {
      * @return a URL with the path appended.
      * @throws IllegalArgumentException If {@code name} causes the URL to become malformed.
      */
-    public static URL appendToURLPath(URL baseURL, String name) {
+    public static URL appendToURLPath(String baseURL, String name) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.getPath() == null) {
