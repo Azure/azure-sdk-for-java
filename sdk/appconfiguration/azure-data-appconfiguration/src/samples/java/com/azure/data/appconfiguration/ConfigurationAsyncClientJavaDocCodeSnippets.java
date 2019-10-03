@@ -11,6 +11,9 @@ import reactor.util.context.Context;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Code snippets for {@link ConfigurationAsyncClient}
  */
@@ -94,34 +97,24 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#getSetting(String)}
+     * Code snippets for {@link ConfigurationAsyncClient#getSetting(String, String, OffsetDateTime)}
      */
     public void getSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string
-        client.getSetting("prodDBConnection")
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime
+        client.getSetting("prodDBConnection", null, OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string
-
-        /**
-         * Code snippets for {@link ConfigurationAsyncClient#getSetting(ConfigurationSetting)}
-         */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting
-        client.getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting
+        // END: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime
 
         /**
          * Code snippets for {@link ConfigurationAsyncClient#getSettingWithResponse(String, String)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting
-        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), null,
+            false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
