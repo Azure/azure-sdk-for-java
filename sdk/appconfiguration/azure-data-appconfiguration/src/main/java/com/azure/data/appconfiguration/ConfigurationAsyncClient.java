@@ -437,9 +437,9 @@ public final class ConfigurationAsyncClient {
 
         return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             null, context)
-            .doOnRequest(ignoredValue -> logger.info("Setting read only ConfigurationSetting - {}", setting))
+            .doOnRequest(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.info("Failed to set read only ConfigurationSetting - {}", setting, error));
+            .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -490,9 +490,9 @@ public final class ConfigurationAsyncClient {
 
         return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
             null, null, context)
-            .doOnRequest(ignoredValue -> logger.info("Clearing read only ConfigurationSetting - {}", setting))
+            .doOnRequest(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.info("Failed to clear read only ConfigurationSetting - {}", setting, error));
+            .doOnError(error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
     }
 
     /**

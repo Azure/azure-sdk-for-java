@@ -242,10 +242,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseSetting = configurationClient
-            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
+            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
                 new Context(key2, value2));
-        System.out
-            .printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(),
+            responseSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context
     }
 
@@ -273,10 +273,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseSetting = configurationClient
-            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
+            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
                 new Context(key2, value2));
-        System.out
-            .printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(),
+            responseSetting.getValue().getValue());
         // END: com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context
     }
 
