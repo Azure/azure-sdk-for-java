@@ -59,7 +59,8 @@ class PipelineSample {
         final Stream<ConfigurationSetting> stream = settings == null
                 ? Stream.empty()
                 : settings.stream();
-        Flux.merge(stream.map(client::deleteSetting).collect(Collectors.toList())).blockLast();
+        Flux.merge(stream.map(setting -> client.deleteSettingWithResponse(setting, false))
+            .collect(Collectors.toList())).blockLast();
 
         // Check what sort of HTTP method calls we made.
         tracker.print();

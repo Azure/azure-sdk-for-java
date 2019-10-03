@@ -58,7 +58,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-                    return client.deleteSetting(configurationSetting);
+                    return client.deleteSettingWithResponse(configurationSetting, false);
                 })
                 .blockLast();
 
@@ -225,7 +225,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.deleteSetting(expected))
+            StepVerifier.create(client.deleteSettingWithResponse(expected, false))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -245,11 +245,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().setKey("myNonExistentKey")))
+        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().setKey("myNonExistentKey"), false))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().setKey(neverDeletedConfiguration.getKey()).setLabel("myNonExistentLabel")))
+        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().setKey(neverDeletedConfiguration.getKey()).setLabel("myNonExistentLabel"), false))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
@@ -271,10 +271,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.deleteSetting(initiallyAddedConfig))
+            StepVerifier.create(client.deleteSettingWithResponse(initiallyAddedConfig, true))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            StepVerifier.create(client.deleteSetting(updatedConfig))
+            StepVerifier.create(client.deleteSettingWithResponse(updatedConfig, true))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
@@ -287,8 +287,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
     public void deleteSettingNullKey() {
-        assertRunnableThrowsException(() -> client.deleteSetting((String) null).block(), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null).block(), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting(null, null).block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.deleteSettingWithResponse(null, false).block(), NullPointerException.class);
     }
 
     /**
@@ -742,7 +742,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client.listSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-                return client.deleteSetting(configurationSetting);
+                return client.deleteSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }
 }

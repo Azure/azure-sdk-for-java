@@ -311,9 +311,11 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string-string}
      *
      * @param key The key of the setting to delete.
+     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * label is desired.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -321,9 +323,9 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(String key) {
+    public Mono<ConfigurationSetting> deleteSetting(String key, String label) {
         return withContext(
-            context -> deleteSetting(new ConfigurationSetting().setKey(key), context))
+            context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -338,39 +340,11 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The ConfigurationSetting to delete.
-     * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if the
-     * {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but does not match the
-     * current etag (which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws NullPointerException When {@code setting} is {@code null}.
-     * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return withContext(context -> deleteSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
-     *
-     * If {@link ConfigurationSetting#getETag() etag} is specified and is not the wildcard character ({@code "*"}), then
-     * the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated the
-     * ConfigurationSetting yet.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting}
-     *
-     * @param setting The ConfigurationSetting to delete.
+     * @param ifUnchanged A boolean indicator to decide using setting's ETag value as IF-MATCH value.
+     * If false, set IF_MATCH to {@code null}. Otherwise, set the setting's ETag value to IF_MATCH.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but
      * does not match the current etag (which will also throw HttpResponseException described below).
@@ -382,15 +356,17 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> deleteSetting(setting, context));
+    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting,
+                                                                          boolean ifUnchanged) {
+        return withContext(context -> deleteSetting(setting, ifUnchanged, context));
     }
 
-    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, boolean ifUnchanged,
+                                                       Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
-
-        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), getETagValue(setting.getETag()),
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), ifMatchETag,
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
@@ -540,7 +516,7 @@ public final class ConfigurationAsyncClient {
      * @return The etag surrounded by quotations. (ex. "etag")
      */
     private static String getETagValue(String etag) {
-        return etag == null ? "" : "\"" + etag + "\"";
+        return (etag == null || etag.equals("*")) ? etag : "\"" + etag + "\"";
     }
 
     /*
