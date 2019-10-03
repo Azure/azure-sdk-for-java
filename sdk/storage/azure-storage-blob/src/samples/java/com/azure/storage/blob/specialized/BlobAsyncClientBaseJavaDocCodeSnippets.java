@@ -3,15 +3,15 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link BlobAsyncClientBase}
@@ -125,20 +126,21 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClientBase#downloadToFile(String)} and {@link BlobAsyncClientBase#downloadToFileWithResponse(String,
-     * BlobRange, Integer, ReliableDownloadOptions, BlobAccessConditions, boolean)}
+     * BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobAccessConditions, boolean)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String
         client.downloadToFile(file).subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean
+
         BlobRange range = new BlobRange(1024, 2048L);
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5);
 
         client.downloadToFileWithResponse(file, range, null, options, null, false)
             .subscribe(response -> System.out.println("Completed download to file"));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean
     }
 
     /**
@@ -172,12 +174,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setMetadata(Metadata)}
+     * Code snippets for {@link BlobAsyncClientBase#setMetadata(Map)}
      */
     public void setMetadataCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Metadata
-        client.setMetadata(new Metadata(Collections.singletonMap("metadata", "value")));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Metadata
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Map
+        client.setMetadata(Collections.singletonMap("metadata", "value"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Map
     }
 
     /**
@@ -192,12 +194,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setTier(AccessTier)}
+     * Code snippets for {@link BlobAsyncClientBase#setAccessTier(AccessTier)}
      */
     public void setTierCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier
-        client.setTier(AccessTier.HOT);
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTier#AccessTier
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier
+        client.setAccessTier(AccessTier.HOT);
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier
     }
 
     /**
@@ -229,13 +231,13 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#startCopyFromURLWithResponse(URL, Metadata, AccessTier,
+     * Code snippets for {@link BlobAsyncClientBase#startCopyFromURLWithResponse(URL, Map, AccessTier,
      * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
@@ -244,7 +246,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
@@ -260,13 +262,13 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#copyFromURLWithResponse(URL, Metadata, AccessTier,
+     * Code snippets for {@link BlobAsyncClientBase#copyFromURLWithResponse(URL, Map, AccessTier,
      * ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
@@ -274,7 +276,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
@@ -346,45 +348,44 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setMetadataWithResponse(Metadata, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#setMetadataWithResponse(Map, BlobAccessConditions)}
      */
     public void setMetadataWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Map-BlobAccessConditions
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.setMetadataWithResponse(new Metadata(Collections.singletonMap("metadata", "value")), accessConditions)
+        client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), accessConditions)
             .subscribe(response -> System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Map-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#createSnapshotWithResponse(Metadata, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#createSnapshotWithResponse(Map, BlobAccessConditions)}
      */
     public void createSnapshotWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions
-        Metadata snapshotMetadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Map-BlobAccessConditions
+        Map<String, String> snapshotMetadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.createSnapshotWithResponse(snapshotMetadata, accessConditions)
             .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.getValue()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Map-BlobAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setTierWithResponse(AccessTier, RehydratePriority,
-     * LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#setAccessTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
 
-        client.setTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
+        client.setAccessTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
     }
 
     /**
@@ -408,12 +409,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
+     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSAS(UserDelegationKey, String, BlobSasPermission,
      * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        BlobSasPermission permissions = new BlobSasPermission()
             .setAddPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
@@ -441,12 +442,12 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClientBase#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
+     * Code snippet for {@link BlobAsyncClientBase#generateSAS(String, BlobSasPermission, OffsetDateTime, OffsetDateTime,
      * String, SASProtocol, IPRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
+        BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)

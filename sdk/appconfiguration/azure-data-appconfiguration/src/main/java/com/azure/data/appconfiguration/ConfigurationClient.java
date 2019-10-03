@@ -53,10 +53,11 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String}
+     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String-String}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
+     * @param label Optional, the label of the configuration setting to add.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -64,8 +65,9 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().setKey(key).setValue(value), Context.NONE).getValue();
+    public ConfigurationSetting addSetting(String key, String value, String label) {
+        return addSetting(new ConfigurationSetting().setKey(key).setValue(value).setLabel(label), Context.NONE)
+            .getValue();
     }
 
     /**

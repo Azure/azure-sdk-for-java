@@ -3,7 +3,7 @@
 
 package com.azure.storage.queue;
 
-import com.azure.storage.common.BaseSASQueryParameters;
+import com.azure.storage.common.BaseSasQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
@@ -19,18 +19,18 @@ import java.util.Map;
  * which might affect the appropriate means of appending these query parameters). NOTE: Instances of this class are
  * immutable to ensure thread safety.
  */
-public final class QueueServiceSASQueryParameters extends BaseSASQueryParameters {
+public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters {
 
     private final String identifier;
 
     /**
-     * Creates a new {@link QueueServiceSASQueryParameters} object.
+     * Creates a new {@link QueueServiceSasQueryParameters} object.
      *
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-    public QueueServiceSASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
+    public QueueServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
         super(queryParamsMap, removeSASParametersFromMap);
 
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
@@ -39,7 +39,7 @@ public final class QueueServiceSASQueryParameters extends BaseSASQueryParameters
 
 
     /**
-     * Creates a new {@link QueueServiceSASQueryParameters} object. These objects are only created internally by
+     * Creates a new {@link QueueServiceSasQueryParameters} object. These objects are only created internally by
      * SASSignatureValues classes.
      *
      * @param version A {@code String} representing the storage version.
@@ -52,7 +52,7 @@ public final class QueueServiceSASQueryParameters extends BaseSASQueryParameters
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    QueueServiceSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
+    QueueServiceSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, IPRange ipRange, String identifier, String permissions, String signature) {
         super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);
 

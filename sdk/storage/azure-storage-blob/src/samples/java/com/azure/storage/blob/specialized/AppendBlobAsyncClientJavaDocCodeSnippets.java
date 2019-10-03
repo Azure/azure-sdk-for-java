@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Flux;
@@ -20,6 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link AppendBlobAsyncClient}
@@ -52,14 +52,14 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHTTPHeaders, Metadata, BlobAccessConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHTTPHeaders, Map, BlobAccessConditions)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentType("binary")
             .setBlobContentLanguage("en-US");
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -67,7 +67,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
 
         client.createWithResponse(headers, metadata, accessConditions).subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions
     }
 
     /**

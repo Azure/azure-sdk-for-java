@@ -32,8 +32,6 @@ import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -78,16 +76,9 @@ public final class FileServiceAsyncClient {
      * Get the url of the storage file service client.
      *
      * @return the url of the Storage File service.
-     * @throws RuntimeException If the file service is using a malformed URL.
      */
-    public URL getFileServiceUrl() {
-        try {
-            return new URL(azureFileStorageClient.getUrl());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e));
-        }
+    public String getFileServiceUrl() {
+        return azureFileStorageClient.getUrl();
     }
 
     /**
@@ -457,6 +448,7 @@ public final class FileServiceAsyncClient {
      * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
@@ -483,6 +475,7 @@ public final class FileServiceAsyncClient {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,

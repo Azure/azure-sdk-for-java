@@ -56,9 +56,9 @@ stages:
           jdkVersionOption: $(JavaVersion)
 
         PreRunSteps:
-        - pwsh: |
+        - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
-            wget "$(EmulatorMsiUrl)" -outfile "$env:temp\azure-cosmosdb-emulator.msi"
+            Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"
             Write-Host "Finished Downloading Cosmos Emulator - $env:temp\azure-cosmosdb-emulator.msi"
             dir "$env:temp"
           displayName: 'Download Public Cosmos DB Emulator'
@@ -70,12 +70,12 @@ stages:
             lessmsi x "%TEMP%\azure-cosmosdb-emulator.msi" "%TEMP%\Azure Cosmos DB Emulator\"
           displayName: 'Install Public Cosmos DB Emulator'
 
-        - pwsh: |
+        - powershell: |
             Write-Host "Starting Comsos DB Emulator"
             Start-Process "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\CosmosDB.Emulator.exe" "/NoExplorer /NoUI /DisableRateLimiting /PartitionCount=100 /Consistency=Strong" -Verb RunAs
           displayName: 'Run Public Cosmos DB Emulator'
 
-        - pwsh: |
+        - powershell: |
             Import-Module "$env:Temp\Azure Cosmos DB Emulator\SourceDir\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
 
             Do {
@@ -87,7 +87,7 @@ stages:
             Write-Host "Done"
           displayName: 'Check Public Cosmos DB Emulator Status'
 
-        - pwsh: |
+        - powershell: |
             $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
             $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
             $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
@@ -97,7 +97,7 @@ stages:
             $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
           displayName: 'Export Cosmos DB Emulator Certificate'
 
-        - pwsh: |
+        - powershell: |
             cd $env:java_home\jre\lib\security
             cp $env:temp\CosmosDbEmulatorCert.cer .
             keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Container")
 @Fluent
-public final class ContainerItem {
+public final class BlobContainerItem {
     /*
      * The name property.
      */
@@ -25,7 +25,7 @@ public final class ContainerItem {
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
-    private ContainerProperties properties;
+    private BlobContainerProperties properties;
 
     /*
      * The metadata property.
@@ -48,7 +48,7 @@ public final class ContainerItem {
      * @param name the name value to set.
      * @return the ContainerItem object itself.
      */
-    public ContainerItem setName(String name) {
+    public BlobContainerItem setName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +58,7 @@ public final class ContainerItem {
      *
      * @return the properties value.
      */
-    public ContainerProperties getProperties() {
+    public BlobContainerProperties getProperties() {
         return this.properties;
     }
 
@@ -68,7 +68,7 @@ public final class ContainerItem {
      * @param properties the properties value to set.
      * @return the ContainerItem object itself.
      */
-    public ContainerItem setProperties(ContainerProperties properties) {
+    public BlobContainerItem setProperties(BlobContainerProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -88,7 +88,7 @@ public final class ContainerItem {
      * @param metadata the metadata value to set.
      * @return the ContainerItem object itself.
      */
-    public ContainerItem setMetadata(Map<String, String> metadata) {
+    public BlobContainerItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

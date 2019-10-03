@@ -14,7 +14,7 @@ import java.util.function.Function;
  * (though caution should be taken here in case there are existing query parameters, which might affect the appropriate
  * means of appending these query parameters). NOTE: Instances of this class are immutable to ensure thread safety.
  */
-public abstract class BaseSASQueryParameters {
+public abstract class BaseSasQueryParameters {
 
     protected String version;
 
@@ -31,13 +31,13 @@ public abstract class BaseSASQueryParameters {
     protected String signature;
 
     /**
-     * Creates a new {@link BaseSASQueryParameters} object.
+     * Creates a new {@link BaseSasQueryParameters} object.
      *
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-    public BaseSASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
+    public BaseSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
         this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION,
             removeSASParametersFromMap);
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
@@ -91,7 +91,7 @@ public abstract class BaseSASQueryParameters {
     }
 
     /**
-     * Creates a new {@link BaseSASQueryParameters} object. These objects are only created internally by
+     * Creates a new {@link BaseSasQueryParameters} object. These objects are only created internally by
      * SASSignatureValues classes.
      *
      * @param version A {@code String} representing the storage version.
@@ -103,7 +103,7 @@ public abstract class BaseSASQueryParameters {
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    public BaseSASQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
+    public BaseSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, IPRange ipRange, String permissions, String signature) {
         this.version = version;
         this.protocol = protocol;
