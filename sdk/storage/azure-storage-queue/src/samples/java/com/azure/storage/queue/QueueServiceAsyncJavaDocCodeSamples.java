@@ -8,8 +8,6 @@ import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
@@ -40,7 +38,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with SAS token.
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -54,7 +52,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with SAS token.
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -62,7 +60,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         QueueServiceAsyncClient client = new QueueServiceClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
+            .sasToken("{SASTokenQueryParams}")
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         return client;

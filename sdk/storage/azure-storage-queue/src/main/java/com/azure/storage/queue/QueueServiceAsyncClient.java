@@ -18,7 +18,6 @@ import com.azure.storage.common.AccountSASSignatureValues;
 import com.azure.storage.common.IPRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.CorsRule;
@@ -55,7 +54,6 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
  * @see QueueServiceClientBuilder
  * @see QueueServiceClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class, isAsync = true)
 public final class QueueServiceAsyncClient {
