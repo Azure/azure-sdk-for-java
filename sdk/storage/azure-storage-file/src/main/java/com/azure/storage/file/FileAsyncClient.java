@@ -835,13 +835,13 @@ public class FileAsyncClient {
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
-                                                                                     long destinationOffset, long sourceOffset, URI sourceURI) {
+            long destinationOffset, long sourceOffset, URI sourceURI) {
         return withContext(context ->
             uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
     }
 
     Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-                                                                              long sourceOffset, URI sourceURI, Context context) {
+        long sourceOffset, URI sourceURI, Context context) {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
 
