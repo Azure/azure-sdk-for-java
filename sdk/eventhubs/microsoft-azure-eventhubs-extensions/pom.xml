@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-extensions</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2-SNAPSHOT</version>
 
   <name>Microsoft Azure SDK for Event Hubs Extensions</name>
   <description>Extensions built on Microsoft Azure Event Hubs</description>
