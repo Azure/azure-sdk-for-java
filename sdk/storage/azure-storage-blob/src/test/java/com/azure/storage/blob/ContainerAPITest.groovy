@@ -1190,6 +1190,7 @@ class ContainerAPITest extends APISpec {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .blobName("rootblob")
             .httpClient(getHttpClient())
+            .pipeline(cc.getHttpPipeline())
             .buildClient().getAppendBlobClient()
 
         when:
@@ -1216,6 +1217,7 @@ class ContainerAPITest extends APISpec {
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .containerName(null)
+            .pipeline(cc.getHttpPipeline())
             .buildClient()
 
         then:
