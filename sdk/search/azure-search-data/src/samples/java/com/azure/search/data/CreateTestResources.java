@@ -38,7 +38,7 @@ public class CreateTestResources {
 
         String serviceName = azureSearchResources.getSearchServiceName();
         String apiAdminKey = azureSearchResources.getSearchAdminKey();
-        String indexFileName = azureSearchResources.getIndexFileName();
+        String indexFileName = "index-file-name";
 
         //Creating Index:
         SearchIndexService searchIndexService;
@@ -68,6 +68,5 @@ public class CreateTestResources {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        azureSearchResources.cleanup();
     }
 }
