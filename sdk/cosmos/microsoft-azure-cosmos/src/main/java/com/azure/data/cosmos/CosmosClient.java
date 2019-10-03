@@ -178,8 +178,7 @@ public class CosmosClient implements AutoCloseable {
             }
             return Mono.error(throwable);
         });
-    }CosmosDatabase.java
-    CosmosDatabase.java
+    }
 
     /**
      * Creates a database.
