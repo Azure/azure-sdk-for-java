@@ -140,23 +140,6 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String-String
 
     /**
-      Generates code sample for using {@link ConfigurationClient#setSetting(ConfigurationSetting, boolean)}
-     */
-        // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting-boolean
-        // Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection"
-        ConfigurationSetting resultSetting = configurationClient.setSetting(
-            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"),
-            false);
-        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
-
-        // Update the value of the setting to "updated_db_connection".
-        resultSetting = configurationClient.setSetting(
-            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("updated_db_connection"),
-            false);
-        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
-        // END: com.azure.data.appconfiguration.ConfigurationClient.setSetting#ConfigurationSetting-boolean
-
-    /**
       Generates code sample for using {@link ConfigurationClient#setSettingWithResponse(ConfigurationSetting, boolean, Context)}
      */
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setSettingWithResponse#ConfigurationSetting-boolean-Context

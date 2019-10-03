@@ -109,7 +109,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * When the configuration is locked updates cannot happen, this will result in a 409.
      */
     public void setSetting() {
-        setSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setSetting(expected, false)));
+        setSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setSettingWithResponse(expected, false, Context.NONE).getValue()));
     }
 
     /**
@@ -120,12 +120,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setSettingIfEtag() {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setSetting(initial.setETag("badEtag"), false), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setSettingWithResponse(initial.setETag("badEtag"), true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addSetting(initial).getETag();
 
-            assertConfigurationEquals(update, client.setSetting(update.setETag(etag), false));
-            assertRestException(() -> client.setSetting(initial, false), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertConfigurationEquals(update, client.setSettingWithResponse(update.setETag(etag), true, Context.NONE));
+            assertRestException(() -> client.setSettingWithResponse(initial, true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.getSetting(update));
         });
     }
@@ -153,7 +153,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void setSettingNullKey() {
         assertRunnableThrowsException(() -> client.setSetting(null, null, "A Value"), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.setSetting(null, false), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.setSettingWithResponse(null, false, Context.NONE).getValue(), NullPointerException.class);
     }
 
     /**
@@ -218,7 +218,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void deleteSettingWithETag() {
         deleteSettingWithETagRunner((initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial);
-            final ConfigurationSetting updatedConfig = client.setSetting(update, false);
+            final ConfigurationSetting updatedConfig = client.setSettingWithResponse(update, false, Context.NONE).getValue();
 
             assertConfigurationEquals(update, client.getSetting(initial));
             assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
@@ -246,7 +246,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String label = getLabel();
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue(value).setLabel(label);
 
-        assertConfigurationEquals(expected, client.setSetting(expected, false));
+        assertConfigurationEquals(expected, client.setSettingWithResponse(expected, false, Context.NONE).getValue());
         assertConfigurationEquals(expected, client.listSettings(new SettingSelector().setKeys(key).setLabels(label)).iterator().next());
         assertConfigurationEquals(expected, client.listSettings(new SettingSelector().setKeys(key)).iterator().next());
     }
@@ -289,7 +289,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void listSettingsSelectFields() {
         listSettingsSelectFieldsRunner((settings, selector) -> {
-            settings.forEach(setting -> client.setSetting(setting, false));
+            settings.forEach(setting -> client.setSettingWithResponse(setting, false, Context.NONE).getValue());
             return client.listSettings(selector);
         });
     }
@@ -305,11 +305,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         try {
-            assertConfigurationEquals(original, client.setSetting(original, false));
+            assertConfigurationEquals(original, client.setSettingWithResponse(original, false, Context.NONE).getValue());
             Thread.sleep(2000);
-            assertConfigurationEquals(updated, client.setSetting(updated, false));
+            assertConfigurationEquals(updated, client.setSettingWithResponse(updated, false, Context.NONE).getValue());
             Thread.sleep(2000);
-            assertConfigurationEquals(updated2, client.setSetting(updated2, false));
+            assertConfigurationEquals(updated2, client.setSettingWithResponse(updated2, false, Context.NONE).getValue());
         } catch (InterruptedException ex) {
             // Do nothing.
         }
@@ -336,9 +336,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
-        assertConfigurationEquals(original, client.setSetting(original, false));
-        assertConfigurationEquals(updated, client.setSetting(updated, false));
-        assertConfigurationEquals(updated2, client.setSetting(updated2, false));
+        assertConfigurationEquals(original, client.setSettingWithResponse(original, false, Context.NONE).getValue());
+        assertConfigurationEquals(updated, client.setSettingWithResponse(updated, false, Context.NONE).getValue());
+        assertConfigurationEquals(updated2, client.setSettingWithResponse(updated2, false, Context.NONE).getValue());
 
         // Get all revisions for a key, they are listed in descending order.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().setKeys(keyName)).stream().collect(Collectors.toList());
@@ -362,9 +362,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         listRevisionsWithMultipleKeysRunner(key, key2, (testInput) -> {
             assertConfigurationEquals(testInput.get(0), client.addSetting(testInput.get(0)));
-            assertConfigurationEquals(testInput.get(1), client.setSetting(testInput.get(1), false));
+            assertConfigurationEquals(testInput.get(1), client.setSettingWithResponse(testInput.get(1), false, Context.NONE).getValue());
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
-            assertConfigurationEquals(testInput.get(3), client.setSetting(testInput.get(3), false));
+            assertConfigurationEquals(testInput.get(3), client.setSettingWithResponse(testInput.get(3), false, Context.NONE).getValue());
 
             return client.listSettingRevisions(new SettingSelector().setKeys(key, key2));
         });
@@ -380,9 +380,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         listRevisionsWithMultipleLabelsRunner(key, label, label2, (testInput) -> {
             assertConfigurationEquals(testInput.get(0), client.addSetting(testInput.get(0)));
-            assertConfigurationEquals(testInput.get(1), client.setSetting(testInput.get(1), false));
+            assertConfigurationEquals(testInput.get(1), client.setSettingWithResponse(testInput.get(1), false, Context.NONE).getValue());
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
-            assertConfigurationEquals(testInput.get(3), client.setSetting(testInput.get(3), false));
+            assertConfigurationEquals(testInput.get(3), client.setSettingWithResponse(testInput.get(3), false, Context.NONE).getValue());
 
             return client.listSettingRevisions(new SettingSelector().setKeys(key).setLabels(label, label2));
         });
@@ -398,8 +398,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         assertConfigurationEquals(original, client.addSetting(original));
-        assertConfigurationEquals(updated, client.setSetting(updated, false));
-        assertConfigurationEquals(updated2, client.setSetting(updated2, false));
+        assertConfigurationEquals(updated, client.setSettingWithResponse(updated, false, Context.NONE).getValue());
+        assertConfigurationEquals(updated2, client.setSettingWithResponse(updated2, false, Context.NONE).getValue());
 
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().setKeys(key).setRange(new Range(1, 2))).stream().collect(Collectors.toList());
         assertConfigurationEquals(updated, revisions.get(0));
@@ -430,11 +430,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         try {
-            assertConfigurationEquals(original, client.setSetting(original, false));
+            assertConfigurationEquals(original, client.setSettingWithResponse(original, false, Context.NONE).getValue());
             Thread.sleep(2000);
-            assertConfigurationEquals(updated, client.setSetting(updated, false));
+            assertConfigurationEquals(updated, client.setSettingWithResponse(updated, false, Context.NONE).getValue());
             Thread.sleep(2000);
-            assertConfigurationEquals(updated2, client.setSetting(updated2, false));
+            assertConfigurationEquals(updated2, client.setSettingWithResponse(updated2, false, Context.NONE).getValue());
         } catch (InterruptedException ex) {
             // Do nothing.
         }
@@ -460,7 +460,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listRevisionsWithPagination() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
-            client.setSetting(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false);
+            client.setSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
         }
 
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
@@ -474,7 +474,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listRevisionsWithPaginationAndRepeatStream() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
-            client.setSetting(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false);
+            client.setSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
         }
 
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
@@ -491,7 +491,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listRevisionsWithPaginationAndRepeatIterator() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
-            client.setSetting(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false);
+            client.setSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
         }
 
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix).setLabels(labelPrefix);
@@ -516,7 +516,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listSettingsWithPagination() {
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
-            client.setSetting(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix), false);
+            client.setSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix), false, Context.NONE).getValue();
         }
         SettingSelector filter = new SettingSelector().setKeys(keyPrefix + "-*").setLabels(labelPrefix);
 
@@ -535,7 +535,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertNotNull(block);
         assertConfigurationEquals(expected, block);
-        assertConfigurationEquals(newExpected, client.setSetting(newExpected, false));
+        assertConfigurationEquals(newExpected, client.setSettingWithResponse(newExpected, false, Context.NONE).getValue());
     }
 
     public void deleteAllSettings() {

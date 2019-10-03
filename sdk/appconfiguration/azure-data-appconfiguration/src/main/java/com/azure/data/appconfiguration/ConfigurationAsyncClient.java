@@ -78,7 +78,8 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
-     * @param label Optional, the label of the configuration setting to add.
+     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * label is desired.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
      * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -170,7 +171,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string}
      *
      * @param key The key of the configuration setting to create or update.
-     * @param label Optional, the label of the setting to create or update.
+     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * label is desired.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value (which will
      * also throw HttpResponseException described below).
