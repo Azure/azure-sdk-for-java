@@ -18,12 +18,7 @@ public enum SerializerEncoding {
     /**
      * Extensible Markup Language.
      */
-    XML,
-
-    /**
-     * Plaintext.
-     */
-    TEXT;
+    XML;
 
     /**
      * Determines the serializer encoding to use based on the Content-Type header.
@@ -37,8 +32,6 @@ public enum SerializerEncoding {
             String[] parts = mimeContentType.split(";");
             if (parts[0].equalsIgnoreCase("application/xml") || parts[0].equalsIgnoreCase("text/xml")) {
                 return XML;
-            } else if (parts[0].equalsIgnoreCase("multipart/mixed")) {
-                return TEXT;
             }
         }
 

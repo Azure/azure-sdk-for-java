@@ -108,7 +108,11 @@ public final class SharedKeyCredential {
 
     private String buildStringToSign(URL requestURL, String httpMethod, Map<String, String> headers) {
         String contentLength = headers.get("Content-Length");
-        contentLength = contentLength.equals("0") ? "" : contentLength;
+        if (contentLength == null) {
+            contentLength = "";
+        } else if (contentLength.equals("0")) {
+            contentLength = "";
+        }
 
         // If the x-ms-header exists ignore the Date header
         String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers, "Date");

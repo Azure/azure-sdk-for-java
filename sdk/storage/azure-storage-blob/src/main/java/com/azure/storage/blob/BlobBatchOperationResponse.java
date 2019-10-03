@@ -1,27 +1,29 @@
-package com.azure.storage.blob.specialized;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
 
 public class BlobBatchOperationResponse<T> implements Response<T> {
-    private final int contentId;
+    private final ClientLogger logger = new ClientLogger(BlobBatchOperationResponse.class);
 
     private int statusCode;
     private HttpHeaders headers;
     private HttpRequest request;
     private T value;
 
-    BlobBatchOperationResponse(int contentId) {
-        this.contentId = contentId;
-    }
+    private boolean responseReceived = false;
 
-    /* TODO: This class will need to handle throwing an exception if the value hasn't been returned from the service
-     * when it is requested.
-     */
+    BlobBatchOperationResponse() {
+    }
 
     @Override
     public int getStatusCode() {
+        assertResponseReceived();
         return statusCode;
     }
 
@@ -32,6 +34,7 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
 
     @Override
     public HttpHeaders getHeaders() {
+        assertResponseReceived();
         return headers;
     }
 
@@ -42,6 +45,7 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
 
     @Override
     public HttpRequest getRequest() {
+        assertResponseReceived();
         return request;
     }
 
@@ -52,11 +56,24 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
 
     @Override
     public T getValue() {
+        assertResponseReceived();
         return value;
     }
 
     BlobBatchOperationResponse<T> setValue(T value) {
         this.value = value;
         return this;
+    }
+
+    BlobBatchOperationResponse<T> setResponseReceived() {
+        this.responseReceived = true;
+        return this;
+    }
+
+    private void assertResponseReceived() {
+        if (!responseReceived) {
+            // This is programmatically recoverable by sending the batch request.
+            throw logger.logExceptionAsWarning(new UnsupportedOperationException("Batch request has not been sent."));
+        }
     }
 }

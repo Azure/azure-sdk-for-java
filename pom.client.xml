@@ -693,8 +693,8 @@
             <version>${maven-compiler-plugin.version}</version>
             <!-- setup defaults for compile and testCompile -->
             <configuration>
-              <source>9</source>
-              <target>9</target>
+              <source>11</source>
+              <target>11</target>
               <showWarnings>true</showWarnings>
               <failOnWarning>false</failOnWarning> <!-- FIXME: this is false for now as it introduces a build failure -->
               <compilerArgs>

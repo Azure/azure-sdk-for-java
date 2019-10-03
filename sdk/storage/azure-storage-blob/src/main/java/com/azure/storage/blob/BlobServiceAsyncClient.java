@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
@@ -27,7 +28,6 @@ import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.specialized.BlobBatch;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
@@ -40,10 +40,13 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
@@ -496,7 +499,64 @@ public final class BlobServiceAsyncClient {
         return postProcessResponse(this.azureBlobStorage.services()
             .submitBatchWithRestResponseAsync(batch.getBody(), batch.getContentLength(), batch.getContentType(),
                 context))
-            .map(response -> new SimpleResponse<>(response, null));
+            .flatMap(response -> mapBatchResponse(batch, response, throwOnAnyFailure));
+    }
+
+    // This method connects the batch response values to the individual batch operations based on their Content-Id
+    private Mono<Response<Void>> mapBatchResponse(BlobBatch batch, ServicesSubmitBatchResponse batchResponse,
+        boolean throwOnAnyFailure) {
+        /*
+         * Content-Type will contain the boundary for each batch response. The expected format is:
+         * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
+         */
+        String contentType = batchResponse.getDeserializedHeaders().getContentType();
+
+        // Split on the boundary [ "multipart/mixed; boundary", "batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"]
+        String boundary = contentType.split("=", 2)[1];
+
+        return FluxUtil.collectBytesInByteBufferStream(batchResponse.getValue())
+            .flatMap(byteArrayBody -> {
+                String body = new String(byteArrayBody, StandardCharsets.UTF_8);
+
+                for (String subResponse : body.split("--" + boundary)) {
+                    // This is a split value that isn't a response.
+                    if (!subResponse.contains("application/http")) {
+                        continue;
+                    }
+
+                    int contentId;
+                    Pattern contentIdPattern = Pattern.compile("Content-ID:\\s?(\\d+)", Pattern.CASE_INSENSITIVE);
+                    Matcher contentIdMatcher = contentIdPattern.matcher(subResponse);
+                    if (contentIdMatcher.find()) {
+                        contentId = Integer.parseInt(contentIdMatcher.group(1));
+                    } else {
+                        contentId = 0;
+                    }
+
+                    BlobBatchOperationResponse subRequestResponse = batch.getBatchRequest(contentId);
+                    subRequestResponse.setResponseReceived();
+
+                    for (String line : subResponse.split("\n")) {
+                        if (line.contains("Content-Type: application/http")) {
+                            continue;
+                        }
+
+                        if (line.startsWith("Content-ID")) {
+
+                        }
+                    }
+
+                    // TODO: Get status code
+
+                    // TODO: Get headers
+
+                    // TODO: Get body
+
+                    // TODO: Throw if any failure is true and status code is a failure
+                }
+
+                return Mono.just(new SimpleResponse<>(batchResponse, null));
+            });
     }
 
     /**
