@@ -4,7 +4,7 @@ import com.azure.storage.common.AccountSASPermission
 import com.azure.storage.common.AccountSASResourceType
 import com.azure.storage.common.AccountSASService
 import com.azure.storage.common.Constants
-import com.azure.storage.common.IPRange
+import com.azure.storage.common.IpRange
 import com.azure.storage.common.SASProtocol
 
 import com.azure.storage.file.models.AccessPolicy
@@ -33,7 +33,7 @@ class FileSASTests extends APISpec {
     @Unroll
     def "FileSASPermissions toString"() {
         setup:
-        def perms = new FileSASPermission()
+        def perms = new FileSasPermission()
             .setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
@@ -54,7 +54,7 @@ class FileSASTests extends APISpec {
     @Unroll
     def "FileSASPermissions parse"() {
         when:
-        def perms = FileSASPermission.parse(permString)
+        def perms = FileSasPermission.parse(permString)
 
         then:
         perms.getReadPermission() == read
@@ -74,7 +74,7 @@ class FileSASTests extends APISpec {
 
     def "FileSASPermissions parse IA"() {
         when:
-        FileSASPermission.parse("rwaq")
+        FileSasPermission.parse("rwaq")
 
         then:
         thrown(IllegalArgumentException)
@@ -83,12 +83,12 @@ class FileSASTests extends APISpec {
     @Unroll
     def "ShareSASPermissions toString"() {
         setup:
-        def perms = new ShareSASPermission()
-            .setRead(read)
-            .setWrite(write)
-            .setDelete(delete)
-            .setCreate(create)
-            .setList(list)
+        def perms = new ShareSasPermission()
+            .setReadPermission(read)
+            .setWritePermission(write)
+            .setDeletePermission(delete)
+            .setCreatePermission(create)
+            .setListPermission(list)
 
         expect:
         perms.toString() == expectedString
@@ -106,14 +106,14 @@ class FileSASTests extends APISpec {
     @Unroll
     def "ShareSASPermissions parse"() {
         when:
-        def perms = ShareSASPermission.parse(permString)
+        def perms = ShareSasPermission.parse(permString)
 
         then:
-        perms.getRead() == read
-        perms.getWrite() == write
-        perms.getDelete() == delete
-        perms.getCreate() == create
-        perms.getList() == list
+        perms.getReadPermission() == read
+        perms.getWritePermission() == write
+        perms.getDeletePermission() == delete
+        perms.getCreatePermission() == create
+        perms.getListPermission() == list
 
         where:
         permString || read  | write | delete | create | list
@@ -128,7 +128,7 @@ class FileSASTests extends APISpec {
 
     def "ShareSASPermissions parse IA"() {
         when:
-        ShareSASPermission.parse("rwaq")
+        ShareSasPermission.parse("rwaq")
 
         then:
         thrown(IllegalArgumentException)
@@ -141,7 +141,7 @@ class FileSASTests extends APISpec {
         def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = primaryFileClient.fileAsyncClient.configureServiceSASSignatureValues(new FileServiceSASSignatureValues(), accountName)
+        def serviceSASSignatureValues = primaryFileClient.fileAsyncClient.configureServiceSASSignatureValues(new FileServiceSasSignatureValues(), accountName)
 
         then:
         serviceSASSignatureValues.getCanonicalName() == "/file/" + accountName  + "/" + shareName + "/" + fileName
@@ -153,14 +153,14 @@ class FileSASTests extends APISpec {
         primaryFileClient.create(Constants.KB)
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
 
-        def permissions = new FileSASPermission()
+        def permissions = new FileSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new IPRange()
+        def ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
@@ -200,14 +200,14 @@ class FileSASTests extends APISpec {
         String data = "test"
         primaryFileClient.create(Constants.KB)
 
-        def permissions = new FileSASPermission()
+        def permissions = new FileSasPermission()
             .setReadPermission(true)
             .setWritePermission(false)
             .setCreatePermission(true)
             .setDeletePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new IPRange()
+        def ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
         def sasProtocol = SASProtocol.HTTPS_HTTP
@@ -247,12 +247,12 @@ class FileSASTests extends APISpec {
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier))
 
         // Check containerSASPermissions
-        ShareSASPermission permissions = new ShareSASPermission()
-            .setRead(true)
-            .setWrite(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setList(true)
+        ShareSasPermission permissions = new ShareSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setListPermission(true)
 
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 

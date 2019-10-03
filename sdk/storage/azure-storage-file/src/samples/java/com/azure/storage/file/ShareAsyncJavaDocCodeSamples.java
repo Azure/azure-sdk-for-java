@@ -3,7 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
@@ -521,22 +521,22 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#generateSAS(String, ShareSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Generates a code sample for using {@link ShareAsyncClient#generateSAS(String, ShareSasPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
         String identifier = "identifier";
-        ShareSASPermission permissions = new ShareSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true)
-            .setList(true);
+        ShareSasPermission permissions = new ShareSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setWritePermission(true)
+            .setListPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -548,7 +548,7 @@ public class ShareAsyncJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String sas = shareAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
     }
 
     /**

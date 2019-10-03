@@ -11,10 +11,10 @@ import java.util.Locale;
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a queue. Setting
  * a value to true means that any SAS which uses these permissions will grant permissions for that operation. Once all
  * the values are set, this should be serialized with toString and set as the permissions field on a {@link
- * QueueServiceSASSignatureValues} object. It is possible to construct the permissions string without this class, but
+ * QueueServiceSasSignatureValues} object. It is possible to construct the permissions string without this class, but
  * the order of the permissions is particular and this class guarantees correctness.
  */
-public final class QueueSASPermission {
+public final class QueueSasPermission {
 
     private boolean readPermission;
 
@@ -25,21 +25,21 @@ public final class QueueSASPermission {
     private boolean processPermission;
 
     /**
-     * Initializes a {@code QueueSASPermission} object with all fields set to false.
+     * Initializes a {@code QueueSasPermission} object with all fields set to false.
      */
-    public QueueSASPermission() {
+    public QueueSasPermission() {
     }
 
     /**
-     * Creates a {@code QueueSASPermission} from the specified permissions string. This method will throw an
+     * Creates a {@code QueueSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code QueueSASPermission}.
-     * @return A {@code QueueSASPermission} generated from the given {@code String}.
+     * @param permString A {@code String} which represents the {@code QueueSasPermission}.
+     * @return A {@code QueueSasPermission} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, u, or p.
      */
-    public static QueueSASPermission parse(String permString) {
-        QueueSASPermission permissions = new QueueSASPermission();
+    public static QueueSasPermission parse(String permString) {
+        QueueSasPermission permissions = new QueueSasPermission();
 
         for (int i = 0; i < permString.length(); i++) {
             char c = permString.charAt(i);
@@ -76,9 +76,9 @@ public final class QueueSASPermission {
      * Sets the read permission status.
      *
      * @param hadReadPermission Permission status to set
-     * @return the updated QueueSASPermission object.
+     * @return the updated QueueSasPermission object.
      */
-    public QueueSASPermission setReadPermission(boolean hadReadPermission) {
+    public QueueSasPermission setReadPermission(boolean hadReadPermission) {
         this.readPermission = hadReadPermission;
         return this;
     }
@@ -94,9 +94,9 @@ public final class QueueSASPermission {
      * Sets the add permission status.
      *
      * @param hasAddPermission Permission status to set
-     * @return the updated QueueSASPermission object.
+     * @return the updated QueueSasPermission object.
      */
-    public QueueSASPermission setAddPermission(boolean hasAddPermission) {
+    public QueueSasPermission setAddPermission(boolean hasAddPermission) {
         this.addPermission = hasAddPermission;
         return this;
     }
@@ -112,9 +112,9 @@ public final class QueueSASPermission {
      * Sets the update permission status.
      *
      * @param hasUpdatePermission Permission status to set
-     * @return the updated QueueSASPermission object.
+     * @return the updated QueueSasPermission object.
      */
-    public QueueSASPermission setUpdatePermission(boolean hasUpdatePermission) {
+    public QueueSasPermission setUpdatePermission(boolean hasUpdatePermission) {
         this.updatePermission = hasUpdatePermission;
         return this;
     }
@@ -130,9 +130,9 @@ public final class QueueSASPermission {
      * Sets the process permission status.
      *
      * @param hasProcessPermission Permission status to set
-     * @return the updated QueueSASPermission object.
+     * @return the updated QueueSasPermission object.
      */
-    public QueueSASPermission setProcessPermission(boolean hasProcessPermission) {
+    public QueueSasPermission setProcessPermission(boolean hasProcessPermission) {
         this.processPermission = hasProcessPermission;
         return this;
     }
@@ -141,7 +141,7 @@ public final class QueueSASPermission {
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@code String} which represents the {@code QueueSASPermission}.
+     * @return A {@code String} which represents the {@code QueueSasPermission}.
      */
     @Override
     public String toString() {

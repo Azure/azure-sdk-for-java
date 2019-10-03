@@ -15,7 +15,7 @@ import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -31,10 +31,10 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
     /**
      * Generates a code sample for using {@link BlobServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SASProtocol)}
      */
     public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
+        // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
         AccountSASService service = new AccountSASService()
             .setBlob(true)
             .setFile(true)
@@ -55,7 +55,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
             .setUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -63,7 +63,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
         String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
+        // END: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
     }
 
     /**

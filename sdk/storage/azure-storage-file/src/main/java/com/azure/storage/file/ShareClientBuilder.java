@@ -143,11 +143,11 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     @Override
     public ShareClientBuilder endpoint(String endpoint) {
         try {
-            URL fullURL = new URL(endpoint);
-            super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
+            URL fullUrl = new URL(endpoint);
+            super.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
 
             // Attempt to get the share name from the URL passed
-            String[] pathSegments = fullURL.getPath().split("/");
+            String[] pathSegments = fullUrl.getPath().split("/");
             int length = pathSegments.length;
             if (length > 3) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -157,7 +157,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new FileServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
+                Utility.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 super.sasToken(sasToken);
             }

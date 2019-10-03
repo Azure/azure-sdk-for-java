@@ -7,7 +7,7 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.common.BaseSasQueryParameters;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 
@@ -95,7 +95,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
-     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or
+     * @param ipRange A {@link IpRange} representing the range of valid IP addresses for this SAS token or
      * {@code null}.
      * @param identifier A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
      * @param resource A {@code String} representing the storage container or blob (only for Service SAS).
@@ -103,7 +103,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     BlobServiceSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, IPRange ipRange, String identifier, String resource, String permissions,
+        OffsetDateTime expiryTime, IpRange ipRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType, UserDelegationKey key) {
         super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);

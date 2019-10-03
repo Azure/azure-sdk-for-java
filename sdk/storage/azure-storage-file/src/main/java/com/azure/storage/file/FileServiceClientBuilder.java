@@ -133,12 +133,12 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
     @Override
     public FileServiceClientBuilder endpoint(String endpoint) {
         try {
-            URL fullURL = new URL(endpoint);
-            super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
+            URL fullUrl = new URL(endpoint);
+            super.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new FileServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
+                Utility.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 super.sasToken(sasToken);
             }
