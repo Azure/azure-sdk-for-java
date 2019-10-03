@@ -195,36 +195,27 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#deleteSetting(String)}
+     * Generates code sample for using {@link ConfigurationClient#deleteSetting(String, String)}
      */
     public void deleteSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#string
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#string-string
         ConfigurationSetting result = configurationClient
-            .deleteSetting("prodDBConnection");
+            .deleteSetting("prodDBConnection", null);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
 
-        // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#string
-
-        /**
-         * Generates code sample for using {@link ConfigurationClient#addSetting(ConfigurationSetting)}
-         */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
-        ConfigurationSetting resultSetting = configurationClient
-            .deleteSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
-        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
+        // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#string-string
 
         /**
          * Generates code sample for using {@link ConfigurationClient#deleteSettingWithResponse(ConfigurationSetting, Context)}
          */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-boolean-Context
         Response<ConfigurationSetting> responseSetting = configurationClient
             .deleteSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
-                new Context(key2, value2));
-        System.out
-            .printf("Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
+                false, new Context(key2, value2));
+        System.out.printf(
+            "Key: %s, Value: %s", responseSetting.getValue().getKey(), responseSetting.getValue().getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-boolean-Context
     }
 
     /**

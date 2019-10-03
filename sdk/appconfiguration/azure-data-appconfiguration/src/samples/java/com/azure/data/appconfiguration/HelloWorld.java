@@ -48,7 +48,7 @@ public class HelloWorld {
             error -> System.err.println("There was an error adding the setting: " + error.toString()),
             () -> {
                 System.out.println("Completed. Deleting setting...");
-                client.deleteSetting(key).block();
+                client.deleteSetting(key, null).block();
             });
     }
 }
