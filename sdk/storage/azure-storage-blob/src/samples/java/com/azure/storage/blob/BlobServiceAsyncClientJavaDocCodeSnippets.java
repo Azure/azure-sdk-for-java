@@ -51,7 +51,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
         BlobContainerAsyncClient containerClient = client
             .createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Map-PublicAccessType
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
     }
 
     /**
