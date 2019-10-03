@@ -192,8 +192,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
-     * @param label Optional, the label of the setting to retrieve.
-     * @param acceptDateTime Optional, to access a past state of the configuration setting.
+     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * label is desired.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -201,32 +201,34 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return client.getSetting(new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime,
-            false, Context.NONE).block().getValue();
+    public ConfigurationSetting getSetting(String key, String label) {
+        return getSetting(key, label, null);
     }
 
     /**
-     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label} and {@code onlyIfChanged}.
+     * Attempts to get a ConfigurationSetting that matches the {@code key}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the setting with the key "prodDBConnection", label "westUS"</p>
+     * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting-boolean}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime}
      *
-     * @param setting The setting to retrieve based on its key and optional label combination.
-     * @param onlyIfChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
+     * @param key The key of the setting to retrieve.
+     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * label is desired.
+     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * asOfDateTime is desired.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
-     * @throws HttpResponseException If the {@code} key is an empty string.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
+     * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(ConfigurationSetting setting, boolean onlyIfChanged) {
-        return getSettingWithResponse(setting, onlyIfChanged, Context.NONE).getValue();
+    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime asOfDateTime) {
+        return client.getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
+            false, Context.NONE).block().getValue();
     }
 
     /**

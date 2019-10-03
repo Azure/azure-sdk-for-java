@@ -78,9 +78,9 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string}
      *
      * @param key The key of the configuration setting to add.
-     * @param value The value associated with this configuration setting key.
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
      * label is desired.
+     * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
      * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -88,9 +88,9 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> addSetting(String key, String value, String label) {
+    public Mono<ConfigurationSetting> addSetting(String key, String label, String value) {
         return withContext(
-            context -> addSetting(new ConfigurationSetting().setKey(key).setValue(value).setLabel(label), context))
+            context -> addSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
