@@ -57,12 +57,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
-                    Mono<Response<ConfigurationSetting>> unlock;
-                    if (configurationSetting.isLocked()) {
-                        unlock = client.clearReadOnlyWithResponse(configurationSetting);
-                    } else {
-                        unlock = Mono.empty();
-                    }
+                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isLocked() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
                     return unlock.then(client.deleteSettingWithResponse(configurationSetting, false));
                 })

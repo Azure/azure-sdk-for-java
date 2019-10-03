@@ -309,7 +309,7 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     * Lock the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label}
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -317,10 +317,10 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string}
      *
-     * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to add.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     * @param key The key of the configuration setting to lock.
+     * @param label The label of the configuration setting to lock.
+     * @return The {@link ConfigurationSetting} that was locked, if a key collision occurs or the key is an invalid
+     * value(which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -330,17 +330,17 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     * Lock the {@link ConfigurationSetting} with a matching setting.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting}
      *
-     * @param setting The ConfigurationSetting to unlock.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     * @param setting The ConfigurationSetting to lock.
+     * @return The {@link ConfigurationSetting} that was lock, if a key collision occurs or the key is an invalid
+     * value(which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -350,15 +350,15 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     * Lock the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label}
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context}
      *
-     * @param setting The ConfigurationSetting to unlock.
+     * @param setting The ConfigurationSetting to lock.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the locked ConfigurationSetting. {@code null} is also returned if the
      * {@code key} is an invalid value.
@@ -371,18 +371,18 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     * Unlock the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#string-string}
      *
-     * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to add.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     * @param key The key of the configuration setting to unlock.
+     * @param label The label of the configuration setting to unlock.
+     * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
+     * value(which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -393,17 +393,17 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     * Unlock the {@link ConfigurationSetting} with a matching setting
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to unlock.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
+     * value(which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */

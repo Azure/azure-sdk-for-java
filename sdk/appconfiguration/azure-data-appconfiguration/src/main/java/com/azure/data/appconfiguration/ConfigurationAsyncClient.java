@@ -397,10 +397,11 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string}
      *
-     * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to add.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     * @param key The key of the configuration setting to lock.
+     * @param label The label of the configuration setting to lock, or optionally, null if a setting with
+     * label is desired.
+     * @return The {@link ConfigurationSetting} that was locked, if a key collision occurs or the key is an invalid
+     * value(which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -421,7 +422,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to unlock.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
      * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
