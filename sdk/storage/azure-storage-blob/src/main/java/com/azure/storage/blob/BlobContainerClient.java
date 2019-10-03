@@ -98,11 +98,11 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getContainerName}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobContainerName}
      *
      * @return The name of container.
      */
-    public String getContainerName() {
+    public String getBlobContainerName() {
         return this.blobContainerAsyncClient.getBlobContainerName();
     }
 
