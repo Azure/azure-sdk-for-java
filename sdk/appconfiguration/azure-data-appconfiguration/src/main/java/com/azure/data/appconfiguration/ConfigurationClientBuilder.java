@@ -98,6 +98,21 @@ public final class ConfigurationClientBuilder {
             .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
             .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
+
+    /**
+     * The constructor with custom retry policy.
+     */
+    public ConfigurationClientBuilder(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        httpLogDetailLevel = HttpLogDetailLevel.NONE;
+        policies = new ArrayList<>();
+
+        headers = new HttpHeaders()
+            .put(ECHO_REQUEST_ID_HEADER, "true")
+            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
+            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
+    }
+
     /**
      * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code buildClient()} is
      * called a new instance of {@link ConfigurationClient} is created.
