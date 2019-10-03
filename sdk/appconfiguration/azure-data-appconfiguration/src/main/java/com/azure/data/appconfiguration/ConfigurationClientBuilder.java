@@ -280,7 +280,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the retry policy that is used when each request is sent.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      *
      * The default retry policy will be used if not provided.
      *
