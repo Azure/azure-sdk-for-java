@@ -98,7 +98,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.ContainerClient.getContainerName}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getContainerName}
      *
      * @return The name of container.
      */

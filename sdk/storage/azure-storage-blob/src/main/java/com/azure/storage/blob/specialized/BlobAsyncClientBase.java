@@ -11,7 +11,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
-import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.HTTPGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
