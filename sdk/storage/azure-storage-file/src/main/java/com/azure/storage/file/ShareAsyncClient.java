@@ -15,7 +15,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -93,11 +93,11 @@ public class ShareAsyncClient {
      * @return the url of the Storage Share.
      */
     public String getShareUrl() {
-        StringBuilder shareURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
+        StringBuilder shareUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
         if (snapshot != null) {
-            shareURLString.append("?snapshot=").append(snapshot);
+            shareUrlString.append("?snapshot=").append(snapshot);
         }
-        return shareURLString.toString();
+        return shareUrlString.toString();
     }
 
 
@@ -885,12 +885,12 @@ public class ShareAsyncClient {
     /**
      * Generates a SAS token with the specified parameters
      *
-     * @param permissions The {@code ShareSASPermission} permission for the SAS
+     * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(ShareSASPermission permissions, OffsetDateTime expiryTime) {
+    public String generateSAS(ShareSasPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -913,17 +913,17 @@ public class ShareAsyncClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code ShareSASPermission} permission for the SAS
+     * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
+    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
@@ -934,18 +934,18 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code ShareSASPermission} permission for the SAS
+     * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
      * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
@@ -954,11 +954,11 @@ public class ShareAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+            OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange, String cacheControl,
+            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
-        FileServiceSASSignatureValues fileServiceSASSignatureValues = new FileServiceSASSignatureValues(version,
+        FileServiceSasSignatureValues fileServiceSASSignatureValues = new FileServiceSasSignatureValues(version,
             sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
             identifier, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
@@ -967,7 +967,7 @@ public class ShareAsyncClient {
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
-        FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
+        FileServiceSasSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
         FileServiceSasQueryParameters fileServiceSasQueryParameters =
@@ -992,8 +992,8 @@ public class ShareAsyncClient {
     /**
      * Sets fileServiceSASSignatureValues parameters dependent on the current file type
      */
-    FileServiceSASSignatureValues configureServiceSASSignatureValues(
-        FileServiceSASSignatureValues fileServiceSASSignatureValues, String accountName) {
+    FileServiceSasSignatureValues configureServiceSASSignatureValues(
+        FileServiceSasSignatureValues fileServiceSASSignatureValues, String accountName) {
 
         // Set canonical name
         fileServiceSASSignatureValues.setCanonicalName(this.shareName, accountName);

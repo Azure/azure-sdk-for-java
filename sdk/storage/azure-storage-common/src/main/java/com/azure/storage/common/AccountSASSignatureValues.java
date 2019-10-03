@@ -39,7 +39,7 @@ public final class AccountSASSignatureValues {
 
     private String permissions;
 
-    private IPRange ipRange;
+    private IpRange ipRange;
 
     private String services;
 
@@ -62,7 +62,7 @@ public final class AccountSASSignatureValues {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
@@ -70,7 +70,8 @@ public final class AccountSASSignatureValues {
      */
     public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService
         accountSASService, AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
-        OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange, SASProtocol sasProtocol) {
+                                            OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+                                            IpRange ipRange, SASProtocol sasProtocol) {
 
         AccountSASSignatureValues values = new AccountSASSignatureValues();
 
@@ -187,19 +188,19 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange getIpRange() {
+    public IpRange getIpRange() {
         return ipRange;
     }
 
     /**
-     * Sets the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @param ipRange Allowed IP range to set
      * @return the updated AccountSASSignatureValues object.
      */
-    public AccountSASSignatureValues setIpRange(IPRange ipRange) {
+    public AccountSASSignatureValues setIpRange(IpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
