@@ -3,7 +3,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
