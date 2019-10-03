@@ -13,7 +13,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains OpenCensus span data. This span will be used
      * as the parent span for all spans the SDK creates.
-     *
+     * <p>
      * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
      */
     String OPENCENSUS_SPAN_KEY = "opencensus-span";
@@ -21,7 +21,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are
      * created.
-     *
+     * <p>
      * If no span name is listed when the span is created it will default to using the calling method's name.
      */
     String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
@@ -51,7 +51,7 @@ public interface Tracer {
 
     /**
      * Creates a new tracing span.
-     *
+     * <p>
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found,
      * the new span will be added as a child. Otherwise the parent span will be created and added to the {@code context}
      * and any downstream {@code start()} calls will use the created span as the parent.
@@ -72,14 +72,20 @@ public interface Tracer {
     /**
      * Creates a new tracing span for AMQP calls.
      *
+     * <p>
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
      * new span will be added as a child. Otherwise the span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
+     * <p>
      * Sets additional request attributes on the created span when {@code processKind} is
      * {@link ProcessKind#SEND ProcessKind.SEND}.
+     *
+     * <p>
      * Returns the diagnostic Id and span context of the returned span when {@code processKind} is
      * {@link ProcessKind#RECEIVE ProcessKind.RECEIVE}.
+     *
+     * <p>
      * Creates a new tracing span with remote parent and returns that scope when the given when {@code processKind}
      * is {@link ProcessKind#PROCESS ProcessKind.PROCESS}.
      *

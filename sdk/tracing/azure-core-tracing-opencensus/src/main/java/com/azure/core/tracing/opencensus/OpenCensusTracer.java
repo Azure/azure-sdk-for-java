@@ -27,6 +27,8 @@ import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
  * context propagation.
+ *
+ * <p>
  * This helper class supports W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP
  * and AMQP requests.
  */
@@ -183,7 +185,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Starts a new child {@link Span} with parent being the remote and uses the {@link Span} is in the current Context,
      * to return an object that represents that scope.
-     * The scope is exited when the returned object is closed.
+     * <p>The scope is exited when the returned object is closed.</p>
      *
      * @param spanName The name of the returned Span.
      * @param context The {@link Context} containing the {@link SpanContext}.

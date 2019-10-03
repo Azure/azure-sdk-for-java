@@ -45,34 +45,6 @@ public class OpenCensusTracerTest {
         assertTrue(updatedContext.getData(OPENCENSUS_SPAN_KEY).get() instanceof Span);
     }
 
-    // @Test
-    // public void startSpanParentContextFlowTest() {
-    //     // Arrange
-    //     // tracer1.spanBuilder("parent-span").startScopedSpan();
-    //     // Context traceContext = new Context(OPENCENSUS_SPAN_KEY, tracer1.getCurrentSpan());
-    //
-    //     when(tracer1.spanBuilderWithExplicitParent(any(), any())).thenReturn(null);
-    //
-    //     // Act
-    //     final Context updatedContext = openCensusTracer1.start(METHOD_NAME, Context.NONE);
-    //
-    //     // Assert
-    //     Assert.assertNotNull(updatedContext.getData(OPENCENSUS_SPAN_KEY));
-    //     Span returnedSpan = (Span) updatedContext.getData(OPENCENSUS_SPAN_KEY).get();
-    //     verify(tracer1, times(1)).spanBuilderWithExplicitParent(any(), any());
-    //     Assert.assertNotEquals(returnedSpan, BlankSpan.INSTANCE);
-    //     Assert.assertEquals(returnedSpan, tracer.getCurrentSpan());
-    //
-    //     Capture the argument of the doSomething function
-    //     ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-    //     ArgumentCaptor<Span> captor2 = ArgumentCaptor.forClass(Span.class);
-    //     verify(tracer1).spanBuilderWithExplicitParent(captor.getValue(), captor2.getValue());
-    //
-    //     // Assert the argument
-    //     assertEquals(captor.getValue(), METHOD_NAME);
-    //     assertTrue(captor2.getValue() instanceof Span);
-    // }
-
     @Test(expected = NullPointerException.class)
     public void startSpanOverloadNullPointerException() {
         // Act

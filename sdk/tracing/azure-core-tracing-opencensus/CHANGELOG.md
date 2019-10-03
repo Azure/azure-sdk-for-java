@@ -1,6 +1,6 @@
 # Release History
 
-## Version 1.0.0-preview.3 ()
+## Version 1.0.0-preview.3 (2019-10-07)
 For details on the Azure SDK for Java (October 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 Version 1.0.0-preview.3 added tracing support for AMQP client libraries across different languages and platforms as possible.
