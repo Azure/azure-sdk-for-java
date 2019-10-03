@@ -111,20 +111,20 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = new BlobBatch(primaryBlobServiceClient)
-        def containerClient = primaryBlobServiceClient.getContainerClient(containerName)
+        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
-        containerClient.getBlobClient(blobName1).asPageBlobClient().create(0)
-        containerClient.getBlobClient(blobName2).asPageBlobClient().create(0)
+        containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
+        containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
 
         when:
         def response1 = batch.delete(containerName, blobName1, null, null)
-        //def response2 = batch.delete(containerName, blobName2, null, null)
+        def response2 = batch.delete(containerName, blobName2, null, null)
         primaryBlobServiceClient.submitBatch(batch)
 
         then:
         notThrown(StorageException)
         response1.getStatusCode() == 204
-        //response2.getStatusCode() == 204
+        response2.getStatusCode() == 204
     }
 
     def "Delete blob some succeed throw on any error"() {

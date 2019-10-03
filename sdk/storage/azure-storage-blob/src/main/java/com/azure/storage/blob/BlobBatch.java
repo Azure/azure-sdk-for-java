@@ -25,6 +25,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
@@ -57,7 +58,7 @@ public final class BlobBatch {
 
     private final ClientLogger logger = new ClientLogger(BlobBatch.class);
 
-    private final URL accountUrl;
+    private final String accountUrl;
     private final HttpPipeline batchPipeline;
 
     private final Deque<Mono<? extends Response>> batchOperationQueue;
@@ -77,7 +78,7 @@ public final class BlobBatch {
         this(client.getAccountUrl(), client.getHttpPipeline());
     }
 
-    BlobBatch(URL accountUrl, HttpPipeline pipeline) {
+    BlobBatch(String accountUrl, HttpPipeline pipeline) {
         this.contentId = new AtomicInteger(0);
         this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
 
@@ -215,23 +216,27 @@ public final class BlobBatch {
 
     private BlobAsyncClientBase buildClient(String containerName, String blobName) {
         return new BlobClientBuilder()
-            .endpoint(accountUrl.toString())
+            .endpoint(accountUrl)
             .containerName(containerName)
             .blobName(blobName)
             .pipeline(batchPipeline)
-            .buildBlobAsyncClient();
+            .buildAsyncClient();
     }
 
     private BlobAsyncClientBase buildClient(URL blobUrl) {
         return new BlobClientBuilder()
             .endpoint(blobUrl.toString())
             .pipeline(batchPipeline)
-            .buildBlobAsyncClient();
+            .buildAsyncClient();
     }
 
     private void sendCallback(HttpRequest request) {
         int contentId = Integer.parseInt(request.getHeaders().getValue(CONTENT_ID));
         this.batchMapping.get(contentId).setRequest(request);
+
+        if (batchRequest.size() > 0) {
+            batchRequest.add(ByteBuffer.wrap("\r\n\r\n\r\n".getBytes(StandardCharsets.UTF_8)));
+        }
 
         StringBuilder batchRequestBuilder = new StringBuilder();
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
@@ -264,11 +269,14 @@ public final class BlobBatch {
     Flux<ByteBuffer> getBody() {
         while (!batchOperationQueue.isEmpty()) {
             Mono<? extends Response> batchOperation = batchOperationQueue.pop();
-            batchOperation.block();
+            Disposable disposable = batchOperation.subscribe();
+            while (!disposable.isDisposed()) {
+                // Wait until the batch operation has processed in the pipeline.
+            }
         }
 
         this.batchRequest.add(ByteBuffer
-            .wrap(String.format("--%s--", batchBoundary).getBytes(StandardCharsets.UTF_8)));
+            .wrap(String.format("--%s--\r\n", batchBoundary).getBytes(StandardCharsets.UTF_8)));
 
         return Flux.fromIterable(this.batchRequest);
     }

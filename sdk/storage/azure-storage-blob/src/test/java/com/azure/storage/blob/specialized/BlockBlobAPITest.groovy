@@ -804,7 +804,7 @@ class BlockBlobAPITest extends APISpec {
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        bac.upload(Flux.just(data), parallelTransferOptions).block()
+        blobac.upload(Flux.just(data), parallelTransferOptions).block()
         data.position(0)
 
         then:
@@ -852,7 +852,7 @@ class BlockBlobAPITest extends APISpec {
             .setBlockSize(bufferSize).setNumBuffers(numBuffers)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        bac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
+        blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
 
         expect:
         compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
