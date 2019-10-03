@@ -147,8 +147,7 @@ public final class ConfigurationAsyncClient {
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        return service
-            .setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
                 getETagValue(ETAG_ANY), context)
             .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
@@ -177,8 +176,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(String key, String label, String value) {
-        return withContext(
-            context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
+        return withContext(context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
                 false, context))
             .map(response -> response.getValue());
     }
