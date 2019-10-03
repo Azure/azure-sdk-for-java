@@ -14,10 +14,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 public class StorageFileOutputStream extends StorageOutputStream {
-    /*
-     * Holds the last exception this stream encountered.
-     */
-    volatile IOException lastError;
     private long offsetPos;
 
     private final FileAsyncClient client;

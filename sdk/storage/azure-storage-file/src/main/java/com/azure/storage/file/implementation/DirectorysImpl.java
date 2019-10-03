@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -18,15 +17,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.storage.file.models.DirectorysCreateResponse;
-import com.azure.storage.file.models.DirectorysDeleteResponse;
-import com.azure.storage.file.models.DirectorysForceCloseHandlesResponse;
-import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
-import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
-import com.azure.storage.file.models.DirectorysListHandlesResponse;
-import com.azure.storage.file.models.DirectorysSetMetadataResponse;
-import com.azure.storage.file.models.DirectorysSetPropertiesResponse;
+import com.azure.storage.file.implementation.models.DirectorysCreateResponse;
+import com.azure.storage.file.implementation.models.DirectorysDeleteResponse;
+import com.azure.storage.file.implementation.models.DirectorysForceCloseHandlesResponse;
+import com.azure.storage.file.implementation.models.DirectorysGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.DirectorysListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.implementation.models.DirectorysListHandlesResponse;
+import com.azure.storage.file.implementation.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.implementation.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
 import java.util.Map;
 import reactor.core.publisher.Mono;

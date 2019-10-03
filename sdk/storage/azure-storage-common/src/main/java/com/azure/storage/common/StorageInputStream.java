@@ -18,12 +18,12 @@ public abstract class StorageInputStream extends InputStream {
     /**
      * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
      */
-    private volatile boolean streamFaulted;
+    protected volatile boolean streamFaulted;
 
     /**
      * Holds the last exception this stream encountered.
      */
-    private IOException lastError;
+    protected IOException lastError;
 
 
     /**
@@ -49,12 +49,12 @@ public abstract class StorageInputStream extends InputStream {
     /**
      * Holds the absolute byte position of the start of the current buffer.
      */
-    private long bufferStartOffset;
+    protected long bufferStartOffset;
 
     /**
      * Holds the length of the current buffer in bytes.
      */
-    private int bufferSize;
+    protected int bufferSize;
 
     /**
      * Offset of the source blob this class is configured to stream from.

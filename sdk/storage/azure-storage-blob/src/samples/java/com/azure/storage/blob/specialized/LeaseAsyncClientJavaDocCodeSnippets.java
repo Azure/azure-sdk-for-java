@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 
 public class LeaseAsyncClientJavaDocCodeSnippets {
     private LeaseAsyncClient client = new LeaseClientBuilder()
-        .blobAsyncClient(new BlobClientBuilder().blobName("blob").buildBlobAsyncClient())
+        .blobAsyncClient(new BlobClientBuilder().blobName("blob").buildAsyncClient())
         .buildAsyncClient();
 
     /**

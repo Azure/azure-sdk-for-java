@@ -10,13 +10,12 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
@@ -28,16 +27,17 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Client to an append blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the
- * method {@link BlobClient#asAppendBlobClient()}. This class does not hold any state about a particular blob, but is
+ * method {@link BlobClient#getAppendBlobClient()}. This class does not hold any state about a particular blob, but is
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerClient}, and
- * operations on the service are available on {@link BlobServiceClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link BlobContainerClient},
+ * and operations on the service are available on {@link BlobServiceClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -109,16 +109,16 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions-Duration-Context}
      *
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
+    public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
         return Utility.blockWithOptionalTimeout(appendBlobAsyncClient.
             createWithResponse(headers, metadata, accessConditions, context), timeout);

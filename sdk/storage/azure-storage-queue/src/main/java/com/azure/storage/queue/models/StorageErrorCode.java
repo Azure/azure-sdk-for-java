@@ -268,6 +268,36 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
     public static final StorageErrorCode QUEUE_NOT_FOUND = fromString("QueueNotFound");
 
     /**
+     * Static value AuthorizationSourceIPMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_SOURCE_IPMISMATCH = fromString("AuthorizationSourceIPMismatch");
+
+    /**
+     * Static value AuthorizationProtocolMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_PROTOCOL_MISMATCH = fromString("AuthorizationProtocolMismatch");
+
+    /**
+     * Static value AuthorizationPermissionMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_PERMISSION_MISMATCH = fromString("AuthorizationPermissionMismatch");
+
+    /**
+     * Static value AuthorizationServiceMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_SERVICE_MISMATCH = fromString("AuthorizationServiceMismatch");
+
+    /**
+     * Static value AuthorizationResourceTypeMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH = fromString("AuthorizationResourceTypeMismatch");
+
+    /**
+     * Static value FeatureVersionMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode FEATURE_VERSION_MISMATCH = fromString("FeatureVersionMismatch");
+
+    /**
      * Creates or finds a StorageErrorCode from its string representation.
      *
      * @param name a name to look for.

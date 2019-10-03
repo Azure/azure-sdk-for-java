@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -20,6 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
@@ -96,13 +99,14 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
                     EventPosition.fromEnqueuedTime(Instant.now()));
                 consumers[i] = consumer;
 
-                final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
-                    logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId);
-                }, error -> Assert.fail("An error should not have occurred:" + error.toString()),
-                    () -> {
-                        logger.info("Disposing of consumer now that the receive is complete.");
-                        countDownLatch.countDown();
-                    });
+                final Disposable subscription = consumer.receive().take(numberOfEvents)
+                    .subscribe(
+                        event -> logger.info("Event[{}] received. partition: {}", event.getSequenceNumber(), partitionId),
+                        error -> Assert.fail("An error should not have occurred:" + error.toString()),
+                        () -> {
+                            logger.info("Disposing of consumer now that the receive is complete.");
+                            countDownLatch.countDown();
+                        });
 
                 subscriptions.add(subscription);
 
@@ -126,6 +130,110 @@ public class EventHubAsyncConsumerIntegrationTest extends IntegrationTestBase {
             dispose(consumers);
             dispose(producers);
         }
+    }
+
+    /**
+     * Verify if we don't set {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}, then it is always
+     * null as we are consuming events.
+     */
+    @Test
+    public void lastEnqueuedInformationIsNotUpdated() throws IOException {
+        // Arrange
+        final String secondPartitionId = "1";
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setPrefetchCount(1)
+            .setTrackLastEnqueuedEventProperties(false);
+        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            position, options);
+
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final int expectedNumber = 5;
+        final EventHubAsyncProducer producer = client.createProducer();
+        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event", error));
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receive().take(expectedNumber))
+                .expectNextCount(expectedNumber)
+                .verifyComplete();
+
+            final LastEnqueuedEventProperties lastEnqueuedEventProperties = consumer.getLastEnqueuedEventProperties();
+            Assert.assertNull("'lastEnqueuedEventProperties' should be null.", lastEnqueuedEventProperties);
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
+    }
+
+    /**
+     * Verify that each time we receive an event, the data, {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()},
+     * null as we are consuming events.
+     */
+    @Test
+    public void lastEnqueuedInformationIsUpdated() throws IOException {
+        // Arrange
+        final String secondPartitionId = "1";
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubAsyncProducer producer = client.createProducer(
+            new EventHubProducerOptions().setPartitionId(secondPartitionId));
+        final Disposable producerEvents = getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event", error));
+
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .setPrefetchCount(1)
+            .setTrackLastEnqueuedEventProperties(true);
+        final EventHubAsyncConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            EventPosition.latest(), options);
+        final AtomicReference<LastEnqueuedEventProperties> lastViewed = new AtomicReference<>(
+            new LastEnqueuedEventProperties(null, null, null, null));
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receive().take(10))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), true))
+                .expectNextCount(5)
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .assertNext(event -> verifyLastRetrieved(lastViewed, consumer.getLastEnqueuedEventProperties(), false))
+                .verifyComplete();
+
+            Assert.assertNotNull("'lastEnqueuedEventProperties' should be not be null.",
+                consumer.getLastEnqueuedEventProperties());
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            consumer.close();
+        }
+    }
+
+    private static void verifyLastRetrieved(AtomicReference<LastEnqueuedEventProperties> atomicReference,
+                                            LastEnqueuedEventProperties current, boolean isFirst) {
+        Assert.assertNotNull(current);
+        final LastEnqueuedEventProperties previous = atomicReference.get();
+
+        // Update the atomic reference to the new one now.
+        atomicReference.set(current);
+
+        // The first time we step through this, the retrieval time will not be set for the previous event.
+        if (isFirst) {
+            return;
+        }
+
+        Assert.assertNotNull("This is not the first event, should have a retrieval time.", previous.getRetrievalTime());
+
+        final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
+        final int comparedSequenceNumber = previous.getOffset().compareTo(current.getOffset());
+        Assert.assertTrue(String.format("Expected retrieval time previous '%s' to be before or equal to current '%s'",
+            previous.getRetrievalTime(), current.getRetrievalTime()), compared <= 0);
+
+        Assert.assertTrue(String.format("Expected offset previous '%s' to be before or equal to current '%s'",
+            previous.getRetrievalTime(), current.getRetrievalTime()), comparedSequenceNumber <= 0);
     }
 
     /**

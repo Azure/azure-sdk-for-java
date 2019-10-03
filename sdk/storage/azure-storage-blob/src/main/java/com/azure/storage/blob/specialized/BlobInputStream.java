@@ -26,26 +26,6 @@ public final class BlobInputStream extends StorageInputStream {
     private final BlobAsyncClientBase blobClient;
 
     /**
-     * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
-     */
-    private volatile boolean streamFaulted;
-
-    /**
-     * Holds the last exception this stream encountered.
-     */
-    private IOException lastError;
-
-    /**
-     * Holds the absolute byte position of the start of the current buffer.
-     */
-    private long bufferStartOffset;
-
-    /**
-     * Holds the length of the current buffer in bytes.
-     */
-    private int bufferSize;
-
-    /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
     private final BlobAccessConditions accessCondition;

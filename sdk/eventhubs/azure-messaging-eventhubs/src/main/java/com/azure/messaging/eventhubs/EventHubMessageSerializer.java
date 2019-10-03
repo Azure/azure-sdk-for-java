@@ -9,12 +9,14 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
@@ -27,11 +29,22 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
+import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
+import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC;
+import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC;
+
 /**
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
     private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
+    private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
+        Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
+    private static final Symbol LAST_ENQUEUED_OFFSET = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
+    private static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
+    private static final Symbol RETRIEVAL_TIME_UTC =
+        Symbol.getSymbol(MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC);
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -73,8 +86,8 @@ class EventHubMessageSerializer implements MessageSerializer {
     }
 
     /**
-     * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing
-     * {@link EventData}.
+     * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing {@link
+     * EventData}.
      *
      * @param object Concrete object to deserialize.
      *
@@ -115,11 +128,66 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         if (clazz == PartitionProperties.class || clazz == EventHubProperties.class) {
             return deserializeManagementResponse(message, clazz);
-        } else if (clazz != EventData.class) {
+        } else if (clazz == EventData.class) {
+            return (T) deserializeEventData(message);
+        } else if (clazz == LastEnqueuedEventProperties.class) {
+            return (T) deserializeEnqueuedEventProperties(message);
+        } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
         }
+    }
 
+    @SuppressWarnings("unchecked")
+    private <T> T deserializeManagementResponse(Message message, Class<T> deserializedType) {
+        if (!(message.getBody() instanceof AmqpValue)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
+        }
+
+        final AmqpValue body = (AmqpValue) message.getBody();
+        if (!(body.getValue() instanceof Map)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Expected message.getBody().getValue() to be of type Map"));
+        }
+
+        final Map<?, ?> amqpBody = (Map<?, ?>) body.getValue();
+
+        if (deserializedType == PartitionProperties.class) {
+            return (T) toPartitionProperties(amqpBody);
+        } else if (deserializedType == EventHubProperties.class) {
+            return (T) toEventHubProperties(amqpBody);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "Class '%s' is not a supported deserializable type.", deserializedType)));
+        }
+    }
+
+    /**
+     * Tries to deserialize {@link LastEnqueuedEventProperties} from an AMQP message.
+     *
+     * @param message AMQP message from the message broker.
+     *
+     * @return An instance of {@link LastEnqueuedEventProperties} with extracted properties. Otherwise, {@code null} if
+     *     there were no delivery annotations in the message.
+     */
+    private LastEnqueuedEventProperties deserializeEnqueuedEventProperties(Message message) {
+        final DeliveryAnnotations annotations = message.getDeliveryAnnotations();
+        if (annotations == null || annotations.getValue() == null) {
+            return null;
+        }
+
+        final Map<Symbol, Object> deliveryAnnotations = annotations.getValue();
+        final Long lastSequenceNumber = getValue(deliveryAnnotations, LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
+        final String lastEnqueuedOffset = getValue(deliveryAnnotations, LAST_ENQUEUED_OFFSET, String.class);
+        final Instant lastEnqueuedTime = getValue(deliveryAnnotations, LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
+        final Instant retrievalTime = getValue(deliveryAnnotations, RETRIEVAL_TIME_UTC, Date.class).toInstant();
+
+        return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
+            retrievalTime);
+    }
+
+    private EventData deserializeEventData(Message message) {
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
         final HashMap<String, Object> receiveProperties = new HashMap<>();
 
@@ -165,32 +233,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         properties.forEach((key, value) -> eventData.addProperty(key, value));
 
         message.clear();
-        return (T) eventData;
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T deserializeManagementResponse(Message message, Class<T> deserializedType) {
-        if (!(message.getBody() instanceof AmqpValue)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
-        }
-
-        final AmqpValue body = (AmqpValue) message.getBody();
-        if (!(body.getValue() instanceof Map)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Expected message.getBody().getValue() to be of type Map"));
-        }
-
-        final Map<?, ?> amqpBody = (Map<?, ?>) body.getValue();
-
-        if (deserializedType == PartitionProperties.class) {
-            return (T) toPartitionProperties(amqpBody);
-        } else if (deserializedType == EventHubProperties.class) {
-            return (T) toEventHubProperties(amqpBody);
-        } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "Class '%s' is not a supported deserializable type.", deserializedType)));
-        }
+        return eventData;
     }
 
     private EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
@@ -205,20 +248,32 @@ class EventHubMessageSerializer implements MessageSerializer {
             getValue(amqpBody, ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, String.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY, String.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER, Long.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
+            getValue(amqpBody, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class),
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class));
     }
 
-    @SuppressWarnings("unchecked")
     private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
             throw logger.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
-        final Object value = amqpBody.get(key);
+        return getValue(amqpBody.get(key), key, clazz);
+    }
+
+    private <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz) {
+        if (!amqpBody.containsKey(key)) {
+            throw logger.logExceptionAsError(new AzureException(
+                String.format("AMQP body did not contain expected field '%s'.", key)));
+        }
+
+        return getValue(amqpBody.get(key), key, clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getValue(Object value, Object key, Class<T> clazz) {
         if (value == null) {
             throw logger.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain a value for key '%s'.", key)));

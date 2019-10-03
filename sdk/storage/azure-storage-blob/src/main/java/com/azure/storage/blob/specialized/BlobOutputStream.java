@@ -25,10 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class BlobOutputStream extends StorageOutputStream {
-    /*
-     * Holds the last exception this stream encountered.
-     */
-    volatile IOException lastError;
 
     BlobOutputStream(final int writeThreshold) {
         super(writeThreshold);
@@ -87,7 +83,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
                                        final AppendBlobAccessConditions appendBlobAccessConditions) {
-            super(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES);
             this.client = client;
             this.appendBlobAccessConditions = appendBlobAccessConditions;
 
@@ -153,7 +149,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private final BlockBlobAsyncClient client;
 
         private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
-            super(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
             this.client = client;
             this.accessConditions = accessConditions;
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
@@ -215,9 +211,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private PageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
                                      final BlobAccessConditions blobAccessConditions) {
-            super(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            super(PageBlobClient.MAX_PUT_PAGES_BYTES);
             this.client = client;
             this.pageRange = pageRange;
+
             if (blobAccessConditions != null) {
                 this.pageBlobAccessConditions = new PageBlobAccessConditions()
                     .setModifiedAccessConditions(blobAccessConditions.getModifiedAccessConditions())

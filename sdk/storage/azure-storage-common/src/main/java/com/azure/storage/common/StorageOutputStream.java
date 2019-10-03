@@ -21,12 +21,12 @@ public abstract class StorageOutputStream extends OutputStream {
      * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
      * block size, for page blob this is the Page commit size.
      */
-    final int writeThreshold;
+    private final int writeThreshold;
 
     /*
      * Holds the last exception this stream encountered.
      */
-    volatile IOException lastError;
+    protected volatile IOException lastError;
 
     protected abstract Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset);
 

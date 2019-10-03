@@ -21,26 +21,6 @@ public class StorageFileInputStream extends StorageInputStream {
     private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Holds the length of the current buffer in bytes.
-     */
-    private int bufferSize;
-
-    /**
-     * Holds the last exception this stream encountered.
-     */
-    private IOException lastError;
-
-    /**
-     * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
-     */
-    private volatile boolean streamFaulted;
-
-    /**
-     * Holds the absolute byte position of the start of the current buffer.
-     */
-    private long bufferStartOffset;
-
-    /**
      * Initializes a new instance of the StorageFileInputStream class.
      *
      * @param fileAsyncClient A {@link FileClient} object which represents the blob that this stream is associated with.
