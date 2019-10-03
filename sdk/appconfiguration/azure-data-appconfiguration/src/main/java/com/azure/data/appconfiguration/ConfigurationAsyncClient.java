@@ -91,7 +91,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> addSetting(String key, String label, String value) {
         return withContext(
             context -> addSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -115,7 +115,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return withContext(context -> addSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -148,15 +148,9 @@ public final class ConfigurationAsyncClient {
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service
-            .setKey(
-                serviceEndpoint,
-                setting.getKey(),
-                setting.getLabel(),
-                setting,
-                null,
-                getETagValue(ETAG_ANY),
-                context)
-            .doOnRequest(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
+            .setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
+                getETagValue(ETAG_ANY), context)
+            .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
@@ -186,7 +180,7 @@ public final class ConfigurationAsyncClient {
         return withContext(
             context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
                 false, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -235,7 +229,7 @@ public final class ConfigurationAsyncClient {
         // If no etag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting,
             ifMatchETag, null, context)
-            .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
     }
@@ -287,8 +281,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime asOfDateTime) {
         return withContext(context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
-                false, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+                false, context)).map(response -> response.getValue());
     }
 
     /**
@@ -329,7 +322,7 @@ public final class ConfigurationAsyncClient {
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             asOfDateTime == null ? null : asOfDateTime.toString(), null, ifNoneMatchETag, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
     }
@@ -356,7 +349,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> deleteSetting(String key, String label) {
         return withContext(
             context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -398,7 +391,7 @@ public final class ConfigurationAsyncClient {
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), ifMatchETag,
             null, context)
-            .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
     }
@@ -424,7 +417,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> setReadOnly(String key, String label) {
         return withContext(context -> setReadOnly(
             new ConfigurationSetting().setKey(key).setLabel(label), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -453,7 +446,7 @@ public final class ConfigurationAsyncClient {
 
         return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             null, context)
-            .doOnRequest(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting, error));
     }
@@ -477,7 +470,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> clearReadOnly(String key, String label) {
         return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+            .map(response -> response.getValue());
     }
 
     /**
@@ -506,7 +499,7 @@ public final class ConfigurationAsyncClient {
 
         return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
             null, null, context)
-            .doOnRequest(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
     }
@@ -542,7 +535,7 @@ public final class ConfigurationAsyncClient {
         }
 
         return service.listKeyValues(serviceEndpoint, continuationToken, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
                 error));
@@ -561,7 +554,7 @@ public final class ConfigurationAsyncClient {
         String labels = ImplUtils.arrayToString(options.getLabels(), label -> label);
 
         return service.listKeyValues(serviceEndpoint, keys, labels, fields, options.getAcceptDateTime(), context)
-            .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", options))
+            .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", options))
             .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", options))
             .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", options, error));
 
@@ -619,7 +612,7 @@ public final class ConfigurationAsyncClient {
 
     Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error));
@@ -634,7 +627,7 @@ public final class ConfigurationAsyncClient {
 
     private Flux<ConfigurationSetting> listSettings(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error));
