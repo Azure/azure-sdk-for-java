@@ -53,7 +53,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     protected String endpoint;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
-    private String sasToken;
+    protected String sasToken;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();

@@ -83,8 +83,13 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
             pipeline = super.buildPipeline();
         }
 
+        String url = String.format("%s/%s/%s", endpoint, containerName, blobName);
+        if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            url = url + "?" + sasToken;
+        }
+
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+            .url(url)
             .pipeline(pipeline)
             .build(), snapshot, customerProvidedKey);
     }

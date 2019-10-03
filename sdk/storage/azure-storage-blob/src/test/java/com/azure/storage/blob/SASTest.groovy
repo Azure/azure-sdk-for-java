@@ -18,10 +18,8 @@ import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.Utility
-
 import com.azure.storage.common.credentials.SharedKeyCredential
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -221,7 +219,7 @@ class SASTest extends APISpec {
     }
 
     /* TODO: Fix user delegation tests to run in CI */
-    @Requires({ liveMode() })
+    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -334,7 +332,7 @@ class SASTest extends APISpec {
 
     }
 
-    @Requires({ liveMode() })
+    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()
