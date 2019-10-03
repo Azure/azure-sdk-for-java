@@ -7,12 +7,12 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.0.0-preview.4/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue)
 
-- UUpdated to use correct Java Bean getter/setter styles.
-- Added `getName` for fetching the resource names.
+- Updated to use correct Java Bean getter/setter styles.
+- Added `getQueueName` for fetching the resource names.
 - Updated to be fully compliant with the Java 9 Platform Module System.
 - Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
 - Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
-- `getURL` API now returns URL with scheme, host, resource name and snapshot if any.
+- `getQueueServiceUrl`, `getQueueUrl` API now returns URL with scheme, host, resource name and snapshot if any.
 
 
 ## Version 12.0.0-preview.3 (2019-09-10)

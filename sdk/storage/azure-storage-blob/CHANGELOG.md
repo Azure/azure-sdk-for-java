@@ -11,16 +11,16 @@ and
 - Moved the specialized `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`, into the `specialized` package within Azure Storage Blobs. Additionally, moved any model classes that are tied to a specific specialized client.
 - Added a `BlobClientBase` which is now the super class for `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`.
 - Updated to use correct Java Bean getter/setter styles.
-- Added `getName` for fetching the resource names.
+- Added `getBlobContainerName` on `BlobContainerClient` and `BlobContainerAsyncClient` and `getContainerName`, `getBlobName` on `BlobClientBase` and `BlobAsyncClientBase` for fetching the resource names.
 - Updated to be fully compliant with the Java 9 Platform Module System.
 - Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
 - Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
 - Updated the return type of `downloadToFile` API to `BlobProperties` on sync API and `Mono<BlobProperties>` on async API.
-- `getURL` API now returns URL with scheme, host, resource name and snapshot if any.
+- `getAccountUrl`, `getBlobContainerUrl`, `getBlobUrl` API now returns URL with scheme, host, resource name and snapshot if any.
 - Added `LeaseClient` and `LeaseAsyncClient` to the specialized package and removed the leasing methods from `BlobClient`, `BlobAsyncClient`, `ContainerClient`, and `ContainerAsyncClient`.
 - Added `blocksize` parameter to sync `blockBlobClient`.
 - Use Primitives for `exist` API return type.
-- Removed a `create` and `appendBlockFromUrl` middle overload API in `AppendBlob`. 
+- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`. 
 - Fixed `create` method name in PageBlob.
 - Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
 - Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.

@@ -182,7 +182,7 @@ BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
 
 Create a BlobClient if container client exists.
 ```java
-BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
+BlobClient blobClient = blobContainerClient.getBlobClient("myblob").getBlockBlobClient();
 ```
 
 or
@@ -216,7 +216,7 @@ blobContainerClient.create();
 Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").asBlockBlobClient();
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
@@ -229,7 +229,7 @@ Upload a file to a blob using BlockBlobClient generated from BlobContainerClient
 
 ```java
 
-BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").asBlockBlobClient();
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
 blockBlobClient.uploadFromFile("local-file.jpg");
 ```
 
