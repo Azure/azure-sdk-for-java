@@ -281,7 +281,7 @@ public final class ConfigurationAsyncClient {
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
      * asOfDateTime is desired.
-     * @param ifChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
+     * @param ifChanged Flag indicating if the {@ code setting} {@link ConfigurationSetting#getETag ETag} is used as a If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
      * value does not exist or the key is an invalid value (which will also throw HttpResponseException described
      * below).
