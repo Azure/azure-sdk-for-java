@@ -7,14 +7,30 @@ jobs:
 
     strategy:
       matrix:
-        Java 8:
+        Java 8 Windows:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: vs2017-win2016
-        Java LTS:
+        Java LTS Windows:
           ProfileFlag: '-Djava-lts'
           JavaVersion: '1.11'
           OSVmImage: vs2017-win2016
+        Java 8 Linux:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: ubuntu-16.04
+        Java LTS Linux:
+          ProfileFlag: '-Djava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: ubuntu-16.04
+        Java 8 MacOS:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: macOS-10.14
+        Java LTS MacOS:
+          ProfileFlag: '-Djava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: macOS-10.14
 
     pool:
       vmImage: $(OSVmImage)
