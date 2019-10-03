@@ -57,7 +57,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
             if (configurationSetting.isLocked()) {
-                client.clearReadOnly(configurationSetting);
+                client.clearReadOnlyWithResponse(configurationSetting, Context.NONE);
             }
             client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
@@ -246,7 +246,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String key = getKey();
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
         client.addSettingWithResponse(setting, Context.NONE);
-        client.setReadOnly(setting);
+        client.setReadOnlyWithResponse(setting, Context.NONE);
         assertConfigurationEquals(setting, client.getSettingWithResponse(setting, false, Context.NONE).getValue());
         assertRestException(() -> client.deleteSettingWithResponse(setting, false, Context.NONE), ResourceModifiedException.class, 409);
     }
@@ -257,9 +257,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void clearReadOnly() {
         final String key = getKey();
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("myValue");
-        client.addSettingWithResponse(setting, Context.NONE);
-        client.setReadOnly(setting);
-        client.clearReadOnly(setting);
+        client.addSetting(key, ConfigurationSetting.NO_LABEL, "myValue");
+        client.setReadOnly(key, ConfigurationSetting.NO_LABEL);
+        client.clearReadOnly(key, ConfigurationSetting.NO_LABEL);
         assertConfigurationEquals(setting, client.deleteSettingWithResponse(setting, false, Context.NONE)
             .getValue());
     }
@@ -272,7 +272,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String value = "myValue";
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(value);
         client.addSettingWithResponse(setting, Context.NONE);
-        client.setReadOnly(key, null);
+        client.setReadOnlyWithResponse(setting, Context.NONE);
         assertConfigurationEquals(setting, client.getSettingWithResponse(setting, false, Context.NONE));
         assertRestException(() -> client.deleteSettingWithResponse(setting, false, Context.NONE).getValue(),
             ResourceModifiedException.class, 409);
@@ -286,8 +286,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String value = "myValue";
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue(value);
         client.addSettingWithResponse(setting, Context.NONE);
-        client.setReadOnly(setting);
-        client.clearReadOnly(key, null);
+        client.setReadOnlyWithResponse(setting, Context.NONE);
+        client.clearReadOnlyWithResponse(setting, Context.NONE);
         assertConfigurationEquals(
             setting,
             client.deleteSettingWithResponse(setting, false, Context.NONE).getValue());

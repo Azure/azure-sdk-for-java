@@ -222,8 +222,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          * Generates code sample for using {@link ConfigurationClient#setReadOnly(ConfigurationSetting)}
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting
-        ConfigurationSetting resultSetting = configurationClient
-            .setReadOnly(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+        ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), Context.NONE).getValue();
         System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting
 
@@ -253,8 +253,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
          * Generates code sample for using {@link ConfigurationClient#clearReadOnly(ConfigurationSetting)}
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting
-        ConfigurationSetting resultSetting = configurationClient
-            .setReadOnly(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
+        ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), Context.NONE).getValue();
         System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting
 

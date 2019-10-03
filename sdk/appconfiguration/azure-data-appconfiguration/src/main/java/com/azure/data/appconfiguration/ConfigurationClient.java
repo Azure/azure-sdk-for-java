@@ -311,26 +311,6 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Lock the {@link ConfigurationSetting} with a matching setting.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting}
-     *
-     * @param setting The ConfigurationSetting to lock.
-     * @return The {@link ConfigurationSetting} that was lock, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting setReadOnly(ConfigurationSetting setting) {
-        return setReadOnlyWithResponse(setting, Context.NONE).getValue();
-    }
-
-    /**
      * Lock the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label}
      *
      * <p><strong>Code Samples</strong></p>
@@ -371,26 +351,6 @@ public final class ConfigurationClient {
     public ConfigurationSetting clearReadOnly(String key, String label) {
         return clearReadOnlyWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), Context.NONE)
             .getValue();
-    }
-
-    /**
-     * Unlock the {@link ConfigurationSetting} with a matching setting
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting}
-     *
-     * @param setting The ConfigurationSetting to unlock.
-     * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting clearReadOnly(ConfigurationSetting setting) {
-        return clearReadOnlyWithResponse(setting, Context.NONE).getValue();
     }
 
     /**
