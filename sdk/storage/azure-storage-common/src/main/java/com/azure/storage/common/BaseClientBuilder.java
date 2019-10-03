@@ -19,6 +19,8 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -53,7 +55,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     protected String endpoint;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
-    protected String sasToken;
+    private SasTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
@@ -78,6 +80,8 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
             policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
         } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -139,7 +143,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     public final T credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.tokenCredential = null;
-        this.sasToken = null;
+        this.sasTokenCredential = null;
 
         return getClazz().cast(this);
     }
@@ -154,7 +158,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     public T credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
-        this.sasToken = null;
+        this.sasTokenCredential = null;
 
         return getClazz().cast(this);
     }
@@ -167,7 +171,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public final T sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken);
+        this.sasTokenCredential = SasTokenCredential.fromSasTokenString(Objects.requireNonNull(sasToken));
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
 
@@ -182,7 +186,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     public T setAnonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasToken = null;
+        this.sasTokenCredential = null;
 
         return getClazz().cast(this);
     }
@@ -195,7 +199,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     protected final boolean hasCredential() {
         return this.sharedKeyCredential != null
             || this.tokenCredential != null
-            || !ImplUtils.isNullOrEmpty(this.sasToken);
+            || this.sasTokenCredential != null;
     }
 
     /**
