@@ -78,7 +78,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string}
      *
      * @param key The key of the configuration setting to add.
-     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * @param label The label of the configuration setting to add, or optionally, null if a setting with
      * label is desired.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
@@ -251,8 +251,10 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime}
      *
      * @param key The key of the setting to retrieve.
-     * @param label Optional, the label of the setting to retrieve.
-     * @param acceptDateTime Optional, to access a past state of the configuration setting.
+     * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
+     * label is desired.
+     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * asOfDateTime is desired.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
      * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -260,14 +262,15 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return withContext(context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime,
+    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime asOfDateTime) {
+        return withContext(context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
                 false, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
-     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
+     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}, optional
+     * {@code asOfDateTime}
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -276,7 +279,9 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @param onlyIfChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
+     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * asOfDateTime is desired.
+     * @param ifChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
      * value does not exist or the key is an invalid value (which will also throw HttpResponseException described
      * below).
@@ -287,18 +292,19 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting,
-                                                                       boolean onlyIfChanged) {
-        return withContext(context -> getSetting(setting, null, onlyIfChanged, context));
+                                                                       OffsetDateTime asOfDateTime,
+                                                                       boolean ifChanged) {
+        return withContext(context -> getSetting(setting, asOfDateTime, ifChanged, context));
     }
 
-    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime acceptDateTime,
+    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime asOfDateTime,
                                                     boolean onlyIfChanged, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
-            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
+            asOfDateTime == null ? null : asOfDateTime.toString(), null, ifNoneMatchETag, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
@@ -314,7 +320,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string-string}
      *
      * @param key The key of the setting to delete.
-     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * @param label The label of the configuration setting to delete, or optionally, null if a setting with
      * label is desired.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw HttpResponseException described below).

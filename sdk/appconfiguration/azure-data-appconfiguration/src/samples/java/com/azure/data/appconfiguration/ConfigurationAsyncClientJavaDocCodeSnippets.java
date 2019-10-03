@@ -113,7 +113,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          * Code snippets for {@link ConfigurationAsyncClient#getSettingWithResponse(String, String)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting
-        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"),
+        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), null,
             false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {

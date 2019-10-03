@@ -67,31 +67,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting addSetting(String key, String label, String value) {
-        return addSetting(new ConfigurationSetting().setKey(key).setValue(value).setLabel(label), Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Adds a configuration value in the service if that key and label does not exist. The label value of the
-     * ConfigurationSetting is optional.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addSetting#ConfigurationSetting}
-     *
-     * @param setting The setting to add to the configuration service.
-     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
-     * is an invalid value (which will also throw ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, Context.NONE).getValue();
+        return addSettingWithResponse(new ConfigurationSetting().setKey(key).setValue(value).setLabel(label),
+            Context.NONE).getValue();
     }
 
     /**
@@ -116,10 +93,6 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addSettingWithResponse(ConfigurationSetting setting, Context context) {
-        return addSetting(setting, context);
-    }
-
-    private Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
         return client.addSetting(setting, context).block();
     }
 
@@ -147,7 +120,6 @@ public final class ConfigurationClient {
         return setSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
             false, Context.NONE).getValue();
     }
-
 
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
@@ -183,13 +155,13 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Attempts to get a ConfigurationSetting that matches the {@code key}.
+     * Attempts to get a ConfigurationSetting that matches the {@code key}, and the {@code label} optionally.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string-string}
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
@@ -206,7 +178,8 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Attempts to get a ConfigurationSetting that matches the {@code key}.
+     * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} optionally, and the
+     * {@code asOfDateTime} optionally.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -227,8 +200,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key, String label, OffsetDateTime asOfDateTime) {
-        return client.getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
-            false, Context.NONE).block().getValue();
+        final Response<ConfigurationSetting> getResponse = client.getSetting(
+            new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime, false, Context.NONE)
+            .block();
+        return getResponse == null ? null : getResponse.getValue();
     }
 
     /**
@@ -238,23 +213,23 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-boolean-Context}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @param onlyIfChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
+     * @param ifChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containg the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
+     * @return A REST response contains the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
      * configuration value does not exist or the key is an invalid value (which will also throw ServiceRequestException
      * described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
-     * @throws HttpResponseException If the {@code} key is an empty string.
+     * @throws HttpResponseException If the {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting, boolean onlyIfChanged,
+    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting, boolean ifChanged,
                                                                  Context context) {
-        return client.getSetting(setting, null, onlyIfChanged, context).block();
+        return client.getSetting(setting, null, ifChanged, context).block();
     }
 
     /**
@@ -309,8 +284,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting,
-                                                                    boolean ifUnchanged, Context context) {
+    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting, boolean ifUnchanged,
+                                                                    Context context) {
         return client.deleteSetting(setting, ifUnchanged, context).block();
     }
 
