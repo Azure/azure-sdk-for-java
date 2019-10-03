@@ -253,7 +253,7 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
      * label is desired.
-     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * @param asOfDateTime Datetime used to retrieve the state of the configuration at that time. If null the current state will be retrieved.
      * asOfDateTime is desired.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
      * key is an invalid value (which will also throw HttpResponseException described below).
