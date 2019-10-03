@@ -11,11 +11,11 @@ import com.azure.storage.blob.BlobServiceClient;
  * requests, so changing the details for a different listing operation requires construction of a new object. Null may
  * be passed if none of the options are desirable.
  */
-public final class ContainerListDetails {
+public final class BlobContainerListDetails {
 
-    private boolean metadata;
+    private boolean retrieveMetadata;
 
-    public ContainerListDetails() {
+    public BlobContainerListDetails() {
 
     }
 
@@ -24,27 +24,27 @@ public final class ContainerListDetails {
      *
      * @return a flag indicating whether metadata should be returned in the listing
      */
-    public boolean getMetadata() {
-        return this.metadata;
+    public boolean getRetrieveMetadata() {
+        return this.retrieveMetadata;
     }
 
     /**
      * Whether metadata should be returned.
      *
-     * @param metadata Flag indicating whether metadata should be returned
+     * @param retrieveMetadata Flag indicating whether metadata should be returned
      * @return the updated ContainerListDetails object
      */
-    public ContainerListDetails setMetadata(boolean metadata) {
-        this.metadata = metadata;
+    public BlobContainerListDetails setRetrieveMetadata(boolean retrieveMetadata) {
+        this.retrieveMetadata = retrieveMetadata;
         return this;
     }
 
     /**
      * @return the listing flags
      */
-    public ListContainersIncludeType toIncludeType() {
-        if (this.metadata) {
-            return ListContainersIncludeType.METADATA;
+    public ListBlobContainersIncludeType toIncludeType() {
+        if (this.retrieveMetadata) {
+            return ListBlobContainersIncludeType.METADATA;
         }
         return null;
     }

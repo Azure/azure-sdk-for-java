@@ -52,9 +52,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
@@ -125,20 +123,14 @@ public class FileAsyncClient {
      * Get the url of the storage file client.
      *
      * @return the URL of the storage file client
-     * @throws RuntimeException If the file is using a malformed URL.
      */
-    public URL getFileUrl() {
+    public String getFileUrl() {
         StringBuilder fileURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(filePath);
         if (snapshot != null) {
             fileURLString.append("?snapshot=").append(snapshot);
         }
-        try {
-            return new URL(fileURLString.toString());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), fileURLString), e));
-        }
+        return fileURLString.toString();
     }
 
     /**
@@ -1113,6 +1105,7 @@ public class FileAsyncClient {
      * @param permissions The {@code FileSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(FileSASPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
@@ -1125,6 +1118,7 @@ public class FileAsyncClient {
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier) {
         return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
@@ -1143,6 +1137,7 @@ public class FileAsyncClient {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
@@ -1174,6 +1169,7 @@ public class FileAsyncClient {
      * @param contentLanguage An optional {@code String} content-language header for the SAS.
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
@@ -1191,7 +1187,7 @@ public class FileAsyncClient {
         FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
-        FileServiceSASQueryParameters fileServiceSasQueryParameters =
+        FileServiceSasQueryParameters fileServiceSasQueryParameters =
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return fileServiceSasQueryParameters.encode();
@@ -1338,7 +1334,7 @@ public class FileAsyncClient {
 
     private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        Boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileMetadataInfo fileMetadataInfo = new FileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, fileMetadataInfo);
     }

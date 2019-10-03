@@ -36,8 +36,6 @@ import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -93,19 +91,13 @@ public class ShareAsyncClient {
      * Get the url of the storage share client.
      *
      * @return the url of the Storage Share.
-     * @throws RuntimeException If the share is using a malformed URL.
      */
-    public URL getShareUrl() {
+    public String getShareUrl() {
         StringBuilder shareURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
         if (snapshot != null) {
             shareURLString.append("?snapshot=").append(snapshot);
         }
-        try {
-            return new URL(shareURLString.toString());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), shareURLString), e));
-        }
+        return shareURLString.toString();
     }
 
 
@@ -896,6 +888,7 @@ public class ShareAsyncClient {
      * @param permissions The {@code ShareSASPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(ShareSASPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
@@ -908,6 +901,7 @@ public class ShareAsyncClient {
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier) {
         return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
@@ -926,6 +920,7 @@ public class ShareAsyncClient {
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
@@ -957,6 +952,7 @@ public class ShareAsyncClient {
      * @param contentLanguage An optional {@code String} content-language header for the SAS.
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
+     * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
@@ -974,7 +970,7 @@ public class ShareAsyncClient {
         FileServiceSASSignatureValues values = configureServiceSASSignatureValues(fileServiceSASSignatureValues,
             sharedKeyCredential.getAccountName());
 
-        FileServiceSASQueryParameters fileServiceSasQueryParameters =
+        FileServiceSasQueryParameters fileServiceSasQueryParameters =
             values.generateSASQueryParameters(sharedKeyCredential);
 
         return fileServiceSasQueryParameters.encode();

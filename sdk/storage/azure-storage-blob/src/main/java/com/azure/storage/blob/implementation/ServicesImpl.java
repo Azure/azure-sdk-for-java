@@ -27,7 +27,7 @@ import com.azure.storage.blob.implementation.models.ServicesListContainersSegmen
 import com.azure.storage.blob.implementation.models.ServicesSetPropertiesResponse;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.KeyInfo;
-import com.azure.storage.blob.models.ListContainersIncludeType;
+import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import reactor.core.publisher.Flux;
@@ -85,7 +85,7 @@ public final class ServicesImpl {
         @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListBlobContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Post("")
         @ExpectedResponses({200})
@@ -213,7 +213,7 @@ public final class ServicesImpl {
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
-        final ListContainersIncludeType include = null;
+        final ListBlobContainersIncludeType include = null;
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
@@ -234,7 +234,7 @@ public final class ServicesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, Context context) {
+    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListBlobContainersIncludeType include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
         return service.listContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }

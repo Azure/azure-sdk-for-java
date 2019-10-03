@@ -18,7 +18,7 @@ class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu.upload(defaultInputStream.get(), defaultText.length())
     }
 
@@ -100,7 +100,7 @@ class DownloadResponseTest extends APISpec {
         new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
 
         where:
         info                               | _
@@ -126,7 +126,7 @@ class DownloadResponseTest extends APISpec {
         response.body(null).blockFirst()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     def "Info"() {

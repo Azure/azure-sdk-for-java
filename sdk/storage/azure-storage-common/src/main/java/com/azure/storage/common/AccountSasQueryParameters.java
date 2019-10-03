@@ -14,20 +14,20 @@ import java.util.Map;
  * might affect the appropriate means of appending these query parameters). NOTE: Instances of this class are immutable
  * to ensure thread safety.
  */
-public final class AccountSASQueryParameters extends BaseSASQueryParameters {
+public final class AccountSasQueryParameters extends BaseSasQueryParameters {
 
     private final String services;
 
     private final String resourceTypes;
 
     /**
-     * Creates a new {@link AccountSASQueryParameters} object.
+     * Creates a new {@link AccountSasQueryParameters} object.
      *
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-    public AccountSASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
+    public AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
         super(queryParamsMap, removeSASParametersFromMap);
         this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
             removeSASParametersFromMap);
@@ -36,7 +36,7 @@ public final class AccountSASQueryParameters extends BaseSASQueryParameters {
     }
 
     /**
-     * Creates a new {@link AccountSASQueryParameters} object. These objects are only created internally by
+     * Creates a new {@link AccountSasQueryParameters} object. These objects are only created internally by
      * SASSignatureValues classes.
      *
      * @param version A {@code String} representing the storage version.
@@ -51,7 +51,7 @@ public final class AccountSASQueryParameters extends BaseSASQueryParameters {
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    AccountSASQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
+    AccountSasQueryParameters(String version, String services, String resourceTypes, SASProtocol protocol,
         OffsetDateTime startTime, OffsetDateTime expiryTime, IPRange ipRange, String permissions, String signature) {
         super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);
         this.services = services;

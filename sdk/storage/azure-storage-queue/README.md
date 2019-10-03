@@ -19,7 +19,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.0.0-preview.3</version>
+  <version>12.0.0-preview.4</version>
 </dependency>
 ```
 ### Default HTTP Client
@@ -35,7 +35,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-queue</artifactId>
-      <version>12.0.0-preview.3</version>
+      <version>12.0.0-preview.4</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>

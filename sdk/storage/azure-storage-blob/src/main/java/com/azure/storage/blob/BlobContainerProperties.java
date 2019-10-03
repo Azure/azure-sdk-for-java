@@ -12,7 +12,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-public final class ContainerProperties {
+public final class BlobContainerProperties {
 
     private final Map<String, String> metadata;
     private final String eTag;
@@ -24,7 +24,7 @@ public final class ContainerProperties {
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
 
-    ContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
+    BlobContainerProperties(ContainerGetPropertiesHeaders generatedResponseHeaders) {
         this.metadata = generatedResponseHeaders.getMetadata();
         this.eTag = generatedResponseHeaders.getETag();
         this.lastModified = generatedResponseHeaders.getLastModified();
