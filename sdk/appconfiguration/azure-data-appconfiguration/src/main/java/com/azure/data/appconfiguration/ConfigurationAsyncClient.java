@@ -91,7 +91,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> addSetting(String key, String label, String value) {
         return withContext(
             context -> addSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
-            .map(response -> response.getValue());
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -115,7 +115,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return withContext(context -> addSetting(setting, context))
-            .map(response -> response.getValue());
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -178,7 +178,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> setSetting(String key, String label, String value) {
         return withContext(context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
                 false, context))
-            .map(response -> response.getValue());
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -279,7 +279,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime asOfDateTime) {
         return withContext(context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
-                false, context)).map(response -> response.getValue());
+                false, context))
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -347,7 +348,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> deleteSetting(String key, String label) {
         return withContext(
             context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
-            .map(response -> response.getValue());
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -415,7 +416,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> setReadOnly(String key, String label) {
         return withContext(context -> setReadOnly(
             new ConfigurationSetting().setKey(key).setLabel(label), context))
-            .map(response -> response.getValue());
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -468,7 +469,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> clearReadOnly(String key, String label) {
         return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
-            .map(response -> response.getValue());
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
