@@ -82,28 +82,13 @@ public final class ConfigurationClientBuilder {
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
-    private final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
      * The constructor with defaults.
      */
     public ConfigurationClientBuilder() {
-        retryPolicy = new RetryPolicy();
-        httpLogDetailLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
-
-        headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true")
-            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-            .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
-    }
-
-    /**
-     * The constructor with custom retry policy.
-     */
-    public ConfigurationClientBuilder(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
 
@@ -175,7 +160,7 @@ public final class ConfigurationClientBuilder {
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -291,6 +276,19 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the retry policy that is used during construction of the service client.
+     *
+     * The default retry policy will be used if not provided.
+     *
+     * @param retryPolicy The custom retry policy
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
