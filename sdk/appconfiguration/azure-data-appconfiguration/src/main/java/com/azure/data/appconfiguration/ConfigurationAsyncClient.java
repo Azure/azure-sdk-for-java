@@ -450,7 +450,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string-string}
      *
      * @param key The key of the setting to delete.
-     * @param label Optional, the label of the setting to delete.
+     * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
+     * label is desired.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -478,7 +479,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting-boolean}
      *
      * @param setting The ConfigurationSetting to delete.
-     * @param onlyIfUnchanged A boolean indicator to decide using setting's ETag value as IF-MATCH value.
+     * @param ifUnchanged A boolean indicator to decide using setting's ETag value as IF-MATCH value.
      * If false, set IF_MATCH to {@code null}. Otherwise, set the setting's ETag value to IF_MATCH.
      * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null}
      * is also returned if the {@code key} is an invalid value or {@link ConfigurationSetting#getETag() etag} is set but
@@ -492,15 +493,15 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting,
-                                                                          boolean onlyIfUnchanged) {
-        return withContext(context -> deleteSetting(setting, onlyIfUnchanged, context));
+                                                                          boolean ifUnchanged) {
+        return withContext(context -> deleteSetting(setting, ifUnchanged, context));
     }
 
-    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, boolean onlyIfUnchanged,
+    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, boolean ifUnchanged,
                                                        Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
-        final String ifMatchETag = onlyIfUnchanged ? getETagValue(setting.getETag()) : null;
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), ifMatchETag,
             null, context)
             .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))

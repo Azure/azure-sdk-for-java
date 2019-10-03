@@ -56,7 +56,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-            client.deleteSetting(configurationSetting, false);
+            client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
 
         logger.info("Finished cleaning up values.");
@@ -255,7 +255,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addSetting(expected);
             assertConfigurationEquals(expected, client.getSetting(expected));
 
-            assertConfigurationEquals(expected, client.deleteSetting(expected, false));
+            assertConfigurationEquals(expected, client.deleteSettingWithResponse(expected, false, Context.NONE).getValue());
             assertRestException(() -> client.getSetting(expected), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
@@ -286,8 +286,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting updatedConfig = client.updateSetting(update);
 
             assertConfigurationEquals(update, client.getSetting(initial));
-            assertRestException(() -> client.deleteSetting(initiallyAddedConfig, true), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
-            assertConfigurationEquals(update, client.deleteSetting(updatedConfig, true));
+            assertRestException(() -> client.deleteSettingWithResponse(initiallyAddedConfig, true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertConfigurationEquals(update, client.deleteSettingWithResponse(updatedConfig, true, Context.NONE).getValue());
             assertRestException(() -> client.getSetting(initial), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
     }
@@ -297,7 +297,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting(null, null), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.deleteSetting(null, false), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.deleteSettingWithResponse(null, false, Context.NONE).getValue(), NullPointerException.class);
     }
 
     /**
@@ -607,7 +607,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         client.listSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-            client.deleteSetting(configurationSetting, false);
+            client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
     }
 }

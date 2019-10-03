@@ -258,15 +258,6 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#string-string
 
         /**
-         * Generates code sample for using {@link ConfigurationClient#deleteSetting(ConfigurationSetting, boolean)}
-         */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting-boolean
-        ConfigurationSetting resultSetting = configurationClient
-            .deleteSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), true);
-        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting-boolean
-
-        /**
          * Generates code sample for using {@link ConfigurationClient#deleteSettingWithResponse(ConfigurationSetting, Context)}
          */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-boolean-Context
