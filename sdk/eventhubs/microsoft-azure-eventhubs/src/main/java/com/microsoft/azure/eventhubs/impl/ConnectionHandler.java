@@ -94,6 +94,9 @@ public class ConnectionHandler extends BaseHandler {
         }
 
         connection.setProperties(connectionProperties);
+
+        // Set IdleTimeout to 60 seconds to automatically detect and abort dead TCP sockets
+        event.getTransport().setIdleTimeout(60000);
         connection.open();
     }
 
