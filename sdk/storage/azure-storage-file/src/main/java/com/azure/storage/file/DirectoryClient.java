@@ -16,7 +16,7 @@ import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
-import com.azure.storage.file.models.FileRef;
+import com.azure.storage.file.models.FileReference;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
@@ -343,9 +343,9 @@ public class DirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure
      * Docs</a>.</p>
      *
-     * @return {@link FileRef File info} in the storage directory
+     * @return {@link FileReference File info} in the storage directory
      */
-    public PagedIterable<FileRef> listFilesAndDirectories() {
+    public PagedIterable<FileReference> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null, null, Context.NONE);
     }
 
@@ -370,11 +370,11 @@ public class DirectoryClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link FileRef File info} in this directory with prefix and max number of return results.
+     * @return {@link FileReference File info} in this directory with prefix and max number of return results.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout,
-        Context context) {
+    public PagedIterable<FileReference> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout,
+                                                                Context context) {
         return new PagedIterable<>(directoryAsyncClient
             .listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, timeout, context));
     }
