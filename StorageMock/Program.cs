@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace StorageMock
@@ -43,6 +44,10 @@ namespace StorageMock
                 {
                     var request = context.Request;
                     var response = context.Response;
+                    if (request.Method == HttpMethods.Delete)
+                    {
+                        await DeleteNoOp(request, response);
+                    }
                     if (request.Method == HttpMethods.Put)
                     {
                         // await Put(request, response);
@@ -68,6 +73,54 @@ namespace StorageMock
                 }))
                 .Build()
                 .Run();
+        }
+
+        private static async Task DeleteNoOp(HttpRequest request, HttpResponse response)
+        {
+            //DELETE /testcontainer/downloadtest HTTP/1.1
+            //Host: mikeharderperf.blob.core.windows.net
+            //x-ms-version: 2019-02-02
+            //x-ms-client-request-id: a2bcf64f-380c-4ddc-b6f2-26f7160a4ccd
+            //x-ms-return-client-request-id: true
+            //User-Agent: azsdk-net-Storage.Blobs/12.0.0-preview.3+399d6c245a0996265296ec9e49e9aa6960e24454 (.NET Core 3.0.0; Microsoft Windows 10.0.18362)
+            //x-ms-date: Wed, 02 Oct 2019 21:05:17 GMT
+            //Authorization: SharedKey mikeharderperf:<redacted>
+
+            //HTTP/1.1 404 The specified blob does not exist.
+            //Content-Length: 215
+            //Content-Type: application/xml
+            //Server: Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+            //x-ms-request-id: 70befda8-801e-006e-0865-794f09000000
+            //x-ms-client-request-id: a2bcf64f-380c-4ddc-b6f2-26f7160a4ccd
+            //x-ms-version: 2019-02-02
+            //x-ms-error-code: BlobNotFound
+            //Date: Wed, 02 Oct 2019 21:05:18 GMT
+
+            //<?xml version="1.0" encoding="utf-8"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.
+            //RequestId:70befda8-801e-006e-0865-794f09000000
+            //Time:2019-10-02T21:05:18.5494225Z</Message></Error>
+
+#if DEBUG
+            Console.WriteLine("DeleteNoOp");
+#endif
+
+            response.StatusCode = (int)HttpStatusCode.NotFound;
+            response.ContentLength = 212;
+            response.ContentType = "application/xml";
+
+            var headers = response.Headers;
+
+            headers.Add("Server", "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0");
+            headers.Add("x-ms-request-id", "70befdba-801e-006e-1865-794f09000000");
+            headers.Add("x-ms-client-request-id", "ee6e66c7-8a75-4593-b2ee-af41159f4ccd");
+            headers.Add("x-ms-version", "2019-02-02");
+            headers.Add("x-ms-error-code", "BlobNotFound");
+
+            var content = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.\n" +
+                          "RequestId:70befda8-801e-006e-0865-794f09000000\n" +
+                          "Time:2019-10-02T21:05:18.5494225Z</Message></Error>";
+
+            await response.WriteAsync(content);
         }
 
         private static async Task Put(HttpRequest request, HttpResponse response)
