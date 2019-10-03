@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.BlobContainerItem;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -45,10 +45,10 @@ public final class ListContainersSegmentResponse {
 
     private static final class ContainersWrapper {
         @JacksonXmlProperty(localName = "Container")
-        private final List<ContainerItem> items;
+        private final List<BlobContainerItem> items;
 
         @JsonCreator
-        private ContainersWrapper(@JacksonXmlProperty(localName = "Container") List<ContainerItem> items) {
+        private ContainersWrapper(@JacksonXmlProperty(localName = "Container") List<BlobContainerItem> items) {
             this.items = items;
         }
     }
@@ -150,9 +150,9 @@ public final class ListContainersSegmentResponse {
      *
      * @return the containerItems value.
      */
-    public List<ContainerItem> getContainerItems() {
+    public List<BlobContainerItem> getContainerItems() {
         if (this.containerItems == null) {
-            this.containerItems = new ContainersWrapper(new ArrayList<ContainerItem>());
+            this.containerItems = new ContainersWrapper(new ArrayList<BlobContainerItem>());
         }
         return this.containerItems.items;
     }
@@ -160,11 +160,11 @@ public final class ListContainersSegmentResponse {
     /**
      * Set the containerItems property: The containerItems property.
      *
-     * @param containerItems the containerItems value to set.
+     * @param blobContainerItems the containerItems value to set.
      * @return the ListContainersSegmentResponse object itself.
      */
-    public ListContainersSegmentResponse setContainerItems(List<ContainerItem> containerItems) {
-        this.containerItems = new ContainersWrapper(containerItems);
+    public ListContainersSegmentResponse setContainerItems(List<BlobContainerItem> blobContainerItems) {
+        this.containerItems = new ContainersWrapper(blobContainerItems);
         return this;
     }
 

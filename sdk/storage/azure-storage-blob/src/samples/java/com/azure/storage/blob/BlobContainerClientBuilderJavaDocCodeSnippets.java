@@ -14,10 +14,10 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 /**
- * Code snippets for {@link ContainerClientBuilder}
+ * Code snippets for {@link BlobContainerClientBuilder}
  */
 @SuppressWarnings({"unused"})
-public class ContainerClientBuilderJavaDocCodeSnippets {
+public class BlobContainerClientBuilderJavaDocCodeSnippets {
     private String connectionString = "AccountName=name;AccountKey=key;DefaultEndpointProtocol=protocol;EndpointSuffix=suffix";
     private String endpoint = "endpointURL";
     private String containerName = "container Name";
@@ -31,48 +31,48 @@ public class ContainerClientBuilderJavaDocCodeSnippets {
         .build();
 
     /**
-     * Code snippet for {@link ContainerClientBuilder#buildClient()} using connection string
+     * Code snippet for {@link BlobContainerClientBuilder#buildClient()} using connection string
      */
     public void containerClientConnectionString() {
-        // BEGIN: com.azure.storage.blob.ContainerClientBuilder.buildClient
-        ContainerClient client = new ContainerClientBuilder()
+        // BEGIN: com.azure.storage.blob.BlobContainerClientBuilder.buildClient
+        BlobContainerClient client = new BlobContainerClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        // END: com.azure.storage.blob.ContainerClientBuilder.buildClient
+        // END: com.azure.storage.blob.BlobContainerClientBuilder.buildClient
     }
 
     /**
-     * Code snippet for {@link ContainerClientBuilder#buildAsyncClient()} using connection string
+     * Code snippet for {@link BlobContainerClientBuilder#buildAsyncClient()} using connection string
      */
     public void containerAsyncClientConnectionString() {
-        // BEGIN: com.azure.storage.blob.ContainerClientBuilder.buildAsyncClient
-        ContainerAsyncClient client = new ContainerClientBuilder()
+        // BEGIN: com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient
+        BlobContainerAsyncClient client = new BlobContainerClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
-        // END: com.azure.storage.blob.ContainerClientBuilder.buildAsyncClient
+        // END: com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient
     }
 
     /**
-     * Code snippet for {@link ContainerClientBuilder#buildClient()} using credential and endpoint
+     * Code snippet for {@link BlobContainerClientBuilder#buildClient()} using credential and endpoint
      */
     public void containerClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.blob.ContainerClientBuilder.endpoint#String
-        ContainerClient client = new ContainerClientBuilder()
+        // BEGIN: com.azure.storage.blob.BlobContainerClientBuilder.endpoint#String
+        BlobContainerClient client = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .credential(sharedKeyCredential)
             .buildClient();
-        // END: com.azure.storage.blob.ContainerClientBuilder.endpoint#String
+        // END: com.azure.storage.blob.BlobContainerClientBuilder.endpoint#String
     }
 
     /**
-     * Code snippet for {@link ContainerClientBuilder#buildClient()} using Container Name
+     * Code snippet for {@link BlobContainerClientBuilder#buildClient()} using Container Name
      */
     public void containerClientContainerName() {
-        // BEGIN: com.azure.storage.blob.ContainerClientBuilder.containerName#String
-        ContainerClient client = new ContainerClientBuilder()
+        // BEGIN: com.azure.storage.blob.BlobContainerClientBuilder.containerName#String
+        BlobContainerClient client = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .containerName(containerName)
             .buildClient();
-        // END: com.azure.storage.blob.ContainerClientBuilder.containerName#String
+        // END: com.azure.storage.blob.BlobContainerClientBuilder.containerName#String
     }
 }

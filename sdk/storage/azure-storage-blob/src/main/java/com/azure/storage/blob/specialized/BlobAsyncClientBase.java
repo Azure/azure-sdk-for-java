@@ -7,11 +7,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobURLParts;
 import com.azure.storage.blob.HTTPGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -39,7 +39,6 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -93,7 +92,7 @@ public class BlobAsyncClientBase {
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
-            .url(getBlobUrl().toString())
+            .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), snapshot, customerProvidedKey);
     }
@@ -102,18 +101,17 @@ public class BlobAsyncClientBase {
      * Gets the URL of the blob represented by this client.
      *
      * @return the URL.
-     * @throws RuntimeException If the blob is using a malformed URL.
      */
-    public URL getBlobUrl() {
-        try {
-            UrlBuilder urlBuilder = UrlBuilder.parse(azureBlobStorage.getUrl());
-            if (snapshot != null) {
-                urlBuilder.setQuery("snapshot=" + snapshot);
+    public String getBlobUrl() {
+        if (!this.isSnapshot()) {
+            return azureBlobStorage.getUrl();
+        } else {
+            if (azureBlobStorage.getUrl().contains("?")) {
+                return String.format("%s&snapshot=%s", azureBlobStorage.getUrl(), snapshot);
             }
-            return urlBuilder.toURL();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.getUrl()), e));
+            else {
+                return String.format("%s?snapshot=%s", azureBlobStorage.getUrl(), snapshot);
+            }
         }
     }
 
@@ -127,7 +125,7 @@ public class BlobAsyncClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getContainerName();
+        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**
@@ -857,6 +855,7 @@ public class BlobAsyncClientBase {
      *
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Void> setAccessTier(AccessTier tier) {
         return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
@@ -880,6 +879,7 @@ public class BlobAsyncClientBase {
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
+     * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {

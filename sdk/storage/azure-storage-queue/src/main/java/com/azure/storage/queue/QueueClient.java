@@ -18,7 +18,6 @@ import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +53,8 @@ public final class QueueClient {
 
     /**
      * @return the URL of the storage queue.
-     * @throws RuntimeException If the queue is using a malformed URL.
      */
-    public URL getQueueUrl() {
+    public String getQueueUrl() {
         return client.getQueueUrl();
     }
 

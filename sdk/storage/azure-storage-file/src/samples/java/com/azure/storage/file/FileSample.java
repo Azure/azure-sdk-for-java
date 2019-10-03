@@ -10,7 +10,6 @@ import com.azure.storage.file.models.StorageException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -66,9 +65,9 @@ public class FileSample {
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.
-        URL clientURL = srcFileClient.getFileUrl();
+        String clientURL = srcFileClient.getFileUrl();
 
-        String sourceURL = clientURL.toString() + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
+        String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
         FileCopyInfo copyResponse = null;
         try {

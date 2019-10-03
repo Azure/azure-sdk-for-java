@@ -5,10 +5,6 @@ package com.azure.storage.file
 
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryClient
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileSmbProperties
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
@@ -47,7 +43,7 @@ class DirectoryAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
 
         when:
-        def directoryURL = primaryDirectoryClient.getDirectoryUrl().toString()
+        def directoryURL = primaryDirectoryClient.getDirectoryUrl()
 
         then:
         expectURL == directoryURL
@@ -63,7 +59,7 @@ class DirectoryAPITests extends APISpec {
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
         DirectoryClient newDirClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getDirectoryClient(directoryPath)
-        def directoryURL = newDirClient.getDirectoryUrl().toString()
+        def directoryURL = newDirClient.getDirectoryUrl()
 
         then:
         expectURL.equals(directoryURL)

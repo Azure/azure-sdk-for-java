@@ -30,8 +30,6 @@ import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -79,14 +77,9 @@ public final class QueueAsyncClient {
 
     /**
      * @return the URL of the storage queue
-     * @throws RuntimeException If the queue is using a malformed URL.
      */
-    public URL getQueueUrl() {
-        try {
-            return new URL(String.format("%s/%s", client.getUrl(), queueName));
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new RuntimeException("Queue URL is malformed"));
-        }
+    public String getQueueUrl() {
+        return String.format("%s/%s", client.getUrl(), queueName);
     }
 
     /**

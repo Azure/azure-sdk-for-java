@@ -18,7 +18,6 @@ import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
@@ -54,7 +53,7 @@ public final class QueueServiceClient {
     /**
      * @return the URL of the storage queue
      */
-    public URL getQueueServiceUrl() {
+    public String getQueueServiceUrl() {
         return client.getQueueServiceUrl();
     }
 

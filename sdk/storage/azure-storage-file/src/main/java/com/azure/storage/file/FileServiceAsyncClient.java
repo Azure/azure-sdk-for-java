@@ -26,8 +26,6 @@ import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,16 +69,9 @@ public final class FileServiceAsyncClient {
      * Get the url of the storage file service client.
      *
      * @return the url of the Storage File service.
-     * @throws RuntimeException If the file service is using a malformed URL.
      */
-    public URL getFileServiceUrl() {
-        try {
-            return new URL(azureFileStorageClient.getUrl());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e));
-        }
+    public String getFileServiceUrl() {
+        return azureFileStorageClient.getUrl();
     }
 
     /**

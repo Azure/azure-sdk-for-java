@@ -25,7 +25,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
@@ -63,9 +62,8 @@ public class FileClient {
      * Get the url of the storage file client.
      *
      * @return the URL of the storage file client.
-     * @throws RuntimeException If the file is using a malformed URL.
      */
-    public URL getFileUrl() {
+    public String getFileUrl() {
         return fileAsyncClient.getFileUrl();
     }
 

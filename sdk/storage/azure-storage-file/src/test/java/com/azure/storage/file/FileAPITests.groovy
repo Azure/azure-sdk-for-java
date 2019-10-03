@@ -10,9 +10,6 @@ import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.FileClient
-import com.azure.storage.file.FileSASPermission
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
@@ -62,7 +59,7 @@ class FileAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
-        def fileURL = primaryFileClient.getFileUrl().toString()
+        def fileURL = primaryFileClient.getFileUrl()
 
         then:
         expectURL == fileURL
@@ -78,7 +75,7 @@ class FileAPITests extends APISpec {
         expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
         FileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getFileClient(filePath)
-        def fileURL = newFileClient.getFileUrl().toString()
+        def fileURL = newFileClient.getFileUrl()
         then:
         expectURL.equals(fileURL)
     }
@@ -411,7 +408,7 @@ class FileAPITests extends APISpec {
             .buildFileClient()
 
         client.create(1024)
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl().toString() +"?" + sasToken).toURI())
+        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl() +"?" + sasToken).toURI())
 
         then:
         def result = new String(client.downloadWithProperties().getBody().blockLast().array())
@@ -426,7 +423,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
-        def sourceURL = primaryFileClient.getFileUrl().toString()
+        def sourceURL = primaryFileClient.getFileUrl()
 
         when:
         Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null, null)

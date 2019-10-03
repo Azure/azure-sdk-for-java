@@ -20,7 +20,6 @@ import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +52,8 @@ public class ShareClient {
      * Get the url of the storage share client.
      *
      * @return the url of the Storage Share.
-     * @throws RuntimeException If the share is using a malformed URL.
      */
-    public URL getShareUrl() {
+    public String getShareUrl() {
         return client.getShareUrl();
     }
 

@@ -5,9 +5,9 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessPolicy;
+import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.ContainerAccessConditions;
-import com.azure.storage.blob.models.ContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings({"unused"})
-public class ContainerClientJavaDocCodeSnippets {
+public class BlobContainerClientJavaDocCodeSnippets {
 
-    private ContainerClient client = JavaDocCodeSnippetsHelpers.getContainerClient();
+    private BlobContainerClient client = JavaDocCodeSnippetsHelpers.getContainerClient();
     private String blobName = "blobName";
     private String snapshot = "snapshot";
     private String leaseId = "leaseId";
@@ -35,43 +35,43 @@ public class ContainerClientJavaDocCodeSnippets {
     private Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Code snippet for {@link ContainerClient#getBlobClient(String)}
+     * Code snippet for {@link BlobContainerClient#getBlobClient(String)}
      */
     public void getBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getBlobClient#String
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getBlobClient#String
         BlobClient blobClient = client.getBlobClient(blobName);
-        // END: com.azure.storage.blob.ContainerClient.getBlobClient#String
+        // END: com.azure.storage.blob.BlobContainerClient.getBlobClient#String
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getBlobClient(String, String)}
+     * Code snippet for {@link BlobContainerClient#getBlobClient(String, String)}
      */
     public void getSnapshotBlobClient() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getBlobClient#String-String
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String
         BlobClient blobClient = client.getBlobClient(blobName, snapshot);
-        // END: com.azure.storage.blob.ContainerClient.getBlobClient#String-String
+        // END: com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String
     }
 
     /**
-     * Code snippets for {@link ContainerClient#exists()} and {@link ContainerClient#existsWithResponse(Duration,
+     * Code snippets for {@link BlobContainerClient#exists()} and {@link BlobContainerClient#existsWithResponse(Duration,
      * Context)}
      */
     public void exists() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.exists
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.exists
         System.out.printf("Exists? %b%n", client.exists());
-        // END: com.azure.storage.blob.ContainerClient.exists
+        // END: com.azure.storage.blob.BlobContainerClient.exists
 
-        // BEGIN: com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.existsWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
         System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
-        // END: com.azure.storage.blob.ContainerClient.existsWithResponse#Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.existsWithResponse#Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#create()}
+     * Code snippet for {@link BlobContainerClient#create()}
      */
     public void setCreate() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.create
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.create
         try {
             client.create();
             System.out.printf("Create completed%n");
@@ -80,27 +80,27 @@ public class ContainerClientJavaDocCodeSnippets {
                 System.out.printf("Can't create container. It already exists %n");
             }
         }
-        // END: com.azure.storage.blob.ContainerClient.create
+        // END: com.azure.storage.blob.BlobContainerClient.create
     }
 
     /**
-     * Code snippet for {@link ContainerClient#createWithResponse(Map, PublicAccessType, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#createWithResponse(Map, PublicAccessType, Duration, Context)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Context context = new Context("Key", "Value");
 
         System.out.printf("Create completed with status %d%n",
             client.createWithResponse(metadata, PublicAccessType.CONTAINER, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#delete()}
+     * Code snippet for {@link BlobContainerClient#delete()}
      */
     public void setDelete() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.delete
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.delete
         try {
             client.delete();
             System.out.printf("Delete completed%n");
@@ -109,15 +109,15 @@ public class ContainerClientJavaDocCodeSnippets {
                 System.out.printf("Delete failed. Container was not found %n");
             }
         }
-        // END: com.azure.storage.blob.ContainerClient.delete
+        // END: com.azure.storage.blob.BlobContainerClient.delete
     }
 
     /**
-     * Code snippet for {@link ContainerClient#deleteWithResponse(ContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#deleteWithResponse(BlobContainerAccessConditions, Duration, Context)}
      */
     public void delete2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
-        ContainerAccessConditions accessConditions = new ContainerAccessConditions()
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context
+        BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
@@ -125,63 +125,62 @@ public class ContainerClientJavaDocCodeSnippets {
 
         System.out.printf("Delete completed with status %d%n", client.deleteWithResponse(
             accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.ContainerClient.deleteWithResponse#ContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobContainerAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getProperties()}
+     * Code snippet for {@link BlobContainerClient#getProperties()}
      */
     public void getProperties() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getProperties
-        ContainerProperties properties = client.getProperties();
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getProperties
+        BlobContainerProperties properties = client.getProperties();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
             properties.getBlobPublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
-        // END: com.azure.storage.blob.ContainerClient.getProperties
+        // END: com.azure.storage.blob.BlobContainerClient.getProperties
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getPropertiesWithResponse(LeaseAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#getPropertiesWithResponse(LeaseAccessConditions, Duration, Context)}
      */
     public void getProperties2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("Key", "Value");
 
-        ContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context)
+        BlobContainerProperties properties = client.getPropertiesWithResponse(accessConditions, timeout, context)
             .getValue();
         System.out.printf("Public Access Type: %s, Legal Hold? %b, Immutable? %b%n",
             properties.getBlobPublicAccess(),
             properties.hasLegalHold(),
             properties.hasImmutabilityPolicy());
-        // END: com.azure.storage.blob.ContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#LeaseAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setMetadata(Map)}
+     * Code snippet for {@link BlobContainerClient#setMetadata(Map)}
      */
     public void setMetadata() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.createWithResponse#Map
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.setMetadata#Map
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-
         try {
             client.setMetadata(metadata);
             System.out.printf("Set metadata completed with status %n");
         } catch (UnsupportedOperationException error) {
             System.out.printf("Fail while setting metadata %n");
         }
-        // END: com.azure.storage.blob.ContainerClient.createWithResponse#Map
+        // END: com.azure.storage.blob.BlobContainerClient.setMetadata#Map
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setMetadataWithResponse(Map, ContainerAccessConditions, Duration,
+     * Code snippet for {@link BlobContainerClient#setMetadataWithResponse(Map, BlobContainerAccessConditions, Duration,
      * Context)}
      */
     public void setMetadata2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Map-ContainerAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobContainerAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        ContainerAccessConditions accessConditions = new ContainerAccessConditions()
+        BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
@@ -189,15 +188,15 @@ public class ContainerClientJavaDocCodeSnippets {
 
         System.out.printf("Set metadata completed with status %d%n",
             client.setMetadataWithResponse(metadata, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.ContainerClient.setMetadataWithResponse#Map-ContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobContainerAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getAccessPolicy()}
+     * Code snippet for {@link BlobContainerClient#getAccessPolicy()}
      */
     public void getAccessPolicy() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAccessPolicy
-        ContainerAccessPolicies accessPolicies = client.getAccessPolicy();
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getAccessPolicy
+        BlobContainerAccessPolicies accessPolicies = client.getAccessPolicy();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
         for (SignedIdentifier identifier : accessPolicies.getIdentifiers()) {
@@ -205,17 +204,17 @@ public class ContainerClientJavaDocCodeSnippets {
                 identifier.getId(),
                 identifier.getAccessPolicy().getPermission());
         }
-        // END: com.azure.storage.blob.ContainerClient.getAccessPolicy
+        // END: com.azure.storage.blob.BlobContainerClient.getAccessPolicy
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getAccessPolicyWithResponse(LeaseAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#getAccessPolicyWithResponse(LeaseAccessConditions, Duration, Context)}
      */
     public void getAccessPolicy2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("Key", "Value");
-        ContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context)
+        BlobContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse(accessConditions, timeout, context)
             .getValue();
         System.out.printf("Blob Access Type: %s%n", accessPolicies.getBlobAccessType());
 
@@ -224,14 +223,14 @@ public class ContainerClientJavaDocCodeSnippets {
                 identifier.getId(),
                 identifier.getAccessPolicy().getPermission());
         }
-        // END: com.azure.storage.blob.ContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#LeaseAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setAccessPolicy(PublicAccessType, List)}
+     * Code snippet for {@link BlobContainerClient#setAccessPolicy(PublicAccessType, List)}
      */
     public void setAccessPolicy() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.setAccessPolicy#PublicAccessType-List
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.setAccessPolicy#PublicAccessType-List
         SignedIdentifier identifier = new SignedIdentifier()
             .setId("name")
             .setAccessPolicy(new AccessPolicy()
@@ -245,15 +244,15 @@ public class ContainerClientJavaDocCodeSnippets {
         } catch (UnsupportedOperationException error) {
             System.out.printf("Set Access Policy completed %s%n", error);
         }
-        // END: com.azure.storage.blob.ContainerClient.setAccessPolicy#PublicAccessType-List
+        // END: com.azure.storage.blob.BlobContainerClient.setAccessPolicy#PublicAccessType-List
     }
 
     /**
-     * Code snippet for {@link ContainerClient#setAccessPolicyWithResponse(PublicAccessType, List,
-     * ContainerAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#setAccessPolicyWithResponse(PublicAccessType, List,
+     * BlobContainerAccessConditions, Duration, Context)}
      */
     public void setAccessPolicy2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions-Duration-Context
         SignedIdentifier identifier = new SignedIdentifier()
             .setId("name")
             .setAccessPolicy(new AccessPolicy()
@@ -261,7 +260,7 @@ public class ContainerClientJavaDocCodeSnippets {
                 .setExpiry(OffsetDateTime.now().plusDays(7))
                 .setPermission("permissionString"));
 
-        ContainerAccessConditions accessConditions = new ContainerAccessConditions()
+        BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
@@ -274,29 +273,29 @@ public class ContainerClientJavaDocCodeSnippets {
                 accessConditions,
                 timeout,
                 context).getStatusCode());
-        // END: com.azure.storage.blob.ContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-ContainerAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsFlat()}
+     * Code snippet for {@link BlobContainerClient#listBlobsFlat()}
      */
     public void listBlobsFlat() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsFlat
         client.listBlobsFlat().forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.ContainerClient.listBlobsFlat
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsFlat
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsFlat(ListBlobsOptions, Duration)}
+     * Code snippet for {@link BlobContainerClient#listBlobsFlat(ListBlobsOptions, Duration)}
      */
     public void listBlobsFlat2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("prefixToMatch")
             .setDetails(new BlobListDetails()
-                .setDeletedBlobs(true)
-                .setSnapshots(true));
+                .setRetrieveDeletedBlobs(true)
+                .setRetrieveSnapshots(true));
 
         client.listBlobsFlat(options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
@@ -304,29 +303,29 @@ public class ContainerClientJavaDocCodeSnippets {
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.ContainerClient.listBlobsFlat#ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsHierarchy(String)}
+     * Code snippet for {@link BlobContainerClient#listBlobsHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String
         client.listBlobsHierarchy("directoryName").forEach(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String
     }
 
     /**
-     * Code snippet for {@link ContainerClient#listBlobsHierarchy(String, ListBlobsOptions, Duration)}
+     * Code snippet for {@link BlobContainerClient#listBlobsHierarchy(String, ListBlobsOptions, Duration)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
-                .setDeletedBlobs(true)
-                .setSnapshots(true));
+                .setRetrieveDeletedBlobs(true)
+                .setRetrieveSnapshots(true));
 
         client.listBlobsHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
@@ -334,37 +333,37 @@ public class ContainerClientJavaDocCodeSnippets {
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.ContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
+        // END: com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getAccountInfo(Duration)}
+     * Code snippet for {@link BlobContainerClient#getAccountInfo(Duration)}
      */
     public void getAccountInfo() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAccountInfo#Duration
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getAccountInfo#Duration
         StorageAccountInfo accountInfo = client.getAccountInfo(timeout);
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.getAccountKind(), accountInfo.getSkuName());
-        // END: com.azure.storage.blob.ContainerClient.getAccountInfo#Duration
+        // END: com.azure.storage.blob.BlobContainerClient.getAccountInfo#Duration
     }
 
     /**
-     * Code snippet for {@link ContainerClient#getAccountInfoWithResponse(Duration, Context)}
+     * Code snippet for {@link BlobContainerClient#getAccountInfoWithResponse(Duration, Context)}
      */
     public void getAccountInfo2() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getAccountInfoWithResponse#Duration-Context
         Context context = new Context("Key", "Value");
         StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).getValue();
         System.out.printf("Account Kind: %s, SKU: %s%n", accountInfo.getAccountKind(), accountInfo.getSkuName());
-        // END: com.azure.storage.blob.ContainerClient.getAccountInfoWithResponse#Duration-Context
+        // END: com.azure.storage.blob.BlobContainerClient.getAccountInfoWithResponse#Duration-Context
     }
 
     /**
-     * Generates a code sample for using {@link ContainerClient#getContainerName()}
+     * Generates a code sample for using {@link BlobContainerClient#getBlobContainerName()}
      */
     public void getContainerName() {
-        // BEGIN: com.azure.storage.blob.ContainerClient.getContainerName
-        String containerName = client.getContainerName();
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.getBlobContainerName
+        String containerName = client.getBlobContainerName();
         System.out.println("The name of the blob is " + containerName);
-        // END: com.azure.storage.blob.ContainerClient.getContainerName
+        // END: com.azure.storage.blob.BlobContainerClient.getBlobContainerName
     }
 }

@@ -9,7 +9,7 @@ package com.azure.storage.blob.models;
  * passed to a method to indicate that those conditions are not desired. Please refer to the type of each field for more
  * information on those particular access conditions.
  */
-public final class ContainerAccessConditions {
+public final class BlobContainerAccessConditions {
 
     private ModifiedAccessConditions modifiedAccessConditions;
 
@@ -18,7 +18,7 @@ public final class ContainerAccessConditions {
     /**
      * Creates an instance which has fields set to non-null, empty values.
      */
-    public ContainerAccessConditions() {
+    public BlobContainerAccessConditions() {
         this.modifiedAccessConditions = new ModifiedAccessConditions();
         this.leaseAccessConditions = new LeaseAccessConditions();
     }
@@ -42,7 +42,7 @@ public final class ContainerAccessConditions {
      * @param modifiedAccessConditions the modified access conditions to set
      * @return the updated ContainerAccessConditions object
      */
-    public ContainerAccessConditions setModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public BlobContainerAccessConditions setModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -64,7 +64,7 @@ public final class ContainerAccessConditions {
      * @param leaseID the lease access conditions to set
      * @return the updated ContainerAccessConditions object
      */
-    public ContainerAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseID) {
+    public BlobContainerAccessConditions setLeaseAccessConditions(LeaseAccessConditions leaseID) {
         this.leaseAccessConditions = leaseID;
         return this;
     }
