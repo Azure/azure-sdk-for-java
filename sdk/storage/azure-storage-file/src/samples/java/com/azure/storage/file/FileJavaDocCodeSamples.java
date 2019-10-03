@@ -342,28 +342,28 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#uploadRangeFromURL(long, long, long, URI)}
+     * Generates a code sample for using {@link FileClient#uploadRangeFromUrl(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLAsync() throws URISyntaxException {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri
-        FileUploadRangeFromUrlInfo response = fileClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken"));
+        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromUrl#long-long-long-uri
+        FileUploadRangeFromUrlInfo response = fileClient.uploadRangeFromUrl(6, 8, 0, new URI("filewithSAStoken"));
         System.out.println("Completed upload range from url!");
-        // END: com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri
+        // END: com.azure.storage.file.fileClient.uploadRangeFromUrl#long-long-long-uri
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#uploadRangeFromURLWithResponse(long, long, long, URI, Duration, Context)}
+     * Generates a code sample for using {@link FileClient#uploadRangeFromUrlWithResponse(long, long, long, URI, Duration, Context)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-duration-context
-        Response<FileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromURLWithResponse(6,
+        // BEGIN: com.azure.storage.file.fileClient.uploadRangeFromUrlWithResponse#long-long-long-uri-duration-context
+        Response<FileUploadRangeFromUrlInfo> response = fileClient.uploadRangeFromUrlWithResponse(6,
             8, 0, new URI("filewithSAStoken"), Duration.ofSeconds(1), Context.NONE);
         System.out.println("Completed upload range from url!");
-        // END: com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-duration-context
+        // END: com.azure.storage.file.fileClient.uploadRangeFromUrlWithResponse#long-long-long-uri-duration-context
     }
 
     /**

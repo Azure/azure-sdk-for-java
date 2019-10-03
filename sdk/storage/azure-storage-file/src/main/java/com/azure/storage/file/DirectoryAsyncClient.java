@@ -98,12 +98,12 @@ public class DirectoryAsyncClient {
      * @return the URL of the storage directory client
      */
     public String getDirectoryUrl() {
-        StringBuilder directoryURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(directoryPath);
         if (snapshot != null) {
-            directoryURLString.append("?snapshot=").append(snapshot);
+            directoryUrlString.append("?snapshot=").append(snapshot);
         }
-        return directoryURLString.toString();
+        return directoryUrlString.toString();
     }
 
     /**

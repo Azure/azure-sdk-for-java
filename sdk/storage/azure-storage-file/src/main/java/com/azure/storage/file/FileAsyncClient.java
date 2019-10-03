@@ -125,12 +125,12 @@ public class FileAsyncClient {
      * @return the URL of the storage file client
      */
     public String getFileUrl() {
-        StringBuilder fileURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+        StringBuilder fileUrlstring = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(filePath);
         if (snapshot != null) {
-            fileURLString.append("?snapshot=").append(snapshot);
+            fileUrlstring.append("?snapshot=").append(snapshot);
         }
-        return fileURLString.toString();
+        return fileUrlstring.toString();
     }
 
     /**
@@ -796,7 +796,7 @@ public class FileAsyncClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -808,9 +808,9 @@ public class FileAsyncClient {
      * @return The {@link FileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<FileUploadRangeFromUrlInfo> uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
+    public Mono<FileUploadRangeFromUrlInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
                                                                URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI)
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -821,7 +821,7 @@ public class FileAsyncClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -834,21 +834,21 @@ public class FileAsyncClient {
      * and response status code.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromURLWithResponse(long length,
-            long destinationOffset, long sourceOffset, URI sourceURI) {
+    public Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
+                                                                                     long destinationOffset, long sourceOffset, URI sourceURI) {
         return withContext(context ->
-            uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
+            uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
     }
 
-    Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromURLWithResponse(long length, long destinationOffset,
-        long sourceOffset, URI sourceURI, Context context) {
+    Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
+                                                                              long sourceOffset, URI sourceURI, Context context) {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
 
         return postProcessResponse(azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
                 sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context))
-            .map(this::uploadRangeFromURLResponse);
+            .map(this::uploadRangeFromUrlResponse);
     }
 
     /**
@@ -1322,15 +1322,15 @@ public class FileAsyncClient {
         return new SimpleResponse<>(response, fileUploadInfo);
     }
 
-    private Response<FileUploadRangeFromUrlInfo> uploadRangeFromURLResponse(
+    private Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
         final FilesUploadRangeFromURLResponse response) {
         FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Boolean isServerEncrypted = headers.isServerEncrypted();
-        FileUploadRangeFromUrlInfo fileUploadRangeFromURLInfo =
+        FileUploadRangeFromUrlInfo fileUploadRangeFromUrlInfo =
             new FileUploadRangeFromUrlInfo(eTag, lastModified, isServerEncrypted);
-        return new SimpleResponse<>(response, fileUploadRangeFromURLInfo);
+        return new SimpleResponse<>(response, fileUploadRangeFromUrlInfo);
     }
 
     private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {

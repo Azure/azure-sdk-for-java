@@ -401,7 +401,7 @@ class FileAPITests extends APISpec {
             .buildFileClient()
 
         client.create(1024)
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl() +"?" + sasToken).toURI())
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl() +"?" + sasToken).toURI())
 
         then:
         def result = new String(client.downloadWithProperties().getBody().blockLast().array())
