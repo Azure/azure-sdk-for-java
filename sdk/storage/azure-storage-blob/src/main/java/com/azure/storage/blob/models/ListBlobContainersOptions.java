@@ -11,31 +11,31 @@ import com.azure.storage.blob.BlobServiceClient;
  * object. See the constructor for details on each of the options. Null may be passed in place of an object of this type
  * if no options are desirable.
  */
-public final class ListContainersOptions {
-    private final ClientLogger logger = new ClientLogger(ListContainersOptions.class);
+public final class ListBlobContainersOptions {
+    private final ClientLogger logger = new ClientLogger(ListBlobContainersOptions.class);
 
-    private ContainerListDetails details;
+    private BlobContainerListDetails details;
 
     private String prefix;
 
     private Integer maxResults;
 
-    public ListContainersOptions() {
-        this.details = new ContainerListDetails();
+    public ListBlobContainersOptions() {
+        this.details = new BlobContainerListDetails();
     }
 
     /**
      * @return the details for listing specific containers
      */
-    public ContainerListDetails getDetails() {
+    public BlobContainerListDetails getDetails() {
         return details;
     }
 
     /**
      * @param details The details for listing specific containers
-     * @return the updated ListContainersOptions object
+     * @return the updated ListBlobContainersOptions object
      */
-    public ListContainersOptions setDetails(ContainerListDetails details) {
+    public ListBlobContainersOptions setDetails(BlobContainerListDetails details) {
         this.details = details;
         return this;
     }
@@ -53,9 +53,9 @@ public final class ListContainersOptions {
      * Filters the results to return only blobs whose names begin with the specified prefix.
      *
      * @param prefix The prefix that a container must match to be returned
-     * @return the updated ListContainersOptions object
+     * @return the updated ListBlobContainersOptions object
      */
-    public ListContainersOptions setPrefix(String prefix) {
+    public ListBlobContainersOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -75,10 +75,10 @@ public final class ListContainersOptions {
      * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      *
      * @param maxResults The number of containers to return in a single response
-     * @return the updated ListContainersOptions object
+     * @return the updated ListBlobContainersOptions object
      * @throws IllegalArgumentException If {@code maxResults} is less than or equal to {@code 0}.
      */
-    public ListContainersOptions setMaxResults(Integer maxResults) {
+    public ListBlobContainersOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
         }

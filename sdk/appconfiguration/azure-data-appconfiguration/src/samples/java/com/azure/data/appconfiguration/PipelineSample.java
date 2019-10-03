@@ -51,7 +51,7 @@ class PipelineSample {
 
         // Adding a couple of settings and then fetching all the settings in our repository.
         final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().setKey("hello").setValue("world")),
-                client.setSetting(new ConfigurationSetting().setKey("newSetting").setValue("newValue")))
+                client.setSetting("newSetting", null, "newValue"))
                 .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
                 .block();
 
@@ -59,7 +59,8 @@ class PipelineSample {
         final Stream<ConfigurationSetting> stream = settings == null
                 ? Stream.empty()
                 : settings.stream();
-        Flux.merge(stream.map(client::deleteSetting).collect(Collectors.toList())).blockLast();
+        Flux.merge(stream.map(setting -> client.deleteSettingWithResponse(setting, false))
+            .collect(Collectors.toList())).blockLast();
 
         // Check what sort of HTTP method calls we made.
         tracker.print();
