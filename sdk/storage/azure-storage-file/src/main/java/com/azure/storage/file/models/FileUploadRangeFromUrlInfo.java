@@ -5,12 +5,12 @@ package com.azure.storage.file.models;
 
 import java.time.OffsetDateTime;
 
-public final class FileUploadRangeFromURLInfo {
+public final class FileUploadRangeFromUrlInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
 
-    public FileUploadRangeFromURLInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted) {
+    public FileUploadRangeFromUrlInfo(final String eTag, final OffsetDateTime lastModified, final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;

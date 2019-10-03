@@ -7,6 +7,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -18,7 +20,7 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
-import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
+import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Flux;
@@ -615,7 +617,7 @@ public class FileClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromUrl#long-long-long-uri}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -624,12 +626,12 @@ public class FileClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceURI Specifies the URL of the source file.
-     * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
+     * @return The {@link FileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public FileUploadRangeFromURLInfo uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
-        URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
+    public FileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
+                                                         URI sourceURI) {
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
             .getValue();
     }
 
@@ -640,7 +642,7 @@ public class FileClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-duration-context}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromUrlWithResponse#long-long-long-uri-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -652,14 +654,14 @@ public class FileClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
+     * @return A response containing the {@link FileUploadRangeFromUrlInfo file upload range from url info} with headers
      * and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Response<FileUploadRangeFromURLInfo> uploadRangeFromURLWithResponse(long length, long destinationOffset,
-        long sourceOffset, URI sourceURI, Duration timeout, Context context) {
-        Mono<Response<FileUploadRangeFromURLInfo>> response = fileAsyncClient.uploadRangeFromURLWithResponse(length,
+    public Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
+            long sourceOffset, URI sourceURI, Duration timeout, Context context) {
+        Mono<Response<FileUploadRangeFromUrlInfo>> response = fileAsyncClient.uploadRangeFromUrlWithResponse(length,
             destinationOffset, sourceOffset, sourceURI, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

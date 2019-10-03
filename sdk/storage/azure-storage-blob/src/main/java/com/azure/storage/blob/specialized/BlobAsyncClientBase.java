@@ -107,8 +107,7 @@ public class BlobAsyncClientBase {
         } else {
             if (azureBlobStorage.getUrl().contains("?")) {
                 return String.format("%s&snapshot=%s", azureBlobStorage.getUrl(), snapshot);
-            }
-            else {
+            } else {
                 return String.format("%s?snapshot=%s", azureBlobStorage.getUrl(), snapshot);
             }
         }

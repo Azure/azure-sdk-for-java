@@ -38,7 +38,7 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
-import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
+import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.Exceptions;
@@ -122,12 +122,12 @@ public class FileAsyncClient {
      * @return the URL of the storage file client
      */
     public String getFileUrl() {
-        StringBuilder fileURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+        StringBuilder fileUrlstring = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(filePath);
         if (snapshot != null) {
-            fileURLString.append("?snapshot=").append(snapshot);
+            fileUrlstring.append("?snapshot=").append(snapshot);
         }
-        return fileURLString.toString();
+        return fileUrlstring.toString();
     }
 
     /**
@@ -793,7 +793,7 @@ public class FileAsyncClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -802,12 +802,12 @@ public class FileAsyncClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceURI Specifies the URL of the source file.
-     * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
+     * @return The {@link FileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<FileUploadRangeFromURLInfo> uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
-        URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI)
+    public Mono<FileUploadRangeFromUrlInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
+                                                               URI sourceURI) {
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -818,7 +818,7 @@ public class FileAsyncClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -827,17 +827,17 @@ public class FileAsyncClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceURI Specifies the URL of the source file.
-     * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
+     * @return A response containing the {@link FileUploadRangeFromUrlInfo file upload range from url info} with headers
      * and response status code.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length,
-        long destinationOffset, long sourceOffset, URI sourceURI) {
+    public Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
+            long destinationOffset, long sourceOffset, URI sourceURI) {
         return withContext(context ->
-            uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
+            uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
     }
 
-    Mono<Response<FileUploadRangeFromURLInfo>> uploadRangeFromURLWithResponse(long length, long destinationOffset,
+    Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, URI sourceURI, Context context) {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
@@ -845,7 +845,7 @@ public class FileAsyncClient {
         return postProcessResponse(azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
                 sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context))
-            .map(this::uploadRangeFromURLResponse);
+            .map(this::uploadRangeFromUrlResponse);
     }
 
     /**
@@ -1209,15 +1209,15 @@ public class FileAsyncClient {
         return new SimpleResponse<>(response, fileUploadInfo);
     }
 
-    private Response<FileUploadRangeFromURLInfo> uploadRangeFromURLResponse(
+    private Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
         final FilesUploadRangeFromURLResponse response) {
         FileUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Boolean isServerEncrypted = headers.isServerEncrypted();
-        FileUploadRangeFromURLInfo fileUploadRangeFromURLInfo =
-            new FileUploadRangeFromURLInfo(eTag, lastModified, isServerEncrypted);
-        return new SimpleResponse<>(response, fileUploadRangeFromURLInfo);
+        FileUploadRangeFromUrlInfo fileUploadRangeFromUrlInfo =
+            new FileUploadRangeFromUrlInfo(eTag, lastModified, isServerEncrypted);
+        return new SimpleResponse<>(response, fileUploadRangeFromUrlInfo);
     }
 
     private Response<FileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {

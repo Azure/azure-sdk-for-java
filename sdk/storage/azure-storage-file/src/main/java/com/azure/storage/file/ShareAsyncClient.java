@@ -89,11 +89,11 @@ public class ShareAsyncClient {
      * @return the url of the Storage Share.
      */
     public String getShareUrl() {
-        StringBuilder shareURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
+        StringBuilder shareUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
         if (snapshot != null) {
-            shareURLString.append("?snapshot=").append(snapshot);
+            shareUrlString.append("?snapshot=").append(snapshot);
         }
-        return shareURLString.toString();
+        return shareUrlString.toString();
     }
 
 

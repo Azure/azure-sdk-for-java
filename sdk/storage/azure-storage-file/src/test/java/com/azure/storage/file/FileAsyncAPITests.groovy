@@ -387,9 +387,9 @@ class FileAsyncAPITests extends APISpec {
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
-        def sasToken = new FileServiceSASSignatureValues()
+        def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))
-            .setPermissions(new FileSASPermission().setReadPermission(true).toString())
+            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
             .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
             .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
             .generateSASQueryParameters(credential)
@@ -401,7 +401,7 @@ class FileAsyncAPITests extends APISpec {
             .buildFileAsyncClient()
 
         client.create(1024).block()
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() +"?" + sasToken).toURI()).block()
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() +"?" + sasToken).toURI()).block()
 
         then:
         def result = new String(client.downloadWithProperties().block().getBody().blockLast().array())
