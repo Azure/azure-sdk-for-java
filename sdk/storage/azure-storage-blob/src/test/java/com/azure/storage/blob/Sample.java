@@ -170,7 +170,7 @@ public class Sample {
         blobContainerClient.create();
 
         // upload data
-        BlockBlobClient blobClient = blobContainerClient.getBlobClient("testblob_" + UUID.randomUUID()).getBlockBlobClient();
+        BlobClient blobClient = blobContainerClient.getBlobClient("testblob_" + UUID.randomUUID());
         blobClient.uploadFromFile(startFile.getAbsolutePath());
 
         // download data
@@ -201,7 +201,7 @@ public class Sample {
 
             // upload data
             .then(Mono.defer(() -> {
-                BlockBlobAsyncClient blobClient = containerClient.getBlobAsyncClient("testblob_" + UUID.randomUUID()).getBlockBlobAsyncClient();
+                BlobAsyncClient blobClient = containerClient.getBlobAsyncClient("testblob_" + UUID.randomUUID());
                 return blobClient.uploadFromFile(startFile.getAbsolutePath())
                     .then(Mono.just(blobClient));
             }))

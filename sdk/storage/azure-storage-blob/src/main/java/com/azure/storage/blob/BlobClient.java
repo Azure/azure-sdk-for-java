@@ -4,11 +4,23 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.Utility;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.time.Duration;
+import java.util.Map;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
@@ -30,6 +42,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
  */
 @ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
+    private final ClientLogger logger = new ClientLogger(BlobClient.class);
     private final BlobAsyncClient client;
 
     /**
@@ -84,5 +97,49 @@ public class BlobClient extends BlobClientBase {
         return new SpecializedBlobClientBuilder()
             .blobClient(this)
             .buildPageBlobClient();
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String}
+     *
+     * @param filePath Path of the file to upload
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFile(String filePath) throws IOException {
+        uploadFromFile(filePath, null, null, null, null, null, null);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
+     *
+     * @param filePath Path of the file to upload
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
+     *        transfers parameter is ignored.
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tier {@link AccessTier} for the uploaded blob
+     * @param accessConditions {@link BlobAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Duration timeout) {
+        Mono<Void> upload = this.client.uploadFromFile(
+            filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
+
+        try {
+            Utility.blockWithOptionalTimeout(upload, timeout);
+        } catch (UncheckedIOException e) {
+            throw logger.logExceptionAsError(e);
+        }
     }
 }
