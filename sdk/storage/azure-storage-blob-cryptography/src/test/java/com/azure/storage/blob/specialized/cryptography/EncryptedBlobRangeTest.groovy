@@ -1,4 +1,4 @@
-package com.azure.storage.blob.cryptography
+package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.storage.blob.models.BlobRange
 import spock.lang.Requires

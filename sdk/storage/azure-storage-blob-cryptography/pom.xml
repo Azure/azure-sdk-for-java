@@ -43,9 +43,9 @@
       <version>12.0.0-preview.4</version>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.2.2</version>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-keyvault-keys</artifactId>
+      <version>4.0.0-preview.4</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -69,17 +69,6 @@
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.2.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.2.2</version>
     </dependency>
     <!--    <dependency>-->
 <!--      <groupId>io.projectreactor</groupId>-->

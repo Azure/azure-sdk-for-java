@@ -1,9 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -11,11 +14,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobURLParts;
-import com.azure.storage.blob.BlockBlobAsyncClient;
-import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SASTokenCredential;
 
 import java.net.MalformedURLException;
@@ -24,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation Storage Blob clients.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
  *
  * <p>
  * The following information must be provided on this builder:
@@ -40,7 +43,12 @@ import java.util.Objects;
  * Once all the configurations are set on this builder use the following mapping to construct the given client:
  * <ul>
  * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient()} - {@link EncryptedBlockBlobClient}</li>
- * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient()} - {@link EncryptedBlockBlobClient}</li>
+ * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient(BlockBlobClient)} -
+ * {@link EncryptedBlockBlobClient}</li>
+ * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobAsyncClient()} -
+ * {@link EncryptedBlockBlobAsyncClient}</li>
+ * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobAsyncClient(BlockBlobAsyncClient)} -
+ * {@link EncryptedBlockBlobAsyncClient}</li>
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {EncryptedBlockBlobAsyncClient.class, EncryptedBlockBlobClient.class})
@@ -52,8 +60,9 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     private String blobName;
     private String snapshot;
 
-    private IKey keyWrapper;
-    private IKeyResolver keyResolver;
+    private AsyncKeyEncryptionKey keyWrapper;
+    private AsyncKeyEncryptionKeyResolver keyResolver;
+    private KeyWrapAlgorithm keyWrapAlgorithm;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -83,7 +92,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient#blockblobasyncclient}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient#blockblobasyncclient}
      *
      * @param client The client to convert.
      * @return The encrypted client.
@@ -99,7 +108,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
             .build();
 
         return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-            new BlobEncryptionPolicy(this.keyWrapper));
+            new BlobEncryptionPolicy(this.keyWrapper, this.keyWrapAlgorithm));
     }
 
     /**
@@ -107,7 +116,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient#blockblobclient}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient#blockblobclient}
      *
      * @param client The client to convert.
      * @return The encrypted client.
@@ -124,7 +133,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
 
         return new EncryptedBlockBlobClient(
             new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-                new BlobEncryptionPolicy(this.keyWrapper)));
+                new BlobEncryptionPolicy(this.keyWrapper, this.keyWrapAlgorithm)));
     }
 
     private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
@@ -143,7 +152,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient}
      *
      * @return a {@link EncryptedBlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -157,14 +166,14 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient}
      *
      * @return a {@link EncryptedBlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient() {
         return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot,
-            new BlobEncryptionPolicy(this.keyWrapper));
+            new BlobEncryptionPolicy(this.keyWrapper, this.keyWrapAlgorithm));
     }
 
     /**
@@ -177,7 +186,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     public EncryptedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = URLParser.parse(url);
+            BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getContainerName();
@@ -252,14 +261,25 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     }
 
     /**
-     * Creates a builder instance that is able to configure and construct Storage Blob clients.
+     * Sets the encryption key parameters for the client
      *
-     * @param key An object of type {@link IKey} that is used to wrap/unwrap the content encryption key.
+     * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
+     * @param keyWrapAlgorithm The {@link KeyWrapAlgorithm} used to wrap the key.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder key(AsyncKeyEncryptionKey key, KeyWrapAlgorithm keyWrapAlgorithm) {
+        this.keyWrapper = key;
+        this.keyWrapAlgorithm = keyWrapAlgorithm;
+        return this;
+    }
+
+    /**
+     * Sets the encryption parameters for this client
+     *
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
      * @return the updated EncryptedBlobClientBuilder object
      */
-    public EncryptedBlobClientBuilder keyAndKeyResolver(IKey key, IKeyResolver keyResolver) {
-        this.keyWrapper = key;
+    public EncryptedBlobClientBuilder keyResolver(AsyncKeyEncryptionKeyResolver keyResolver) {
         this.keyResolver = keyResolver;
         return this;
     }
@@ -269,6 +289,15 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         if (this.keyWrapper == null && this.keyResolver == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
         }
+        if (this.keyWrapper != null && this.keyWrapAlgorithm == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Key Wrap Algorithm must be specified with "
+                + "the Key."));
+        }
+    }
+
+    @Override
+    protected Class<EncryptedBlobClientBuilder> getClazz() {
+        return EncryptedBlobClientBuilder.class;
     }
 
 }

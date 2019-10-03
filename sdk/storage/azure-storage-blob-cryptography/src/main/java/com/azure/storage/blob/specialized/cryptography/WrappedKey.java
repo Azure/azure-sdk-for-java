@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,7 +32,6 @@ final class WrappedKey {
      * Initializes a new instance of the {@link WrappedKey} class.
      */
     WrappedKey() {
-
     }
 
     /**

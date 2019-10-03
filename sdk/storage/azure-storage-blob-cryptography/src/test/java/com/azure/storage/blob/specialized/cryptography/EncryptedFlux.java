@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import org.reactivestreams.Subscriber;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
@@ -134,11 +136,11 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
 
     public static final int CASE_TWENTY_TWO = 22; // 1/3; 4/9;
 
-    public EncryptedFlux(int testCase, IKey key, APISpec spec) throws InvalidKeyException {
+    public EncryptedFlux(int testCase, AsyncKeyEncryptionKey key, APISpec spec) throws InvalidKeyException {
         this.testCase = testCase;
         this.plainText = spec.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
 
-        EncryptedBlob encryptedBlob = new BlobEncryptionPolicy(key)
+        EncryptedBlob encryptedBlob = new BlobEncryptionPolicy(key, KeyWrapAlgorithm.RSA_OAEP)
             .encryptBlob(Flux.just(this.plainText)).block();
         this.cipherText = APISpec.collectBytesInBuffer(encryptedBlob.getCiphertextFlux()).block();
         this.encryptionData = encryptedBlob.getEncryptionData();

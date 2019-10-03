@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -35,21 +37,21 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.storage.blob.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(BlobDecryptionPolicy.class);
 
     /**
-     * The {@link IKeyResolver} used to select the correct key for decrypting existing blobs.
+     * The {@link AsyncKeyEncryptionKeyResolver} used to select the correct key for decrypting existing blobs.
      */
-    private final IKeyResolver keyResolver;
+    private final AsyncKeyEncryptionKeyResolver keyResolver;
 
     /**
-     * An object of type {@link IKey} that is used to wrap/unwrap the content key during encryption.
+     * An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content key during encryption.
      */
-    private final IKey keyWrapper;
+    private final AsyncKeyEncryptionKey keyWrapper;
 
     /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
@@ -60,10 +62,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * resolver if specified to get the key. 2. If resolver is not specified but a key is specified, match the key id on
      * the key and use it.
      *
-     * @param key An object of type {@link IKey} that is used to wrap/unwrap the content encryption key.
+     * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
      * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
      */
-    BlobDecryptionPolicy(IKey key, IKeyResolver keyResolver) {
+    BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
     }
@@ -304,8 +306,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             EncryptionData encryptionData = objectMapper.readValue(encryptedDataString, EncryptionData.class);
 
             if (encryptionData == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(CryptographyConstants.DECRYPT_UNENCRYPTED_BLOB
-                ));
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    CryptographyConstants.DECRYPT_UNENCRYPTED_BLOB));
             }
 
             Objects.requireNonNull(encryptionData.contentEncryptionIV());
@@ -340,10 +342,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         2. If resolver is not specified but a key is specified, match the key id on the key and and use it.
         */
 
-        Mono<IKey> keyMono;
+        Mono<AsyncKeyEncryptionKey> keyMono;
 
         if (this.keyResolver != null) {
-            keyMono = this.keyResolver.resolveKeyAsync(encryptionData.wrappedContentKey().keyId())
+            keyMono = this.keyResolver.resolveKey(encryptionData.wrappedContentKey().keyId())
                 .onErrorResume(NullPointerException.class, e -> {
                     /*
                     keyResolver returns null if it cannot find the key, but RX throws on null values
@@ -352,7 +354,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     throw logger.logExceptionAsError(Exceptions.propagate(e));
                 });
         } else {
-            if (encryptionData.wrappedContentKey().keyId().equals(this.keyWrapper.getKid())) {
+            if (encryptionData.wrappedContentKey().keyId().equals(this.keyWrapper.getKeyId().block())) {
                 keyMono = Mono.just(this.keyWrapper);
             } else {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Key mismatch. The key id stored on "
@@ -360,16 +362,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             }
         }
 
-        return keyMono.flatMap(keyEncryptionKey -> {
-            try {
-                return this.keyWrapper.unwrapKeyAsync(
-                    encryptionData.wrappedContentKey().encryptedKey(),
-                    encryptionData.wrappedContentKey().algorithm()
-                );
-            } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(Exceptions.propagate(e));
-            }
-        });
+        return keyMono.flatMap(keyEncryptionKey -> this.keyWrapper.unwrapKey(
+            encryptionData.wrappedContentKey().algorithm(),
+            encryptionData.wrappedContentKey().encryptedKey()
+        ));
     }
 
     /**
@@ -430,8 +426,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 metadata.put(key.substring(CryptographyConstants.METADATA_HEADER.length()), header.getValue());
             }
         }
-        String encryptedDataString = metadata.get(CryptographyConstants.ENCRYPTION_DATA_KEY);
-        return encryptedDataString;
+        return metadata.get(CryptographyConstants.ENCRYPTION_DATA_KEY);
     }
 
     static class DecryptedResponse extends HttpResponse {

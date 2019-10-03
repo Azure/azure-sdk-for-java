@@ -13,10 +13,9 @@
  * limitations under the License.
  */
 
-package com.azure.storage.blob.cryptography
+package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.Metadata
 import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -26,7 +25,7 @@ import javax.crypto.SecretKey
 
 class DecryptionTests extends APISpec {
     String keyId
-    SymmetricKey symmetricKey
+    def symmetricKey
     BlobDecryptionPolicy blobDecryptionPolicy
     String blobName
 
@@ -35,15 +34,16 @@ class DecryptionTests extends APISpec {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES")
         keyGen.init(256)
         SecretKey secretKey = keyGen.generateKey()
-        symmetricKey = new SymmetricKey(keyId, secretKey.getEncoded())
+//        symmetricKey = new SymmetricKey(keyId, secretKey.getEncoded())
 
+        symmetricKey = null
         blobDecryptionPolicy = new BlobDecryptionPolicy(symmetricKey, null)
 
         blobName = generateBlobName()
     }
 
     @Unroll
-    @Requires({ APISpec.liveMode() })
+    @Requires({ liveMode() })
     def "Decryption"() {
         setup:
         def flow = new EncryptedFlux(testCase, symmetricKey, this)

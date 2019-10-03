@@ -1,19 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,7 +27,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
 
-public class EncryptedBlockBlobClient extends BlobClient {
+public class EncryptedBlockBlobClient extends BlobClientBase {
 
     private final EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient;
 
@@ -43,7 +44,8 @@ public class EncryptedBlockBlobClient extends BlobClient {
             .pipeline(EncryptedBlockBlobAsyncClient.removeDecryptionPolicy(getHttpPipeline(),
                 getHttpPipeline().getHttpClient()))
             .endpoint(getBlobUrl().toString())
-            .buildBlockBlobClient();
+            .buildBlobClient()
+            .asBlockBlobClient();
     }
 
     /**
@@ -55,7 +57,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.upload#InputStream-long}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.upload#InputStream-long}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
@@ -76,7 +78,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
@@ -114,14 +116,13 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) throws IOException {
-        uploadFromFile(filePath, EncryptedBlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, 2, null, null, null,
-            null, null);
+        uploadFromFile(filePath, null, null, null, null, null, null);
     }
 
     /**
@@ -129,13 +130,11 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-Integer-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
-     * @param blockSize Size of the blocks to upload
-     * @param numBuffers The maximum number of buffers this method should allocate. Must be at least two. Typically, the
-     * larger the number of buffers, the more parallel, and thus faster, the upload portion of this operation will be.
-     * The amount of memory consumed by this method may be up to blockSize * numBuffers.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
+     *        transfers parameter is ignored.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata {@link Metadata}
      * @param tier {@link AccessTier} for the uploaded blob
@@ -143,11 +142,11 @@ public class EncryptedBlockBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws IOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, Integer blockSize, int numBuffers, BlobHTTPHeaders headers,
-        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout)
-        throws IOException {
-        Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(filePath, blockSize, numBuffers, headers,
-            metadata, tier, accessConditions);
+    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
+        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Duration timeout) throws IOException {
+        Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
+            headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);

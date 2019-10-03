@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.models.BlobRange;
 
 
-import static com.azure.storage.blob.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 
 /**
  * This is a representation of a range of bytes on an encrypted blob, which may be expanded from the requested range to

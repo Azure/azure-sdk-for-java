@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.cryptography;
+package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.models.Metadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
@@ -32,9 +34,14 @@ final class BlobEncryptionPolicy {
     private final ClientLogger logger = new ClientLogger(BlobEncryptionPolicy.class);
 
     /**
-     * An object of type {@link IKey} that is used to wrap/unwrap the content key during encryption.
+     * An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content key during encryption.
      */
-    private final IKey keyWrapper;
+    private final AsyncKeyEncryptionKey keyWrapper;
+
+    /**
+     * A {@link KeyWrapAlgorithm} that is used to wrap/unwrap the content key during encryption.
+     */
+    private final KeyWrapAlgorithm keyWrapAlgorithm;
 
     /**
      * Initializes a new instance of the {@link BlobEncryptionPolicy} class with the specified key.
@@ -45,10 +52,12 @@ final class BlobEncryptionPolicy {
      * resolver if specified to get the key. 2. If resolver is not specified but a key is specified, match the key id on
      * the key and use it.
      *
-     * @param key An object of type {@link IKey} that is used to wrap/unwrap the content encryption key.
+     * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
+     * @param keyWrapAlgorithm A {@link KeyWrapAlgorithm} that is used to wrap/unwrap the content key during encryption.
      */
-    BlobEncryptionPolicy(IKey key) {
+    BlobEncryptionPolicy(AsyncKeyEncryptionKey key, KeyWrapAlgorithm keyWrapAlgorithm) {
         this.keyWrapper = key;
+        this.keyWrapAlgorithm = keyWrapAlgorithm;
     }
 
     /**
@@ -73,12 +82,13 @@ final class BlobEncryptionPolicy {
             cipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
-            keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY, CryptographyConstants.AGENT_METADATA_VALUE);
+            keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
+                CryptographyConstants.AGENT_METADATA_VALUE);
 
-            return this.keyWrapper.wrapKeyAsync(aesKey.getEncoded(), null /* algorithm */)
+            return this.keyWrapper.wrapKey(keyWrapAlgorithm.toString(), aesKey.getEncoded())
                 .map(encryptedKey -> {
                     WrappedKey wrappedKey = new WrappedKey(
-                        this.keyWrapper.getKid(), encryptedKey.getT1(), encryptedKey.getT2());
+                        this.keyWrapper.getKeyId().block(), encryptedKey, keyWrapAlgorithm.toString());
 
                     // Build EncryptionData
                     EncryptionData encryptionData = new EncryptionData()

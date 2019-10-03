@@ -1,5 +1,7 @@
-package com.azure.storage.blob.cryptography
+package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.cryptography.AsyncKeyEncryptionKey
+import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
@@ -12,6 +14,7 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobProperties
@@ -203,11 +206,13 @@ class APISpec extends Specification {
         }
     }
 
-    EncryptedBlobClientBuilder getEncryptedClientBuilder(IKey key, IKeyResolver keyResolver,
+    EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
+                                                         AsyncKeyEncryptionKeyResolver keyResolver,
                                                          SharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
-            .keyAndKeyResolver(key, keyResolver)
+            .key(key, KeyWrapAlgorithm.RSA_OAEP_256)
+            .keyResolver(keyResolver)
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
