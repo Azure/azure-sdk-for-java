@@ -282,8 +282,8 @@ public final class ConfigurationClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      *
-     * The default retry policy will be used if not provided.
-     *
+     * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
+     * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
      * @param retryPolicy RetryPolicy applied to each request.
      * @return The updated ConfigurationClientBuilder object.
      */
