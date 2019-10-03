@@ -7,7 +7,7 @@ namespace Azure.Storage.Blobs.PerfStress
 {
     public abstract class StorageTest<TOptions> : PerfStressTest<TOptions> where TOptions: PerfStressOptions
     {
-        private const string _containerName = "testcontainer";
+        private const string _containerName = "perfstress";
 
         protected BlobClient BlobClient { get; private set; }
 
@@ -27,6 +27,15 @@ namespace Azure.Storage.Blobs.PerfStress
 
             var blobClientOptions = new BlobClientOptions();
             blobClientOptions.Transport = new HttpClientTransport(httpClient);
+
+            var serviceClient = new BlobServiceClient(connectionString, blobClientOptions);
+            try
+            {
+                serviceClient.CreateBlobContainer(_containerName);
+            }
+            catch (StorageRequestFailedException)
+            {
+            }
 
             BlobClient = new BlobClient(connectionString, _containerName, blobName, blobClientOptions);
         }
