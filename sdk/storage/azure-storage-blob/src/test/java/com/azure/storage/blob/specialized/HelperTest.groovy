@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobSasPermission
 import com.azure.storage.blob.BlobURLParts
 import com.azure.storage.blob.BlobContainerSasPermission
@@ -661,7 +662,7 @@ class HelperTest extends APISpec {
             .setBlobName("blob")
 
         then:
-        BlobURLParts.parse(bup.toURL()).getContainerName() == ContainerAsyncClient.ROOT_CONTAINER_NAME
+        BlobURLParts.parse(bup.toURL()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
     }
 
     def "URLParser"() {
