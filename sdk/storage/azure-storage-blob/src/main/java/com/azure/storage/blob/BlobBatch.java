@@ -234,10 +234,6 @@ public final class BlobBatch {
         int contentId = Integer.parseInt(request.getHeaders().getValue(CONTENT_ID));
         this.batchMapping.get(contentId).setRequest(request);
 
-        if (batchRequest.size() > 0) {
-            batchRequest.add(ByteBuffer.wrap("\r\n\r\n\r\n".getBytes(StandardCharsets.UTF_8)));
-        }
-
         StringBuilder batchRequestBuilder = new StringBuilder();
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
         appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
@@ -258,6 +254,8 @@ public final class BlobBatch {
                 && !X_MS_VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
+
+        batchRequestBuilder.append("\r\n");
 
         batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
     }
@@ -323,6 +321,7 @@ public final class BlobBatch {
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
             headers.remove("Content-Length");
+            headers.remove(X_MS_VERSION);
             headers.entrySet().removeIf(header -> header.getValue() == null);
 
             context.getHttpRequest().setHeaders(new HttpHeaders(headers));
