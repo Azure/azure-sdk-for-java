@@ -280,7 +280,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the retry policy that is used during construction of the service client.
+     * Sets the retry policy that is used when each request is sent.
      *
      * The default retry policy will be used if not provided.
      *
