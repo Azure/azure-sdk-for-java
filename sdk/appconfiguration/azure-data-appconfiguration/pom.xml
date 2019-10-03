@@ -46,16 +46,16 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.5</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.5</version>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
       <version>1.0.0-preview.5</version>
     </dependency>
     <dependency>

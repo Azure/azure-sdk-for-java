@@ -90,7 +90,7 @@ public class ConfigurationSets {
         // Blocking so that the program does not exit before these tasks have completed.
         Flux.fromArray(new String[]{BETA, PRODUCTION})
             .flatMap(set -> client.listSettings(new SettingSelector().setLabels(set)))
-            .map(client::deleteSetting)
+            .map(setting -> client.deleteSettingWithResponse(setting, false))
             .blockLast();
     }
 

@@ -6,15 +6,7 @@ package com.azure.storage.file
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.file.models.CorsRule
-import com.azure.storage.file.models.FileServiceProperties
-import com.azure.storage.file.models.Metrics
-import com.azure.storage.file.models.RetentionPolicy
-import com.azure.storage.file.models.ShareItem
-import com.azure.storage.file.models.SignedIdentifier
-import com.azure.storage.file.models.StorageErrorCode
-import com.azure.storage.file.models.StorageException
-import com.azure.storage.file.models.StorageServiceProperties
+import com.azure.storage.file.models.*
 
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -40,16 +32,6 @@ class FileTestHelper {
     static boolean assertExceptionErrorMessage(Throwable throwable, StorageErrorCode errMessage) {
         return throwable instanceof StorageException &&
             ((StorageException) throwable).getErrorCode() == errMessage
-    }
-
-    static boolean assertFileServicePropertiesAreEqual(StorageServiceProperties expected, StorageServiceProperties actual) {
-        if (expected == null) {
-            return actual == null
-        } else {
-            return assertMetricsAreEqual(expected.hourMetrics(), actual.hourMetrics()) &&
-                assertMetricsAreEqual(expected.minuteMetrics(), actual.minuteMetrics()) &&
-                assertCorsAreEqual(expected.cors(), actual.cors())
-        }
     }
 
     static boolean assertMetricsAreEqual(Metrics expected, Metrics actual) {

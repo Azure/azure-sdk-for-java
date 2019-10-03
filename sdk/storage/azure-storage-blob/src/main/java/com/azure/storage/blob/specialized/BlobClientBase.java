@@ -11,17 +11,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
-import com.azure.storage.blob.BlobSASPermission;
+import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -39,6 +38,7 @@ import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -76,7 +76,7 @@ public class BlobClientBase {
      *
      * @return the URL.
      */
-    public URL getBlobUrl() {
+    public String getBlobUrl() {
         return client.getBlobUrl();
     }
 
@@ -219,13 +219,13 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
@@ -237,7 +237,7 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Metadata metadata, AccessTier tier,
+    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = client
@@ -257,8 +257,7 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
-     * BlobStartCopyFromURLHeaders} object.
+     * @param copyId The id of the copy operation to abort.
      */
     public void abortCopyFromURL(String copyId) {
         abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
@@ -274,8 +273,7 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
-     * BlobStartCopyFromURLHeaders} object.
+     * @param copyId The id of the copy operation to abort.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -312,13 +310,13 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
@@ -329,7 +327,7 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> copyFromURLWithResponse(URL copySource, Metadata metadata, AccessTier tier,
+    public Response<String> copyFromURLWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Duration timeout, Context context) {
         Mono<Response<String>> response = client
@@ -352,6 +350,7 @@ public class BlobClientBase {
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
      */
     public void download(OutputStream stream) {
         downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
@@ -377,6 +376,7 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
      */
     public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
@@ -414,10 +414,12 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @return The properties of the download blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void downloadToFile(String filePath) {
-        downloadToFile(filePath, null, null, null, null, false, null, Context.NONE);
+    public BlobProperties downloadToFile(String filePath) {
+        return downloadToFileWithResponse(filePath, null, null, null, null,
+            false, null, Context.NONE).getValue();
     }
 
     /**
@@ -434,27 +436,29 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
-     * @param blockSize the size of a chunk to download at a time, in bytes
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     *        transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
      * @param accessConditions {@link BlobAccessConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws UncheckedIOException If an I/O error occurs
+     * @return The response of download blob properties.
+     * @throws UncheckedIOException If an I/O error occurs.
      */
-    public void downloadToFile(String filePath, BlobRange range, Integer blockSize, ReliableDownloadOptions options,
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Void> download = client.downloadToFile(filePath, range, blockSize, options, accessConditions,
-            rangeGetContentMD5, context);
-
-        Utility.blockWithOptionalTimeout(download, timeout);
+        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
+            parallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
+        return Utility.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -583,14 +587,14 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadata#Metadata}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadata#Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      */
-    public void setMetadata(Metadata metadata) {
+    public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
     }
 
@@ -600,18 +604,18 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setMetadataWithResponse#Map-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setMetadataWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
+    public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, accessConditions, context);
 
@@ -641,20 +645,20 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.createSnapshotWithResponse#Metadata-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.createSnapshotWithResponse#Map-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob snapshot.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
      * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Response<BlobClientBase> createSnapshotWithResponse(Metadata metadata, BlobAccessConditions accessConditions,
-        Duration timeout, Context context) {
+    public Response<BlobClientBase> createSnapshotWithResponse(Map<String, String> metadata,
+        BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<BlobClientBase>> response = client
             .createSnapshotWithResponse(metadata, accessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, new BlobClientBase(rb.getValue())));
@@ -670,15 +674,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTier#AccessTier}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTier#AccessTier}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
      */
-    public void setTier(AccessTier tier) {
-        setTierWithResponse(tier, null, null, null, Context.NONE);
+    public void setAccessTier(AccessTier tier) {
+        setAccessTierWithResponse(tier, null, null, null, Context.NONE);
     }
 
     /**
@@ -689,7 +693,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -702,7 +706,7 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setTierWithResponse(AccessTier tier, RehydratePriority priority,
+    public Response<Void> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setTierWithResponse(tier, priority, leaseAccessConditions,
             context);
@@ -790,7 +794,7 @@ public class BlobClientBase {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobSASPermission permissions, OffsetDateTime expiryTime) {
+        BlobSasPermission permissions, OffsetDateTime expiryTime) {
         return this.client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime);
     }
 
@@ -808,7 +812,7 @@ public class BlobClientBase {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange) {
         return this.client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange);
@@ -841,7 +845,7 @@ public class BlobClientBase {
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+        BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
         return this.client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
@@ -856,7 +860,7 @@ public class BlobClientBase {
      * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions) {
+    public String generateSAS(OffsetDateTime expiryTime, BlobSasPermission permissions) {
         return this.client.generateSAS(permissions, expiryTime);
     }
 
@@ -882,7 +886,7 @@ public class BlobClientBase {
      * @param ipRange An optional {@code IPRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
@@ -912,7 +916,7 @@ public class BlobClientBase {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
+    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,

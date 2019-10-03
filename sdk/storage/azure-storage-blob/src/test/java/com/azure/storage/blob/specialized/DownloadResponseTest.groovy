@@ -9,16 +9,13 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HTTPGetterInfo
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageErrorException
-import com.azure.storage.blob.specialized.BlockBlobClient
-import com.azure.storage.blob.specialized.DownloadAsyncResponse
-import com.azure.storage.blob.specialized.DownloadResponseMockFlux
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu.upload(defaultInputStream.get(), defaultText.length())
     }
 
@@ -100,7 +97,7 @@ class DownloadResponseTest extends APISpec {
         new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
 
         where:
         info                               | _
@@ -126,7 +123,7 @@ class DownloadResponseTest extends APISpec {
         response.body(null).blockFirst()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     def "Info"() {

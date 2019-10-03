@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 /**
  * QueueServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSASQueryParameters}
+ * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
  * actual REST requests.
  * <p>
@@ -255,11 +255,14 @@ final class QueueServiceSASSignatureValues {
      * parameters.
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
-     * @return {@link QueueServiceSASQueryParameters}
+     * @return {@link QueueServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
+     * @throws NullPointerException If {@code sharedKeyCredential} is null. Or if any of {@code version} or
+     * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
+     * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
      */
-    public QueueServiceSASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public QueueServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 
@@ -267,7 +270,7 @@ final class QueueServiceSASSignatureValues {
         String stringToSign = stringToSign();
         String signature = sharedKeyCredentials.computeHmac256(stringToSign);
 
-        return new QueueServiceSASQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new QueueServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.ipRange, this.identifier, this.permissions, signature);
     }
 

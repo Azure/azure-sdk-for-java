@@ -21,7 +21,6 @@ import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
@@ -59,9 +58,8 @@ public class DirectoryClient {
      * Get the url of the storage directory client.
      *
      * @return the URL of the storage directory client.
-     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getDirectoryUrl() {
+    public String getDirectoryUrl() {
         return directoryAsyncClient.getDirectoryUrl();
     }
 

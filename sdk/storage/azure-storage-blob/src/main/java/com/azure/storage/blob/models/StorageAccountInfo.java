@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.models;
 
+import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
+
 public class StorageAccountInfo {
     private final SkuName skuName;
     private final AccountKind accountKind;

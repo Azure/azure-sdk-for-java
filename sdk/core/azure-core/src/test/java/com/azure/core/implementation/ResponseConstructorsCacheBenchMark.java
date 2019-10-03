@@ -34,36 +34,15 @@ public class ResponseConstructorsCacheBenchMark {
     private ResponseConstructorsCacheBenchMarkTestData testData;
     // Cache Types
     private ResponseConstructorsCache defaultCache;
-    private ResponseConstructorsCacheReflection reflectionCache;
+    private ResponseConstructorsCacheLambdaMetaFactory lambdaMetaCache;
     private ResponseConstructorsNoCacheReflection reflectionNoCache;
 
     @Setup
     public void setup() {
         testData = new ResponseConstructorsCacheBenchMarkTestData();
         defaultCache = new ResponseConstructorsCache();
-        reflectionCache = new ResponseConstructorsCacheReflection();
+        lambdaMetaCache = new ResponseConstructorsCacheLambdaMetaFactory();
         reflectionNoCache = new ResponseConstructorsNoCacheReflection();
-    }
-
-    @Benchmark
-    @SuppressWarnings("unchecked")
-    public void lambdaMetaFactoryCache(Blackhole blackhole) {
-        ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
-
-        for (int i = 0; i < inputs.length; i++) {
-            Class<? extends Response<?>> responseClass =
-                    (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
-            // Step1: Locate Constructor using LambdaMetaFactory.
-            ResponseConstructorsCache.ResponseConstructor constructor = defaultCache.get(responseClass);
-            if (constructor == null) {
-                throw new IllegalStateException("Response constructor with expected parameters not found.");
-            }
-            // Step2: Invoke Constructor using LambdaMetaFactory functional interface.
-            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(),
-                    inputs[i].bodyAsObject());
-            // avoid JVM dead code detection
-            blackhole.consume(response.block());
-        }
     }
 
     @Benchmark
@@ -75,13 +54,35 @@ public class ResponseConstructorsCacheBenchMark {
             Class<? extends Response<?>> responseClass =
                     (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
-            Constructor<? extends Response<?>> constructor = reflectionCache.get(responseClass);
+            Constructor<? extends Response<?>> constructor = defaultCache.get(responseClass);
             if (constructor == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response = reflectionCache.invoke(constructor, inputs[i].decodedResponse(),
+            Mono<Response<?>> response = defaultCache.invoke(constructor, inputs[i].decodedResponse(),
                     inputs[i].bodyAsObject());
+            // avoid JVM dead code detection
+            blackhole.consume(response.block());
+        }
+    }
+
+    @Benchmark
+    @SuppressWarnings("unchecked")
+    public void lambdaMetaFactoryCache(Blackhole blackhole) {
+        ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
+
+        for (int i = 0; i < inputs.length; i++) {
+            Class<? extends Response<?>> responseClass =
+                (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
+            // Step1: Locate Constructor using LambdaMetaFactory.
+            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor =
+                lambdaMetaCache.get(responseClass);
+            if (constructor == null) {
+                throw new IllegalStateException("Response constructor with expected parameters not found.");
+            }
+            // Step2: Invoke Constructor using LambdaMetaFactory functional interface.
+            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(),
+                inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }

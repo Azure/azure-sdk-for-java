@@ -9,7 +9,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
 
     def setup() {
-        bc = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks

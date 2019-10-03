@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.amqp.implementation;
 
-import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
-
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.implementation.tracing.ProcessKind;
 import com.azure.core.util.Context;
@@ -13,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Signal;
+
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);
@@ -62,7 +62,7 @@ public class TracerProvider {
         Objects.requireNonNull(signal, "'signal' cannot be null");
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
+        if (!context.getData(OPENCENSUS_SPAN_KEY).isPresent()) {
             return;
         }
 

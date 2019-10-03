@@ -5,11 +5,8 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.HTTPGetterInfo;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,8 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * BlobAccessConditions, boolean)} to automatically retry failed reads from the body as appropriate. If the download is
+ * {@code DownloadAsyncResponse} automatically retries failed reads from the body as appropriate. If the download is
  * interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download from where it left off,
  * allowing the user to consume the data as one continuous stream, for any interruptions are hidden. The retry behavior
  * is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The download will also lock on the

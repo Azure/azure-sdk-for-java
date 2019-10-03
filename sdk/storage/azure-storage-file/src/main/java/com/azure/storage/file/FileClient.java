@@ -27,7 +27,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
@@ -66,9 +65,8 @@ public class FileClient {
      * Get the url of the storage file client.
      *
      * @return the URL of the storage file client.
-     * @throws RuntimeException If the file is using a malformed URL.
      */
-    public URL getFileUrl() {
+    public String getFileUrl() {
         return fileAsyncClient.getFileUrl();
     }
 
@@ -235,9 +233,10 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
+     * @return The properties of the file.
      */
-    public void downloadToFile(String downloadFilePath) {
-        downloadToFile(downloadFilePath, null);
+    public FileProperties downloadToFile(String downloadFilePath) {
+        return downloadToFileWithResponse(downloadFilePath, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -250,16 +249,23 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional byte range which returns file data only from the specified range.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The response of the file properties.
      */
-    public void downloadToFile(String downloadFilePath, FileRange range) {
-        fileAsyncClient.downloadToFile(downloadFilePath, range).block();
+    public Response<FileProperties> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+            Duration timeout, Context context) {
+        Mono<Response<FileProperties>> response = fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range,
+            context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
