@@ -42,7 +42,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
      * @return the cosmos container properties
      */
     public CosmosContainerProperties getProperties() {
-        return this.getProperties();
+        return super.getProperties();
     }
 
     /**

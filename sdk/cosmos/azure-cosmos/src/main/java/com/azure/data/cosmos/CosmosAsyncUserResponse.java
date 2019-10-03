@@ -8,7 +8,7 @@ import com.azure.data.cosmos.internal.User;
 
 public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties> {
     private CosmosAsyncUser user;
-    
+
     CosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         super(response);
         if(response.getResource() == null){
@@ -34,6 +34,6 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
      * @return {@link CosmosUserProperties}
      */
     public CosmosUserProperties getProperties(){
-        return this.getProperties();
+        return super.getProperties();
     }
 }

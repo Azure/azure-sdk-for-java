@@ -23,7 +23,7 @@ public class CosmosAsyncItemResponse extends CosmosResponse<CosmosItemProperties
      * @return the itemSettings
      */
     public CosmosItemProperties getProperties() {
-        return this.getProperties();
+        return super.getProperties();
     }
 
     /**

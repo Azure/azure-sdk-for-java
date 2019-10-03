@@ -33,7 +33,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
      * @return the cosmos database properties
      */
     public CosmosDatabaseProperties getProperties() {
-        return this.getProperties();
+        return super.getProperties();
     }
 
     /**
