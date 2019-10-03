@@ -14,5 +14,5 @@ public interface KeyEncryptionKeyResolver {
      * @param keyId The key identifier of the key encryption key to retrieve
      * @return The key encryption key corresponding to the specified {@code keyId}
      */
-    KeyEncryptionKey resolveKey(String keyId);
+    KeyEncryptionKey buildKeyEncryptionKey(String keyId);
 }
