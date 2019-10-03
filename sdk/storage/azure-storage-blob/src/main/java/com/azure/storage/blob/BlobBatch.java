@@ -250,8 +250,7 @@ public final class BlobBatch {
         appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
         request.getHeaders().stream()
-            .filter(header -> !CONTENT_ID.equalsIgnoreCase(header.getName())
-                && !X_MS_VERSION.equalsIgnoreCase(header.getName()))
+            .filter(header -> !CONTENT_ID.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
@@ -320,7 +319,6 @@ public final class BlobBatch {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
-            headers.remove("Content-Length");
             headers.remove(X_MS_VERSION);
             headers.entrySet().removeIf(header -> header.getValue() == null);
 
