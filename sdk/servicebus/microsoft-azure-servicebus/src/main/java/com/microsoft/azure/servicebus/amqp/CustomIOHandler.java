@@ -19,8 +19,10 @@ public class CustomIOHandler extends IOHandler {
         }
 
         Transport transport = Proton.transport();
-        // To fix connection drops that the client recognizes only with a delay of 15 or 20 minutes
-        transport.setIdleTimeout(60000);
+        //To detect connection drops in worst case in idleTimeout, which otherwise can take a non deterministic
+        // amount of time to get detected. In practice, we saw 15-20 minutes, on Linux docker containers when 
+        // simulating packet drops with iptables rules.
+        transport.setIdleTimeout(AmqpConstants.TRANSPORT_IDLE_TIMEOUT_MILLIS);
         transport.sasl();
         transport.setEmitFlowEventOnSend(false);
         transport.bind(connection);
