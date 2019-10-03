@@ -284,7 +284,7 @@ public final class ConfigurationClientBuilder {
      *
      * The default retry policy will be used if not provided.
      *
-     * @param retryPolicy The custom retry policy
+     * @param retryPolicy RetryPolicy applied to each request.
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
