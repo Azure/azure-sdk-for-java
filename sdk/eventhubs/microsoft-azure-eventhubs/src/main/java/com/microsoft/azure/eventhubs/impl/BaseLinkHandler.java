@@ -70,7 +70,7 @@ public class BaseLinkHandler extends BaseHandler {
                     this.name, link.getName(), condition != null ? condition.getCondition() : "n/a", condition != null ? condition.getDescription() : "n/a"));
         }
 
-        this.underlyingEntity.onClose(condition);
+        this.underlyingEntity.onClose(condition, link.getName());
     }
 
     public void processOnClose(Link link, Exception exception) {
@@ -79,7 +79,7 @@ public class BaseLinkHandler extends BaseHandler {
                     this.name, link.getName(), exception != null ? exception.getMessage() : "n/a"));
         }
 
-        this.underlyingEntity.onError(exception);
+        this.underlyingEntity.onError(exception, link.getName());
     }
 
     private void closeSession(Link link, ErrorCondition condition) {

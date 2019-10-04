@@ -46,6 +46,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.5</version>
+    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -85,5 +90,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 </project>

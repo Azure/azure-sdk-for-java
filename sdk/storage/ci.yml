@@ -6,6 +6,10 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
 
 trigger:
   branches:
@@ -40,9 +44,18 @@ stages:
         - name: azure-storage-blob
           safeName: azurestorageblob
           stagingProfileId: 88192f04117501
+        # - name: azure-storage-blob-cryptography
+        #   safeName: azurestorageblobcryptography
+        #   stagingProfileId: 88192f04117501
         - name: azure-storage-file
           safeName: azurestoragefile
           stagingProfileId: 88192f04117501
+#        - name: azure-storage-file-datalake
+#          safeName: azurestoragefiledatalake
+#          stagingProfileId: 88192f04117501
         - name: azure-storage-queue
           safeName: azurestoragequeue
           stagingProfileId: 88192f04117501
+        # - name: azure-storage-queue-cryptography
+        #   safeName: azurestoragequeuecryptography
+        #   stagingProfileId: 88192f04117501

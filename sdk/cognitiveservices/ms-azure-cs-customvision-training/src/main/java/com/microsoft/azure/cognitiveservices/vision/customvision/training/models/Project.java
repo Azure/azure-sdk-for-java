@@ -25,19 +25,19 @@ public class Project {
     /**
      * Gets or sets the name of the project.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Gets or sets the description of the project.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", required = true)
     private String description;
 
     /**
      * Gets or sets the project settings.
      */
-    @JsonProperty(value = "settings")
+    @JsonProperty(value = "settings", required = true)
     private ProjectSettings settings;
 
     /**
@@ -47,16 +47,22 @@ public class Project {
     private DateTime created;
 
     /**
-     * Gets the date this project was last modifed.
+     * Gets the date this project was last modified.
      */
     @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;
 
     /**
-     * Gets the thumbnail url representing the project.
+     * Gets the thumbnail url representing the image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
+
+    /**
+     * Gets if the DR mode is on.
+     */
+    @JsonProperty(value = "drModeEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean drModeEnabled;
 
     /**
      * Get the id value.
@@ -152,6 +158,15 @@ public class Project {
      */
     public String thumbnailUri() {
         return this.thumbnailUri;
+    }
+
+    /**
+     * Get the drModeEnabled value.
+     *
+     * @return the drModeEnabled value
+     */
+    public Boolean drModeEnabled() {
+        return this.drModeEnabled;
     }
 
 }

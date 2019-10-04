@@ -52,10 +52,76 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!--The plugin may outdated with WireWork. TODO: Move to WireWork.
+      Issue: https://github.com/Azure/azure-sdk-for-java/issues/3255-->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <httpConnector>
+            <port>11081</port>
+          </httpConnector>
+          <webApp>
+            <contextPath>/javasdktest/upload</contextPath>
+          </webApp>
+          <webAppSourceDirectory>temp/</webAppSourceDirectory>
+        </configuration>
+      </plugin>
+
+      <!--The plugin may outdated with WireWork. TODO: Move to WireWork.
+      Issue: https://github.com/Azure/azure-sdk-for-java/issues/3255-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals><goal>java</goal></goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.azure.core.MockServer</mainClass>
+          <classpathScope>test</classpathScope>
+        </configuration>
+      </plugin>
+
+      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -42,7 +42,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.secondaryHost() != null)
-            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod()) || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
+            && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
+            || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
         return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
     }
@@ -91,7 +92,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
          duplicates the ByteBuffer object, not the underlying data.
          */
-        context.setHttpRequest(originalRequest.buffer());
+        context.setHttpRequest(originalRequest.copy());
         Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
             ? null
             : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
@@ -140,7 +141,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry, attempt + 1);
+                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                        attempt + 1);
                 }
                 return Mono.just(response);
             }).onErrorResume(throwable -> {

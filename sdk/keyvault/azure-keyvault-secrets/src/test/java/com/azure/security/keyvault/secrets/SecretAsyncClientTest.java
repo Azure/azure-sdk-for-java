@@ -178,7 +178,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     }).verifyComplete();
             sleepInRecordMode(30000);
 
-            StepVerifier.create(client.purgeDeletedSecret(secretToDelete.getName()))
+            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToDelete.getName()))
                     .assertNext(voidResponse -> {
                         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
@@ -216,7 +216,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         Assert.assertEquals(secretToDeleteAndGet.getName(), deletedSecretResponse.getName());
                     }).verifyComplete();
 
-            StepVerifier.create(client.purgeDeletedSecret(secretToDeleteAndGet.getName()))
+            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToDeleteAndGet.getName()))
                     .assertNext(voidResponse -> {
                         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
@@ -306,7 +306,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     .assertNext(Assert::assertNotNull).verifyComplete();
             pollOnSecretDeletion(secretToBackupAndRestore.getName());
 
-            StepVerifier.create(client.purgeDeletedSecret(secretToBackupAndRestore.getName()))
+            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToBackupAndRestore.getName()))
                     .assertNext(voidResponse -> {
                         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();
@@ -369,7 +369,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             assertEquals(0, secrets.size());
 
             for (DeletedSecret deletedSecret : deletedSecrets) {
-                StepVerifier.create(client.purgeDeletedSecret(deletedSecret.getName()))
+                StepVerifier.create(client.purgeDeletedSecretWithResponse(deletedSecret.getName()))
                         .assertNext(voidResponse -> {
                             assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                         }).verifyComplete();
@@ -402,7 +402,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             pollOnSecretDeletion(secretName);
 
 
-            StepVerifier.create(client.purgeDeletedSecret(secretName))
+            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretName))
                     .assertNext(voidResponse -> {
                         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
                     }).verifyComplete();

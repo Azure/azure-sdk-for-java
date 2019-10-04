@@ -22,6 +22,15 @@ public final class ExportFlavor extends ExpandableStringEnum<ExportFlavor> {
     /** Static value Windows for ExportFlavor. */
     public static final ExportFlavor WINDOWS = fromString("Windows");
 
+    /** Static value ONNX10 for ExportFlavor. */
+    public static final ExportFlavor ONNX10 = fromString("ONNX10");
+
+    /** Static value ONNX12 for ExportFlavor. */
+    public static final ExportFlavor ONNX12 = fromString("ONNX12");
+
+    /** Static value ARM for ExportFlavor. */
+    public static final ExportFlavor ARM = fromString("ARM");
+
     /**
      * Creates or finds a ExportFlavor from its string representation.
      * @param name a name to look for

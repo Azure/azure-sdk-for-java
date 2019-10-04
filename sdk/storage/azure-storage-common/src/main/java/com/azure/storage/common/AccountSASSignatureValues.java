@@ -8,9 +8,9 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link AccountSASQueryParameters} exist because
+ * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all
+ * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
+ * can actually be applied to blob urls. Note: that both this class and {@link AccountSasQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  * <p>
@@ -39,15 +39,15 @@ public final class AccountSASSignatureValues {
 
     private String permissions;
 
-    private IPRange ipRange;
+    private IpRange ipRange;
 
     private String services;
 
     private String resourceTypes;
 
     /**
-     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
-     * other values empty.
+     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all other
+     * values empty.
      */
     public AccountSASSignatureValues() {
     }
@@ -62,13 +62,16 @@ public final class AccountSASSignatureValues {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
+     * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
+     * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService accountSASService,
-        AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
-        OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange, SASProtocol sasProtocol) {
+    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService
+        accountSASService, AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
+                                            OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+                                            IpRange ipRange, SASProtocol sasProtocol) {
 
         AccountSASSignatureValues values = new AccountSASSignatureValues();
 
@@ -85,7 +88,7 @@ public final class AccountSASSignatureValues {
         values.setIpRange(ipRange);
         values.setProtocol(sasProtocol);
 
-        AccountSASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        AccountSasQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
 
         return sasQueryParameters.encode();
     }
@@ -185,19 +188,19 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange getIpRange() {
+    public IpRange getIpRange() {
         return ipRange;
     }
 
     /**
-     * Sets the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @param ipRange Allowed IP range to set
      * @return the updated AccountSASSignatureValues object.
      */
-    public AccountSASSignatureValues setIpRange(IPRange ipRange) {
+    public AccountSASSignatureValues setIpRange(IpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -242,15 +245,16 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Generates a {@link AccountSASQueryParameters} object which contains all SAS query parameters needed to make an actual
-     * REST request.
+     * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters needed to make an
+     * actual REST request.
      *
      * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
-     *
-     * @return {@link AccountSASQueryParameters}
+     * @return {@link AccountSasQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
+     * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
+     * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public AccountSASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public AccountSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
@@ -261,22 +265,23 @@ public final class AccountSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
 
-        return new AccountSASQueryParameters(this.version, this.services, resourceTypes,
-                this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
+        return new AccountSasQueryParameters(this.version, this.services, resourceTypes,
+            this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
     }
 
     private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
-                sharedKeyCredentials.getAccountName(),
-                AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
-                this.services,
-                resourceTypes,
-                this.startTime == null ? Constants.EMPTY_STRING : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                this.ipRange == null ? Constants.EMPTY_STRING : this.ipRange.toString(),
-                this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
-                this.version,
-                Constants.EMPTY_STRING // Account SAS requires an additional newline character
+            sharedKeyCredentials.getAccountName(),
+            AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
+            this.services,
+            resourceTypes,
+            this.startTime == null ? Constants.EMPTY_STRING
+                : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.ipRange == null ? Constants.EMPTY_STRING : this.ipRange.toString(),
+            this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
+            this.version,
+            Constants.EMPTY_STRING // Account SAS requires an additional newline character
         );
     }
 }

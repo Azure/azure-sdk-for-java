@@ -4,30 +4,30 @@
 
 package com.azure.storage.blob.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetStatisticsResponse;
+import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKeyResponse;
+import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentResponse;
+import com.azure.storage.blob.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.KeyInfo;
-import com.azure.storage.blob.models.ListContainersIncludeType;
-import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
-import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesGetStatisticsResponse;
-import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
-import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
-import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
-import com.azure.storage.blob.models.ServicesSubmitBatchResponse;
+import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import java.nio.ByteBuffer;
@@ -84,7 +84,7 @@ public final class ServicesImpl {
         @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesListContainersSegmentResponse> listContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListBlobContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Post("")
         @ExpectedResponses({200})
@@ -212,7 +212,7 @@ public final class ServicesImpl {
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
-        final ListContainersIncludeType include = null;
+        final ListBlobContainersIncludeType include = null;
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
@@ -233,7 +233,7 @@ public final class ServicesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, Context context) {
+    public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListBlobContainersIncludeType include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
         return service.listContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }

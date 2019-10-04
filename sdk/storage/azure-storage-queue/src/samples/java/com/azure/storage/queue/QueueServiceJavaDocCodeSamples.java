@@ -3,12 +3,11 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.core.util.Context;
@@ -153,7 +152,7 @@ public class QueueServiceJavaDocCodeSamples {
      */
     public void deleteQueueWithResponse() {
         // BEGIN: com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context
-        VoidResponse response = client.deleteQueueWithResponse("myqueue", Duration.ofSeconds(1),
+        Response<Void> response = client.deleteQueueWithResponse("myqueue", Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.println("Complete deleting the queue with status code: " + response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context
@@ -203,7 +202,7 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context
         StorageServiceProperties properties = client.getProperties();
         properties.setCors(Collections.emptyList());
-        VoidResponse response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
+        Response<Void> response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#storageServiceProperties-duration-context
@@ -218,7 +217,7 @@ public class QueueServiceJavaDocCodeSamples {
         StorageServiceProperties properties = client.getProperties();
         properties.getMinuteMetrics().setEnabled(true);
         properties.getHourMetrics().setEnabled(true);
-        VoidResponse response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
+        Response<Void> response = client.setPropertiesWithResponse(properties, Duration.ofSeconds(1),
             new Context(key1, value1));
         System.out.printf("Setting Queue service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#storageServiceProperties-duration-context
@@ -263,10 +262,10 @@ public class QueueServiceJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link QueueServiceClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SASProtocol)}
      */
     public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
+        // BEGIN: com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
         AccountSASService service = new AccountSASService()
             .setBlob(true)
             .setFile(true)
@@ -277,17 +276,17 @@ public class QueueServiceJavaDocCodeSamples {
             .setObject(true)
             .setService(true);
         AccountSASPermission permission = new AccountSASPermission()
-            .setRead(true)
-            .setAdd(true)
-            .setCreate(true)
-            .setWrite(true)
-            .setDelete(true)
-            .setList(true)
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setListPermission(true)
             .setProcessMessages(true)
-            .setUpdate(true);
+            .setUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -295,6 +294,6 @@ public class QueueServiceJavaDocCodeSamples {
 
         String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
-        // END: com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
+        // END: com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
     }
 }

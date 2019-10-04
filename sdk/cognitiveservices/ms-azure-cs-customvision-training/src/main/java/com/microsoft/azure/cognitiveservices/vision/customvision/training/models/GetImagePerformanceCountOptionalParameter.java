@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.customvision.training.models;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * The GetImagePerformanceCountOptionalParameter model.
@@ -18,7 +19,7 @@ public class GetImagePerformanceCountOptionalParameter {
      * A list of tags ids to filter the images to count. Defaults to all tags
      * when null.
      */
-    private List<String> tagIds;
+    private List<UUID> tagIds;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -30,7 +31,7 @@ public class GetImagePerformanceCountOptionalParameter {
      *
      * @return the tagIds value
      */
-    public List<String> tagIds() {
+    public List<UUID> tagIds() {
         return this.tagIds;
     }
 
@@ -40,7 +41,7 @@ public class GetImagePerformanceCountOptionalParameter {
      * @param tagIds the tagIds value to set
      * @return the GetImagePerformanceCountOptionalParameter object itself.
      */
-    public GetImagePerformanceCountOptionalParameter withTagIds(List<String> tagIds) {
+    public GetImagePerformanceCountOptionalParameter withTagIds(List<UUID> tagIds) {
         this.tagIds = tagIds;
         return this;
     }

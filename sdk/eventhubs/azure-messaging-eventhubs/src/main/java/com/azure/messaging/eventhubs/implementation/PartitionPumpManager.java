@@ -3,9 +3,12 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CloseReason;
@@ -20,8 +23,6 @@ import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import reactor.core.publisher.Signal;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -29,9 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-
-import static com.azure.core.implementation.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.implementation.tracing.Tracer.SPAN_CONTEXT;
+import reactor.core.publisher.Signal;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessor}. Each

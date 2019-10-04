@@ -69,7 +69,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-        if (detailLevel.shouldLogURL()) {
+        if (detailLevel.shouldLogUrl()) {
             logger.info("--> {} {}", request.getHttpMethod(), request.getUrl());
         }
 
@@ -87,7 +87,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 logger.info("--> END {}", request.getHttpMethod());
             } else {
                 boolean isHumanReadableContentType =
-                    !"application/octet-stream".equalsIgnoreCase(request.getHeaders().value("Content-Type"));
+                    !"application/octet-stream".equalsIgnoreCase(request.getHeaders().getValue("Content-Type"));
                 final long contentLength = getContentLength(request.getHeaders());
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
@@ -97,7 +97,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(
                                 logger,
-                                request.getHeaders().value("Content-Type"),
+                                request.getHeaders().getValue("Content-Type"),
                                 bodyString);
                             logger.info("{}-byte body:%n{}", contentLength, bodyString);
                             logger.info("--> END {}", request.getHttpMethod());
@@ -129,7 +129,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             //            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
-            if (detailLevel.shouldLogURL()) {
+            if (detailLevel.shouldLogUrl()) {
                 logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
             }
 
@@ -179,7 +179,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private long getContentLength(HttpHeaders headers) {
         long contentLength = 0;
         try {
-            contentLength = Long.parseLong(headers.value("content-length"));
+            contentLength = Long.parseLong(headers.getValue("content-length"));
         } catch (NumberFormatException | NullPointerException ignored) {
         }
 

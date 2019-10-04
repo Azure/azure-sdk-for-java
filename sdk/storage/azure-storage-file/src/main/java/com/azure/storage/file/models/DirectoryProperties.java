@@ -24,10 +24,12 @@ public final class DirectoryProperties {
      * @param metadata A set of name-value pairs that contain metadata for the directory.
      * @param eTag Entity tag that corresponds to the directory.
      * @param lastModified Last time the directory was modified.
-     * @param isServerEncrypted  The value of this header is set to true if the directory metadata is completely encrypted using the specified algorithm. Otherwise, the value is set to false.
+     * @param isServerEncrypted The value of this header is set to true if the directory metadata is completely
+     * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the directory.
      */
-    public DirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified, final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+    public DirectoryProperties(final Map<String, String> metadata, final String eTag, final OffsetDateTime lastModified,
+        final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -57,7 +59,8 @@ public final class DirectoryProperties {
     }
 
     /**
-     * @return The value of this header is true if the directory metadata is completely encrypted using the specified algorithm. Otherwise, the value is false.
+     * @return The value of this header is true if the directory metadata is completely encrypted using the specified
+     * algorithm. Otherwise, the value is false.
      */
     public boolean isServerEncrypted() {
         return isServerEncrypted;

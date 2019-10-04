@@ -10,6 +10,7 @@ import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
+import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param networkInterceptors the interceptors to add
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setNetworkInterceptors(List<Interceptor> networkInterceptors) {
+    public OkHttpAsyncHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
         this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "networkInterceptors cannot be null.");
         return this;
     }
@@ -81,7 +82,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param readTimeout the read timeout
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setReadTimeout(Duration readTimeout) {
+    public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
         // setReadTimeout can be null
         this.readTimeout = readTimeout;
         return this;
@@ -95,7 +96,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param connectionTimeout the connection timeout
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setConnectionTimeout(Duration connectionTimeout) {
+    public OkHttpAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -107,7 +108,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param connectionPool the OkHttp connection pool to use
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setConnectionPool(ConnectionPool connectionPool) {
+    public OkHttpAsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
         // Null ConnectionPool is not allowed
         this.connectionPool = Objects.requireNonNull(connectionPool, "connectionPool cannot be null.");
         return this;
@@ -119,7 +120,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param dispatcher the dispatcher to use
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setDispatcher(Dispatcher dispatcher) {
+    public OkHttpAsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
         // Null Dispatcher is not allowed
         this.dispatcher = Objects.requireNonNull(dispatcher, "dispatcher cannot be null.");
         return this;
@@ -128,10 +129,14 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the proxy.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#proxy}
+     *
      * @param proxy the proxy
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setProxy(java.net.Proxy proxy) {
+    public OkHttpAsyncHttpClientBuilder proxy(Proxy proxy) {
         // Proxy can be null
         this.proxy = proxy;
         return this;
@@ -143,7 +148,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param proxyAuthenticator the proxy authenticator
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
-    public OkHttpAsyncHttpClientBuilder setProxyAuthenticator(Authenticator proxyAuthenticator) {
+    public OkHttpAsyncHttpClientBuilder proxyAuthenticator(Authenticator proxyAuthenticator) {
         // Null Authenticator is not allowed
         this.proxyAuthenticator = Objects.requireNonNull(proxyAuthenticator, "proxyAuthenticator cannot be null.");
         return this;

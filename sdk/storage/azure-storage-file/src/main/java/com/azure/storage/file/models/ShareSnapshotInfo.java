@@ -8,18 +8,18 @@ import java.time.OffsetDateTime;
 /**
  * Contains information about a snapshot of a Share in the storage File service.
  */
-public final class  ShareSnapshotInfo {
-    private String snapshot;
-    private String eTag;
-    private OffsetDateTime lastModified;
+public final class ShareSnapshotInfo {
+    private final String snapshot;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
 
     /**
      * Creates an instance of snapshot information for a specific Share.
      *
      * @param snapshot Identifier for the snapshot
      * @param eTag Entity tag that corresponds to the snapshot
-     * @param lastModified Last time the Share was modified if the snapshot was created without metadata, if the snapshot
-     * was created with metadata then it will be the time the snapshot was created
+     * @param lastModified Last time the Share was modified if the snapshot was created without metadata, if the
+     * snapshot was created with metadata then it will be the time the snapshot was created
      */
     public ShareSnapshotInfo(String snapshot, String eTag, OffsetDateTime lastModified) {
         this.snapshot = snapshot;

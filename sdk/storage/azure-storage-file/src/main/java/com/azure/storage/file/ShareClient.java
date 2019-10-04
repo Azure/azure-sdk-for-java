@@ -3,13 +3,13 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
+import com.azure.storage.common.IpRange;
+import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -20,12 +20,12 @@ import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageException;
-import java.net.URL;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
+@ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
     private final ShareAsyncClient client;
 
@@ -52,10 +53,10 @@ public class ShareClient {
 
     /**
      * Get the url of the storage share client.
+     *
      * @return the url of the Storage Share.
-     * @throws RuntimeException If the share is using a malformed URL.
      */
-    public URL getShareUrl() {
+    public String getShareUrl() {
         return client.getShareUrl();
     }
 
@@ -135,14 +136,16 @@ public class ShareClient {
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareInfo information about the share} and the status its creation.
      * @throws StorageException If the share already exists with different metadata or {@code quotaInGB} is outside the
      * allowed range.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout, Context context) {
+    public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
+        Context context) {
         Mono<Response<ShareInfo>> response = client.createWithResponse(metadata, quotaInGB, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -160,8 +163,8 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @return The {@link ShareSnapshotInfo information about snapshot of share}
-     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
-     * in progress for the share
+     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is in
+     * progress for the share
      */
     public ShareSnapshotInfo createSnapshot() {
         return createSnapshotWithResponse(null, null, Context.NONE).getValue();
@@ -179,16 +182,19 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
-     * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share
-     * will be copied to the snapshot.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share will
+     * be copied to the snapshot.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareSnapshotInfo information about snapshot of the share} and status of creation.
-     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
-     * in progress for the share
+     * @return A response containing the {@link ShareSnapshotInfo information about snapshot of the share} and status of
+     * creation.
+     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is in
+     * progress for the share
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+    public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
+        Context context) {
         Mono<Response<ShareSnapshotInfo>> response = client.createSnapshotWithResponse(metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -223,14 +229,15 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -267,7 +274,8 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
      * @throws StorageException If the share doesn't exist
@@ -311,7 +319,8 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
      * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
@@ -363,13 +372,15 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
      * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+    public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
+        Context context) {
         Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -427,14 +438,17 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link ShareInfo information of the share} with headers and response status code
+     * @return A response containing the {@link ShareInfo information of the share} with headers and response status
+     * code
      * @throws StorageException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the share will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareInfo> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout, Context context) {
+    public Response<ShareInfo> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout,
+        Context context) {
         Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(permissions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -469,7 +483,8 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareStatistics statistics of the share}
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
@@ -493,8 +508,8 @@ public class ShareClient {
      *
      * @param directoryName Name of the directory
      * @return A response containing a {@link DirectoryClient} to interact with the created directory.
-     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of
-     * being deleted, or the parent directory for the new directory doesn't exist
+     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of being
+     * deleted, or the parent directory for the new directory doesn't exist
      */
     public DirectoryClient createDirectory(String directoryName) {
         return createDirectoryWithResponse(directoryName, null, null, null,
@@ -518,12 +533,12 @@ public class ShareClient {
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
-     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of
-     * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal
-     * key name
+     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of being
+     * deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal key name
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectoryClient> createDirectoryWithResponse(String directoryName, FileSmbProperties smbProperties,
@@ -550,12 +565,12 @@ public class ShareClient {
      * @return A response containing a {@link FileClient} to interact with the created file.
      * @throws StorageException If one of the following cases happen:
      * <ul>
-     *     <li>
-     *         If the share or parent directory does not exist.
-     *     </li>
-     *     <li>
-     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
-     *     </li>
+     * <li>
+     * If the share or parent directory does not exist.
+     * </li>
+     * <li>
+     * An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     * </li>
      * </ul>
      */
     public FileClient createFile(String fileName, long maxSize) {
@@ -581,23 +596,25 @@ public class ShareClient {
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
      * @param metadata Optional name-value pairs associated with the file as metadata.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing a {@link FileClient} to interact with the created file and the
-     * status of its creation.
+     * @return A response containing a {@link FileClient} to interact with the created file and the status of its
+     * creation.
      * @throws StorageException If one of the following cases happen:
      * <ul>
-     *     <li>
-     *         If the share or parent directory does not exist.
-     *     </li>
-     *     <li>
-     *          An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
-     *     </li>
+     * <li>
+     * If the share or parent directory does not exist.
+     * </li>
+     * <li>
+     * An attempt to create file on a share snapshot will fail with 400 (InvalidQueryParameterValue).
+     * </li>
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
-        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout, Context context) {
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
         FileClient fileClient = getFileClient(fileName);
         return new SimpleResponse<>(fileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
             filePermission, metadata, timeout, context), fileClient);
@@ -636,14 +653,15 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share doesn't exist or the directory isn't empty
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteDirectoryWithResponse(directoryName, context);
+    public Response<Void> deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteDirectoryWithResponse(directoryName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -679,20 +697,21 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
      * @throws StorageException If the share or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteFileWithResponse(String fileName, Duration timeout, Context context) {
-        Mono<VoidResponse> response = client.deleteFileWithResponse(fileName, context);
+    public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Creates a permission at the share level. If a permission already exists, it returns the key of it,
-     * else creates a new permission and returns the key.
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -706,8 +725,8 @@ public class ShareClient {
     }
 
     /**
-     * Creates a permission t the share level. If a permission already exists, it returns the key of it,
-     * else creates a new permission and returns the key.
+     * Creates a permission t the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -751,8 +770,7 @@ public class ShareClient {
     }
 
     /**
-     * Get snapshot id which attached to {@link ShareClient}.
-     * Return {@code null} if no snapshot id attached.
+     * Get snapshot id which attached to {@link ShareClient}. Return {@code null} if no snapshot id attached.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -760,7 +778,8 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.getSnapshotId}
      *
-     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base
+     * share.
      */
     public String getSnapshotId() {
         return client.getSnapshotId();
@@ -770,10 +789,10 @@ public class ShareClient {
      * Generates a SAS token with the specified parameters
      *
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param permissions The {@code ShareSASPermission} permission for the SAS
+     * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, ShareSASPermission permissions) {
+    public String generateSAS(OffsetDateTime expiryTime, ShareSasPermission permissions) {
         return this.client.generateSAS(permissions, expiryTime);
     }
 
@@ -791,18 +810,17 @@ public class ShareClient {
      * Generates a SAS token with the specified parameters
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code ShareSASPermission} permission for the SAS
+     * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange);
+    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
+        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
     }
 
     /**
@@ -810,18 +828,18 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.file.ShareClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
      *
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code ShareSASPermission} permission for the SAS
+     * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
      * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
@@ -829,10 +847,23 @@ public class ShareClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+            OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange, String cacheControl,
+            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    }
+
+    /**
+     * Get share name from share client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getShareName}
+     *
+     * @return The name of the share.
+     */
+    public String getShareName() {
+        return this.client.getShareName();
     }
 }

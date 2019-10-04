@@ -3,7 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -299,33 +299,33 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURL(long, long, long, URI)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrl(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
-        fileAsyncClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri
+        fileAsyncClient.uploadRangeFromUrl(6, 8, 0, new URI("filewithSAStoken")).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURLWithResponse(long, long, long, URI)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
-        fileAsyncClient.uploadRangeFromURLWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri
+        fileAsyncClient.uploadRangeFromUrlWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri
     }
 
     /**
@@ -390,21 +390,23 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadToFile(String, FileRange)}
+     * Generates a code sample for using {@link FileAsyncClient#downloadToFileWithResponse(String, FileRange)}
      */
     public void downloadFileAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
-        fileAsyncClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L)).subscribe(
-            response -> {
-                if (Files.exists(Paths.get("somelocalfilepath"))) {
-                    System.out.println("Successfully downloaded the file.");
-                }
-            },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete downloading the file!")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
+        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
+        fileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L))
+            .subscribe(
+                response -> {
+                    if (Files.exists(Paths.get("somelocalfilepath"))) {
+                        System.out.println("Successfully downloaded the file with status code "
+                            + response.getStatusCode());
+                    }
+                },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete downloading the file!")
+            );
+        // END: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
     }
 
     /**
@@ -642,21 +644,21 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#generateSAS(String, FileSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Generates a code sample for using {@link FileAsyncClient#generateSAS(String, FileSasPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
         String identifier = "identifier";
-        FileSASPermission permissions = new FileSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true);
+        FileSasPermission permissions = new FileSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setWritePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -668,7 +670,7 @@ public class FileAsyncJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String sas = fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
     }
 
     /**
@@ -687,5 +689,27 @@ public class FileAsyncJavaDocCodeSamples {
 
         System.out.printf("Snapshot ID: %s%n", fileAsyncClient.getShareSnapshotId());
         // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getShareName()}
+     */
+    public void getShareNameAsync() {
+        FileAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getShareName
+        String shareName = directoryAsyncClient.getShareName();
+        System.out.println("The share name of the directory is " + shareName);
+        // END: com.azure.storage.file.fileAsyncClient.getShareName
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getFilePath()}
+     */
+    public void getFilePathAsync() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getFilePath
+        String filePath = fileAsyncClient.getFilePath();
+        System.out.println("The name of the file is " + filePath);
+        // END: com.azure.storage.file.fileAsyncClient.getFilePath
     }
 }

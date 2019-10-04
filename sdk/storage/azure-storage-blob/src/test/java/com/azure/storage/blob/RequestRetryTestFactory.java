@@ -55,7 +55,7 @@ class RequestRetryTestFactory {
     static final String RETRY_TEST_PRIMARY_HOST = "PrimaryDC";
 
     static final String RETRY_TEST_SECONDARY_HOST = "SecondaryDC";
-    static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
+    private static final ByteBuffer RETRY_TEST_DEFAULT_DATA = ByteBuffer.wrap("Default data".getBytes());
     private static final String RETRY_TEST_HEADER = "TestHeader";
     private static final String RETRY_TEST_QUERY_PARAM = "TestQueryParam";
     private static final Mono<HttpResponse> RETRY_TEST_OK_RESPONSE = Mono.just(new RetryTestResponse(200));
@@ -107,6 +107,7 @@ class RequestRetryTestFactory {
         int statusCode;
 
         RetryTestResponse(int statusCode) {
+            super(null);
             this.statusCode = statusCode;
         }
 
@@ -184,7 +185,7 @@ class RequestRetryTestFactory {
              This policy will add test headers and query parameters. Ensure they are removed/reset for each retry.
              The retry policy should be starting with a fresh copy of the request for every try.
              */
-            if (request.getHeaders().value(RETRY_TEST_HEADER) != null) {
+            if (request.getHeaders().getValue(RETRY_TEST_HEADER) != null) {
                 throw new IllegalArgumentException("Headers not reset.");
             }
             if ((request.getUrl().getQuery() != null && request.getUrl().getQuery().contains(RETRY_TEST_QUERY_PARAM))) {
@@ -371,17 +372,17 @@ class RequestRetryTestFactory {
 
         private OffsetDateTime calcUpperBound(OffsetDateTime start, int primaryTryNumber, boolean tryingPrimary) {
             if (tryingPrimary) {
-                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 + 500, ChronoUnit.MILLIS);
+                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 + 1000, ChronoUnit.MILLIS);
             } else {
-                return start.plus(1400, ChronoUnit.MILLIS);
+                return start.plus(1500, ChronoUnit.MILLIS);
             }
         }
 
         private OffsetDateTime calcLowerBound(OffsetDateTime start, int primaryTryNumber, boolean tryingPrimary) {
             if (tryingPrimary) {
-                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 - 500, ChronoUnit.MILLIS);
+                return start.plus(calcPrimaryDelay(primaryTryNumber) * 1000 - 1000, ChronoUnit.MILLIS);
             } else {
-                return start.plus(700, ChronoUnit.MILLIS);
+                return start.plus(500, ChronoUnit.MILLIS);
             }
         }
 

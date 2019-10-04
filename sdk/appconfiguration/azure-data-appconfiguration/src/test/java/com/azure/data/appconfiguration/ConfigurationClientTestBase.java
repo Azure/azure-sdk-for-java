@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -11,7 +11,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
@@ -71,7 +70,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (ImplUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : ConfigurationManager.getConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+                : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
         }
 
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
@@ -187,72 +186,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test public abstract void setSettingNullKey();
-
-    @Test
-    public abstract void updateNoExistingSetting();
-
-    void updateNoExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
-        final ConfigurationSetting expectedFail = new ConfigurationSetting().setKey(getKey()).setValue("myFailingUpdate");
-
-        testRunner.accept(expectedFail);
-        testRunner.accept(expectedFail.setLabel(getLabel()));
-    }
-
-    @Test
-    public abstract void updateSetting();
-
-    void updateSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
-        String key = getKey();
-        String label = getLabel();
-
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("first tag", "first value");
-        tags.put("second tag", "second value");
-        final ConfigurationSetting original = new ConfigurationSetting()
-            .setKey(key)
-            .setValue("myNewValue")
-            .setTags(tags)
-            .setContentType("json");
-
-        final Map<String, String> updatedTags = new HashMap<>(tags);
-        final ConfigurationSetting updated = new ConfigurationSetting()
-            .setKey(original.getKey())
-            .setValue("myUpdatedValue")
-            .setTags(updatedTags)
-            .setContentType("text");
-
-        testRunner.accept(original, updated);
-        testRunner.accept(original.setLabel(label), updated.setLabel(label));
-    }
-
-    @Test
-    public abstract void updateSettingOverload();
-
-    void updateSettingOverloadRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
-        String key = getKey();
-
-        ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("A Value");
-        ConfigurationSetting updated = new ConfigurationSetting().setKey(key).setValue("A New Value");
-
-        testRunner.accept(original, updated);
-    }
-
-    @Test
-    public abstract void updateSettingNullKey();
-
-    @Test
-    public abstract void updateSettingIfEtag();
-
-    void updateSettingIfEtagRunner(Consumer<List<ConfigurationSetting>> testRunner) {
-        final String key = getKey();
-        final String label = getLabel();
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().setKey(key).setValue("myUpdateValue");
-        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().setKey(key).setValue("myFinalValue");
-
-        testRunner.accept(Arrays.asList(newConfiguration, updateConfiguration, finalConfiguration));
-        testRunner.accept(Arrays.asList(newConfiguration.setLabel(label), updateConfiguration.setLabel(label), finalConfiguration.setLabel(label)));
-    }
 
     @Test
     public abstract void getSetting();

@@ -16,16 +16,16 @@ import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Put;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.implementation.http.ContentType;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -164,18 +164,18 @@ public class RestProxyStressTests {
     interface IOService {
         @ExpectedResponses({201})
         @Put("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
+        Mono<Response<Void>> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
 
         @Get("/javasdktest/upload/100m-{id}.dat?{sas}")
         Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({201})
         @Put("/testcontainer{id}?restype=container&{sas}")
-        Mono<VoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<Response<Void>> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({202})
         @Delete("/testcontainer{id}?restype=container&{sas}")
-        Mono<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<Response<Void>> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
     private static Path tempFolderPath;
@@ -455,7 +455,7 @@ public class RestProxyStressTests {
                     //
                     return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)
                             .flatMap(uploadResponse -> {
-                                String base64MD5 = uploadResponse.getHeaders().value("Content-MD5");
+                                String base64MD5 = uploadResponse.getHeaders().getValue("Content-MD5");
                                 byte[] uploadMD5 = Base64.getDecoder().decode(base64MD5);
                                 assertArrayEquals(md5, uploadMD5);
                                 LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);

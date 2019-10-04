@@ -3,11 +3,10 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.ResumeOperation;
+import com.azure.core.annotation.ResumeOperation;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -31,7 +30,8 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedR
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.core.implementation.tracing.TracerProxy;
+import com.azure.core.util.Base64Url;
+import com.azure.core.util.tracing.TracerProxy;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
@@ -45,20 +45,16 @@ import reactor.core.publisher.Signal;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -74,6 +70,8 @@ public class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
 
+    private final ResponseConstructorsCache responseConstructorsCache;
+
     /**
      * Create a RestProxy.
      *
@@ -88,6 +86,7 @@ public class RestProxy implements InvocationHandler {
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
+        this.responseConstructorsCache = new ResponseConstructorsCache();
     }
 
     /**
@@ -173,7 +172,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         return Flux.defer(() -> {
-            Long expectedLength = Long.valueOf(request.getHeaders().value("Content-Length"));
+            Long expectedLength = Long.valueOf(request.getHeaders().getValue("Content-Length"));
             final long[] currentTotalLength = new long[1];
             return bbFlux.doOnEach(s -> {
                 if (s.isOnNext()) {
@@ -202,7 +201,6 @@ public class RestProxy implements InvocationHandler {
                 return potentialResumeMethod;
             }
         }
-
         return null;
     }
 
@@ -459,13 +457,13 @@ public class RestProxy implements InvocationHandler {
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 asyncResult = response.getSourceResponse().getBody().ignoreElements()
-                    .then(Mono.just(createResponse(response, entityType, null)));
+                    .then(createResponse(response, entityType, null));
             } else {
                 asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                    .map((Function<Object, Response<?>>) bodyAsObject -> createResponse(response, entityType,
+                    .flatMap((Function<Object, Mono<Response<?>>>) bodyAsObject -> createResponse(response, entityType,
                         bodyAsObject))
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> Mono.just(createResponse(response,
-                        entityType, null))));
+                    .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> createResponse(response,
+                        entityType, null)));
             }
         } else {
             // For now we're just throwing if the Maybe didn't emit a value.
@@ -476,12 +474,7 @@ public class RestProxy implements InvocationHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Response<?> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
-        final HttpResponse httpResponse = response.getSourceResponse();
-        final HttpRequest httpRequest = httpResponse.getRequest();
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final HttpHeaders responseHeaders = httpResponse.getHeaders();
-
+    private Mono<Response<?>> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
         // determine the type of response class. If the type is the 'RestResponse' interface, we will use the
         // 'RestResponseBase' class instead.
         Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
@@ -495,48 +488,12 @@ public class RestProxy implements InvocationHandler {
                     "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
             }
         }
-
-        // we try to find the most specific constructor, which we do in the following order:
-        // 1) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body, Object deserializedHeaders)
-        // 2) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body)
-        // 3) (HttpRequest httpRequest, int statusCode, HttpHeaders headers)
-        List<Constructor<?>> constructors = Arrays.stream(cls.getDeclaredConstructors())
-            .filter(constructor -> {
-                int paramCount = constructor.getParameterCount();
-                return paramCount >= 3 && paramCount <= 5;
-            })
-            .sorted(Comparator.comparingInt(Constructor::getParameterCount))
-            .collect(Collectors.toList());
-
-        if (constructors.isEmpty()) {
-            throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
+        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
+        if (ctr != null) {
+            return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
+        } else {
+            return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
         }
-
-        // try to create an instance using our list of potential candidates
-        for (Constructor<?> constructor : constructors) {
-            final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
-
-            try {
-                final int paramCount = constructor.getParameterCount();
-
-                switch (paramCount) {
-                    case 3:
-                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders);
-                    case 4:
-                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject);
-                    case 5:
-                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject,
-                            response.getDecodedHeaders().block());
-                    default:
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "Response constructor with expected parameters not found."));
-                }
-            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
-            }
-        }
-        // error
-        throw logger.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
     }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response,

@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 
@@ -12,16 +13,15 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * This type is to support the implementation of buffered upload only. It is mandatory that the caller
- * has broken the source into ByteBuffers that are no greater than the size of a chunk and therefore a buffer in the
- * pool. This is necessary because it upper bounds the number of buffers we need for a given call to write() to 2. If
- * the size of ByteBuffer passed into write() were unbounded, the pool could stall as it would run out of buffers before
- * it is able to return a result, and if it is unable to return, no data can be uploaded and therefore no pools
- * returned.
+ * This type is to support the implementation of buffered upload only. It is mandatory that the caller has broken the
+ * source into ByteBuffers that are no greater than the size of a chunk and therefore a buffer in the pool. This is
+ * necessary because it upper bounds the number of buffers we need for a given call to write() to 2. If the size of
+ * ByteBuffer passed into write() were unbounded, the pool could stall as it would run out of buffers before it is able
+ * to return a result, and if it is unable to return, no data can be uploaded and therefore no pools returned.
  *
  * It is incumbent upon the caller to return the buffers after an upload is completed. It is also the caller's
- * responsibility to signal to the pool when the stream is empty and call flush to return any data still sitting in
- * the pool.
+ * responsibility to signal to the pool when the stream is empty and call flush to return any data still sitting in the
+ * pool.
  *
  * Broadly, the workflow of this operation is to chunk the source into reasonable sized pieces. On each piece, one
  * thread will call write on the pool. The pool will grab a buffer from the queue to write to, possibly waiting for one
@@ -42,7 +42,7 @@ final class UploadBufferPool {
     private final int maxBuffs;
 
     // The number of buffs we have allocated. We can query the queue for how many are available.
-    private int numBuffs = 0;
+    private int numBuffs;
 
     private final int buffSize;
 
@@ -142,8 +142,8 @@ final class UploadBufferPool {
                 result = this.buffers.take();
 
             } catch (InterruptedException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("BufferedUpload thread interrupted." + " Thread:"
-                        + Thread.currentThread().getId()));
+                throw logger.logExceptionAsError(new IllegalStateException("BufferedUpload thread interrupted. Thread:"
+                    + Thread.currentThread().getId()));
             }
         }
         return result;

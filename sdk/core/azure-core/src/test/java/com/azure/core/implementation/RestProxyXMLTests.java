@@ -3,15 +3,15 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.entities.AccessPolicy;
-import com.azure.core.entities.SignedIdentifierInner;
-import com.azure.core.entities.SignedIdentifiersWrapper;
-import com.azure.core.entities.Slideshow;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.implementation.entities.AccessPolicy;
+import com.azure.core.implementation.entities.SignedIdentifierInner;
+import com.azure.core.implementation.entities.SignedIdentifiersWrapper;
+import com.azure.core.implementation.entities.Slideshow;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -39,8 +39,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 
 public class RestProxyXMLTests {
     static class MockXMLHTTPClient implements HttpClient {
@@ -186,7 +184,7 @@ public class RestProxyXMLTests {
 
         assertEquals("all", slideshow.slides()[0].type());
         assertEquals("Wake up to WonderWidgets!", slideshow.slides()[0].title());
-        assertNull(slideshow.slides()[0].items());
+        assertEquals(0, slideshow.slides()[0].items().length);
 
         assertEquals("all", slideshow.slides()[1].type());
         assertEquals("Overview", slideshow.slides()[1].title());

@@ -90,7 +90,8 @@ public final class Utility {
         return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
-    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString, Function<String, T> valueParser) {
+    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString,
+        Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
         if (ImplUtils.isNullOrEmpty(queryString)) {
@@ -277,11 +278,12 @@ public final class Utility {
      *
      * @param param Name of the parameter
      * @param value Value of the parameter
-     * @throws IllegalArgumentException If {@code value} is {@code null}
+     * @throws NullPointerException If {@code value} is {@code null}
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new NullPointerException(String.format(Locale.ROOT,
+                Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -297,7 +299,8 @@ public final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
         }
     }
 
@@ -334,7 +337,8 @@ public final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT,
+                    Constants.MessageConstants.INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -342,8 +346,8 @@ public final class Utility {
     }
 
     /**
-     * Wraps any potential error responses from the service and applies post processing of the response's eTag header
-     * to standardize the value.
+     * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
+     * standardize the value.
      *
      * @param response Response from a service call
      * @param errorWrapper Error wrapping function that is applied to the response
@@ -431,7 +435,7 @@ public final class Utility {
      * @return a URL with the path appended.
      * @throws IllegalArgumentException If {@code name} causes the URL to become malformed.
      */
-    public static URL appendToURLPath(URL baseURL, String name) {
+    public static URL appendToURLPath(String baseURL, String name) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.getPath() == null) {
@@ -461,7 +465,8 @@ public final class Utility {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.getPath() == null || !builder.getPath().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
+            throw new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
         }
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
@@ -490,8 +495,8 @@ public final class Utility {
     }
 
     /**
-     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of
-     * entity length and the input length.
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length
+     * and the input length.
      *
      * @param data The input data which needs to convert to ByteBuffer.
      * @param length The expected input data length.
@@ -509,9 +514,9 @@ public final class Utility {
                 byte[] cache = new byte[(int) count];
                 int lastIndex = data.read(cache);
                 currentTotalLength[0] += lastIndex;
-                if (currentTotalLength[0] < count) {
+                if (lastIndex < count) {
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                        String.format("Request body emitted %d bytes less than the expected %d bytes.",
+                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
                 }
                 return ByteBuffer.wrap(cache);
@@ -519,9 +524,9 @@ public final class Utility {
             .doOnComplete(() -> {
                 try {
                     if (data.available() > 0) {
-                        Long totalLength = currentTotalLength[0] + data.available();
+                        long totalLength = currentTotalLength[0] + data.available();
                         throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes more than the expected %d bytes.",
+                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
                                 totalLength, length), totalLength, length));
                     }
                 } catch (IOException e) {

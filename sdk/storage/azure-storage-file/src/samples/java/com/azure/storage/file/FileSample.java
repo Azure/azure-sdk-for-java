@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -10,7 +10,6 @@ import com.azure.storage.file.models.StorageException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -20,7 +19,7 @@ import java.util.UUID;
  * Sample demonstrates how to create, copy and delete a file and how to get and set properties.
  */
 public class FileSample {
-    private static final String ENDPOINT = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -66,9 +65,9 @@ public class FileSample {
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.
-        URL clientURL = srcFileClient.getFileUrl();
+        String clientURL = srcFileClient.getFileUrl();
 
-        String sourceURL = clientURL.toString() + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
+        String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
         FileCopyInfo copyResponse = null;
         try {

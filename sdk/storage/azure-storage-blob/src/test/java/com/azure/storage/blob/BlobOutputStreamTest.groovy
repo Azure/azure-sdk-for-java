@@ -1,20 +1,22 @@
 package com.azure.storage.blob
 
+
 import com.azure.storage.common.Constants
 import spock.lang.Ignore
+import spock.lang.Requires
 
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
 
-    @Ignore
+    @Requires({ liveMode() })
     def "BlockBlob output stream"() {
         setup:
-        byte[] data = getRandomByteArray(100 * Constants.MB)
-        BlockBlobClient blockBlobClient = cu.getBlockBlobClient(generateBlobName())
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        BlobOutputStream outputStream = blockBlobClient.getBlobOutputStream()
-        outputStream.setWrite(data)
+        def outputStream = blockBlobClient.getBlobOutputStream()
+        outputStream.write(data)
         outputStream.close()
 
         then:
@@ -22,34 +24,34 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
-    @Ignore
+    @Requires({ liveMode() })
     def "PageBlob output stream"() {
         setup:
-        byte[] data = getRandomByteArray(1024 * Constants.MB - 512)
-        PageBlobClient pageBlobClient = cu.getPageBlobClient(generateBlobName())
-        pageBlobClient.setCreate(data.length)
+        def data = getRandomByteArray(16 * Constants.MB - 512)
+        def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+        pageBlobClient.create(data.length)
 
 
         when:
-        BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(data.length)
-        outputStream.setWrite(data)
+        def outputStream = pageBlobClient.getBlobOutputStream(data.length)
+        outputStream.write(data)
         outputStream.close()
 
         then:
         convertInputStreamToByteArray(pageBlobClient.openInputStream()) == data
     }
 
-    @Ignore
+    @Requires({ liveMode() })
     def "AppendBlob output stream"() {
         setup:
-        byte[] data = getRandomByteArray(64 * FOUR_MB)
-        AppendBlobClient appendBlobClient = cu.getAppendBlobClient(generateBlobName())
-        appendBlobClient.setCreate()
+        def data = getRandomByteArray(4 * FOUR_MB)
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
 
         when:
-        BlobOutputStream outputStream = appendBlobClient.getBlobOutputStream()
-        for (int i = 0; i != 64; i++) {
-            outputStream.setWrite(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
+        def outputStream = appendBlobClient.getBlobOutputStream()
+        for (int i = 0; i != 4; i++) {
+            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB) - 1))
         }
         outputStream.close()
 
@@ -58,12 +60,12 @@ class BlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
     }
 
-    private static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+    def convertInputStreamToByteArray(InputStream inputStream) {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
-            while ((b = inputStream.setRead()) != -1) {
-                outputStream.setWrite(b)
+            while ((b = inputStream.read()) != -1) {
+                outputStream.write(b)
             }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex)

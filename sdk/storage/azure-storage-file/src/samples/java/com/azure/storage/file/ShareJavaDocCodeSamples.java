@@ -3,12 +3,11 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
@@ -19,6 +18,7 @@ import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -247,7 +247,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteDirectoryWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context
-        VoidResponse response = shareClient.deleteDirectoryWithResponse("mydirectory",
+        Response<Void> response = shareClient.deleteDirectoryWithResponse("mydirectory",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the directory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteDirectoryWithResponse#string-duration-context
@@ -270,7 +270,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteFileWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context
-        VoidResponse response = shareClient.deleteFileWithResponse("myfile",
+        Response<Void> response = shareClient.deleteFileWithResponse("myfile",
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteFileWithResponse#string-duration-context
@@ -293,7 +293,7 @@ public class ShareJavaDocCodeSamples {
     public void deleteShareWithResponse() {
         ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.shareClient.deleteWithResponse#duration-context
-        VoidResponse response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
+        Response<Void> response = shareClient.deleteWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the share with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.shareClient.deleteWithResponse#duration-context
     }
@@ -513,22 +513,22 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#generateSAS(String, ShareSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * Generates a code sample for using {@link ShareClient#generateSAS(String, ShareSasPermission, OffsetDateTime,
+     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSAS() {
         ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.file.ShareClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
         String identifier = "identifier";
-        ShareSASPermission permissions = new ShareSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true)
-            .setList(true);
+        ShareSasPermission permissions = new ShareSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setWritePermission(true)
+            .setListPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -540,6 +540,17 @@ public class ShareJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String sas = shareClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.ShareClient.generateSAS#String-ShareSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.file.ShareClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#getShareName()}
+     */
+    public void getShareName() {
+        ShareClient shareAsyncClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.shareClient.getShareName
+        String shareName = shareAsyncClient.getShareName();
+        System.out.println("The name of the share is " + shareName);
+        // END: com.azure.storage.file.shareClient.getShareName
     }
 }
