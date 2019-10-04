@@ -50,7 +50,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
                                             ProxyConfiguration proxyConfiguration) {
         super(connectionId, amqpHostname);
         this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
-        this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' is required.");
+        this.proxyConfiguration = Objects.requireNonNull(proxyConfiguration, "'proxyConfiguration' cannot be null.");
     }
 
     /**
@@ -112,6 +112,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final String[] hostNameParts = hostName.split(":");
         if (hostNameParts.length != 2) {
+            logger.warning("Invalid hostname " + hostName);
             return;
         }
 
@@ -119,6 +120,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         try {
             port = Integer.parseInt(hostNameParts[1]);
         } catch (NumberFormatException ignore) {
+            logger.warning("Invalid port number " + hostNameParts[1]);
             return;
         }
 
@@ -142,7 +144,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         super.addTransportLayers(event, transport);
 
         // Checking that the proxy configuration is not null and not equal to the system defaults option.
-        final ProxyImpl proxy = proxyConfiguration != null && !(proxyConfiguration == ProxyConfiguration.SYSTEM_DEFAULTS)
+        final ProxyImpl proxy = proxyConfiguration != null
+            && !(proxyConfiguration == ProxyConfiguration.SYSTEM_DEFAULTS)
             ? new ProxyImpl(getProtonConfiguration())
             : new ProxyImpl();
 

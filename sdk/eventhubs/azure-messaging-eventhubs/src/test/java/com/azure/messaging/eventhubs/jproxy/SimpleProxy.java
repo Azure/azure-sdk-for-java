@@ -56,7 +56,7 @@ public class SimpleProxy implements ProxyServer {
         serverSocket.accept(serverSocket, new SocketListener(logger, onErrorHandler, isRunning));
     }
 
-    private static class SocketListener implements
+    private static final class SocketListener implements
         CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> {
 
         private final ClientLogger logger;
