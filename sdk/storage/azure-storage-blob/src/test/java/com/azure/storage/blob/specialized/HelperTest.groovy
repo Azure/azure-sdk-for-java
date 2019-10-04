@@ -280,7 +280,7 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSASQueryParameters((SharedKeyCredential)creds)
+        v.generateSasQueryParameters((SharedKeyCredential)creds)
 
         then:
         def e = thrown(NullPointerException)
@@ -470,7 +470,7 @@ class HelperTest extends APISpec {
             v.setIpRange(new IpRange().setIpMin("ip"))
         }
 
-        def token = v.generateSASQueryParameters(primaryCredential)
+        def token = v.generateSasQueryParameters(primaryCredential)
 
         expectedStringToSign = String.format(expectedStringToSign, primaryCredential.getAccountName())
 
@@ -495,7 +495,7 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSASQueryParameters(creds)
+        v.generateSasQueryParameters(creds)
 
         then:
         def e = thrown(NullPointerException)

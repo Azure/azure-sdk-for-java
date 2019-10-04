@@ -525,7 +525,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
@@ -553,7 +553,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client.delete()
@@ -576,7 +576,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
@@ -599,7 +599,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
@@ -962,7 +962,7 @@ class SASTest extends APISpec {
         }
         v.setProtocol(protocol)
 
-        def token = v.generateSASQueryParameters(primaryCredential)
+        def token = v.generateSasQueryParameters(primaryCredential)
 
         then:
         token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.getAccountName()))
@@ -985,7 +985,7 @@ class SASTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSASQueryParameters(creds)
+        v.generateSasQueryParameters(creds)
 
         then:
         def e = thrown(NullPointerException)

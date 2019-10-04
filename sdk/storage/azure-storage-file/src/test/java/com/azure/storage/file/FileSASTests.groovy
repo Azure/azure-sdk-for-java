@@ -4,6 +4,7 @@ package com.azure.storage.file
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasPermission
+import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IpRange
@@ -342,7 +343,7 @@ class FileSASTests extends APISpec {
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSASSignatureValues.generateAccountSAS(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         then:
         sas != null

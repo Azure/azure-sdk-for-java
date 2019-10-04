@@ -4,6 +4,7 @@ package com.azure.storage.queue
 import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
+import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.SasProtocol
 
 import com.azure.storage.common.IpRange
@@ -250,7 +251,7 @@ class QueueSASTests extends APISpec {
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSASSignatureValues.generateAccountSAS(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
@@ -282,7 +283,7 @@ class QueueSASTests extends APISpec {
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSASSignatureValues.generateAccountSAS(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())

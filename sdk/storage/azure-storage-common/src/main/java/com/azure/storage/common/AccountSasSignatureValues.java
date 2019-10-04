@@ -68,7 +68,7 @@ public final class AccountSasSignatureValues {
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSasService
+    public static String generateAccountSas(SharedKeyCredential sharedKeyCredential, AccountSasService
         accountSASService, AccountSasResourceType accountSASResourceType, AccountSasPermission accountSASPermission,
                                             OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
                                             IpRange ipRange, SasProtocol sasProtocol) {
@@ -88,7 +88,7 @@ public final class AccountSasSignatureValues {
         values.setIpRange(ipRange);
         values.setProtocol(sasProtocol);
 
-        AccountSasQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+        AccountSasQueryParameters sasQueryParameters = values.generateSasQueryParameters(sharedKeyCredential);
 
         return sasQueryParameters.encode();
     }
@@ -254,7 +254,7 @@ public final class AccountSasSignatureValues {
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public AccountSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public AccountSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
