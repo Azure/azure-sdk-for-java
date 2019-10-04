@@ -68,7 +68,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -121,7 +121,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
+        return new PageBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
     }
 
     private AzureBlobStorageImpl constructImpl() {

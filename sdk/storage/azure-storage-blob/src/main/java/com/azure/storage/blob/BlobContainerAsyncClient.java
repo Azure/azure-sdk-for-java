@@ -83,15 +83,18 @@ public final class BlobContainerAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
+    private final String accountName; // only used to pass down to blob clients
+
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk) {
+    BlobContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk, String accountName) {
         this.azureBlobStorage = azureBlobStorage;
         this.customerProvidedKey = cpk;
+        this.accountName = accountName;
     }
 
     /**
@@ -129,7 +132,7 @@ public final class BlobContainerAsyncClient {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getBlobContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, customerProvidedKey);
+            .build(), snapshot, customerProvidedKey, accountName);
     }
 
     /**

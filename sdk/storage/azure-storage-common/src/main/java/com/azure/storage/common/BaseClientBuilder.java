@@ -52,6 +52,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     // for when a user wants to add policies to our pre-constructed pipeline
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
+    protected String accountName;
     protected String endpoint;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -218,7 +219,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
             connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
-        String accountName = connectionKVPs.get(ACCOUNT_NAME);
+        accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
         String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
         String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
