@@ -47,9 +47,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
-public final class CryptographyAsyncClient {
+public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    private JsonWebKey key;
+    JsonWebKey key;
     private final CryptographyService service;
     private final CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;

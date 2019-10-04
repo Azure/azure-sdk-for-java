@@ -26,7 +26,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.2</version>
 </dependency>
 ```
 
@@ -99,11 +99,10 @@ sequence number and the timestamp of when it was enqueued.
 
 ### Create an instance of Storage container with SAS token
 ```java
-SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString("<SAS_TOKEN_WITH_WRITE_PERMISSION>");
-ContainerAsyncClient containerAsyncClient = new ContainerClientBuilder()
+BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")
-    .credential(sasTokenCredential)
+    .sasToken("<SAS_TOKEN>")
     .buildAsyncClient();
 ``` 
 
@@ -128,7 +127,7 @@ class Program {
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
             .consumerGroupName("<< CONSUMER GROUP NAME>>")
             .partitionProcessorFactory(SimplePartitionProcessor::new)
-            .partitionManager(new BlobPartitionManager(containerAsyncClient))
+            .partitionManager(new BlobPartitionManager(blobContainerAsyncClient))
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.

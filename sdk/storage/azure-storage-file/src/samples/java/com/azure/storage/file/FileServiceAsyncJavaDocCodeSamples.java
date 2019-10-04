@@ -6,10 +6,8 @@ import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
@@ -38,7 +36,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileServiceAsyncClient} with SAS token.
      * @return An instance of {@link FileServiceAsyncClient}
      */
     public FileServiceAsyncClient createAsyncClientWithSASToken() {
@@ -51,14 +49,14 @@ public class FileServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileServiceAsyncClient} with SAS token.
      * @return An instance of {@link FileServiceAsyncClient}
      */
     public FileServiceAsyncClient createAsyncClientWithCredential() {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
         FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .buildAsyncClient();
         // END: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
         return fileServiceAsyncClient;
@@ -271,11 +269,11 @@ public class FileServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link FileServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
+     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SASProtocol)}
      */
     public void generateAccountSASAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
+        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
         AccountSASService service = new AccountSASService()
             .setBlob(true)
             .setFile(true)
@@ -296,7 +294,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
             .setUpdatePermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -304,6 +302,6 @@ public class FileServiceAsyncJavaDocCodeSamples {
 
         String sas = fileServiceAsyncClient.generateAccountSAS(service, resourceType, permission, expiryTime, startTime,
             version, ipRange, sasProtocol);
-        // END: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
+        // END: com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
     }
 }

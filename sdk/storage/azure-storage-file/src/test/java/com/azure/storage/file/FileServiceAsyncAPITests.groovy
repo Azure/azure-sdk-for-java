@@ -40,7 +40,7 @@ class FileServiceAsyncAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
-        def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl().toString()
+        def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl()
 
         then:
         expectURL.equals(fileServiceURL)

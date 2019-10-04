@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.specialized.BlobServiceSASQueryParameters;
+import com.azure.storage.blob.specialized.BlobServiceSasQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 
@@ -29,7 +29,7 @@ public final class BlobURLParts {
     private String containerName;
     private String blobName;
     private String snapshot;
-    private BlobServiceSASQueryParameters blobServiceSasQueryParameters;
+    private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
     /**
@@ -84,7 +84,7 @@ public final class BlobURLParts {
      *
      * @return the container name.
      */
-    public String getContainerName() {
+    public String getBlobContainerName() {
         return containerName;
     }
 
@@ -140,23 +140,23 @@ public final class BlobURLParts {
     }
 
     /**
-     * Gets the {@link BlobServiceSASQueryParameters} representing the SAS query parameters that will be used to
+     * Gets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters that will be used to
      * generate the SAS token for this URL.
      *
-     * @return the {@link BlobServiceSASQueryParameters} of the URL
+     * @return the {@link BlobServiceSasQueryParameters} of the URL
      */
-    public BlobServiceSASQueryParameters getSasQueryParameters() {
+    public BlobServiceSasQueryParameters getSasQueryParameters() {
         return blobServiceSasQueryParameters;
     }
 
     /**
-     * Sets the {@link BlobServiceSASQueryParameters} representing the SAS query parameters that will be used to
+     * Sets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters that will be used to
      * generate the SAS token for this URL.
      *
      * @param blobServiceSasQueryParameters The SAS query parameters.
      * @return the updated BlobURLParts object.
      */
-    public BlobURLParts setSasQueryParameters(BlobServiceSASQueryParameters blobServiceSasQueryParameters) {
+    public BlobURLParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
         this.blobServiceSasQueryParameters = blobServiceSasQueryParameters;
         return this;
     }
@@ -242,7 +242,7 @@ public final class BlobURLParts {
     /**
      * Parses an existing URL into a BlobURLParts.
      *
-     * <p>Query parameters will be parsed into two properties, {@link BlobServiceSASQueryParameters} which contains
+     * <p>Query parameters will be parsed into two properties, {@link BlobServiceSasQueryParameters} which contains
      * all SAS token related values and {@link #getUnparsedParameters() unparsedParameters} which is all other query
      * parameters.</p>
      *
@@ -284,8 +284,8 @@ public final class BlobURLParts {
             queryParamsMap.remove("snapshot");
         }
 
-        BlobServiceSASQueryParameters blobServiceSasQueryParameters =
-            new BlobServiceSASQueryParameters(queryParamsMap, true);
+        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
+            new BlobServiceSasQueryParameters(queryParamsMap, true);
 
         return new BlobURLParts()
             .setScheme(scheme)

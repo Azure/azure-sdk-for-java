@@ -4,16 +4,16 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobURLParts;
-import com.azure.storage.blob.ContainerAsyncClient;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -73,9 +73,9 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
 
     /**
      * Creates a {@link BlockBlobClient} based on options set in the Builder. BlockBlobClients are used to perform
-     * generic upload operations such as {@link BlockBlobClient#uploadFromFile(String) upload from file} and block blob
-     * specific operations such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and {@link
-     * BlockBlobClient#commitBlockList(List)}, only use this when the blob is known to be a block blob.
+     * generic upload operations such as {@link BlockBlobClient#upload(InputStream, long) upload from file} and block
+     * blob specific operations such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and
+     * {@link BlockBlobClient#commitBlockList(List)}, only use this when the blob is known to be a block blob.
      *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -86,7 +86,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
 
     /**
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
-     * perform generic upload operations such as {@link BlockBlobAsyncClient#uploadFromFile(String) upload from file}
+     * perform generic upload operations such as {@link BlockBlobAsyncClient#upload(Flux, long) upload from file}
      * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long,
      * LeaseAccessConditions) stage block} and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list},
      * only use this when the blob is known to be a block blob.
@@ -139,7 +139,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
-        endpoint(blobClient.getBlobUrl().toString());
+        endpoint(blobClient.getBlobUrl());
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
@@ -153,41 +153,41 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      */
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
-        endpoint(blobAsyncClient.getBlobUrl().toString());
+        endpoint(blobAsyncClient.getBlobUrl());
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
     }
 
     /**
-     * Configures the builder based on the {@link ContainerClient} and appends the blob name to the container's URL.
+     * Configures the builder based on the {@link BlobContainerClient} and appends the blob name to the container's URL.
      *
-     * @param containerClient The {@code ContainerClient} used to configure this builder.
+     * @param blobContainerClient The {@code ContainerClient} used to configure this builder.
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object.
      */
-    public SpecializedBlobClientBuilder containerClient(ContainerClient containerClient, String blobName) {
-        pipeline(containerClient.getHttpPipeline());
-        endpoint(containerClient.getContainerUrl().toString());
+    public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
+        pipeline(blobContainerClient.getHttpPipeline());
+        endpoint(blobContainerClient.getBlobContainerUrl());
         blobName(blobName);
-        this.customerProvidedKey = containerClient.getCustomerProvidedKey();
+        this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
     }
 
     /**
-     * Configures the builder based on the {@link ContainerAsyncClient} and appends the blob name to the container's
+     * Configures the builder based on the {@link BlobContainerAsyncClient} and appends the blob name to the container's
      * URL.
      *
-     * @param containerAsyncClient The {@code ContainerAsyncClient} used to configure this builder.
+     * @param blobContainerAsyncClient The {@code ContainerAsyncClient} used to configure this builder.
      * @param blobName Name of the blob.
      * @return the updated SpecializedBlobClientBuilder object.
      */
-    public SpecializedBlobClientBuilder containerAsyncClient(ContainerAsyncClient containerAsyncClient,
+    public SpecializedBlobClientBuilder containerAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient,
         String blobName) {
-        pipeline(containerAsyncClient.getHttpPipeline());
-        endpoint(containerAsyncClient.getContainerUrl().toString());
+        pipeline(blobContainerAsyncClient.getHttpPipeline());
+        endpoint(blobContainerAsyncClient.getBlobContainerUrl());
         blobName(blobName);
-        this.customerProvidedKey = containerAsyncClient.getCustomerProvidedKey();
+        this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;
     }
 
@@ -205,14 +205,13 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
             BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
-            this.containerName = parts.getContainerName();
+            this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential =
-                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = parts.getSasQueryParameters().encode();
+            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(

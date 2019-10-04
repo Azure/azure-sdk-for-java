@@ -75,7 +75,7 @@ public final class Utility {
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
-    public static TreeMap<String, String> parseQueryString(final String queryString) {
+    public static Map<String, String> parseQueryString(final String queryString) {
         return parseQueryStringHelper(queryString, Utility::urlDecode);
     }
 
@@ -86,11 +86,11 @@ public final class Utility {
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
-    public static TreeMap<String, String[]> parseQueryStringSplitValues(final String queryString) {
+    public static Map<String, String[]> parseQueryStringSplitValues(final String queryString) {
         return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
-    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString,
+    private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
         Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
@@ -278,11 +278,11 @@ public final class Utility {
      *
      * @param param Name of the parameter
      * @param value Value of the parameter
-     * @throws IllegalArgumentException If {@code value} is {@code null}
+     * @throws NullPointerException If {@code value} is {@code null}
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
+            throw new NullPointerException(String.format(Locale.ROOT,
                 Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
@@ -435,7 +435,7 @@ public final class Utility {
      * @return a URL with the path appended.
      * @throws IllegalArgumentException If {@code name} causes the URL to become malformed.
      */
-    public static URL appendToURLPath(URL baseURL, String name) {
+    public static URL appendToURLPath(String baseURL, String name) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.getPath() == null) {
