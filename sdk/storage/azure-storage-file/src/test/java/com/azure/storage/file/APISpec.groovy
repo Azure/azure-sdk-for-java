@@ -10,9 +10,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.Configuration;
+import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-
 import com.azure.storage.file.FileClientBuilder
 import com.azure.storage.file.FileServiceAsyncClient
 import com.azure.storage.file.FileServiceClient
@@ -42,8 +41,8 @@ class APISpec extends Specification {
     // Test name for test method name.
     def methodName
 
-    static def testMode = getTestMode()
-    def connectionString
+    def testMode = getTestMode()
+    String connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false

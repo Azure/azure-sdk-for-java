@@ -27,7 +27,7 @@ import com.azure.storage.blob.implementation.models.DirectorysDeleteResponse;
 import com.azure.storage.blob.implementation.models.DirectorysGetAccessControlResponse;
 import com.azure.storage.blob.implementation.models.DirectorysRenameResponse;
 import com.azure.storage.blob.implementation.models.DirectorysSetAccessControlResponse;
-import com.azure.storage.blob.models.DataLakeStorageErrorException;
+import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PathRenameMode;
