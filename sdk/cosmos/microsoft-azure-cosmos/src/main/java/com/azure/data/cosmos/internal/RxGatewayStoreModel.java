@@ -17,6 +17,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -254,7 +255,10 @@ class RxGatewayStoreModel implements RxStoreModel {
                 contentObservable = Flux.just(StringUtils.EMPTY);
             } else {
                 // transforms the ByteBufFlux to Flux<String>
-                contentObservable = httpResponse.bodyAsString().flux();
+                contentObservable = httpResponse
+                    .bodyAsString()
+                    .switchIfEmpty(Mono.just(StringUtils.EMPTY))
+                    .flux();
             }
 
             return contentObservable
@@ -272,7 +276,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                     } catch (Exception e) {
                         return Flux.error(e);
                     }
-                }).single();
+                })
+                .single();
 
         }).map(RxDocumentServiceResponse::new)
                .onErrorResume(throwable -> {
