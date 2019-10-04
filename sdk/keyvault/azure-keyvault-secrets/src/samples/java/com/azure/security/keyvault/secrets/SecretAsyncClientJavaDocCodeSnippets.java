@@ -11,7 +11,7 @@ import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.util.context.Context;
 
 import java.time.OffsetDateTime;
@@ -79,18 +79,18 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#getSecret(SecretBase)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getSecret(SecretProperties)}
      */
     public void getSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.getSecret#secretBase
+        // BEGIN: com.azure.keyvault.secrets.secretclient.getSecret#secretProperties
         secretAsyncClient.listSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretBase -> secretAsyncClient.getSecret(secretBase)
+            .subscribe(secretProperties -> secretAsyncClient.getSecret(secretProperties)
                 .subscribe(secretResponse ->
                     System.out.printf("Secret is returned with name %s and value %s %n", secretResponse.getName(),
                         secretResponse.getValue())));
-        // END: com.azure.keyvault.secrets.secretclient.getSecret#secretBase
+        // END: com.azure.keyvault.secrets.secretclient.getSecret#secretProperties
 
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecret#string-string
         String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
@@ -111,18 +111,18 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#getSecretWithResponse(SecretBase)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getSecretWithResponse(SecretProperties)}
      */
     public void getSecretWithResponseCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretBase
+        // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties
         secretAsyncClient.listSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretBase -> secretAsyncClient.getSecretWithResponse(secretBase)
+            .subscribe(secretProperties -> secretAsyncClient.getSecretWithResponse(secretProperties)
                 .subscribe(secretResponse ->
                     System.out.printf("Secret is returned with name %s and value %s %n", secretResponse.getValue().getName(),
                         secretResponse.getValue().getValue())));
-        // END: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretBase
+        // END: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties
 
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string
         String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
@@ -141,7 +141,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.setSecret#secret
         Secret newSecret = new Secret("secretName", "secretValue").
-            setExpires(OffsetDateTime.now().plusDays(60));
+            setProperties(new SecretProperties().setExpires(OffsetDateTime.now().plusDays(60)));
         secretAsyncClient.setSecret(newSecret)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretResponse ->
@@ -165,7 +165,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.setSecretWithResponse#secret
         Secret newSecret = new Secret("secretName", "secretValue").
-            setExpires(OffsetDateTime.now().plusDays(60));
+            setProperties(new SecretProperties().setExpires(OffsetDateTime.now().plusDays(60)));
         secretAsyncClient.setSecretWithResponse(newSecret)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretResponse ->
@@ -175,43 +175,43 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#updateSecret(SecretBase)}
+     * Method to insert code snippets for {@link SecretAsyncClient#updateSecretProperties(SecretProperties)}
      */
     public void updateSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.updateSecret#secretBase
+        // BEGIN: com.azure.keyvault.secrets.secretclient.updateSecretProperties#secretProperties
         secretAsyncClient.getSecret("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretResponseValue -> {
-                Secret secret = secretResponseValue;
+                SecretProperties secretProperties = secretResponseValue.getProperties();
                 //Update the not before time of the secret.
-                secret.setNotBefore(OffsetDateTime.now().plusDays(50));
-                secretAsyncClient.updateSecret(secret)
+                secretProperties.setNotBefore(OffsetDateTime.now().plusDays(50));
+                secretAsyncClient.updateSecretProperties(secretProperties)
                     .subscribe(secretResponse ->
                         System.out.printf("Secret's updated not before time %s %n",
                             secretResponse.getNotBefore().toString()));
             });
-        // END: com.azure.keyvault.secrets.secretclient.updateSecret#secretBase
+        // END: com.azure.keyvault.secrets.secretclient.updateSecretProperties#secretProperties
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#updateSecretWithResponse(SecretBase)}
+     * Method to insert code snippets for {@link SecretAsyncClient#updateSecretPropertiesWithResponse(SecretProperties)}
      */
     public void updateSecretWithResponseCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.updateSecretWithResponse#secretBase
+        // BEGIN: com.azure.keyvault.secrets.secretclient.updateSecretPropertiesWithResponse#secretProperties
         secretAsyncClient.getSecret("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretResponseValue -> {
-                Secret secret = secretResponseValue;
+                SecretProperties secretProperties = secretResponseValue.getProperties();
                 //Update the not before time of the secret.
-                secret.setNotBefore(OffsetDateTime.now().plusDays(50));
-                secretAsyncClient.updateSecretWithResponse(secret)
+                secretProperties.setNotBefore(OffsetDateTime.now().plusDays(50));
+                secretAsyncClient.updateSecretPropertiesWithResponse(secretProperties)
                     .subscribe(secretResponse ->
                         System.out.printf("Secret's updated not before time %s %n",
                             secretResponse.getValue().getNotBefore().toString()));
             });
-        // END: com.azure.keyvault.secrets.secretclient.updateSecretWithResponse#secretBase
+        // END: com.azure.keyvault.secrets.secretclient.updateSecretPropertiesWithResponse#secretProperties
     }
 
     /**
@@ -379,7 +379,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecrets
         secretAsyncClient.listSecrets()
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretBase -> secretAsyncClient.getSecret(secretBase)
+            .subscribe(secretProperties -> secretAsyncClient.getSecret(secretProperties)
                 .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
                     secretResponse.getName(), secretResponse.getValue())));
         // END: com.azure.keyvault.secrets.secretclient.listSecrets
@@ -406,7 +406,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secrets.secretclient.listSecretVersions#string
         secretAsyncClient.listSecretVersions("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(secretBase -> secretAsyncClient.getSecret(secretBase)
+            .subscribe(secretProperties -> secretAsyncClient.getSecret(secretProperties)
                 .subscribe(secretResponse -> System.out.printf("Received secret with name %s and type %s",
                     secretResponse.getName(), secretResponse.getValue())));
         // END: com.azure.keyvault.secrets.secretclient.listSecretVersions#string

@@ -28,7 +28,7 @@ import com.azure.security.keyvault.secrets.implementation.DeletedSecretPage;
 import com.azure.security.keyvault.secrets.implementation.SecretBasePage;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Mono;
 
 /**
@@ -70,14 +70,14 @@ interface SecretService {
     @Patch("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<SecretBase>> updateSecret(@HostParam("url") String url,
-                                            @PathParam("secret-name") String secretName,
-                                            @PathParam("secret-version") String secretVersion,
-                                            @QueryParam("api-version") String apiVersion,
-                                            @HeaderParam("accept-language") String acceptLanguage,
-                                            @BodyParam("body") SecretRequestParameters parameters,
-                                            @HeaderParam("Content-Type") String type,
-                                            Context context);
+    Mono<Response<SecretProperties>> updateSecret(@HostParam("url") String url,
+                                                  @PathParam("secret-name") String secretName,
+                                                  @PathParam("secret-version") String secretVersion,
+                                                  @QueryParam("api-version") String apiVersion,
+                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                  @BodyParam("body") SecretRequestParameters parameters,
+                                                  @HeaderParam("Content-Type") String type,
+                                                  Context context);
 
 
     @Delete("secrets/{secret-name}")
@@ -156,36 +156,36 @@ interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretBasePage.class)
-    Mono<PagedResponse<SecretBase>> getSecrets(@HostParam("url") String url,
-                                               @QueryParam("maxresults") Integer maxresults,
-                                               @QueryParam("api-version") String apiVersion,
-                                               @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type,
-                                               Context context);
+    Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
+                                                     @QueryParam("maxresults") Integer maxresults,
+                                                     @QueryParam("api-version") String apiVersion,
+                                                     @HeaderParam("accept-language") String acceptLanguage,
+                                                     @HeaderParam("Content-Type") String type,
+                                                     Context context);
 
 
     @Get("secrets/{secret-name}/versions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretBasePage.class)
-    Mono<PagedResponse<SecretBase>> getSecretVersions(@HostParam("url") String url,
-                                                      @PathParam("secret-name") String secretName,
-                                                      @QueryParam("maxresults") Integer maxresults,
-                                                      @QueryParam("api-version") String apiVersion,
-                                                      @HeaderParam("accept-language") String acceptLanguage,
-                                                      @HeaderParam("Content-Type") String type,
-                                                      Context context);
+    Mono<PagedResponse<SecretProperties>> getSecretVersions(@HostParam("url") String url,
+                                                            @PathParam("secret-name") String secretName,
+                                                            @QueryParam("maxresults") Integer maxresults,
+                                                            @QueryParam("api-version") String apiVersion,
+                                                            @HeaderParam("accept-language") String acceptLanguage,
+                                                            @HeaderParam("Content-Type") String type,
+                                                            Context context);
 
 
     @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretBasePage.class)
-    Mono<PagedResponse<SecretBase>> getSecrets(@HostParam("url") String url,
-                                               @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                               @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type,
-                                               Context context);
+    Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
+                                                     @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                     @HeaderParam("accept-language") String acceptLanguage,
+                                                     @HeaderParam("Content-Type") String type,
+                                                     Context context);
 
 
     @Get("deletedsecrets")

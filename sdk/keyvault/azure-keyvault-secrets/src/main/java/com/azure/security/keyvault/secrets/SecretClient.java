@@ -12,7 +12,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.util.List;
 
@@ -46,9 +46,9 @@ public final class SecretClient {
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, a new version of the
      * secret is created in the key vault. This operation requires the {@code secrets/set} permission.
      *
-     * <p>The {@link Secret} is required. The {@link Secret#getExpires() expires}, {@link Secret#getContentType() contentType}
+     * <p>The {@link Secret} is required. The {@link SecretProperties#getExpires() expires}, {@link SecretProperties#getContentType() contentType}
      * and
-     * {@link Secret#getNotBefore() notBefore} values in {@code secret} are optional. The {@link Secret#isEnabled() enabled}
+     * {@link SecretProperties#getNotBefore() notBefore} values in {@code secret} are optional. The {@link SecretProperties#isEnabled() enabled}
      * field is set to true by key vault, if not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -128,48 +128,48 @@ public final class SecretClient {
     }
 
     /**
-     * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable
+     * Get the secret which represents {@link SecretProperties secretProperties} from the key vault. The get operation is applicable
      * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)}
-     * return the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of
+     * return the {@link List} containing {@link SecretProperties base secret} as output excluding the include the value of
      * the secret.
-     * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
+     * This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
      * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#secretBase}
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#secretProperties}
      *
-     * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
+     * @param secretProperties The {@link SecretProperties base secret} holding attributes of the secret being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Secret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
-     *     SecretBase#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#getName()  name} or {@link SecretBase#getVersion() version} is empty
+     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
+     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretProperties#getName()  name} or {@link SecretProperties#getVersion() version} is empty
      *     string.
      */
-    public Response<Secret> getSecretWithResponse(SecretBase secretBase, Context context) {
-        return client.getSecretWithResponse(secretBase, context).block();
+    public Response<Secret> getSecretWithResponse(SecretProperties secretProperties, Context context) {
+        return client.getSecretWithResponse(secretProperties, context).block();
     }
 
     /**
-     * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable
+     * Get the secret which represents {@link SecretProperties secretProperties} from the key vault. The get operation is applicable
      * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)}
-     * return the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of
+     * return the {@link List} containing {@link SecretProperties base secret} as output excluding the include the value of
      * the secret.
-     * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
+     * This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
      * <p><strong>Code Samples</strong></p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretBase}
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretProperties}
      *
-     * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
+     * @param secretProperties The {@link SecretProperties base secret} holding attributes of the secret being requested.
      * @return The requested {@link Secret secret}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
-     *     SecretBase#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#getName()  name} or {@link SecretBase#getVersion() version} is
+     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
+     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretProperties#getName()  name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
-    public Secret getSecret(SecretBase secretBase) {
-        return getSecretWithResponse(secretBase, Context.NONE).getValue();
+    public Secret getSecret(SecretProperties secretProperties) {
+        return getSecretWithResponse(secretProperties, Context.NONE).getValue();
     }
 
     /**
@@ -218,25 +218,25 @@ public final class SecretClient {
      * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
      * requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secret} is required and its fields {@link SecretBase#getName() name} and {@link SecretBase#getVersion()
+     * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and {@link SecretProperties#getVersion()
      * version} cannot be null.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret, changes its expiry time and the updates the secret in the key vault.
      * </p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretWithResponse#secretBase-Context}
+     * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretPropertiesWithResponse#secretProperties-Context}
      *
-     * @param secret The {@link SecretBase base secret} object with updated properties.
+     * @param secret The {@link SecretProperties base secret} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link SecretBase updated secret}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
-     *     SecretBase#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#getName() name} or {@link SecretBase#getVersion() version} is
+     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
+     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretProperties#getName() name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
-    public Response<SecretBase> updateSecretWithResponse(SecretBase secret, Context context) {
-        return client.updateSecretWithResponse(secret, context).block();
+    public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secret, Context context) {
+        return client.updateSecretPropertiesWithResponse(secret, context).block();
     }
 
     /**
@@ -245,24 +245,24 @@ public final class SecretClient {
      * specified in the request are left unchanged. The value of a secret itself cannot be changed. This operation
      * requires the {@code secrets/set} permission.
      *
-     * <p>The {@code secret} is required and its fields {@link SecretBase#getName() name} and {@link SecretBase#getVersion()
+     * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and {@link SecretProperties#getVersion()
      * version} cannot be null.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret, changes its expiry time and the updates the secret in the key
      * vault.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.updateSecret#secretBase}
+     * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretProperties#secretProperties}
      *
-     * @param secret The {@link SecretBase base secret} object with updated properties.
-     * @return The {@link SecretBase updated secret}.
+     * @param secret The {@link SecretProperties base secret} object with updated properties.
+     * @return The {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
-     * @throws ResourceNotFoundException when a secret with {@link SecretBase#getName() name} and {@link
-     *     SecretBase#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link SecretBase#getName() name} or {@link SecretBase#getVersion() version} is
+     * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
+     *     SecretProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretProperties#getName() name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
-    public SecretBase updateSecret(SecretBase secret) {
-        return updateSecretWithResponse(secret, Context.NONE).getValue();
+    public SecretProperties updateSecretProperties(SecretProperties secret) {
+        return updateSecretPropertiesWithResponse(secret, Context.NONE).getValue();
     }
 
     /**
@@ -507,45 +507,45 @@ public final class SecretClient {
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response in the list is represented by {@link SecretBase} as only the base secret identifier and its
+     * secret response in the list is represented by {@link SecretProperties} as only the base secret identifier and its
      * attributes are provided in the response. The secret values and individual secret versions are not listed in the
      * response. This operation requires the {@code secrets/list} permission.
      *
-     * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret}
-     * and call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
+     * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretProperties secret}
+     * and call {@link SecretClient#getSecret(SecretProperties baseSecret)} . This will return the {@link Secret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
-     * <p>It is possible to get full secrets with values from this information. Iterate over all the {@link SecretBase
-     * secret} by page and call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the
+     * <p>It is possible to get full secrets with values from this information. Iterate over all the {@link SecretProperties
+     * secret} by page and call {@link SecretClient#getSecret(SecretProperties baseSecret)} . This will return the
      * {@link Secret secret} with value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets.iterableByPage}
      *
-     * @return {@link PagedIterable} of {@link SecretBase} of all the secrets in the vault. The {@link SecretBase}
+     * @return {@link PagedIterable} of {@link SecretProperties} of all the secrets in the vault. The {@link SecretProperties}
      *     contains all the information about the secret, except its value.
      */
-    public PagedIterable<SecretBase> listSecrets() {
+    public PagedIterable<SecretProperties> listSecrets() {
         return listSecrets(Context.NONE);
     }
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response in the list is represented by {@link SecretBase} as only the base secret identifier and its
+     * secret response in the list is represented by {@link SecretProperties} as only the base secret identifier and its
      * attributes are provided in the response. The secret values and individual secret versions are not listed in the
      * response. This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples to iterate over secrets by page</strong></p>
-     * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret}
-     * and call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with
+     * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretProperties secret}
+     * and call {@link SecretClient#getSecret(SecretProperties baseSecret)} . This will return the {@link Secret secret} with
      * value included of its latest version.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.*
-     * @return {@link PagedIterable} of {@link SecretBase} of all the secrets in the vault. The {@link SecretBase}
+     * @return {@link PagedIterable} of {@link SecretProperties} of all the secrets in the vault. The {@link SecretProperties}
      *     contains all the information about the secret, except its value.
      */
-    public PagedIterable<SecretBase> listSecrets(Context context) {
+    public PagedIterable<SecretProperties> listSecrets(Context context) {
         return new PagedIterable<>(client.listSecrets(context));
     }
 
@@ -587,49 +587,49 @@ public final class SecretClient {
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link
-     * SecretBase} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * SecretProperties} as only the base secret identifier and its attributes are provided in the response. The secret values
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretBase secret} and call {@link SecretClient#getSecret(SecretBase)}. This will return the
+     * SecretProperties secret} and call {@link SecretClient#getSecret(SecretProperties)}. This will return the
      * {@link Secret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string}
      *
      * @param name The name of the secret.
-     * @return {@link PagedIterable} of {@link SecretBase} of all the versions of the specified secret in the vault.
+     * @return {@link PagedIterable} of {@link SecretProperties} of all the versions of the specified secret in the vault.
      *     List is empty if secret with {@code name} does not exist in key vault
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public PagedIterable<SecretBase> listSecretVersions(String name) {
+    public PagedIterable<SecretProperties> listSecretVersions(String name) {
         return listSecretVersions(name, Context.NONE);
     }
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link
-     * SecretBase} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * SecretProperties} as only the base secret identifier and its attributes are provided in the response. The secret values
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
-     * SecretBase secret} and call {@link SecretClient#getSecret(SecretBase)} . This will return the
+     * SecretProperties secret} and call {@link SecretClient#getSecret(SecretProperties)} . This will return the
      * {@link Secret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      *
      * <p><strong>Code Samples to iterate over secret versions by page</strong></p>
      * <p>It is possible to get full Secrets with values for each version from this information. Iterate over all the
-     * {@link SecretBase secret} by each page and call {@link SecretClient#getSecret(SecretBase)} . This will return the
+     * {@link SecretProperties secret} by each page and call {@link SecretClient#getSecret(SecretProperties)} . This will return the
      * {@link Secret secrets} with values included of the specified versions.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage}
      *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link PagedIterable} of {@link SecretBase} of all the versions of the specified secret in the vault.
+     * @return {@link PagedIterable} of {@link SecretProperties} of all the versions of the specified secret in the vault.
      *     List is empty if secret with {@code name} does not exist in key vault
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public PagedIterable<SecretBase> listSecretVersions(String name, Context context) {
+    public PagedIterable<SecretProperties> listSecretVersions(String name, Context context) {
         return new PagedIterable<>(client.listSecretVersions(name, context));
     }
 }

@@ -17,6 +17,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -100,10 +101,11 @@ public abstract class SecretClientTestBase extends TestBase {
         tags.put("foo", "baz");
 
         final Secret secret = new Secret(SECRET_NAME, SECRET_VALUE)
-            .setExpires(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
-            .setTags(tags)
-            .setContentType("text");
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+                .setTags(tags)
+                .setContentType("text"));
 
         testRunner.accept(secret);
     }
@@ -131,12 +133,14 @@ public abstract class SecretClientTestBase extends TestBase {
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
         final Secret originalSecret = new Secret("testSecretUpdate", "testSecretVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setTags(tags);
+                .setProperties(new SecretProperties()
+                    .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                    .setTags(tags));
 
         final Secret updatedSecret = new Secret("testSecretUpdate", "testSecretVal")
+            .setProperties(new SecretProperties()
                 .setExpires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setTags(tags);
+                .setTags(tags));
 
         testRunner.accept(originalSecret, updatedSecret);
     }
@@ -146,16 +150,17 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void updateDisabledSecret();
 
     void updateDisabledSecretRunner(BiConsumer<Secret, Secret> testRunner) {
-
         final Map<String, String> tags = new HashMap<>();
 
         final Secret originalSecret = new Secret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
+            .setProperties(new SecretProperties()
                 .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setEnabled(false);
+                .setEnabled(false));
 
         final Secret updatedSecret = new Secret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
-                .setExpires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
-
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setEnabled(false));
         testRunner.accept(originalSecret, updatedSecret);
     }
 
@@ -164,8 +169,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void getSecretRunner(Consumer<Secret> testRunner) {
         final Secret originalSecret = new Secret("testSecretGet", "testSecretGetVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
-
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(originalSecret);
     }
 
@@ -174,11 +179,12 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void getSecretSpecificVersionRunner(BiConsumer<Secret, Secret> testRunner) {
         final Secret secret = new Secret("testSecretGetVersion", "testSecretGetVersionVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         final Secret secretWithNewVal = new Secret("testSecretGetVersion", "newVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
-
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secret, secretWithNewVal);
     }
 
@@ -190,8 +196,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void deleteSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToDelete = new Secret("testSecretDelete", "testSecretDeleteVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
-
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToDelete);
     }
 
@@ -204,7 +210,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void getDeletedSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToDeleteAndGet = new Secret("testSecretGetDeleted", "testSecretGetDeleteVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToDeleteAndGet);
     }
 
@@ -216,7 +223,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void recoverDeletedSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToDeleteAndRecover = new Secret("testSecretRecover", "testSecretRecoverVal")
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToDeleteAndRecover);
     }
 
@@ -228,7 +236,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void backupSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToBackup = new Secret("testSecretBackup", "testSecretBackupVal")
-                .setExpires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToBackup);
     }
 
@@ -240,7 +249,8 @@ public abstract class SecretClientTestBase extends TestBase {
 
     void restoreSecretRunner(Consumer<Secret> testRunner) {
         final Secret secretToBackupAndRestore = new Secret("testSecretRestore", "testSecretRestoreVal")
-                .setExpires(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToBackupAndRestore);
     }
 
@@ -258,7 +268,8 @@ public abstract class SecretClientTestBase extends TestBase {
             secretName = "listSecret" + i;
             secretVal = "listSecretVal" + i;
             Secret secret =  new Secret(secretName, secretVal)
-                    .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+                .setProperties(new SecretProperties()
+                    .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
             secrets.put(secretName, secret);
         }
         testRunner.accept(secrets);
@@ -275,8 +286,8 @@ public abstract class SecretClientTestBase extends TestBase {
             secretName = "listDeletedSecretsTest" + i;
             secretVal = "listDeletedSecretVal" + i;
             secrets.put(secretName, new Secret(secretName, secretVal)
-                    .setExpires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-
+                .setProperties(new SecretProperties()
+                    .setExpires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
         testRunner.accept(secrets);
     }
@@ -293,7 +304,8 @@ public abstract class SecretClientTestBase extends TestBase {
             secretName = "listSecretVersion";
             secretVal = "listSecretVersionVal" + i;
             secrets.add(new Secret(secretName, secretVal)
-                    .setExpires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setProperties(new SecretProperties()
+                    .setExpires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
         testRunner.accept(secrets);
     }
@@ -331,8 +343,8 @@ public abstract class SecretClientTestBase extends TestBase {
     static void assertSecretEquals(Secret expected, Secret actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getValue(), actual.getValue());
-        assertEquals(expected.getExpires(), actual.getExpires());
-        assertEquals(expected.getNotBefore(), actual.getNotBefore());
+        assertEquals(expected.getProperties().getExpires(), actual.getProperties().getExpires());
+        assertEquals(expected.getProperties().getNotBefore(), actual.getProperties().getNotBefore());
     }
 
     public String getEndpoint() {
