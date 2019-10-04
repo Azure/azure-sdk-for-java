@@ -75,7 +75,7 @@ public final class Utility {
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
-    public static TreeMap<String, String> parseQueryString(final String queryString) {
+    public static Map<String, String> parseQueryString(final String queryString) {
         return parseQueryStringHelper(queryString, Utility::urlDecode);
     }
 
@@ -86,11 +86,11 @@ public final class Utility {
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
-    public static TreeMap<String, String[]> parseQueryStringSplitValues(final String queryString) {
+    public static Map<String, String[]> parseQueryStringSplitValues(final String queryString) {
         return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
-    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString,
+    private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
         Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
