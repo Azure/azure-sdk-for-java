@@ -16,7 +16,7 @@ and
 - Updated the return type of `downloadToFile` API to `FileProperties` on sync API and `Mono<FileProperties>` on async API.
 - `getFileServiceUrl`, `getShareUrl`, `getDirectoryUrl`, `getFileUrl` API now returns URL with scheme, host, resource name and snapshot if any.
 - Removed SAS token generation APIs from clients, use FileServiceSasSignatureValues to generate SAS tokens. 
-- Removed SASTokenCredential and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 ## Version 12.0.0-preview.3 (2019-09-10):
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).

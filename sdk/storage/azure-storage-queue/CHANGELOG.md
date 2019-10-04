@@ -14,7 +14,7 @@ and
 - Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
 - `getQueueServiceUrl`, `getQueueUrl` API now returns URL with scheme, host, resource name and snapshot if any.
 - Removed SAS token generation APIs from clients, use QueueServiceSasSignatureValues to generate SAS tokens. 
-- Removed SASTokenCredential and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 
 
