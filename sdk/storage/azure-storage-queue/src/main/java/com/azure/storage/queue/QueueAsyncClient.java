@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.queue.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -11,8 +14,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -28,17 +29,13 @@ import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.queue.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.

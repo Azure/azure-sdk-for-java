@@ -12,11 +12,6 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
-import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;

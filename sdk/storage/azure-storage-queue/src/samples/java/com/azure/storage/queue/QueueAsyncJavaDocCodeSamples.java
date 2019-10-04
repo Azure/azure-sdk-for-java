@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

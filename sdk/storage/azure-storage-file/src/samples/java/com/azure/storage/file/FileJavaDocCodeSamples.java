@@ -4,9 +4,6 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -18,7 +15,6 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.NtfsFileAttributes;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;

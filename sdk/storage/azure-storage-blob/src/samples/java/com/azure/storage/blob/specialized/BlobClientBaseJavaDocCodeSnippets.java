@@ -17,9 +17,6 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
-
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;

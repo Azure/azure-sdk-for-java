@@ -3,18 +3,11 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
-import com.azure.storage.common.AccountSasPermission;
-import com.azure.storage.common.AccountSasResourceType;
-import com.azure.storage.common.AccountSasService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;

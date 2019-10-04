@@ -4,9 +4,6 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
@@ -14,7 +11,6 @@ import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.UpdatedMessage;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
