@@ -18,11 +18,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * AsyncKeyEncryptionKey KeyRncryptionRey async client} and {@link KeyEncryptionKey KeyEncryptionKey sync client},
+ * AsyncKeyEncryptionKey KeyEncryptionRey async client} and {@link KeyEncryptionKey KeyEncryptionKey sync client},
  * by calling {@link KeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(String)} and {@link
  * KeyEncryptionKeyClientBuilder#buildKeyEncryptionKey(String)} respectively
  * It constructs an instance of the desired client.
@@ -90,86 +88,54 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests.
-     *
-     * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated {@link KeyEncryptionKeyClientBuilder} object.
-     * @throws NullPointerException if {@code credential} is {@code null}.
+     * {@inheritDoc}
      */
+    @Override
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential);
-        this.credential = credential;
+        super.credential(credential);
         return this;
     }
 
     /**
-     * Sets the logging level for HTTP requests and responses.
-     *
-     * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
-     *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated {@link KeyEncryptionKeyClientBuilder} object.
-     * @throws NullPointerException if {@code logLevel} is {@code null}.
+     * {@inheritDoc}
      */
+    @Override
     public KeyEncryptionKeyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        Objects.requireNonNull(logLevel);
-        httpLogDetailLevel = logLevel;
+        super.httpLogDetailLevel(logLevel);
         return this;
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after {@link KeyEncryptionKeyAsyncClient} and {@link
-     * KeyEncryptionKeyClient} required policies.
-     *
-     * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated {@link KeyEncryptionKeyClientBuilder} object.
-     * @throws NullPointerException if {@code policy} is {@code null}.
+     * {@inheritDoc}
      */
+    @Override
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
-        policies.add(policy);
+        super.addPolicy(policy);
         return this;
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param client The HTTP client to use for requests.
-     * @return the updated {@link KeyEncryptionKeyClientBuilder} object.
-     * @throws NullPointerException If {@code client} is {@code null}.
+     * {@inheritDoc}
      */
     public KeyEncryptionKeyClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
-        this.httpClient = client;
+        super.httpClient(client);
         return this;
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
-     *
-     * If {@code pipeline} is set, all other settings are ignored to build {@link AsyncKeyEncryptionKey} or
-     * {@link KeyEncryptionKey}.
-     *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the updated {@link KeyEncryptionKeyClientBuilder} object.
+     * {@inheritDoc}
      */
     public KeyEncryptionKeyClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
-        this.pipeline = pipeline;
+        super.pipeline(pipeline);
         return this;
     }
 
     /**
-     * Sets the configuration store that is used during construction of the service client.
-     *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
-     * @return The updated KeyEncryptionKeyClientBuilder object.
+     * {@inheritDoc}
      */
+    @Override
     public KeyEncryptionKeyClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        super.configuration(configuration);
         return this;
     }
 }

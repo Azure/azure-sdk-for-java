@@ -179,7 +179,7 @@ public class CryptographyClientBuilder {
      * cryptography operations.</p>
      *
      * @param keyId The jsonWebKey identifier representing the jsonWebKey stored in jsonWebKey vault.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         this.keyId = keyId;
@@ -193,7 +193,7 @@ public class CryptographyClientBuilder {
      * operations.</p>
      *
      * @param jsonWebKey The Json web jsonWebKey to be used for cryptography operations.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
         this.jsonWebKey = jsonWebKey;
@@ -204,7 +204,7 @@ public class CryptographyClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public CryptographyClientBuilder credential(TokenCredential credential) {
@@ -219,7 +219,7 @@ public class CryptographyClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public CryptographyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -229,11 +229,10 @@ public class CryptographyClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after {@link CryptographyAsyncClient} and {@link
-     * CryptographyClient} required policies.
+     * Adds a policy to the set of existing policies that are executed after the client required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -246,7 +245,7 @@ public class CryptographyClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CryptographyClientBuilder httpClient(HttpClient client) {
@@ -258,13 +257,11 @@ public class CryptographyClientBuilder {
     /**
      * Sets the HTTP pipeline to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier} or {@link
-     * CryptographyClientBuilder#jsonWebKey(JsonWebKey) json web jsonWebKey} to build {@link CryptographyClient} or
-     * {@link CryptographyAsyncClient}.
+     * If {@code pipeline} is set, all other settings are ignored, aside from jsonWebKey identifier
+     * or jsonWebKey to build the clients.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
@@ -279,7 +276,7 @@ public class CryptographyClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated CryptographyClientBuilder object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

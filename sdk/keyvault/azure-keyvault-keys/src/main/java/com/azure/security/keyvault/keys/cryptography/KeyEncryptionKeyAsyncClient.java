@@ -16,11 +16,11 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
     /**
      * Creates a KeyEncryptionKeyAsyncClient that uses {@code pipeline} to service requests
      *
-     * @param kid The identifier of the key to use for cryptography operations.
+     * @param keyId The identifier of the key to use for cryptography operations.
      * @param pipeline The HttpPipeline that the HTTP requests and responses flow through.
      */
-    KeyEncryptionKeyAsyncClient(String kid, HttpPipeline pipeline) {
-        super(kid, pipeline);
+    KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline) {
+        super(keyId, pipeline);
     }
 
     /**
