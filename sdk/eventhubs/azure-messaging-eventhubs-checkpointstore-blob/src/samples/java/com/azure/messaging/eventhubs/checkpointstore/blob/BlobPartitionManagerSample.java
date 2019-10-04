@@ -6,8 +6,8 @@ package com.azure.messaging.eventhubs.checkpointstore.blob;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import com.azure.storage.blob.ContainerAsyncClient;
-import com.azure.storage.blob.ContainerClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import java.util.StringJoiner;
 
@@ -25,14 +25,14 @@ public class BlobPartitionManagerSample {
      */
     public static void main(String[] args) throws Exception {
         SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString("");
-        ContainerAsyncClient containerAsyncClient = new ContainerClientBuilder()
+        BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString("")
             .containerName("")
             .credential(sasTokenCredential)
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildAsyncClient();
 
-        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
+        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
         blobPartitionManager.listOwnership("abc", "xyz")
             .subscribe(BlobPartitionManagerSample::printPartitionOwnership);
 

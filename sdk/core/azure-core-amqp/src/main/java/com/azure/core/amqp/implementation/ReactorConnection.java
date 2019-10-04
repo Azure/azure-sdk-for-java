@@ -109,7 +109,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
     }
 
     @Override
-    public String getIdentifier() {
+    public String getId() {
         return connectionId;
     }
 
@@ -117,7 +117,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
      * {@inheritDoc}
      */
     @Override
-    public String getHost() {
+    public String getHostname() {
         return handler.getHostname();
     }
 
@@ -148,8 +148,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
         }
 
         return connectionMono.map(connection -> sessionMap.computeIfAbsent(sessionName, key -> {
-            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHost(), sessionName,
-                connectionOptions.getRetry().getTryTimeout());
+            final SessionHandler handler = handlerProvider.createSessionHandler(connectionId, getHostname(),
+                sessionName, connectionOptions.getRetry().getTryTimeout());
             final Session session = connection.session();
 
             BaseHandler.setHandler(session, handler);
@@ -220,7 +220,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
                                                                         String entityPath) {
         return createSession(sessionName)
             .cast(ReactorSession.class)
-            .map(reactorSession -> new RequestResponseChannel(getIdentifier(), getHost(), linkName, entityPath,
+            .map(reactorSession -> new RequestResponseChannel(getId(), getHostname(), linkName, entityPath,
                 reactorSession.session(), connectionOptions.getRetry(), handlerProvider,
                 reactorProvider, messageSerializer));
     }
