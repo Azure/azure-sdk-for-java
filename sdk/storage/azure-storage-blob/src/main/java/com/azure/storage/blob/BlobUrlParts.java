@@ -50,7 +50,7 @@ public final class BlobUrlParts {
     }
 
     /**
-     * Sets the account name.".
+     * Sets the account name.
      *
      * @param accountName The account name.
      * @return the updated BlobURLParts object.
