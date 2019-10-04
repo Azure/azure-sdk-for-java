@@ -52,7 +52,7 @@ namespace HttpMock
                 Console.WriteLine(responseMessage);
                 Console.WriteLine();
             }
-            else if (!Program.Options.Trace)
+            else if (!Program.Options.Trace && !Program.Options.Silent)
             {
                 if (cached)
                 {

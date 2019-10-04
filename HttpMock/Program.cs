@@ -22,6 +22,9 @@ namespace HttpMock
             [Option("debug")]
             public bool Debug { get; set; }
 
+            [Option("silent")]
+            public bool Silent { get; set; }
+
             [Option("trace")]
             public bool Trace { get; set; }
         }
