@@ -290,8 +290,7 @@ public final class BlobBatch {
     }
 
     private void sendCallback(HttpRequest request) {
-        HttpHeaders headers = request.getHeaders();
-        int contentId = Integer.parseInt(headers.getValue(CONTENT_ID));
+        int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
 
         StringBuilder batchRequestBuilder = new StringBuilder();
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
@@ -308,7 +307,8 @@ public final class BlobBatch {
         }
         appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
-        headers.stream().filter(header -> Constants.HeaderConstants.VERSION.equalsIgnoreCase(header.getName()))
+        request.getHeaders().stream()
+            .filter(header -> !Constants.HeaderConstants.VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
@@ -324,6 +324,10 @@ public final class BlobBatch {
     }
 
     Flux<ByteBuffer> getBody() {
+        if (batchOperationQueue.isEmpty()) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException("Empty batch requests aren't allowed."));
+        }
+
         while (!batchOperationQueue.isEmpty()) {
             Mono<? extends Response> batchOperation = batchOperationQueue.pop();
             Disposable disposable = batchOperation.subscribe();
@@ -357,11 +361,18 @@ public final class BlobBatch {
         return this.batchMapping.get(contentId);
     }
 
+    /*
+     * Enum class that indicates which type of operation this batch is using.
+     */
     private enum BlobBatchType {
         DELETE,
         SET_TIER
     }
 
+    /*
+     * This HttpClient is a dummy client that simply triggers the batch operation request to be written into the
+     * overall batch request.
+     */
     private static class BatchClient implements HttpClient {
         private final Consumer<HttpRequest> sendCallback;
 
@@ -371,19 +382,30 @@ public final class BlobBatch {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
+            // Trigger the batch operation request to be added into the overall batch.
             sendCallback.accept(request);
             return Mono.empty();
         }
     }
 
+    /*
+     * This HttpPipelinePolicy performs some cleanup operations that would be handled when the request is sent through
+     * Netty or OkHttp. Additionally, it removed the "x-ms-version" header from the request as batch operation request
+     * cannot have this and it adds the header "Content-Id" that allows for the request to be mapped to the response.
+     */
     private static class BatchHeadersPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            // Remove the "x-ms-header" as it shouldn't be included in the batch operation request.
+            context.getHttpRequest().getHeaders().remove(Constants.HeaderConstants.VERSION);
+
+            // Remove any null headers (this is done in Netty and OkHttp normally).
             Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
-            headers.remove(Constants.HeaderConstants.VERSION);
             headers.entrySet().removeIf(header -> header.getValue() == null);
 
             context.getHttpRequest().setHeaders(new HttpHeaders(headers));
+
+            // Add the "Content-Id" header which allows this request to be mapped to the response.
             context.getHttpRequest().setHeader(CONTENT_ID, context.getData(BATCH_REQUEST_CONTENT_ID).get().toString());
             return next.process();
         }

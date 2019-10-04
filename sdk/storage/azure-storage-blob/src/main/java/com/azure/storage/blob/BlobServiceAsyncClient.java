@@ -514,19 +514,26 @@ public final class BlobServiceAsyncClient {
             .flatMap(byteArrayBody -> {
                 String body = new String(byteArrayBody, StandardCharsets.UTF_8);
 
+                // Split the batch response body into batch operation responses.
                 for (String subResponse : body.split("--" + boundary)) {
                     // This is a split value that isn't a response.
                     if (!subResponse.contains("application/http")) {
                         continue;
                     }
 
+                    // The batch operation response will be delimited by two new lines.
                     String[] subResponseSections = subResponse.split("\r\n\r\n");
 
+                    // The first section will contain batching metadata.
                     BlobBatchOperationResponse batchOperationResponse =
                         getBatchOperation(batch, subResponseSections[0]);
+
+                    // The second section will contain status code and header information.
                     setStatusCodeAndHeaders(batchOperationResponse, subResponseSections[1]);
 
+                    // The third section will contain the body.
                     if (subResponseSections.length >2) {
+                        // The body is optional and may not exist.
                         setBodyOrPotentiallyThrow(batchOperationResponse, subResponseSections[2], throwOnAnyFailure);
                     }
                 }
@@ -542,8 +549,8 @@ public final class BlobServiceAsyncClient {
         if (contentIdMatcher.find()) {
             contentId = Integer.parseInt(contentIdMatcher.group(1));
         } else {
-            // TODO: Should this fail here?
-            contentId = 0;
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Batch operation response doesn't contain a 'Content-Id' header."));
         }
 
         return batch.getBatchRequest(contentId).setResponseReceived();
