@@ -8,7 +8,7 @@ import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -47,7 +47,7 @@ public final class BlobServiceSasSignatureValues {
 
     private String permissions;
 
-    private IPRange ipRange;
+    private IpRange ipRange;
 
     private String canonicalName;
 
@@ -94,8 +94,8 @@ public final class BlobServiceSasSignatureValues {
     }
 
     public BlobServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+            OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
+            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
             this.version = version;
         }
@@ -207,19 +207,19 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange getIpRange() {
+    public IpRange getIpRange() {
         return ipRange;
     }
 
     /**
-     * Sets the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @param ipRange Allowed IP range to set
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSasSignatureValues setIpRange(IPRange ipRange) {
+    public BlobServiceSasSignatureValues setIpRange(IpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }

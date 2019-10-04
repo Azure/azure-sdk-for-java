@@ -8,7 +8,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CloseReason;

@@ -7,26 +7,26 @@ package com.azure.storage.common;
  * This type specifies a continuous range of IP addresses. It is used to limit permissions on SAS tokens. Null may be
  * set if it is not desired to confine the sas permissions to an IP range.
  */
-public final class IPRange {
+public final class IpRange {
     private String ipMin;
     private String ipMax;
 
     /**
-     * Constructs an IPRange object.
+     * Constructs an IpRange object.
      */
-    public IPRange() {
+    public IpRange() {
     }
 
     /**
-     * Creates a {@code IPRange} from the specified string.
+     * Creates a {@code IpRange} from the specified string.
      *
-     * @param rangeStr The {@code String} representation of the {@code IPRange}.
-     * @return The {@code IPRange} generated from the {@code String}.
+     * @param rangeStr The {@code String} representation of the {@code IpRange}.
+     * @return The {@code IpRange} generated from the {@code String}.
      */
-    public static IPRange parse(String rangeStr) {
+    public static IpRange parse(String rangeStr) {
         String[] addrs = rangeStr.split("-");
 
-        IPRange range = new IPRange().setIpMin(addrs[0]);
+        IpRange range = new IpRange().setIpMin(addrs[0]);
         if (addrs.length > 1) {
             range.setIpMax(addrs[1]);
         }
@@ -45,9 +45,9 @@ public final class IPRange {
      * Sets the minimum IP address of the range.
      *
      * @param ipMin IP address to set as the minimum
-     * @return the updated IPRange object
+     * @return the updated IpRange object
      */
-    public IPRange setIpMin(String ipMin) {
+    public IpRange setIpMin(String ipMin) {
         this.ipMin = ipMin;
         return this;
     }
@@ -63,9 +63,9 @@ public final class IPRange {
      * Sets the maximum IP address of the range.
      *
      * @param ipMax IP address to set as the maximum
-     * @return the updated IPRange object
+     * @return the updated IpRange object
      */
-    public IPRange setIpMax(String ipMax) {
+    public IpRange setIpMax(String ipMax) {
         this.ipMax = ipMax;
         return this;
     }
