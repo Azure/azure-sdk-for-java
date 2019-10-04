@@ -96,7 +96,7 @@ public class RestProxyStressTests {
             polices.add(new HostPolicy("http://localhost:" + port));
         }
         //
-        polices.add(new HttpLoggingPolicy(new HttpLogOptions(HttpLogDetailLevel.BASIC), false));
+        polices.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC), false));
         //
         service = RestProxy.create(IOService.class,
             new HttpPipelineBuilder()

@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -14,6 +16,8 @@ public class HttpLogOptions {
     private Set<String> allowedQueryParamNames;
 
     public HttpLogOptions() {
+        allowedHeaderNames = new HashSet<>();
+        allowedQueryParamNames = new HashSet<>();
     }
 
     /**
@@ -29,9 +33,11 @@ public class HttpLogOptions {
      * Sets the level of detail to log on Http messages.
      *
      * @param logLevel The {@link HttpLogDetailLevel}.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code logLevel} is {@code null}.
      */
     public HttpLogOptions setLogLevel(final HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+        this.logLevel = Objects.requireNonNull(logLevel);
         return this;
     }
 
@@ -48,9 +54,11 @@ public class HttpLogOptions {
      * Sets the given whitelisted headers that should be logged.
      *
      * @param allowedHeaderNames The list of whitelisted header names from the user.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code allowedHeaderNames} is {@code null}.
      */
     public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames;
+        this.allowedHeaderNames = Objects.requireNonNull(allowedHeaderNames);
         return this;
     }
 
@@ -58,8 +66,11 @@ public class HttpLogOptions {
      * Sets the given whitelisted header that should be logged.
      *
      * @param allowedHeaderName The whitelisted header name from the user.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
      */
     public HttpLogOptions addAllowedHeaderName(final String allowedHeaderName) {
+        Objects.requireNonNull(allowedHeaderName);
         this.allowedHeaderNames.add(allowedHeaderName);
         return this;
     }
@@ -77,19 +88,24 @@ public class HttpLogOptions {
      * Sets the given whitelisted query params to be displayed in the logging info.
      *
      * @param allowedQueryParamNames The list of whitelisted query params from the user.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code allowedQueryParamNames} is {@code null}.
      */
     public HttpLogOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
-        this.allowedQueryParamNames = allowedQueryParamNames;
+        this.allowedQueryParamNames = Objects.requireNonNull(allowedQueryParamNames);
         return this;
     }
 
     /**
      * Sets the given whitelisted query param that should be logged.
      *
-     * @param allowedQueryParam The whitelisted queryParam name from the user.
+     * @param allowedQueryParamName The whitelisted query param name from the user.
+     * @return The updated HttpLogOptions object.
+     * @throws NullPointerException If {@code allowedQueryParamName} is {@code null}.
      */
-    public HttpLogOptions addAllowedQueryParam(final String allowedQueryParam) {
-        this.allowedQueryParamNames.add(allowedQueryParam);
+    public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
+        Objects.requireNonNull(allowedQueryParamName);
+        this.allowedQueryParamNames.add(allowedQueryParamName);
         return this;
     }
 }

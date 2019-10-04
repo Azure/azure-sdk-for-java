@@ -47,7 +47,7 @@ class PipelineSample {
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
                 .credential(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
-                .httpLogOptions(new HttpLogOptions(HttpLogDetailLevel.HEADERS))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
                 .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.

@@ -142,7 +142,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             for (String queryParam : queryParams) {
                 String[] queryPair = queryParam.split("=", 2);
                 if (queryPair.length == 2) {
-                    if(allowedQueryParamNames.contains(queryPair[0])) {
+                    if (allowedQueryParamNames.contains(queryPair[0])) {
                         sb.append(queryParam);
                     } else {
                         sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
@@ -152,7 +152,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 }
                 sb.append("&");
             }
-            if ((sb != null) && (sb.length() > 0)) {
+            if (sb.length() > 0) {
                 logger.info(sb.substring(0, sb.length() - 1));
             }
         }

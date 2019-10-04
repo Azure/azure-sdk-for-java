@@ -215,7 +215,7 @@ public final class ConfigurationClientBuilder {
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
     public ConfigurationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        httpLogOptions = Objects.requireNonNull(logOptions);
+        httpLogOptions = Objects.requireNonNull(logOptions, "Http log options cannot be null.");
         return this;
     }
 
