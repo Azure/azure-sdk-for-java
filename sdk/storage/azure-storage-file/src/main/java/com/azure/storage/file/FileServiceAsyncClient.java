@@ -32,7 +32,6 @@ import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -436,54 +435,5 @@ public final class FileServiceAsyncClient {
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
             .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * @param accountSASService The {@code AccountSasService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredentials} is null
-     */
-    public String generateAccountSas(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
-        AccountSasPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
-            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
-     *
-     * @param accountSASService The {@code AccountSasService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredentials} is null
-     */
-    public String generateAccountSas(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
-            AccountSasPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
-            String version, IpRange ipRange, SasProtocol sasProtocol) {
-
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureFileStorageClient
-            .getHttpPipeline());
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        return AccountSasSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
-            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

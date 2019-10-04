@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
@@ -409,71 +408,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.getAccountInfoWithResponse().subscribe(response -> System.out.printf("Account Kind: %s, SKU: %s%n",
             response.getValue().getAccountKind(), response.getValue().getSkuName()));
         // END: com.azure.storage.blob.BlobAsyncClient.getAccountInfoWithResponse
-    }
-
-    /**
-     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSas(UserDelegationKey, String, BlobSasPermission,
-     * OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
-     */
-    public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSas#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
-        BlobSasPermission permissions = new BlobSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String accountName = "accountName";
-        UserDelegationKey userDelegationKey = new UserDelegationKey();
-
-        String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
-            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
-            contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSas#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
-    }
-
-    /**
-     * Code snippet for {@link BlobAsyncClient#generateSas(String, BlobSasPermission, OffsetDateTime, OffsetDateTime,
-     * String, SasProtocol, IpRange, String, String, String, String, String)}
-     */
-    public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSas#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
-        BlobSasPermission permissions = new BlobSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String identifier = "identifier";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateSas#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**

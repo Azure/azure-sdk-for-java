@@ -5,7 +5,6 @@ package com.azure.storage.queue;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
@@ -482,31 +481,6 @@ public class QueueAsyncJavaDocCodeSamples {
         client.clearMessages().subscribe(
             response -> System.out.println("Clearing messages completed."));
         // END: com.azure.storage.queue.queueAsyncClient.clearMessages
-    }
-
-    /**
-     * Code snippet for {@link QueueAsyncClient#generateSas(String, QueueSasPermission, OffsetDateTime, OffsetDateTime,
-     * String, SasProtocol, IpRange)}
-     */
-    public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.generateSas#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setUpdatePermission(true)
-            .setProcessPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String identifier = "";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.queue.queueAsyncClient.generateSas#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
     }
 
     /**

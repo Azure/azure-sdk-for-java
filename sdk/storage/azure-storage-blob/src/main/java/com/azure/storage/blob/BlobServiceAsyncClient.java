@@ -33,7 +33,6 @@ import com.azure.storage.common.AccountSasSignatureValues;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -452,54 +451,5 @@ public final class BlobServiceAsyncClient {
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         return postProcessResponse(this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(context))
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * @param accountSasService The {@code AccountSasService} services for the account SAS
-     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException if {@code sharedKeyCredential} is null
-     */
-    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
-        AccountSasPermission accountSasPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSas(accountSasService, accountSasResourceType, accountSasPermission, expiryTime,
-            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.blobServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a></p>
-     *
-     * @param accountSasService The {@code AccountSasService} services for the account SAS
-     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException if {@code sharedKeyCredential} is null
-     */
-    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
-            AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
-            String version, IpRange ipRange, SasProtocol sasProtocol) {
-
-        SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        return AccountSasSignatureValues.generateAccountSAS(sharedKeyCredential, accountSasService,
-            accountSasResourceType, accountSasPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

@@ -8,7 +8,6 @@ import com.azure.storage.common.AccountSasService;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
@@ -266,43 +265,5 @@ public class FileServiceAsyncJavaDocCodeSamples {
                     response.getStatusCode()));
         });
         // END: com.azure.storage.file.fileServiceAsyncClient.setPropertiesWithResponse#fileServiceProperties.clearCORS
-    }
-
-    /**
-     * Generates a code sample for using {@link FileServiceAsyncClient#generateAccountSas(AccountSasService,
-     * AccountSasResourceType, AccountSasPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SasProtocol)}
-     */
-    public void generateAccountSASAsync() {
-        FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
-        AccountSasService service = new AccountSasService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSasPermission permission = new AccountSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setProcessMessages(true)
-            .setUpdatePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = fileServiceAsyncClient.generateAccountSas(service, resourceType, permission, expiryTime, startTime,
-            version, ipRange, sasProtocol);
-        // END: com.azure.storage.file.FileServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
     }
 }

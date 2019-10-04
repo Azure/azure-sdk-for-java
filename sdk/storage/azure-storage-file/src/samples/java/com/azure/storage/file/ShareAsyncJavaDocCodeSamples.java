@@ -5,7 +5,6 @@ package com.azure.storage.file;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
@@ -519,37 +518,6 @@ public class ShareAsyncJavaDocCodeSamples {
 
         System.out.printf("Snapshot ID: %s%n", shareAsyncClient.getSnapshotId());
         // END: com.azure.storage.file.shareAsyncClient.getSnapshotId
-    }
-
-    /**
-     * Generates a code sample for using {@link ShareAsyncClient#generateSas(String, ShareSasPermission, OffsetDateTime,
-     * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
-     */
-    public void generateSASAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
-        String identifier = "identifier";
-        ShareSasPermission permissions = new ShareSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setWritePermission(true)
-            .setListPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = shareAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.shareAsyncClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**

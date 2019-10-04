@@ -511,37 +511,6 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#generateSas(String, ShareSasPermission, OffsetDateTime,
-     * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
-     */
-    public void generateSAS() {
-        ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.ShareClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
-        String identifier = "identifier";
-        ShareSasPermission permissions = new ShareSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setWritePermission(true)
-            .setListPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = shareClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.ShareClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
-    }
-
-    /**
      * Generates a code sample for using {@link ShareClient#getShareName()}
      */
     public void getShareName() {

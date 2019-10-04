@@ -5,6 +5,7 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
@@ -385,7 +386,14 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSas(new FileSasPermission().setReadPermission(true), getUTCNow().plusDays(1))
+        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def sasToken = new FileServiceSasSignatureValues()
+            .setExpiryTime(getUTCNow().plusDays(1))
+            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
+            .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
+            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .generateSASQueryParameters(credential)
+            .encode()
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")

@@ -456,6 +456,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
+      <Class name="com.azure.storage.file.StorageFileInputStream"/>
       <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
@@ -622,5 +623,12 @@
                   NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
                   RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+
+  <!-- The field is read by parent class StorageOutputStrem methods. -->
+  <Match>
+    <Class name="com.azure.storage.file.StorageFileOutputStream"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 </FindBugsFilter>

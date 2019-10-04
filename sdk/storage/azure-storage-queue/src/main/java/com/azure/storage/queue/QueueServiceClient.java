@@ -23,7 +23,6 @@ import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -389,48 +388,5 @@ public final class QueueServiceClient {
     public Response<StorageServiceStats> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageServiceStats>> response = client.getStatisticsWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * @param accountSASService The {@code AccountSasService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateAccountSAS(AccountSasService accountSASService,
-        AccountSasResourceType accountSASResourceType, AccountSasPermission accountSASPermission,
-        OffsetDateTime expiryTime) {
-        return this.client.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission,
-            expiryTime);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
-     *
-     * @param accountSASService The {@code AccountSasService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateAccountSAS(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
-            AccountSasPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
-            String version, IpRange ipRange, SasProtocol sasProtocol) {
-        return this.client.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission,
-            expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

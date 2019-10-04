@@ -87,9 +87,9 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSasPermission().setReadPermission(true).toString())
+            v.setPermissions(new BlobSasPermission().setReadPermission(true))
         } else {
-            v.setPermissions("")
+            v.setPermissions(new BlobSasPermission())
         }
 
         if (snapId != null) {
@@ -120,7 +120,7 @@ class HelperTest extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
 
-        BlobServiceSasQueryParameters token = v.generateSASQueryParameters(primaryCredential)
+        BlobServiceSasQueryParameters token = v.generateSasQueryParameters(primaryCredential)
 
         if (startTime != null) {
             expectedStringToSign = String.format(expectedStringToSign,
@@ -163,9 +163,9 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSasPermission().setReadPermission(true).toString())
+            v.setPermissions(new BlobSasPermission().setReadPermission(true))
         } else {
-            v.setPermissions("")
+            v.setPermissions(new BlobSasPermission())
         }
 
         v.setStartTime(startTime)
@@ -204,7 +204,7 @@ class HelperTest extends APISpec {
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
 
-        BlobServiceSasQueryParameters token = v.generateSASQueryParameters(key)
+        BlobServiceSasQueryParameters token = v.generateSasQueryParameters(key)
 
         expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.getExpiryTime()), primaryCredential.getAccountName())
 
@@ -240,7 +240,7 @@ class HelperTest extends APISpec {
         setup:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
             .setExpiryTime(expiryTime)
-            .setPermissions(new BlobSasPermission().toString())
+            .setPermissions(new BlobSasPermission())
             .setResource(expectedResource)
             .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.getAccountName(), containerName))
             .setSnapshotId(snapId)
@@ -254,7 +254,7 @@ class HelperTest extends APISpec {
             primaryCredential.getAccountName())
 
         when:
-        BlobServiceSasQueryParameters token = v.generateSASQueryParameters(primaryCredential)
+        BlobServiceSasQueryParameters token = v.generateSasQueryParameters(primaryCredential)
 
         then:
         token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
@@ -271,8 +271,8 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
-        BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
-            .setPermissions(new AccountSasPermission().toString())
+        def v = new BlobServiceSasSignatureValues()
+            .setPermissions(new BlobSasPermission())
             .setExpiryTime(OffsetDateTime.now())
             .setResource(containerName)
             .setCanonicalName(blobName)
@@ -634,11 +634,11 @@ class HelperTest extends APISpec {
 
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
-            .setPermissions("r")
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
             .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 
-        parts.setSasQueryParameters(sasValues.generateSASQueryParameters(primaryCredential))
+        parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 
         when:
         String[] splitParts = parts.toURL().toString().split("\\?")

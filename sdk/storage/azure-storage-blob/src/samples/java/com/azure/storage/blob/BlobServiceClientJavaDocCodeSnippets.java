@@ -32,43 +32,6 @@ public class BlobServiceClientJavaDocCodeSnippets {
     private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Generates a code sample for using {@link BlobServiceClient#generateAccountSas(AccountSasService,
-     * AccountSasResourceType, AccountSasPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SasProtocol)}
-     */
-    public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
-        AccountSasService service = new AccountSasService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSasPermission permission = new AccountSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setProcessMessages(true)
-            .setUpdatePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = client.generateAccountSas(service, resourceType, permission, expiryTime, startTime, version,
-            ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
-    }
-
-    /**
      * Code snippet for {@link BlobServiceClient#getBlobContainerClient(String)}
      */
     public void getContainerClient() {

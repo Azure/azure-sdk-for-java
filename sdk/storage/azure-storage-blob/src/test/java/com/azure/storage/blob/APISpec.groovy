@@ -35,12 +35,8 @@ import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
-<<<<<<< HEAD
-import com.azure.storage.common.credentials.SasTokenCredential
-=======
-
->>>>>>> master
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.implementation.credentials.SasTokenCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -271,13 +267,8 @@ class APISpec extends Specification {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
-<<<<<<< HEAD
-    BlobServiceClient getServiceClient(SasTokenCredential credential, String endpoint) {
-        return getServiceClientBuilder(null, endpoint, null).credential(credential).buildClient()
-=======
     BlobServiceClient getServiceClient(String sasToken, String endpoint) {
         return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
->>>>>>> master
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
@@ -312,11 +303,7 @@ class APISpec extends Specification {
         return builder
     }
 
-<<<<<<< HEAD
-    BlobContainerClient getContainerClient(SasTokenCredential credential, String endpoint) {
-=======
     BlobContainerClient getContainerClient(String sasToken, String endpoint) {
->>>>>>> master
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -343,19 +330,11 @@ class APISpec extends Specification {
         builder.credential(credential).buildAsyncClient()
     }
 
-<<<<<<< HEAD
-    BlobClient getBlobClient(SasTokenCredential credential, String endpoint, String blobName) {
-        return getBlobClient(credential, endpoint, blobName, null)
-    }
-
-    BlobClient getBlobClient(SasTokenCredential credential, String endpoint, String blobName, String snapshotId) {
-=======
     BlobClient getBlobClient(String sasToken, String endpoint, String blobName) {
         return getBlobClient(sasToken, endpoint, blobName, null)
     }
 
     BlobClient getBlobClient(String sasToken, String endpoint, String blobName, String snapshotId) {
->>>>>>> master
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
@@ -401,11 +380,7 @@ class APISpec extends Specification {
         return builder.credential(credential).buildClient()
     }
 
-<<<<<<< HEAD
-    BlobClient getBlobClient(String endpoint, SasTokenCredential credential) {
-=======
     BlobClient getBlobClient(String endpoint, String sasToken) {
->>>>>>> master
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())

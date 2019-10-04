@@ -257,44 +257,4 @@ public class FileServiceJavaDocCodeSamples {
         System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.fileServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
     }
-
-    /**
-     * Generates a code sample for using {@link FileServiceClient#generateAccountSas(AccountSasService,
-     * AccountSasResourceType, AccountSasPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SasProtocol)}
-     */
-    public void generateAccountSAS() {
-        FileServiceClient fileServiceClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
-        AccountSasService service = new AccountSasService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSasPermission permission = new AccountSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setProcessMessages(true)
-            .setUpdatePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = fileServiceClient.generateAccountSas(service, resourceType, permission, expiryTime, startTime,
-            version, ipRange, sasProtocol);
-        // END: com.azure.storage.file.FileServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
-    }
-
-
 }

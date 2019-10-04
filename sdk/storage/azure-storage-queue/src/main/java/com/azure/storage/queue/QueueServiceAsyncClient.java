@@ -20,8 +20,8 @@ import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
+import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageException;
@@ -30,7 +30,6 @@ import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -422,54 +421,5 @@ public final class QueueServiceAsyncClient {
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * @param accountSasService The {@code AccountSasService} services for the account SAS
-     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredential} is null
-     */
-    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
-        AccountSasPermission accountSasPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSas(accountSasService, accountSasResourceType, accountSasPermission, expiryTime,
-            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
-     *
-     * @param accountSasService The {@code AccountSasService} services for the account SAS
-     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredential} is null
-     */
-    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
-            AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
-            String version, IpRange ipRange, SasProtocol sasProtocol) {
-
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.client.getHttpPipeline());
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        return AccountSasSignatureValues.generateAccountSAS(sharedKeyCredential, accountSasService,
-            accountSasResourceType, accountSasPermission, expiryTime, startTime, version, ipRange, sasProtocol);
-
     }
 }

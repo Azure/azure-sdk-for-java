@@ -22,7 +22,6 @@ import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -781,75 +780,6 @@ public class ShareClient {
      */
     public String getSnapshotId() {
         return client.getSnapshotId();
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param permissions The {@code ShareSasPermission} permission for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSas(OffsetDateTime expiryTime, ShareSasPermission permissions) {
-        return this.client.generateSas(permissions, expiryTime);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @return A string that represents the SAS token
-     */
-    public String generateSas(String identifier) {
-        return this.client.generateSas(identifier);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code ShareSasPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSas(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.ShareClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code ShareSasPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param cacheControl An optional {@code String} cache-control header for the SAS.
-     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage An optional {@code String} content-language header for the SAS.
-     * @param contentType An optional {@code String} content-type header for the SAS.
-     * @return A string that represents the SAS token
-     */
-    public String generateSas(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
-            OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
-            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 
     /**
