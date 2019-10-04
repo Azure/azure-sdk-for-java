@@ -94,6 +94,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
+     * returns associated account name.
+     *
+     * @return account name associated to this blob.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
      * Creates a new {@link AppendBlobAsyncClient} associated to this blob.
      *
      * @return a {@link AppendBlobAsyncClient} associated to this blob.

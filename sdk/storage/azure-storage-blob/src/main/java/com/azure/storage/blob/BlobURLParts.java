@@ -280,7 +280,7 @@ public final class BlobURLParts {
         String accontName = null;
 
         //TODO Parse url to get account name
-        
+
         // find the container & blob names (if any)
         String path = url.getPath();
         if (!ImplUtils.isNullOrEmpty(path)) {
