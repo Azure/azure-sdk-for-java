@@ -32,7 +32,12 @@ public enum HttpLogDetailLevel {
     /**
      * Logs everything in HEADERS and BODY.
      */
-    BODY_AND_HEADERS;
+    BODY_AND_HEADERS,
+
+    /**
+     * Logs everything in QUERY PARAMS.
+     */
+    QUERY_PARAMS;
 
     /**
      * @return a value indicating whether a request's URL should be logged.
@@ -53,5 +58,12 @@ public enum HttpLogDetailLevel {
      */
     public boolean shouldLogBody() {
         return this == BODY || this == BODY_AND_HEADERS;
+    }
+
+    /**
+     * @return a value indicating whether HTTP query params should be logged.
+     */
+    public boolean shouldLogQueryParams() {
+        return this == QUERY_PARAMS;
     }
 }

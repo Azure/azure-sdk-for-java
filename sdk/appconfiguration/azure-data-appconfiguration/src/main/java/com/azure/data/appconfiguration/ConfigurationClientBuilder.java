@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -13,7 +14,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
@@ -80,7 +81,7 @@ public final class ConfigurationClientBuilder {
     private ConfigurationClientCredentials credential;
     private URL endpoint;
     private HttpClient httpClient;
-    private HttpLogDetailLevel httpLogDetailLevel;
+    private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
@@ -89,8 +90,8 @@ public final class ConfigurationClientBuilder {
      * The constructor with defaults.
      */
     public ConfigurationClientBuilder() {
-        httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
+        httpLogOptions = new HttpLogOptions(HttpLogDetailLevel.NONE);
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -164,7 +165,7 @@ public final class ConfigurationClientBuilder {
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -207,14 +208,14 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the logging level for HTTP requests and responses.
+     * Sets the logging configuration for HTTP requests and responses.
      *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+     * @param logOptions The configuration of logging output when sending and receiving HTTP requests/responses.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code logLevel} is {@code null}.
+     * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        httpLogDetailLevel = Objects.requireNonNull(logLevel);
+    public ConfigurationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = Objects.requireNonNull(logOptions);
         return this;
     }
 

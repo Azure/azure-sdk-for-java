@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.annotation.BodyParam;
@@ -95,7 +96,7 @@ public class RestProxyStressTests {
             polices.add(new HostPolicy("http://localhost:" + port));
         }
         //
-        polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
+        polices.add(new HttpLoggingPolicy(new HttpLogOptions(HttpLogDetailLevel.BASIC), false));
         //
         service = RestProxy.create(IOService.class,
             new HttpPipelineBuilder()
