@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.File;
@@ -78,7 +77,7 @@ public class FileTransferExample {
          * Create a BlockBlobClient object that wraps a blob's endpoint and a default pipeline, the blockBlobClient give us access to upload the file.
          */
         String filename = "BigFile.bin";
-        BlockBlobClient blobClient = blobContainerClient.getBlobClient(filename).getBlockBlobClient();
+        BlobClient blobClient = blobContainerClient.getBlobClient(filename);
 
         /*
          * Create the empty uploadFile and downloadFile.

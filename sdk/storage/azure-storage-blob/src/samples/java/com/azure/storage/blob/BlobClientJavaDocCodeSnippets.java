@@ -18,13 +18,15 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -45,6 +47,7 @@ public class BlobClientJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+    private String filePath = "filePath";
 
     /**
      * Code snippets for {@link BlobClient#exists()}
@@ -387,10 +390,10 @@ public class BlobClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSasPermission,
-     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
+     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
         BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -399,7 +402,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -415,15 +418,15 @@ public class BlobClientJavaDocCodeSnippets {
         String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
     }
 
     /**
      * Code snippet for {@link BlobClient#generateSAS(String, BlobSasPermission, OffsetDateTime, OffsetDateTime, String,
-     * SASProtocol, IPRange, String, String, String, String, String)}
+     * SASProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
         BlobSasPermission permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -432,7 +435,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setAddPermission(true);
         OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
+        IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
         SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
@@ -447,7 +450,7 @@ public class BlobClientJavaDocCodeSnippets {
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
     }
 
     /**
@@ -468,5 +471,51 @@ public class BlobClientJavaDocCodeSnippets {
         String blobName = client.getBlobName();
         System.out.println("The name of the blob is " + blobName);
         // END: com.azure.storage.blob.specialized.BlobClientBase.getBlobName
+    }
+
+    /**
+     * Code snippet for {@link BlobClient#uploadFromFile(String)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFile() throws IOException {
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String
+        try {
+            client.uploadFromFile(filePath);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String
+    }
+
+    /**
+     * Code snippet for {@link BlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFile2() throws IOException {
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        BlobHTTPHeaders headers = new BlobHTTPHeaders()
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        BlobAccessConditions accessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize);
+
+        try {
+            client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata,
+                AccessTier.HOT, accessConditions, timeout);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
     }
 }

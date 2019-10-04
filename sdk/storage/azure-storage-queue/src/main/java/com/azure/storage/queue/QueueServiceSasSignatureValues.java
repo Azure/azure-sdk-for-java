@@ -4,7 +4,7 @@
 package com.azure.storage.queue;
 
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -12,7 +12,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * QueueServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
+ * QueueServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
  * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
@@ -28,7 +28,7 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/queue/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-final class QueueServiceSASSignatureValues {
+final class QueueServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -40,7 +40,7 @@ final class QueueServiceSASSignatureValues {
 
     private String permissions;
 
-    private IPRange ipRange;
+    private IpRange ipRange;
 
     private String canonicalName;
 
@@ -49,7 +49,7 @@ final class QueueServiceSASSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    QueueServiceSASSignatureValues() {
+    QueueServiceSasSignatureValues() {
     }
 
     /**
@@ -58,7 +58,7 @@ final class QueueServiceSASSignatureValues {
      * @param expiryTime Time the SAS becomes valid
      * @param permissions Permissions granted by the SAS
      */
-    QueueServiceSASSignatureValues(OffsetDateTime expiryTime, String permissions) {
+    QueueServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
         this.expiryTime = expiryTime;
         this.permissions = permissions;
     }
@@ -68,12 +68,12 @@ final class QueueServiceSASSignatureValues {
      *
      * @param identifier Identifier for the SAS
      */
-    QueueServiceSASSignatureValues(String identifier) {
+    QueueServiceSasSignatureValues(String identifier) {
         this.identifier = identifier;
     }
 
-    QueueServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier) {
+    QueueServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+                                   OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier) {
         if (version != null) {
             this.version = version;
         }
@@ -98,9 +98,9 @@ final class QueueServiceSASSignatureValues {
      * by the library.
      *
      * @param version Version to target
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setVersion(String version) {
+    public QueueServiceSasSignatureValues setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -116,9 +116,9 @@ final class QueueServiceSASSignatureValues {
      * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setProtocol(SASProtocol protocol) {
+    public QueueServiceSasSignatureValues setProtocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -134,9 +134,9 @@ final class QueueServiceSASSignatureValues {
      * Sets when the SAS will take effect.
      *
      * @param startTime When the SAS takes effect
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setStartTime(OffsetDateTime startTime) {
+    public QueueServiceSasSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -152,15 +152,15 @@ final class QueueServiceSASSignatureValues {
      * Sets the time after which the SAS will no longer work.
      *
      * @param expiryTime When the SAS will no longer work
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
+    public QueueServiceSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
 
     /**
-     * @return the permissions string allowed by the SAS. Please refer to {@link QueueSASPermission} for help
+     * @return the permissions string allowed by the SAS. Please refer to {@link QueueSasPermission} for help
      * determining the permissions allowed.
      */
     public String getPermissions() {
@@ -168,31 +168,31 @@ final class QueueServiceSASSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to {@link QueueSASPermission} for help constructing
+     * Sets the permissions string allowed by the SAS. Please refer to {@link QueueSasPermission} for help constructing
      * the permissions string.
      *
      * @param permissions Permissions string for the SAS
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setPermissions(String permissions) {
+    public QueueServiceSasSignatureValues setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
 
     /**
-     * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange getIpRange() {
+    public IpRange getIpRange() {
         return ipRange;
     }
 
     /**
-     * Sets the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @param ipRange Allowed IP range to set
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setIpRange(IPRange ipRange) {
+    public QueueServiceSasSignatureValues setIpRange(IpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -208,9 +208,9 @@ final class QueueServiceSASSignatureValues {
      * Sets the canonical name of the object the SAS user may access.
      *
      * @param canonicalName Canonical name of the object the SAS grants access
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setCanonicalName(String canonicalName) {
+    public QueueServiceSasSignatureValues setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
         return this;
     }
@@ -221,9 +221,9 @@ final class QueueServiceSASSignatureValues {
      *
      * @param queueName Name of the queue object
      * @param accountName Name of the account that contains the object
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setCanonicalName(String queueName, String accountName) {
+    public QueueServiceSasSignatureValues setCanonicalName(String queueName, String accountName) {
         this.canonicalName = String.format("/queue/%s/%s", accountName, queueName);
         return this;
     }
@@ -233,7 +233,7 @@ final class QueueServiceSASSignatureValues {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public String getIdentifier() {
+    public String getId() {
         return identifier;
     }
 
@@ -243,9 +243,9 @@ final class QueueServiceSASSignatureValues {
      * for more information.
      *
      * @param identifier Name of the access policy
-     * @return the updated QueueServiceSASSignatureValues object
+     * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSASSignatureValues setIdentifier(String identifier) {
+    public QueueServiceSasSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
