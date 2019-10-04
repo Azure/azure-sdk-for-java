@@ -4,10 +4,6 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.cryptography.AsyncKeyEncryptionKey;
-import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
-import com.azure.core.cryptography.KeyEncryptionKey;
-import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -23,7 +19,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,18 +60,18 @@ import java.util.Objects;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public final class CryptographyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver {
-    private final List<HttpPipelinePolicy> policies;
+public class CryptographyClientBuilder {
+    final List<HttpPipelinePolicy> policies;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
-    private TokenCredential credential;
-    private HttpPipeline pipeline;
-    private JsonWebKey jsonWebKey;
-    private String keyId;
-    private HttpClient httpClient;
-    private HttpLogDetailLevel httpLogDetailLevel;
-    private final RetryPolicy retryPolicy;
-    private Configuration configuration;
+    TokenCredential credential;
+    HttpPipeline pipeline;
+    JsonWebKey jsonWebKey;
+    String keyId;
+    HttpClient httpClient;
+    HttpLogDetailLevel httpLogDetailLevel;
+    final RetryPolicy retryPolicy;
+    Configuration configuration;
 
     /**
      * The constructor with defaults.
@@ -129,9 +124,6 @@ public final class CryptographyClientBuilder implements KeyEncryptionKeyResolver
      *     CryptographyClientBuilder#jsonWebKey(JsonWebKey)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
-
         if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
@@ -150,6 +142,19 @@ public final class CryptographyClientBuilder implements KeyEncryptionKeyResolver
                 "Key Vault credentials are required to build the Cryptography async client"));
         }
 
+        HttpPipeline pipeline = setupPipeline();
+
+        if (jsonWebKey != null) {
+            return new CryptographyAsyncClient(jsonWebKey, pipeline);
+        } else {
+            return new CryptographyAsyncClient(keyId, pipeline);
+        }
+    }
+
+    HttpPipeline setupPipeline() {
+        Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
@@ -161,34 +166,10 @@ public final class CryptographyClientBuilder implements KeyEncryptionKeyResolver
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-
-        if (jsonWebKey != null) {
-            return new CryptographyAsyncClient(jsonWebKey, pipeline);
-        } else {
-            return new CryptographyAsyncClient(keyId, pipeline);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
-        this.keyId = keyId;
-        return buildClient();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
-        this.keyId = keyId;
-        return Mono.defer(() -> Mono.just(buildAsyncClient()));
     }
 
     /**

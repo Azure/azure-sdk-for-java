@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
@@ -48,9 +47,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
-public final class CryptographyAsyncClient implements AsyncKeyEncryptionKey {
+public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    private JsonWebKey key;
+    JsonWebKey key;
     private final CryptographyService service;
     private final CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
@@ -639,31 +638,5 @@ public final class CryptographyAsyncClient implements AsyncKeyEncryptionKey {
 
     CryptographyServiceClient getCryptographyServiceClient() {
         return cryptographyServiceClient;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<String> getKeyId() {
-        return Mono.just(key.getKid());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<byte[]> wrapKey(String algorithm, byte[] key) {
-        KeyWrapAlgorithm wrapAlgorithm = KeyWrapAlgorithm.fromString(algorithm);
-        return wrapKey(wrapAlgorithm, key).flatMap(keyWrapResult -> Mono.just(keyWrapResult.getEncryptedKey()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<byte[]> unwrapKey(String algorithm, byte[] encryptedKey) {
-        KeyWrapAlgorithm wrapAlgorithm = KeyWrapAlgorithm.fromString(algorithm);
-        return unwrapKey(wrapAlgorithm, encryptedKey).flatMap(keyUnwrapResult -> Mono.just(keyUnwrapResult.getKey()));
     }
 }

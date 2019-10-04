@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ReturnType;
@@ -33,7 +32,7 @@ import com.azure.security.keyvault.keys.models.Key;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)
-public final class CryptographyClient implements KeyEncryptionKey {
+public class CryptographyClient {
     private final CryptographyAsyncClient client;
 
     /**
@@ -621,29 +620,5 @@ public final class CryptographyClient implements KeyEncryptionKey {
 
     CryptographyServiceClient getServiceClient() {
         return client.getCryptographyServiceClient();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getKeyId() {
-        return client.getKeyId().block();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte[] wrapKey(String algorithm, byte[] key) {
-        return client.wrapKey(algorithm, key).block();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public byte[] unwrapKey(String algorithm, byte[] encryptedKey) {
-        return client.unwrapKey(algorithm, encryptedKey).block();
     }
 }
