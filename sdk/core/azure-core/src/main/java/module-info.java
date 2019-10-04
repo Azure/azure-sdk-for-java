@@ -26,6 +26,7 @@ module com.azure.core {
     exports com.azure.core.util.logging;
     exports com.azure.core.util.polling;
     exports com.azure.core.util.tracing;
+    exports com.azure.core.cryptography;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.azure.core.test, com.fasterxml.jackson.databind;
@@ -137,7 +138,6 @@ module com.azure.core {
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;
-    exports com.azure.core.cryptography;
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;
