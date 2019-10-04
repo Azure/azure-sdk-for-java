@@ -18,6 +18,7 @@ import com.azure.storage.file.FileServiceClient
 import com.azure.storage.file.FileServiceClientBuilder
 import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.ListSharesOptions
+import spock.lang.Shared
 import spock.lang.Specification
 
 import java.time.Duration
@@ -25,8 +26,8 @@ import java.time.OffsetDateTime
 
 class APISpec extends Specification {
     // Field common used for all APIs.
-    def logger = new ClientLogger(APISpec.class)
-    def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    static ClientLogger logger = new ClientLogger(APISpec.class)
+    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     def tmpFolder = getClass().getClassLoader().getResource("tmptestfiles")
     def testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
@@ -39,7 +40,8 @@ class APISpec extends Specification {
 
     // Test name for test method name.
     def methodName
-    def testMode = getTestMode()
+
+    static def testMode = getTestMode()
     String connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
@@ -89,7 +91,7 @@ class APISpec extends Specification {
      *     <li>Playback: (default if no test mode setup)</li>
      * </ul>
      */
-    def getTestMode() {
+    static def getTestMode() {
         def azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (azureTestMode != null) {
@@ -103,6 +105,10 @@ class APISpec extends Specification {
 
         logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE)
         return TestMode.PLAYBACK
+    }
+
+    static boolean liveMode() {
+        return testMode == TestMode.RECORD
     }
 
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
