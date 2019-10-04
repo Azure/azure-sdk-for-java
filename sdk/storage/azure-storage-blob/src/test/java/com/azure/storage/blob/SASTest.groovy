@@ -221,7 +221,8 @@ class SASTest extends APISpec {
     }
 
     /* TODO: Fix user delegation tests to run in CI */
-    @Requires({ liveMode() })
+    //@Requires({ liveMode() })
+    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -334,7 +335,8 @@ class SASTest extends APISpec {
 
     }
 
-    @Requires({ liveMode() })
+    //@Requires({ liveMode() })
+    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()

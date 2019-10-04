@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
+import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
@@ -42,11 +43,13 @@ class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
     BlockBlobAsyncClient bac
     BlobAsyncClient blobac
+    BlobClient blobClient
     String blobName
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).getBlockBlobClient()
+        blobClient = cc.getBlobClient(blobName)
+        bc = blobClient.getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
         blobac = ccAsync.getBlobAsyncClient(generateBlobName())
         bac = blobac.getBlockBlobAsyncClient()
@@ -602,7 +605,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file.getAbsolutePath())
+        blobClient.uploadFromFile(file.getAbsolutePath())
 
         then:
         bc.download(outStream)
@@ -617,7 +620,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
+        blobClient.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
 
         then:
         metadata == bc.getProperties().getMetadata()
@@ -804,7 +807,7 @@ class BlockBlobAPITest extends APISpec {
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        bac.upload(Flux.just(data), parallelTransferOptions).block()
+        blobac.upload(Flux.just(data), parallelTransferOptions).block()
         data.position(0)
 
         then:
@@ -852,7 +855,7 @@ class BlockBlobAPITest extends APISpec {
             .setBlockSize(bufferSize).setNumBuffers(numBuffers)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        bac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
+        blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
 
         expect:
         compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
