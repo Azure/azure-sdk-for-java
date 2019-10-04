@@ -58,36 +58,43 @@ namespace HttpMock
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .Configure(app => app.Run(async context =>
                 {
-                    var request = context.Request;
-                    var response = context.Response;
-
-                    var key = new RequestCacheKey(request);
-
-                    if (_cache.TryGetValue(key, out var upstreamResponse))
+                    try
                     {
-                        if (Options.CacheLast)
+                        var request = context.Request;
+                        var response = context.Response;
+
+                        var key = new RequestCacheKey(request);
+
+                        if (_cache.TryGetValue(key, out var upstreamResponse))
                         {
-                            _lastUpstreamResponse = upstreamResponse;
+                            if (Options.CacheLast)
+                            {
+                                _lastUpstreamResponse = upstreamResponse;
+                            }
+                            await Proxy.SendDownstreamResponse(upstreamResponse, response);
                         }
-                        await Proxy.SendDownstreamResponse(upstreamResponse, response);
-                    }
-                    else if (Options.CacheLast && request.QueryString.Value == "?last")
-                    {
-                        // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
-                        // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
-                        // slower when using a proxy (50k vs 6k RPS).
-                        await Proxy.SendDownstreamResponse(_lastUpstreamResponse, response);
-                    }
-                    else
-                    {
-                        upstreamResponse = await Proxy.SendUpstreamRequest(request);
-                        await Proxy.SendDownstreamResponse(upstreamResponse, response);
-                        _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
-
-                        if (Options.CacheLast)
+                        else if (Options.CacheLast && request.QueryString.Value == "?last")
                         {
-                            _lastUpstreamResponse = upstreamResponse;
+                            // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
+                            // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
+                            // slower when using a proxy (50k vs 6k RPS).
+                            await Proxy.SendDownstreamResponse(_lastUpstreamResponse, response);
                         }
+                        else
+                        {
+                            upstreamResponse = await Proxy.SendUpstreamRequest(request);
+                            await Proxy.SendDownstreamResponse(upstreamResponse, response);
+                            _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
+
+                            if (Options.CacheLast)
+                            {
+                                _lastUpstreamResponse = upstreamResponse;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
                     }
                 }))
                 .Build()
