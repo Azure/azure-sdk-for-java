@@ -41,7 +41,7 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     // Test is failing, need to investigate.
-    @Ignore
+    @Requires({ liveMode() })
     def "AppendBlob output stream"() {
         setup:
         def data = getRandomByteArray(4 * FOUR_MB)
