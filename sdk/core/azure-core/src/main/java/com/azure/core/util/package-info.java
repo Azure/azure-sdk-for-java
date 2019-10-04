@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing core utility classes
+ * Package containing core utility classes.
  */
 package com.azure.core.util;
