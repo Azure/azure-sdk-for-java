@@ -11,7 +11,6 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
@@ -62,7 +61,6 @@ public class SimpleProxy implements ProxyServer {
         private final ClientLogger logger;
         private final Consumer<Throwable> onErrorHandler;
         private final AtomicBoolean isRunning;
-        private final AtomicReference<ProxyNegotiationHandler> negotiationHandler = new AtomicReference<>();
 
         private SocketListener(ClientLogger logger, Consumer<Throwable> onErrorHandler, AtomicBoolean isRunning) {
             this.logger = logger;
@@ -78,16 +76,11 @@ public class SimpleProxy implements ProxyServer {
                 logger.error("Error occurred while getting remote address.", e);
             }
 
-            if (negotiationHandler.get() != null) {
-                logger.error("Negotiation handler has already been set. We are not setting another.");
-                return;
-            }
-
             logger.info("Setting negotiation handler.");
             serverSocket.accept(serverSocket, this);
 
             try {
-                negotiationHandler.set(new ProxyNegotiationHandler(client));
+                new ProxyNegotiationHandler(client);
             } catch (IOException e) {
                 onErrorHandler.accept(e);
             }

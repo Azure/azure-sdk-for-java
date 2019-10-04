@@ -18,6 +18,7 @@ import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -102,6 +103,8 @@ public class ProxySendTest extends IntegrationTestBase {
     /**
      * Verifies that we can send some number of events.
      */
+    @Ignore("SimpleProxy is creating multiple proxy negotiation handlers, so it is returning garbage."
+        + "https://github.com/Azure/azure-sdk-for-java/issues/5694")
     @Test
     public void sendEvents() {
         // Arrange
