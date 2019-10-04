@@ -17,7 +17,7 @@ namespace HttpMock
         private static ConcurrentDictionary<RequestCacheKey, HttpResponseMessage> _cache =
             new ConcurrentDictionary<RequestCacheKey, HttpResponseMessage>();
 
-        private static HttpResponseMessage _singleCache;
+        private static HttpResponseMessage _lastResponse;
 
         public class HttpMockOptions
         {
@@ -61,54 +61,53 @@ namespace HttpMock
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .Configure(app => app.Run(async context =>
                 {
-                    if (_singleCache == null)
+                    // var sw = Stopwatch.StartNew();
+
+                    // Trace("Start Request", sw);
+
+                    var request = context.Request;
+                    var response = context.Response;
+
+                    // Log.LogRequest(request);
+
+                    var key = new RequestCacheKey(request);
+
+                    // Trace("Created Cache Key", sw);
+
+                    if (_cache.TryGetValue(key, out var upstreamResponse))
                     {
-                        _singleCache = await Proxy.SendUpstreamRequest(context.Request);
+                        // Trace("Cache Hit", sw);
+                        // Log.LogUpstreamResponse(upstreamResponse, cached: true);
+
+                        await Proxy.SendDownstreamResponse(upstreamResponse, response);
+
+                        // Trace("Sent Downstream Response", sw);
+                    }
+                    else if (_lastResponse != null)
+                    {
+                        await Proxy.SendDownstreamResponse(_lastResponse, response);
+                    }
+                    else
+                    {
+                        // Trace("Cache Miss", sw);
+
+                        upstreamResponse = await Proxy.SendUpstreamRequest(request);
+
+                        // Trace("Received Upstream Response", sw);
+                        // Log.LogUpstreamResponse(upstreamResponse, cached: false);
+
+                        await Proxy.SendDownstreamResponse(upstreamResponse, response);
+
+                        // Trace("Sent Downstream Response", sw);
+
+                        _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
+
+                        _lastResponse = upstreamResponse;
+
+                        // Trace("Updated Cache", sw);
                     }
 
-                    await Proxy.SendDownstreamResponse(_singleCache, context.Response);
-
-                    //// var sw = Stopwatch.StartNew();
-
-                    //// Trace("Start Request", sw);
-
-                    //var request = context.Request;
-                    //var response = context.Response;
-
-                    //// Log.LogRequest(request);
-
-                    //var key = new RequestCacheKey(request);
-
-                    //// Trace("Created Cache Key", sw);
-
-                    //if (_cache.TryGetValue(key, out var upstreamResponse))
-                    //{
-                    //    // Trace("Cache Hit", sw);
-                    //    // Log.LogUpstreamResponse(upstreamResponse, cached: true);
-
-                    //    await Proxy.SendDownstreamResponse(upstreamResponse, response);
-
-                    //    // Trace("Sent Downstream Response", sw);
-                    //}
-                    //else
-                    //{
-                    //    // Trace("Cache Miss", sw);
-
-                    //    upstreamResponse = await Proxy.SendUpstreamRequest(request);
-
-                    //    // Trace("Received Upstream Response", sw);
-                    //    // Log.LogUpstreamResponse(upstreamResponse, cached: false);
-
-                    //    await Proxy.SendDownstreamResponse(upstreamResponse, response);
-
-                    //    // Trace("Sent Downstream Response", sw);
-
-                    //    _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
-
-                    //    // Trace("Updated Cache", sw);
-                    //}
-
-                    //// Trace("End Request" + Environment.NewLine, sw);
+                    // Trace("End Request" + Environment.NewLine, sw);
                 }))
                 .Build()
                 .Run();
