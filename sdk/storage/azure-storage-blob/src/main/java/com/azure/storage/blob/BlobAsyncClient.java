@@ -94,7 +94,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * returns associated account name.
+     * Get associated account name.
      *
      * @return account name associated to this blob.
      */

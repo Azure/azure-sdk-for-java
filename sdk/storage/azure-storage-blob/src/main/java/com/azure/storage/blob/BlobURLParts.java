@@ -277,9 +277,20 @@ public final class BlobURLParts {
 
         String containerName = null;
         String blobName = null;
-        String accontName = null;
+        String accountName = null;
 
-        //TODO Parse url to get account name
+        //Parse host to get account name
+        // host will look like this : <accountname>.blob.core.windows.net
+        if (!ImplUtils.isNullOrEmpty(host)) {
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                // host only contains account name
+                accountName = host;
+            } else {
+                // if host is separated by .
+                accountName = host.substring(0, accountNameIndex);
+            }
+        }
 
         // find the container & blob names (if any)
         String path = url.getPath();
@@ -317,7 +328,7 @@ public final class BlobURLParts {
             .setContainerName(containerName)
             .setBlobName(blobName)
             .setSnapshot(snapshot)
-            .setAccountName(accontName)
+            .setAccountName(accountName)
             .setSasQueryParameters(blobServiceSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
