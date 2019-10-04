@@ -1,5 +1,33 @@
 # Change Log azure-storage-blob
 
+## Version 12.0.0-preview.4 (2019-10-8)
+For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.4/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.0.0-preview.4/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Moved the specialized `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`, into the `specialized` package within Azure Storage Blobs. Additionally, moved any model classes that are tied to a specific specialized client.
+- Added a `BlobClientBase` which is now the super class for `BlobClient`, `AppendBlobClient`, `BlockBlobClient`, and `PageBlobClient`.
+- Getters and setters were updated to use Java Bean notation.
+- Added `getBlobContainerName` on `BlobContainerClient` and `BlobContainerAsyncClient` and `getContainerName`, `getBlobName` on `BlobClientBase` and `BlobAsyncClientBase` for fetching the resource names.
+- Updated to be fully compliant with the Java 9 Platform Module System.
+- Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
+- Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
+- Updated the return type of `downloadToFile` API to `BlobProperties` on sync API and `Mono<BlobProperties>` on async API.
+- `getAccountUrl`, `getBlobContainerUrl`, `getBlobUrl` API now returns URL with scheme, host, resource name and snapshot if any.
+- Added `LeaseClient` and `LeaseAsyncClient` to the specialized package and removed the leasing methods from `BlobClient`, `BlobAsyncClient`, `ContainerClient`, and `ContainerAsyncClient`.
+- Added `blocksize` parameter to sync `blockBlobClient`.
+- Use Primitives for `exist` API return type.
+- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`. 
+- Fixed `create` method name in PageBlob.
+- Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
+- Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.
+- Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
+- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens. 
+- Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
+
 ## Version 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 

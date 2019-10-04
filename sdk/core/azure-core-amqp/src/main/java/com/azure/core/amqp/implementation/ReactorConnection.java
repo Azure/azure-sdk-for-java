@@ -76,7 +76,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Amqp
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.getHostname(),
-            connectionOptions.getTransportType());
+            connectionOptions.getTransportType(), connectionOptions.getProxyConfiguration());
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)

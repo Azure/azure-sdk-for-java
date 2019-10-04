@@ -183,7 +183,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate getCertificate(CertificateBase certificateBase) {
-        return client.getCertificateWithResponse(certificateBase.name(), certificateBase.version(), Context.NONE).block().getValue();
+        return getCertificateWithResponse(certificateBase.name(), certificateBase.version(), Context.NONE).getValue();
     }
 
     /**
@@ -222,7 +222,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate getCertificate(String name, String version) {
-        return client.getCertificateWithResponse(name, version, Context.NONE).block().getValue();
+        return getCertificateWithResponse(name, version, Context.NONE).getValue();
     }
 
     /**
@@ -243,7 +243,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate updateCertificate(CertificateBase certificate) {
-        return client.updateCertificateWithResponse(certificate, Context.NONE).block().getValue();
+        return updateCertificateWithResponse(certificate, Context.NONE).getValue();
     }
 
     /**
@@ -742,7 +742,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Issuer createCertificateIssuer(String name, String provider) {
-        return client.createCertificateIssuerWithResponse(name, provider, Context.NONE).block().getValue();
+        return createCertificateIssuerWithResponse(new Issuer(name, provider), Context.NONE).getValue();
     }
 
     /**
@@ -1148,7 +1148,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation cancelCertificateOperation(String certificateName) {
-        return client.cancelCertificateOperationWithResponse(certificateName, Context.NONE).block().getValue();
+        return cancelCertificateOperationWithResponse(certificateName, Context.NONE).getValue();
     }
 
 
@@ -1224,7 +1224,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Certificate mergeCertificate(String name, List<byte[]> x509Certificates) {
-        return client.mergeCertificateWithResponse(name, x509Certificates, Context.NONE).block().getValue();
+        return mergeCertificateWithResponse(name, x509Certificates, Context.NONE).getValue();
     }
 
     /**
