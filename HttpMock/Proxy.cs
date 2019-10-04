@@ -53,7 +53,9 @@ namespace HttpMock
         {
             response.StatusCode = (int)upstreamResponse.StatusCode;
 
-            foreach (var header in upstreamResponse.Headers)
+            // Must skip "Transfer-Encoding" header, since if it's set manually Kestrel requires you to implement
+            // your own chunking.
+            foreach (var header in upstreamResponse.Headers.Where(h => h.Key != "Transfer-Encoding"))
             {
                 response.Headers.Add(header.Key, header.Value.ToArray());
             }
