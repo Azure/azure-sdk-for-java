@@ -17,7 +17,6 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.FileGetPropertiesHeaders;
@@ -88,7 +87,6 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileClientBuilder
  * @see FileClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {

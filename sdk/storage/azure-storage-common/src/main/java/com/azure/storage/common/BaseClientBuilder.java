@@ -18,12 +18,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     protected String endpoint;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private SasTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
@@ -81,7 +81,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -164,14 +164,14 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     }
 
     /**
-     * Sets the credential used to authorize requests sent to the service
+     * Sets the SAS token used to authorize requests sent to the service
      *
-     * @param credential authorization credential
+     * @param sasToken authorization credential
      * @return the updated builder
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
-    public final T credential(SASTokenCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential);
+    public final T sasToken(String sasToken) {
+        this.sasTokenCredential = SasTokenCredential.fromSasTokenString(Objects.requireNonNull(sasToken));
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
 

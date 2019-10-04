@@ -5,8 +5,6 @@ package com.azure.storage.file;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
@@ -46,7 +44,7 @@ public class FileAsyncJavaDocCodeSamples {
 
 
     /**
-     * Generates code sample for creating a {@link FileAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileAsyncClient} with SAS token.
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithSASToken() {
@@ -61,14 +59,14 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileAsyncClient} with SAS token.
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithCredential() {
         // BEGIN: com.azure.storage.file.fileAsyncClient.instantiation.credential
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .resourcePath("myfilepath")
             .buildFileAsyncClient();
@@ -681,7 +679,7 @@ public class FileAsyncJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .resourcePath("myfiile")
             .snapshot(currentTime.toString())

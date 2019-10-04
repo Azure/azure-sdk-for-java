@@ -13,7 +13,6 @@ import com.azure.storage.common.AccountSASService;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.QueueItem;
@@ -41,7 +40,6 @@ import java.util.Map;
  * @see QueueServiceClientBuilder
  * @see QueueServiceAsyncClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class)
 public final class QueueServiceClient {
@@ -211,6 +209,7 @@ public final class QueueServiceClient {
      * @param options Options for listing queues
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */

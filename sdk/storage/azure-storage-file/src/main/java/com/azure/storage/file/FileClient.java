@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -46,7 +45,6 @@ import java.util.Map;
  * @see FileClientBuilder
  * @see FileAsyncClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
