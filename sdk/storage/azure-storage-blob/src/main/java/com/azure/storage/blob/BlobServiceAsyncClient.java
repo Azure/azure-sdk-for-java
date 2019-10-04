@@ -70,7 +70,7 @@ public final class BlobServiceAsyncClient {
 
     private final AzureBlobStorageImpl azureBlobStorage;
     private final CpkInfo customerProvidedKey;
-    private final String accountName; // only used to pass down to blob clients
+    private final String accountName;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
@@ -504,4 +504,14 @@ public final class BlobServiceAsyncClient {
         return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
             accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
+    }
+
 }

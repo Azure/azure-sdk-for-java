@@ -168,6 +168,15 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
+    }
+
+    /**
      * Gets the snapshotId for a blob resource
      *
      * @return A string that represents the snapshotId of the snapshot blob

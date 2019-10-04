@@ -401,4 +401,14 @@ public final class BlobServiceClient {
         return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
             accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.blobServiceAsyncClient.getAccountName();
+    }
+
 }

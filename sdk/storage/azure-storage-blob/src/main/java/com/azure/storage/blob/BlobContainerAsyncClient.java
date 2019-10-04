@@ -83,8 +83,7 @@ public final class BlobContainerAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
-    private final String accountName; // only used to pass down to blob clients
-
+    private final String accountName;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
@@ -156,6 +155,16 @@ public final class BlobContainerAsyncClient {
     public String getBlobContainerName() {
         return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
+    }
+
 
     /**
      * Gets the {@link HttpPipeline} powering this client.

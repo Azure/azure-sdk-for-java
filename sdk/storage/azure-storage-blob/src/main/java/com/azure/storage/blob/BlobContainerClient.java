@@ -106,6 +106,16 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.blobContainerAsyncClient.getAccountName();
+    }
+
+
+    /**
      * Gets the {@link HttpPipeline} powering this client.
      *
      * @return The pipeline.

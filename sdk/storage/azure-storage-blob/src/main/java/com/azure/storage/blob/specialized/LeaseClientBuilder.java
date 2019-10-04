@@ -45,6 +45,7 @@ public final class LeaseClientBuilder {
     private String url;
     private String leaseId;
     private boolean isBlob;
+    protected String accountName;
 
     /**
      * Creates a {@link LeaseClient} based on the configurations set in the builder.
@@ -77,6 +78,7 @@ public final class LeaseClientBuilder {
         this.pipeline = blobClient.getHttpPipeline();
         this.url = blobClient.getBlobUrl();
         this.isBlob = true;
+        this.accountName = blobClient.getAccountName();
         return this;
     }
 
@@ -93,6 +95,7 @@ public final class LeaseClientBuilder {
         this.pipeline = blobAsyncClient.getHttpPipeline();
         this.url = blobAsyncClient.getBlobUrl();
         this.isBlob = true;
+        this.accountName = blobAsyncClient.getAccountName();
         return this;
     }
 
@@ -109,6 +112,7 @@ public final class LeaseClientBuilder {
         this.pipeline = blobContainerClient.getHttpPipeline();
         this.url = blobContainerClient.getBlobContainerUrl();
         this.isBlob = false;
+        this.accountName = blobContainerClient.getAccountName();
         return this;
     }
 
@@ -125,6 +129,7 @@ public final class LeaseClientBuilder {
         this.pipeline = blobContainerAsyncClient.getHttpPipeline();
         this.url = blobContainerAsyncClient.getBlobContainerUrl();
         this.isBlob = false;
+        this.accountName = blobContainerAsyncClient.getAccountName();
         return this;
     }
 
