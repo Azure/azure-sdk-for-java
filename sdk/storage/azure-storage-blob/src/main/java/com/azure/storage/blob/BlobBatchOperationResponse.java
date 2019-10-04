@@ -7,18 +7,25 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.StorageException;
+
+import java.util.Arrays;
 
 public class BlobBatchOperationResponse<T> implements Response<T> {
     private final ClientLogger logger = new ClientLogger(BlobBatchOperationResponse.class);
+
+    private final int[] expectedStatusCodes;
 
     private int statusCode;
     private HttpHeaders headers;
     private HttpRequest request;
     private T value;
+    private StorageException exception;
 
     private boolean responseReceived = false;
 
-    BlobBatchOperationResponse() {
+    BlobBatchOperationResponse(int... expectedStatusCodes) {
+        this.expectedStatusCodes = expectedStatusCodes;
     }
 
     @Override
@@ -70,10 +77,19 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
         return this;
     }
 
+    BlobBatchOperationResponse<T> setException(StorageException exception) {
+        this.exception = exception;
+        return this;
+    }
+
     private void assertResponseReceived() {
         if (!responseReceived) {
             // This is programmatically recoverable by sending the batch request.
             throw logger.logExceptionAsWarning(new UnsupportedOperationException("Batch request has not been sent."));
+        }
+
+        if (Arrays.stream(expectedStatusCodes).noneMatch(expectedStatusCode -> expectedStatusCode == statusCode)) {
+            throw logger.logExceptionAsError(exception);
         }
     }
 }
