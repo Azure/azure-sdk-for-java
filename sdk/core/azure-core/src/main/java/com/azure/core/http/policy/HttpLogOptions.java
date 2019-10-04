@@ -9,12 +9,15 @@ import java.util.Set;
  * The log configurations for HTTP messages.
  */
 public class HttpLogOptions {
-    public HttpLogOptions(final HttpLogDetailLevel logLevel) {
-        this.logLevel = logLevel;
+    private HttpLogDetailLevel logLevel;
+    private Set<String> allowedHeaderNames;
+    private Set<String> allowedQueryParamNames;
+
+    public HttpLogOptions() {
     }
 
     /**
-     * The level of detail to log on HTTP messages.
+     * Gets the level of detail to log on HTTP messages.
      *
      * @return The {@link HttpLogDetailLevel}.
      */
@@ -27,8 +30,9 @@ public class HttpLogOptions {
      *
      * @param logLevel The {@link HttpLogDetailLevel}.
      */
-    public void setLogLevel(final HttpLogDetailLevel logLevel) {
+    public HttpLogOptions setLogLevel(final HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
+        return this;
     }
 
     /**
@@ -45,8 +49,19 @@ public class HttpLogOptions {
      *
      * @param allowedHeaderNames The list of whitelisted header names from the user.
      */
-    public void setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
+    public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
         this.allowedHeaderNames = allowedHeaderNames;
+        return this;
+    }
+
+    /**
+     * Sets the given whitelisted header that should be logged.
+     *
+     * @param allowedHeaderName The whitelisted header name from the user.
+     */
+    public HttpLogOptions addAllowedHeaderName(final String allowedHeaderName) {
+        this.allowedHeaderNames.add(allowedHeaderName);
+        return this;
     }
 
     /**
@@ -63,11 +78,18 @@ public class HttpLogOptions {
      *
      * @param allowedQueryParamNames The list of whitelisted query params from the user.
      */
-    public void setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
+    public HttpLogOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
         this.allowedQueryParamNames = allowedQueryParamNames;
+        return this;
     }
 
-    private HttpLogDetailLevel logLevel;
-    private Set<String> allowedHeaderNames;
-    private Set<String> allowedQueryParamNames;
+    /**
+     * Sets the given whitelisted query param that should be logged.
+     *
+     * @param allowedQueryParam The whitelisted queryParam name from the user.
+     */
+    public HttpLogOptions addAllowedQueryParam(final String allowedQueryParam) {
+        this.allowedQueryParamNames.add(allowedQueryParam);
+        return this;
+    }
 }

@@ -40,7 +40,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credential(credentials)
                     .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogOptions(new HttpLogOptions(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .httpLogOptions(new HttpLogOptions(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()

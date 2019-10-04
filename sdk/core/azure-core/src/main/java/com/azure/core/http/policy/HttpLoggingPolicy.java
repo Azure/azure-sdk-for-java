@@ -42,7 +42,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates an HttpLoggingPolicy with the given log level and pretty printing setting.
+     * Creates an HttpLoggingPolicy with the given log configuration and pretty printing setting.
      *
      * @param httpLogOptions The HTTP logging configuration options.
      * @param prettyPrintJSON If true, pretty prints JSON message bodies when logging. If the detailLevel does not
@@ -121,34 +121,40 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpRequest request, ClientLogger logger) {
+        StringBuilder sb = new StringBuilder();
         for (HttpHeader header : request.getHeaders()) {
-            if (allowedHeaderNames.contains(header)) {
-                logger.info(header.toString());
+            sb.append(header.getName()).append(":");
+            if (allowedHeaderNames.contains(header.getName())) {
+                sb.append(header.getValue());
             } else {
-                logger.info(REDACTED_PLACEHOLDER);
+                sb.append(REDACTED_PLACEHOLDER);
             }
         }
+        logger.info(sb.toString());
     }
 
     private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, HttpRequest request,
                                             ClientLogger logger) {
         StringBuilder sb = new StringBuilder();
         String queryString = request.getUrl().getQuery();
-        String[] queryParams = queryString.split("&");
-        for (String queryParam : queryParams) {
-            String[] queryPair = queryParam.split("=");
-            if (2 != queryPair.length) {
-                throw new IllegalArgumentException("Parse failed for " + queryString);
+        if (queryString != null) {
+            String[] queryParams = queryString.split("&");
+            for (String queryParam : queryParams) {
+                String[] queryPair = queryParam.split("=", 2);
+                if (queryPair.length == 2) {
+                    if(allowedQueryParamNames.contains(queryPair[0])) {
+                        sb.append(queryParam);
+                    } else {
+                        sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
+                    }
+                } else {
+                    sb.append(queryParam);
+                }
+                sb.append("&");
             }
-            if(allowedQueryParamNames.contains(queryPair[0])) {
-                sb.append(queryParam);
-            } else {
-                sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
+            if ((sb != null) && (sb.length() > 0)) {
+                logger.info(sb.substring(0, sb.length() - 1));
             }
-            sb.append("&");
-        }
-        if ((sb != null) && (sb.length() > 0)) {
-            logger.info(sb.substring(0, sb.length() -1));
         }
     }
 
@@ -172,13 +178,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (httpLogOptions.getLogLevel().shouldLogHeaders()) {
+                StringBuilder sb = new StringBuilder();
                 for (HttpHeader header : response.getHeaders()) {
-                    if (httpLogOptions.getAllowedHeaderNames().contains(header)) {
-                        logger.info(header.toString());
+                    sb.append(header.getName()).append(":");
+                    if (httpLogOptions.getAllowedHeaderNames().contains(header.getName())) {
+                        sb.append(header.getValue());
                     } else {
-                        logger.info(REDACTED_PLACEHOLDER);
+                        sb.append(REDACTED_PLACEHOLDER);
                     }
                 }
+                logger.info(sb.toString());
             }
 
             if (httpLogOptions.getLogLevel().shouldLogBody()) {
