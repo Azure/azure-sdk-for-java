@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -76,7 +75,7 @@ public final class BlobServiceClientBuilder extends BaseBlobClientBuilder<BlobSe
             URL url = new URL(endpoint);
             super.endpoint = url.getProtocol() + "://" + url.getAuthority();
 
-            String sasToken = BlobURLParts.parse(url).getSasQueryParameters().encode();
+            String sasToken = BlobUrlParts.parse(url).getSasQueryParameters().encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 super.sasToken(sasToken);
             }

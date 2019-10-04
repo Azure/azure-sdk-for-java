@@ -12,7 +12,6 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
