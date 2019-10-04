@@ -69,7 +69,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key createKey(String name, KeyType keyType) {
-        return client.createKeyWithResponse(name, keyType, Context.NONE).block().getValue();
+        return createKeyWithResponse(new KeyCreateOptions(name, keyType), Context.NONE).getValue();
     }
 
     /**
@@ -262,7 +262,7 @@ public final class KeyClient {
      * @throws HttpRequestException if {@code name} is empty string.
      */
     public Key importKey(String name, JsonWebKey keyMaterial) {
-        return client.importKeyWithResponse(name, keyMaterial, Context.NONE).block().getValue();
+        return importKeyWithResponse(new KeyImportOptions(name, keyMaterial), Context.NONE).getValue();
     }
 
     /**
@@ -450,7 +450,7 @@ public final class KeyClient {
      *     string.
      */
     public Key updateKey(KeyBase key) {
-        return client.updateKeyWithResponse(key, Context.NONE).block().getValue();
+        return updateKeyWithResponse(key, Context.NONE).getValue();
     }
 
     /**
