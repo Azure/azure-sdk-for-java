@@ -6,8 +6,11 @@ import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IpRange
+<<<<<<< HEAD
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.credentials.SasTokenCredential
+=======
+>>>>>>> master
 import com.azure.storage.file.models.AccessPolicy
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageException
@@ -137,8 +140,8 @@ class FileSASTests extends APISpec {
 
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
-        def fileName = primaryFileClient.fileAsyncClient.filePath
-        def shareName = primaryFileClient.fileAsyncClient.shareName
+        def fileName = primaryFileClient.getFilePath()
+        def shareName = primaryFileClient.getShareName()
         def accountName = "account"
 
         when:
@@ -172,7 +175,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = primaryFileClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         then:
         sas != null
@@ -180,7 +183,11 @@ class FileSASTests extends APISpec {
         when:
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
+<<<<<<< HEAD
             .credential(SasTokenCredential.fromSasTokenString(sas))
+=======
+            .sasToken(sas)
+>>>>>>> master
             .buildFileClient()
 
         def downloadResponse = client.downloadWithProperties()
@@ -219,11 +226,15 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = primaryFileClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = primaryFileClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
+<<<<<<< HEAD
             .credential(SasTokenCredential.fromSasTokenString(sas))
+=======
+            .sasToken(sas)
+>>>>>>> master
             .buildFileClient()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
@@ -260,9 +271,13 @@ class FileSASTests extends APISpec {
         when:
         String sasWithId = primaryShareClient.generateSas(identifier.getId())
 
-        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
+        ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
             .endpoint(primaryShareClient.getShareUrl())
+<<<<<<< HEAD
             .credential(SasTokenCredential.fromSasTokenString(sasWithId))
+=======
+            .sasToken(sasWithId)
+>>>>>>> master
             .buildClient()
 
         client1.createDirectory("dir")
@@ -270,9 +285,13 @@ class FileSASTests extends APISpec {
 
         String sasWithPermissions = primaryShareClient.generateSas(expiryTime, permissions)
 
-        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
+        def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
             .endpoint(primaryFileClient.getFileUrl())
+<<<<<<< HEAD
             .credential(SasTokenCredential.fromSasTokenString(sasWithPermissions))
+=======
+            .sasToken(sasWithPermissions)
+>>>>>>> master
             .buildClient()
 
         client2.createDirectory("dir")
@@ -305,7 +324,11 @@ class FileSASTests extends APISpec {
         when:
         def scBuilder = fileServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
+<<<<<<< HEAD
             .credential(SasTokenCredential.fromSasTokenString(sas))
+=======
+            .sasToken(sas)
+>>>>>>> master
         def sc = scBuilder.buildClient()
         sc.createShare("create")
         sc.deleteShare("create")

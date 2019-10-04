@@ -604,7 +604,7 @@ class HelperTest extends APISpec {
         then:
         resourceTypes.isService() == service
         resourceTypes.isContainer() == container
-        resourceTypes.getObject() == object
+        resourceTypes.isObject() == object
 
         where:
         resourceTypeString || service | container | object

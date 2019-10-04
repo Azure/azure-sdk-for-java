@@ -18,7 +18,6 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.ShareCreateSnapshotHeaders;
@@ -61,7 +60,6 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see ShareClientBuilder
  * @see ShareClient
  * @see SharedKeyCredential
- * @see SasTokenCredential
  */
 @ServiceClient(builder = ShareClientBuilder.class, isAsync = true)
 public class ShareAsyncClient {

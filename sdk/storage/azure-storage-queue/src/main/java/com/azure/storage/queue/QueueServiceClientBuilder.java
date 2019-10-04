@@ -4,15 +4,15 @@ package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -23,7 +23,7 @@ import java.util.Objects;
  *
  * <p>The client needs the endpoint of the Azure Storage Queue service, name of the share, and authorization
  * credential. {@link QueueServiceClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give
- * the builder the A {@link SasTokenCredential} that authorizes the client.</p>
+ * the builder the a SAS token that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation.sastoken}
@@ -31,8 +31,8 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken}
  *
- * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SasTokenCredential} they may
- * be set using {@link QueueServiceClientBuilder#credential(SasTokenCredential) credential} together with endpoint.</p>
+ * <p>If the {@code endpoint} doesn't contain the query parameters to construct a SAS token they may be set using
+ * {@link #sasToken(String) sasToken} together with endpoint.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
@@ -42,7 +42,7 @@ import java.util.Objects;
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage Queue service must be used. Set the SharedKeyCredential with {@link
- * QueueServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SasTokenCredential
+ * QueueServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token
  * and SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with connection string.</strong></p>
@@ -53,7 +53,6 @@ import java.util.Objects;
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
- * @see SasTokenCredential
  * @see SharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
@@ -96,8 +95,8 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
      *
      * @return A QueueServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SasTokenCredential} has been
-     * set.
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
+     * has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
         return new QueueServiceAsyncClient(constructImpl());
@@ -115,8 +114,8 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
      *
      * @return A QueueServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SasTokenCredential} has been
-     * set.
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
+     * has been set.
      */
     public QueueServiceClient buildClient() {
         return new QueueServiceClient(buildAsyncClient());
@@ -126,8 +125,8 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
     /**
      * Sets the endpoint for the Azure Storage Queue instance that the client will interact with.
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SasTokenCredential#fromQueryParameters(Map)} in
-     * an attempt to generate a {@link SasTokenCredential} to authenticate requests sent to the service.</p>
+     * <p>Query parameters of the endpoint will be parsed in an attempt to generate a SAS token to authenticate
+     * requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage Queue instance to send service requests to and receive responses
      * from.
@@ -142,10 +141,10 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
             super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
 
             // Attempt to get the SAS token from the URL passed
-            SasTokenCredential sasTokenCredential = SasTokenCredential
-                .fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = new QueueServiceSasQueryParameters(
+                Utility.parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
+            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(

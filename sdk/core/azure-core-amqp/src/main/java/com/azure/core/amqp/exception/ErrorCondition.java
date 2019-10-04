@@ -98,7 +98,11 @@ public enum ErrorCondition {
     /**
      * Tracking Id for an exception.
      */
-    TRACKING_ID_PROPERTY("com.microsoft:tracking-id");
+    TRACKING_ID_PROPERTY("com.microsoft:tracking-id"),
+    /**
+     * IO exceptions that occur in proton-j library.
+     */
+    PROTON_IO("proton:io");
 
     private static final Map<String, ErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;

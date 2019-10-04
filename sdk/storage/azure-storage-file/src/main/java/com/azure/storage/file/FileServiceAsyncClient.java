@@ -20,7 +20,6 @@ import com.azure.storage.common.AccountSasSignatureValues;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
@@ -56,7 +55,6 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileServiceClientBuilder
  * @see FileServiceClient
  * @see SharedKeyCredential
- * @see SasTokenCredential
  */
 @ServiceClient(builder = FileServiceClientBuilder.class, isAsync = true)
 public final class FileServiceAsyncClient {

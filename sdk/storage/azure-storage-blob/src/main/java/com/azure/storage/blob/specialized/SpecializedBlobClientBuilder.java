@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -13,7 +14,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -209,10 +209,9 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SasTokenCredential sasTokenCredential =
-                SasTokenCredential.fromSasTokenString(parts.getSasQueryParameters().encode());
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = parts.getSasQueryParameters().encode();
+            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(

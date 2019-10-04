@@ -9,7 +9,6 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
@@ -38,7 +37,7 @@ public class FileServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@link SasTokenCredential}
+     * Generates code sample for creating a {@link FileServiceAsyncClient} with SAS token.
      * @return An instance of {@link FileServiceAsyncClient}
      */
     public FileServiceAsyncClient createAsyncClientWithSASToken() {
@@ -51,14 +50,14 @@ public class FileServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceAsyncClient} with {@link SasTokenCredential}
+     * Generates code sample for creating a {@link FileServiceAsyncClient} with SAS token.
      * @return An instance of {@link FileServiceAsyncClient}
      */
     public FileServiceAsyncClient createAsyncClientWithCredential() {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
         FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SasTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .buildAsyncClient();
         // END: com.azure.storage.file.fileServiceAsyncClient.instantiation.credential
         return fileServiceAsyncClient;

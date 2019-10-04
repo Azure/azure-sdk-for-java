@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.ShareInfo;
@@ -41,7 +40,6 @@ import java.util.Map;
  * @see ShareClientBuilder
  * @see ShareAsyncClient
  * @see SharedKeyCredential
- * @see SasTokenCredential
  */
 @ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {

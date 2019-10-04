@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -39,7 +38,6 @@ import java.util.Map;
  * @see QueueClientBuilder
  * @see QueueAsyncClient
  * @see SharedKeyCredential
- * @see SasTokenCredential
  */
 @ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {

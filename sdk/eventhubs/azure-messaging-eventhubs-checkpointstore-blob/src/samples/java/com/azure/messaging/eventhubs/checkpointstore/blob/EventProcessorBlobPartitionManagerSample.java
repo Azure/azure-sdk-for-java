@@ -13,7 +13,6 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import java.util.concurrent.TimeUnit;
 import reactor.core.publisher.Mono;
 
@@ -51,11 +50,10 @@ public class EventProcessorBlobPartitionManagerSample {
             .connectionString(EH_CONNECTION_STRING)
             .buildAsyncClient();
 
-        SasTokenCredential sasTokenCredential = SasTokenCredential.fromSasTokenString(SAS_TOKEN_STRING);
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName("")
-            .credential(sasTokenCredential)
+            .sasToken(SAS_TOKEN_STRING)
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildAsyncClient();
 

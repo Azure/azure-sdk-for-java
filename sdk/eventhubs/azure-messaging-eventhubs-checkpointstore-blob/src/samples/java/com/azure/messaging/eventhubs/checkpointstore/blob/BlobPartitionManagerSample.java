@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import java.util.StringJoiner;
 
 /**
@@ -24,11 +23,11 @@ public class BlobPartitionManagerSample {
      * @throws Exception If there are any errors while running the sample.
      */
     public static void main(String[] args) throws Exception {
-        SasTokenCredential sasTokenCredential = SasTokenCredential.fromSasTokenString("");
+        String sasToken = "";
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString("")
             .containerName("")
-            .credential(sasTokenCredential)
+            .sasToken(sasToken)
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .buildAsyncClient();
 

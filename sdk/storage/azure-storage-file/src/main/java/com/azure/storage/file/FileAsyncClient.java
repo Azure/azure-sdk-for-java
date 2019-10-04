@@ -17,7 +17,6 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.FileGetPropertiesHeaders;
@@ -88,7 +87,6 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileClientBuilder
  * @see FileClient
  * @see SharedKeyCredential
- * @see SasTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {
@@ -1107,8 +1105,8 @@ public class FileAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(FileSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(FileSasPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1120,8 +1118,8 @@ public class FileAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1139,9 +1137,9 @@ public class FileAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
     }
@@ -1171,7 +1169,7 @@ public class FileAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange,
                               String cacheControl, String contentDisposition, String contentEncoding,
                               String contentLanguage, String contentType) {

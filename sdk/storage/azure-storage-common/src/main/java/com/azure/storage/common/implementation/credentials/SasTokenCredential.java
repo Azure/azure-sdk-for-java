@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.credentials;
+package com.azure.storage.common.implementation.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
 
@@ -36,10 +36,6 @@ public final class SasTokenCredential {
      *
      * <p>This method expects a pre-formatted SAS token. Each service offers helper classes to make it easier to
      * generate the SAS token.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromSasTokenString#String}
      *
      * @param sasToken SAS token
      * @return a SAS token credential if {@code sasToken} is not {@code null} or empty, otherwise null.

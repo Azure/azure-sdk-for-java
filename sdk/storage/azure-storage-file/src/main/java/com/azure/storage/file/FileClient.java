@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -46,7 +45,6 @@ import java.util.Map;
  * @see FileClientBuilder
  * @see FileAsyncClient
  * @see SharedKeyCredential
- * @see SasTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
@@ -865,8 +863,8 @@ public class FileClient {
      * @param permissions The {@code FileSasPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, FileSasPermission permissions) {
-        return this.fileAsyncClient.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, FileSasPermission permissions) {
+        return this.fileAsyncClient.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -875,8 +873,8 @@ public class FileClient {
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.fileAsyncClient.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.fileAsyncClient.generateSas(identifier);
     }
 
     /**
@@ -891,9 +889,9 @@ public class FileClient {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.fileAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
 
@@ -921,10 +919,10 @@ public class FileClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
             OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.fileAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 
