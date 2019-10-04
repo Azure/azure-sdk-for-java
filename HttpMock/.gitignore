@@ -1,3 +1,5 @@
+[Oo]ut/
+
 # Customizations
 *.pfx
 !testCert.pfx

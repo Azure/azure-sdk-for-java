@@ -59,47 +59,47 @@ namespace HttpMock
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .Configure(app => app.Run(async context =>
                 {
-                    var sw = Stopwatch.StartNew();
+                    // var sw = Stopwatch.StartNew();
 
-                    Trace("Start Request", sw);
+                    // Trace("Start Request", sw);
 
                     var request = context.Request;
                     var response = context.Response;
 
-                    Log.LogRequest(request);
+                    // Log.LogRequest(request);
 
                     var key = new RequestCacheKey(request);
 
-                    Trace("Created Cache Key", sw);
+                    // Trace("Created Cache Key", sw);
 
                     if (_cache.TryGetValue(key, out var upstreamResponse))
                     {
-                        Trace("Cache Hit", sw);
-                        Log.LogUpstreamResponse(upstreamResponse, cached: true);
+                        // Trace("Cache Hit", sw);
+                        // Log.LogUpstreamResponse(upstreamResponse, cached: true);
                         
                         await Proxy.SendDownstreamResponse(upstreamResponse, response);
 
-                        Trace("Sent Downstream Response", sw);
+                        // Trace("Sent Downstream Response", sw);
                     }
                     else
                     {
-                        Trace("Cache Miss", sw);
+                        // Trace("Cache Miss", sw);
                         
                         upstreamResponse = await Proxy.SendUpstreamRequest(request);
 
-                        Trace("Received Upstream Response", sw);
-                        Log.LogUpstreamResponse(upstreamResponse, cached: false);
+                        // Trace("Received Upstream Response", sw);
+                        // Log.LogUpstreamResponse(upstreamResponse, cached: false);
 
                         await Proxy.SendDownstreamResponse(upstreamResponse, response);
 
-                        Trace("Sent Downstream Response", sw);
+                        // Trace("Sent Downstream Response", sw);
 
                         _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
 
-                        Trace("Updated Cache", sw);
+                        // Trace("Updated Cache", sw);
                     }
 
-                    Trace("End Request" + Environment.NewLine, sw);
+                    // Trace("End Request" + Environment.NewLine, sw);
                 }))
                 .Build()
                 .Run();
