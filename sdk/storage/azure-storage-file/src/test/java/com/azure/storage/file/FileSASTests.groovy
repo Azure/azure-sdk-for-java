@@ -180,7 +180,7 @@ class FileSASTests extends APISpec {
         when:
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
-            .credential(SasTokenCredential.fromSASTokenString(sas))
+            .credential(SasTokenCredential.fromSasTokenString(sas))
             .buildFileClient()
 
         def downloadResponse = client.downloadWithProperties()
@@ -223,7 +223,7 @@ class FileSASTests extends APISpec {
 
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
             .endpoint(primaryFileClient.getFileUrl())
-            .credential(SasTokenCredential.fromSASTokenString(sas))
+            .credential(SasTokenCredential.fromSasTokenString(sas))
             .buildFileClient()
 
         client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
@@ -262,7 +262,7 @@ class FileSASTests extends APISpec {
 
         ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryShareClient.getShareUrl())
-            .credential(SasTokenCredential.fromSASTokenString(sasWithId))
+            .credential(SasTokenCredential.fromSasTokenString(sasWithId))
             .buildClient()
 
         client1.createDirectory("dir")
@@ -272,7 +272,7 @@ class FileSASTests extends APISpec {
 
         def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.client.shareName)
             .endpoint(primaryFileClient.getFileUrl())
-            .credential(SasTokenCredential.fromSASTokenString(sasWithPermissions))
+            .credential(SasTokenCredential.fromSasTokenString(sasWithPermissions))
             .buildClient()
 
         client2.createDirectory("dir")
@@ -305,7 +305,7 @@ class FileSASTests extends APISpec {
         when:
         def scBuilder = fileServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
-            .credential(SasTokenCredential.fromSASTokenString(sas))
+            .credential(SasTokenCredential.fromSasTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createShare("create")
         sc.deleteShare("create")

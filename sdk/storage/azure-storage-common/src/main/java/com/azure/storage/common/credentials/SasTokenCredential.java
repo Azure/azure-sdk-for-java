@@ -39,12 +39,12 @@ public final class SasTokenCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromSASTokenString#String}
+     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromSasTokenString#String}
      *
      * @param sasToken SAS token
      * @return a SAS token credential if {@code sasToken} is not {@code null} or empty, otherwise null.
      */
-    public static SasTokenCredential fromSASTokenString(String sasToken) {
+    public static SasTokenCredential fromSasTokenString(String sasToken) {
         if (ImplUtils.isNullOrEmpty(sasToken)) {
             return null;
         }

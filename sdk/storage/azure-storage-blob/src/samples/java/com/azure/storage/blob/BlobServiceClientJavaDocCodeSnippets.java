@@ -32,11 +32,11 @@ public class BlobServiceClientJavaDocCodeSnippets {
     private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Generates a code sample for using {@link BlobServiceClient#generateAccountSAS(AccountSasService,
+     * Generates a code sample for using {@link BlobServiceClient#generateAccountSas(AccountSasService,
      * AccountSasResourceType, AccountSasPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SasProtocol)}
      */
     public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
+        // BEGIN: com.azure.storage.blob.blobServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
         AccountSasService service = new AccountSasService()
             .setBlob(true)
             .setFile(true)
@@ -63,9 +63,9 @@ public class BlobServiceClientJavaDocCodeSnippets {
         SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
+        String sas = client.generateAccountSas(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
+        // END: com.azure.storage.blob.blobServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
     }
 
     /**

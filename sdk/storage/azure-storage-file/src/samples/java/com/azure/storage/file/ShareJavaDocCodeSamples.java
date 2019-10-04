@@ -503,7 +503,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareClient shareClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SasTokenCredential.fromSASTokenString("${SASToken}"))
+            .credential(SasTokenCredential.fromSasTokenString("${SASToken}"))
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();

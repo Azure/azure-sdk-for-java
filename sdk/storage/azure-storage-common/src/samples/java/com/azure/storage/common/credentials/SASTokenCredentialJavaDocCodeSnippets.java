@@ -22,13 +22,13 @@ public final class SASTokenCredentialJavaDocCodeSnippets {
     }
 
     /**
-     * Code sample for {@link SasTokenCredential#fromSASTokenString(String)}.
+     * Code sample for {@link SasTokenCredential#fromSasTokenString(String)}.
      */
     public void fromSASTokenString() {
         String preformattedSASToken = "sasToken";
-        // BEGIN: com.azure.storage.common.credentials.SasTokenCredential.fromSASTokenString#String
-        SasTokenCredential credential = SasTokenCredential.fromSASTokenString(preformattedSASToken);
-        // END: com.azure.storage.common.credentials.SasTokenCredential.fromSASTokenString#String
+        // BEGIN: com.azure.storage.common.credentials.SasTokenCredential.fromSasTokenString#String
+        SasTokenCredential credential = SasTokenCredential.fromSasTokenString(preformattedSASToken);
+        // END: com.azure.storage.common.credentials.SasTokenCredential.fromSasTokenString#String
     }
 
     /**

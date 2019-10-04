@@ -681,7 +681,7 @@ public class FileAsyncJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SasTokenCredential.fromSASTokenString("${SASToken}"))
+            .credential(SasTokenCredential.fromSasTokenString("${SASToken}"))
             .shareName("myshare")
             .resourcePath("myfiile")
             .snapshot(currentTime.toString())

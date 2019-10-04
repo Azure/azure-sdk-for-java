@@ -37,12 +37,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#generateUserDelegationSAS(UserDelegationKey, String,
+     * Code snippet for {@link BlobContainerAsyncClient#generateUserDelegationSas(UserDelegationKey, String,
      * BlobContainerSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String,
      * String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -65,18 +65,18 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         String accountName = "accountName";
         UserDelegationKey userDelegationKey = new UserDelegationKey();
 
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#generateSAS(String, BlobContainerSasPermission, OffsetDateTime,
+     * Code snippet for {@link BlobContainerAsyncClient#generateSas(String, BlobContainerSasPermission, OffsetDateTime,
      * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateSas#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -99,9 +99,9 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
+        String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateSas#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**

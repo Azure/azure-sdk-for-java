@@ -98,7 +98,7 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
             this.containerName = parts.getBlobContainerName();
 
             SasTokenCredential sasTokenCredential = SasTokenCredential
-                .fromSASTokenString(parts.getSasQueryParameters().encode());
+                .fromSasTokenString(parts.getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

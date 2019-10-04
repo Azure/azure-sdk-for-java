@@ -112,7 +112,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
             this.snapshot = parts.getSnapshot();
 
             SasTokenCredential sasTokenCredential =
-                SasTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
+                SasTokenCredential.fromSasTokenString(parts.getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

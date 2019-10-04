@@ -210,7 +210,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
             this.snapshot = parts.getSnapshot();
 
             SasTokenCredential sasTokenCredential =
-                SasTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
+                SasTokenCredential.fromSasTokenString(parts.getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

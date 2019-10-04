@@ -369,9 +369,9 @@ public final class BlobServiceClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
         AccountSasPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
+        return this.blobServiceAsyncClient.generateAccountSas(accountSASService, accountSASResourceType,
             accountSASPermission, expiryTime);
     }
 
@@ -380,14 +380,14 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.blobServiceClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
+     * {@codesnippet com.azure.storage.blob.blobServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a></p>
      *
-     * @param accountSASService The {@code AccountSasService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
+     * @param accountSasService The {@code AccountSasService} services for the account SAS
+     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
+     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
@@ -395,10 +395,10 @@ public final class BlobServiceClient {
      * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateAccountSAS(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
-            AccountSasPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
+    public String generateAccountSas(AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
+            AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
             String version, IpRange ipRange, SasProtocol sasProtocol) {
-        return this.blobServiceAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType,
-            accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return this.blobServiceAsyncClient.generateAccountSas(accountSasService, accountSasResourceType,
+            accountSasPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

@@ -424,7 +424,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SasTokenCredential.fromSASTokenString("${SASToken}"))
+            .credential(SasTokenCredential.fromSasTokenString("${SASToken}"))
             .shareName("myshare")
             .resourcePath("mydirectory")
             .snapshot(currentTime.toString())

@@ -24,7 +24,7 @@ public class BlobPartitionManagerSample {
      * @throws Exception If there are any errors while running the sample.
      */
     public static void main(String[] args) throws Exception {
-        SasTokenCredential sasTokenCredential = SasTokenCredential.fromSASTokenString("");
+        SasTokenCredential sasTokenCredential = SasTokenCredential.fromSasTokenString("");
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString("")
             .containerName("")

@@ -51,7 +51,7 @@ public class EventProcessorBlobPartitionManagerSample {
             .connectionString(EH_CONNECTION_STRING)
             .buildAsyncClient();
 
-        SasTokenCredential sasTokenCredential = SasTokenCredential.fromSASTokenString(SAS_TOKEN_STRING);
+        SasTokenCredential sasTokenCredential = SasTokenCredential.fromSasTokenString(SAS_TOKEN_STRING);
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName("")
