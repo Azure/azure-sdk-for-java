@@ -67,9 +67,10 @@ public class EventHubReactorConnectionTest {
             .thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
 
+        final ProxyConfiguration proxy = ProxyConfiguration.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
             tokenCredential, CBSAuthorizationType.SHARED_ACCESS_SIGNATURE, TransportType.AMQP, new RetryOptions(),
-            ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+            proxy, scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -77,7 +78,7 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP))
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, TransportType.AMQP, proxy))
             .thenReturn(connectionHandler);
     }
 
