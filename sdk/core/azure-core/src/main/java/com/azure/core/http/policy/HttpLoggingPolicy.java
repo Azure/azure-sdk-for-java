@@ -99,7 +99,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                                 logger,
                                 request.getHeaders().getValue("Content-Type"),
                                 bodyString);
-                            logger.info("{}-byte body:\n{}", contentLength, bodyString);
+                            logger.info("{}-byte body:%n{}", contentLength, bodyString);
                             logger.info("--> END {}", request.getHttpMethod());
                             return Mono.empty();
                         });

@@ -56,6 +56,9 @@ public final class BlobBatch {
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
 
+    private static final int[] EXPECTED_DELETE_STATUS_CODES = { 202 };
+    private static final int[] EXPECTED_SET_TIER_STATUS_CODES = { 200, 202 };
+
     private final ClientLogger logger = new ClientLogger(BlobBatch.class);
 
     private final String accountUrl;
@@ -160,7 +163,8 @@ public final class BlobBatch {
                 "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
         }
 
-        return createAndReturnBatchOperation(client.deleteWithResponse(deleteOptions, blobAccessConditions));
+        return createAndReturnBatchOperation(client.deleteWithResponse(deleteOptions, blobAccessConditions),
+            EXPECTED_DELETE_STATUS_CODES);
     }
 
     /**
@@ -202,14 +206,15 @@ public final class BlobBatch {
                 "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
         }
 
-        return createAndReturnBatchOperation(client.setAccessTierWithResponse(accessTier, null, leaseAccessConditions));
+        return createAndReturnBatchOperation(client.setAccessTierWithResponse(accessTier, null, leaseAccessConditions),
+            EXPECTED_SET_TIER_STATUS_CODES);
     }
 
-    private <T> Response<T> createAndReturnBatchOperation(Mono<Response<T>> response) {
+    private <T> Response<T> createAndReturnBatchOperation(Mono<Response<T>> response, int... expectedStatusCodes) {
         int contentId = this.contentId.getAndIncrement();
         this.batchOperationQueue.add(response.subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, contentId)));
 
-        BlobBatchOperationResponse<T> batchOperationResponse = new BlobBatchOperationResponse<>();
+        BlobBatchOperationResponse<T> batchOperationResponse = new BlobBatchOperationResponse<>(expectedStatusCodes);
         this.batchMapping.put(contentId, batchOperationResponse);
         return batchOperationResponse;
     }

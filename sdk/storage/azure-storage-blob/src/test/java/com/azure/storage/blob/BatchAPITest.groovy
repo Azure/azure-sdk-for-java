@@ -64,11 +64,27 @@ class BatchAPITest extends APISpec {
     }
 
     def "Sub-request has version"() {
-        // Needs to use a custom pipeline policy
+        setup:
+        def httpPipeline = cc.getHttpPipeline()
+
+        def pipeline = new HttpPipelineBuilder()
+            .policies(setupCustomPolicy(httpPipeline, null)) // replace null with custom policy
+            .httpClient(httpPipeline.getHttpClient())
+            .build()
+
+        def batch = new BlobBatch(null, pipeline)
     }
 
     def "Incorrect batch boundary"() {
-        // Needs to use a custom pipeline policy
+        setup:
+        def httpPipeline = cc.getHttpPipeline()
+
+        def pipeline = new HttpPipelineBuilder()
+            .policies(setupCustomPolicy(httpPipeline, null)) // replace null with custom policy
+            .httpClient(httpPipeline.getHttpClient())
+            .build()
+
+        def batch = new BlobBatch(null, pipeline)
     }
 
     def "Set tier all succeed"() {
@@ -77,10 +93,10 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = new BlobBatch(primaryBlobServiceClient)
-        def containerClient = primaryBlobServiceClient.getContainerClient(containerName)
+        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
-        containerClient.getBlobClient(blobName1).asPageBlobClient().create(0)
-        containerClient.getBlobClient(blobName2).asPageBlobClient().create(0)
+        containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
+        containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
 
         when:
         def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT, null)

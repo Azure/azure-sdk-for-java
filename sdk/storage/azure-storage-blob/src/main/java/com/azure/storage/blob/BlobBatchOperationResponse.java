@@ -11,6 +11,11 @@ import com.azure.storage.blob.models.StorageException;
 
 import java.util.Arrays;
 
+/**
+ * REST response associated to a Azure Storage Blob batch operation.
+ *
+ * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
+ */
 public class BlobBatchOperationResponse<T> implements Response<T> {
     private final ClientLogger logger = new ClientLogger(BlobBatchOperationResponse.class);
 
