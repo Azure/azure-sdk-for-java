@@ -4,10 +4,10 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.AmqpErrorCode;
+import com.azure.core.amqp.models.ProxyAuthenticationType;
 import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
@@ -112,7 +112,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         final String[] hostNameParts = hostName.split(":");
         if (hostNameParts.length != 2) {
-            logger.warning("Invalid hostname " + hostName);
+            logger.warning("Invalid hostname: {}", hostName);
             return;
         }
 
@@ -120,7 +120,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         try {
             port = Integer.parseInt(hostNameParts[1]);
         } catch (NumberFormatException ignore) {
-            logger.warning("Invalid port number " + hostNameParts[1]);
+            logger.warning("Invalid port number: {}", hostNameParts[1]);
             return;
         }
 
@@ -181,7 +181,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     }
 
     private com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration() {
-        final ProxyAuthenticationType type = getProtonAuthType(proxyConfiguration.getAuthentication());
+        final com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType type =
+            getProtonAuthType(proxyConfiguration.getAuthentication());
         final String username = proxyConfiguration.hasUserDefinedCredentials()
             ? proxyConfiguration.getCredential().getUserName()
             : null;
@@ -193,14 +194,15 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             proxyConfiguration.getProxyAddress(), username, password);
     }
 
-    private ProxyAuthenticationType getProtonAuthType(com.azure.core.amqp.models.ProxyAuthenticationType type) {
+    private com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType getProtonAuthType(
+        ProxyAuthenticationType type) {
         switch (type) {
             case DIGEST:
-                return ProxyAuthenticationType.DIGEST;
+                return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.DIGEST;
             case BASIC:
-                return ProxyAuthenticationType.BASIC;
+                return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.BASIC;
             case NONE:
-                return ProxyAuthenticationType.NONE;
+                return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.NONE;
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException(
                     "This authentication type is unknown:" + type.name()));
