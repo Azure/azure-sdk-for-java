@@ -450,9 +450,9 @@ public final class FileServiceAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateAccountSAS(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
         AccountSasPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+        return this.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
             null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
     }
 
@@ -461,7 +461,7 @@ public final class FileServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
+     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
@@ -477,7 +477,7 @@ public final class FileServiceAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateAccountSAS(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
+    public String generateAccountSas(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
             AccountSasPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
             String version, IpRange ipRange, SasProtocol sasProtocol) {
 

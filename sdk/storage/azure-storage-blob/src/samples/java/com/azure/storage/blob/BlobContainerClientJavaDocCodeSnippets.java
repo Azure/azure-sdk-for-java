@@ -39,7 +39,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
     private Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Code snippet for {@link BlobContainerClient#generateUserDelegationSAS(UserDelegationKey, String,
+     * Code snippet for {@link BlobContainerClient#generateUserDelegationSas(UserDelegationKey, String,
      * BlobContainerSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String,
      * String, String)}
      */
@@ -67,7 +67,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         String accountName = "accountName";
         UserDelegationKey userDelegationKey = new UserDelegationKey();
 
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        String sas = client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
         // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String

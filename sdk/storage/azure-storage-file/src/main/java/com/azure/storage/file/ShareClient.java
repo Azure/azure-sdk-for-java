@@ -792,8 +792,8 @@ public class ShareClient {
      * @param permissions The {@code ShareSasPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, ShareSasPermission permissions) {
-        return this.client.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, ShareSasPermission permissions) {
+        return this.client.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -802,8 +802,8 @@ public class ShareClient {
      * @param identifier The {@code String} name of the access policy on the share this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.client.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.client.generateSas(identifier);
     }
 
     /**
@@ -818,9 +818,9 @@ public class ShareClient {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
     }
 
     /**
@@ -828,7 +828,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.ShareClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.file.ShareClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -847,10 +847,10 @@ public class ShareClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
             OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 

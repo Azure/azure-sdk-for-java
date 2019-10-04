@@ -523,12 +523,12 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#generateSAS(String, ShareSasPermission, OffsetDateTime,
+     * Generates a code sample for using {@link ShareAsyncClient#generateSas(String, ShareSasPermission, OffsetDateTime,
      * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         String identifier = "identifier";
         ShareSasPermission permissions = new ShareSasPermission()
             .setReadPermission(true)
@@ -548,9 +548,9 @@ public class ShareAsyncJavaDocCodeSamples {
         String contentLanguage = "language";
         String contentType = "type";
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = shareAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        String sas = shareAsyncClient.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.file.shareAsyncClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**

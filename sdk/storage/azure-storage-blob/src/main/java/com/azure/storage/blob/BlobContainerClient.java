@@ -542,7 +542,7 @@ public final class BlobContainerClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobContainerSasPermission permissions, OffsetDateTime expiryTime) {
         return this.blobContainerAsyncClient.generateUserDelegationSas(userDelegationKey, accountName, permissions,
             expiryTime);
@@ -561,7 +561,7 @@ public final class BlobContainerClient {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobContainerSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SasProtocol sasProtocol, IpRange ipRange) {
         return this.blobContainerAsyncClient.generateUserDelegationSas(userDelegationKey, accountName, permissions,
@@ -594,7 +594,7 @@ public final class BlobContainerClient {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
             BlobContainerSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
             SasProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
             String contentEncoding, String contentLanguage, String contentType) {

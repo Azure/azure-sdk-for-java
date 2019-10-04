@@ -664,8 +664,8 @@ public final class QueueClient {
      * @param permissions The {@code QueueSasPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, QueueSasPermission permissions) {
-        return this.client.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, QueueSasPermission permissions) {
+        return this.client.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -674,8 +674,8 @@ public final class QueueClient {
      * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.client.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.client.generateSas(identifier);
     }
 
     /**
@@ -683,7 +683,7 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange}
+     * {@codesnippet com.azure.storage.queue.queueClient.generateSas#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -697,9 +697,9 @@ public final class QueueClient {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, QueueSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, QueueSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
 

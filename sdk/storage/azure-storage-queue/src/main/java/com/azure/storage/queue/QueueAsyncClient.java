@@ -756,8 +756,8 @@ public final class QueueAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredential} is null
      */
-    public String generateSAS(QueueSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(QueueSasPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */);
     }
 
@@ -768,8 +768,8 @@ public final class QueueAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */);
     }
 
@@ -778,7 +778,7 @@ public final class QueueAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.generateSas#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -793,7 +793,7 @@ public final class QueueAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier, QueueSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, QueueSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
 
         QueueServiceSasSignatureValues queueServiceSASSignatureValues = new QueueServiceSasSignatureValues(version,

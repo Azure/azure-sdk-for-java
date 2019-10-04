@@ -271,11 +271,11 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSAS(AccountSasService,
+     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSas(AccountSasService,
      * AccountSasResourceType, AccountSasPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SasProtocol)}
      */
     public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
         AccountSasService service = new AccountSasService()
             .setBlob(true)
             .setFile(true)
@@ -302,8 +302,8 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
+        String sas = client.generateAccountSas(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
-        // END: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
+        // END: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
     }
 }

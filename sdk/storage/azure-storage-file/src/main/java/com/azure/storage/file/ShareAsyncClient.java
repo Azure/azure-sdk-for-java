@@ -890,8 +890,8 @@ public class ShareAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(ShareSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(ShareSasPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -903,8 +903,8 @@ public class ShareAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -922,9 +922,9 @@ public class ShareAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
                               OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
     }
@@ -934,7 +934,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.generateSas#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -954,7 +954,7 @@ public class ShareAsyncClient {
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
-    public String generateSAS(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, ShareSasPermission permissions, OffsetDateTime expiryTime,
             OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 

@@ -109,7 +109,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def sasPermissions = queueClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
+        def sasPermissions = queueClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl())
@@ -150,7 +150,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def sasPermissions = queueClient.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
+        def sasPermissions = queueClient.generateSas(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange)
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
             .endpoint(queueClient.getQueueUrl())
@@ -193,7 +193,7 @@ class QueueSASTests extends APISpec {
         queueClient.setAccessPolicy(Arrays.asList(identifier))
 
         when:
-        def sasIdentifier = queueClient.generateSAS(identifier.getId())
+        def sasIdentifier = queueClient.generateSas(identifier.getId())
 
         def clientBuilder = queueBuilderHelper(interceptorManager)
         def clientIdentifier = clientBuilder

@@ -404,7 +404,7 @@ public final class QueueServiceClient {
     public String generateAccountSAS(AccountSasService accountSASService,
         AccountSasResourceType accountSASResourceType, AccountSasPermission accountSASPermission,
         OffsetDateTime expiryTime) {
-        return this.client.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission,
+        return this.client.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission,
             expiryTime);
     }
 
@@ -413,7 +413,7 @@ public final class QueueServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.generateAccountSas#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
@@ -431,7 +431,7 @@ public final class QueueServiceClient {
     public String generateAccountSAS(AccountSasService accountSASService, AccountSasResourceType accountSASResourceType,
             AccountSasPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
             String version, IpRange ipRange, SasProtocol sasProtocol) {
-        return this.client.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission,
+        return this.client.generateAccountSas(accountSASService, accountSASResourceType, accountSASPermission,
             expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

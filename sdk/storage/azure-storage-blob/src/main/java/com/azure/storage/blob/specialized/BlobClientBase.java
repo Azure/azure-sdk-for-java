@@ -793,9 +793,9 @@ public class BlobClientBase {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime);
+        return this.client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime);
     }
 
     /**
@@ -811,10 +811,10 @@ public class BlobClientBase {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SasProtocol sasProtocol, IpRange ipRange) {
-        return this.client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        return this.client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange);
     }
 
@@ -844,11 +844,11 @@ public class BlobClientBase {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
             BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
             SasProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
             String contentEncoding, String contentLanguage, String contentType) {
-        return this.client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+        return this.client.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
     }
@@ -860,8 +860,8 @@ public class BlobClientBase {
      * @param permissions The {@code BlobSASPermission} permission for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, BlobSasPermission permissions) {
-        return this.client.generateSAS(permissions, expiryTime);
+    public String generateSas(OffsetDateTime expiryTime, BlobSasPermission permissions) {
+        return this.client.generateSas(permissions, expiryTime);
     }
 
     /**
@@ -870,8 +870,8 @@ public class BlobClientBase {
      * @param identifier The {@code String} name of the access policy on the container this SAS references if any
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier) {
-        return this.client.generateSAS(identifier);
+    public String generateSas(String identifier) {
+        return this.client.generateSas(identifier);
     }
 
     /**
@@ -886,9 +886,9 @@ public class BlobClientBase {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }
 
@@ -916,10 +916,10 @@ public class BlobClientBase {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
             OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
+        return this.client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 }

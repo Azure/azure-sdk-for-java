@@ -444,11 +444,11 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for {@link QueueClient#generateSAS(String, QueueSasPermission, OffsetDateTime, OffsetDateTime,
+     * Code snippet for {@link QueueClient#generateSas(String, QueueSasPermission, OffsetDateTime, OffsetDateTime,
      * String, SasProtocol, IpRange)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
+        // BEGIN: com.azure.storage.queue.queueClient.generateSas#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
         QueueSasPermission permissions = new QueueSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
@@ -464,8 +464,8 @@ public class QueueJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
+        String sas = client.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
+        // END: com.azure.storage.queue.queueClient.generateSas#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange
     }
 
     /**

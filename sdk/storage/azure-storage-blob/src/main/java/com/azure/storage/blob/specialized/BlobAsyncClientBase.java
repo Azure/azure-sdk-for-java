@@ -984,9 +984,9 @@ public class BlobAsyncClientBase {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null /*
+        return this.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime, null /*
         startTime */, null /* version */, null /*sasProtocol */, null /* ipRange */, null /* cacheControl */, null
             /*contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1004,10 +1004,10 @@ public class BlobAsyncClientBase {
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
         BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SasProtocol sasProtocol, IpRange ipRange) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
+        return this.generateUserDelegationSas(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1038,7 +1038,7 @@ public class BlobAsyncClientBase {
      * @param contentType An optional {@code String} content-type header for the SAS.
      * @return A string that represents the SAS token
      */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+    public String generateUserDelegationSas(UserDelegationKey userDelegationKey, String accountName,
             BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
             SasProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
             String contentEncoding, String contentLanguage, String contentType) {
@@ -1064,8 +1064,8 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(BlobSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
+    public String generateSas(BlobSasPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSas(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
         version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentLanguage*/,
             null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1077,8 +1077,8 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
+    public String generateSas(String identifier) {
+        return this.generateSas(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
             null /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
             contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
     }
@@ -1096,9 +1096,9 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+        return this.generateSas(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
     }
@@ -1128,7 +1128,7 @@ public class BlobAsyncClientBase {
      * @return A string that represents the SAS token
      * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
-    public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
+    public String generateSas(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
             OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 

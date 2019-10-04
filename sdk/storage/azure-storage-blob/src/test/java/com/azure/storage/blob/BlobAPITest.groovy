@@ -1455,7 +1455,7 @@ class BlobAPITest extends APISpec {
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))), null, tier2, null, null, null, null)
+        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl() + "?" + bc.generateSas(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))), null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2
