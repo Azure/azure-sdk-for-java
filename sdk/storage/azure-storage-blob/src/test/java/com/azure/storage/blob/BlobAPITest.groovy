@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
@@ -24,6 +23,7 @@ import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import spock.lang.Unroll
 
@@ -1455,7 +1455,13 @@ class BlobAPITest extends APISpec {
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))), null, tier2, null, null, null, null)
+        def sas = new BlobServiceSasSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
+            .setCanonicalName(bc.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
+        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + sas), null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2

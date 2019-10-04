@@ -88,9 +88,9 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSasPermission().setReadPermission(true).toString())
+            v.setPermissions(new BlobSasPermission().setReadPermission(true))
         } else {
-            v.setPermissions("")
+            v.setPermissions(new BlobSasPermission())
         }
 
         if (snapId != null) {
@@ -164,9 +164,9 @@ class HelperTest extends APISpec {
         when:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
         if (permissions != null) {
-            v.setPermissions(new BlobSasPermission().setReadPermission(true).toString())
+            v.setPermissions(new BlobSasPermission().setReadPermission(true))
         } else {
-            v.setPermissions("")
+            v.setPermissions(new BlobSasPermission())
         }
 
         v.setStartTime(startTime)
@@ -241,7 +241,7 @@ class HelperTest extends APISpec {
         setup:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
             .setExpiryTime(expiryTime)
-            .setPermissions(new BlobSasPermission().toString())
+            .setPermissions(new BlobSasPermission())
             .setResource(expectedResource)
             .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.getAccountName(), containerName))
             .setSnapshotId(snapId)
@@ -272,8 +272,8 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
-        BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
-            .setPermissions(new AccountSASPermission().toString())
+        def v = new BlobServiceSasSignatureValues()
+            .setPermissions(new BlobSasPermission())
             .setExpiryTime(OffsetDateTime.now())
             .setResource(containerName)
             .setCanonicalName(blobName)
@@ -635,7 +635,7 @@ class HelperTest extends APISpec {
 
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
-            .setPermissions("r")
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
             .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 

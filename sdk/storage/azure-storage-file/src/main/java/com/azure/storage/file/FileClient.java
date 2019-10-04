@@ -7,10 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -30,7 +27,6 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -46,14 +42,13 @@ import java.util.Map;
  * @see FileClientBuilder
  * @see FileAsyncClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Creates a FileClient that wraps a FileAsyncClient and blocks requests.
+     * Creates a FileClient that wraps a FileAsyncClient and requests.
      *
      * @param fileAsyncClient FileAsyncClient that is used to send requests
      */
@@ -68,6 +63,53 @@ public class FileClient {
      */
     public String getFileUrl() {
         return fileAsyncClient.getFileUrl();
+    }
+
+    /**
+     * Opens a file input stream to download the file.
+     * <p>
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileInputStream openInputStream() {
+        return openInputStream(new FileRange(0));
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file.
+     * <p>
+     *
+     * @param range {@link FileRange}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileInputStream openInputStream(FileRange range) {
+        return new StorageFileInputStream(fileAsyncClient, range.getStart(), range.getEnd());
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileOutputStream getFileOutputStream() {
+        return getFileOutputStream(0);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileOutputStream getFileOutputStream(long offset) {
+        return new StorageFileOutputStream(fileAsyncClient, offset);
     }
 
     /**
@@ -856,76 +898,6 @@ public class FileClient {
      */
     public String getShareSnapshotId() {
         return fileAsyncClient.getShareSnapshotId();
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param permissions The {@code FileSasPermission} permission for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(OffsetDateTime expiryTime, FileSasPermission permissions) {
-        return this.fileAsyncClient.generateSAS(permissions, expiryTime);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier) {
-        return this.fileAsyncClient.generateSAS(identifier);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSasPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSasPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param cacheControl An optional {@code String} cache-control header for the SAS.
-     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage An optional {@code String} content-language header for the SAS.
-     * @param contentType An optional {@code String} content-type header for the SAS.
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
-            OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange, String cacheControl,
-            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 
     /**

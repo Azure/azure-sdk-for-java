@@ -11,12 +11,6 @@ import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageServiceProperties;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -28,43 +22,6 @@ import java.util.Map;
 public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
     private BlobServiceAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobServiceAsyncClient();
-
-    /**
-     * Generates a code sample for using {@link BlobServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SASProtocol)}
-     */
-    public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
-        AccountSASService service = new AccountSASService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSASResourceType resourceType = new AccountSASResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSASPermission permission = new AccountSASPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setProcessMessages(true)
-            .setUpdatePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
-            ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
-    }
 
     /**
      * Code snippet for {@link BlobServiceAsyncClient#getBlobContainerAsyncClient(String)}
@@ -91,8 +48,9 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     public void createContainerWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobContainerAsyncClient containerClient =
-            client.createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
+
+        BlobContainerAsyncClient containerClient = client
+            .createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
     }
 
