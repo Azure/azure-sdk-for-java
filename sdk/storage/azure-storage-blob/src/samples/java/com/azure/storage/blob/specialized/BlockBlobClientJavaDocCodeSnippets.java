@@ -12,13 +12,11 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -39,7 +37,6 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);
     private String leaseId = "leaseId";
-    private String filePath = "filePath";
     private String base64BlockID = "base64BlockID";
     private URL sourceURL = new URL("https://example.com");
     private long offset = 1024L;
@@ -86,52 +83,6 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 .getValue()
                 .getContentMD5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
-    }
-
-    /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String)}
-     *
-     * @throws IOException If an I/O error occurs
-     */
-    public void uploadFromFile() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String
-        try {
-            client.uploadFromFile(filePath);
-            System.out.println("Upload from file succeeded");
-        } catch (UncheckedIOException ex) {
-            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
-        }
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String
-    }
-
-    /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
-     *
-     * @throws IOException If an I/O error occurs
-     */
-    public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
-        BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
-
-        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
-        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize);
-
-        try {
-            client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata,
-                AccessTier.HOT, accessConditions, timeout);
-            System.out.println("Upload from file succeeded");
-        } catch (UncheckedIOException ex) {
-            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
-        }
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
     }
 
     /**

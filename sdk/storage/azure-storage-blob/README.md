@@ -21,7 +21,7 @@ definition, such as text or binary data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.0.0-preview.3</version>
+  <version>12.0.0-preview.4</version>
 </dependency>
 ```
 
@@ -156,7 +156,7 @@ Create a BlobServiceClient using the [`sasToken`](#get-credentials) generated ab
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .endpoint("<your-storage-blob-url>")
-        .credential("<your-sasToken>")
+        .sasToken("<your-sasToken>")
         .buildClient();
 ```
 
@@ -173,7 +173,7 @@ Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) g
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
          .endpoint("<your-storage-blob-url>")
-         .credential("<your-sasToken>")
+         .sasToken("<your-sasToken>")
          .containerName("mycontainer")
          .buildClient();
 ```
@@ -191,7 +191,7 @@ Create the BlobClient from the builder [`sasToken`](#get-credentials) generated 
 ```java
 BlobClient blobClient = new BlobClientBuilder()
          .endpoint("<your-storage-blob-url>")
-         .credential("<your-sasToken>")
+         .sasToken("<your-sasToken>")
          .containerName("mycontainer")
          .blobName("myblob")
          .buildBlobClient();

@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
@@ -40,13 +41,15 @@ import java.security.MessageDigest
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
     BlockBlobAsyncClient bac
+    BlobAsyncClient blobac
     String blobName
 
     def setup() {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
-        bac = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
+        blobac = ccAsync.getBlobAsyncClient(generateBlobName())
+        bac = blobac.getBlockBlobAsyncClient()
         bac.upload(defaultFlux, defaultDataSize)
     }
 
@@ -868,7 +871,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(4).setNumBuffers(4)
-        bac.upload(null, parallelTransferOptions)
+        blobac.upload(null, parallelTransferOptions)
 
         then:
         thrown(NullPointerException)
@@ -879,7 +882,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        bac.upload(Flux.just(defaultData), parallelTransferOptions)
+        blobac.upload(Flux.just(defaultData), parallelTransferOptions)
 
         then:
         thrown(IllegalArgumentException)
@@ -898,7 +901,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10)
-        bac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        blobac.uploadWithResponse(defaultFlux, parallelTransferOptions, new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -934,7 +937,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10).setNumBuffers(10)
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, metadata, null, null).block()
+        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, metadata, null, null).block()
         def response = bac.getPropertiesWithResponse(null).block()
 
         then:
@@ -963,7 +966,7 @@ class BlockBlobAPITest extends APISpec {
         expect:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10)
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block().getStatusCode() == 201
+        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block().getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -991,7 +994,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(10)
-        bac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block()
+        blobac.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, accessConditions).block()
 
         then:
         def e = thrown(StorageException)
@@ -1071,20 +1074,20 @@ class BlockBlobAPITest extends APISpec {
         }
 
         // Build the pipeline
-        bac = new BlobServiceClientBuilder()
+        blobac = new BlobServiceClientBuilder()
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
-            .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
+            .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(1024).setNumBuffers(4)
-        bac.upload(nonReplayableFlux, parallelTransferOptions).block()
+        blobac.upload(nonReplayableFlux, parallelTransferOptions).block()
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         then:

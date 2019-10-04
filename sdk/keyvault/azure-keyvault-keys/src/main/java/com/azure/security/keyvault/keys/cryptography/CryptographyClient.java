@@ -20,6 +20,7 @@ import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.Key;
 
+
 /**
  * The CryptographyClient provides synchronous methods to perform cryptographic operations using asymmetric and
  * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the
@@ -31,7 +32,7 @@ import com.azure.security.keyvault.keys.models.Key;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)
-public final class CryptographyClient {
+public class CryptographyClient {
     private final CryptographyAsyncClient client;
 
     /**

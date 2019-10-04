@@ -14,7 +14,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DirectorysCreateResponse;
@@ -26,7 +25,7 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileRef;
+import com.azure.storage.file.models.FileReference;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
@@ -61,7 +60,6 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class DirectoryAsyncClient {
@@ -98,12 +96,12 @@ public class DirectoryAsyncClient {
      * @return the URL of the storage directory client
      */
     public String getDirectoryUrl() {
-        StringBuilder directoryURLString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(directoryPath);
         if (snapshot != null) {
-            directoryURLString.append("?snapshot=").append(snapshot);
+            directoryUrlString.append("?snapshot=").append(snapshot);
         }
-        return directoryURLString.toString();
+        return directoryUrlString.toString();
     }
 
     /**
@@ -423,9 +421,9 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure
      * Docs</a>.</p>
      *
-     * @return {@link FileRef File info} in the storage directory
+     * @return {@link FileReference File info} in the storage directory
      */
-    public PagedFlux<FileRef> listFilesAndDirectories() {
+    public PagedFlux<FileReference> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -446,15 +444,15 @@ public class DirectoryAsyncClient {
      * with.
      * @param maxResults Optional maximum number of files and/or directories to return per page. If the request does not
      * specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @return {@link FileRef File info} in this directory with prefix and max number of return results.
+     * @return {@link FileReference File info} in this directory with prefix and max number of return results.
      */
-    public PagedFlux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
+    public PagedFlux<FileReference> listFilesAndDirectories(String prefix, Integer maxResults) {
         return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, null, Context.NONE);
     }
 
-    PagedFlux<FileRef> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults, Duration timeout,
-        Context context) {
-        Function<String, Mono<PagedResponse<FileRef>>> retriever =
+    PagedFlux<FileReference> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults,
+                                                                        Duration timeout, Context context) {
+        Function<String, Mono<PagedResponse<FileReference>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResults, null, context), timeout)
@@ -563,7 +561,8 @@ public class DirectoryAsyncClient {
      * directory is an invalid resource name.
      */
     public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, null, null).flatMap(FluxUtil::toMono);
+        return createSubDirectoryWithResponse(subDirectoryName, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -667,7 +666,8 @@ public class DirectoryAsyncClient {
      * invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, maxSize, null, null, null, null)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -830,15 +830,18 @@ public class DirectoryAsyncClient {
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
-    private List<FileRef> convertResponseAndGetNumOfResults(DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        Set<FileRef> fileRefs = new TreeSet<>(Comparator.comparing(FileRef::getName));
+    private List<FileReference> convertResponseAndGetNumOfResults(
+        DirectorysListFilesAndDirectoriesSegmentResponse response) {
+        Set<FileReference> fileReferences = new TreeSet<>(Comparator.comparing(FileReference::getName));
         if (response.getValue().getSegment() != null) {
             response.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> fileRefs.add(new FileRef(directoryItem.getName(), true, null)));
+                .forEach(directoryItem -> fileReferences.add(new FileReference(directoryItem.getName(),
+                    true, null)));
             response.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> fileRefs.add(new FileRef(fileItem.getName(), false, fileItem.getProperties())));
+                .forEach(fileItem -> fileReferences.add(new FileReference(fileItem.getName(), false,
+                    fileItem.getProperties())));
         }
 
-        return new ArrayList<>(fileRefs);
+        return new ArrayList<>(fileReferences);
     }
 }

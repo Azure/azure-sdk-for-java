@@ -38,6 +38,6 @@ stages:
     parameters:
       ServiceDirectory: tracing
       Artifacts:
-        - name: tracing-opentelemetry
-          safeName: tracingopentelemetry
+        - name: azure-core-tracing-opencensus
+          safeName: azurecoretracingopencensus
           stagingProfileId: 88192f04117501
