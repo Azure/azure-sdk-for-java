@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -18,9 +21,9 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -30,8 +33,6 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,9 +41,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -143,7 +142,7 @@ public final class BlobContainerAsyncClient {
      * @return The name of container.
      */
     public String getBlobContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**

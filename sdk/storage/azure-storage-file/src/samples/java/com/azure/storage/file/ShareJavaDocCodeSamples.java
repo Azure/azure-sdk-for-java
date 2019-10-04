@@ -13,7 +13,6 @@ import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;

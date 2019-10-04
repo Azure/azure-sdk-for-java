@@ -5,7 +5,6 @@ package com.azure.storage.file;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

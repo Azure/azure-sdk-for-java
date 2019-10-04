@@ -1,11 +1,13 @@
 package com.azure.storage.queue
 
-import com.azure.storage.common.AccountSASPermission
-import com.azure.storage.common.AccountSASResourceType
-import com.azure.storage.common.AccountSASService
-import com.azure.storage.common.AccountSASSignatureValues
+
+import com.azure.storage.common.AccountSasPermission
+import com.azure.storage.common.AccountSasResourceType
+import com.azure.storage.common.AccountSasService
+import com.azure.storage.common.AccountSasSignatureValues
+import com.azure.storage.common.SasProtocol
+
 import com.azure.storage.common.IpRange
-import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
@@ -106,7 +108,7 @@ class QueueSASTests extends APISpec {
         def ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
-        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
@@ -156,7 +158,7 @@ class QueueSASTests extends APISpec {
         def ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
-        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
@@ -235,13 +237,13 @@ class QueueSASTests extends APISpec {
 
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
-        def service = new AccountSASService()
+        def service = new AccountSasService()
             .setQueue(true)
-        def resourceType = new AccountSASResourceType()
+        def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
             .setObject(true)
-        def permissions = new AccountSASPermission()
+        def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
@@ -249,7 +251,7 @@ class QueueSASTests extends APISpec {
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSASSignatureValues.generateAccountSAS(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
@@ -269,19 +271,19 @@ class QueueSASTests extends APISpec {
 
     @Test
     def "Test Account QueueServiceSAS list queues"() {
-        def service = new AccountSASService()
+        def service = new AccountSasService()
             .setQueue(true)
-        def resourceType = new AccountSASResourceType()
+        def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
             .setObject(true)
-        def permissions = new AccountSASPermission()
+        def permissions = new AccountSasPermission()
             .setListPermission(true)
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
-        def sas = AccountSASSignatureValues.generateAccountSAS(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())

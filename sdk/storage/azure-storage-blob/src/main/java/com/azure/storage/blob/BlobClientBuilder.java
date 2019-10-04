@@ -104,7 +104,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
     public BlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();

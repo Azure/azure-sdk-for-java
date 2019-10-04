@@ -7,8 +7,6 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.NtfsFileAttributes;
-import reactor.core.publisher.Flux;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -21,6 +19,7 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link FileClient} and {@link FileAsyncClient}.

@@ -12,7 +12,6 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
