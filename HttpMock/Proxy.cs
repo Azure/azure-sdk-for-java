@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,11 +10,9 @@ namespace HttpMock
 {
     public static class Proxy
     {
-        private const string _upstreamHost = "mikeharderperf.blob.core.windows.net";
-
         private static readonly HttpClient _httpClient = new HttpClient();
 
-        public static Task<HttpResponseMessage> SendUpstreamRequest(HttpRequest request)
+        public static async Task<UpstreamResponse> SendUpstreamRequest(HttpRequest request)
         {
             var upstreamUriBuilder = new UriBuilder()
             {
@@ -41,32 +41,41 @@ namespace HttpMock
                     upstreamRequest.Content = new StreamContent(request.Body);
                 }
 
-#if DEBUG
-                Log.LogUpstreamRequest(upstreamRequest);
-#endif
+                using (var upstreamResponseMessage = await _httpClient.SendAsync(upstreamRequest))
+                {
+                    var headers = new List<KeyValuePair<string, StringValues>>();
+                    foreach (var header in upstreamResponseMessage.Headers)
+                    {
+                        // Must skip "Transfer-Encoding" header, since if it's set manually Kestrel requires you to implement
+                        // your own chunking.
+                        if (string.Equals(header.Key, "Transfer-Encoding", StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
 
-                return _httpClient.SendAsync(upstreamRequest);
+                        headers.Add(new KeyValuePair<string, StringValues>(header.Key, header.Value.ToArray()));
+                    }
+
+                    return new UpstreamResponse()
+                    {
+                        StatusCode = (int)upstreamResponseMessage.StatusCode,
+                        Headers = headers.ToArray(),
+                        Content = await upstreamResponseMessage.Content.ReadAsByteArrayAsync()
+                    };
+                }
             }
         }
 
-        public static Task SendDownstreamResponse(HttpResponseMessage upstreamResponse, HttpResponse response)
+        public static Task SendDownstreamResponse(UpstreamResponse upstreamResponse, HttpResponse response)
         {
-            response.StatusCode = (int)upstreamResponse.StatusCode;
+            response.StatusCode = upstreamResponse.StatusCode;
 
             foreach (var header in upstreamResponse.Headers)
             {
-                // Must skip "Transfer-Encoding" header, since if it's set manually Kestrel requires you to implement
-                // your own chunking.
-                if (string.Equals(header.Key, "Transfer-Encoding", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                // PERF: Store StringValues in cache
-                response.Headers.Add(header.Key, header.Value.ToArray());
+                response.Headers.Add(header.Key, header.Value);
             }
 
-            return upstreamResponse.Content.CopyToAsync(response.Body);
+            return response.Body.WriteAsync(upstreamResponse.Content, 0, upstreamResponse.Content.Length);
         }
     }
 }

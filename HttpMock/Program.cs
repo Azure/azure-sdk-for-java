@@ -13,14 +13,13 @@ namespace HttpMock
 {
     class Program
     {
-        // TODO: Store custom value instead of HttpResponseMessage?
-        private static ConcurrentDictionary<RequestCacheKey, HttpResponseMessage> _cache =
-            new ConcurrentDictionary<RequestCacheKey, HttpResponseMessage>();
+        private static ConcurrentDictionary<RequestCacheKey, UpstreamResponse> _cache =
+            new ConcurrentDictionary<RequestCacheKey, UpstreamResponse>();
 
         // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
         // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
         // slower when using a proxy (50k vs 6k RPS).
-        private static HttpResponseMessage _lastUpstreamResponse;
+        private static UpstreamResponse _lastUpstreamResponse;
 
         public class HttpMockOptions
         {
