@@ -13,22 +13,19 @@ namespace HttpMock
 {
     class Program
     {
-        // PERF: Store custom value instead of HttpResponseMessage
+        // TODO: Store custom value instead of HttpResponseMessage?
         private static ConcurrentDictionary<RequestCacheKey, HttpResponseMessage> _cache =
             new ConcurrentDictionary<RequestCacheKey, HttpResponseMessage>();
 
-        private static HttpResponseMessage _lastResponse;
+        // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
+        // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
+        // slower when using a proxy (50k vs 6k RPS).
+        private static HttpResponseMessage _lastUpstreamResponse;
 
         public class HttpMockOptions
         {
-            [Option("debug")]
-            public bool Debug { get; set; }
-
-            [Option("silent")]
-            public bool Silent { get; set; }
-
-            [Option("trace")]
-            public bool Trace { get; set; }
+            [Option("cachelast")]
+            public bool CacheLast { get; set; }
         }
 
         public static HttpMockOptions Options { get; private set; }
@@ -61,64 +58,40 @@ namespace HttpMock
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .Configure(app => app.Run(async context =>
                 {
-                    // var sw = Stopwatch.StartNew();
-
-                    // Trace("Start Request", sw);
-
                     var request = context.Request;
                     var response = context.Response;
 
-                    // Log.LogRequest(request);
-
                     var key = new RequestCacheKey(request);
-
-                    // Trace("Created Cache Key", sw);
 
                     if (_cache.TryGetValue(key, out var upstreamResponse))
                     {
-                        // Trace("Cache Hit", sw);
-                        // Log.LogUpstreamResponse(upstreamResponse, cached: true);
-
+                        if (Options.CacheLast)
+                        {
+                            _lastUpstreamResponse = upstreamResponse;
+                        }
                         await Proxy.SendDownstreamResponse(upstreamResponse, response);
-
-                        // Trace("Sent Downstream Response", sw);
                     }
-                    else if (_lastResponse != null)
+                    else if (Options.CacheLast && request.QueryString.Value == "?last")
                     {
-                        await Proxy.SendDownstreamResponse(_lastResponse, response);
+                        // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
+                        // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
+                        // slower when using a proxy (50k vs 6k RPS).
+                        await Proxy.SendDownstreamResponse(_lastUpstreamResponse, response);
                     }
                     else
                     {
-                        // Trace("Cache Miss", sw);
-
                         upstreamResponse = await Proxy.SendUpstreamRequest(request);
-
-                        // Trace("Received Upstream Response", sw);
-                        // Log.LogUpstreamResponse(upstreamResponse, cached: false);
-
                         await Proxy.SendDownstreamResponse(upstreamResponse, response);
-
-                        // Trace("Sent Downstream Response", sw);
-
                         _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
 
-                        _lastResponse = upstreamResponse;
-
-                        // Trace("Updated Cache", sw);
+                        if (Options.CacheLast)
+                        {
+                            _lastUpstreamResponse = upstreamResponse;
+                        }
                     }
-
-                    // Trace("End Request" + Environment.NewLine, sw);
                 }))
                 .Build()
                 .Run();
-        }
-
-        private static void Trace(string message, Stopwatch stopwatch)
-        {
-            if (Options.Trace)
-            {
-                Console.WriteLine($"[{stopwatch.Elapsed.TotalSeconds:N4}] {message}");
-            }
         }
     }
 }
