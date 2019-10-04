@@ -1,5 +1,13 @@
 # Release History
 
+## 5.0.0-preview.4 (2019-10-08)
+- Proxy support for Event Hub Clients.
+- EventHubConsumer now provides last enqueued event information.
+- Refactored `azure-messaging-eventhubs` to extract AMQP implementation details to `azure-core-amqp` module.
+- Added modules support for JDK 9+.
+- Renamed model classes to support Java bean naming convention.
+- EventHubClient now provides method to get the name of the Event Hub associated with the client.
+
 ## 5.0.0-preview.3 (2019-09-09)
 
 - Added synchronous `EventHubConsumer` and `EventHubProducer`.
