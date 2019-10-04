@@ -24,7 +24,7 @@ public abstract class BaseSasQueryParameters {
 
     protected OffsetDateTime expiryTime;
 
-    protected IPRange ipRange;
+    protected IpRange ipRange;
 
     protected String permissions;
 
@@ -47,7 +47,7 @@ public abstract class BaseSasQueryParameters {
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
             removeSASParametersFromMap, Utility::parseDate);
         this.ipRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE,
-            removeSASParametersFromMap, IPRange::parse);
+            removeSASParametersFromMap, IpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
             removeSASParametersFromMap);
         this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE,
@@ -98,13 +98,13 @@ public abstract class BaseSasQueryParameters {
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
-     * @param ipRange A {@link IPRange} representing the range of valid IP addresses for this SAS token or
+     * @param ipRange A {@link IpRange} representing the range of valid IP addresses for this SAS token or
      * {@code null}.
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     public BaseSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, IPRange ipRange, String permissions, String signature) {
+                                  OffsetDateTime expiryTime, IpRange ipRange, String permissions, String signature) {
         this.version = version;
         this.protocol = protocol;
         this.startTime = startTime;
@@ -143,9 +143,9 @@ public abstract class BaseSasQueryParameters {
     }
 
     /**
-     * @return {@link IPRange}
+     * @return {@link IpRange}
      */
-    public IPRange getIpRange() {
+    public IpRange getIpRange() {
         return ipRange;
     }
 

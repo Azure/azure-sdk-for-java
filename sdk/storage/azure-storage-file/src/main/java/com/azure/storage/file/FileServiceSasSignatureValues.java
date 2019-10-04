@@ -4,7 +4,7 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -12,7 +12,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * FileServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
+ * FileServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
  * which can actually be applied to file urls. Note: that both this class and {@link FileServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
@@ -28,7 +28,7 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/file/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-final class FileServiceSASSignatureValues {
+final class FileServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
@@ -40,7 +40,7 @@ final class FileServiceSASSignatureValues {
 
     private String permissions;
 
-    private IPRange ipRange;
+    private IpRange ipRange;
 
     private String canonicalName;
 
@@ -61,7 +61,7 @@ final class FileServiceSASSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    FileServiceSASSignatureValues() {
+    FileServiceSasSignatureValues() {
     }
 
     /**
@@ -70,7 +70,7 @@ final class FileServiceSASSignatureValues {
      * @param expiryTime Time the SAS becomes valid
      * @param permissions Permissions granted by the SAS
      */
-    FileServiceSASSignatureValues(OffsetDateTime expiryTime, String permissions) {
+    FileServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
         this.expiryTime = expiryTime;
         this.permissions = permissions;
     }
@@ -80,12 +80,12 @@ final class FileServiceSASSignatureValues {
      *
      * @param identifier Identifier for the SAS
      */
-    FileServiceSASSignatureValues(String identifier) {
+    FileServiceSasSignatureValues(String identifier) {
         this.identifier = identifier;
     }
 
-    FileServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
+    FileServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+        OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
             this.version = version;
@@ -116,9 +116,9 @@ final class FileServiceSASSignatureValues {
      * by the library.
      *
      * @param version Version to target
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setVersion(String version) {
+    public FileServiceSasSignatureValues setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -134,9 +134,9 @@ final class FileServiceSASSignatureValues {
      * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setProtocol(SASProtocol protocol) {
+    public FileServiceSasSignatureValues setProtocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -152,9 +152,9 @@ final class FileServiceSASSignatureValues {
      * Sets when the SAS will take effect.
      *
      * @param startTime When the SAS takes effect
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setStartTime(OffsetDateTime startTime) {
+    public FileServiceSasSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -170,47 +170,47 @@ final class FileServiceSASSignatureValues {
      * Sets the time after which the SAS will no longer work.
      *
      * @param expiryTime When the SAS will no longer work
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
+    public FileServiceSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
 
     /**
-     * @return the permissions string allowed by the SAS. Please refer to either {@link ShareSASPermission} or {@link
-     * FileSASPermission} depending on the resource being accessed for help determining the permissions allowed.
+     * @return the permissions string allowed by the SAS. Please refer to either {@link ShareSasPermission} or {@link
+     * FileSasPermission} depending on the resource being accessed for help determining the permissions allowed.
      */
     public String getPermissions() {
         return permissions;
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link ShareSASPermission} or {@link
-     * FileSASPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the permissions string allowed by the SAS. Please refer to either {@link ShareSasPermission} or {@link
+     * FileSasPermission} depending on the resource being accessed for help constructing the permissions string.
      *
      * @param permissions Permissions string for the SAS
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setPermissions(String permissions) {
+    public FileServiceSasSignatureValues setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
 
     /**
-     * @return the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IPRange getIpRange() {
+    public IpRange getIpRange() {
         return ipRange;
     }
 
     /**
-     * Sets the {@link IPRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @param ipRange Allowed IP range to set
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setIpRange(IPRange ipRange) {
+    public FileServiceSasSignatureValues setIpRange(IpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -226,9 +226,9 @@ final class FileServiceSASSignatureValues {
      * Sets the resource the SAS user may access.
      *
      * @param resource Allowed resources string to set
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setResource(String resource) {
+    public FileServiceSasSignatureValues setResource(String resource) {
         this.resource = resource;
         return this;
     }
@@ -244,9 +244,9 @@ final class FileServiceSASSignatureValues {
      * Sets the canonical name of the object the SAS user may access.
      *
      * @param canonicalName Canonical name of the object the SAS grants access
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setCanonicalName(String canonicalName) {
+    public FileServiceSasSignatureValues setCanonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
         return this;
     }
@@ -258,9 +258,9 @@ final class FileServiceSASSignatureValues {
      * @param shareName Name of the share
      * @param filePath Name of the file
      * @param accountName Name of the account that contains the object
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setCanonicalName(String shareName, String filePath, String accountName) {
+    public FileServiceSasSignatureValues setCanonicalName(String shareName, String filePath, String accountName) {
         this.canonicalName = String.format("/file/%s/%s/%s", accountName, shareName, filePath);
         return this;
     }
@@ -271,9 +271,9 @@ final class FileServiceSASSignatureValues {
      *
      * @param shareName Name of the share
      * @param accountName Name of the account that contains the object
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setCanonicalName(String shareName, String accountName) {
+    public FileServiceSasSignatureValues setCanonicalName(String shareName, String accountName) {
         this.canonicalName = String.format("/file/%s/%s", accountName, shareName);
         return this;
     }
@@ -293,9 +293,9 @@ final class FileServiceSASSignatureValues {
      * for more information.
      *
      * @param identifier Name of the access policy
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setIdentifier(String identifier) {
+    public FileServiceSasSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -311,9 +311,9 @@ final class FileServiceSASSignatureValues {
      * Sets the cache-control header for the SAS.
      *
      * @param cacheControl Cache-Control header value
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setCacheControl(String cacheControl) {
+    public FileServiceSasSignatureValues setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -329,9 +329,9 @@ final class FileServiceSASSignatureValues {
      * Sets the content-disposition header for the SAS.
      *
      * @param contentDisposition Content-Disposition header value
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setContentDisposition(String contentDisposition) {
+    public FileServiceSasSignatureValues setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -347,9 +347,9 @@ final class FileServiceSASSignatureValues {
      * Sets the content-encoding header for the SAS.
      *
      * @param contentEncoding Content-Encoding header value
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setContentEncoding(String contentEncoding) {
+    public FileServiceSasSignatureValues setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -365,9 +365,9 @@ final class FileServiceSASSignatureValues {
      * Sets the content-language header for the SAS.
      *
      * @param contentLanguage Content-Language header value
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setContentLanguage(String contentLanguage) {
+    public FileServiceSasSignatureValues setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -383,9 +383,9 @@ final class FileServiceSASSignatureValues {
      * Sets the content-type header for the SAS.
      *
      * @param contentType Content-Type header value
-     * @return the updated FileServiceSASSignatureValues object
+     * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSASSignatureValues setContentType(String contentType) {
+    public FileServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
