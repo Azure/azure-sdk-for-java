@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -109,7 +110,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD) {
             return new FileServiceClientBuilder()
                 .connectionString(connectionString)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -124,7 +125,7 @@ class APISpec extends Specification {
             return new ShareClientBuilder()
                 .connectionString(connectionString)
                 .shareName(shareName)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -141,7 +142,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(directoryPath)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
@@ -159,7 +160,7 @@ class APISpec extends Specification {
                 .connectionString(connectionString)
                 .shareName(shareName)
                 .resourcePath(filePath)
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(getHttpClient())
         } else {
