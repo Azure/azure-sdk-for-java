@@ -123,8 +123,8 @@ class BatchAPITest extends APISpec {
 
         then:
         notThrown(StorageException)
-        response1.getStatusCode() == 204
-        response2.getStatusCode() == 204
+        response1.getStatusCode() == 202
+        response2.getStatusCode() == 202
     }
 
     def "Delete blob some succeed throw on any error"() {

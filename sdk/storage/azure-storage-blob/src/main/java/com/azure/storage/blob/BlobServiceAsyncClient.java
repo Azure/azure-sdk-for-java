@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -12,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -71,6 +73,11 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  */
 @ServiceClient(builder = BlobServiceClientBuilder.class, isAsync = true)
 public final class BlobServiceAsyncClient {
+    private static final Pattern CONTENT_ID_PATTERN = Pattern
+        .compile("Content-ID:\\s?(\\d+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern STATUS_CODE_PATTERN = Pattern
+        .compile("HTTP\\/\\d\\.\\d\\s?(\\d+)\\s?\\w+", Pattern.CASE_INSENSITIVE);
+
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
@@ -520,39 +527,59 @@ public final class BlobServiceAsyncClient {
                         continue;
                     }
 
-                    int contentId;
-                    Pattern contentIdPattern = Pattern.compile("Content-ID:\\s?(\\d+)", Pattern.CASE_INSENSITIVE);
-                    Matcher contentIdMatcher = contentIdPattern.matcher(subResponse);
-                    if (contentIdMatcher.find()) {
-                        contentId = Integer.parseInt(contentIdMatcher.group(1));
-                    } else {
-                        contentId = 0;
+                    String[] subResponseSections = subResponse.split("\r\n\r\n");
+
+                    BlobBatchOperationResponse batchOperationResponse =
+                        getBatchOperation(batch, subResponseSections[0]);
+                    setStatusCodeAndHeaders(batchOperationResponse, subResponseSections[1]);
+
+                    if (subResponseSections.length >2) {
+                        setBodyOrPotentiallyThrow(batchOperationResponse, subResponseSections[2], throwOnAnyFailure);
                     }
-
-                    BlobBatchOperationResponse subRequestResponse = batch.getBatchRequest(contentId);
-                    subRequestResponse.setResponseReceived();
-
-                    for (String line : subResponse.split("\n")) {
-                        if (line.contains("Content-Type: application/http")) {
-                            continue;
-                        }
-
-                        if (line.startsWith("Content-ID")) {
-
-                        }
-                    }
-
-                    // TODO: Get status code
-
-                    // TODO: Get headers
-
-                    // TODO: Get body
-
-                    // TODO: Throw if any failure is true and status code is a failure
                 }
 
                 return Mono.just(new SimpleResponse<>(batchResponse, null));
             });
+    }
+
+    private BlobBatchOperationResponse getBatchOperation(BlobBatch batch, String subResponseSection) {
+        Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(subResponseSection);
+
+        int contentId;
+        if (contentIdMatcher.find()) {
+            contentId = Integer.parseInt(contentIdMatcher.group(1));
+        } else {
+            // TODO: Should this fail here?
+            contentId = 0;
+        }
+
+        return batch.getBatchRequest(contentId).setResponseReceived();
+    }
+
+    private void setStatusCodeAndHeaders(BlobBatchOperationResponse batchOperationResponse, String subResponseSection) {
+        HttpHeaders headers = new HttpHeaders();
+        for (String line : subResponseSection.split("\r\n")) {
+            if (ImplUtils.isNullOrEmpty(line)) {
+                continue;
+            }
+
+            if (line.startsWith("HTTP")) {
+                Matcher statusCodeMatcher = STATUS_CODE_PATTERN.matcher(line);
+                if (statusCodeMatcher.find()) {
+                    batchOperationResponse.setStatusCode(Integer.parseInt(statusCodeMatcher.group(1)));
+                }
+            } else {
+                String[] headerPieces = line.split(":\\s*", 2);
+                headers.put(headerPieces[0], headerPieces[1]);
+            }
+        }
+
+        batchOperationResponse.setHeaders(headers);
+    }
+
+    private void setBodyOrPotentiallyThrow(BlobBatchOperationResponse batchOperationResponse, String subResponseSection,
+        boolean throwOnError) {
+
     }
 
     /**
