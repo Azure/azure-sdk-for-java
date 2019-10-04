@@ -18,10 +18,8 @@ import com.azure.storage.common.Constants
 import com.azure.storage.common.IpRange
 import com.azure.storage.common.SASProtocol
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -136,7 +134,7 @@ class SASTest extends APISpec {
             .generateSASQueryParameters(primaryCredential)
             .encode()
 
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -197,7 +195,7 @@ class SASTest extends APISpec {
             .generateSASQueryParameters(primaryCredential)
             .encode()
 
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -239,7 +237,7 @@ class SASTest extends APISpec {
             .generateSASQueryParameters(primaryCredential)
             .encode()
 
-        def client1 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithId), cc.getBlobContainerUrl())
+        def client1 = getContainerClient(sasWithId, cc.getBlobContainerUrl())
 
         client1.listBlobsFlat().iterator().hasNext()
 
@@ -250,7 +248,7 @@ class SASTest extends APISpec {
             .generateSASQueryParameters(primaryCredential)
             .encode()
 
-        def client2 = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getBlobContainerUrl())
+        def client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
 
         client2.listBlobsFlat().iterator().hasNext()
 
@@ -259,7 +257,7 @@ class SASTest extends APISpec {
     }
 
     /* TODO: Fix user delegation tests to run in CI */
-    @Requires({ liveMode() })
+    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -312,7 +310,7 @@ class SASTest extends APISpec {
         sas != null
 
         when:
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -373,7 +371,7 @@ class SASTest extends APISpec {
             .encode()
 
         and:
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), containerClient.getBlobContainerUrl(), blobName).getAppendBlobClient()
+        def client = getBlobClient(sas, containerClient.getBlobContainerUrl(), blobName).getAppendBlobClient()
 
         client.download(new ByteArrayOutputStream())
 
@@ -381,7 +379,7 @@ class SASTest extends APISpec {
         thrown(StorageException)
 
         when:
-        def snapClient = getBlobClient(SASTokenCredential.fromSASTokenString(sas), containerClient.getBlobContainerUrl(), blobName, snapshotId).getAppendBlobClient()
+        def snapClient = getBlobClient(sas, containerClient.getBlobContainerUrl(), blobName, snapshotId).getAppendBlobClient()
 
         def data = new ByteArrayOutputStream()
         snapClient.download(data)
@@ -401,7 +399,7 @@ class SASTest extends APISpec {
 
     }
 
-    @Requires({ liveMode() })
+    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -453,7 +451,7 @@ class SASTest extends APISpec {
             .encode()
 
         // base blob with snapshot SAS
-        def client1 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def client1 = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client1.download(new ByteArrayOutputStream())
 
         then:
@@ -462,7 +460,7 @@ class SASTest extends APISpec {
 
         when:
         // blob snapshot with snapshot SAS
-        def client2 = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
+        def client2 = getBlobClient(sas, cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
         client2.download(os)
 
@@ -503,7 +501,7 @@ class SASTest extends APISpec {
             .generateSASQueryParameters(key)
             .encode()
 
-        def client = getContainerClient(SASTokenCredential.fromSASTokenString(sasWithPermissions), cc.getBlobContainerUrl())
+        def client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
         client.listBlobsFlat().iterator().hasNext()
 
         then:
@@ -530,7 +528,7 @@ class SASTest extends APISpec {
         when:
         def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
         client.download(os)
 
@@ -558,7 +556,7 @@ class SASTest extends APISpec {
         when:
         def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def client = getBlobClient(SASTokenCredential.fromSASTokenString(sas), cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client.delete()
 
         then:
@@ -581,7 +579,7 @@ class SASTest extends APISpec {
         when:
         def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def sc = getServiceClient(SASTokenCredential.fromSASTokenString(sas), primaryBlobServiceClient.getAccountUrl())
+        def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
         then:
@@ -604,7 +602,7 @@ class SASTest extends APISpec {
         when:
         def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def sc = getServiceClient(SASTokenCredential.fromSASTokenString(sas), primaryBlobServiceClient.getAccountUrl())
+        def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
         then:

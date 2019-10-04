@@ -14,7 +14,6 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.ShareCreateSnapshotHeaders;
@@ -57,7 +56,6 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see ShareClientBuilder
  * @see ShareClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = ShareClientBuilder.class, isAsync = true)
 public class ShareAsyncClient {

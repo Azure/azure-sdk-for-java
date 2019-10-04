@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
@@ -35,7 +34,6 @@ import java.util.Map;
  * @see FileServiceClientBuilder
  * @see FileServiceAsyncClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileServiceClientBuilder.class)
 public final class FileServiceClient {

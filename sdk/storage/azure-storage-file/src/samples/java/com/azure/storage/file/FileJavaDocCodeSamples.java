@@ -4,8 +4,6 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -53,7 +51,7 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileClient} with SAS token.
      * @return An instance of {@link FileClient}
      */
     public FileClient createClientWithSASToken() {
@@ -70,7 +68,7 @@ public class FileJavaDocCodeSamples {
 
 
     /**
-     * Generates code sample for creating a {@link FileClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileClient} with SAS token.
      * @return An instance of {@link FileClient}
      */
     public FileClient createClientWithCredential() {
@@ -78,7 +76,7 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileClient.instantiation.credential
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .resourcePath("myfilepath")
             .buildFileClient();
@@ -602,7 +600,7 @@ public class FileJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .resourcePath("myfile")
             .snapshot(currentTime.toString())

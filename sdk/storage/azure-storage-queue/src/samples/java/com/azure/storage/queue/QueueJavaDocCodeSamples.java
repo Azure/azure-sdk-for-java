@@ -4,8 +4,6 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
@@ -58,7 +56,7 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueClient} with SAS token.
      *
      * @return An instance of {@link QueueClient}
      */
@@ -67,7 +65,7 @@ public class QueueJavaDocCodeSamples {
         QueueClient client = new QueueClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net")
             .queueName("myqueue")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
+            .sasToken("{SASTokenQueryParams}")
             .buildClient();
         // END: com.azure.storage.queue.queueClient.instantiation.credential
         return client;

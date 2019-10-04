@@ -12,7 +12,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
@@ -48,7 +47,6 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
  * @see QueueServiceClientBuilder
  * @see QueueServiceClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class, isAsync = true)
 public final class QueueServiceAsyncClient {

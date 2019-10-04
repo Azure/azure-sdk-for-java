@@ -4,8 +4,6 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
@@ -46,7 +44,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link ShareClient} with SAS token
      * @return An instance of {@link ShareClient}
      */
     public ShareClient createClientWithSASToken() {
@@ -62,7 +60,7 @@ public class ShareJavaDocCodeSamples {
 
 
     /**
-     * Generates code sample for creating a {@link ShareClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link ShareClient} with SAS token
      * @return An instance of {@link ShareClient}
      */
     public ShareClient createClientWithCredential() {
@@ -70,7 +68,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.instantiation.credential
         ShareClient shareClient = new ShareClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .buildClient();
         // END: com.azure.storage.file.shareClient.instantiation.credential
@@ -500,7 +498,7 @@ public class ShareJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareClient shareClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildClient();

@@ -20,7 +20,7 @@ class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    def interceptorManager
+    InterceptorManager interceptorManager
     TestResourceNamer testResourceName
 
     // Clients for API tests
@@ -29,7 +29,7 @@ class APISpec extends Specification {
 
 
     // Test name for test method name.
-    def methodName
+    String methodName
     def testMode = getTestMode()
     String connectionString
 
