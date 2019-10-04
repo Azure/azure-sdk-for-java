@@ -7,13 +7,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
  * A collection of headers on an HTTP request or response.
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
-    private final Map<String, HttpHeader> headers = new HashMap<>();
+    private final Map<String, HttpHeader> headers = new ConcurrentHashMap<>();
 
     /**
      * Create an empty HttpHeaders instance.
