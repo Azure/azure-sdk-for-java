@@ -186,7 +186,7 @@ Once you have the SASToken, you can construct the file service client with `${ac
 ```java
 String fileServiceURL = String.format("https://%s.file.core.windows.net", accountName);
 FileServiceClient fileServiceClient = new FileServiceClientBuilder().endpoint(fileServiceURL)
-    .credential(sasToken).buildClient();
+    .sasToken(sasToken).buildClient();
 ```
 
 ### Share
@@ -196,7 +196,7 @@ Once you have the SASToken, you can construct the file service client with `${ac
 ```java
 String shareURL = String.format("https://%s.file.core.windows.net", accountName);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
-    .credential(sasToken).shareName(shareName).buildClient();
+    .sasToken(sasToken).shareName(shareName).buildClient();
 ```
 
 ### Directory
@@ -206,7 +206,7 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
 ```java
 String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", accountName, shareName, directoryPath, sasToken);
 DirectoryClient directoryClient = new DirectoryClientBuilder().endpoint(directoryURL)
-    .credential(sasToken).shareName(shareName).directoryName(directoryPath).buildClient();
+    .sasToken(sasToken).shareName(shareName).directoryName(directoryPath).buildClient();
 ```
 ### File
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
@@ -215,7 +215,7 @@ DirectoryClient directoryClient = new DirectoryClientBuilder().endpoint(director
 ```java
 String fileURL = String.format("https://%s.file.core.windows.net", accountName);
 FileClient fileClient = new FileClientBuilder().endpoint(fileURL)
-    .credential(sasToken).shareName(shareName).filePath(directoryPath + "/" + fileName).buildClient();
+    .sasToken(sasToken).shareName(shareName).filePath(directoryPath + "/" + fileName).buildClient();
 ```
 
 ## Examples
