@@ -44,10 +44,6 @@ namespace HttpMock
 
         static void Run()
         {
-            Console.WriteLine("Connection String (unencrypted): \"BlobEndpoint=http://<hostname>:5000\"");
-            Console.WriteLine("Connection String (encrypted): \"BlobEndpoint=https://<hostname>:5001\"");
-            Console.WriteLine();
-
             new WebHostBuilder()
                 .UseKestrel(options =>
                 {
