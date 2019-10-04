@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.WebUtilities;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Mime;
-using System.Threading.Tasks;
 
 namespace HttpMock
 {
     class Program
     {
+        private static ConcurrentDictionary<RequestCacheKey, HttpResponseMessage> _cache =
+            new ConcurrentDictionary<RequestCacheKey, HttpResponseMessage>();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Connection String (unencrypted): \"BlobEndpoint=http://<hostname>:5000\"");
@@ -32,12 +29,27 @@ namespace HttpMock
                     });
                 })
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .Configure(app => app.Run(context =>
+                .Configure(app => app.Run(async context =>
                 {
                     var request = context.Request;
                     var response = context.Response;
 
-                    return Proxy.ProxyRequest(request, response);
+                    Log.LogRequest(request);
+
+                    var key = new RequestCacheKey(request);
+                    if (_cache.TryGetValue(key, out var upstreamResponse))
+                    {
+                        Log.LogUpstreamResponse(upstreamResponse, cached: true);
+                        await Proxy.SendDownstreamResponse(upstreamResponse, response);
+                    }
+                    else
+                    {
+                        upstreamResponse = await Proxy.SendUpstreamRequest(request);
+                        Log.LogUpstreamResponse(upstreamResponse, cached: false);
+                        await Proxy.SendDownstreamResponse(upstreamResponse, response);
+                        _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
+                    }
+
                 }))
                 .Build()
                 .Run();

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace HttpMock
 {
@@ -11,6 +8,7 @@ namespace HttpMock
     {
         public static void LogRequest(HttpRequest request)
         {
+#if DEBUG
             var uriBuilder = new UriBuilder()
             {
                 Scheme = request.Scheme,
@@ -34,18 +32,35 @@ namespace HttpMock
             }
 
             Console.WriteLine();
+#endif
         }
 
         public static void LogUpstreamRequest(HttpRequestMessage requestMessage)
         {
+#if DEBUG
             Console.WriteLine(requestMessage);
             Console.WriteLine();
+#endif
         }
 
-        public static void LogUpstreamResponse(HttpResponseMessage responseMessage)
+        public static void LogUpstreamResponse(HttpResponseMessage responseMessage, bool cached)
         {
+            if (cached)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+
+#if DEBUG
             Console.WriteLine(responseMessage);
             Console.WriteLine();
+#else
+            Console.Write(".");
+#endif
+
+            if (cached)
+            {
+                Console.ResetColor();
+            }
         }
     }
 }
