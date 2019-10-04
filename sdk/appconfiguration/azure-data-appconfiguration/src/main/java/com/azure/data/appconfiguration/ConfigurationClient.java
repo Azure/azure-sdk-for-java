@@ -11,6 +11,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -200,10 +201,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getSetting(String key, String label, OffsetDateTime asOfDateTime) {
-        final Response<ConfigurationSetting> getResponse = client.getSetting(
+        return client.getSetting(
             new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime, false, Context.NONE)
-            .block();
-        return getResponse == null ? null : getResponse.getValue();
+            .flatMap(FluxUtil::toMono).block();
     }
 
     /**
