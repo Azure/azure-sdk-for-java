@@ -43,4 +43,18 @@ public enum KeyWrapAlgorithm {
      */
     public static final List<KeyWrapAlgorithm> ALL_ALGORITHMS = Collections
             .unmodifiableList(Arrays.asList(RSA_OAEP, RSA1_5, RSA_OAEP_256, A192KW, A128KW, A256KW));
+
+    /**
+     * Return the KeyWrapAlgorithm which maps to {@code value}
+     * @param value The value whose equivalent KeyWrapAlgorithm is needed.
+     * @return the KeyOperation
+     */
+    public static KeyWrapAlgorithm fromString(String value) {
+        for (KeyWrapAlgorithm algorithm : values()) {
+            if (algorithm.value.equalsIgnoreCase(value)) {
+                return algorithm;
+            }
+        }
+        return null;
+    }
 }
