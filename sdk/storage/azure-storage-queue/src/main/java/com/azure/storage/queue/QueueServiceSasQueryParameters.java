@@ -6,7 +6,7 @@ package com.azure.storage.queue;
 import com.azure.storage.common.BaseSasQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -52,7 +52,7 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    QueueServiceSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
+    QueueServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, IpRange ipRange, String identifier, String permissions, String signature) {
         super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);
 

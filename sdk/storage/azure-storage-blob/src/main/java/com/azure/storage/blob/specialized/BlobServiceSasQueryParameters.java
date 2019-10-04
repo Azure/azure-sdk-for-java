@@ -8,7 +8,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.common.BaseSasQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;
@@ -26,9 +26,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
 
     private final String identifier;
 
-    private final String keyOid;
+    private final String keyObjectId;
 
-    private final String keyTid;
+    private final String keyTenantId;
 
     private final OffsetDateTime keyStart;
 
@@ -61,9 +61,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         super(queryParamsMap, removeSASParametersFromMap);
         this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
             removeSASParametersFromMap);
-        this.keyOid = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
+        this.keyObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID,
             removeSASParametersFromMap);
-        this.keyTid = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
+        this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
             removeSASParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
             removeSASParametersFromMap, Utility::parseDate);
@@ -102,7 +102,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    BlobServiceSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
+    BlobServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, IpRange ipRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType, UserDelegationKey key) {
@@ -117,15 +117,15 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         this.contentType = contentType;
 
         if (key != null) {
-            this.keyOid = key.getSignedOid();
-            this.keyTid = key.getSignedTid();
+            this.keyObjectId = key.getSignedOid();
+            this.keyTenantId = key.getSignedTid();
             this.keyStart = key.getSignedStart();
             this.keyExpiry = key.getSignedExpiry();
             this.keyService = key.getSignedService();
             this.keyVersion = key.getSignedVersion();
         } else {
-            this.keyOid = null;
-            this.keyTid = null;
+            this.keyObjectId = null;
+            this.keyTenantId = null;
             this.keyStart = null;
             this.keyExpiry = null;
             this.keyService = null;
@@ -187,15 +187,15 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     /**
      * @return the object ID of the key.
      */
-    public String getKeyOid() {
-        return keyOid;
+    public String getKeyObjectId() {
+        return keyObjectId;
     }
 
     /**
      * @return the tenant ID of the key.
      */
-    public String getKeyTid() {
-        return keyTid;
+    public String getKeyTenantId() {
+        return keyTenantId;
     }
 
     /**
@@ -229,10 +229,10 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     UserDelegationKey userDelegationKey() {
         return new UserDelegationKey()
             .setSignedExpiry(this.keyExpiry)
-            .setSignedOid(this.keyOid)
+            .setSignedOid(this.keyObjectId)
             .setSignedService(this.keyService)
             .setSignedStart(this.keyStart)
-            .setSignedTid(this.keyTid)
+            .setSignedTid(this.keyTenantId)
             .setSignedVersion(this.keyVersion);
     }
 
@@ -254,8 +254,8 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.ipRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID, this.keyOid);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID, this.keyTid);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_OBJECT_ID, this.keyObjectId);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID, this.keyTenantId);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
             formatQueryParameterDate(this.keyStart));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,

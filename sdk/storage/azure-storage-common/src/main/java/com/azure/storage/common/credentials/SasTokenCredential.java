@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Holds a SAS token used for authenticating requests.
  */
-public final class SASTokenCredential {
+public final class SasTokenCredential {
     private static final String SIGNATURE = "sig";
 
     private final String sasToken;
@@ -20,7 +20,7 @@ public final class SASTokenCredential {
      *
      * @param sasToken SAS token used to authenticate requests with the service.
      */
-    private SASTokenCredential(String sasToken) {
+    private SasTokenCredential(String sasToken) {
         this.sasToken = sasToken;
     }
 
@@ -39,12 +39,12 @@ public final class SASTokenCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.credentials.SASTokenCredential.fromSASTokenString#String}
+     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromSASTokenString#String}
      *
      * @param sasToken SAS token
      * @return a SAS token credential if {@code sasToken} is not {@code null} or empty, otherwise null.
      */
-    public static SASTokenCredential fromSASTokenString(String sasToken) {
+    public static SasTokenCredential fromSASTokenString(String sasToken) {
         if (ImplUtils.isNullOrEmpty(sasToken)) {
             return null;
         }
@@ -53,7 +53,7 @@ public final class SASTokenCredential {
             sasToken = sasToken.substring(1);
         }
 
-        return new SASTokenCredential(sasToken);
+        return new SasTokenCredential(sasToken);
     }
 
     /**
@@ -63,13 +63,13 @@ public final class SASTokenCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.credentials.SASTokenCredential.fromQueryParameters#Map}
+     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map}
      *
      * @param queryParameters URL query parameters
      * @return a SAS token credential if {@code queryParameters} is not {@code null} and has
      * the signature ("sig") query parameter, otherwise returns {@code null}.
      */
-    public static SASTokenCredential fromQueryParameters(Map<String, String> queryParameters) {
+    public static SasTokenCredential fromQueryParameters(Map<String, String> queryParameters) {
         if (ImplUtils.isNullOrEmpty(queryParameters) || !queryParameters.containsKey(SIGNATURE)) {
             return null;
         }
@@ -83,6 +83,6 @@ public final class SASTokenCredential {
             sb.append(kvp.getKey()).append("=").append(kvp.getValue());
         }
 
-        return new SASTokenCredential(sb.toString());
+        return new SasTokenCredential(sb.toString());
     }
 }

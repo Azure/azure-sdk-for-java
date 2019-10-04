@@ -7,9 +7,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @see QueueClientBuilder
  * @see QueueAsyncClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
+ * @see SasTokenCredential
  */
 @ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {
@@ -683,7 +683,7 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange}
+     * {@codesnippet com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -693,12 +693,12 @@ public final class QueueClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, QueueSasPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
+                              OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
         return this.client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange);
     }

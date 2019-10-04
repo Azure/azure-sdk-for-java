@@ -5,7 +5,7 @@ package com.azure.storage.file;
 
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -32,7 +32,7 @@ final class FileServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-    private SASProtocol protocol;
+    private SasProtocol protocol;
 
     private OffsetDateTime startTime;
 
@@ -84,7 +84,7 @@ final class FileServiceSasSignatureValues {
         this.identifier = identifier;
     }
 
-    FileServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    FileServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
@@ -124,19 +124,19 @@ final class FileServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * Sets the {@link SasProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
      * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSasSignatureValues setProtocol(SASProtocol protocol) {
+    public FileServiceSasSignatureValues setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }

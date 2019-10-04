@@ -18,12 +18,12 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
+import com.azure.storage.common.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     protected String endpoint;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private SasTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
@@ -81,7 +81,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -170,7 +170,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public final T credential(SASTokenCredential credential) {
+    public final T credential(SasTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.tokenCredential = null;

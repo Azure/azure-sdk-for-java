@@ -19,7 +19,7 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
@@ -557,13 +557,13 @@ public final class BlobContainerClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         BlobContainerSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        SASProtocol sasProtocol, IpRange ipRange) {
+        SasProtocol sasProtocol, IpRange ipRange) {
         return this.blobContainerAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions,
             expiryTime, startTime, version, sasProtocol, ipRange);
     }
@@ -573,7 +573,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
@@ -585,7 +585,7 @@ public final class BlobContainerClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
@@ -596,7 +596,7 @@ public final class BlobContainerClient {
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
             BlobContainerSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-            SASProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
+            SasProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
             String contentEncoding, String contentLanguage, String contentType) {
         return this.blobContainerAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions,
             expiryTime, startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
@@ -632,12 +632,12 @@ public final class BlobContainerClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobContainerSasPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
+        OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
         return this.blobContainerAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version,
             sasProtocol, ipRange);
     }
@@ -647,7 +647,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
@@ -657,7 +657,7 @@ public final class BlobContainerClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
@@ -667,7 +667,7 @@ public final class BlobContainerClient {
      * @return A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobContainerSasPermission permissions, OffsetDateTime expiryTime,
-            OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange, String cacheControl,
+            OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         return this.blobContainerAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version,
             sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);

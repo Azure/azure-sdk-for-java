@@ -7,13 +7,13 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobURLParts;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -202,15 +202,15 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     public SpecializedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential =
-                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
+            SasTokenCredential sasTokenCredential =
+                SasTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);
             }

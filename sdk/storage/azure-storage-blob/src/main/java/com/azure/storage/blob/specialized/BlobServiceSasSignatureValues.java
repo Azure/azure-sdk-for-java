@@ -9,7 +9,7 @@ import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -39,7 +39,7 @@ public final class BlobServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-    private SASProtocol protocol;
+    private SasProtocol protocol;
 
     private OffsetDateTime startTime;
 
@@ -93,7 +93,7 @@ public final class BlobServiceSasSignatureValues {
         this.identifier = identifier;
     }
 
-    public BlobServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
             OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
@@ -133,19 +133,19 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * Sets the {@link SasProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSasSignatureValues setProtocol(SASProtocol protocol) {
+    public BlobServiceSasSignatureValues setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }

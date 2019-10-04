@@ -8,7 +8,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.time.OffsetDateTime;
 
 /**
- * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all
+ * AccountSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all
  * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
  * can actually be applied to blob urls. Note: that both this class and {@link AccountSasQueryParameters} exist because
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
@@ -27,11 +27,11 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-public final class AccountSASSignatureValues {
+public final class AccountSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-    private SASProtocol protocol;
+    private SasProtocol protocol;
 
     private OffsetDateTime startTime;
 
@@ -46,34 +46,34 @@ public final class AccountSASSignatureValues {
     private String resourceTypes;
 
     /**
-     * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all other
+     * Initializes an {@code AccountSasSignatureValues} object with the version number set to the default and all other
      * values empty.
      */
-    public AccountSASSignatureValues() {
+    public AccountSasSignatureValues() {
     }
 
     /**
      * Shared method between service clients to generate an account SAS.
      *
      * @param sharedKeyCredential The {@code SharedKeyCredential} shared key credential for the account SAS
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
+     * @param accountSASService The {@code AccountSasService} services for the account SAS
+     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
+     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSASService
-        accountSASService, AccountSASResourceType accountSASResourceType, AccountSASPermission accountSASPermission,
+    public static String generateAccountSAS(SharedKeyCredential sharedKeyCredential, AccountSasService
+        accountSASService, AccountSasResourceType accountSASResourceType, AccountSasPermission accountSASPermission,
                                             OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            IpRange ipRange, SASProtocol sasProtocol) {
+                                            IpRange ipRange, SasProtocol sasProtocol) {
 
-        AccountSASSignatureValues values = new AccountSASSignatureValues();
+        AccountSasSignatureValues values = new AccountSasSignatureValues();
 
         values.setServices(accountSASService == null ? null : accountSASService.toString());
         values.setResourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
@@ -106,27 +106,27 @@ public final class AccountSASSignatureValues {
      * library.
      *
      * @param version Target version to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setVersion(String version) {
+    public AccountSasSignatureValues setVersion(String version) {
         this.version = version;
         return this;
     }
 
     /**
-     * @return the {@link SASProtocol} which determines the HTTP protocol that will be used.
+     * @return the {@link SasProtocol} which determines the HTTP protocol that will be used.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Sets the {@link SASProtocol} which determines the HTTP protocol that will be used.
+     * Sets the {@link SasProtocol} which determines the HTTP protocol that will be used.
      *
      * @param protocol Protocol to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setProtocol(SASProtocol protocol) {
+    public AccountSasSignatureValues setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -142,9 +142,9 @@ public final class AccountSASSignatureValues {
      * Sets when the SAS will take effect.
      *
      * @param startTime Start time to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setStartTime(OffsetDateTime startTime) {
+    public AccountSasSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -160,15 +160,15 @@ public final class AccountSASSignatureValues {
      * Sets the time after which the SAS will no longer work.
      *
      * @param expiryTime Expiry time to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
+    public AccountSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
 
     /**
-     * @return the operations the SAS user may perform. Please refer to {@link AccountSASPermission} to help determine
+     * @return the operations the SAS user may perform. Please refer to {@link AccountSasPermission} to help determine
      * which permissions are allowed.
      */
     public String getPermissions() {
@@ -176,13 +176,13 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Sets the operations the SAS user may perform. Please refer to {@link AccountSASPermission} for help constructing
+     * Sets the operations the SAS user may perform. Please refer to {@link AccountSasPermission} for help constructing
      * the permissions string.
      *
      * @param permissions Permissions string to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setPermissions(String permissions) {
+    public AccountSasSignatureValues setPermissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -198,15 +198,15 @@ public final class AccountSASSignatureValues {
      * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @param ipRange Allowed IP range to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setIpRange(IpRange ipRange) {
+    public AccountSasSignatureValues setIpRange(IpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
 
     /**
-     * @return the services accessible with this SAS. Please refer to {@link AccountSASService} to help determine which
+     * @return the services accessible with this SAS. Please refer to {@link AccountSasService} to help determine which
      * services are accessible.
      */
     public String getServices() {
@@ -214,18 +214,18 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Sets the services accessible with this SAS. Please refer to {@link AccountSASService} to construct this value.
+     * Sets the services accessible with this SAS. Please refer to {@link AccountSasService} to construct this value.
      *
      * @param services Allowed services string to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setServices(String services) {
+    public AccountSasSignatureValues setServices(String services) {
         this.services = services;
         return this;
     }
 
     /**
-     * @return the resource types accessible with this SAS. Please refer to {@link AccountSASResourceType} to help
+     * @return the resource types accessible with this SAS. Please refer to {@link AccountSasResourceType} to help
      * determine the resource types that are accessible.
      */
     public String getResourceTypes() {
@@ -233,13 +233,13 @@ public final class AccountSASSignatureValues {
     }
 
     /**
-     * Sets the resource types accessible with this SAS. Please refer to {@link AccountSASResourceType} to construct
+     * Sets the resource types accessible with this SAS. Please refer to {@link AccountSasResourceType} to construct
      * this value.
      *
      * @param resourceTypes Allowed resource types string to set
-     * @return the updated AccountSASSignatureValues object.
+     * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSASSignatureValues setResourceTypes(String resourceTypes) {
+    public AccountSasSignatureValues setResourceTypes(String resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
     }
@@ -272,7 +272,7 @@ public final class AccountSASSignatureValues {
     private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
             sharedKeyCredentials.getAccountName(),
-            AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
+            AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
             this.services,
             resourceTypes,
             this.startTime == null ? Constants.EMPTY_STRING

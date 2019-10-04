@@ -4,9 +4,9 @@ package com.azure.storage.file;
 
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
@@ -40,7 +40,7 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link ShareAsyncClient} with {@link SasTokenCredential}
      *
      * @return An instance of {@link ShareAsyncClient}
      */
@@ -55,7 +55,7 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link ShareAsyncClient} with {@link SasTokenCredential}
      *
      * @return An instance of {@link ShareAsyncClient}
      */
@@ -63,7 +63,7 @@ public class ShareAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.shareAsyncClient.instantiation.credential
         ShareAsyncClient shareAsyncClient = new ShareClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .credential(SasTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .buildAsyncClient();
         // END: com.azure.storage.file.shareAsyncClient.instantiation.credential
@@ -513,7 +513,7 @@ public class ShareAsyncJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareAsyncClient shareAsyncClient = new ShareClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .credential(SasTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .snapshot(currentTime.toString())
             .buildAsyncClient();
@@ -524,11 +524,11 @@ public class ShareAsyncJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareAsyncClient#generateSAS(String, ShareSasPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
+     * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         String identifier = "identifier";
         ShareSasPermission permissions = new ShareSasPermission()
             .setReadPermission(true)
@@ -541,7 +541,7 @@ public class ShareAsyncJavaDocCodeSamples {
         IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -550,7 +550,7 @@ public class ShareAsyncJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String sas = shareAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.file.shareAsyncClient.generateSAS#String-ShareSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**

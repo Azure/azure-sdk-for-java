@@ -6,9 +6,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -56,7 +56,7 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileClient} with {@link SasTokenCredential}
      * @return An instance of {@link FileClient}
      */
     public FileClient createClientWithSASToken() {
@@ -73,7 +73,7 @@ public class FileJavaDocCodeSamples {
 
 
     /**
-     * Generates code sample for creating a {@link FileClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileClient} with {@link SasTokenCredential}
      * @return An instance of {@link FileClient}
      */
     public FileClient createClientWithCredential() {
@@ -81,7 +81,7 @@ public class FileJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileClient.instantiation.credential
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .credential(SasTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
             .shareName("myshare")
             .resourcePath("myfilepath")
             .buildFileClient();
@@ -599,11 +599,11 @@ public class FileJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link FileClient#generateSAS(String, FileSasPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
+     * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSAS() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         String identifier = "identifier";
         FileSasPermission permissions = new FileSasPermission()
             .setReadPermission(true)
@@ -615,7 +615,7 @@ public class FileJavaDocCodeSamples {
         IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -624,7 +624,7 @@ public class FileJavaDocCodeSamples {
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         String sas = fileClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
             ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
      /**
@@ -635,7 +635,7 @@ public class FileJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileClient fileClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .credential(SasTokenCredential.fromSASTokenString("${SASToken}"))
             .shareName("myshare")
             .resourcePath("myfile")
             .snapshot(currentTime.toString())

@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
+import com.azure.storage.common.AccountSasPermission;
+import com.azure.storage.common.AccountSasResourceType;
+import com.azure.storage.common.AccountSasService;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
@@ -40,7 +40,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SasTokenCredential}
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -54,7 +54,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SasTokenCredential}
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */
@@ -62,7 +62,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         QueueServiceAsyncClient client = new QueueServiceClientBuilder()
             .endpoint("https://{accountName}.queue.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
+            .credential(SasTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         return client;
@@ -271,21 +271,21 @@ public class QueueServiceAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SASProtocol)}
+     * Generates a code sample for using {@link QueueServiceAsyncClient#generateAccountSAS(AccountSasService,
+     * AccountSasResourceType, AccountSasPermission, OffsetDateTime, OffsetDateTime, String, IpRange, SasProtocol)}
      */
     public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
-        AccountSASService service = new AccountSASService()
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
+        AccountSasService service = new AccountSasService()
             .setBlob(true)
             .setFile(true)
             .setQueue(true)
             .setTable(true);
-        AccountSASResourceType resourceType = new AccountSASResourceType()
+        AccountSasResourceType resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setObject(true)
             .setService(true);
-        AccountSASPermission permission = new AccountSASPermission()
+        AccountSasPermission permission = new AccountSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
             .setCreatePermission(true)
@@ -299,11 +299,11 @@ public class QueueServiceAsyncJavaDocCodeSamples {
         IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
         String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
             ipRange, sasProtocol);
-        // END: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol
+        // END: com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSasService-AccountSasResourceType-AccountSasPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SasProtocol
     }
 }

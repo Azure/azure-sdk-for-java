@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * Code snippets for {@link SASTokenCredential}.
+ * Code snippets for {@link SasTokenCredential}.
  */
 public final class SASTokenCredentialJavaDocCodeSnippets {
     private final URL url = new URL("https://www.example.com?queryString");
@@ -22,22 +22,22 @@ public final class SASTokenCredentialJavaDocCodeSnippets {
     }
 
     /**
-     * Code sample for {@link SASTokenCredential#fromSASTokenString(String)}.
+     * Code sample for {@link SasTokenCredential#fromSASTokenString(String)}.
      */
     public void fromSASTokenString() {
         String preformattedSASToken = "sasToken";
-        // BEGIN: com.azure.storage.common.credentials.SASTokenCredential.fromSASTokenString#String
-        SASTokenCredential credential = SASTokenCredential.fromSASTokenString(preformattedSASToken);
-        // END: com.azure.storage.common.credentials.SASTokenCredential.fromSASTokenString#String
+        // BEGIN: com.azure.storage.common.credentials.SasTokenCredential.fromSASTokenString#String
+        SasTokenCredential credential = SasTokenCredential.fromSASTokenString(preformattedSASToken);
+        // END: com.azure.storage.common.credentials.SasTokenCredential.fromSASTokenString#String
     }
 
     /**
-     * Code sample for {@link SASTokenCredential#fromQueryParameters(Map)}.
+     * Code sample for {@link SasTokenCredential#fromQueryParameters(Map)}.
      */
     public void fromQueryParameters() {
-        // BEGIN: com.azure.storage.common.credentials.SASTokenCredential.fromQueryParameters#Map
-        SASTokenCredential credential = SASTokenCredential
+        // BEGIN: com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map
+        SasTokenCredential credential = SasTokenCredential
             .fromQueryParameters(Utility.parseQueryString(url.getQuery()));
-        // END: com.azure.storage.common.credentials.SASTokenCredential.fromQueryParameters#Map
+        // END: com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map
     }
 }

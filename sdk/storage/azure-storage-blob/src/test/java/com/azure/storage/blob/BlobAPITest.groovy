@@ -94,15 +94,15 @@ class BlobAPITest extends APISpec {
 
     /*
     This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
-    HTTPGetterInfo.
+    HttpGetterInfo.
      */
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
         a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
-        from the count and offset values in HTTPGetterInfo that was constructed on the initial call to download. We
+        from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
-        test the correction of a bug that was found which caused HTTPGetterInfo to have an incorrect offset when it was
+        test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
         constructed in BlobClient.download().
          */
         setup:

@@ -15,9 +15,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.FileGetPropertiesHeaders;
@@ -88,7 +88,7 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileClientBuilder
  * @see FileClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
+ * @see SasTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class, isAsync = true)
 public class FileAsyncClient {
@@ -1134,13 +1134,13 @@ public class FileAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
+                              OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
@@ -1151,7 +1151,7 @@ public class FileAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
@@ -1161,7 +1161,7 @@ public class FileAsyncClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
@@ -1172,7 +1172,7 @@ public class FileAsyncClient {
      * @throws NullPointerException If {@code sharedKeyCredentials} is null
      */
     public String generateSAS(String identifier, FileSasPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange,
+                              OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange,
                               String cacheControl, String contentDisposition, String contentEncoding,
                               String contentLanguage, String contentType) {
 

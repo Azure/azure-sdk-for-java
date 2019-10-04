@@ -7,7 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SasTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -30,7 +30,7 @@ import java.util.Objects;
  * <p>The client needs the endpoint of the Azure Storage File service, name of the share, and authorization credential.
  * {@link FileClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
  * {@link FileClientBuilder#shareName(String)}, {@link FileClientBuilder#resourcePath(String)} and a {@link
- * SASTokenCredential} that authorizes the client.</p>
+ * SasTokenCredential} that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.file.fileClient.instantiation.sastoken}
@@ -38,8 +38,8 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous File Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.file.directoryClient.instantiation.sastoken}
  *
- * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
- * be set using {@link FileClientBuilder#credential(SASTokenCredential) credential}.</p>
+ * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SasTokenCredential} they may
+ * be set using {@link FileClientBuilder#credential(SasTokenCredential) credential}.</p>
  *
  * {@codesnippet com.azure.storage.file.fileClient.instantiation.credential}
  *
@@ -47,7 +47,7 @@ import java.util.Objects;
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage File service must be used. Set the SharedKeyCredential with {@link
- * FileClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
+ * FileClientBuilder#connectionString(String) connectionString}. If the builder has both a SasTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with connection string.</strong></p>
@@ -58,7 +58,7 @@ import java.util.Objects;
  *
  * @see FileClient
  * @see FileAsyncClient
- * @see SASTokenCredential
+ * @see SasTokenCredential
  * @see SharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {FileClient.class, FileAsyncClient.class, DirectoryClient.class,
@@ -110,7 +110,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SasTokenCredential} has been
      * set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
@@ -129,7 +129,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      *
      * @return A DirectoryClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SasTokenCredential} has been
      * set.
      */
     public DirectoryClient buildDirectoryClient() {
@@ -148,7 +148,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or the (@code resourcePath) is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SasTokenCredential} has been
      * set.
      */
     public FileAsyncClient buildFileAsyncClient() {
@@ -168,7 +168,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      *
      * @return A FileClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code resourcePath} is {@code null}.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SasTokenCredential} has been
      * set.
      */
     public FileClient buildFileClient() {
@@ -182,9 +182,9 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      * that the client will interact with. Rest of the path segments should be the path of the file. It mush end up with
      * the file name if more segments exist.</p>
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in
+     * <p>Query parameters of the endpoint will be parsed using {@link SasTokenCredential#fromQueryParameters(Map)} in
      * an
-     * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
+     * attempt to generate a {@link SasTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses
      * from.
@@ -205,7 +205,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
             this.resourcePath = filePathParams != null ? String.join("/", filePathParams) : this.resourcePath;
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential sasTokenCredential = SASTokenCredential
+            SasTokenCredential sasTokenCredential = SasTokenCredential
                 .fromQueryParameters(Utility.parseQueryString(fullUrl.getQuery()));
             if (sasTokenCredential != null) {
                 super.credential(sasTokenCredential);

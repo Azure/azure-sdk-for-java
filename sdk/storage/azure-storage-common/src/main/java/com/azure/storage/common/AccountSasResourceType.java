@@ -9,10 +9,10 @@ import java.util.Locale;
  * This is a helper class to construct a string representing the resources accessible by an AccountSAS. Setting a value
  * to true means that any SAS which uses these permissions will grant access to that resource type. Once all the values
  * are set, this should be serialized with toString and set as the resources field on an {@link
- * AccountSASSignatureValues} object. It is possible to construct the resources string without this class, but the order
+ * AccountSasSignatureValues} object. It is possible to construct the resources string without this class, but the order
  * of the resources is particular and this class guarantees correctness.
  */
-public final class AccountSASResourceType {
+public final class AccountSasResourceType {
 
     private boolean service;
 
@@ -21,21 +21,21 @@ public final class AccountSASResourceType {
     private boolean object;
 
     /**
-     * Initializes an {@code AccountSASResourceType} object with all fields set to false.
+     * Initializes an {@code AccountSasResourceType} object with all fields set to false.
      */
-    public AccountSASResourceType() {
+    public AccountSasResourceType() {
     }
 
     /**
-     * Creates an {@code AccountSASResourceType} from the specified resource types string. This method will throw an
+     * Creates an {@code AccountSasResourceType} from the specified resource types string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
      *
      * @param resourceTypesString A {@code String} which represents the {@code AccountSASResourceTypes}.
-     * @return A {@code AccountSASResourceType} generated from the given {@code String}.
+     * @return A {@code AccountSasResourceType} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code resourceTypesString} contains a character other than s, c, or o.
      */
-    public static AccountSASResourceType parse(String resourceTypesString) {
-        AccountSASResourceType resourceType = new AccountSASResourceType();
+    public static AccountSasResourceType parse(String resourceTypesString) {
+        AccountSasResourceType resourceType = new AccountSasResourceType();
 
         for (int i = 0; i < resourceTypesString.length(); i++) {
             char c = resourceTypesString.charAt(i);
@@ -69,9 +69,9 @@ public final class AccountSASResourceType {
      * Sets the access status for service level APIs.
      *
      * @param service Access status to set
-     * @return the updated AccountSASResourceType object.
+     * @return the updated AccountSasResourceType object.
      */
-    public AccountSASResourceType setService(boolean service) {
+    public AccountSasResourceType setService(boolean service) {
         this.service = service;
         return this;
     }
@@ -89,9 +89,9 @@ public final class AccountSASResourceType {
      * Shares.
      *
      * @param container Access status to set
-     * @return the updated AccountSASResourceType object.
+     * @return the updated AccountSasResourceType object.
      */
-    public AccountSASResourceType setContainer(boolean container) {
+    public AccountSasResourceType setContainer(boolean container) {
         this.container = container;
         return this;
     }
@@ -109,9 +109,9 @@ public final class AccountSASResourceType {
      * Files.
      *
      * @param object Access status to set
-     * @return the updated AccountSASResourceType object.
+     * @return the updated AccountSasResourceType object.
      */
-    public AccountSASResourceType setObject(boolean object) {
+    public AccountSasResourceType setObject(boolean object) {
         this.object = object;
         return this;
     }

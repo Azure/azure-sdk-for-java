@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobSasPermission;
-import com.azure.storage.blob.BlobURLParts;
-import com.azure.storage.blob.HTTPGetterInfo;
+import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
@@ -33,7 +33,7 @@ import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
@@ -129,7 +129,7 @@ public class BlobAsyncClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**
@@ -142,7 +142,7 @@ public class BlobAsyncClientBase {
      * @return The name of the blob.
      */
     public final String getBlobName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
     }
 
     /**
@@ -462,7 +462,7 @@ public class BlobAsyncClientBase {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        HTTPGetterInfo info = new HTTPGetterInfo()
+        HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
             .setCount(range.getCount())
             .setETag(accessConditions.getModifiedAccessConditions().getIfMatch());
@@ -1000,13 +1000,13 @@ public class BlobAsyncClientBase {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        SASProtocol sasProtocol, IpRange ipRange) {
+        SasProtocol sasProtocol, IpRange ipRange) {
         return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
             version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
             contentEncoding */, null /* contentLanguage */, null /* contentType */);
@@ -1017,7 +1017,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
@@ -1029,7 +1029,7 @@ public class BlobAsyncClientBase {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
@@ -1040,7 +1040,7 @@ public class BlobAsyncClientBase {
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
             BlobSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-            SASProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
+            SasProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
             String contentEncoding, String contentLanguage, String contentType) {
 
         BlobServiceSasSignatureValues blobServiceSASSignatureValues = new BlobServiceSasSignatureValues(version,
@@ -1091,13 +1091,13 @@ public class BlobAsyncClientBase {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
+        OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
             /* cacheControl */, null /* contentLanguage*/, null /* contentEncoding */, null /* contentLanguage */,
             null /* contentType */);
@@ -1108,7 +1108,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
@@ -1118,7 +1118,7 @@ public class BlobAsyncClientBase {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
      * @param startTime An optional {@code OffsetDateTime} start time for the SAS
      * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param cacheControl An optional {@code String} cache-control header for the SAS.
      * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
@@ -1129,7 +1129,7 @@ public class BlobAsyncClientBase {
      * @throws NullPointerException if {@code sharedKeyCredential} is null
      */
     public String generateSAS(String identifier, BlobSasPermission permissions, OffsetDateTime expiryTime,
-            OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange, String cacheControl,
+            OffsetDateTime startTime, String version, SasProtocol sasProtocol, IpRange ipRange, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
 
         BlobServiceSasSignatureValues blobServiceSASSignatureValues = new BlobServiceSasSignatureValues(version,

@@ -19,7 +19,7 @@ import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -40,11 +40,11 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link BlobContainerClient#generateUserDelegationSAS(UserDelegationKey, String,
-     * BlobContainerSasPermission, OffsetDateTime, OffsetDateTime, String, SASProtocol, IpRange, String, String, String,
+     * BlobContainerSasPermission, OffsetDateTime, OffsetDateTime, String, SasProtocol, IpRange, String, String, String,
      * String, String)}
      */
     public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -57,7 +57,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -70,15 +70,15 @@ public class BlobContainerClientJavaDocCodeSnippets {
         String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
             startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
      * Code snippet for {@link BlobContainerClient#generateSAS(String, BlobContainerSasPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
+     * OffsetDateTime, String, SasProtocol, IpRange, String, String, String, String, String)}
      */
     public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -91,7 +91,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         IpRange ipRange = new IpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
+        SasProtocol sasProtocol = SasProtocol.HTTPS_HTTP;
         String cacheControl = "cache";
         String contentDisposition = "disposition";
         String contentEncoding = "encoding";
@@ -103,7 +103,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
         // Note either "identifier", or "expiryTime and permissions" are required to be set
         String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobContainerClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
+        // END: com.azure.storage.blob.BlobContainerClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SasProtocol-IpRange-String-String-String-String-String
     }
 
     /**
