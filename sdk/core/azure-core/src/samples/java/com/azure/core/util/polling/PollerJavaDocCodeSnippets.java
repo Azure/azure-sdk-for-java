@@ -116,13 +116,10 @@ public final class PollerJavaDocCodeSnippets {
         myPoller.poll()
             .repeatWhen(attemptsCompleted -> attemptsCompleted.flatMap(attempt -> Mono.delay(Duration.ofMillis(500))))
             .takeUntil(response -> response.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED)
-            .subscribe(response -> {
-                System.out.printf("Response status: %s. Value: %s%n", response.getStatus(), response.getValue());
-            }, error -> {
-                System.err.printf("Exception occurred while polling: %s%n", error);
-            }, () -> {
-                System.out.printf("Polling complete with status: %s%n", myPoller.getStatus());
-            });
+            .subscribe(
+                response -> System.out.printf("Status: %s. Value: %s%n", response.getStatus(), response.getValue()),
+                error -> System.err.printf("Exception occurred while polling: %s%n", error),
+                () -> System.out.printf("Polling complete with status: %s%n", myPoller.getStatus()));
         // END: com.azure.core.util.polling.poller.poll-manually
     }
 
