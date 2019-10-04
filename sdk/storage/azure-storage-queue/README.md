@@ -158,7 +158,7 @@ The client performs the interactions with the Queue service, create or delete a 
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${SASToken}`.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName);
-QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).credential(SASToken).buildClient();
+QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).sasToken(SASToken).build();
 
 QueueClient newQueueClient = queueServiceClient.createQueue("myqueue");
 ```
@@ -168,7 +168,7 @@ or
 ```Java
 String queueServiceAsyncURL = String.format("https://%s.queue.core.windows.net/", accountName);
 QueueServiceAsyncClient queueServiceAsyncClient = new QueueServiceClientBuilder().endpoint(queueServiceAsyncURL)
-.credential(SASToken).buildAsyncClient();
+.sasToken(SASToken).buildAsyncClient();
 queueServiceAsyncClient.createQueue("newAsyncQueue").subscribe(
     result -> {
       // do something when new queue created
@@ -189,7 +189,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${queueName}`, `${SASToken}`.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName);
-QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential(SASToken).buildClient();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SASToken).buildClient();
 
 // metadata is map of key-value pair
 queueClient.createWithResponse(metadata, null, Duration.ofSeconds(30), Context.NONE);
@@ -392,7 +392,7 @@ The operation sets user-defined metadata on the specified queue. Metadata is ass
 Use `${SASToken}` as credential.
 ```Java
 String queueSURL = String.format("https://%s.queue.core.windows.net", accountName);
-QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).credential(SASToken).queueName("myqueue").buildClient();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SASToken).queueName("myqueue").buildClient();
 
 Map<String, String> metadata =  new HashMap<String, String>() {{
     put("key1", "val1");
