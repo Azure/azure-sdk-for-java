@@ -13,6 +13,7 @@ namespace HttpMock
 {
     class Program
     {
+        // PERF: Store custom value instead of HttpResponseMessage
         private static ConcurrentDictionary<RequestCacheKey, HttpResponseMessage> _cache =
             new ConcurrentDictionary<RequestCacheKey, HttpResponseMessage>();
 

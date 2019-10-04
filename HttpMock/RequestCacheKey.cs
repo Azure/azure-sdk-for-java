@@ -14,7 +14,7 @@ namespace HttpMock
         public int? Port { get; private set; }
         public string Path { get; private set; }
         public string Query { get; private set; }
-        public KeyValuePair<string, string[]>[] Headers { get; private set; }
+        public KeyValuePair<string, StringValues>[] Headers { get; private set; }
 
         public RequestCacheKey(HttpRequest request)
         {
@@ -23,12 +23,7 @@ namespace HttpMock
             Port = request.Host.Port;
             Path = request.Path.Value;
             Query = request.QueryString.Value;
-
-            // Header names and values must be sorted to ensure equivalence
-            Headers = request.Headers
-                .Where(h => h.Key != "Proxy-Connection")
-                .OrderBy(h => h.Key)
-                .Select(h => new KeyValuePair<string, string[]>(h.Key, h.Value.OrderBy(s => s).ToArray())).ToArray();
+            Headers = request.Headers.ToArray();
         }
 
         public override int GetHashCode()
@@ -42,10 +37,7 @@ namespace HttpMock
             foreach (var h in Headers)
             {
                 hash.Add(h.Key);
-                foreach (var v in h.Value)
-                {
-                    hash.Add(v);
-                }
+                hash.Add(h.Value);
             }
             return hash.ToHashCode();
         }
@@ -62,7 +54,7 @@ namespace HttpMock
                 HeadersEqual(Headers, other.Headers);
         }
 
-        private static bool HeadersEqual(KeyValuePair<string, string[]>[] headers1, KeyValuePair<string, string[]>[] headers2)
+        private static bool HeadersEqual(KeyValuePair<string, StringValues>[] headers1, KeyValuePair<string, StringValues>[] headers2)
         {
             if (headers1.Length != headers2.Length)
             {
@@ -76,17 +68,9 @@ namespace HttpMock
                     return false;
                 }
 
-                if (headers1[i].Value.Length != headers2[i].Value.Length)
+                if (headers1[i].Value != headers2[i].Value)
                 {
                     return false;
-                }
-
-                for (var j =0; j < headers1[i].Value.Length; j++)
-                {
-                    if (headers1[i].Value[j] != headers2[i].Value[j])
-                    {
-                        return false;
-                    }
                 }
             }
 
