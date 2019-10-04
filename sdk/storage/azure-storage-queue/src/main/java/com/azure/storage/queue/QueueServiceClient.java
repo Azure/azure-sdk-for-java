@@ -209,6 +209,7 @@ public final class QueueServiceClient {
      * @param options Options for listing queues
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
