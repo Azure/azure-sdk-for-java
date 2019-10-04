@@ -195,14 +195,34 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link BlobContainerSasPermission} or
-     * {@link BlobSasPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the Blob permissions allowed by the SAS.
      *
-     * @param permissions Permissions string for the SAS
+     * <p>this will set the {@link #resource} to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}
+     * or {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of
+     * {@link #getSnapshotId()}.</p>
+     *
+     * @param permissions {@link BlobSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public BlobServiceSasSignatureValues setPermissions(BlobSasPermission permissions) {
+        this.permissions = permissions.toString();
+        this.resource = Constants.UrlConstants.SAS_BLOB_CONSTANT;
+        return this;
+    }
+
+    /**
+     * Sets the Container permissions allowed by the SAS.
+     *
+     * <p>this will set the {@link #resource} to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
+     *
+     * @param permissions {@link BlobContainerSasPermission}
+     * @return the updated BlobServiceSASSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setPermissions(BlobContainerSasPermission permissions) {
+        this.permissions = permissions.toString();
+        this.resource = Constants.UrlConstants.SAS_CONTAINER_CONSTANT;
         return this;
     }
 
@@ -291,11 +311,19 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Sets the specific snapshot the SAS user may access.
      *
+     * <p>{@link #resource} will be set to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} if the passed
+     * {@code snapshotId} isn't {@code null} and {@link #resource} is set to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
+     *
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
      */
     public BlobServiceSasSignatureValues setSnapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
+        if (snapshotId != null && Constants.UrlConstants.SAS_BLOB_CONSTANT.equals(resource)) {
+            this.resource = Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
+        }
         return this;
     }
 

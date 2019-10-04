@@ -28,7 +28,7 @@ import java.time.OffsetDateTime;
  * <a href=https://github.com/Azure/azure-storage-java/file/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
  * for additional samples.</p>
  */
-final class FileServiceSasSignatureValues {
+public final class FileServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 

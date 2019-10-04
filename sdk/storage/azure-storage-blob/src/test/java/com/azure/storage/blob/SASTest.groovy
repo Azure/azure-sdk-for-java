@@ -118,7 +118,21 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = bu.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setStartTime(startTime)
+            .setProtocol(sasProtocol)
+            .setIpRange(ipRange)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+            .setCanonicalName(bu.getBlobUrl(), primaryCredential.getAccountName())
+            .setSnapshotId(bu.getSnapshotId())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
 
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
 
@@ -165,7 +179,21 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setStartTime(startTime)
+            .setProtocol(sasProtocol)
+            .setIpRange(ipRange)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+            .setCanonicalName(snapshotBlob.getBlobUrl(), primaryCredential.getAccountName())
+            .setSnapshotId(snapshotBlob.getSnapshotId())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
 
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName, snapshotId).getBlockBlobClient()
 
@@ -202,13 +230,23 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sasWithId = cc.generateSAS(identifier.getId())
+        def sasWithId = new BlobServiceSasSignatureValues()
+            .setIdentifier(identifier.getId())
+            .setCanonicalName(cc.getBlobContainerUrl(), primaryCredential.getAccountName())
+            .setResource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
 
         def client1 = getContainerClient(sasWithId, cc.getBlobContainerUrl())
 
         client1.listBlobsFlat().iterator().hasNext()
 
-        def sasWithPermissions = cc.generateSAS(permissions, expiryTime)
+        def sasWithPermissions = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setCanonicalName(cc.getBlobContainerUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
 
         def client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
 
@@ -251,7 +289,22 @@ class SASTest extends APISpec {
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        def sas = bu.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setStartTime(startTime)
+            .setProtocol(sasProtocol)
+            .setIpRange(ipRange)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+            .setCanonicalName(bu.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setSnapshotId(bu.getSnapshotId())
+            .setVersion(key.getSignedVersion())
+            .generateSASQueryParameters(key)
+            .encode()
 
         then:
         sas != null
@@ -301,7 +354,21 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setStartTime(startTime)
+            .setProtocol(sasProtocol)
+            .setIpRange(ipRange)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+            .setCanonicalName(snapshotBlob.getBlobUrl(), primaryCredential.getAccountName())
+            .setSnapshotId(snapshotBlob.getSnapshotId())
+            .generateSASQueryParameters(primaryCredential)
+            .encode()
 
         and:
         def client = getBlobClient(sas, containerClient.getBlobContainerUrl(), blobName).getAppendBlobClient()
@@ -366,7 +433,22 @@ class SASTest extends APISpec {
         def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
         when:
-        def sas = snapshotBlob.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime, startTime, key.getSignedVersion(), sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setStartTime(startTime)
+            .setProtocol(sasProtocol)
+            .setIpRange(ipRange)
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+            .setCanonicalName(snapshotBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setSnapshotId(snapshotBlob.getSnapshotId())
+            .setVersion(key.getSignedVersion())
+            .generateSASQueryParameters(key)
+            .encode()
 
         // base blob with snapshot SAS
         def client1 = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
@@ -412,7 +494,12 @@ class SASTest extends APISpec {
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
         when:
-        def sasWithPermissions = cc.generateUserDelegationSAS(key, primaryCredential.getAccountName(), permissions, expiryTime)
+        def sasWithPermissions = new BlobServiceSasSignatureValues()
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .setCanonicalName(cc.getBlobContainerUrl().toString(), primaryCredential.getAccountName())
+            .generateSASQueryParameters(key)
+            .encode()
 
         def client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
         client.listBlobsFlat().iterator().hasNext()
@@ -439,7 +526,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
@@ -467,7 +554,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client.delete()
@@ -490,7 +577,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
@@ -513,7 +600,7 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = primaryBlobServiceClient.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = AccountSASSignatureValues.generateAccountSAS(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
@@ -534,7 +621,7 @@ class SASTest extends APISpec {
         def v = new BlobServiceSasSignatureValues()
         def p = new BlobSasPermission()
         p.setReadPermission(true)
-        v.setPermissions(p.toString())
+        v.setPermissions(p)
 
         v.setStartTime(startTime)
         def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
@@ -587,7 +674,7 @@ class SASTest extends APISpec {
 
         def p = new BlobSasPermission()
         p.setReadPermission(true)
-        v.setPermissions(p.toString())
+        v.setPermissions(p)
 
         v.setStartTime(startTime)
         def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
@@ -825,10 +912,13 @@ class SASTest extends APISpec {
             .setVersion(version)
             .setCanonicalName(canonicalName)
             .setExpiryTime(expiryTime)
-            .setPermissions(permissions)
             .setIdentifier(identifier)
             .setResource(resource)
             .setSnapshotId(snapshotId)
+
+        if (permissions != null) {
+            serviceSASSignatureValues.setPermissions(permissions)
+        }
 
         if (usingUserDelegation) {
             serviceSASSignatureValues.generateSASQueryParameters(new UserDelegationKey())
@@ -841,16 +931,15 @@ class SASTest extends APISpec {
         thrown(NullPointerException)
 
         where:
-        usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                   | identifier | resource | snapshotId
-        false               | null                                             | null                     | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                          | null       | null     | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                                       | null   | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                       | null   | null | null
-        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSasPermission().setReadPermission(true).toString() | null   | null | null
-        false               | null                                             | null                     | null                                                      | null                                                       | "0000" | "c"  | "id"
+        usingUserDelegation | version                                          | canonicalName            | expiryTime                                                | permissions                                     | identifier | resource | snapshotId
+        false               | null                                             | null                     | null                                                      | null                                            | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | null                     | null                                                      | null                                            | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | null                                            | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                            | null       | null     | null
+        false               | Constants.HeaderConstants.TARGET_STORAGE_VERSION | "containerName/blobName" | null                                                      | new BlobSasPermission().setReadPermission(true) | null       | null     | null
+        false               | null                                             | null                     | null                                                      | null                                            | "0000"     | "c"      | "id"
     }
 
-    // TODO : Account SAS should go into the common package
     /*
      This test will ensure that each field gets placed into the proper location within the string to sign and that null
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
@@ -1035,7 +1124,7 @@ class SASTest extends APISpec {
             .setBlobName("blob")
             .setSnapshot("snapshot")
         def sasValues = new BlobServiceSasSignatureValues()
-            .setPermissions("r")
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName("/containerName/blobName")
             .setExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
             .setResource("bs")
