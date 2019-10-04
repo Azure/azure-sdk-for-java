@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.implementation.util.ImplUtils
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -34,7 +35,7 @@ import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
-import com.azure.storage.common.credentials.SASTokenCredential
+
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -266,8 +267,8 @@ class APISpec extends Specification {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
-    BlobServiceClient getServiceClient(SASTokenCredential credential, String endpoint) {
-        return getServiceClientBuilder(null, endpoint, null).credential(credential).buildClient()
+    BlobServiceClient getServiceClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
@@ -302,7 +303,7 @@ class APISpec extends Specification {
         return builder
     }
 
-    BlobContainerClient getContainerClient(SASTokenCredential credential, String endpoint) {
+    BlobContainerClient getContainerClient(String sasToken, String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -312,7 +313,7 @@ class APISpec extends Specification {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        builder.credential(credential).buildClient()
+        builder.sasToken(sasToken).buildClient()
     }
 
     BlobAsyncClient getBlobAsyncClient(SharedKeyCredential credential, String endpoint, String blobName) {
@@ -329,11 +330,11 @@ class APISpec extends Specification {
         builder.credential(credential).buildAsyncClient()
     }
 
-    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName) {
-        return getBlobClient(credential, endpoint, blobName, null)
+    BlobClient getBlobClient(String sasToken, String endpoint, String blobName) {
+        return getBlobClient(sasToken, endpoint, blobName, null)
     }
 
-    BlobClient getBlobClient(SASTokenCredential credential, String endpoint, String blobName, String snapshotId) {
+    BlobClient getBlobClient(String sasToken, String endpoint, String blobName, String snapshotId) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .blobName(blobName)
@@ -345,7 +346,7 @@ class APISpec extends Specification {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        return builder.credential(credential).buildClient()
+        return builder.sasToken(sasToken).buildClient()
     }
 
     BlobClient getBlobClient(SharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
@@ -379,14 +380,14 @@ class APISpec extends Specification {
         return builder.credential(credential).buildClient()
     }
 
-    BlobClient getBlobClient(String endpoint, SASTokenCredential credential) {
+    BlobClient getBlobClient(String endpoint, String sasToken) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
 
-        if (credential != null) {
-            builder.credential(credential)
+        if (!ImplUtils.isNullOrEmpty(sasToken)) {
+            builder.sasToken(sasToken)
         }
 
         if (testMode == TestMode.RECORD && recordLiveMode) {
