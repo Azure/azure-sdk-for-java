@@ -51,20 +51,20 @@ namespace HttpMock
 
         public static Task SendDownstreamResponse(HttpResponseMessage upstreamResponse, HttpResponse response)
         {
-            response.StatusCode = (int)upstreamResponse.StatusCode;
+            //response.StatusCode = (int)upstreamResponse.StatusCode;
 
-            foreach (var header in upstreamResponse.Headers)
-            {
-                // Must skip "Transfer-Encoding" header, since if it's set manually Kestrel requires you to implement
-                // your own chunking.
-                if (string.Equals(header.Key, "Transfer-Encoding", StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
+            //foreach (var header in upstreamResponse.Headers)
+            //{
+            //    // Must skip "Transfer-Encoding" header, since if it's set manually Kestrel requires you to implement
+            //    // your own chunking.
+            //    if (string.Equals(header.Key, "Transfer-Encoding", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        continue;
+            //    }
 
-                // PERF: Store StringValues in cache
-                response.Headers.Add(header.Key, header.Value.ToArray());
-            }
+            //    // PERF: Store StringValues in cache
+            //    response.Headers.Add(header.Key, header.Value.ToArray());
+            //}
 
             return upstreamResponse.Content.CopyToAsync(response.Body);
         }
