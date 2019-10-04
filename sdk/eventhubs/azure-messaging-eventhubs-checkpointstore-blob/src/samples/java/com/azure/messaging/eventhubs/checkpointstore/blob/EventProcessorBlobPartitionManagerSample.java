@@ -13,9 +13,8 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import reactor.core.publisher.Mono;
-
 import java.util.concurrent.TimeUnit;
+import reactor.core.publisher.Mono;
 
 /**
  * Sample for using {@link BlobPartitionManager} with {@link EventProcessor}.

@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
+import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
@@ -42,11 +43,13 @@ class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
     BlockBlobAsyncClient bac
     BlobAsyncClient blobac
+    BlobClient blobClient
     String blobName
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).getBlockBlobClient()
+        blobClient = cc.getBlobClient(blobName)
+        bc = blobClient.getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
         blobac = ccAsync.getBlobAsyncClient(generateBlobName())
         bac = blobac.getBlockBlobAsyncClient()
@@ -602,7 +605,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file.getAbsolutePath())
+        blobClient.uploadFromFile(file.getAbsolutePath())
 
         then:
         bc.download(outStream)
@@ -617,7 +620,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
+        blobClient.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
 
         then:
         metadata == bc.getProperties().getMetadata()
@@ -926,7 +929,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = [:] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }

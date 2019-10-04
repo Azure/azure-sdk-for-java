@@ -8,7 +8,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobURLParts;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -202,7 +202,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     public SpecializedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();

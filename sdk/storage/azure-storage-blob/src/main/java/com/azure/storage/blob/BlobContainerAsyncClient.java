@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -18,9 +21,9 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -29,18 +32,8 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.specialized.BlobServiceSasQueryParameters;
-import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +41,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -151,7 +142,7 @@ public final class BlobContainerAsyncClient {
      * @return The name of container.
      */
     public String getBlobContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**
@@ -290,7 +281,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> deleteWithResponse(BlobContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
 
-        if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
+        if (!validateNoETag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
@@ -379,7 +370,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
-        if (!validateNoEtag(accessConditions.getModifiedAccessConditions())
+        if (!validateNoETag(accessConditions.getModifiedAccessConditions())
             || accessConditions.getModifiedAccessConditions().getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -486,7 +477,7 @@ public final class BlobContainerAsyncClient {
         BlobContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
 
-        if (!validateNoEtag(accessConditions.getModifiedAccessConditions())) {
+        if (!validateNoETag(accessConditions.getModifiedAccessConditions())) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
@@ -785,194 +776,10 @@ public final class BlobContainerAsyncClient {
     }
 
 
-    private boolean validateNoEtag(ModifiedAccessConditions modifiedAccessConditions) {
+    private boolean validateNoETag(ModifiedAccessConditions modifiedAccessConditions) {
         if (modifiedAccessConditions == null) {
             return true;
         }
         return modifiedAccessConditions.getIfMatch() == null && modifiedAccessConditions.getIfNoneMatch() == null;
-    }
-
-    /**
-     * Generates a user delegation SAS with the specified parameters
-     *
-     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
-     * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code BlobContainerSasPermissions} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobContainerSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null, null,
-            null, null, null, null, null, null, null);
-    }
-
-    /**
-     * Generates a user delegation SAS token with the specified parameters
-     *
-     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
-     * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code BlobContainerSasPermissions} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-        BlobContainerSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        SASProtocol sasProtocol, IpRange ipRange) {
-        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
-            version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
-            contentEncoding */, null /* contentLanguage */, null /* contentType */);
-    }
-
-    /**
-     * Generates a user delegation SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas">Azure
-     * Docs</a></p>
-     *
-     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
-     * @param accountName The {@code String} account name for the SAS
-     * @param permissions The {@code BlobContainerSasPermissions} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param cacheControl An optional {@code String} cache-control header for the SAS.
-     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage An optional {@code String} content-language header for the SAS.
-     * @param contentType An optional {@code String} content-type header for the SAS.
-     * @return A string that represents the SAS token
-     */
-    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
-            BlobContainerSasPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-            SASProtocol sasProtocol, IpRange ipRange, String cacheControl, String contentDisposition,
-            String contentEncoding, String contentLanguage, String contentType) {
-        BlobServiceSasSignatureValues blobServiceSASSignatureValues = new BlobServiceSasSignatureValues(version,
-            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
-            null /* identifier*/, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-
-        BlobServiceSasSignatureValues values =
-            configureServiceSASSignatureValues(blobServiceSASSignatureValues, accountName);
-
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
-            values.generateSASQueryParameters(userDelegationKey);
-
-        return blobServiceSasQueryParameters.encode();
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param permissions The {@code BlobContainerSasPermissions} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(BlobContainerSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions,  /* identifier */  expiryTime, null /* startTime */, null /* version
-             */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentDisposition */,
-            null /* contentEncoding */, null /* contentLanguage */, null /*contentType*/);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null /* permissions*/, null /* expiryTime */, null /* startTime */, null
-            /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
-            contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /*contentType*/);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code BlobContainerSasPermissions} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, BlobContainerSasPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
-        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
-            /* cacheControl */, null /* contentDisposition */, null /* contentEncoding */, null /* contentLanguage */,
-            null /*contentType*/);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateSAS#String-BlobContainerSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a></p>
-     *
-     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
-     * @param permissions The {@code BlobContainerSasPermissions} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @param cacheControl An optional {@code String} cache-control header for the SAS.
-     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage An optional {@code String} content-language header for the SAS.
-     * @param contentType An optional {@code String} content-type header for the SAS.
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, BlobContainerSasPermission permissions, OffsetDateTime expiryTime,
-            OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange, String cacheControl,
-            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        BlobServiceSasSignatureValues blobServiceSASSignatureValues = new BlobServiceSasSignatureValues(version,
-            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
-            identifier, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-
-        SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.azureBlobStorage.getHttpPipeline());
-
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        BlobServiceSasSignatureValues values = configureServiceSASSignatureValues(blobServiceSASSignatureValues,
-            sharedKeyCredential.getAccountName());
-
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
-            values.generateSASQueryParameters(sharedKeyCredential);
-
-        return blobServiceSasQueryParameters.encode();
-    }
-
-    /**
-     * Sets blobServiceSASSignatureValues parameters dependent on the current blob type
-     */
-    private BlobServiceSasSignatureValues configureServiceSASSignatureValues(
-        BlobServiceSasSignatureValues blobServiceSASSignatureValues, String accountName) {
-        // Set canonical name
-        blobServiceSASSignatureValues.setCanonicalName(this.azureBlobStorage.getUrl(), accountName);
-
-        // Set snapshotId to null
-        blobServiceSASSignatureValues.setSnapshotId(null);
-
-        // Set resource
-        blobServiceSASSignatureValues.setResource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT);
-        return blobServiceSASSignatureValues;
     }
 }

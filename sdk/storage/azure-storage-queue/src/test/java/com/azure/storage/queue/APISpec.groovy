@@ -4,25 +4,23 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.Context
 import com.azure.core.util.Configuration
+import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.queue.models.QueuesSegmentOptions
 import spock.lang.Specification
 
 import java.time.Duration
 import java.time.OffsetDateTime
-import java.util.function.Supplier
 
 class APISpec extends Specification {
     // Field common used for all APIs.
     def logger = new ClientLogger(APISpec.class)
     def AZURE_TEST_MODE = "AZURE_TEST_MODE"
-    def interceptorManager
+    InterceptorManager interceptorManager
     TestResourceNamer testResourceName
 
     // Clients for API tests
@@ -31,9 +29,9 @@ class APISpec extends Specification {
 
 
     // Test name for test method name.
-    def methodName
+    String methodName
     def testMode = getTestMode()
-    def connectionString
+    String connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
@@ -141,15 +139,6 @@ class APISpec extends Specification {
     }
 
     static HttpClient getHttpClient() {
-        if (enableDebugging) {
-            return HttpClient.createDefault().setProxy(new Supplier<ProxyOptions>() {
-                @Override
-                ProxyOptions get() {
-                    return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
-                }
-            })
-        } else {
-            return HttpClient.createDefault()
-        }
+        return HttpClient.createDefault()
     }
 }

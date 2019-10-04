@@ -9,10 +9,10 @@ import java.util.Locale;
  * This is a helper class to construct a string representing the permissions granted by an AccountSAS. Setting a value
  * to true means that any SAS which uses these permissions will grant permissions for that operation. Once all the
  * values are set, this should be serialized with toString and set as the permissions field on an {@link
- * AccountSASSignatureValues} object. It is possible to construct the permissions string without this class, but the
+ * AccountSasSignatureValues} object. It is possible to construct the permissions string without this class, but the
  * order of the permissions is particular and this class guarantees correctness.
  */
-public final class AccountSASPermission {
+public final class AccountSasPermission {
 
     private boolean readPermission;
 
@@ -31,22 +31,22 @@ public final class AccountSASPermission {
     private boolean processMessagesPermission;
 
     /**
-     * Initializes an {@code AccountSASPermission} object with all fields set to false.
+     * Initializes an {@code AccountSasPermission} object with all fields set to false.
      */
-    public AccountSASPermission() {
+    public AccountSasPermission() {
     }
 
     /**
-     * Creates an {@code AccountSASPermission} from the specified permissions string. This method will throw an
+     * Creates an {@code AccountSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permString A {@code String} which represents the {@code SharedAccessAccountPermissions}.
-     * @return An {@code AccountSASPermission} object generated from the given {@code String}.
+     * @return An {@code AccountSasPermission} object generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or
      * p.
      */
-    public static AccountSASPermission parse(String permString) {
-        AccountSASPermission permissions = new AccountSASPermission();
+    public static AccountSasPermission parse(String permString) {
+        AccountSasPermission permissions = new AccountSasPermission();
 
         for (int i = 0; i < permString.length(); i++) {
             char c = permString.charAt(i);
@@ -95,9 +95,9 @@ public final class AccountSASPermission {
      * Sets the read permission status.
      *
      * @param hasReadPermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setReadPermission(boolean hasReadPermission) {
+    public AccountSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
         return this;
     }
@@ -113,9 +113,9 @@ public final class AccountSASPermission {
      * Sets the add permission status.
      *
      * @param hadAddPermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setAddPermission(boolean hadAddPermission) {
+    public AccountSasPermission setAddPermission(boolean hadAddPermission) {
         this.addPermission = hadAddPermission;
         return this;
     }
@@ -131,9 +131,9 @@ public final class AccountSASPermission {
      * Sets the create permission status.
      *
      * @param hasCreatePermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setCreatePermission(boolean hasCreatePermission) {
+    public AccountSasPermission setCreatePermission(boolean hasCreatePermission) {
         this.createPermission = hasCreatePermission;
         return this;
     }
@@ -149,9 +149,9 @@ public final class AccountSASPermission {
      * Sets the write permission status.
      *
      * @param hasWritePermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setWritePermission(boolean hasWritePermission) {
+    public AccountSasPermission setWritePermission(boolean hasWritePermission) {
         this.writePermission = hasWritePermission;
         return this;
     }
@@ -167,9 +167,9 @@ public final class AccountSASPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setDeletePermission(boolean hasDeletePermission) {
+    public AccountSasPermission setDeletePermission(boolean hasDeletePermission) {
         this.deletePermission = hasDeletePermission;
         return this;
     }
@@ -186,9 +186,9 @@ public final class AccountSASPermission {
      * directories, and files.
      *
      * @param hadListPermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setListPermission(boolean hadListPermission) {
+    public AccountSasPermission setListPermission(boolean hadListPermission) {
         this.listPermission = hadListPermission;
         return this;
     }
@@ -206,9 +206,9 @@ public final class AccountSASPermission {
      * Sets the update permission status, it allows the update of queue messages and tables.
      *
      * @param hasUpdatePermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setUpdatePermission(boolean hasUpdatePermission) {
+    public AccountSasPermission setUpdatePermission(boolean hasUpdatePermission) {
         this.updatePermission = hasUpdatePermission;
         return this;
     }
@@ -226,9 +226,9 @@ public final class AccountSASPermission {
      * Sets the process messages permission, this allows the retrieval and deletion of queue messages.
      *
      * @param hasProcessMessagesPermission Permission status to set
-     * @return the updated AccountSASPermission object
+     * @return the updated AccountSasPermission object
      */
-    public AccountSASPermission setProcessMessages(boolean hasProcessMessagesPermission) {
+    public AccountSasPermission setProcessMessages(boolean hasProcessMessagesPermission) {
         this.processMessagesPermission = hasProcessMessagesPermission;
         return this;
     }

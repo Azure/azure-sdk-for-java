@@ -6,8 +6,9 @@ package com.azure.core.util.tracing;
 import com.azure.core.util.Context;
 
 /**
- * Contract that all tracers must implement to be plug-able into the SDK.
+ * Contract that all tracers must implement to be pluggable into the SDK.
  *
+ * @see TracerProxy
  */
 public interface Tracer {
     /**
@@ -33,28 +34,25 @@ public interface Tracer {
 
     /**
      * Key for {@link Context} which indicates that the context contains the hostname.
-     *
      */
     String HOST_NAME = "hostname";
 
     /**
      * Key for {@link Context} which indicates that the context contains a message span context.
-     *
      */
     String SPAN_CONTEXT = "span-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
-     *
      */
     String DIAGNOSTIC_ID_KEY = "diagnostic-id";
 
     /**
      * Creates a new tracing span.
      * <p>
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found,
-     * the new span will be added as a child. Otherwise the parent span will be created and added to the {@code context}
-     * and any downstream {@code start()} calls will use the created span as the parent.
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -73,8 +71,8 @@ public interface Tracer {
      * Creates a new tracing span for AMQP calls.
      *
      * <p>
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
-     * new span will be added as a child. Otherwise the span will be created and added to the {@code context} and any
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
      * <p>
@@ -126,14 +124,14 @@ public interface Tracer {
     void end(int responseCode, Throwable error, Context context);
 
     /**
-     * Completes the current tracing span.
+     * Completes the current tracing span for AMQP calls.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Completes the tracing span with the corresponding OpenCensus status for the given status message</p>
      * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
      *
-     * @param statusMessage the error or success message that occurred during the call, or {@code null} if no error
+     * @param statusMessage The error or success message that occurred during the call, or {@code null} if no error
      * occurred.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
@@ -142,8 +140,7 @@ public interface Tracer {
     void end(String statusMessage, Throwable error, Context context);
 
     /**
-     * Adds metadata to the current span. The {@code context} is checked for having span information, if no span
-     * information is found in the context no metadata is added.
+     * Adds metadata to the current span. If no span information is found in the context, then no metadata is added.
      *
      * @param key Name of the metadata.
      * @param value Value of the metadata.

@@ -9,7 +9,7 @@ import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -39,7 +39,7 @@ public final class BlobServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-    private SASProtocol protocol;
+    private SasProtocol protocol;
 
     private OffsetDateTime startTime;
 
@@ -93,7 +93,7 @@ public final class BlobServiceSasSignatureValues {
         this.identifier = identifier;
     }
 
-    public BlobServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
             OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
             String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
@@ -133,19 +133,19 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * Sets the {@link SasProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSasSignatureValues setProtocol(SASProtocol protocol) {
+    public BlobServiceSasSignatureValues setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -195,14 +195,34 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link BlobContainerSasPermission} or
-     * {@link BlobSasPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the Blob permissions allowed by the SAS.
      *
-     * @param permissions Permissions string for the SAS
+     * <p>this will set the {@link #resource} to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}
+     * or {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of
+     * {@link #getSnapshotId()}.</p>
+     *
+     * @param permissions {@link BlobSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public BlobServiceSasSignatureValues setPermissions(BlobSasPermission permissions) {
+        this.permissions = permissions.toString();
+        this.resource = Constants.UrlConstants.SAS_BLOB_CONSTANT;
+        return this;
+    }
+
+    /**
+     * Sets the Container permissions allowed by the SAS.
+     *
+     * <p>this will set the {@link #resource} to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
+     *
+     * @param permissions {@link BlobContainerSasPermission}
+     * @return the updated BlobServiceSASSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setPermissions(BlobContainerSasPermission permissions) {
+        this.permissions = permissions.toString();
+        this.resource = Constants.UrlConstants.SAS_CONTAINER_CONSTANT;
         return this;
     }
 
@@ -291,11 +311,19 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Sets the specific snapshot the SAS user may access.
      *
+     * <p>{@link #resource} will be set to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} if the passed
+     * {@code snapshotId} isn't {@code null} and {@link #resource} is set to
+     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
+     *
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object
      */
     public BlobServiceSasSignatureValues setSnapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
+        if (snapshotId != null && Constants.UrlConstants.SAS_BLOB_CONSTANT.equals(resource)) {
+            this.resource = Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
+        }
         return this;
     }
 
@@ -422,7 +450,7 @@ public final class BlobServiceSasSignatureValues {
      * @throws NullPointerException if {@code sharedKeyCredentials} is null. Or if any of {@code version},
      * {@code canonicalName}, {@code resource} or {@code identifier} are null.
      */
-    public BlobServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+    public BlobServiceSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK(false);
 
@@ -444,7 +472,7 @@ public final class BlobServiceSasSignatureValues {
      * @throws NullPointerException if {@code delegationKey} is null. Or if any of {@code version},
      * {@code canonicalName}, {@code resource}, {@code expiryTime} or {@code permissions} are null.
      */
-    public BlobServiceSasQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
+    public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);
         assertGenerateOK(true);
 
