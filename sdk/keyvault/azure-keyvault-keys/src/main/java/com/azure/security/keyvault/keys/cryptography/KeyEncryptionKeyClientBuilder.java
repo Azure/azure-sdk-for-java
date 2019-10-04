@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * AsyncKeyEncryptionKey KeyEncryptionRey async client} and {@link KeyEncryptionKey KeyEncryptionKey sync client},
+ * AsyncKeyEncryptionKey KeyEncryptionKey async client} and {@link KeyEncryptionKey KeyEncryptionKey sync client},
  * by calling {@link KeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(String)} and {@link
  * KeyEncryptionKeyClientBuilder#buildKeyEncryptionKey(String)} respectively
  * It constructs an instance of the desired client.
