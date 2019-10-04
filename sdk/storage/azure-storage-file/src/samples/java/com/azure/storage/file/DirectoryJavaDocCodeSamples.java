@@ -4,8 +4,6 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
@@ -43,7 +41,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link DirectoryClient} with SAS token
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -59,7 +57,7 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link DirectoryClient} with SAS token
      *
      * @return An instance of {@link DirectoryClient}
      */
@@ -68,7 +66,7 @@ public class DirectoryJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.directoryClient.instantiation.credential
         DirectoryClient directoryClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .resourcePath("mydirectory")
             .buildDirectoryClient();
@@ -417,7 +415,7 @@ public class DirectoryJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         DirectoryClient directoryClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .resourcePath("mydirectory")
             .snapshot(currentTime.toString())
