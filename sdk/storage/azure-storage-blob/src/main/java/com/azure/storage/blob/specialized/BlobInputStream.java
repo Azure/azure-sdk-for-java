@@ -30,7 +30,6 @@ public final class BlobInputStream extends StorageInputStream {
      */
     private final BlobAccessConditions accessCondition;
 
-
     /**
      * Initializes a new instance of the BlobInputStream class.
      *

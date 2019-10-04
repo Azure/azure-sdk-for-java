@@ -929,7 +929,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = [:] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }
