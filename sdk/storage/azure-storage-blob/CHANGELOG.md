@@ -25,8 +25,8 @@ and
 - Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
 - Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.
 - Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
-- Removed generate SAS token APIs.
-- Added `sasToken(String)` in client builder.
+- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens. 
+- Removed SASTokenCredential and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 ## Version 12.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (September 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
