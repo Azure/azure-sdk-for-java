@@ -5,11 +5,18 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.StorageException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * REST response associated to a Azure Storage Blob batch operation.
@@ -19,7 +26,7 @@ import java.util.Arrays;
 public class BlobBatchOperationResponse<T> implements Response<T> {
     private final ClientLogger logger = new ClientLogger(BlobBatchOperationResponse.class);
 
-    private final int[] expectedStatusCodes;
+    private final Set<Integer> expectedStatusCodes;
 
     private int statusCode;
     private HttpHeaders headers;
@@ -30,7 +37,10 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
     private boolean responseReceived = false;
 
     BlobBatchOperationResponse(int... expectedStatusCodes) {
-        this.expectedStatusCodes = expectedStatusCodes;
+        this.expectedStatusCodes = new HashSet<>();
+        for (int expectedStatusCode : expectedStatusCodes) {
+            this.expectedStatusCodes.add(expectedStatusCode);
+        }
     }
 
     @Override
@@ -87,14 +97,70 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
         return this;
     }
 
+    boolean wasExpectedResponse() {
+        return expectedStatusCodes.contains(statusCode);
+    }
+
+    HttpResponse asHttpResponse(String body) {
+        return new BlobBatchOperationHttpResponse(request, statusCode, headers, body);
+    }
+
     private void assertResponseReceived() {
         if (!responseReceived) {
             // This is programmatically recoverable by sending the batch request.
             throw logger.logExceptionAsWarning(new UnsupportedOperationException("Batch request has not been sent."));
         }
 
-        if (Arrays.stream(expectedStatusCodes).noneMatch(expectedStatusCode -> expectedStatusCode == statusCode)) {
+        if (!expectedStatusCodes.contains(statusCode)) {
             throw logger.logExceptionAsError(exception);
+        }
+    }
+
+    private static class BlobBatchOperationHttpResponse extends HttpResponse {
+        private final int statusCode;
+        private final HttpHeaders headers;
+        private final String body;
+
+        BlobBatchOperationHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
+            super(request);
+            this.statusCode = statusCode;
+            this.headers = headers;
+            this.body = body;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return headers.getValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.just(ByteBuffer.wrap(body.getBytes(StandardCharsets.UTF_8)));
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.just(body);
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just(body);
         }
     }
 }

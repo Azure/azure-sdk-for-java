@@ -26,6 +26,7 @@ import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
@@ -429,7 +430,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(
-            this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context))
+            this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(context))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -499,9 +500,8 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
-        return postProcessResponse(this.azureBlobStorage.services()
-            .submitBatchWithRestResponseAsync(batch.getBody(), batch.getContentLength(), batch.getContentType(),
-                context))
+        return postProcessResponse(this.azureBlobStorage.services().submitBatchWithRestResponseAsync(
+            batch.getBody(), batch.getContentLength(), batch.getContentType(), context))
             .flatMap(response -> mapBatchResponse(batch, response, throwOnAnyFailure));
     }
 
@@ -542,8 +542,8 @@ public final class BlobServiceAsyncClient {
             });
     }
 
-    private BlobBatchOperationResponse getBatchOperation(BlobBatch batch, String subResponseSection) {
-        Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(subResponseSection);
+    private BlobBatchOperationResponse getBatchOperation(BlobBatch batch, String responseBatchInfo) {
+        Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(responseBatchInfo);
 
         int contentId;
         if (contentIdMatcher.find()) {
@@ -556,9 +556,9 @@ public final class BlobServiceAsyncClient {
         return batch.getBatchRequest(contentId).setResponseReceived();
     }
 
-    private void setStatusCodeAndHeaders(BlobBatchOperationResponse batchOperationResponse, String subResponseSection) {
+    private void setStatusCodeAndHeaders(BlobBatchOperationResponse batchOperationResponse, String responseHeaders) {
         HttpHeaders headers = new HttpHeaders();
-        for (String line : subResponseSection.split("\r\n")) {
+        for (String line : responseHeaders.split("\r\n")) {
             if (ImplUtils.isNullOrEmpty(line)) {
                 continue;
             }
@@ -577,9 +577,18 @@ public final class BlobServiceAsyncClient {
         batchOperationResponse.setHeaders(headers);
     }
 
-    private void setBodyOrPotentiallyThrow(BlobBatchOperationResponse batchOperationResponse, String subResponseSection,
+    private void setBodyOrPotentiallyThrow(BlobBatchOperationResponse batchOperationResponse, String responseBody,
         boolean throwOnError) {
+        if (batchOperationResponse.wasExpectedResponse()) {
+            // Deserialize into body. No batch operations return a success response body right now.
+        } else {
+            StorageException exception = new StorageException(new StorageErrorException(responseBody, batchOperationResponse.asHttpResponse(responseBody)), responseBody);
+            batchOperationResponse.setException(exception);
 
+            if (throwOnError) {
+                throw logger.logExceptionAsError(exception);
+            }
+        }
     }
 
     /**

@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.Disposable;
@@ -30,7 +31,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -44,10 +44,12 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+/**
+ * This class provides
+ */
 public final class BlobBatch {
     private static final String BATCH_REQUEST_CONTENT_ID = "Batch-Request-Content-Id";
     private static final String CONTENT_ID = "Content-Id";
-    private static final String X_MS_VERSION = "x-ms-version";
     private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
     private static final String CONTENT_TYPE = "Content-Type: application/http";
     private static final String CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
@@ -128,6 +130,19 @@ public final class BlobBatch {
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
+     * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
+     */
+    public Response<Void> delete(String containerName, String blobName) {
+        return deleteHelper(buildClient(containerName, blobName), null, null);
+    }
+
+    /**
+     * Adds a delete blob operation to the batch.
+     *
+     * @param containerName The container of the blob.
+     * @param blobName The name of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -143,13 +158,25 @@ public final class BlobBatch {
      * Adds a delete blob operation to the batch.
      *
      * @param blobUrl URI of the blob.
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
+     * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
+     */
+    public Response<Void> delete(String blobUrl) {
+        return deleteHelper(buildClient(blobUrl), null, null);
+    }
+
+    /**
+     * Adds a delete blob operation to the batch.
+     *
+     * @param blobUrl URI of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
-    public Response<Void> delete(URL blobUrl, DeleteSnapshotsOptionType deleteOptions,
+    public Response<Void> delete(String blobUrl, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
         return deleteHelper(buildClient(blobUrl), deleteOptions, blobAccessConditions);
     }
@@ -173,6 +200,20 @@ public final class BlobBatch {
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
      * @param accessTier The tier to set on the blob.
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
+     * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
+     */
+    public Response<Void> setTier(String containerName, String blobName, AccessTier accessTier) {
+        return setTierHelper(buildClient(containerName, blobName), accessTier, null);
+    }
+
+    /**
+     * Adds a set tier operation to the batch.
+     *
+     * @param containerName The container of the blob.
+     * @param blobName The name of the blob.
+     * @param accessTier The tier to set on the blob.
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
@@ -188,12 +229,25 @@ public final class BlobBatch {
      *
      * @param blobUrl URI of the blob.
      * @param accessTier The tier to set on the blob.
+     * @return a {@link Response} that will be used to associate this operation to the response when the batch is
+     * submitted.
+     * @throws UnsupportedOperationException If this batch has already added an operation of another type.
+     */
+    public Response<Void> setTier(String blobUrl, AccessTier accessTier) {
+        return setTierHelper(buildClient(blobUrl), accessTier, null);
+    }
+
+    /**
+     * Adds a set tier operation to the batch.
+     *
+     * @param blobUrl URI of the blob.
+     * @param accessTier The tier to set on the blob.
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
-    public Response<Void> setTier(URL blobUrl, AccessTier accessTier, LeaseAccessConditions leaseAccessConditions) {
+    public Response<Void> setTier(String blobUrl, AccessTier accessTier, LeaseAccessConditions leaseAccessConditions) {
         return setTierHelper(buildClient(blobUrl), accessTier, leaseAccessConditions);
     }
 
@@ -228,16 +282,16 @@ public final class BlobBatch {
             .buildAsyncClient();
     }
 
-    private BlobAsyncClientBase buildClient(URL blobUrl) {
+    private BlobAsyncClientBase buildClient(String blobUrl) {
         return new BlobClientBuilder()
-            .endpoint(blobUrl.toString())
+            .endpoint(blobUrl)
             .pipeline(batchPipeline)
             .buildAsyncClient();
     }
 
     private void sendCallback(HttpRequest request) {
-        int contentId = Integer.parseInt(request.getHeaders().getValue(CONTENT_ID));
-        this.batchMapping.get(contentId).setRequest(request);
+        HttpHeaders headers = request.getHeaders();
+        int contentId = Integer.parseInt(headers.getValue(CONTENT_ID));
 
         StringBuilder batchRequestBuilder = new StringBuilder();
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
@@ -254,14 +308,15 @@ public final class BlobBatch {
         }
         appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
-        request.getHeaders().stream()
-            .filter(header -> !CONTENT_ID.equalsIgnoreCase(header.getName()))
+        headers.stream().filter(header -> Constants.HeaderConstants.VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
         batchRequestBuilder.append("\r\n");
 
         batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
+
+        this.batchMapping.get(contentId).setRequest(request);
     }
 
     private void appendWithNewline(StringBuilder stringBuilder, String value) {
@@ -274,6 +329,7 @@ public final class BlobBatch {
             Disposable disposable = batchOperation.subscribe();
             while (!disposable.isDisposed()) {
                 // Wait until the batch operation has processed in the pipeline.
+                // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
             }
         }
 
@@ -324,7 +380,7 @@ public final class BlobBatch {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
-            headers.remove(X_MS_VERSION);
+            headers.remove(Constants.HeaderConstants.VERSION);
             headers.entrySet().removeIf(header -> header.getValue() == null);
 
             context.getHttpRequest().setHeaders(new HttpHeaders(headers));

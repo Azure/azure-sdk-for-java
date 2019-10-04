@@ -90,6 +90,8 @@ public final class Constants {
 
         public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
 
+        public static final String VERSION = "x-ms-version";
+
         private HeaderConstants() {
             // Private to prevent construction.
         }

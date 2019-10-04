@@ -1,0 +1,87 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsubrequesthasversion042317c94fd32382564d15a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "84132e37-c903-47a1-aab6-65715990d0ca"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D749128B404B31\"",
+      "Last-Modified" : "Fri, 04 Oct 2019 21:33:49 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "031007dc-a01e-00d5-2cfb-7a78ab000000",
+      "Date" : "Fri, 04 Oct 2019 21:33:48 GMT",
+      "x-ms-client-request-id" : "84132e37-c903-47a1-aab6-65715990d0ca"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?comp=batch",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "460cbd44-316a-45e0-9699-b375891b1395",
+      "Content-Type" : "multipart/mixed; boundary=batch_5e23f2f1-63cf-454e-bf8c-d89028b2e70e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "03100827-a01e-00d5-73fb-7a78ab000000",
+      "Body" : "--batchresponse_87869e37-ea5d-421e-9905-d72470a6f21c\r\nContent-Type: application/http\r\n\r\nHTTP/1.1 400 The batch subrequest cannot have version header.\r\nx-ms-error-code: SubRequestCannotHaveVersionHeader\r\nx-ms-request-id: 03100827-a01e-00d5-73fb-7a78ab000000\r\nx-ms-version: 2019-02-02\r\nContent-Length: 251\r\nContent-Type: application/xml\r\nServer: Windows-Azure-Blob/1.0\r\n\r\n﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Error><Code>SubRequestCannotHaveVersionHeader</Code><Message>The batch subrequest cannot have version header.\nRequestId:03100827-a01e-00d5-73fb-7a78ab000000\nTime:2019-10-04T21:33:49.2151450Z</Message></Error>\r\n--batchresponse_87869e37-ea5d-421e-9905-d72470a6f21c--",
+      "Date" : "Fri, 04 Oct 2019 21:33:48 GMT",
+      "x-ms-client-request-id" : "460cbd44-316a-45e0-9699-b375891b1395",
+      "Content-Type" : "multipart/mixed; boundary=batchresponse_87869e37-ea5d-421e-9905-d72470a6f21c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net?prefix=jtcsubrequesthasversion&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "28699d1d-6a34-46f1-b699-5b62f9d0c0af"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "03100888-a01e-00d5-47fb-7a78ab000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcsubrequesthasversion</Prefix><Containers><Container><Name>jtcsubrequesthasversion042317c94fd32382564d15a</Name><Properties><Last-Modified>Fri, 04 Oct 2019 21:33:49 GMT</Last-Modified><Etag>\"0x8D749128B404B31\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 04 Oct 2019 21:33:48 GMT",
+      "x-ms-client-request-id" : "28699d1d-6a34-46f1-b699-5b62f9d0c0af",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcsubrequesthasversion042317c94fd32382564d15a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.4 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "8378d454-0636-4047-9f69-68b6297a2d26"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "031008ac-a01e-00d5-69fb-7a78ab000000",
+      "Date" : "Fri, 04 Oct 2019 21:33:48 GMT",
+      "x-ms-client-request-id" : "8378d454-0636-4047-9f69-68b6297a2d26"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcsubrequesthasversion042317c94fd32382564d15a" ]
+}
