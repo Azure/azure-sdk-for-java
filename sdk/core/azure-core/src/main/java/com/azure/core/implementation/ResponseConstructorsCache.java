@@ -65,7 +65,8 @@ final class ResponseConstructorsCache {
                 try {
                     return (Constructor<? extends Response<?>>) constructor;
                 } catch (Throwable t) {
-                    throw logger.logExceptionAsError(new RuntimeException(t));
+                    throw logger.logExceptionAsError(new RuntimeException("Failed to cast the constructor to Response."
+                        + "Error Details: " + t.getMessage(), t));
                 }
             }
         }
@@ -96,7 +97,8 @@ final class ResponseConstructorsCache {
                         responseStatusCode,
                         responseHeaders));
                 } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 3-parameter "
+                        + "response. Error Details: " + e.getMessage(), e));
                 }
             case 4:
                 try {
@@ -105,7 +107,8 @@ final class ResponseConstructorsCache {
                         responseHeaders,
                         bodyAsObject));
                 } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 4-parameter "
+                        + "response. Error Details: " + e.getMessage(), e));
                 }
             case 5:
                 return decodedResponse.getDecodedHeaders()
@@ -117,7 +120,8 @@ final class ResponseConstructorsCache {
                                 bodyAsObject,
                                 decodedHeaders);
                         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 5-parameter"
+                                + "response with decoded headers. Error Details: " + e.getMessage(), e));
                         }
                     })
                     .switchIfEmpty(Mono.defer((Supplier<Mono<Response<?>>>) () -> {
@@ -128,7 +132,8 @@ final class ResponseConstructorsCache {
                                 bodyAsObject,
                                 null));
                         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 5-parameter"
+                                + "response without decoded headers. Error Details: " + e.getMessage(), e));
                         }
                     }));
             default:

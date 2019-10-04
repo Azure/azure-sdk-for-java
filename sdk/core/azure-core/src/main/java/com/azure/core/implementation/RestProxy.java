@@ -161,7 +161,8 @@ public class RestProxy implements InvocationHandler {
             }
 
         } catch (Exception e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
+            throw logger.logExceptionAsError(new RuntimeException(
+                "Error occurs during sending request and deserializing response. Error Details: "+ e.getMessage(), e));
         }
     }
 

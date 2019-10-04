@@ -44,10 +44,11 @@ public class BasicAuthenticationCredential implements TokenCredential {
         String credential = username + ":" + password;
         String encodedCredential;
         try {
+            // Please change the error message everytime you update the named charset.
             encodedCredential = Base64Util.encodeToString(credential.getBytes("UTF8"));
         } catch (UnsupportedEncodingException e) {
             // The encoding is hard-coded, so if it's unsupported, it needs to be fixed right here.
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException("Please fixed the unsupported encoding UTF8.", e));
         }
 
         return Mono.just(new AccessToken(encodedCredential, OffsetDateTime.MAX));

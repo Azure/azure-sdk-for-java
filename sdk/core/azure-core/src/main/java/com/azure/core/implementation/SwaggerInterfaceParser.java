@@ -9,6 +9,7 @@ import com.azure.core.implementation.exception.MissingRequiredAnnotationExceptio
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
 
+import com.azure.core.util.logging.ClientLogger;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  * interface.
  */
 public class SwaggerInterfaceParser {
+    private ClientLogger logger = new ClientLogger(SwaggerInterfaceParser.class);
     private final String host;
     private final String serviceName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
@@ -47,7 +49,7 @@ public class SwaggerInterfaceParser {
             if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
                 this.host = hostAnnotation.value();
             } else {
-                throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
+                throw logger.logExceptionAsError(new MissingRequiredAnnotationException(Host.class, swaggerInterface));
             }
         }
 
@@ -55,7 +57,8 @@ public class SwaggerInterfaceParser {
         if (serviceAnnotation != null && !serviceAnnotation.name().isEmpty()) {
             serviceName = serviceAnnotation.name();
         } else {
-            throw new MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface);
+            throw logger.logExceptionAsError(new
+                MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface));
         }
     }
 

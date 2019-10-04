@@ -34,6 +34,7 @@ import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,6 +54,7 @@ import java.util.stream.Collectors;
  * method.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
+    private ClientLogger logger = new ClientLogger(SwaggerInterfaceParser.class);
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
@@ -109,7 +111,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             requiredAnnotationOptions.add(Delete.class);
             requiredAnnotationOptions.add(Post.class);
             requiredAnnotationOptions.add(Patch.class);
-            throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
+            throw logger.logExceptionAsError(new MissingRequiredAnnotationException(requiredAnnotationOptions,
+                swaggerMethod));
         }
 
         returnType = swaggerMethod.getGenericReturnType();

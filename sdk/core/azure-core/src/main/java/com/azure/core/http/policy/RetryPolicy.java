@@ -65,7 +65,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(this.delayDuration);
                 } else {
-                    return Mono.error(err);
+                    return Mono.error(new RuntimeException("Max retries exceeded. Error Details: " + err.getMessage(),
+                        err));
                 }
             });
     }

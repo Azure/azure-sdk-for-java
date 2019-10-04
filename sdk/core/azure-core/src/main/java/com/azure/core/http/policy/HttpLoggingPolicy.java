@@ -88,7 +88,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             } else {
                 boolean isHumanReadableContentType =
                     !"application/octet-stream".equalsIgnoreCase(request.getHeaders().getValue("Content-Type"));
-                final long contentLength = getContentLength(request.getHeaders());
+                final long contentLength = getContentLength(logger, request.getHeaders());
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
@@ -140,7 +140,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             if (detailLevel.shouldLogBody()) {
-                long contentLength = getContentLength(response.getHeaders());
+                long contentLength = getContentLength(logger, response.getHeaders());
                 final String contentTypeHeader = response.getHeaderValue("Content-Type");
                 if (!"application/octet-stream".equalsIgnoreCase(contentTypeHeader)
                     && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
@@ -176,11 +176,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return result;
     }
 
-    private long getContentLength(HttpHeaders headers) {
+    private long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
         try {
             contentLength = Long.parseLong(headers.getValue("content-length"));
         } catch (NumberFormatException | NullPointerException ignored) {
+            logger.warning("Http logging cannot parse the content-length: " + headers.getValue("content-length"));
         }
 
         return contentLength;
