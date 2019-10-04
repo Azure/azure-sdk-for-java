@@ -11,8 +11,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -31,7 +29,6 @@ import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -742,73 +739,6 @@ public final class QueueAsyncClient {
         return postProcessResponse(client.messageIds()
             .deleteWithRestResponseAsync(queueName, messageId, popReceipt, context))
             .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param permissions The {@code QueueSasPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredential} is null
-     */
-    public String generateSAS(QueueSasPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
-        version */, null /* sasProtocol */, null /* ipRange */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredential} is null
-     */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
-            null /* version */, null /* sasProtocol */, null /* ipRange */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
-     * @param permissions The {@code QueueSasPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If {@code sharedKeyCredential} is null
-     */
-    public String generateSAS(String identifier, QueueSasPermission permissions, OffsetDateTime expiryTime,
-                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IpRange ipRange) {
-
-        QueueServiceSasSignatureValues queueServiceSASSignatureValues = new QueueServiceSasSignatureValues(version,
-            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
-            identifier);
-
-        SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.client.getHttpPipeline());
-
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        // Set canonical name
-        QueueServiceSasSignatureValues values = queueServiceSASSignatureValues
-            .setCanonicalName(this.queueName, sharedKeyCredential.getAccountName());
-
-        QueueServiceSasQueryParameters queueServiceSasQueryParameters = values
-            .generateSASQueryParameters(sharedKeyCredential);
-
-        return queueServiceSasQueryParameters.encode();
     }
 
     /**
