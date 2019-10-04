@@ -55,7 +55,7 @@ public final class BlobUrlParts {
      * @param accountName The account name.
      * @return the updated BlobURLParts object.
      */
-    public BlobURLParts setAccountName(String accountName) {
+    public BlobUrlParts setAccountName(String accountName) {
         this.accountName = accountName;
         return this;
     }
