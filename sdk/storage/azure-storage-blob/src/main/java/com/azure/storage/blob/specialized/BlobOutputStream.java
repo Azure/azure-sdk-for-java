@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -194,7 +195,7 @@ public abstract class BlobOutputStream extends OutputStream {
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
             final AppendBlobAccessConditions appendBlobAccessConditions) {
             this.client = client;
-            this.writeThreshold = BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+            this.writeThreshold = BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
             this.appendBlobAccessConditions = appendBlobAccessConditions;
 
             if (appendBlobAccessConditions != null) {
@@ -263,7 +264,7 @@ public abstract class BlobOutputStream extends OutputStream {
             this.accessConditions = accessConditions;
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
             this.blockList = new ArrayList<>();
-            this.writeThreshold = BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+            this.writeThreshold = BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
         /**
@@ -320,7 +321,7 @@ public abstract class BlobOutputStream extends OutputStream {
         private PageBlobOutputStream(final PageBlobAsyncClient client, final long length,
             final BlobAccessConditions blobAccessConditions) {
             this.client = client;
-            this.writeThreshold = (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
+            this.writeThreshold = (int) Math.min(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
 
             if (blobAccessConditions != null) {
                 this.pageBlobAccessConditions = new PageBlobAccessConditions()

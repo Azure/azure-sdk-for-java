@@ -40,19 +40,19 @@ public class ListContainersExample {
          * Create 3 different containers from the storageClient.
          */
         for (int i = 0; i < 3; i++) {
-            storageClient.createContainer("mycontainersforlisting" + i + System.currentTimeMillis());
+            storageClient.createBlobContainer("mycontainersforlisting" + i + System.currentTimeMillis());
         }
 
         /*
          * List the containers' name under the Azure storage account.
          */
-        storageClient.listContainers().forEach(containerItem -> {
+        storageClient.listBlobContainers().forEach(containerItem -> {
             System.out.println("Container name: " + containerItem.getName());
 
             /*
              * Clean up the containers at the same time.
              */
-            storageClient.getContainerClient(containerItem.getName()).delete();
+            storageClient.getBlobContainerClient(containerItem.getName()).delete();
         });
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.common.Constants;
 import reactor.core.publisher.Flux;
@@ -27,6 +26,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
@@ -34,12 +34,12 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
 /**
  * Client to an append blob. It may only be instantiated through a
  * {@link SpecializedBlobClientBuilder#buildAppendBlobAsyncClient()} or via the method
- * {@link BlobAsyncClient#asAppendBlobAsyncClient()}. This class does not hold any state about a particular blob, but
- * is instead a convenient way of sending appropriate requests to the resource on the service.
+ * {@link BlobAsyncClient#getAppendBlobAsyncClient()}. This class does not hold any state about a
+ * particular blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link
+ * BlobContainerAsyncClient}, and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -90,22 +90,21 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Metadata-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions}
      *
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
-    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
+    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions) {
         return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Metadata metadata,
+    Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions, Context context) {
-        metadata = (metadata == null) ? new Metadata() : metadata;
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
