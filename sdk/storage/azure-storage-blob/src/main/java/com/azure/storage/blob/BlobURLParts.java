@@ -29,6 +29,7 @@ public final class BlobURLParts {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String accountName;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -37,6 +38,26 @@ public final class BlobURLParts {
      */
     public BlobURLParts() {
         unparsedParameters = new HashMap<>();
+    }
+
+    /**
+     * Gets the accountname, ex. "myaccountname".
+     *
+     * @return the account name.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Sets the URL scheme, ex. "https://".
+     *
+     * @param accountName The account name.
+     * @return the updated BlobURLParts object.
+     */
+    public BlobURLParts setAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
     }
 
     /**
@@ -256,7 +277,10 @@ public final class BlobURLParts {
 
         String containerName = null;
         String blobName = null;
+        String accontName = null;
 
+        //TODO Parse url to get account name
+        
         // find the container & blob names (if any)
         String path = url.getPath();
         if (!ImplUtils.isNullOrEmpty(path)) {
@@ -293,6 +317,7 @@ public final class BlobURLParts {
             .setContainerName(containerName)
             .setBlobName(blobName)
             .setSnapshot(snapshot)
+            .setAccountName(accontName)
             .setSasQueryParameters(blobServiceSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
