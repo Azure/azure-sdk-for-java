@@ -72,7 +72,7 @@ namespace HttpMock
                             }
                             await Proxy.SendDownstreamResponse(upstreamResponse, response);
                         }
-                        else if (Options.CacheLast && request.QueryString.Value == "?last")
+                        else if (Options.CacheLast && request.Path.Value == "/last")
                         {
                             // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
                             // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
