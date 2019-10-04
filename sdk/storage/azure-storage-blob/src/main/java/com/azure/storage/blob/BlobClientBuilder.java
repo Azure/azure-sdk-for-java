@@ -5,9 +5,9 @@ package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.common.credentials.SASTokenCredential;
 
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -104,7 +104,7 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
     public BlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
@@ -112,10 +112,9 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential =
-                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = parts.getSasQueryParameters().encode();
+            if (ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(

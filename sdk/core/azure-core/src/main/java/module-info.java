@@ -26,6 +26,7 @@ module com.azure.core {
     exports com.azure.core.util.logging;
     exports com.azure.core.util.polling;
     exports com.azure.core.util.tracing;
+    exports com.azure.core.cryptography;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.azure.core.test, com.fasterxml.jackson.databind;

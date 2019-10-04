@@ -3,12 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
@@ -60,7 +55,7 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link QueueClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link QueueClient} with SAS token.
      *
      * @return An instance of {@link QueueClient}
      */
@@ -69,7 +64,7 @@ public class QueueJavaDocCodeSamples {
         QueueClient client = new QueueClientBuilder()
             .endpoint("https://${accountName}.queue.core.windows.net")
             .queueName("myqueue")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("{SASTokenQueryParams}")))
+            .sasToken("{SASTokenQueryParams}")
             .buildClient();
         // END: com.azure.storage.queue.queueClient.instantiation.credential
         return client;
@@ -441,31 +436,6 @@ public class QueueJavaDocCodeSamples {
         Response<Void> response = client.clearMessagesWithResponse(Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Clearing messages completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.queue.queueClient.clearMessagesWithResponse#duration-context
-    }
-
-    /**
-     * Code snippet for {@link QueueClient#generateSAS(String, QueueSasPermission, OffsetDateTime, OffsetDateTime,
-     * String, SASProtocol, IpRange)}
-     */
-    public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setUpdatePermission(true)
-            .setProcessPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String identifier = "";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.queue.queueClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange
     }
 
     /**

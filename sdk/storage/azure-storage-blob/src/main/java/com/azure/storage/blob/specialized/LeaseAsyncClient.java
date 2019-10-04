@@ -52,7 +52,7 @@ public final class LeaseAsyncClient {
     private final boolean isBlob;
     private final String leaseId;
     private final AzureBlobStorageImpl client;
-    private final String accountName;
+    private String accountName;
 
     LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob) {
         this.isBlob = isBlob;
@@ -61,7 +61,6 @@ public final class LeaseAsyncClient {
             .pipeline(pipeline)
             .url(url)
             .build();
-        this.accountName = parseAccountName(url);
     }
 
     /**
@@ -335,24 +334,5 @@ public final class LeaseAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
-    }
-
-    /* Parse the url string and return account name.
-    * The url should look like this "https://myaccount.blob.core.windows.net/......" */
-    private String parseAccountName(String url) {
-
-        String accountName;
-        int indexOfHostNameStart = url.indexOf("//");
-        int indexOfHostNameEnd = url.indexOf('/', indexOfHostNameStart);
-        String host = url.substring(indexOfHostNameStart, indexOfHostNameEnd);
-        int accountNameIndex = host.indexOf('.');
-        if (accountNameIndex == -1) {
-            // host only contains account name
-            accountName = host;
-        } else {
-            // if host is separated by .
-            accountName = host.substring(0, accountNameIndex);
-        }
-        return accountName;
     }
 }

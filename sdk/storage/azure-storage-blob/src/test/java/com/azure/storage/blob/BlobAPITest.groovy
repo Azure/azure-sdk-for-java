@@ -15,7 +15,6 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
@@ -24,6 +23,7 @@ import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import spock.lang.Unroll
 
@@ -94,15 +94,15 @@ class BlobAPITest extends APISpec {
 
     /*
     This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
-    HTTPGetterInfo.
+    HttpGetterInfo.
      */
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
         a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
-        from the count and offset values in HTTPGetterInfo that was constructed on the initial call to download. We
+        from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
-        test the correction of a bug that was found which caused HTTPGetterInfo to have an incorrect offset when it was
+        test the correction of a bug that was found which caused HttpGetterInfo to have an incorrect offset when it was
         constructed in BlobClient.download().
          */
         setup:
@@ -1455,7 +1455,13 @@ class BlobAPITest extends APISpec {
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl() + "?" + bc.generateSAS(OffsetDateTime.now().plusHours(1), new BlobSasPermission().setReadPermission(true))), null, tier2, null, null, null, null)
+        def sas = new BlobServiceSasSignatureValues()
+            .setExpiryTime(OffsetDateTime.now().plusHours(1))
+            .setPermissions(new BlobSasPermission().setReadPermission(true))
+            .setCanonicalName(bc.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
+        bcCopy.copyFromURLWithResponse(new URL(bc.getBlobUrl().toString() + "?" + sas), null, tier2, null, null, null, null)
 
         then:
         bcCopy.getProperties().getAccessTier() == tier2

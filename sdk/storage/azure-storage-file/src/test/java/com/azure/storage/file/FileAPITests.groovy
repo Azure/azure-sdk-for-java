@@ -393,7 +393,14 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
-        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSasPermission().setReadPermission(true))
+        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def sasToken = new FileServiceSasSignatureValues()
+            .setExpiryTime(getUTCNow().plusDays(1))
+            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
+            .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
+            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .generateSASQueryParameters(credential)
+            .encode()
 
         when:
         FileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")

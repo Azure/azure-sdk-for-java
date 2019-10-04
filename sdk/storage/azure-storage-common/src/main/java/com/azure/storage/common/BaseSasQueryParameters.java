@@ -18,7 +18,7 @@ public abstract class BaseSasQueryParameters {
 
     protected String version;
 
-    protected SASProtocol protocol;
+    protected SasProtocol protocol;
 
     protected OffsetDateTime startTime;
 
@@ -41,7 +41,7 @@ public abstract class BaseSasQueryParameters {
         this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION,
             removeSASParametersFromMap);
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
-            removeSASParametersFromMap, SASProtocol::parse);
+            removeSASParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
             removeSASParametersFromMap, Utility::parseDate);
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
@@ -103,7 +103,7 @@ public abstract class BaseSasQueryParameters {
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    public BaseSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
+    public BaseSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
                                   OffsetDateTime expiryTime, IpRange ipRange, String permissions, String signature) {
         this.version = version;
         this.protocol = protocol;
@@ -122,9 +122,9 @@ public abstract class BaseSasQueryParameters {
     }
 
     /**
-     * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
+     * @return The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SasProtocol} for more details.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
