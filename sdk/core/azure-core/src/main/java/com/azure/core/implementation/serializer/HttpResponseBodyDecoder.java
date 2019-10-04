@@ -56,9 +56,7 @@ final class HttpResponseBodyDecoder {
                         try {
                             final Object decodedErrorEntity = deserializeBody(bodyString,
                                 decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
-                                null,
-                                serializer,
-                                SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
+                                null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
                             return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
                         } catch (IOException | MalformedValueException ignored) {
                             // This translates in RestProxy as a RestException with no deserialized body.
