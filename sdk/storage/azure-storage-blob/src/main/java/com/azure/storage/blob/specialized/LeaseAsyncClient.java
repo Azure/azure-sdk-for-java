@@ -54,13 +54,14 @@ public final class LeaseAsyncClient {
     private final AzureBlobStorageImpl client;
     private String accountName;
 
-    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob) {
+    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
             .build();
+        this.accountName = accountName;
     }
 
     /**
