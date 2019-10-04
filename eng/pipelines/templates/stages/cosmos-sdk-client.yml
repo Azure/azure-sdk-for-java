@@ -58,7 +58,7 @@ stages:
         PreRunSteps:
         - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
-            wget "$(EmulatorMsiUrl)" -outfile "$env:temp\azure-cosmosdb-emulator.msi"
+            Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"
             Write-Host "Finished Downloading Cosmos Emulator - $env:temp\azure-cosmosdb-emulator.msi"
             dir "$env:temp"
           displayName: 'Download Public Cosmos DB Emulator'

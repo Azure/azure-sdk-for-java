@@ -4,10 +4,12 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -26,6 +28,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -58,7 +61,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
-                httpClient.newCall(okHttpRequest).enqueue(new OkHttpCallback(sink, request));
+                Call call = httpClient.newCall(okHttpRequest);
+                call.enqueue(new OkHttpCallback(sink, request));
+                sink.onCancel(() -> call.cancel());
             }, sink::error);
         }));
     }
@@ -74,7 +79,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
             .map(rb -> {
                 rb.url(request.getUrl());
                 if (request.getHeaders() != null) {
-                    return rb.headers(okhttp3.Headers.of(request.getHeaders().toMap()));
+                    Map<String, String> headers = new HashMap<>();
+                    for (HttpHeader hdr : request.getHeaders()) {
+                        if (hdr.getValue() != null) {
+                            headers.put(hdr.getName(), hdr.getValue());
+                        }
+                    }
+                    return rb.headers(okhttp3.Headers.of(headers));
                 } else {
                     return rb.headers(okhttp3.Headers.of(new HashMap<>()));
                 }
@@ -189,7 +200,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     rb -> Mono.just(rb),
                     // Resource cleanup
                     // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                    ResponseBody::close);
+                    ResponseBody::close, /* Change in behavior since reactor-core 3.3.0.RELEASE */ false);
             }
         }
 

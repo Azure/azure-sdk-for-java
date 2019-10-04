@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -53,15 +54,15 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(scopes, port)))
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

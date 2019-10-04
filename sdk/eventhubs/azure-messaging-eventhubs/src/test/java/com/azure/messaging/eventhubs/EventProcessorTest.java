@@ -4,7 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
@@ -217,7 +217,7 @@ public class EventProcessorTest {
                 return passed.addData(SPAN_CONTEXT, "value1")
                     .addData("scope", (Closeable) () -> {
                     })
-                    .addData(OPENTELEMETRY_SPAN_KEY, "value2");
+                    .addData(OPENCENSUS_SPAN_KEY, "value2");
             }
         );
 
@@ -274,7 +274,7 @@ public class EventProcessorTest {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT, "value1").addData("scope", (Closeable) () -> {
                     return;
-                }).addData(OPENTELEMETRY_SPAN_KEY, "value2");
+                }).addData(OPENCENSUS_SPAN_KEY, "value2");
             }
         );
 

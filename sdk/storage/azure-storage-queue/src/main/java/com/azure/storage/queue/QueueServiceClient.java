@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.AccountSASPermission;
 import com.azure.storage.common.AccountSASResourceType;
 import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.IPRange;
+import com.azure.storage.common.IpRange;
 import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -23,7 +23,6 @@ import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -60,7 +59,7 @@ public final class QueueServiceClient {
     /**
      * @return the URL of the storage queue
      */
-    public URL getQueueServiceUrl() {
+    public String getQueueServiceUrl() {
         return client.getQueueServiceUrl();
     }
 
@@ -414,7 +413,7 @@ public final class QueueServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IpRange-SASProtocol}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
@@ -425,13 +424,13 @@ public final class QueueServiceClient {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param ipRange An optional {@code IpRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        IPRange ipRange, SASProtocol sasProtocol) {
+            AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
+            String version, IpRange ipRange, SASProtocol sasProtocol) {
         return this.client.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission,
             expiryTime, startTime, version, ipRange, sasProtocol);
     }

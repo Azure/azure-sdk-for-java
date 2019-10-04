@@ -31,7 +31,7 @@ public class CredentialsTests {
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
-            .policies((context, next) -> credentials.getToken("scope./default")
+            .policies((context, next) -> credentials.getToken(new TokenRequest().addScopes("scope./default"))
                 .flatMap(token -> {
                     context.getHttpRequest().getHeaders().put("Authorization", "Basic " + token.getToken());
                     return next.process();
@@ -44,12 +44,7 @@ public class CredentialsTests {
 
     @Test
     public void tokenCredentialTest() throws Exception {
-        TokenCredential credentials = new TokenCredential() {
-            @Override
-            public Mono<AccessToken> getToken(String... scopes) {
-                return Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
-            }
-        };
+        TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
             String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");

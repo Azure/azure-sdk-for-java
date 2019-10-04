@@ -9,6 +9,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
@@ -36,6 +37,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
+    public static final String MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC = "runtime_info_retrieval_time_utc";
     public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
 
     // Well-known keys for management plane service requests.
@@ -108,7 +110,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
         final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
 
-        return tokenProvider.getToken(tokenAudience).flatMap(accessToken -> {
+        return tokenProvider.getToken(new TokenRequest().addScopes(tokenAudience)).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
 
             final Message request = Proton.message();

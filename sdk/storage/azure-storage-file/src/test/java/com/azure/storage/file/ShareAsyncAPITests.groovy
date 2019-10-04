@@ -5,11 +5,6 @@ package com.azure.storage.file
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryAsyncClient
-import com.azure.storage.file.FileAsyncClient
-import com.azure.storage.file.FileSmbProperties
-import com.azure.storage.file.ShareAsyncClient
-import com.azure.storage.file.ShareClientBuilder
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
@@ -40,9 +35,9 @@ class ShareAsyncAPITests extends APISpec {
     def "Get share URL"() {
         given:
         def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accoutName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
         when:
-        def shareURL = primaryShareAsyncClient.getShareUrl().toString()
+        def shareURL = primaryShareAsyncClient.getShareUrl()
         then:
         expectURL.equals(shareURL)
     }

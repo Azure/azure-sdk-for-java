@@ -133,7 +133,7 @@ class RequestResponseLinkCache {
                                 }
                             } else {
                                 Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
-                                TRACE_LOGGER.error("Creating requestresponselink to '{}' failed.", requestResponseLinkPath, cause);
+                                TRACE_LOGGER.info("Creating requestresponselink to '{}' failed.", requestResponseLinkPath, cause);
                                 RequestResponseLinkCache.this.removeWrapperFromCache(this.entityPath);
                                 this.completeWaiters(cause);
                             }

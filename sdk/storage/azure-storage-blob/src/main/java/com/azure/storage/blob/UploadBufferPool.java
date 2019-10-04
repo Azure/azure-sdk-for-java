@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 
@@ -41,7 +42,7 @@ final class UploadBufferPool {
     private final int maxBuffs;
 
     // The number of buffs we have allocated. We can query the queue for how many are available.
-    private int numBuffs = 0;
+    private int numBuffs;
 
     private final int buffSize;
 

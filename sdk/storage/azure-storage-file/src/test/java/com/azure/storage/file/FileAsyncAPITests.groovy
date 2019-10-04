@@ -51,10 +51,10 @@ class FileAsyncAPITests extends APISpec {
     def "Get file URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
-        def fileURL = primaryFileAsyncClient.getFileUrl().toString()
+        def fileURL = primaryFileAsyncClient.getFileUrl()
 
         then:
         expectURL == fileURL
@@ -122,20 +122,14 @@ class FileAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    @Unroll
     def "Create file with args error"() {
         when:
-        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(maxSize, null, null, null, metadata))
+        def createFileErrorVerifier = StepVerifier.create(primaryFileAsyncClient.createWithResponse(-1, null, null, null, testMetadata))
 
         then:
         createFileErrorVerifier.verifyErrorSatisfies {
-            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_INPUT)
         }
-
-        where:
-        maxSize | metadata                                      | statusCode | errMsg
-        -1      | testMetadata                                  | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
-        1024    | Collections.singletonMap("testMeta", "value") | 403        | StorageErrorCode.AUTHENTICATION_FAILED
     }
 
     def "Upload and download data"() {
@@ -371,7 +365,9 @@ class FileAsyncAPITests extends APISpec {
         def downloadFromFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
 
         then:
-        downloadFromFileVerifier.verifyComplete()
+        downloadFromFileVerifier.assertNext{
+            assert it.getContentLength() == data.length()
+        }.verifyComplete()
         def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
         data == scanner.next()
         scanner.close()
@@ -389,7 +385,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setReadPermission(true), getUTCNow().plusDays(1))
+        def sasToken = primaryFileAsyncClient.generateSAS(new FileSasPermission().setReadPermission(true), getUTCNow().plusDays(1))
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
@@ -397,7 +393,7 @@ class FileAsyncAPITests extends APISpec {
             .buildFileAsyncClient()
 
         client.create(1024).block()
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI()).block()
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() +"?" + sasToken).toURI()).block()
 
         then:
         def result = new String(client.downloadWithProperties().block().getBody().blockLast().array())
@@ -412,7 +408,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
-        def sourceURL = primaryFileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
         def copyInfoVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse(sourceURL, null))
