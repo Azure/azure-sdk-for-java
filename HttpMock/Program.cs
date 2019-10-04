@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -50,8 +51,8 @@ namespace HttpMock
             new WebHostBuilder()
                 .UseKestrel(options =>
                 {
-                    options.Listen(IPAddress.Any, 5000);
-                    options.Listen(IPAddress.Any, 5001, listenOptions =>
+                    options.Listen(IPAddress.Any, 8888);
+                    options.Listen(IPAddress.Any, 8889, listenOptions =>
                     {
                         listenOptions.UseHttps("testCert.pfx", "testPassword");
                     });
@@ -59,7 +60,9 @@ namespace HttpMock
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .Configure(app => app.Run(async context =>
                 {
-                    Trace("Start Request");
+                    var sw = Stopwatch.StartNew();
+
+                    Trace("Start Request", sw);
 
                     var request = context.Request;
                     var response = context.Response;
@@ -68,46 +71,46 @@ namespace HttpMock
 
                     var key = new RequestCacheKey(request);
 
-                    Trace("Created Cache Key");
+                    Trace("Created Cache Key", sw);
 
                     if (_cache.TryGetValue(key, out var upstreamResponse))
                     {
-                        Trace("Cache Hit");
+                        Trace("Cache Hit", sw);
                         Log.LogUpstreamResponse(upstreamResponse, cached: true);
                         
                         await Proxy.SendDownstreamResponse(upstreamResponse, response);
 
-                        Trace("Sent Downstream Response");
+                        Trace("Sent Downstream Response", sw);
                     }
                     else
                     {
-                        Trace("Cache Miss");
+                        Trace("Cache Miss", sw);
                         
                         upstreamResponse = await Proxy.SendUpstreamRequest(request);
 
-                        Trace("Received Upstream Response");                        
+                        Trace("Received Upstream Response", sw);
                         Log.LogUpstreamResponse(upstreamResponse, cached: false);
 
                         await Proxy.SendDownstreamResponse(upstreamResponse, response);
 
-                        Trace("Sent Downstream Response");
+                        Trace("Sent Downstream Response", sw);
 
                         _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
 
-                        Trace("Updated Cache");
+                        Trace("Updated Cache", sw);
                     }
 
-                    Trace("End Request" + Environment.NewLine);
+                    Trace("End Request" + Environment.NewLine, sw);
                 }))
                 .Build()
                 .Run();
         }
          
-        private static void Trace(string message)
+        private static void Trace(string message, Stopwatch stopwatch)
         {
             if (Options.Trace)
             {
-                Console.WriteLine($"[{DateTime.Now.ToString("o")}] {message}");
+                Console.WriteLine($"[{stopwatch.Elapsed.TotalSeconds:N4}] {message}");
             }
         }
     }
