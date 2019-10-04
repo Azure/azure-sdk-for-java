@@ -19,8 +19,7 @@ This SDK will:
 
 ### Prerequisites
 
-* Android 6.0 or later
-* Java Development Kit (JDK) with version 7 or above
+* Java Development Kit (JDK) with version 8 or above
 * You must have a Cognitive Services API account. Please refer the [Ink Recognizer API][inkrecognizer_api] if you don't have one already.
 
 ## Key concepts
@@ -67,7 +66,6 @@ You will need to then create an InkRecognizerClient object, an example is as fol
 InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
 InkRecognizerClient inkRecognizerClient = inkRecognizerClientBuilder.credentials(credential)
                 .endpoint(endpoint)
-                .displayMetrics(displayMetrics)
                 .buildClient();
 ```
 
@@ -77,7 +75,6 @@ or an InkRecognizerAsyncClient object as shown as:
 InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
 InkRecognizerAsyncClient inkRecognizerAsyncClient = inkRecognizerClientBuilder.credentials(credential)
                 .endpoint(endpoint)
-                .displayMetrics(displayMetrics)
                 .buildAsyncClient();
 ```
 
@@ -105,7 +102,6 @@ Putting all of this together, here is how you can use the sdk for searching word
 InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
 InkRecognizerClient inkRecognizerClient = inkRecognizerClientBuilder.credentials(credential)
                 .endpoint(endpoint)
-                .displayMetrics(displayMetrics)
                 .buildClient();
 InkRecognitionRoot root = inkRecognizerClient.recognizeInk(strokes);
 Iterable<InkWord> wordsFound = root.findWord("hello");
@@ -117,12 +113,7 @@ File an issue via [Github Issues][github_issues].
 
 ## Next steps
 
-You can refer the Javadocs for this project to view the different ways you can use this sdk.
-
-## Notes
-
-* You can obtain a local version of this sdk library by building this project by running 'gradlew build' at the root of the project in terminal. This will place the .aar library in the folder 'inkrecognizer/build/outputs/aar'.
-* You can obtain the javadocs for this project by running 'gradlew javadoc' at the root of the project in the terminal. This will create a javadocs folder at the root of the project.
+Please refer to the code to view the different ways you can use this sdk.
 
 ## Contributing
 
