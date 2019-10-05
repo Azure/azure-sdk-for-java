@@ -1,0 +1,199 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.data.cosmos;
+
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.rx.TestSuiteBase;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class CosmosSyncStoredProcTest extends TestSuiteBase {
+    private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
+    private List<String> databases = new ArrayList<>();
+    private CosmosClient client;
+    private CosmosContainer container;
+
+    @Factory(dataProvider = "clientBuilders")
+    public CosmosSyncStoredProcTest(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
+    }
+
+
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    public void beforeClass() {
+        assertThat(this.client).isNull();
+        this.client = clientBuilder().buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+    }
+
+    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        assertThat(this.client).isNotNull();
+        this.client.close();
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createStoredProcedure() throws Exception {
+
+        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        validateResponse(storedProcedureDef, response);
+
+        storedProcedureDef.setId(UUID.randomUUID().toString());
+        storedProcedureDef.setBody("function() {var x = 11;}");
+        CosmosStoredProcedureResponse response1 = container.getScripts()
+                                                              .createStoredProcedure(storedProcedureDef,
+                                                                      new CosmosStoredProcedureRequestOptions());
+        validateResponse(storedProcedureDef, response1);
+
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createSproc_alreadyExists() throws Exception {
+        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        validateResponse(storedProcedureDef, response);
+
+        // Test for conflict
+        try {
+            container.getScripts().createStoredProcedure(storedProcedureDef);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(CosmosClientException.class);
+            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readStoredProcedure() throws Exception {
+        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        validateResponse(storedProcedureDef, response);
+
+        CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureDef.getId());
+        CosmosStoredProcedureResponse readResponse = storedProcedure.read();
+        validateResponse(storedProcedureDef, readResponse);
+
+        CosmosStoredProcedureResponse readResponse2 =
+                storedProcedure.read(new CosmosStoredProcedureRequestOptions());
+        validateResponse(storedProcedureDef, readResponse2);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void replaceStoredProcedure() throws Exception {
+        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        validateResponse(storedProcedureDef, response);
+
+        CosmosStoredProcedureResponse readResponse = container.getScripts()
+                                                                 .getStoredProcedure(storedProcedureDef.getId())
+                                                                 .read();
+        validateResponse(storedProcedureDef, readResponse);
+        //replace
+        storedProcedureDef = readResponse.getProperties();
+        storedProcedureDef.setBody("function(){ var y = 20;}");
+        CosmosStoredProcedureResponse replaceResponse = container.getScripts()
+                                                                    .getStoredProcedure(storedProcedureDef.getId())
+                                                                    .replace(storedProcedureDef);
+        validateResponse(storedProcedureDef, replaceResponse);
+
+        storedProcedureDef.setBody("function(){ var z = 2;}");
+        CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
+                                                                     .getStoredProcedure(storedProcedureDef.getId())
+                                                                     .replace(storedProcedureDef,
+                                                                             new CosmosStoredProcedureRequestOptions());
+        validateResponse(storedProcedureDef, replaceResponse2);
+
+    }
+
+    private CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
+        storedProcedureDef.setId(UUID.randomUUID().toString());
+        storedProcedureDef.setBody("function() {var x = 10;}");
+        return storedProcedureDef;
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void deleteStoredProcedure() throws Exception {
+        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
+        validateResponse(storedProcedureDef, response);
+        container.getScripts()
+            .getStoredProcedure(storedProcedureDef.getId())
+            .delete();
+
+    }
+
+    // TODO: Fix underlying async execute response issue before enabling this test
+/*
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void executeStoredProcedure() throws Exception {
+        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties()
+                                                        .id(UUID.randomUUID().toString());
+        sproc.body("function() {var x = 10;}");
+
+        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.partitionKey(PartitionKey.None);
+        container.getScripts()
+                .getStoredProcedure(sproc.id())
+                .execute(null, options);
+    }
+*/
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    private void readAllSprocs() throws Exception {
+        CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
+        container.getScripts().createStoredProcedure(storedProcedureDef);
+
+        FeedOptions feedOptions = new FeedOptions();
+        feedOptions.setEnableCrossPartitionQuery(true);
+        Iterator<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator3 =
+                container.getScripts().readAllStoredProcedures(feedOptions);
+        assertThat(feedResponseIterator3.hasNext()).isTrue();
+
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    private void querySprocs() throws Exception {
+        CosmosStoredProcedureProperties properties = getCosmosStoredProcedureProperties();
+        container.getScripts().createStoredProcedure(properties);
+
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        FeedOptions feedOptions = new FeedOptions().setEnableCrossPartitionQuery(true);
+
+        Iterator<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator1 =
+                container.getScripts().queryStoredProcedures(query, feedOptions);
+        assertThat(feedResponseIterator1.hasNext()).isTrue();
+
+        SqlQuerySpec querySpec = new SqlQuerySpec(query);
+        Iterator<FeedResponse<CosmosStoredProcedureProperties>> feedResponseIterator2 =
+                container.getScripts().queryStoredProcedures(query, feedOptions);
+        assertThat(feedResponseIterator2.hasNext()).isTrue();
+    }
+
+    private void validateResponse(CosmosStoredProcedureProperties properties,
+                                  CosmosStoredProcedureResponse createResponse) {
+        // Basic validation
+        assertThat(createResponse.getProperties().getId()).isNotNull();
+        assertThat(createResponse.getProperties().getId())
+                .as("check Resource Id")
+                .isEqualTo(properties.getId());
+
+    }
+}
