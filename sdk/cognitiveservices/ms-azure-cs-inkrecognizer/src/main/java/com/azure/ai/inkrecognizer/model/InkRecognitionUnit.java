@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,10 +24,7 @@ public class InkRecognitionUnit {
     private final List<Point> rotatedBoundingBox = new ArrayList<>();
     private final InkRecognitionRoot root;
 
-    InkRecognitionUnit(
-            JsonNode jsonNode,
-            InkRecognitionRoot root
-    ) throws Exception {
+    InkRecognitionUnit(JsonNode jsonNode, InkRecognitionRoot root) throws Exception {
 
         this.root = root;
 
@@ -48,10 +48,10 @@ public class InkRecognitionUnit {
             if (jsonNode.has("boundingRectangle")) {
                 JsonNode jsonBoundingBox = jsonNode.get("boundingRectangle");
                 boundingBox = new Rectangle(
-                        jsonBoundingBox.get("topX").asDouble(),
-                        jsonBoundingBox.get("topY").asDouble(),
-                        jsonBoundingBox.get("width").asDouble(),
-                        jsonBoundingBox.get("height").asDouble()
+                    jsonBoundingBox.get("topX").asDouble(),
+                    jsonBoundingBox.get("topY").asDouble(),
+                    jsonBoundingBox.get("width").asDouble(),
+                    jsonBoundingBox.get("height").asDouble()
                 );
             } else {
                 boundingBox = new Rectangle();
@@ -62,10 +62,10 @@ public class InkRecognitionUnit {
                 JsonNode jsonRotatedBoundingBox = jsonNode.get("rotatedBoundingRectangle");
                 for (final JsonNode coordinate : jsonRotatedBoundingBox) {
                     rotatedBoundingBox.add(
-                            new Point(
-                                    coordinate.get("x").asDouble(),
-                                    coordinate.get("y").asDouble()
-                            )
+                        new Point(
+                            coordinate.get("x").asDouble(),
+                            coordinate.get("y").asDouble()
+                        )
                     );
                 }
             }

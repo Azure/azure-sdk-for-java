@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,21 +16,19 @@ class Utils {
     }
 
     static String createJSONForRequest(
-            Iterable<InkStroke> strokes,
-            InkPointUnit unit,
-            float multiple,
-            ApplicationKind applicationKind,
-            String language
-    ) throws Exception {
+        Iterable<InkStroke> strokes,
+        InkPointUnit unit,
+        float multiple,
+        ApplicationKind applicationKind,
+        String language) throws Exception {
 
         Iterator strokesIterator = strokes.iterator();
 
         if (
-                strokesIterator.hasNext()
-                        && unit != null
-                        && language != null
-                        && applicationKind != null
-        ) {
+            strokesIterator.hasNext()
+                && unit != null
+                && language != null
+                && applicationKind != null) {
 
             JsonNodeFactory factory = JsonNodeFactory.instance;
             ObjectNode jsonAnalysisRequest = factory.objectNode();
@@ -55,9 +56,9 @@ class Utils {
                 while (pointsIterator.hasNext()) {
                     InkPoint inkPoint = (InkPoint) pointsIterator.next();
                     jsonPoints.add(
-                            factory.objectNode()
-                                    .put("x", inkPoint.getX())
-                                    .put("y", inkPoint.getY())
+                        factory.objectNode()
+                            .put("x", inkPoint.getX())
+                            .put("y", inkPoint.getY())
                     );
                 }
 

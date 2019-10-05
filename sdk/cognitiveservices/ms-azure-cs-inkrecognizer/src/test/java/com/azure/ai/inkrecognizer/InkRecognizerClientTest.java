@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 import com.azure.ai.inkrecognizer.model.InkRecognitionRoot;
@@ -15,7 +18,7 @@ import static com.azure.ai.inkrecognizer.TestUtils.*;
 public class InkRecognizerClientTest {
 
     private InkRecognizerClient inkRecognizerClient;
-        private InkRecognizerCredentials credential = new InkRecognizerCredentials("");
+    private InkRecognizerCredentials credential = new InkRecognizerCredentials("");
     private String endpoint = "https://api.cognitive.microsoft.com/inkrecognizer";
     private final int retryCount = 3;
     private final int retryTimeout = 300;
@@ -30,15 +33,15 @@ public class InkRecognizerClientTest {
 
         InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
         inkRecognizerClient = inkRecognizerClientBuilder.credentials(credential)
-                .endpoint(endpoint)
-                .retryCount(retryCount)
-                .retryTimeout(retryTimeout)
-                .applicationKind(applicationKind)
-                .language(language)
-                .unit(unit)
-                .unitMultiple(unitMultiple)
-                .serviceVersion(serviceVersion)
-                .buildClient();
+            .endpoint(endpoint)
+            .retryCount(retryCount)
+            .retryTimeout(retryTimeout)
+            .applicationKind(applicationKind)
+            .language(language)
+            .unit(unit)
+            .unitMultiple(unitMultiple)
+            .serviceVersion(serviceVersion)
+            .buildClient();
 
     }
 
@@ -86,12 +89,11 @@ public class InkRecognizerClientTest {
 
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.TWO_STROKES_REQUEST_FILE);
         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(
-                strokes,
-                customUnit,
-                customMultiple,
-                customApplicationKind,
-                customLanguage
-        );
+            strokes,
+            customUnit,
+            customMultiple,
+            customApplicationKind,
+            customLanguage);
         Assert.assertTrue(response.body.length() > 0);
         Assert.assertEquals(response.status, 200);
         Assert.assertNotEquals(response.root, null);
@@ -136,16 +138,16 @@ public class InkRecognizerClientTest {
 
         InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
         InkRecognizerClient inkRecognizerClient = inkRecognizerClientBuilder
-                .credentials(new InkRecognizerCredentials(""))
-                .endpoint(endpoint)
-                .retryCount(retryCount)
-                .retryTimeout(retryTimeout)
-                .applicationKind(applicationKind)
-                .language(language)
-                .unit(unit)
-                .unitMultiple(unitMultiple)
-                .serviceVersion(serviceVersion)
-                .buildClient();
+            .credentials(new InkRecognizerCredentials(""))
+            .endpoint(endpoint)
+            .retryCount(retryCount)
+            .retryTimeout(retryTimeout)
+            .applicationKind(applicationKind)
+            .language(language)
+            .unit(unit)
+            .unitMultiple(unitMultiple)
+            .serviceVersion(serviceVersion)
+            .buildClient();
 
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.TWO_STROKES_REQUEST_FILE);
         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(strokes);
@@ -157,16 +159,16 @@ public class InkRecognizerClientTest {
 
         InkRecognizerClientBuilder inkRecognizerClientBuilder = new InkRecognizerClientBuilder();
         InkRecognizerClient inkRecognizerClient = inkRecognizerClientBuilder
-                .credentials(credential)
-                .endpoint("")
-                .retryCount(retryCount)
-                .retryTimeout(retryTimeout)
-                .applicationKind(applicationKind)
-                .language(language)
-                .unit(unit)
-                .unitMultiple(unitMultiple)
-                .serviceVersion(serviceVersion)
-                .buildClient();
+            .credentials(credential)
+            .endpoint("")
+            .retryCount(retryCount)
+            .retryTimeout(retryTimeout)
+            .applicationKind(applicationKind)
+            .language(language)
+            .unit(unit)
+            .unitMultiple(unitMultiple)
+            .serviceVersion(serviceVersion)
+            .buildClient();
 
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.TWO_STROKES_REQUEST_FILE);
         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(strokes);

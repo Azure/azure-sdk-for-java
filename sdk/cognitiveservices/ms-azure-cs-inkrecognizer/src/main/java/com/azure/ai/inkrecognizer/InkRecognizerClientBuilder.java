@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 /**
@@ -113,15 +116,15 @@ public final class InkRecognizerClientBuilder {
     public InkRecognizerClient buildClient() throws Exception {
         validateFields();
         return new InkRecognizerClient(endpoint, credentials)
-                .setCredentials(credentials)
-                .setEndpoint(endpoint)
-                .setRetryCount(retryCount)
-                .setRetryTimeout(retryTimeout)
-                .setApplicationKind(applicationKind)
-                .setLanguage(language)
-                .setUnit(unit)
-                .setUnitMultiple(unitMultiple)
-                .setServiceVersion(serviceVersion);
+            .setCredentials(credentials)
+            .setEndpoint(endpoint)
+            .setRetryCount(retryCount)
+            .setRetryTimeout(retryTimeout)
+            .setApplicationKind(applicationKind)
+            .setLanguage(language)
+            .setUnit(unit)
+            .setUnitMultiple(unitMultiple)
+            .setServiceVersion(serviceVersion);
     }
 
     /**
@@ -132,15 +135,15 @@ public final class InkRecognizerClientBuilder {
     public InkRecognizerAsyncClient buildAsyncClient() throws Exception {
         validateFields();
         return new InkRecognizerAsyncClient(endpoint, credentials)
-                .setCredentials(credentials)
-                .setEndpoint(endpoint)
-                .setRetryCount(retryCount)
-                .setRetryTimeout(retryTimeout)
-                .setApplicationKind(applicationKind)
-                .setLanguage(language)
-                .setUnit(unit)
-                .setUnitMultiple(unitMultiple)
-                .setServiceVersion(serviceVersion);
+            .setCredentials(credentials)
+            .setEndpoint(endpoint)
+            .setRetryCount(retryCount)
+            .setRetryTimeout(retryTimeout)
+            .setApplicationKind(applicationKind)
+            .setLanguage(language)
+            .setUnit(unit)
+            .setUnitMultiple(unitMultiple)
+            .setServiceVersion(serviceVersion);
     }
 
     private void validateFields() throws Exception {

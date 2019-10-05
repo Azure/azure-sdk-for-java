@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 import com.azure.ai.inkrecognizer.model.InkRecognitionRoot;
@@ -30,13 +33,12 @@ public final class InkRecognizerClient {
     private final OkHttpClient httpClient;
 
     InkRecognizerClient(
-            String endpoint,
-            InkRecognizerCredentials credentials
-    ) {
+        String endpoint,
+        InkRecognizerCredentials credentials) {
         this.credentials = credentials;
         this.endpoint = endpoint;
         httpClient = new OkHttpClient.Builder()
-                .build();
+            .build();
     }
 
     /**
@@ -47,14 +49,13 @@ public final class InkRecognizerClient {
      * @throws Exception Exception thrown while trying to recognize ink
      */
     public Response<InkRecognitionRoot> recognizeInk(
-            Iterable<InkStroke> strokes
-    ) throws Exception {
+        Iterable<InkStroke> strokes) throws Exception {
         return recognizeInk(
-                strokes,
-                this.unit,
-                this.unitMultiple,
-                this.applicationKind,
-                this.language
+            strokes,
+            this.unit,
+            this.unitMultiple,
+            this.applicationKind,
+            this.language
         );
     }
 
@@ -68,15 +69,14 @@ public final class InkRecognizerClient {
      * @throws Exception Exception thrown while trying to recognize ink
      */
     public Response<InkRecognitionRoot> recognizeInk(
-            Iterable<InkStroke> strokes,
-            String language
-    ) throws Exception {
+        Iterable<InkStroke> strokes,
+        String language) throws Exception {
         return recognizeInk(
-                strokes,
-                this.unit,
-                this.unitMultiple,
-                this.applicationKind,
-                language
+            strokes,
+            this.unit,
+            this.unitMultiple,
+            this.applicationKind,
+            language
         );
     }
 
@@ -94,24 +94,23 @@ public final class InkRecognizerClient {
      * @throws Exception Exception thrown while trying to recognize ink
      */
     public Response<InkRecognitionRoot> recognizeInk(
-            Iterable<InkStroke> strokes,
-            InkPointUnit unit,
-            float multiple,
-            ApplicationKind applicationKind,
-            String language
-    ) throws Exception {
+        Iterable<InkStroke> strokes,
+        InkPointUnit unit,
+        float multiple,
+        ApplicationKind applicationKind,
+        String language) throws Exception {
 
         String requestJSON = Utils.createJSONForRequest(strokes, unit, multiple, applicationKind, language);
 
         MediaType mediaTypeJSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = httpClient.newBuilder()
-                .connectTimeout(retryTimeout, TimeUnit.MILLISECONDS)
-                .build();
+            .connectTimeout(retryTimeout, TimeUnit.MILLISECONDS)
+            .build();
         RequestBody body = RequestBody.create(requestJSON, mediaTypeJSON);
         Request request = new Request.Builder()
-                .url(endpoint + serviceVersion.toString())
-                .put(body)
-                .build();
+            .url(endpoint + serviceVersion.toString())
+            .put(body)
+            .build();
         request = credentials.SetRequestCredentials(request);
 
         okhttp3.Response response = null;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,10 +23,7 @@ public class InkDrawing extends InkRecognitionUnit {
     private final List<InkDrawing> alternates = new ArrayList<>();
     private final List<Point> points = new ArrayList<>();
 
-    InkDrawing(
-            JsonNode drawingNode,
-            InkRecognitionRoot root
-    ) throws Exception {
+    InkDrawing(JsonNode drawingNode, InkRecognitionRoot root) throws Exception {
 
         super(drawingNode, root);
 
@@ -135,8 +135,8 @@ public class InkDrawing extends InkRecognitionUnit {
 
     private Point populateCenter(JsonNode jsonCenter) {
         return new Point(
-                jsonCenter.get("x").asDouble(),
-                jsonCenter.get("y").asDouble()
+            jsonCenter.get("x").asDouble(),
+            jsonCenter.get("y").asDouble()
         );
     }
 
@@ -144,10 +144,10 @@ public class InkDrawing extends InkRecognitionUnit {
         if (jsonPoints != null) {
             for (JsonNode jsonPoint : jsonPoints) {
                 points.add(
-                        new Point(
-                                jsonPoint.get("x").asDouble(),
-                                jsonPoint.get("y").asDouble()
-                        )
+                    new Point(
+                        jsonPoint.get("x").asDouble(),
+                        jsonPoint.get("y").asDouble()
+                    )
                 );
             }
         }

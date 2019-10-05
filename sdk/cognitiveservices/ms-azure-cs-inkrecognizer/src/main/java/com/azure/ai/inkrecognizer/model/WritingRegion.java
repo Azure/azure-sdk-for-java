@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,10 +17,7 @@ public class WritingRegion extends InkRecognitionUnit {
 
     private String recognizedText;
 
-    WritingRegion(
-            JsonNode writingRegionNode,
-            InkRecognitionRoot root
-    ) throws Exception {
+    WritingRegion(JsonNode writingRegionNode, InkRecognitionRoot root) throws Exception {
         super(writingRegionNode, root);
     }
 

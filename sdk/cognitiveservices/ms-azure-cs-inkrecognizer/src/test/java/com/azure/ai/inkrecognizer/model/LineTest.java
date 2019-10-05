@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,10 +37,10 @@ public class LineTest {
         jsonLine = factory.objectNode();
 
         jsonLine.put(CATEGORY, category)
-                .put(CLASS_TYPE, classString)
-                .put(ID, id)
-                .put(PARENT_ID, parent)
-                .put(RECOGNIZED_TEXT, recognizedText);
+            .put(CLASS_TYPE, classString)
+            .put(ID, id)
+            .put(PARENT_ID, parent)
+            .put(RECOGNIZED_TEXT, recognizedText);
         jsonLine.set(BOUNDING_RECTANGLE, TestUtils.addBoundingRectangle(boundingRectangle));
         jsonLine.set(ROTATED_BOUNDING_RECTANGLE, TestUtils.addPointsArray(rotatedBoundingRectangle));
         jsonLine.set(CHILD_IDS, TestUtils.addIds(children));

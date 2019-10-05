@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,12 +33,11 @@ public class InkDrawingTest {
     private final float[][] points = new float[][]{{251.6300048828125f, 85.169998168945313f}, {362.42999267578125f, 79.370002746582031f}, {259.22000122070313f, 230.35000610351563f}};
 
     private final Alternate alternate = new Alternate(
-            "inkDrawing",
-            0.8f,
-            0.45f,
-            new float[][]{{362.42999267578125f, 79.370002746582031f}, {251.6300048828125f, 185.169998168945313f}},
-            "ellipse"
-    );
+        "inkDrawing",
+        0.8f,
+        0.45f,
+        new float[][]{{362.42999267578125f, 79.370002746582031f}, {251.6300048828125f, 185.169998168945313f}},
+        "ellipse");
 
     @Before
     public void setUp() {
@@ -44,12 +46,12 @@ public class InkDrawingTest {
         jsonInkDrawing = factory.objectNode();
 
         jsonInkDrawing.put(CATEGORY, category)
-                .put(CLASS_TYPE, classString)
-                .put(ID, id)
-                .put(PARENT_ID, parentId)
-                .put(CONFIDENCE, confidence)
-                .put(RECOGNIZED_OBJECT, shape)
-                .put(ROTATION_ANGLE, rotationAngle);
+            .put(CLASS_TYPE, classString)
+            .put(ID, id)
+            .put(PARENT_ID, parentId)
+            .put(CONFIDENCE, confidence)
+            .put(RECOGNIZED_OBJECT, shape)
+            .put(ROTATION_ANGLE, rotationAngle);
         jsonInkDrawing.set(BOUNDING_RECTANGLE, addBoundingRectangle(boundingRectangle));
         jsonInkDrawing.set(ROTATED_BOUNDING_RECTANGLE, addPointsArray(rotatedBoundingRectangle));
         jsonInkDrawing.set(STROKE_IDS, addIds(strokes));
@@ -262,12 +264,11 @@ public class InkDrawingTest {
         final String alternateRecognizedString;
 
         Alternate(
-                String alternateCategory,
-                float alternateConfidence,
-                float alternateRotationAngle,
-                float[][] alternatePoints,
-                String alternateRecognizedString
-        ) {
+            String alternateCategory,
+            float alternateConfidence,
+            float alternateRotationAngle,
+            float[][] alternatePoints,
+            String alternateRecognizedString) {
             this.alternateCategory = alternateCategory;
             this.alternateConfidence = alternateConfidence;
             this.alternateRotationAngle = alternateRotationAngle;

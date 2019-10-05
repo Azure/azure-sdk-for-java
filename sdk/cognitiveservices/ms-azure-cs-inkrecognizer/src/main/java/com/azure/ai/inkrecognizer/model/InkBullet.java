@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -12,10 +15,7 @@ public class InkBullet extends InkRecognitionUnit {
 
     private final String recognizedText;
 
-    InkBullet(
-            JsonNode bulletNode,
-            InkRecognitionRoot root
-    ) throws Exception {
+    InkBullet(JsonNode bulletNode, InkRecognitionRoot root) throws Exception {
 
         super(bulletNode, root);
 

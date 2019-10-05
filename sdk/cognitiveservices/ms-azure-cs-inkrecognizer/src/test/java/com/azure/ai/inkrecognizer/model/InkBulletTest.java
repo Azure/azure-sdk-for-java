@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -30,11 +33,11 @@ public class InkBulletTest {
         jsonInkBullet = factory.objectNode();
 
         jsonInkBullet.put(CATEGORY, category)
-                .put(CLASS_TYPE, classString)
-                .put(ID, id)
-                .put(PARENT_ID, parentId)
-                .put(RECOGNIZED_TEXT, recognizedText)
-                .put(CHILD_IDS, children);
+            .put(CLASS_TYPE, classString)
+            .put(ID, id)
+            .put(PARENT_ID, parentId)
+            .put(RECOGNIZED_TEXT, recognizedText)
+            .put(CHILD_IDS, children);
         jsonInkBullet.set(BOUNDING_RECTANGLE, TestUtils.addBoundingRectangle(boundingRectangle));
         jsonInkBullet.set(ROTATED_BOUNDING_RECTANGLE, TestUtils.addPointsArray(rotatedBoundingRectangle));
         jsonInkBullet.set(STROKE_IDS, TestUtils.addIds(strokes));

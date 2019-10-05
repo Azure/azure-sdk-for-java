@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 import com.azure.ai.inkrecognizer.model.InkRecognitionRoot;
@@ -31,13 +34,12 @@ public final class InkRecognizerAsyncClient {
     private final OkHttpClient httpClient;
 
     InkRecognizerAsyncClient(
-            String endpoint,
-            InkRecognizerCredentials credentials
-    ) {
+        String endpoint,
+        InkRecognizerCredentials credentials) {
         this.credentials = credentials;
         this.endpoint = endpoint;
         httpClient = new OkHttpClient.Builder()
-                .build();
+            .build();
     }
 
     /**
@@ -47,14 +49,13 @@ public final class InkRecognizerAsyncClient {
      * results in a hierarchy.
      */
     public Mono<Response<InkRecognitionRoot>> recognizeInk(
-            Iterable<InkStroke> strokes
-    ) {
+        Iterable<InkStroke> strokes) {
         return Mono.fromCallable(() -> recognizeInkHelper(
-                strokes,
-                this.unit,
-                this.unitMultiple,
-                this.applicationKind,
-                this.language
+            strokes,
+            this.unit,
+            this.unitMultiple,
+            this.applicationKind,
+            this.language
         ));
     }
 
@@ -67,15 +68,14 @@ public final class InkRecognizerAsyncClient {
      * results in a hierarchy.
      */
     public Mono<Response<InkRecognitionRoot>> recognizeInk(
-            Iterable<InkStroke> strokes,
-            String language
-    ) {
+        Iterable<InkStroke> strokes,
+        String language) {
         return Mono.fromCallable(() -> recognizeInkHelper(
-                strokes,
-                this.unit,
-                this.unitMultiple,
-                this.applicationKind,
-                language
+            strokes,
+            this.unit,
+            this.unitMultiple,
+            this.applicationKind,
+            language
         ));
     }
 
@@ -92,40 +92,38 @@ public final class InkRecognizerAsyncClient {
      * results in a hierarchy.
      */
     public Mono<Response<InkRecognitionRoot>> recognizeInk(
-            Iterable<InkStroke> strokes,
-            InkPointUnit unit,
-            float multiple,
-            ApplicationKind applicationKind,
-            String language
-    ) {
+        Iterable<InkStroke> strokes,
+        InkPointUnit unit,
+        float multiple,
+        ApplicationKind applicationKind,
+        String language) {
         return Mono.fromCallable(() -> recognizeInkHelper(
-                strokes,
-                unit,
-                multiple,
-                applicationKind,
-                language
+            strokes,
+            unit,
+            multiple,
+            applicationKind,
+            language
         ));
     }
 
     private Response<InkRecognitionRoot> recognizeInkHelper(
-            Iterable<InkStroke> strokes,
-            InkPointUnit unit,
-            float multiple,
-            ApplicationKind applicationKind,
-            String language
-    ) throws Exception {
+        Iterable<InkStroke> strokes,
+        InkPointUnit unit,
+        float multiple,
+        ApplicationKind applicationKind,
+        String language) throws Exception {
 
         String requestJSON = Utils.createJSONForRequest(strokes, unit, multiple, applicationKind, language);
 
         MediaType mediaTypeJSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = httpClient.newBuilder()
-                .connectTimeout(retryTimeout, TimeUnit.MILLISECONDS)
-                .build();
+            .connectTimeout(retryTimeout, TimeUnit.MILLISECONDS)
+            .build();
         RequestBody body = RequestBody.create(requestJSON, mediaTypeJSON);
         Request request = new Request.Builder()
-                .url(endpoint + serviceVersion.toString())
-                .put(body)
-                .build();
+            .url(endpoint + serviceVersion.toString())
+            .put(body)
+            .build();
         request = credentials.SetRequestCredentials(request);
 
         okhttp3.Response response = null;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -62,7 +65,7 @@ class TestUtils {
         if (jsonPoints.isArray()) {
             for (JsonNode jsonPoint : jsonPoints) {
                 inkPoints.add(new InkPointImplementor().setX(jsonPoint.get("x").asDouble())
-                        .setY(jsonPoint.get("y").asDouble()));
+                    .setY(jsonPoint.get("y").asDouble()));
             }
         }
         // or process string
@@ -70,7 +73,7 @@ class TestUtils {
             StringTokenizer st = new StringTokenizer(jsonPoints.asText(), ",");
             while (st.hasMoreTokens()) {
                 inkPoints.add(new InkPointImplementor().setX(Float.parseFloat(st.nextToken()))
-                        .setY(Float.parseFloat(st.nextToken())));
+                    .setY(Float.parseFloat(st.nextToken())));
             }
         }
 

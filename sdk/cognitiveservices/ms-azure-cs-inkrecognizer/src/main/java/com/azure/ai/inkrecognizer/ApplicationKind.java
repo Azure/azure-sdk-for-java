@@ -1,7 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
- * project root for license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer;
 
 import java.util.HashMap;
@@ -9,10 +8,10 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * The ApplicationKind enum allows an application to identify its domain (when it has one).
- * Specifying a domain allows the application to inform the service of its contents. This
- * can facilitate faster processing as the service will skip some classification steps.
- * Applications that don't have a specific domain can simply specify ApplicationKind.MIXED which is the default.
+ * The ApplicationKind enum allows an application to identify its domain (when it has one). Specifying a domain allows
+ * the application to inform the service of its contents. This can facilitate faster processing as the service will skip
+ * some classification steps. Applications that don't have a specific domain can simply specify ApplicationKind.MIXED
+ * which is the default.
  * @author Microsoft
  * @version 1.0
  */

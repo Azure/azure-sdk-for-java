@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,11 +37,11 @@ public class InkWordTest {
         jsonInkWord = factory.objectNode();
 
         jsonInkWord.put(CATEGORY, category)
-                .put(CLASS_TYPE, classString)
-                .put(ID, id)
-                .put(PARENT_ID, parent)
-                .put(RECOGNIZED_TEXT, recognizedText)
-                .put(CHILD_IDS, children);
+            .put(CLASS_TYPE, classString)
+            .put(ID, id)
+            .put(PARENT_ID, parent)
+            .put(RECOGNIZED_TEXT, recognizedText)
+            .put(CHILD_IDS, children);
         jsonInkWord.set(BOUNDING_RECTANGLE, TestUtils.addBoundingRectangle(boundingRectangle));
         jsonInkWord.set(ROTATED_BOUNDING_RECTANGLE, TestUtils.addPointsArray(rotatedBoundingRectangle));
         jsonInkWord.set(STROKE_IDS, TestUtils.addIds(strokes));

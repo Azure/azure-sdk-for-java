@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.inkrecognizer.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,10 +17,7 @@ public class Paragraph extends InkRecognitionUnit {
 
     private String recognizedText;
 
-    Paragraph(
-            JsonNode paragraphNode,
-            InkRecognitionRoot root
-    ) throws Exception {
+    Paragraph(JsonNode paragraphNode, InkRecognitionRoot root) throws Exception {
         super(paragraphNode, root);
     }
 
