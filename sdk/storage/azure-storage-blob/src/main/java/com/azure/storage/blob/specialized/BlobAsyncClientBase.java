@@ -67,6 +67,7 @@ public class BlobAsyncClientBase {
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
+    protected final String accountName;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -75,11 +76,14 @@ public class BlobAsyncClientBase {
      * @param snapshot Optional. The snapshot identifier for the snapshot blob.
      * @param customerProvidedKey Optional. Customer provided key used during encryption of the blob's data on the
      * server.
+     * @param accountName The account name for storage account.
      */
-    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo customerProvidedKey) {
+    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot,
+                                  CpkInfo customerProvidedKey, String accountName) {
         this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
+        this.accountName = accountName;
     }
 
     /**
@@ -92,7 +96,7 @@ public class BlobAsyncClientBase {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
             .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, customerProvidedKey);
+            .build(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -154,6 +158,15 @@ public class BlobAsyncClientBase {
      */
     public CpkInfo getCustomerProvidedKey() {
         return customerProvidedKey;
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     /**

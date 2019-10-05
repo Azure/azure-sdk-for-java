@@ -663,4 +663,14 @@ public final class QueueClient {
     public String getQueueName() {
         return this.client.getQueueName();
     }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
+    }
 }

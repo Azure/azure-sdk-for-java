@@ -29,6 +29,7 @@ public final class BlobUrlParts {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String accountName;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -37,6 +38,26 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts() {
         unparsedParameters = new HashMap<>();
+    }
+
+    /**
+     * Gets the accountname, ex. "myaccountname".
+     *
+     * @return the account name.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Sets the account name.
+     *
+     * @param accountName The account name.
+     * @return the updated BlobURLParts object.
+     */
+    public BlobUrlParts setAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
     }
 
     /**
@@ -256,6 +277,20 @@ public final class BlobUrlParts {
 
         String containerName = null;
         String blobName = null;
+        String accountName = null;
+
+        //Parse host to get account name
+        // host will look like this : <accountname>.blob.core.windows.net
+        if (!ImplUtils.isNullOrEmpty(host)) {
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                // host only contains account name
+                accountName = host;
+            } else {
+                // if host is separated by .
+                accountName = host.substring(0, accountNameIndex);
+            }
+        }
 
         // find the container & blob names (if any)
         String path = url.getPath();
@@ -293,6 +328,7 @@ public final class BlobUrlParts {
             .setContainerName(containerName)
             .setBlobName(blobName)
             .setSnapshot(snapshot)
+            .setAccountName(accountName)
             .setSasQueryParameters(blobServiceSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }

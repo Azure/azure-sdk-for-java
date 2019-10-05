@@ -74,7 +74,7 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline)
-            .build(), customerProvidedKey);
+            .build(), customerProvidedKey, accountName);
     }
 
     /**

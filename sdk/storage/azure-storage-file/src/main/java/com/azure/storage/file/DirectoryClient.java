@@ -681,4 +681,13 @@ public class DirectoryClient {
     public String getDirectoryPath() {
         return directoryAsyncClient.getDirectoryPath();
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.directoryAsyncClient.getAccountName();
+    }
 }

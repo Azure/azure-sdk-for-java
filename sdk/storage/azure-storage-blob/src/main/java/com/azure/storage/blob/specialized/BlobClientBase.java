@@ -75,6 +75,15 @@ public class BlobClientBase {
     }
 
     /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
+    }
+
+    /**
      * Get the container name.
      *
      * <p><strong>Code Samples</strong></p>
