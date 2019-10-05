@@ -69,7 +69,6 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
     private String shareName;
     private String shareSnapshot;
     private String resourcePath;
-    protected String accountName;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileClient FileClients} and {@link

@@ -58,7 +58,7 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
 
     private final ClientLogger logger = new ClientLogger(FileServiceClientBuilder.class);
 
-    protected String accountName;
+    private String accountName;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileServiceClient FileServiceClients}

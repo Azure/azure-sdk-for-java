@@ -61,7 +61,6 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
     private String shareName;
     private String snapshot;
-    protected String accountName;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareClient ShareClients} and {@link
