@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -16,14 +15,14 @@ namespace HttpMock
         public string Query { get; private set; }
         public KeyValuePair<string, StringValues>[] Headers { get; private set; }
 
-        public RequestCacheKey(HttpRequest request)
+        public RequestCacheKey(HttpRequest request, IEnumerable<string> headers)
         {
             Scheme = request.Scheme;
             Host = request.Host.Host;
             Port = request.Host.Port;
             Path = request.Path.Value;
             Query = request.QueryString.Value;
-            Headers = request.Headers.ToArray();
+            Headers = request.Headers.Where(h => headers.Contains(h.Key)).ToArray();
         }
 
         public override int GetHashCode()

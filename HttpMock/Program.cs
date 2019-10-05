@@ -1,13 +1,11 @@
 ﻿using CommandLine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Runtime;
 
 namespace HttpMock
@@ -29,6 +27,9 @@ namespace HttpMock
 
             [Option("dots")]
             public bool Dots { get; set; }
+
+            [Option('h', "headers")]
+            public IEnumerable<string> Headers { get; set; }
         }
 
         public static HttpMockOptions Options { get; private set; }
@@ -49,6 +50,11 @@ namespace HttpMock
 
         static void Run()
         {
+            foreach (var header in Options.Headers)
+            {
+                Console.WriteLine(header);
+            }
+
             new WebHostBuilder()
                 .UseKestrel(options =>
                 {
@@ -66,7 +72,7 @@ namespace HttpMock
                         var request = context.Request;
                         var response = context.Response;
 
-                        var key = new RequestCacheKey(request);
+                        var key = new RequestCacheKey(request, Options.Headers);
 
                         if (_cache.TryGetValue(key, out var upstreamResponse))
                         {
