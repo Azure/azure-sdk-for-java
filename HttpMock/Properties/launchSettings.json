@@ -10,7 +10,7 @@
   "profiles": {
     "HttpMock": {
       "commandName": "Project",
-      "commandLineArgs": "--silent",
+      "commandLineArgs": "--dots",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

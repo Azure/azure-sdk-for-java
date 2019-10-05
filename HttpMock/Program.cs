@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -25,6 +26,9 @@ namespace HttpMock
         {
             [Option("cachelast")]
             public bool CacheLast { get; set; }
+
+            [Option("dots")]
+            public bool Dots { get; set; }
         }
 
         public static HttpMockOptions Options { get; private set; }
@@ -66,6 +70,11 @@ namespace HttpMock
 
                         if (_cache.TryGetValue(key, out var upstreamResponse))
                         {
+                            if (Options.Dots)
+                            {
+                                Console.Write(".");
+                            }
+
                             if (Options.CacheLast)
                             {
                                 _lastUpstreamResponse = upstreamResponse;
@@ -74,6 +83,11 @@ namespace HttpMock
                         }
                         else if (Options.CacheLast && request.Path.Value == "/last")
                         {
+                            if (Options.Dots)
+                            {
+                                Console.Write("@");
+                            }
+
                             // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
                             // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
                             // slower when using a proxy (50k vs 6k RPS).
@@ -81,6 +95,11 @@ namespace HttpMock
                         }
                         else
                         {
+                            if (Options.Dots)
+                            {
+                                Console.Write("*");
+                            }
+
                             upstreamResponse = await Proxy.SendUpstreamRequest(request);
                             await Proxy.SendDownstreamResponse(upstreamResponse, response);
                             _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);

@@ -14,7 +14,7 @@ namespace HttpMock
         public int? Port { get; private set; }
         public string Path { get; private set; }
         public string Query { get; private set; }
-        public IHeaderDictionary Headers { get; private set; }
+        public KeyValuePair<string, StringValues>[] Headers { get; private set; }
 
         public RequestCacheKey(HttpRequest request)
         {
@@ -23,7 +23,7 @@ namespace HttpMock
             Port = request.Host.Port;
             Path = request.Path.Value;
             Query = request.QueryString.Value;
-            Headers = request.Headers;
+            Headers = request.Headers.ToArray();
         }
 
         public override int GetHashCode()
