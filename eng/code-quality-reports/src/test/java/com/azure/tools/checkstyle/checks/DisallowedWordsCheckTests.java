@@ -8,9 +8,8 @@ import org.junit.After;
 import org.junit.Test;
 
 public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
-    private static final String DISALLOWED_WORD_ERROR_MESSAGE = "All Public API Classes, Fields and Methods should follow" +
+    private static final String DISALLOWED_WORD_ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow" +
         " Camelcase standards for the following words: XML, HTTP, URL.";
-    private static final String NO_DISALLOWED_WORDS_ERROR_MESSAGE = "The disallowedWords property is required for the DisallowedWordsCheck module. Please specify which words should be disallowed from being used.";
 
     private Checker checker;
 
@@ -26,22 +25,11 @@ public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
 
     @Test
     public void disallowedWordsTestData() throws Exception {
-        checker = prepareCheckStyleChecker(true);
+        checker = prepareCheckStyleChecker();
         checker.addListener(this.getBriefUtLogger());
         String[] expected = {
-            expectedErrorMessage(2, 5, DISALLOWED_WORD_ERROR_MESSAGE),
-            expectedErrorMessage(4, 5, DISALLOWED_WORD_ERROR_MESSAGE)
-        };
-
-        verify(checker, getPath("DisallowedWordsTestData.java"), expected);
-    }
-
-    @Test
-    public void camelCaseNoPropertySetTestData() throws Exception {
-        checker = prepareCheckStyleChecker(false);
-        checker.addListener(this.getBriefUtLogger());
-        String[] expected = {
-            expectedErrorMessage(1, 1, NO_DISALLOWED_WORDS_ERROR_MESSAGE),
+            expectedErrorMessage(2, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorURLCase")),
+            expectedErrorMessage(4, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorHTTPMethod"))
         };
 
         verify(checker, getPath("DisallowedWordsTestData.java"), expected);
@@ -51,20 +39,18 @@ public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
         return String.format("%d:%d: %s", line, column, errorMessage);
     }
 
-    private Checker prepareCheckStyleChecker(boolean addDisallowedWords) throws CheckstyleException {
+    private Checker prepareCheckStyleChecker() throws CheckstyleException {
         Checker checker = new Checker();
         checker.setModuleClassLoader(Thread.currentThread().getContextClassLoader());
-        checker.configure(prepareConfiguration(addDisallowedWords));
+        checker.configure(prepareConfiguration());
         return checker;
     }
 
-    private DefaultConfiguration prepareConfiguration(boolean addDisallowedWords) {
+    private DefaultConfiguration prepareConfiguration() {
         DefaultConfiguration checks = new DefaultConfiguration("Checks");
         DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
         DefaultConfiguration camelCaseCheck = new DefaultConfiguration(DisallowedWordsCheck.class.getCanonicalName());
-        if (addDisallowedWords) {
-            camelCaseCheck.addAttribute("disallowedWords", "URL, HTTP, XML");
-        }
+        camelCaseCheck.addAttribute("disallowedWords", "URL, HTTP, XML");
         checks.addChild(treeWalker);
         treeWalker.addChild(camelCaseCheck);
         return checks;

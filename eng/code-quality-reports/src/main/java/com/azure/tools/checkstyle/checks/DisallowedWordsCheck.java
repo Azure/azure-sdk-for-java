@@ -14,11 +14,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DisallowedWordsCheck extends AbstractCheck {
-    private static final String MISSING_DISALLOWED_WORDS_PROPERTY = "The disallowedWords property is required for the " + DisallowedWordsCheck.class.getSimpleName() + " module. Please specify which words should be disallowed from being used.";
-    private Set<String> disallowedWords = new HashSet<>();
-    private String errorMessage = "";
+    private final String[] DEFAULT_VALUES = new String[] { "URL", "HTTP" };
+    private Set<String> disallowedWords = new HashSet<>(Arrays.asList(DEFAULT_VALUES));
+    private String errorMessage = "%s, All Public API Classes, Fields and Methods should follow " +
+        "Camelcase standards for the following words: %s.";
     private boolean applyToPublic = true;
-    private boolean loggedAlready = false;
 
     /**
      * Adds words that Classes, Methods and Variables that should follow Camelcasing standards
@@ -27,8 +27,6 @@ public class DisallowedWordsCheck extends AbstractCheck {
     public final void setDisallowedWords(String... disallowedWords) {
         if (this.disallowedWords != null) {
             Collections.addAll(this.disallowedWords, disallowedWords);
-            errorMessage = String.format("All Public API Classes, Fields and Methods should follow "
-                + "Camelcase standards for the following words: %s.", this.disallowedWords.stream().collect(Collectors.joining(", ", "", "")));
         }
     }
 
@@ -55,16 +53,11 @@ public class DisallowedWordsCheck extends AbstractCheck {
             case TokenTypes.CLASS_DEF:
             case TokenTypes.METHOD_DEF:
             case TokenTypes.VARIABLE_DEF:
-                if (disallowedWords.size() == 0 && !loggedAlready) {
-                    log(1, 0, String.format(MISSING_DISALLOWED_WORDS_PROPERTY));
-                    loggedAlready = true;
-                    break;
-                }
                 String tokenName = token.findFirstToken(TokenTypes.IDENT).getText();
                 if (shouldCheckInScope(token)) {
                     String result = getDisallowedWords(tokenName);
                     if (result != null) {
-                        log(token, String.format(errorMessage));
+                        log(token, String.format(errorMessage, tokenName, this.disallowedWords.stream().collect(Collectors.joining(", ", "", ""))));
                     }
                 }
                 break;
@@ -77,13 +70,13 @@ public class DisallowedWordsCheck extends AbstractCheck {
     /**
      * Should we check member with given modifiers.
      *
-     * @param ast
+     * @param token
      *                modifiers of member to check.
      * @return true if we should check such member.
      */
-    private boolean shouldCheckInScope(DetailAST ast) {
+    private boolean shouldCheckInScope(DetailAST token) {
         final DetailAST modifiersAST =
-            ast.findFirstToken(TokenTypes.MODIFIERS);
+            token.findFirstToken(TokenTypes.MODIFIERS);
         final boolean isPublic = modifiersAST
             .findFirstToken(TokenTypes.LITERAL_PUBLIC) != null;
         return applyToPublic && isPublic;
@@ -91,18 +84,18 @@ public class DisallowedWordsCheck extends AbstractCheck {
 
     /**
      * Gets the disallowed abbreviation contained in given String.
-     * @param str
+     * @param tokenName
      *        the given String.
      * @return the disallowed abbreviation contained in given String as a
      *         separate String.
      */
-    private String getDisallowedWords(String str) {
+    private String getDisallowedWords(String tokenName) {
         int beginIndex = 0;
         boolean abbrStarted = false;
         String result = null;
 
-        for (int index = 0; index < str.length(); index++) {
-            final char symbol = str.charAt(index);
+        for (int index = 0; index < tokenName.length(); index++) {
+            final char symbol = tokenName.charAt(index);
 
             if (Character.isUpperCase(symbol)) {
                 if (!abbrStarted) {
@@ -114,7 +107,7 @@ public class DisallowedWordsCheck extends AbstractCheck {
                 abbrStarted = false;
 
                 final int endIndex = index - 1;
-                result = getAbbreviationIfIllegal(str, beginIndex, endIndex);
+                result = getAbbreviationIfIllegal(tokenName, beginIndex, endIndex);
                 if (result != null) {
                     break;
                 }
@@ -123,8 +116,8 @@ public class DisallowedWordsCheck extends AbstractCheck {
         }
         // if abbreviation at the end of name (example: scaleX)
         if (abbrStarted) {
-            final int endIndex = str.length() - 1;
-            result = getAbbreviationIfIllegal(str, beginIndex, endIndex);
+            final int endIndex = tokenName.length() - 1;
+            result = getAbbreviationIfIllegal(tokenName, beginIndex, endIndex);
         }
         return result;
     }
@@ -132,29 +125,28 @@ public class DisallowedWordsCheck extends AbstractCheck {
     /**
      * Get Abbreviation if it is illegal, where {@code beginIndex} and {@code endIndex} are
      * inclusive indexes of a sequence of consecutive upper-case characters.
-     * @param str name
+     * @param tokenName name
      * @param beginIndex begin index
      * @param endIndex end index
      * @return the abbreviation if it is bigger than required and not in the
      *         ignore list, otherwise {@code null}
      */
-    private String getAbbreviationIfIllegal(String str, int beginIndex, int endIndex) {
+    private String getAbbreviationIfIllegal(String tokenName, int beginIndex, int endIndex) {
         String result = null;
-        final String abbr = getAbbreviation(str, beginIndex, endIndex);
+        final String abbr = getAbbreviation(tokenName, beginIndex, endIndex);
         if (disallowedWords.contains(abbr)) {
             result = abbr;
         }
         return result;
     }
 
-    private static String getAbbreviation(String str, int beginIndex, int endIndex) {
+    private static String getAbbreviation(String tokenName, int beginIndex, int endIndex) {
         String result;
-        if (endIndex == str.length() - 1) {
-            result = str.substring(beginIndex);
+        if (endIndex == tokenName.length() - 1) {
+            result = tokenName.substring(beginIndex);
         } else {
-            result = str.substring(beginIndex, endIndex);
+            result = tokenName.substring(beginIndex, endIndex);
         }
-
         return result;
     }
 }
