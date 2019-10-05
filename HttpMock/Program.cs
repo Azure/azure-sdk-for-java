@@ -48,8 +48,8 @@ namespace HttpMock
             new WebHostBuilder()
                 .UseKestrel(options =>
                 {
-                    options.Listen(IPAddress.Any, 8888);
-                    options.Listen(IPAddress.Any, 8889, listenOptions =>
+                    options.Listen(IPAddress.Any, 7777);
+                    options.Listen(IPAddress.Any, 7778, listenOptions =>
                     {
                         listenOptions.UseHttps("testCert.pfx", "testPassword");
                     });
