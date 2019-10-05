@@ -8,6 +8,7 @@ namespace HttpMock
 {
     public class RequestCacheKey
     {
+        public string Method { get; private set; }
         public string Scheme { get; private set; }
         public string Host { get; private set; }
         public int? Port { get; private set; }
@@ -17,6 +18,7 @@ namespace HttpMock
 
         public RequestCacheKey(HttpRequest request, IEnumerable<string> headers)
         {
+            Method = request.Method;
             Scheme = request.Scheme;
             Host = request.Host.Host;
             Port = request.Host.Port;
@@ -28,6 +30,7 @@ namespace HttpMock
         public override int GetHashCode()
         {
             var hash = new HashCode();
+            hash.Add(Method);
             hash.Add(Scheme);
             hash.Add(Host);
             hash.Add(Port);
@@ -44,6 +47,7 @@ namespace HttpMock
         public override bool Equals(object obj)
         {
             return obj is RequestCacheKey other &&
+                Method == other.Method &&
                 Scheme == other.Scheme &&
                 Host == other.Host &&
                 Port == other.Port &&
