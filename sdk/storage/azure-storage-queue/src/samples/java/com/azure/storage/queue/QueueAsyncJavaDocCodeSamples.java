@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -481,31 +477,6 @@ public class QueueAsyncJavaDocCodeSamples {
         client.clearMessages().subscribe(
             response -> System.out.println("Clearing messages completed."));
         // END: com.azure.storage.queue.queueAsyncClient.clearMessages
-    }
-
-    /**
-     * Code snippet for {@link QueueAsyncClient#generateSAS(String, QueueSasPermission, OffsetDateTime, OffsetDateTime,
-     * String, SASProtocol, IpRange)}
-     */
-    public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setUpdatePermission(true)
-            .setProcessPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String identifier = "";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange);
-        // END: com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange
     }
 
     /**

@@ -59,7 +59,7 @@ public final class SasTokenCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.credentials.SASTokenCredential.fromQueryParameters#Map}
+     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map}
      *
      * @param queryParameters URL query parameters
      * @return a SAS token credential if {@code queryParameters} is not {@code null} and has

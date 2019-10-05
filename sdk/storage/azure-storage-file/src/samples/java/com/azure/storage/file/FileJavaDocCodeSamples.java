@@ -4,9 +4,6 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -18,7 +15,6 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.NtfsFileAttributes;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -593,36 +589,6 @@ public class FileJavaDocCodeSamples {
                     System.out.printf("Close %d handles.", numOfClosedHandles)
                 ));
         // END: com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context
-    }
-
-    /**
-     * Generates a code sample for using {@link FileClient#generateSAS(String, FileSasPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IpRange, String, String, String, String, String)}
-     */
-    public void generateSAS() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
-        String identifier = "identifier";
-        FileSasPermission permissions = new FileSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setWritePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IpRange ipRange = new IpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = fileClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.FileClient.generateSAS#String-FileSasPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IpRange-String-String-String-String-String
     }
 
      /**

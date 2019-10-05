@@ -6,7 +6,7 @@ package com.azure.storage.file;
 import com.azure.storage.common.BaseSasQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -75,7 +75,7 @@ public final class FileServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param permissions A {@code String} representing the storage permissions or {@code null}.
      * @param signature A {@code String} representing the signature for the SAS token.
      */
-    FileServiceSasQueryParameters(String version, SASProtocol protocol, OffsetDateTime startTime,
+    FileServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, IpRange ipRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType) {
