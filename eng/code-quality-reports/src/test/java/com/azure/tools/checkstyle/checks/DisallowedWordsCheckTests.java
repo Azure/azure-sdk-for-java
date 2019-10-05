@@ -5,6 +5,7 @@ import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
@@ -12,6 +13,12 @@ public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
         " Camelcase standards for the following words: XML, HTTP, URL.";
 
     private Checker checker;
+
+    @Before
+    public void prepare() throws Exception {
+        checker = prepareCheckStyleChecker();
+        checker.addListener(this.getBriefUtLogger());
+    }
 
     @After
     public void cleanup() {
@@ -25,13 +32,10 @@ public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
 
     @Test
     public void disallowedWordsTestData() throws Exception {
-        checker = prepareCheckStyleChecker();
-        checker.addListener(this.getBriefUtLogger());
         String[] expected = {
             expectedErrorMessage(2, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorURLCase")),
             expectedErrorMessage(4, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorHTTPMethod"))
         };
-
         verify(checker, getPath("DisallowedWordsTestData.java"), expected);
     }
 
