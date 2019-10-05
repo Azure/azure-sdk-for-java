@@ -58,6 +58,8 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
 
     private final ClientLogger logger = new ClientLogger(FileServiceClientBuilder.class);
 
+    protected String accountName;
+
     /**
      * Creates a builder instance that is able to configure and construct {@link FileServiceClient FileServiceClients}
      * and {@link FileServiceAsyncClient FileServiceAsyncClients}.
@@ -97,7 +99,7 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
      * has been set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
-        return new FileServiceAsyncClient(constructImpl());
+        return new FileServiceAsyncClient(constructImpl(), accountName);
     }
 
     /**
@@ -135,6 +137,8 @@ public final class FileServiceClientBuilder extends BaseFileClientBuilder<FileSe
         try {
             URL fullUrl = new URL(endpoint);
             super.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
+
+            this.accountName = Utility.getAccountName(fullUrl);
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new FileServiceSasQueryParameters(

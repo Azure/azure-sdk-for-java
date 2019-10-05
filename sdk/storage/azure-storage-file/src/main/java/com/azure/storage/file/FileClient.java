@@ -924,5 +924,15 @@ public class FileClient {
     public String getFilePath() {
         return this.fileAsyncClient.getFilePath();
     }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.fileAsyncClient.getAccountName();
+    }
 }
 

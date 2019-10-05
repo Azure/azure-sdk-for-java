@@ -61,6 +61,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
     private String shareName;
     private String snapshot;
+    protected String accountName;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link ShareClient ShareClients} and {@link
@@ -104,7 +105,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
      * has been set.
      */
     public ShareAsyncClient buildAsyncClient() {
-        return new ShareAsyncClient(constructImpl(), shareName, snapshot);
+        return new ShareAsyncClient(constructImpl(), shareName, snapshot, accountName);
     }
 
     /**
@@ -145,6 +146,8 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
         try {
             URL fullUrl = new URL(endpoint);
             super.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
+
+            this.accountName = Utility.getAccountName(fullUrl);
 
             // Attempt to get the share name from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");
