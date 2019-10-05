@@ -44,6 +44,7 @@ namespace HttpMock
                 using (var upstreamResponseMessage = await _httpClient.SendAsync(upstreamRequest))
                 {
                     var headers = new List<KeyValuePair<string, StringValues>>();
+
                     foreach (var header in upstreamResponseMessage.Headers)
                     {
                         // Must skip "Transfer-Encoding" header, since if it's set manually Kestrel requires you to implement
@@ -53,6 +54,11 @@ namespace HttpMock
                             continue;
                         }
 
+                        headers.Add(new KeyValuePair<string, StringValues>(header.Key, header.Value.ToArray()));
+                    }
+
+                    foreach (var header in upstreamResponseMessage.Content.Headers)
+                    {
                         headers.Add(new KeyValuePair<string, StringValues>(header.Key, header.Value.ToArray()));
                     }
 
