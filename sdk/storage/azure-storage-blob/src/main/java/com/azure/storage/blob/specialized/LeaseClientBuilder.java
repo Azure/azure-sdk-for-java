@@ -45,7 +45,7 @@ public final class LeaseClientBuilder {
     private String url;
     private String leaseId;
     private boolean isBlob;
-    protected String accountName;
+    private String accountName;
 
     /**
      * Creates a {@link LeaseClient} based on the configurations set in the builder.
