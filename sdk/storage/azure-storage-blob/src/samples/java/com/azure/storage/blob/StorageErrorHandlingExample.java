@@ -21,7 +21,7 @@ public class StorageErrorHandlingExample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        ContainerClient containerClient = new ContainerClientBuilder().endpoint("https://account.blob.core.windows.net/mycontainer")
+        BlobContainerClient blobContainerClient = new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/mycontainer")
             .buildClient();
 
         try {
@@ -29,7 +29,7 @@ public class StorageErrorHandlingExample {
             /*
              * An error occurred while creating the container.
              */
-            containerClient.create();
+            blobContainerClient.create();
         } catch (StorageException e) {
 
             /*
@@ -59,7 +59,7 @@ public class StorageErrorHandlingExample {
                 /*
                  * Process the error.
                  */
-                System.out.println("The container url is " + containerClient.toString());
+                System.out.println("The container url is " + blobContainerClient.toString());
             }
         }
     }

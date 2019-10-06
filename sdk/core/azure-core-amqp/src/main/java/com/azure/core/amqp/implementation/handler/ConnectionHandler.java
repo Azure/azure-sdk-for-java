@@ -42,8 +42,7 @@ public class ConnectionHandler extends Handler {
      * Creates a handler that handles proton-j's connection events.
      *
      * @param connectionId Identifier for this connection.
-     * @param hostname Hostname to use for socket creation. If there is a proxy configured, this could be a proxy's
-     *     IP address.
+     * @param hostname Hostname of the AMQP message broker to create a connection to.
      */
     public ConnectionHandler(final String connectionId, final String hostname) {
         this(connectionId, hostname, new ClientLogger(ConnectionHandler.class));

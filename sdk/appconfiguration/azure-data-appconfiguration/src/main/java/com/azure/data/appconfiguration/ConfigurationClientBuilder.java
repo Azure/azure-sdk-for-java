@@ -82,14 +82,13 @@ public final class ConfigurationClientBuilder {
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private HttpPipeline pipeline;
-    private final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
      * The constructor with defaults.
      */
     public ConfigurationClientBuilder() {
-        retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
 
@@ -98,6 +97,7 @@ public final class ConfigurationClientBuilder {
             .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
             .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
+
     /**
      * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code buildClient()} is
      * called a new instance of {@link ConfigurationClient} is created.
@@ -160,7 +160,7 @@ public final class ConfigurationClientBuilder {
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -276,6 +276,19 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
+     * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
+     * @param retryPolicy RetryPolicy applied to each request.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 

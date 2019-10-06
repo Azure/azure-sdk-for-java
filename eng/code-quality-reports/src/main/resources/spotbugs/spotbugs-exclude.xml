@@ -383,8 +383,9 @@
     <Or>
       <Package name="com.microsoft.azure.storage.blob"/>
       <Package name="com.azure.storage.file.models"/>
-      <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+      <Class name="com.azure.storage.blob.HttpGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
+      <Class name="com.azure.storage.blob.BlobContainerProperties"/>
       <Class name="com.azure.storage.file.implementation.models.DirectoryCreateHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
@@ -455,6 +456,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
+      <Class name="com.azure.storage.file.StorageFileInputStream"/>
       <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
@@ -466,17 +468,6 @@
     <Class name="com.azure.storage.blob.BlobClient"/>
     <Method name="downloadToFile"/>
     <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"/>
-  </Match>
-
-  <!-- Incorrect flagging, if the response is null a HttpResponseException should be thrown
-  https://github.com/azure/azure-sdk-for-java/issues/4556 -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.keys.KeyClient"/>
-      <Class name="com.azure.security.keyvault.secrets.SecretClient"/>
-      <Class name="com.azure.security.keyvault.certificates.CertificateClient"/>
-    </Or>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Super doesn't need to be cloned since it is Object -->
@@ -580,7 +571,7 @@
 
   <!-- This is a false positive, it is possible for usingUserDelegation to be false. -->
   <Match>
-    <Class name="com.azure.storage.blob.specialized.BlobServiceSASSignatureValues"/>
+    <Class name="com.azure.storage.blob.specialized.BlobServiceSasSignatureValues"/>
     <Bug pattern="UC_USELESS_CONDITION"/>
   </Match>
 
@@ -632,5 +623,12 @@
                   NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
                   RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+
+  <!-- The field is read by parent class StorageOutputStrem methods. -->
+  <Match>
+    <Class name="com.azure.storage.file.StorageFileOutputStream"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 </FindBugsFilter>

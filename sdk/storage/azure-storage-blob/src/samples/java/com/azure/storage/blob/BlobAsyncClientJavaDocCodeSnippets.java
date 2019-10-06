@@ -13,19 +13,18 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 
 /**
  * Code snippets for {@link BlobAsyncClient}
@@ -34,10 +33,14 @@ import java.util.Map;
 public class BlobAsyncClientJavaDocCodeSnippets {
 
     private BlobAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobAsyncClient("blobName");
+    private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes(StandardCharsets.UTF_8)));
     private String leaseId = "leaseId";
     private String copyId = "copyId";
     private URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
     private String file = "file";
+    private int blockSize = 50;
+    private int numBuffers = 2;
+    private String filePath = "filePath";
 
     /**
      * Code snippet for {@link BlobAsyncClient#exists()}
@@ -404,71 +407,6 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#generateUserDelegationSAS(UserDelegationKey, String, BlobSASPermission,
-     * OffsetDateTime, OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
-     */
-    public void generateUserDelegationSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String accountName = "accountName";
-        UserDelegationKey userDelegationKey = new UserDelegationKey();
-
-        String sas = client.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
-            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
-            contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateUserDelegationSAS#UserDelegationKey-String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-    }
-
-    /**
-     * Code snippet for {@link BlobAsyncClient#generateSAS(String, BlobSASPermission, OffsetDateTime, OffsetDateTime,
-     * String, SASProtocol, IPRange, String, String, String, String, String)}
-     */
-    public void generateSASCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        BlobSASPermission permissions = new BlobSASPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String identifier = "identifier";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        // Note either "identifier", or "expiryTime and permissions" are required to be set
-        String sas = client.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange,
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.blob.BlobAsyncClient.generateSAS#String-BlobSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-    }
-
-    /**
      * Generates a code sample for using {@link BlobAsyncClient#getContainerName()}
      */
     public void getContainerName() {
@@ -487,4 +425,80 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         System.out.println("The name of the blob is " + blobName);
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName
     }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#upload(Flux, ParallelTransferOptions)}
+     */
+    public void upload3() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers);
+        client.upload(data, parallelTransferOptions).subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMD5())));
+        // END: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions)}
+     */
+    public void upload4() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
+        BlobHTTPHeaders headers = new BlobHTTPHeaders()
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        BlobAccessConditions accessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers);
+
+        client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
+            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String)}
+     */
+    public void uploadFromFile() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String
+        client.uploadFromFile(filePath)
+            .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload from file succeeded"));
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions)}
+     */
+    public void uploadFromFile2() {
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
+        BlobHTTPHeaders headers = new BlobHTTPHeaders()
+            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
+            .setBlobContentLanguage("en-US")
+            .setBlobContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        BlobAccessConditions accessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+            .setModifiedAccessConditions(new ModifiedAccessConditions()
+                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+
+        client.uploadFromFile(filePath,
+            new ParallelTransferOptions().setBlockSize(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE),
+            headers, metadata, AccessTier.HOT, accessConditions)
+            .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload from file succeeded"));
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions
+    }
+
 }

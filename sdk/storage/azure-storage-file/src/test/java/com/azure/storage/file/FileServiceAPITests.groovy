@@ -39,7 +39,7 @@ class FileServiceAPITests extends APISpec {
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
-        def fileServiceURL = primaryFileServiceClient.getFileServiceUrl().toString()
+        def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()
 
         then:
         expectURL.equals(fileServiceURL)

@@ -5,7 +5,6 @@ package com.azure.storage.queue
 
 
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.queue.QueueAsyncClient
 import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.SignedIdentifier
 import com.azure.storage.queue.models.StorageErrorCode
@@ -37,7 +36,7 @@ class QueueAysncAPITests extends APISpec {
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accoutName, queueName)
 
         when:
-        def queueURL = queueAsyncClient.getQueueUrl().toString()
+        def queueURL = queueAsyncClient.getQueueUrl()
 
         then:
         expectURL.equals(queueURL)

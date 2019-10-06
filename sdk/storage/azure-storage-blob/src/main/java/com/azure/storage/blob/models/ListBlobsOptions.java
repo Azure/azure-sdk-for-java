@@ -4,10 +4,10 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerClient;
 
 /**
- * Defines options available to configure the behavior of a call to listBlobsFlatSegment on a {@link ContainerClient}
+ * Defines options available to configure the behavior of a call to listBlobsFlatSegment on a {@link BlobContainerClient}
  * object. See the constructor for details on each of the options.
  */
 public final class ListBlobsOptions {

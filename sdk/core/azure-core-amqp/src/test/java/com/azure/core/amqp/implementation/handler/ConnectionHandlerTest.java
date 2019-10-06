@@ -27,6 +27,7 @@ import static com.azure.core.amqp.implementation.handler.ConnectionHandler.FRAME
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATFORM;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PRODUCT;
+import static com.azure.core.amqp.implementation.handler.ConnectionHandler.USER_AGENT;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.VERSION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -77,6 +78,9 @@ public class ConnectionHandlerTest {
             Assert.assertTrue(actual instanceof String);
             Assert.assertEquals(value, actual);
         });
+
+        Assert.assertTrue("Expected the USER_AGENT string to be there.",
+            properties.containsKey(USER_AGENT.toString()));
     }
 
     @Test

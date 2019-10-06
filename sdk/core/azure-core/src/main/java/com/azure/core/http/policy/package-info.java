@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing HttpPipelinePolicy interface and it's implementations.
+ * Package containing HttpPipelinePolicy interface and its implementations.
  */
 package com.azure.core.http.policy;
 
