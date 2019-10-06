@@ -5,6 +5,7 @@ package com.azure.search.data.customization;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,8 +32,8 @@ public class SearchIndexClientBuildersTest {
             .searchDnsSuffix(dnsSuffix)
             .buildClient();
 
-        assert (client != null);
-        assert (client.getClass().getSimpleName().equals(SearchIndexClientImpl.class.getSimpleName()));
+        Assert.assertNotNull(client);
+        Assert.assertEquals(client.getClass().getSimpleName(),SearchIndexClientImpl.class.getSimpleName());
 
         return (SearchIndexClientImpl) client;
     }
@@ -50,8 +51,8 @@ public class SearchIndexClientBuildersTest {
             .searchDnsSuffix(dnsSuffix)
             .buildClient();
 
-        assert (client != null);
-        assert (client.getClass().getSimpleName().equals(SearchIndexClientImpl.class.getSimpleName()));
+        Assert.assertNotNull (client);
+        Assert.assertEquals(client.getClass().getSimpleName(),SearchIndexClientImpl.class.getSimpleName());
 
         return (SearchIndexClientImpl) client;
     }
@@ -70,8 +71,8 @@ public class SearchIndexClientBuildersTest {
             .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
 
-        assert (client != null);
-        assert (client.getClass().getSimpleName().equals(SearchIndexAsyncClientImpl.class.getSimpleName()));
+        Assert.assertNotNull (client);
+        Assert.assertEquals(client.getClass().getSimpleName(),SearchIndexAsyncClientImpl.class.getSimpleName());
 
         return (SearchIndexAsyncClientImpl) client;
     }
@@ -89,8 +90,8 @@ public class SearchIndexClientBuildersTest {
             .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
 
-        assert (client != null);
-        assert (client.getClass().getSimpleName().equals(SearchIndexAsyncClientImpl.class.getSimpleName()));
+        Assert.assertNotNull (client);
+        Assert.assertEquals(client.getClass().getSimpleName(),SearchIndexAsyncClientImpl.class.getSimpleName());
 
         return (SearchIndexAsyncClientImpl) client;
     }
@@ -152,6 +153,24 @@ public class SearchIndexClientBuildersTest {
     @Test
     public void buildAsyncClientTest() {
         buildAsyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+    }
+
+    @Test
+    public void whenApiVersionNotSpecifiedThenDefaultValueExists(){
+        SearchIndexClient searchIndexClient = buildClient(searchServiceName, indexName, apiKey, dnsSuffix);
+        Assert.assertEquals("2019-05-06", searchIndexClient.getApiVersion());
+
+        SearchIndexAsyncClient searchIndexAsyncClient = buildAsyncClient(searchServiceName, indexName, apiKey, dnsSuffix);
+        Assert.assertEquals("2019-05-06", searchIndexAsyncClient.getApiVersion());
+    }
+
+    @Test
+    public void whenApiVersionSpecifiedThenSpecifiedValueExists(){
+        SearchIndexClient searchIndexClient = buildClient(searchServiceName, indexName, apiKey,"abc", dnsSuffix);
+        Assert.assertEquals("abc", searchIndexClient.getApiVersion());
+
+        SearchIndexAsyncClient searchIndexAsyncClient = buildAsyncClient(searchServiceName, indexName, apiKey,"abc", dnsSuffix);
+        Assert.assertEquals("abc", searchIndexAsyncClient.getApiVersion());
     }
 
     @Test
