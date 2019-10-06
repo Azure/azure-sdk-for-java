@@ -132,13 +132,13 @@ public final class SecretClient {
      * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)}
-     * return the {@link List} containing {@link SecretProperties base secret} as output excluding the include the value of
+     * return the {@link List} containing {@link SecretProperties secret properties} as output excluding the include the value of
      * the secret.
      * This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#secretProperties}
      *
-     * @param secretProperties The {@link SecretProperties base secret} holding attributes of the secret being requested.
+     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -155,13 +155,13 @@ public final class SecretClient {
      * to any secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)}
-     * return the {@link List} containing {@link SecretProperties base secret} as output excluding the include the value of
+     * return the {@link List} containing {@link SecretProperties secret properties} as output excluding the include the value of
      * the secret.
      * This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretProperties}
      *
-     * @param secretProperties The {@link SecretProperties base secret} holding attributes of the secret being requested.
+     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being requested.
      * @return The requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
      *     SecretProperties#getVersion() version} doesn't exist in the key vault.
@@ -226,7 +226,7 @@ public final class SecretClient {
      * </p>
      * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretPropertiesWithResponse#secretProperties-Context}
      *
-     * @param secret The {@link SecretProperties base secret} object with updated properties.
+     * @param secret The {@link SecretProperties secret properties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -253,7 +253,7 @@ public final class SecretClient {
      * vault.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretProperties#secretProperties}
      *
-     * @param secret The {@link SecretProperties base secret} object with updated properties.
+     * @param secret The {@link SecretProperties secret properties} object with updated properties.
      * @return The {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -507,7 +507,7 @@ public final class SecretClient {
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response in the list is represented by {@link SecretProperties} as only the base secret identifier and its
+     * secret response in the list is represented by {@link SecretProperties} as only the secret identifier and its
      * attributes are provided in the response. The secret values and individual secret versions are not listed in the
      * response. This operation requires the {@code secrets/list} permission.
      *
@@ -531,7 +531,7 @@ public final class SecretClient {
 
     /**
      * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response in the list is represented by {@link SecretProperties} as only the base secret identifier and its
+     * secret response in the list is represented by {@link SecretProperties} as only the secret identifier and its
      * attributes are provided in the response. The secret values and individual secret versions are not listed in the
      * response. This operation requires the {@code secrets/list} permission.
      *
@@ -587,7 +587,7 @@ public final class SecretClient {
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link
-     * SecretProperties} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * SecretProperties} as only the secret identifier and its attributes are provided in the response. The secret values
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link
@@ -607,7 +607,7 @@ public final class SecretClient {
 
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link
-     * SecretProperties} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * SecretProperties} as only the secret identifier and its attributes are provided in the response. The secret values
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link

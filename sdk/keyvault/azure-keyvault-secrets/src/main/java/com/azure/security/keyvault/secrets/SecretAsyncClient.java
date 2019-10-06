@@ -227,13 +227,13 @@ public final class SecretAsyncClient {
      * {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretAsyncClient#listSecrets()} and {@link
-     * SecretAsyncClient#listSecretVersions(String)} return the {@link Flux} containing {@link SecretProperties base secret}
+     * SecretAsyncClient#listSecretVersions(String)} return the {@link Flux} containing {@link SecretProperties secret properties}
      * as output. This operation can then be used to get the full secret with its value from {@code secretProperties}. </p>
      *
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#secretProperties}
      *
-     * @param secretProperties The {@link SecretProperties base secret} secret base holding attributes of the secret being
+     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being
      *     requested.
      * @return A {@link Mono} containing the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -252,13 +252,13 @@ public final class SecretAsyncClient {
      * {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretAsyncClient#listSecrets()} and {@link
-     * SecretAsyncClient#listSecretVersions(String)} return the {@link Flux} containing {@link SecretProperties base secret}
+     * SecretAsyncClient#listSecretVersions(String)} return the {@link Flux} containing {@link SecretProperties secret properties}
      * as output. This operation can then be used to get the full secret with its value from {@code secretProperties}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties}
      *
-     * @param secretProperties The {@link SecretProperties base secret} secret base holding attributes of the secret being
+     * @param secretProperties The {@link SecretProperties secret properties} holding attributes of the secret being
      *     requested.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -311,7 +311,7 @@ public final class SecretAsyncClient {
      * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and {@link SecretProperties#getVersion()
      * version} cannot be null.</p>
      *
-     * @param secret The {@link SecretProperties base secret} object with updated properties.
+     * @param secret The {@link SecretProperties secret properties} object with updated properties.
      * @return A {@link Mono} containing the {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -338,7 +338,7 @@ public final class SecretAsyncClient {
      * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and {@link SecretProperties#getVersion()
      * version} cannot be null.</p>
      *
-     * @param secret The {@link SecretProperties base secret} object with updated properties.
+     * @param secret The {@link SecretProperties secret properties} object with updated properties.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -674,14 +674,14 @@ public final class SecretAsyncClient {
 
     /**
      * List secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual
-     * secret response in the flux is represented by {@link SecretProperties} as only the base secret identifier and its
+     * secret response in the flux is represented by {@link SecretProperties} as only the secret identifier and its
      * attributes are provided in the response. The secret values and individual secret versions are not listed in the
      * response. This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing
-     * {@link SecretProperties base secret} to
-     * {@link Flux} containing {@link Secret secret} using {@link SecretAsyncClient#getSecret(SecretProperties baseSecret)}
+     * {@link SecretProperties secret properties} to
+     * {@link Flux} containing {@link Secret secret} using {@link SecretAsyncClient#getSecret(SecretProperties secretProperties)}
      * within {@link Flux#flatMap(Function)}.</p>
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecrets}
      *
@@ -788,12 +788,12 @@ public final class SecretAsyncClient {
 
     /**
      * List all versions of the specified secret. The individual secret response in the flux is represented by {@link
-     * SecretProperties} as only the base secret identifier and its attributes are provided in the response. The secret values
+     * SecretProperties} as only the secret identifier and its attributes are provided in the response. The secret values
      * are not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get the Secret with value of all the versions from this information. Convert the {@link
-     * Flux} containing {@link SecretProperties base secret} to {@link Flux} containing {@link Secret secret} using
-     * {@link SecretAsyncClient#getSecret(SecretProperties baseSecret)} within {@link Flux#flatMap(Function)}.</p>
+     * Flux} containing {@link SecretProperties secret} to {@link Flux} containing {@link Secret secret} using
+     * {@link SecretAsyncClient#getSecret(SecretProperties secretProperties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
      *
