@@ -549,7 +549,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
      * @return boolean value that defines if two ConfigurationSetting lists are equal
      */
     boolean equalsArray(List<ConfigurationSetting> settings1, List<ConfigurationSetting> settings2) {
-        if(settings1 == settings2) {
+        if (settings1 == settings2) {
             return true;
         }
 
