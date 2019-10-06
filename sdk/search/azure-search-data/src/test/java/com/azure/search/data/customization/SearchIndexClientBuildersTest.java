@@ -38,6 +38,25 @@ public class SearchIndexClientBuildersTest {
     }
 
     /**
+     * Builds a Sync Search Index client
+     */
+    private SearchIndexClientImpl buildClient(String searchServiceName, String indexName, String apiKey, String dnsSuffix) {
+
+        SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
+        SearchIndexClient client = clientBuilder
+            .serviceName(searchServiceName)
+            .indexName(indexName)
+            .credential(apiKey)
+            .searchDnsSuffix(dnsSuffix)
+            .buildClient();
+
+        assert (client != null);
+        assert (client.getClass().getSimpleName().equals(SearchIndexClientImpl.class.getSimpleName()));
+
+        return (SearchIndexClientImpl) client;
+    }
+
+    /**
      * Builds an Async Search Index client
      */
     private SearchIndexAsyncClientImpl buildAsyncClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
@@ -48,6 +67,25 @@ public class SearchIndexClientBuildersTest {
             .indexName(indexName)
             .credential(apiKey)
             .apiVersion(apiVersion)
+            .searchDnsSuffix(dnsSuffix)
+            .buildAsyncClient();
+
+        assert (client != null);
+        assert (client.getClass().getSimpleName().equals(SearchIndexAsyncClientImpl.class.getSimpleName()));
+
+        return (SearchIndexAsyncClientImpl) client;
+    }
+
+    /**
+     * Builds an Async Search Index client
+     */
+    private SearchIndexAsyncClientImpl buildAsyncClient(String searchServiceName, String indexName, String apiKey, String dnsSuffix) {
+
+        SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
+        SearchIndexAsyncClient client = clientBuilder
+            .serviceName(searchServiceName)
+            .indexName(indexName)
+            .credential(apiKey)
             .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
 
@@ -107,8 +145,18 @@ public class SearchIndexClientBuildersTest {
     }
 
     @Test
+    public void buildSyncClientUsingDefaultApiVersionTest() {
+        buildClient(searchServiceName, indexName, apiKey, dnsSuffix);
+    }
+
+    @Test
     public void buildAsyncClientTest() {
         buildAsyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+    }
+
+    @Test
+    public void buildAsyncClientUsingDefaultApiVersionTest() {
+        buildAsyncClient(searchServiceName, indexName, apiKey, dnsSuffix);
     }
 
     @Test
