@@ -8,7 +8,7 @@ import java.util.Locale;
 /**
  * Specifies the set of possible permissions for a shared access signature protocol.
  */
-public enum SASProtocol {
+public enum SasProtocol {
     /**
      * Permission to use SAS only through https granted.
      */
@@ -21,7 +21,7 @@ public enum SASProtocol {
 
     private final String protocols;
 
-    SASProtocol(String p) {
+    SasProtocol(String p) {
         this.protocols = p;
     }
 
@@ -30,17 +30,17 @@ public enum SASProtocol {
      *
      * @param str The value to try to parse.
      *
-     * @return A {@code SASProtocol} value that represents the string if possible.
+     * @return A {@code SasProtocol} value that represents the string if possible.
      * @throws IllegalArgumentException If {@code str} doesn't equal "https" or "https,http"
      */
-    public static SASProtocol parse(String str) {
+    public static SasProtocol parse(String str) {
         if (str.equals(Constants.HTTPS)) {
-            return SASProtocol.HTTPS_ONLY;
+            return SasProtocol.HTTPS_ONLY;
         } else if (str.equals(Constants.HTTPS_HTTP)) {
-            return SASProtocol.HTTPS_HTTP;
+            return SasProtocol.HTTPS_HTTP;
         }
         throw new IllegalArgumentException(String.format(Locale.ROOT,
-            "%s could not be parsed into a SASProtocol value.", str));
+            "%s could not be parsed into a SasProtocol value.", str));
     }
 
     @Override

@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -18,9 +21,9 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -30,8 +33,6 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,9 +41,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -75,15 +74,17 @@ public final class BlobContainerAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
+    private final String accountName;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk) {
+    BlobContainerAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo cpk, String accountName) {
         this.azureBlobStorage = azureBlobStorage;
         this.customerProvidedKey = cpk;
+        this.accountName = accountName;
     }
 
     /**
@@ -121,7 +122,7 @@ public final class BlobContainerAsyncClient {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getBlobContainerUrl(), blobName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, customerProvidedKey);
+            .build(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -143,8 +144,18 @@ public final class BlobContainerAsyncClient {
      * @return The name of container.
      */
     public String getBlobContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
+    }
+
 
     /**
      * Gets the {@link HttpPipeline} powering this client.

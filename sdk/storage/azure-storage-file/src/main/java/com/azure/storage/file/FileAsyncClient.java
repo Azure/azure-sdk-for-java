@@ -3,6 +3,10 @@
 
 package com.azure.storage.file;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
+import static com.azure.storage.file.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -40,11 +44,6 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -65,10 +64,10 @@ import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -95,6 +94,7 @@ public class FileAsyncClient {
     private final String shareName;
     private final String filePath;
     private final String snapshot;
+    private final String accountName;
 
     /**
      * Creates a FileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -105,13 +105,15 @@ public class FileAsyncClient {
      * @param filePath Path to the file
      * @param snapshot The snapshot of the share
      */
-    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String snapshot) {
+    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
+                    String snapshot, String accountName) {
         Objects.requireNonNull(shareName);
         Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
+        this.accountName = accountName;
     }
 
     /**
@@ -1118,6 +1120,16 @@ public class FileAsyncClient {
      */
     public String getFilePath() {
         return filePath;
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {

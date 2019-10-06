@@ -18,11 +18,10 @@ import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -353,5 +352,14 @@ public final class BlobServiceClient {
         Mono<Response<StorageAccountInfo>> response = blobServiceAsyncClient.getAccountInfoWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.blobServiceAsyncClient.getAccountName();
     }
 }

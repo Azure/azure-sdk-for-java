@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.queue.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -26,17 +29,13 @@ import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.queue.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -57,6 +56,7 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
 public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
     private final String queueName;
+    private final String accountName;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -65,10 +65,11 @@ public final class QueueAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
      */
-    QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
+    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
         Objects.requireNonNull(queueName);
         this.queueName = queueName;
         this.client = client;
+        this.accountName = accountName;
     }
 
     /**
@@ -752,6 +753,16 @@ public final class QueueAsyncClient {
      */
     public String getQueueName() {
         return queueName;
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     /*

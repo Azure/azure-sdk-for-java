@@ -18,11 +18,10 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -114,6 +113,16 @@ public final class BlobContainerClient {
     public String getBlobContainerUrl() {
         return blobContainerAsyncClient.getBlobContainerUrl();
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.blobContainerAsyncClient.getAccountName();
+    }
+
 
     /**
      * Gets the {@link HttpPipeline} powering this client.

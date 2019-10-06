@@ -15,10 +15,9 @@ import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -383,5 +382,15 @@ public final class QueueServiceClient {
     public Response<StorageServiceStats> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageServiceStats>> response = client.getStatisticsWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
     }
 }
