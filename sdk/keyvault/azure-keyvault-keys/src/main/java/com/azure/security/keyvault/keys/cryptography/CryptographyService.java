@@ -130,17 +130,4 @@ interface CryptographyService {
                                @HeaderParam("accept-language") String acceptLanguage,
                                @HeaderParam("Content-Type") String type,
                                Context context);
-
-    @Get("secrets/{key-getName}/{key-getVersion}")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
-    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<SecretKey>> getKeyAsSecret(@HostParam("url") String url,
-                               @PathParam("key-getName") String keyName,
-                               @PathParam("key-getVersion") String keyVersion,
-                               @QueryParam("api-getVersion") String apiVersion,
-                               @HeaderParam("accept-language") String acceptLanguage,
-                               @HeaderParam("Content-Type") String type,
-                               Context context);
 }
