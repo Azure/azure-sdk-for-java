@@ -39,17 +39,6 @@ public class SuggestSyncTests extends SuggestTestBase {
     @Override
     protected void initializeClient() {
         client = builderSetup().indexName(HOTELS_INDEX_NAME).buildClient();
-
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                BOOKS_INDEX_JSON, searchServiceName, apiKey);
-            try {
-                searchIndexService.initialize();
-            } catch (IOException e) {
-                Assert.fail("Unable to create books index: " + e.getMessage());
-            }
-        }
     }
 
     @Test
