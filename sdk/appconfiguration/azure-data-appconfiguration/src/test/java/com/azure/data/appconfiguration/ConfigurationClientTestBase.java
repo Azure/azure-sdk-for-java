@@ -245,7 +245,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
-        testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual))));
+        testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual))));
         assertTrue(expectedSelection.isEmpty());
     }
 
@@ -258,7 +258,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
 
         for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -325,7 +325,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
         for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -343,7 +343,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
         for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -399,7 +399,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertConfigurationEquals(ConfigurationSetting expected, Response<ConfigurationSetting> response, final int expectedStatusCode) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
-
         assertConfigurationEquals(expected, response.getValue());
     }
 
@@ -412,9 +411,32 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertConfigurationEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
         if (expected != null && actual != null) {
             actual = cleanResponse(expected, actual);
+        } else if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertTrue(false);
         }
 
-        assertEquals(expected, actual);
+        assertEquals(expected.getKey(), actual.getKey());
+        assertEquals(expected.getLabel(), actual.getLabel());
+        assertEquals(expected.getValue(), actual.getValue());
+        assertEquals(expected.getETag(), actual.getETag());
+        assertEquals(expected.getLastModified(), actual.getLastModified());
+        assertEquals(expected.getContentType(), actual.getContentType());
+
+        final Map<String, String> expectedTags = expected.getTags();
+        final Map<String, String> actualTags = actual.getTags();
+
+        boolean expectedIsNullOrEmpty = ImplUtils.isNullOrEmpty(expectedTags);
+        boolean actualIsNullOrEmpty = ImplUtils.isNullOrEmpty(actualTags);
+
+        if (expectedIsNullOrEmpty) {
+            assertTrue(actualIsNullOrEmpty);
+        } else {
+            assertEquals(expectedTags, actualTags);
+
+            assertTrue(true);
+        }
     }
 
     /**
@@ -488,4 +510,64 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             assertEquals(exception, ex.getClass());
         }
     }
+
+    /**
+     * Helper method to verify that two configuration setting are equal. Users can defined their equal method.
+     *
+     * @param o1 ConfigurationSetting object 1
+     * @param o2 ConfigurationSetting object 2
+     * @return boolean value that defines if two ConfigurationSettings are equal
+     */
+    boolean equals(ConfigurationSetting o1, ConfigurationSetting o2) {
+        if (o1 == o2) {
+            return true;
+        }
+
+        if (!Objects.equals(o1.getKey(), o2.getKey())
+            || !Objects.equals(o1.getLabel(), o2.getLabel())
+            || !Objects.equals(o1.getValue(), o2.getValue())
+            || !Objects.equals(o1.getETag(), o2.getETag())
+            || !Objects.equals(o1.getLastModified(), o2.getLastModified())
+            || !Objects.equals(o1.isLocked(), o2.isLocked())
+            || !Objects.equals(o1.getContentType(), o2.getContentType())
+            || ImplUtils.isNullOrEmpty(o1.getTags()) != ImplUtils.isNullOrEmpty(o2.getTags())) {
+            return false;
+        }
+
+        if (!ImplUtils.isNullOrEmpty(o1.getTags())) {
+            return Objects.equals(o1.getTags(), o2.getTags());
+        }
+
+        return true;
+    }
+
+    /**
+     * A helper method to verify that two lists of ConfigurationSetting are equal each other.
+     *
+     * @param settings1 List of ConfigurationSetting
+     * @param settings2 Another List of ConfigurationSetting
+     * @return boolean value that defines if two ConfigurationSetting lists are equal
+     */
+    boolean equalsArray(List<ConfigurationSetting> settings1, List<ConfigurationSetting> settings2) {
+        if(settings1 == settings2) {
+            return true;
+        }
+
+        if (settings1 == null || settings2 == null) {
+            return false;
+        }
+
+        if (settings1.size() != settings2.size()) {
+            return false;
+        }
+
+        final int size = settings1.size();
+        for (int i = 0; i < size; i++) {
+            if (!equals(settings1.get(i), settings2.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
