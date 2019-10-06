@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized
 
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.HTTPGetterInfo
+import com.azure.storage.blob.HttpGetterInfo
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageErrorException
 import spock.lang.Unroll
@@ -15,7 +15,7 @@ class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
     def setup() {
-        bu = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+        bu = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu.upload(defaultInputStream.get(), defaultText.length())
     }
 
@@ -36,7 +36,7 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
 
-        HTTPGetterInfo info = new HTTPGetterInfo()
+        HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(0)
             .setCount(flux.getScenarioData().remaining())
             .setETag("etag")
@@ -63,7 +63,7 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
-        HTTPGetterInfo info = new HTTPGetterInfo().setETag("etag")
+        HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
         when:
         DownloadAsyncResponse response = flux.getter(info).block()
@@ -94,15 +94,15 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
 
         when:
-        new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
+        new DownloadAsyncResponse(flux.getter(info).block().getRawResponse(), info, { HttpGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
 
         where:
         info                               | _
         null                               | _
-        new HTTPGetterInfo().setETag(null) | _
+        new HttpGetterInfo().setETag(null) | _
     }
 
     def "Options IA"() {
@@ -118,18 +118,18 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
 
         when:
-        DownloadAsyncResponse response = new DownloadAsyncResponse(flux.getter(new HTTPGetterInfo()).block()
-            .getRawResponse(), new HTTPGetterInfo().setETag("etag"), null)
+        DownloadAsyncResponse response = new DownloadAsyncResponse(flux.getter(new HttpGetterInfo()).block()
+            .getRawResponse(), new HttpGetterInfo().setETag("etag"), null)
         response.body(null).blockFirst()
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(NullPointerException)
     }
 
     def "Info"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_INFO_TEST, this)
-        HTTPGetterInfo info = new HTTPGetterInfo()
+        HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(20)
             .setCount(10)
             .setETag("etag")
@@ -146,7 +146,7 @@ class DownloadResponseTest extends APISpec {
 
     def "Info count IA"() {
         when:
-        new HTTPGetterInfo().setCount(-1)
+        new HttpGetterInfo().setCount(-1)
 
         then:
         thrown(IllegalArgumentException)

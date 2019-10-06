@@ -49,6 +49,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>12.0.0-preview.4</version>

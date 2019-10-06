@@ -25,8 +25,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * Creates a handler that handles proton-j's connection events using web sockets.
      *
      * @param connectionId Identifier for this connection.
-     * @param hostname Hostname to use for socket creation. If there is a proxy configured, this could be a
-     *         proxy's IP address.
+     * @param hostname Hostname to use for socket creation.
      */
     public WebSocketsConnectionHandler(final String connectionId, final String hostname) {
         super(connectionId, hostname, new ClientLogger(WebSocketsConnectionHandler.class));
