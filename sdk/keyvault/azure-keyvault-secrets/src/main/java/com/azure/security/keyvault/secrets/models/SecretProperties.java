@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * SecretProperties is the resource containing all the properties of the secret except its value.
@@ -139,9 +140,11 @@ public class SecretProperties {
      * Set the enabled value.
      *
      * @param enabled The enabled value to set
+     * @throws NullPointerException if {@code enabled} is null.
      * @return the SecretProperties object itself.
      */
     public SecretProperties setEnabled(Boolean enabled) {
+        Objects.requireNonNull(enabled);
         this.enabled = enabled;
         return this;
     }
@@ -229,7 +232,7 @@ public class SecretProperties {
      * Set the contentType.
      *
      * @param contentType The contentType to set
-     * @return the SecretProperties object itself.
+     * @return the updated SecretProperties object itself.
      */
     public SecretProperties setContentType(String contentType) {
         this.contentType = contentType;

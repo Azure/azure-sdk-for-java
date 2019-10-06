@@ -25,7 +25,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.secrets.implementation.DeletedSecretPage;
-import com.azure.security.keyvault.secrets.implementation.SecretBasePage;
+import com.azure.security.keyvault.secrets.implementation.SecretPropertiesPage;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -155,7 +155,7 @@ interface SecretService {
     @Get("secrets")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(SecretBasePage.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
     Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
                                                      @QueryParam("maxresults") Integer maxresults,
                                                      @QueryParam("api-version") String apiVersion,
@@ -167,7 +167,7 @@ interface SecretService {
     @Get("secrets/{secret-name}/versions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(SecretBasePage.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
     Mono<PagedResponse<SecretProperties>> getSecretVersions(@HostParam("url") String url,
                                                             @PathParam("secret-name") String secretName,
                                                             @QueryParam("maxresults") Integer maxresults,
@@ -180,7 +180,7 @@ interface SecretService {
     @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(SecretBasePage.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
     Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
                                                      @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                      @HeaderParam("accept-language") String acceptLanguage,
