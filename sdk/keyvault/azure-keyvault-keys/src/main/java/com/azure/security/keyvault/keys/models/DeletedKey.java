@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
-public final class DeletedKey extends KeyBase {
+public final class DeletedKey extends Key {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
@@ -19,7 +19,9 @@ public final class DeletedKey extends KeyBase {
     @JsonProperty(value = "recoveryId")
     private String recoveryId;
 
-
+    /**
+     * The Json Web Key
+     */
     @JsonProperty(value = "key")
     private JsonWebKey keyMaterial;
 
@@ -85,7 +87,7 @@ public final class DeletedKey extends KeyBase {
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
-        keyMaterial = createKeyMaterialFromJson(key);
+        keyMaterial = properties.createKeyMaterialFromJson(key);
     }
 
     /**

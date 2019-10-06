@@ -33,7 +33,7 @@ class KeyImportRequestParameters {
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
+    @JsonProperty(value = "getTags")
     private Map<String, String> tags;
 
     /**
@@ -57,18 +57,18 @@ class KeyImportRequestParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get the getTags value.
      *
-     * @return the tags value
+     * @return the getTags value
      */
     public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
-     * Set the tags value.
+     * Set the getTags value.
      *
-     * @param tags the tags value to set
+     * @param tags the getTags value to set
      * @return the KeyRequestParameters object itself.
      */
     public KeyImportRequestParameters setTags(Map<String, String> tags) {

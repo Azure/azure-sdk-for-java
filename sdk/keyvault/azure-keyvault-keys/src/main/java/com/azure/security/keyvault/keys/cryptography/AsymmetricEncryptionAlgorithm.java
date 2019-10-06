@@ -18,7 +18,7 @@ abstract class AsymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
     /**
      * Constructor.
      *
-     * @param name The name of the algorithm.
+     * @param name The getName of the algorithm.
      */
     protected AsymmetricEncryptionAlgorithm(String name) {
         super(name);

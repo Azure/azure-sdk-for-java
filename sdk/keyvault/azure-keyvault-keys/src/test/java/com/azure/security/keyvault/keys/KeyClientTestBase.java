@@ -329,10 +329,10 @@ public abstract class KeyClientTestBase extends TestBase {
      * @param actual ConfigurationSetting contained in the RestResponse body
      */
     static void assertKeyEquals(KeyCreateOptions expected, Key actual) {
-        assertEquals(expected.name(), actual.name());
+        assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.keyType(), actual.getKeyMaterial().getKty());
-        assertEquals(expected.expires(), actual.expires());
-        assertEquals(expected.notBefore(), actual.notBefore());
+        assertEquals(expected.getExpires(), actual.getProperties().getExpires());
+        assertEquals(expected.notBefore(), actual.getProperties().getNotBefore());
     }
 
     public String getEndpoint() {

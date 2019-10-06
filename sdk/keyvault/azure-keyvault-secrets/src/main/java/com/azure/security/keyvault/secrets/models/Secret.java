@@ -7,12 +7,8 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *  Secret is the resource consisting of name, value and its attributes specified in {@link SecretProperties}.
@@ -91,9 +87,11 @@ public class Secret {
     /**
      * Set the secret properties
      * @param properties The Secret properties
+     * @throws NullPointerException if {@code properties} is null.
      * @return the updated secret object
      */
     public Secret setProperties(SecretProperties properties) {
+        Objects.requireNonNull(properties)
         properties.name = this.properties.name;
         this.properties = properties;
         return this;

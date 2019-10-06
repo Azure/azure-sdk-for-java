@@ -127,8 +127,8 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.updateSecretPropertiesWithResponse#secretProperties-Context
         SecretProperties secretProperties = secretClient.getSecret("secretName").getProperties();
         secretProperties.setExpires(OffsetDateTime.now().plusDays(60));
-        SecretProperties updatedSecretBase = secretClient.updateSecretPropertiesWithResponse(secretProperties, new Context(key2, value2))
-            .getValue();
+        SecretProperties updatedSecretBase = secretClient.updateSecretPropertiesWithResponse(secretProperties,
+            new Context(key2, value2)).getValue();
         Secret updatedSecret = secretClient.getSecret(updatedSecretBase.getName());
         System.out.printf("Updated Secret is returned with name %s, value %s and expires %s %n",
             updatedSecret.getName(), updatedSecret.getValue(), updatedSecret.getProperties().getExpires());
@@ -361,8 +361,8 @@ public final class SecretClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
-        secretClient.listSecretVersions("secretName", new Context(key1, value2)).iterableByPage().forEach(resp -> {
-            System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+        secretClient.listSecretVersions("secretName", new Context(key1, value2))
+            .iterableByPage().forEach(resp -> { System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
                 Secret secretWithValue = secretClient.getSecret(value);

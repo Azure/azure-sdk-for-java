@@ -89,7 +89,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         cryptographyAsyncClient.getKeyWithResponse()
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->  System.out.printf("Key is returned with name %s and id %s \n",
-                keyResponse.getValue().name(), keyResponse.getValue().id()));
+                keyResponse.getValue().getName(), keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse
     }
 
@@ -101,7 +101,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKey
         cryptographyAsyncClient.getKey()
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(key ->  System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id()));
+            .subscribe(key ->  System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKey
     }
 

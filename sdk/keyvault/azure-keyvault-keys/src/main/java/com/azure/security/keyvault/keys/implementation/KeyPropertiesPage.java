@@ -13,7 +13,7 @@ import java.util.List;
  * A page of Azure App Configuration {@link KeyProperties} resources and a link to get the next page of
  * resources, if any.
  */
-public final class KeyBasePage implements Page<KeyProperties> {
+public final class KeyPropertiesPage implements Page<KeyProperties> {
 
     /**
      * The link to the next page.

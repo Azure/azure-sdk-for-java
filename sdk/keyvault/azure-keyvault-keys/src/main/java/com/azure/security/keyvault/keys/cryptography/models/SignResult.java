@@ -12,7 +12,7 @@ public final class SignResult {
 
     /**
      * Creates the instance of SignResult holding the sign operation response details.
-     * @param signature The signature created from the digest.
+     * @param signature The signature getCreated from the digest.
      * @param algorithm The algorithm used to sign the digest.
      */
     public SignResult(byte[] signature, SignatureAlgorithm algorithm) {
@@ -21,7 +21,7 @@ public final class SignResult {
     }
 
     /**
-     * The signature created from the digest.
+     * The signature getCreated from the digest.
      */
     private final byte[] signature;
 
@@ -31,7 +31,7 @@ public final class SignResult {
     private final SignatureAlgorithm algorithm;
 
     /**
-     * Get the signature created from the digest.
+     * Get the signature getCreated from the digest.
      * @return The signature.
      */
     public byte[] getSignature() {

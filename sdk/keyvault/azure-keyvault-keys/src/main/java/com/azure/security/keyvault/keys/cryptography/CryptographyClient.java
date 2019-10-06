@@ -295,9 +295,9 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature is to be created.
+     * @param digest The content from which signature is to be getCreated.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the getCreated signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      */
@@ -323,8 +323,8 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature is to be created.
-     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
+     * @param digest The content from which signature is to be getCreated.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the getCreated signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      */
@@ -352,7 +352,7 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature was created.
+     * @param digest The content from which signature was getCreated.
      * @param signature The signature to be verified.
      * @return The {@link Boolean} indicating the signature verification result.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
@@ -382,7 +382,7 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature is to be created.
+     * @param digest The content from which signature is to be getCreated.
      * @param signature The signature to be verified.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link Boolean} indicating the signature verification result.
@@ -518,8 +518,8 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param data The content from which signature is to be created.
-     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
+     * @param data The content from which signature is to be getCreated.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the getCreated signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      */
@@ -546,9 +546,9 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param data The content from which signature is to be created.
+     * @param data The content from which signature is to be getCreated.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the getCreated signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      */

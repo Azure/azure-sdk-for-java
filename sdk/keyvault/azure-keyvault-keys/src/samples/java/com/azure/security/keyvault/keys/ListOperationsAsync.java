@@ -31,18 +31,18 @@ public class ListOperationsAsync {
                 .buildAsyncClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
-        // already exists in the key vault, then a new version of the key is created.
+        // already exists in the key vault, then a new getVersion of the key is getCreated.
         keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                        System.out.printf("Key is getCreated with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                        System.out.printf("Key is getCreated with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
@@ -51,24 +51,24 @@ public class ListOperationsAsync {
         keyAsyncClient.listKeys()
             .subscribe(keyBase ->
                 keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
-                    System.out.printf("Received key with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty())));
+                    System.out.printf("Received key with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty())));
 
         Thread.sleep(15000);
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
-        // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
+        // Calling createRsaKey on an existing key creates a new getVersion of the key in the key vault with the new specified size.
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
             .setKeySize(4096)
             .setExpires(OffsetDateTime.now().plusYears(1))).subscribe(keyResponse ->
-                System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                System.out.printf("Key is getCreated with name %s and type %s \n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         keyAsyncClient.listKeyVersions("CloudRsaKey").subscribe(keyBase ->
             keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
-                System.out.printf("Received key's version with name %s, type %s and version %s \n", keyResponse.name(),
-                        keyResponse.getKeyMaterial().getKty(), keyResponse.version())));
+                System.out.printf("Received key's getVersion with name %s, type %s and getVersion %s \n", keyResponse.getName(),
+                        keyResponse.getKeyMaterial().getKty(), keyResponse.getProperties().getVersion())));
 
         Thread.sleep(15000);
     }

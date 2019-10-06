@@ -120,8 +120,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretProperties -> secretAsyncClient.getSecretWithResponse(secretProperties)
                 .subscribe(secretResponse ->
-                    System.out.printf("Secret is returned with name %s and value %s %n", secretResponse.getValue().getName(),
-                        secretResponse.getValue().getValue())));
+                    System.out.printf("Secret is returned with name %s and value %s %n",
+                        secretResponse.getValue().getName(), secretResponse.getValue().getValue())));
         // END: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretProperties
 
         // BEGIN: com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string
@@ -236,7 +236,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.deleteSecretWithResponse("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getValue().getRecoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s %n",
+                    deletedSecretResponse.getValue().getRecoveryId()));
         // END: com.azure.keyvault.secrets.secretclient.deleteSecretWithResponse#string
     }
 
@@ -262,7 +263,8 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
         secretAsyncClient.getDeletedSecretWithResponse("secretName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getValue().getRecoveryId()));
+                System.out.printf("Deleted Secret's Recovery Id %s %n",
+                    deletedSecretResponse.getValue().getRecoveryId()));
         // END: com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string
     }
 

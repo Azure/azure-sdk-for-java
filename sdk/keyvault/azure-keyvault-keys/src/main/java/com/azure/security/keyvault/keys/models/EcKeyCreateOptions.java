@@ -65,9 +65,9 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
+     * Set the {@link OffsetDateTime getNotBefore} UTC time.
      *
-     * @param notBefore The notBefore UTC time to set
+     * @param notBefore The getNotBefore UTC time to set
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
@@ -77,7 +77,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
+     * Set the {@link OffsetDateTime getExpires} UTC time.
      *
      * @param expires The expiry time to set for the key.
      * @return the EcKeyCreateOptions object itself.
@@ -89,9 +89,9 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the tags to be associated with the key.
+     * Set the getTags to be associated with the key.
      *
-     * @param tags The tags to set
+     * @param tags The getTags to set
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
@@ -101,9 +101,9 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the enabled value.
+     * Set the setEnabled value.
      *
-     * @param enabled The enabled value to set
+     * @param enabled The setEnabled value to set
      * @return the EcKeyCreateOptions object itself.
      */
     public KeyCreateOptions setEnabled(Boolean enabled) {
@@ -112,7 +112,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set whether the key being created is of hsm type or not.
+     * Set whether the key being getCreated is of hsm type or not.
      * @param hsm The hsm value to set.
      * @return the EcKeyCreateOptions object itself.
      */
@@ -123,7 +123,7 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Get the hsm value of the key being created.
+     * Get the hsm value of the key being getCreated.
      * @return the hsm value.
      */
     public Boolean isHsm() {

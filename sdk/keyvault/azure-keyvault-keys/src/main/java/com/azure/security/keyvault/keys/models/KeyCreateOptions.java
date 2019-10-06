@@ -14,7 +14,7 @@ import java.util.Map;
 public class KeyCreateOptions {
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the object is setEnabled.
      */
     private Boolean enabled;
 
@@ -92,9 +92,9 @@ public class KeyCreateOptions {
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
+     * Set the {@link OffsetDateTime getNotBefore} UTC time.
      *
-     * @param notBefore The notBefore UTC time to set
+     * @param notBefore The getNotBefore UTC time to set
      * @return the KeyCreateOptions object itself.
      */
     public KeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
@@ -103,16 +103,16 @@ public class KeyCreateOptions {
     }
 
     /**
-     * Get the notBefore UTC time.
+     * Get the getNotBefore UTC time.
      *
-     * @return the notBefore UTC time.
+     * @return the getNotBefore UTC time.
      */
     public OffsetDateTime notBefore() {
         return notBefore;
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
+     * Set the {@link OffsetDateTime getExpires} UTC time.
      *
      * @param expires The expiry time to set for the key.
      * @return the KeyCreateOptions object itself.
@@ -125,16 +125,16 @@ public class KeyCreateOptions {
     /**
      * Get the Key Expiry time in UTC.
      *
-     * @return the expires UTC time.
+     * @return the getExpires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         return this.expires;
     }
 
     /**
-     * Set the tags to be associated with the key.
+     * Set the getTags to be associated with the key.
      *
-     * @param tags The tags to set
+     * @param tags The getTags to set
      * @return the KeyCreateOptions object itself.
      */
     public KeyCreateOptions setTags(Map<String, String> tags) {
@@ -143,18 +143,18 @@ public class KeyCreateOptions {
     }
 
     /**
-     * Get the tags associated with the key.
+     * Get the getTags associated with the key.
      *
-     * @return the value of the tags.
+     * @return the value of the getTags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
-     * Set the enabled value.
+     * Set the setEnabled value.
      *
-     * @param enabled The enabled value to set
+     * @param enabled The setEnabled value to set
      * @return the KeyCreateOptions object itself.
      */
     public KeyCreateOptions setEnabled(Boolean enabled) {
@@ -163,11 +163,11 @@ public class KeyCreateOptions {
     }
 
     /**
-     * Get the enabled value.
+     * Get the setEnabled value.
      *
-     * @return the enabled value
+     * @return the setEnabled value
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -176,7 +176,7 @@ public class KeyCreateOptions {
      *
      * @return the name of the key.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 

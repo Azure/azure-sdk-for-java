@@ -84,7 +84,7 @@ public final class CryptographyClientBuilder {
 
     /**
      * Creates a {@link CryptographyClient} based on options set in the builder.
-     * Every time {@code buildClient()} is called, a new instance of {@link CryptographyClient} is created.
+     * Every time {@code buildClient()} is called, a new instance of {@link CryptographyClient} is getCreated.
      *
      * <p>If {@link CryptographyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier} or {@link
@@ -106,7 +106,7 @@ public final class CryptographyClientBuilder {
     }
     /**
      * Creates a {@link CryptographyAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is created.
+     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is getCreated.
      *
      * <p>If {@link CryptographyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier} or {@link
@@ -175,7 +175,7 @@ public final class CryptographyClientBuilder {
      * cryptography operations.</p>
      *
      * @param keyId The jsonWebKey identifier representing the jsonWebKey stored in jsonWebKey vault.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         this.keyId = keyId;
@@ -189,7 +189,7 @@ public final class CryptographyClientBuilder {
      * operations.</p>
      *
      * @param jsonWebKey The Json web jsonWebKey to be used for cryptography operations.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
         this.jsonWebKey = jsonWebKey;
@@ -200,7 +200,7 @@ public final class CryptographyClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public CryptographyClientBuilder credential(TokenCredential credential) {
@@ -215,7 +215,7 @@ public final class CryptographyClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public CryptographyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -229,7 +229,7 @@ public final class CryptographyClientBuilder {
      * CryptographyClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -242,7 +242,7 @@ public final class CryptographyClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CryptographyClientBuilder httpClient(HttpClient client) {
@@ -260,7 +260,7 @@ public final class CryptographyClientBuilder {
      * {@link CryptographyAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the getUpdated {@link CryptographyClientBuilder} object.
      */
     public CryptographyClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
@@ -275,7 +275,7 @@ public final class CryptographyClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated CryptographyClientBuilder object.
+     * @return The getUpdated CryptographyClientBuilder object.
      */
     public CryptographyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

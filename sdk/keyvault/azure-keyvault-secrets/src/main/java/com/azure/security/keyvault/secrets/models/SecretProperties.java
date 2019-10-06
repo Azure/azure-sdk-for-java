@@ -106,7 +106,7 @@ public class SecretProperties {
     /**
      * Creates empty instance of SecretProperties.
      */
-    public SecretProperties() {}
+    public SecretProperties() { }
 
     /**
      * Get the secret name.

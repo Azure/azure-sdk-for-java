@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class KeyBase {
+public class KeyProperties {
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the object is setEnabled.
      */
     private Boolean enabled;
 
@@ -32,7 +32,7 @@ public class KeyBase {
     private OffsetDateTime notBefore;
 
     /**
-     * The key version.
+     * The key getVersion.
      */
     String version;
 
@@ -47,7 +47,7 @@ public class KeyBase {
     private OffsetDateTime created;
 
     /**
-     * Last updated time in UTC.
+     * Last getUpdated time in UTC.
      */
     private OffsetDateTime updated;
 
@@ -75,22 +75,22 @@ public class KeyBase {
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
+    @JsonProperty(value = "getTags")
     private Map<String, String> tags;
 
     /**
-     * True if the key's lifetime is managed by key vault. If this is a key
-     * backing a certificate, then managed will be true.
+     * True if the key's lifetime is isManaged by key vault. If this is a key
+     * backing a certificate, then isManaged will be true.
      */
-    @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "isManaged", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
 
     /**
-     * Get the recoveryLevel value.
+     * Get the getRecoveryLevel value.
      *
-     * @return the recoveryLevel value
+     * @return the getRecoveryLevel value
      */
-    public String recoveryLevel() {
+    public String getRecoveryLevel() {
         return this.recoveryLevel;
     }
 
@@ -99,47 +99,47 @@ public class KeyBase {
      *
      * @return the name of the key.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
 
     /**
-     * Get the enabled value.
+     * Get the setEnabled value.
      *
-     * @return the enabled value
+     * @return the setEnabled value
      */
-    public Boolean enabled() {
+    public Boolean getEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the enabled value.
+     * Set the setEnabled value.
      *
-     * @param enabled The enabled value to set
-     * @return the KeyBase object itself.
+     * @param enabled The setEnabled value to set
+     * @return the KeyProperties object itself.
      */
-    public KeyBase enabled(Boolean enabled) {
+    public KeyProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
     /**
-     * Get the notBefore UTC time.
+     * Get the getNotBefore UTC time.
      *
-     * @return the notBefore UTC time.
+     * @return the getNotBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
+     * Set the {@link OffsetDateTime getNotBefore} UTC time.
      *
-     * @param notBefore The notBefore UTC time to set
-     * @return the KeyBase object itself.
+     * @param notBefore The getNotBefore UTC time to set
+     * @return the KeyProperties object itself.
      */
-    public KeyBase setNotBefore(OffsetDateTime notBefore) {
+    public KeyProperties setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -147,9 +147,9 @@ public class KeyBase {
     /**
      * Get the Key Expiry time in UTC.
      *
-     * @return the expires UTC time.
+     * @return the getExpires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         if (this.expires == null) {
             return null;
         }
@@ -157,31 +157,31 @@ public class KeyBase {
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
+     * Set the {@link OffsetDateTime getExpires} UTC time.
      *
      * @param expires The expiry time to set for the key.
-     * @return the KeyBase object itself.
+     * @return the KeyProperties object itself.
      */
-    public KeyBase setExpires(OffsetDateTime expires) {
+    public KeyProperties setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }
 
     /**
-     * Get the the UTC time at which key was created.
+     * Get the the UTC time at which key was getCreated.
      *
-     * @return the created UTC time.
+     * @return the getCreated UTC time.
      */
-    public OffsetDateTime created() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
     /**
-     * Get the UTC time at which key was last updated.
+     * Get the UTC time at which key was last getUpdated.
      *
-     * @return the last updated UTC time.
+     * @return the last getUpdated UTC time.
      */
-    public OffsetDateTime updated() {
+    public OffsetDateTime getUpdated() {
         return updated;
     }
 
@@ -190,66 +190,66 @@ public class KeyBase {
      *
      * @return the key identifier.
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
 
     /**
-     * Get the tags associated with the key.
+     * Get the getTags associated with the key.
      *
-     * @return the value of the tags.
+     * @return the value of the getTags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
-     * Set the tags to be associated with the key.
+     * Set the getTags to be associated with the key.
      *
-     * @param tags The tags to set
-     * @return the KeyBase object itself.
+     * @param tags The getTags to set
+     * @return the KeyProperties object itself.
      */
-    public KeyBase setTags(Map<String, String> tags) {
+    public KeyProperties setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
 
     /**
-     * Get the managed value.
+     * Get the isManaged value.
      *
-     * @return the managed value
+     * @return the isManaged value
      */
-    public Boolean managed() {
+    public Boolean isManaged() {
         return this.managed;
     }
 
     /**
-     * Get the version of the key.
+     * Get the getVersion of the key.
      *
-     * @return the version of the key.
+     * @return the getVersion of the key.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
     /**
      * Unpacks the attributes json response and updates the variables in the Key Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and id as these variables are
+     * Uses Lazy Update to set values for variables getId, getTags, contentType, isManaged and getId as these variables are
      * part of main json body and not attributes json body when the key response comes from list keys operations.
      * @param attributes The key value mapping of the key attributes
      */
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
-    private void unpackAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("enabled");
+    void unpackAttributes(Map<String, Object> attributes) {
+        this.enabled = (Boolean) attributes.get("setEnabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
         this.expires =  epochToOffsetDateTime(attributes.get("exp"));
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
-        this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
-        this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
+        this.created = epochToOffsetDateTime(attributes.get("getCreated"));
+        this.updated = epochToOffsetDateTime(attributes.get("getUpdated"));
+        this.recoveryLevel = (String) attributes.get("getRecoveryLevel");
+        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("getTags"), this.tags);
+        this.managed = (Boolean) lazyValueSelection(attributes.get("isManaged"), this.managed);
         unpackId((String) lazyValueSelection(attributes.get("id"), this.id));
     }
 

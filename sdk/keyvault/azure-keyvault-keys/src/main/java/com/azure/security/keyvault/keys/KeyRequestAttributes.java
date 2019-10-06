@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.security.keyvault.keys.models.KeyBase;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,23 +14,23 @@ import java.time.ZoneOffset;
 class KeyRequestAttributes {
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads keyBase.notBefore, keyBase.expires and keyBase.enabled fields
+     * Creates an instance of KeyRequestAttributes. Reads keyBase.getNotBefore, keyBase.getExpires and keyBase.setEnabled fields
      * from {@code keyBase}
-     * @param keyBase the {@link KeyBase} object with populated attributes
+     * @param keyBase the {@link KeyProperties} object with populated attributes
      */
-    KeyRequestAttributes(KeyBase keyBase) {
-        if (keyBase.notBefore() != null) {
-            this.notBefore = keyBase.notBefore().toEpochSecond();
+    KeyRequestAttributes(KeyProperties keyBase) {
+        if (keyBase.getNotBefore() != null) {
+            this.notBefore = keyBase.getNotBefore().toEpochSecond();
         }
-        if (keyBase.expires() != null) {
-            this.expires = keyBase.expires().toEpochSecond();
+        if (keyBase.getExpires() != null) {
+            this.expires = keyBase.getExpires().toEpochSecond();
         }
-        this.enabled = keyBase.enabled();
+        this.enabled = keyBase.getEnabled();
     }
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.notBefore, KeyCreateOptions.expires and
-     * KeyCreateOptions.enabled fields
+     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
+     * KeyCreateOptions.setEnabled fields
      * from {@code keyOptions}
      * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
      */
@@ -38,16 +38,16 @@ class KeyRequestAttributes {
         if (keyOptions.notBefore() != null) {
             this.notBefore = keyOptions.notBefore().toEpochSecond();
         }
-        if (keyOptions.expires() != null) {
-            this.expires = keyOptions.expires().toEpochSecond();
+        if (keyOptions.getExpires() != null) {
+            this.expires = keyOptions.getExpires().toEpochSecond();
         }
-        this.enabled = keyOptions.enabled();
+        this.enabled = keyOptions.isEnabled();
     }
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the object is setEnabled.
      */
-    @JsonProperty(value = "enabled")
+    @JsonProperty(value = "setEnabled")
     private Boolean enabled;
 
     /**
@@ -65,28 +65,28 @@ class KeyRequestAttributes {
     /**
      * Creation time in UTC.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "getCreated", access = JsonProperty.Access.WRITE_ONLY)
     private Long created;
 
     /**
-     * Last updated time in UTC.
+     * Last getUpdated time in UTC.
      */
-    @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "getUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
 
     /**
-     * Get the enabled value.
+     * Get the setEnabled value.
      *
-     * @return the enabled value
+     * @return the setEnabled value
      */
     public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the enabled value.
+     * Set the setEnabled value.
      *
-     * @param enabled the enabled value to set
+     * @param enabled the setEnabled value to set
      * @return the Attributes object itself.
      */
     public KeyRequestAttributes setEnabled(Boolean enabled) {
@@ -95,9 +95,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the notBefore value.
+     * Get the getNotBefore value.
      *
-     * @return the notBefore value
+     * @return the getNotBefore value
      */
     public OffsetDateTime getNotBefore() {
         if (this.notBefore == null) {
@@ -107,9 +107,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Set the notBefore value.
+     * Set the getNotBefore value.
      *
-     * @param notBefore the notBefore value to set
+     * @param notBefore the getNotBefore value to set
      * @return the Attributes object itself.
      */
     public KeyRequestAttributes setNotBefore(OffsetDateTime notBefore) {
@@ -122,9 +122,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the expires value.
+     * Get the getExpires value.
      *
-     * @return the expires value
+     * @return the getExpires value
      */
     public OffsetDateTime getExpires() {
         if (this.expires == null) {
@@ -134,9 +134,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Set the expires value.
+     * Set the getExpires value.
      *
-     * @param expires the expires value to set
+     * @param expires the getExpires value to set
      * @return the Attributes object itself.
      */
     public KeyRequestAttributes setExpires(OffsetDateTime expires) {
@@ -149,9 +149,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the created value.
+     * Get the getCreated value.
      *
-     * @return the created value
+     * @return the getCreated value
      */
     public OffsetDateTime getCreated() {
         if (this.created == null) {
@@ -161,9 +161,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the updated value.
+     * Get the getUpdated value.
      *
-     * @return the updated value
+     * @return the getUpdated value
      */
     public OffsetDateTime getUpdated() {
         if (this.updated == null) {
