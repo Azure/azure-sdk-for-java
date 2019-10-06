@@ -75,8 +75,31 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 
+    /**
+     * Gets properties to add when creating AMQP connection.
+     *
+     * @return A map of properties to add when creating AMQP connection.
+     */
     public Map<String, Object> getConnectionProperties() {
         return connectionProperties;
+    }
+
+    /**
+     * Gets the port used when opening connection.
+     *
+     * @return The port used to open connection.
+     */
+    public int getProtocolPort() {
+        return AMQPS_PORT;
+    }
+
+    /**
+     * Gets the max frame size for this connection.
+     *
+     * @return The max frame size for this connection.
+     */
+    public int getMaxFrameSize() {
+        return MAX_FRAME_SIZE;
     }
 
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
@@ -99,24 +122,6 @@ public class ConnectionHandler extends Handler {
 
         connection.setProperties(properties);
         connection.open();
-    }
-
-    /**
-     * Gets the port used when opening connection.
-     *
-     * @return The port used to open connection.
-     */
-    public int getProtocolPort() {
-        return AMQPS_PORT;
-    }
-
-    /**
-     * Gets the max frame size for this connection.
-     *
-     * @return The max frame size for this connection.
-     */
-    public int getMaxFrameSize() {
-        return MAX_FRAME_SIZE;
     }
 
     @Override
