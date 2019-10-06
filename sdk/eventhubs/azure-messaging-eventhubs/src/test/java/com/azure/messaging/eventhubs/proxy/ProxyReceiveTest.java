@@ -107,8 +107,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         dispose(client);
     }
 
-    @Ignore("SimpleProxy is creating multiple proxy negotiation handlers, so it is returning garbage."
-        + "https://github.com/Azure/azure-sdk-for-java/issues/5694")
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Arrange

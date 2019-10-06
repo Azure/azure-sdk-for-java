@@ -102,8 +102,6 @@ public class ProxySendTest extends IntegrationTestBase {
     /**
      * Verifies that we can send some number of events.
      */
-    @Ignore("SimpleProxy is creating multiple proxy negotiation handlers, so it is returning garbage."
-        + "https://github.com/Azure/azure-sdk-for-java/issues/5694")
     @Test
     public void sendEvents() {
         // Arrange
