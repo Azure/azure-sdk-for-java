@@ -4,16 +4,16 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.security.keyvault.keys.models.KeyBase;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
- * A page of Azure App Configuration {@link KeyBase} resources and a link to get the next page of
+ * A page of Azure App Configuration {@link KeyProperties} resources and a link to get the next page of
  * resources, if any.
  */
-public final class KeyBasePage implements Page<KeyBase> {
+public final class KeyBasePage implements Page<KeyProperties> {
 
     /**
      * The link to the next page.
@@ -25,7 +25,7 @@ public final class KeyBasePage implements Page<KeyBase> {
      * The list of items.
      */
     @JsonProperty("value")
-    private List<KeyBase> items;
+    private List<KeyProperties> items;
 
     /**
      * Gets the link to the next page. Or {@code null} if there are no more resources to fetch.
@@ -38,12 +38,12 @@ public final class KeyBasePage implements Page<KeyBase> {
     }
 
     /**
-     * Gets the list of {@link KeyBase KeyBase} on this page.
+     * Gets the list of {@link KeyProperties KeyProperties} on this page.
      *
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<KeyBase> getItems() {
+    public List<KeyProperties> getItems() {
         return items;
     }
 }
