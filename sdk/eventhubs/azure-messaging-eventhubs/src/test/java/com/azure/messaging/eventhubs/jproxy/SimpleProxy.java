@@ -102,7 +102,7 @@ public class SimpleProxy implements ProxyServer {
             serverSocket.accept(serverSocket, this);
 
             try {
-                connectedClients.add(new ProxyNegotiationHandler(client, onErrorHandler));
+                connectedClients.add(new ProxyNegotiationHandler(client));
             } catch (IOException e) {
                 logger.error("Error creating proxy negotiation handler.", e);
                 onErrorHandler.accept(e);
@@ -124,13 +124,12 @@ public class SimpleProxy implements ProxyServer {
     private static class ProxyNegotiationHandler implements Closeable {
         private final ConnectionProperties connection;
 
-        ProxyNegotiationHandler(AsynchronousSocketChannel clientSocket, Consumer<Throwable> onError)
+        ProxyNegotiationHandler(AsynchronousSocketChannel clientSocket)
             throws IOException {
             Objects.requireNonNull(clientSocket);
 
             final AsynchronousSocketChannel serviceSocket = AsynchronousSocketChannel.open();
-            connection = new ConnectionProperties(ProxyConnectionState.PROXY_NOT_STARTED,
-                clientSocket, serviceSocket, onError);
+            connection = new ConnectionProperties(ProxyConnectionState.PROXY_NOT_STARTED, clientSocket, serviceSocket);
             final ReadWriteState state = new ReadWriteState(ReadWriteState.Target.SERVICE,
                 ByteBuffer.allocate(PROXY_BUFFER_SIZE), true);
 

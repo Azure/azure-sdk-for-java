@@ -10,23 +10,24 @@ import java.net.SocketAddress;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
+/**
+ * Properties when creating a connection through the {@link SimpleProxy}.
+ */
 class ConnectionProperties implements Closeable {
     private final ClientLogger logger = new ClientLogger(ConnectionProperties.class);
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final AsynchronousSocketChannel clientSocket;
     private final AsynchronousSocketChannel outgoingSocket;
-    private final Consumer<Throwable> onErrorHandler;
 
     private volatile ProxyConnectionState proxyConnectionState;
 
     ConnectionProperties(ProxyConnectionState proxyConnectionState, AsynchronousSocketChannel clientSocket,
-                         AsynchronousSocketChannel outgoingSocket, Consumer<Throwable> onErrorHandler) {
-        this.proxyConnectionState = Objects.requireNonNull(proxyConnectionState);
-        this.clientSocket = Objects.requireNonNull(clientSocket);
-        this.outgoingSocket = Objects.requireNonNull(outgoingSocket);
-        this.onErrorHandler = Objects.requireNonNull(onErrorHandler);
+                         AsynchronousSocketChannel outgoingSocket) {
+        this.proxyConnectionState = Objects.requireNonNull(proxyConnectionState,
+            "'proxyConnectionState' cannot be null.");
+        this.clientSocket = Objects.requireNonNull(clientSocket, "'clientSocket' cannot be null.");
+        this.outgoingSocket = Objects.requireNonNull(outgoingSocket, "'outgoingSocket' cannot be null.");
     }
 
     /**
@@ -63,10 +64,6 @@ class ConnectionProperties implements Closeable {
      */
     void setProxyConnectionState(ProxyConnectionState proxyConnectionState) {
         this.proxyConnectionState = proxyConnectionState;
-    }
-
-    void onError(Throwable error) {
-        onErrorHandler.accept(error);
     }
 
     @Override

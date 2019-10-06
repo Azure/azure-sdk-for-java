@@ -93,7 +93,6 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         connection.open();
     }
 
-
     @Override
     public String getHostname() {
         final InetSocketAddress socketAddress = getProxyAddress();
@@ -149,11 +148,11 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         // it swallows the IOException and translates it to proton-io errorCode
         // we reconstruct the IOException in this case - but, callstack is lost
         final IOException ioException = new IOException(errorCondition.getDescription());
-        final URI url = createURI(amqpHostname, getProtocolPort());
+        final URI url = createURI(amqpHostname, HTTPS_PORT);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
         logger.error(String.format("Failed to connect to url: '%s', proxy host: '%s'",
-            url.toString(), address.getHostString()), ioException);
+            url, address.getHostString()), ioException);
 
         if (proxySelector != null) {
             proxySelector.connectFailed(url, address, ioException);
