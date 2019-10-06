@@ -136,10 +136,10 @@ public class SuggestSyncTests extends SuggestTestBase {
         doc2.ISBN("456");
         doc2.title("War and Peace");
         doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
-        uploadDocuments(client, BOOKS_INDEX_NAME, Arrays.asList(doc1, doc2) );
+        uploadDocuments(client, BOOKS_INDEX_NAME, Arrays.asList(doc1, doc2));
 
         SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate" ));
+        suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate"));
         PagedIterable<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
 
