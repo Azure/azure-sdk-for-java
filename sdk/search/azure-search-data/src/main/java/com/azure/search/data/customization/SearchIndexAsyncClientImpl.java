@@ -205,7 +205,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     }
 
     @Override
-    public Mono<Long> countDocuments() {
+    public Mono<Long> getDocumentCount() {
         return restClient.documents().countAsync();
     }
 
