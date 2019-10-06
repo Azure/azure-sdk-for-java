@@ -5,91 +5,134 @@ package com.azure.messaging.eventhubs.jproxy;
 
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
- *
+ * Creates a simple unauthenticated service on localhost that proxies requests.
  */
 public class SimpleProxy implements ProxyServer {
-    private ClientLogger logger = new ClientLogger(SimpleProxy.class);
-    private final int port;
-    private final String hostname;
+    static final int PROXY_BUFFER_SIZE = 1024;
 
+    private static final String HOSTNAME = "localhost";
+
+    private final ClientLogger logger = new ClientLogger(SimpleProxy.class);
     private final AtomicBoolean isRunning;
+    private final InetSocketAddress host;
+    private final List<ProxyNegotiationHandler> connectedClients = new ArrayList<>();
 
-    private Consumer<Throwable> onErrorHandler;
+    private volatile Consumer<Throwable> onErrorHandler;
     private volatile AsynchronousServerSocketChannel serverSocket;
 
-    public SimpleProxy(final String hostname, final int port) {
-        this.port = port;
-        this.hostname = hostname;
+    public SimpleProxy(final int port) {
+        this.host = new InetSocketAddress(HOSTNAME, port);
         this.isRunning = new AtomicBoolean(false);
+    }
+
+    @Override
+    public InetSocketAddress getHost() {
+        return host;
     }
 
     @Override
     public void start(final Consumer<Throwable> onError) throws IOException {
         if (isRunning.getAndSet(true)) {
-            throw new IllegalStateException("ProxyServer is already running");
+            throw new IllegalStateException("ProxyServer is already running.");
         }
 
-        onErrorHandler = onError;
+        onErrorHandler = onError != null
+            ? onError
+            : error -> logger.error("Error occurred when running proxy.", error);
+
+        logger.info("Opening proxy server on: '{}'", host);
+
         serverSocket = AsynchronousServerSocketChannel.open();
-        serverSocket.bind(new InetSocketAddress("localhost", port));
-        scheduleListener(serverSocket);
+        serverSocket.bind(host);
+        serverSocket.accept(serverSocket, new ClientConnectedHandler());
     }
 
     @Override
     public void stop() throws IOException {
         if (isRunning.getAndSet(false)) {
             serverSocket.close();
+
+            for (ProxyNegotiationHandler client : connectedClients) {
+                try {
+                    client.close();
+                } catch (IOException e) {
+                    final AsynchronousSocketChannel clientSocket = client.connection.getClientSocket();
+                    logger.warning("Error closing client: {}.", clientSocket.getRemoteAddress(), e);
+                }
+            }
         }
     }
 
-    private void scheduleListener(final AsynchronousServerSocketChannel serverSocket) {
-        serverSocket.accept(serverSocket, new SocketListener(logger, onErrorHandler, isRunning));
-    }
-
-    private static final class SocketListener implements
+    /**
+     * Handler invoked when a client connects to the proxy server.
+     */
+    private class ClientConnectedHandler implements
         CompletionHandler<AsynchronousSocketChannel, AsynchronousServerSocketChannel> {
 
-        private final ClientLogger logger;
-        private final Consumer<Throwable> onErrorHandler;
-        private final AtomicBoolean isRunning;
-
-        private SocketListener(ClientLogger logger, Consumer<Throwable> onErrorHandler, AtomicBoolean isRunning) {
-            this.logger = logger;
-            this.onErrorHandler = onErrorHandler;
-            this.isRunning = isRunning;
-        }
-
+        /**
+         * When a client has successfully connected to the proxy server.
+         *
+         * @param client Client that connects to the service.
+         * @param serverSocket The socket this proxy server is running on.
+         */
         @Override
         public void completed(AsynchronousSocketChannel client, AsynchronousServerSocketChannel serverSocket) {
             try {
-                logger.warning("Client connected from: {}", client.getRemoteAddress().toString());
-            } catch (IOException e) {
-                logger.error("Error occurred while getting remote address.", e);
+                logger.info("Client connected from: {}", client.getRemoteAddress());
+            } catch (IOException ignore) {
             }
 
-            logger.info("Setting negotiation handler.");
+            // Invoke again to accept additional client connections.
             serverSocket.accept(serverSocket, this);
 
             try {
-                new ProxyNegotiationHandler(client);
+                connectedClients.add(new ProxyNegotiationHandler(client, onErrorHandler));
             } catch (IOException e) {
+                logger.error("Error creating proxy negotiation handler.", e);
                 onErrorHandler.accept(e);
             }
         }
 
         @Override
-        public void failed(Throwable exception, AsynchronousServerSocketChannel attachment) {
+        public void failed(Throwable exc, AsynchronousServerSocketChannel attachment) {
             isRunning.set(false);
-            onErrorHandler.accept(exception);
+            onErrorHandler.accept(exc);
+        }
+    }
+
+    private static class ProxyNegotiationHandler implements Closeable {
+        private final ConnectionProperties connection;
+
+        ProxyNegotiationHandler(AsynchronousSocketChannel clientSocket, Consumer<Throwable> onError)
+            throws IOException {
+            Objects.requireNonNull(clientSocket);
+
+            final AsynchronousSocketChannel serviceSocket = AsynchronousSocketChannel.open();
+            connection = new ConnectionProperties(ProxyConnectionState.PROXY_NOT_STARTED,
+                clientSocket, serviceSocket, onError);
+            final ReadWriteState state = new ReadWriteState(false, ByteBuffer.allocate(PROXY_BUFFER_SIZE),
+                true);
+
+            clientSocket.read(state.getBuffer(), state, new ReadWriteHandler(connection));
+        }
+
+        @Override
+        public void close() throws IOException {
+            connection.close();
         }
     }
 }
