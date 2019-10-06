@@ -41,7 +41,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
     @Override
     public void countingDocsOfNewIndexGivesZero() {
-        Mono<Long> result = client.countDocuments();
+        Mono<Long> result = client.getDocumentCount();
         Long expected = 0L;
 
         StepVerifier.create(result).expectNext(expected).expectComplete().verify();
@@ -62,7 +62,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         waitForIndexing();
 
-        StepVerifier.create(client.countDocuments()).
+        StepVerifier.create(client.getDocumentCount()).
             expectNext(expectedHotelCount).
             verifyComplete();
     }
@@ -87,7 +87,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         waitForIndexing();
 
-        StepVerifier.create(client.countDocuments()).
+        StepVerifier.create(client.getDocumentCount()).
             expectNext(expectedHotelCount).
             verifyComplete();
     }
@@ -481,7 +481,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             new Hotel().hotelId("2")
         )).block();
         waitForIndexing();
-        StepVerifier.create(client.countDocuments())
+        StepVerifier.create(client.getDocumentCount())
             .expectNext(2L)
             .verifyComplete();
 
@@ -500,7 +500,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
         waitForIndexing();
 
-        StepVerifier.create(client.countDocuments())
+        StepVerifier.create(client.getDocumentCount())
             .expectNext(0L)
             .verifyComplete();
     }
@@ -511,7 +511,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         client.uploadDocument(document).block();
         waitForIndexing();
-        StepVerifier.create(client.countDocuments())
+        StepVerifier.create(client.getDocumentCount())
             .expectNext(1L)
             .verifyComplete();
 
@@ -526,7 +526,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
         waitForIndexing();
 
-        StepVerifier.create(client.countDocuments())
+        StepVerifier.create(client.getDocumentCount())
             .expectNext(0L)
             .verifyComplete();
     }
@@ -539,7 +539,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         client.uploadDocument(document).block();
         waitForIndexing();
-        StepVerifier.create(client.countDocuments())
+        StepVerifier.create(client.getDocumentCount())
             .expectNext(1L)
             .verifyComplete();
 
@@ -554,7 +554,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
         waitForIndexing();
 
-        StepVerifier.create(client.countDocuments())
+        StepVerifier.create(client.getDocumentCount())
             .expectNext(0L)
             .verifyComplete();
     }

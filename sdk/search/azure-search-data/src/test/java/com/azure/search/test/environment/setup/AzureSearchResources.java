@@ -20,7 +20,6 @@ public class AzureSearchResources {
     private String resourceGroupName;
     private String searchServiceName;
     private String searchAdminKey;
-    private String indexFileName;
 
     private AzureTokenCredentials azureTokenCredentials;
     private String subscriptionId;
@@ -29,22 +28,6 @@ public class AzureSearchResources {
     private Azure azure = null;
     private ResourceGroup resourceGroup = null;
     private SearchService searchService = null;
-
-    /**
-     *
-     * @return The created Resource Group name
-     */
-    public String getResourceGroupName() {
-        return resourceGroupName;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getIndexFileName() {
-        return indexFileName;
-    }
 
     /**
      *
@@ -89,28 +72,6 @@ public class AzureSearchResources {
                 .authenticate(azureTokenCredentials)
                 .withSubscription(subscriptionId);
         }
-
-        if (resourceGroup == null) {
-            resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
-            System.out.println("Creating Resource Group: " + resourceGroupName);
-            resourceGroup = azure.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(location)
-                .create();
-        }
-
-        if (searchService == null) {
-            searchServiceName = SdkContext.randomResourceName(SEARCH_SERVICE_NAME_PREFIX, 24);
-            System.out.println("Creating Search Service: " + searchServiceName);
-            searchService = azure.searchServices()
-                .define(searchServiceName)
-                .withRegion(location)
-                .withExistingResourceGroup(resourceGroup)
-                .withFreeSku()
-                .create();
-        }
-
-        searchAdminKey = searchService.getAdminKeys().primaryKey();
     }
 
     private void validate() {
@@ -122,18 +83,53 @@ public class AzureSearchResources {
     }
 
     /**
-     * Deletes the created resources in Azure. This should be run after finishing all tests.
+     * Creates an Azure Service in an existing resource group
      */
-    public void cleanup() {
+    public void createService() {
+        searchServiceName = SdkContext.randomResourceName(SEARCH_SERVICE_NAME_PREFIX, 24);
+        System.out.println("Creating Search Service: " + searchServiceName);
+        searchService = azure.searchServices()
+            .define(searchServiceName)
+            .withRegion(location)
+            .withExistingResourceGroup(resourceGroup)
+            .withFreeSku()
+            .create();
+
+        searchAdminKey = searchService.getAdminKeys().primaryKey();
+    }
+
+    /**
+     * Deletes the Search service in Azure.
+     */
+    public void deleteService() {
         if (searchService != null) {
             System.out.println("Deleting Search Service: " + searchService.name());
             azure.searchServices().deleteById(searchService.id());
         }
+    }
+
+    /**
+     * Creates the Resource Group in Azure. This should be run at @BeforeClass
+     */
+    public void createResourceGroup() {
+        if (resourceGroup == null) {
+            resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
+            System.out.println("Creating Resource Group: " + resourceGroupName);
+            resourceGroup = azure.resourceGroups()
+                .define(resourceGroupName)
+                .withRegion(location)
+                .create();
+        }
+    }
+
+    /**
+     * Deletes the Resource Group in Azure. This should be run at @AfterClass
+     */
+    public void deleteResourceGroup() {
         if (resourceGroup != null) {
             System.out.println("Deleting Resource Group: " + resourceGroup.name());
             azure.resourceGroups().beginDeleteByName(resourceGroup.name());
+            resourceGroup = null;
         }
     }
 }
-
-
