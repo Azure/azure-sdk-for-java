@@ -13,6 +13,7 @@ import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,10 +27,22 @@ import static com.azure.search.data.customization.SearchTestBase.HOTELS_INDEX_NA
 public class SuggestAsyncTests extends SuggestTestBase {
 
     private SearchIndexAsyncClient client;
+    private static final String BOOKS_INDEX_NAME = "books";
 
     @Override
     protected void initializeClient() {
         client = builderSetup().indexName(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                BOOKS_INDEX_JSON, searchServiceName, apiKey);
+            try {
+                searchIndexService.initialize();
+            } catch (IOException e) {
+                Assert.fail("Unable to create books index: " + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -112,9 +125,6 @@ public class SuggestAsyncTests extends SuggestTestBase {
         if(api == null){
             api = "api";
         }
-        SearchIndexService searchIndexService = new SearchIndexService(
-            BOOKS_INDEX_JSON, client.getSearchServiceName(), api);
-        searchIndexService.initialize();
 
         Author tolkien = new Author();
         tolkien.firstName("J.R.R.");
@@ -128,7 +138,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         doc2.ISBN("456");
         doc2.title("War and Peace");
         doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
-        uploadDocuments(client,searchIndexService.indexName(),new LinkedList<>(Arrays.asList(doc1, doc2)));
+        uploadDocuments(client, BOOKS_INDEX_NAME, Arrays.asList(doc1, doc2) );
 
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate" ));
@@ -136,7 +146,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         StepVerifier
             .create(suggestResult.byPage())
-            .assertNext(result -> verifyCanSuggestWithDateTimeInStaticModel(result))
+            .assertNext(this::verifyCanSuggestWithDateTimeInStaticModel)
             .verifyComplete();
     }
 

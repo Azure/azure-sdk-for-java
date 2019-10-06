@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ import static com.azure.search.data.customization.SearchTestBase.HOTELS_INDEX_NA
 public class SuggestSyncTests extends SuggestTestBase {
 
     private SearchIndexClient client;
+    private static final String BOOKS_INDEX_NAME = "books";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -37,6 +39,17 @@ public class SuggestSyncTests extends SuggestTestBase {
     @Override
     protected void initializeClient() {
         client = builderSetup().indexName(HOTELS_INDEX_NAME).buildClient();
+
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                BOOKS_INDEX_JSON, searchServiceName, apiKey);
+            try {
+                searchIndexService.initialize();
+            } catch (IOException e) {
+                Assert.fail("Unable to create books index: " + e.getMessage());
+            }
+        }
     }
 
     @Test
@@ -111,10 +124,6 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void canSuggestWithDateTimeInStaticModel() throws Exception {
-        SearchIndexService searchIndexService = new SearchIndexService(
-            BOOKS_INDEX_JSON, searchServiceName, apiKey);
-        searchIndexService.initialize();
-
         Author tolkien = new Author();
         tolkien.firstName("J.R.R.");
         tolkien.lastName("Tolkien");
@@ -127,7 +136,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         doc2.ISBN("456");
         doc2.title("War and Peace");
         doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
-        uploadDocuments(client,searchIndexService.indexName(),new LinkedList<>(Arrays.asList(doc1, doc2)));
+        uploadDocuments(client, BOOKS_INDEX_NAME, Arrays.asList(doc1, doc2) );
 
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate" ));
