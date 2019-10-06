@@ -32,29 +32,29 @@ import reactor.core.publisher.Mono;
 @ServiceInterface(name = "KeyVault")
 interface CryptographyService {
 
-    @Post("keys/{key-getName}/{key-getVersion}/encrypt")
+    @Post("keys/{key-name}/{key-version}/encrypt")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyOperationResult>> encrypt(@HostParam("url") String url,
-                                  @PathParam("key-getName") String keyName,
-                                  @PathParam("key-getVersion") String keyVersion,
-                                  @QueryParam("api-getVersion") String apiVersion,
+                                  @PathParam("key-name") String keyName,
+                                  @PathParam("key-version") String keyVersion,
+                                  @QueryParam("api-version") String apiVersion,
                                   @HeaderParam("accept-language") String acceptLanguage,
                                   @BodyParam("body") KeyOperationParameters parameters,
                                   @HeaderParam("Content-Type") String type,
                                   Context context);
 
 
-    @Post("keys/{key-getName}/{key-getVersion}/decrypt")
+    @Post("keys/{key-name}/{key-version}/decrypt")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyOperationResult>> decrypt(@HostParam("url") String url,
-                                @PathParam("key-getName") String keyName,
-                                @PathParam("key-getVersion") String keyVersion,
-                                @QueryParam("api-getVersion") String apiVersion,
+                                @PathParam("key-name") String keyName,
+                                @PathParam("key-version") String keyVersion,
+                                @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
                                 @BodyParam("body") KeyOperationParameters parameters,
                                 @HeaderParam("Content-Type") String type,
@@ -62,28 +62,28 @@ interface CryptographyService {
 
 
 
-    @Post("keys/{key-getName}/{key-getVersion}/sign")
+    @Post("keys/{key-name}/{key-version}/sign")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyOperationResult>> sign(@HostParam("url") String url,
-                                @PathParam("key-getName") String keyName,
-                                @PathParam("key-getVersion") String keyVersion,
-                                @QueryParam("api-getVersion") String apiVersion,
+                                @PathParam("key-name") String keyName,
+                                @PathParam("key-version") String keyVersion,
+                                @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
                                 @BodyParam("body") KeySignRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
 
-    @Post("keys/{key-getName}/{key-getVersion}/verify")
+    @Post("keys/{key-name}/{key-version}/verify")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyVerifyResponse>> verify(@HostParam("url") String url,
-                                @PathParam("key-getName") String keyName,
-                                @PathParam("key-getVersion") String keyVersion,
-                                @QueryParam("api-getVersion") String apiVersion,
+                                @PathParam("key-name") String keyName,
+                                @PathParam("key-version") String keyVersion,
+                                @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
                                 @BodyParam("body") KeyVerifyRequest parameters,
                                 @HeaderParam("Content-Type") String type,
@@ -91,42 +91,42 @@ interface CryptographyService {
 
 
 
-    @Post("keys/{key-getName}/{key-getVersion}/wrapkey")
+    @Post("keys/{key-name}/{key-version}/wrapkey")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyOperationResult>> wrapKey(@HostParam("url") String url,
-                                @PathParam("key-getName") String keyName,
-                                @PathParam("key-getVersion") String keyVersion,
-                                @QueryParam("api-getVersion") String apiVersion,
+                                @PathParam("key-name") String keyName,
+                                @PathParam("key-version") String keyVersion,
+                                @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
                                 @BodyParam("body") KeyWrapUnwrapRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
 
-    @Post("keys/{key-getName}/{key-getVersion}/unwrapkey")
+    @Post("keys/{key-name}/{key-version}/unwrapkey")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<KeyOperationResult>> unwrapKey(@HostParam("url") String url,
-                                @PathParam("key-getName") String keyName,
-                                @PathParam("key-getVersion") String keyVersion,
-                                @QueryParam("api-getVersion") String apiVersion,
+                                @PathParam("key-name") String keyName,
+                                @PathParam("key-version") String keyVersion,
+                                @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
                                 @BodyParam("body") KeyWrapUnwrapRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
-    @Get("keys/{key-getName}/{key-getVersion}")
+    @Get("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<Key>> getKey(@HostParam("url") String url,
-                               @PathParam("key-getName") String keyName,
-                               @PathParam("key-getVersion") String keyVersion,
-                               @QueryParam("api-getVersion") String apiVersion,
+                               @PathParam("key-name") String keyName,
+                               @PathParam("key-version") String keyVersion,
+                               @QueryParam("api-version") String apiVersion,
                                @HeaderParam("accept-language") String acceptLanguage,
                                @HeaderParam("Content-Type") String type,
                                Context context);

@@ -84,7 +84,7 @@ public class CryptographyClientBuilder {
 
     /**
      * Creates a {@link CryptographyClient} based on options set in the builder.
-     * Every time {@code buildClient()} is called, a new instance of {@link CryptographyClient} is getCreated.
+     * Every time {@code buildClient()} is called, a new instance of {@link CryptographyClient} is created.
      *
      * <p>If {@link CryptographyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier} or {@link
@@ -106,7 +106,7 @@ public class CryptographyClientBuilder {
     }
     /**
      * Creates a {@link CryptographyAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is getCreated.
+     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CryptographyAsyncClient} is created.
      *
      * <p>If {@link CryptographyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier} or {@link

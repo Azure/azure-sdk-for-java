@@ -345,9 +345,9 @@ public class CryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature is to be getCreated.
+     * @param digest The content from which signature is to be created.
      * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
-     *     the getCreated signature.
+     *     the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      */
@@ -390,7 +390,7 @@ public class CryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param digest The content from which signature is to be getCreated.
+     * @param digest The content from which signature is to be created.
      * @param signature The signature to be verified.
      * @return A {@link Mono} containing a {@link Boolean} indicating the signature verification result.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
@@ -522,9 +522,9 @@ public class CryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte}
      *
      * @param algorithm The algorithm to use for signing.
-     * @param data The content from which signature is to be getCreated.
+     * @param data The content from which signature is to be created.
      * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
-     *     the getCreated signature.
+     *     the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      */
@@ -608,9 +608,9 @@ public class CryptographyAsyncClient {
             if (Strings.isNullOrEmpty(endpoint)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Key endpoint in key getId is invalid"));
             } else if (Strings.isNullOrEmpty(keyName)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Key getName in key getId is invalid"));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key name in key getId is invalid"));
             } else if (Strings.isNullOrEmpty(version)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Key getVersion in key getId is invalid"));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key version in key getId is invalid"));
             }
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed", e));
