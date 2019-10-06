@@ -7,6 +7,9 @@ import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 
+import com.azure.search.test.environment.models.Author;
+import com.azure.search.test.environment.models.Book;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
@@ -104,7 +107,37 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() {
+    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+        String api = apiKey;
+        if(api == null){
+            api = "api";
+        }
+        SearchIndexService searchIndexService = new SearchIndexService(
+            BOOKS_INDEX_JSON, client.getSearchServiceName(), api);
+        searchIndexService.initialize();
+
+        Author tolkien = new Author();
+        tolkien.firstName("J.R.R.");
+        tolkien.lastName("Tolkien");
+        Book doc1 = new Book();
+        doc1.ISBN("123");
+        doc1.title("Lord of the Rings");
+        doc1.author(tolkien);
+
+        Book doc2 = new Book();
+        doc2.ISBN("456");
+        doc2.title("War and Peace");
+        doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
+        uploadDocuments(client,searchIndexService.indexName(),new LinkedList<>(Arrays.asList(doc1, doc2)));
+
+        SuggestParameters suggestParams = new SuggestParameters();
+        suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate" ));
+        PagedFlux<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(result -> verifyCanSuggestWithDateTimeInStaticModel(result))
+            .verifyComplete();
     }
 
     @Override

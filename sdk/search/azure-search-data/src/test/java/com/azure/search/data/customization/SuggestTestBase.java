@@ -111,6 +111,14 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
     }
 
+    protected void verifyCanSuggestWithDateTimeInStaticModel(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+        List<SuggestResult> books = suggestResultPagedResponse.value();
+        List<Document> docs = suggestResultPagedResponse.value().stream().map(h -> h.additionalProperties()).collect(Collectors.toList());
+
+        Assert.assertEquals(1, docs.size());
+        Assert.assertEquals("War and Peace", books.get(0).text());
+    }
+
     @Test
     public abstract void canSuggestDynamicDocuments() throws Exception;
 
