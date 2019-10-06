@@ -14,18 +14,18 @@ import java.time.ZoneOffset;
 class KeyRequestAttributes {
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads keyBase.getNotBefore, keyBase.getExpires and keyBase.setEnabled fields
-     * from {@code keyBase}
-     * @param keyBase the {@link KeyProperties} object with populated attributes
+     * Creates an instance of KeyRequestAttributes. Reads keyProperties.getNotBefore, keyProperties.getExpires and keyProperties.setEnabled fields
+     * from {@code keyProperties}
+     * @param keyProperties the {@link KeyProperties} object with populated attributes
      */
-    KeyRequestAttributes(KeyProperties keyBase) {
-        if (keyBase.getNotBefore() != null) {
-            this.notBefore = keyBase.getNotBefore().toEpochSecond();
+    KeyRequestAttributes(KeyProperties keyProperties) {
+        if (keyProperties.getNotBefore() != null) {
+            this.notBefore = keyProperties.getNotBefore().toEpochSecond();
         }
-        if (keyBase.getExpires() != null) {
-            this.expires = keyBase.getExpires().toEpochSecond();
+        if (keyProperties.getExpires() != null) {
+            this.expires = keyProperties.getExpires().toEpochSecond();
         }
-        this.enabled = keyBase.getEnabled();
+        this.enabled = keyProperties.getEnabled();
     }
 
     /**
@@ -47,7 +47,7 @@ class KeyRequestAttributes {
     /**
      * Determines whether the object is setEnabled.
      */
-    @JsonProperty(value = "setEnabled")
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -65,28 +65,28 @@ class KeyRequestAttributes {
     /**
      * Creation time in UTC.
      */
-    @JsonProperty(value = "getCreated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private Long created;
 
     /**
-     * Last getUpdated time in UTC.
+     * Last updated time in UTC.
      */
-    @JsonProperty(value = "getUpdated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
 
     /**
-     * Get the setEnabled value.
+     * Get the enabled value.
      *
-     * @return the setEnabled value
+     * @return the enabled value
      */
     public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the setEnabled value.
+     * Set the enabled value.
      *
-     * @param enabled the setEnabled value to set
+     * @param enabled the enabled value to set
      * @return the Attributes object itself.
      */
     public KeyRequestAttributes setEnabled(Boolean enabled) {
@@ -95,11 +95,11 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the getNotBefore value.
+     * Get the notBefore value.
      *
-     * @return the getNotBefore value
+     * @return the notBefore value
      */
-    public OffsetDateTime getNotBefore() {
+    public OffsetDateTime notBefore() {
         if (this.notBefore == null) {
             return null;
         }
@@ -107,9 +107,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Set the getNotBefore value.
+     * Set the notBefore value.
      *
-     * @param notBefore the getNotBefore value to set
+     * @param notBefore the notBefore value to set
      * @return the Attributes object itself.
      */
     public KeyRequestAttributes setNotBefore(OffsetDateTime notBefore) {
@@ -122,9 +122,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the getExpires value.
+     * Get the expires value.
      *
-     * @return the getExpires value
+     * @return the expires value
      */
     public OffsetDateTime getExpires() {
         if (this.expires == null) {
@@ -134,9 +134,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Set the getExpires value.
+     * Set the expires value.
      *
-     * @param expires the getExpires value to set
+     * @param expires the expires value to set
      * @return the Attributes object itself.
      */
     public KeyRequestAttributes setExpires(OffsetDateTime expires) {
@@ -149,9 +149,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the getCreated value.
+     * Get the created value.
      *
-     * @return the getCreated value
+     * @return the created value
      */
     public OffsetDateTime getCreated() {
         if (this.created == null) {
@@ -161,9 +161,9 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Get the getUpdated value.
+     * Get the updated value.
      *
-     * @return the getUpdated value
+     * @return the updated value
      */
     public OffsetDateTime getUpdated() {
         if (this.updated == null) {

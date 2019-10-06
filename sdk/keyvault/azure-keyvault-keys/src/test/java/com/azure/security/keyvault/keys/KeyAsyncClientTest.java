@@ -79,7 +79,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a key is able to be getUpdated when it exists.
+     * Tests that a key is able to be updated when it exists.
      */
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
@@ -101,7 +101,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a key is not able to be getUpdated when it is disabled. 403 error is expected.
+     * Tests that a key is not able to be updated when it is disabled. 403 error is expected.
      */
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
@@ -136,7 +136,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a specific getVersion of the key can be retrieved.
+     * Tests that a specific version of the key can be retrieved.
      */
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
@@ -193,7 +193,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete setEnabled vault.
+     * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void getDeletedKeyNotFound() {
         StepVerifier.create(client.getDeletedKey("non-existing"))
@@ -201,7 +201,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a deleted key can be recovered on a soft-delete setEnabled vault.
+     * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
     public void recoverDeletedKey() {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
@@ -222,7 +222,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete setEnabled vault.
+     * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
         StepVerifier.create(client.recoverDeletedKey("non-existing"))
@@ -293,7 +293,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a deleted key can be retrieved on a soft-delete setEnabled vault.
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
      */
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {

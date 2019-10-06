@@ -79,7 +79,7 @@ public final class KeyClientBuilder {
 
     /**
      * Creates a {@link KeyClient} based on options set in the builder.
-     * Every time {@code buildClient()} is called, a new instance of {@link KeyClient} is getCreated.
+     * Every time {@code buildClient()} is called, a new instance of {@link KeyClient} is created.
      *
      * <p>If {@link KeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link KeyClientBuilder#endpoint(String) serviceEndpoint} are used to create the {@link KeyClientBuilder client}.
@@ -97,7 +97,7 @@ public final class KeyClientBuilder {
 
     /**
      * Creates a {@link KeyAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link KeyAsyncClient} is getCreated.
+     * Every time {@code buildAsyncClient()} is called, a new instance of {@link KeyAsyncClient} is created.
      *
      * <p>If {@link KeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link KeyClientBuilder#endpoint(String) serviceEndpoint} are used to create the {@link KeyClientBuilder client}.
@@ -153,7 +153,7 @@ public final class KeyClientBuilder {
      * Sets the vault endpoint url to send HTTP requests to.
      *
      * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
-     * @return the getUpdated ServiceClientBuilder object.
+     * @return the updated ServiceClientBuilder object.
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public KeyClientBuilder endpoint(String endpoint) {
@@ -170,7 +170,7 @@ public final class KeyClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the getUpdated {@link KeyClientBuilder} object.
+     * @return the updated {@link KeyClientBuilder} object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public KeyClientBuilder credential(TokenCredential credential) {
@@ -185,7 +185,7 @@ public final class KeyClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the getUpdated {@link KeyClientBuilder} object.
+     * @return the updated {@link KeyClientBuilder} object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public KeyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -199,7 +199,7 @@ public final class KeyClientBuilder {
      * KeyClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the getUpdated {@link KeyClientBuilder} object.
+     * @return the updated {@link KeyClientBuilder} object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public KeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -212,7 +212,7 @@ public final class KeyClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the getUpdated {@link KeyClientBuilder} object.
+     * @return the updated {@link KeyClientBuilder} object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyClientBuilder httpClient(HttpClient client) {
@@ -228,7 +228,7 @@ public final class KeyClientBuilder {
      * {@link KeyClientBuilder#endpoint(String) endpoint} to build {@link KeyClient} or {@link KeyAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the getUpdated {@link KeyClientBuilder} object.
+     * @return the updated {@link KeyClientBuilder} object.
      */
     public KeyClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
@@ -243,7 +243,7 @@ public final class KeyClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The getUpdated KeyClientBuilder object.
+     * @return The updated KeyClientBuilder object.
      */
     public KeyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

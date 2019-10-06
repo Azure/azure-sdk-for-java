@@ -11,11 +11,11 @@ import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to list, recover and purge deleted keys in a soft-delete setEnabled key vault.
+ * Sample demonstrates how to list, recover and purge deleted keys in a soft-delete enabled key vault.
  */
 public class ManagingDeletedKeys {
     /**
-     * Authenticates with the key vault and shows how to list, recover and purge deleted keys in a soft-delete setEnabled key vault.
+     * Authenticates with the key vault and shows how to list, recover and purge deleted keys in a soft-delete enabled key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -23,7 +23,7 @@ public class ManagingDeletedKeys {
      */
     public static void main(String[] args) throws IllegalArgumentException, InterruptedException {
 
-        // NOTE: To manage deleted keys, your key vault needs to have soft-delete setEnabled. Soft-delete allows deleted keys
+        // NOTE: To manage deleted keys, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
         // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if
         // a key needs to be permanently deleted then it needs to be purged.
 
@@ -36,7 +36,7 @@ public class ManagingDeletedKeys {
                 .buildClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
-        // already exists in the key vault, then a new getVersion of the key is getCreated.
+        // already exists in the key vault, then a new version of the key is created.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048));
@@ -51,7 +51,7 @@ public class ManagingDeletedKeys {
         Thread.sleep(30000);
 
         // We accidentally Cloud Ec key. Let's recover it.
-        // A deleted key can only be recovered if the key vault is soft-delete setEnabled.
+        // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyClient.recoverDeletedKey("CloudEcKey");
 
         //To ensure key is recovered on server side.
@@ -64,12 +64,12 @@ public class ManagingDeletedKeys {
         //To ensure key is deleted on server side.
         Thread.sleep(30000);
 
-        // You can list all the deleted and non-purged keys, assuming key vault is soft-delete setEnabled.
+        // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
         for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
             System.out.printf("Deleted key's recovery Id %s", deletedKey.getRecoveryId());
         }
 
-        // If the keyvault is soft-delete setEnabled, then for permanent deletion deleted keys need to be purged.
+        // If the keyvault is soft-delete enabled, then for permanent deletion deleted keys need to be purged.
         keyClient.purgeDeletedKey("CloudEcKey");
         keyClient.purgeDeletedKey("CloudRsaKey");
 

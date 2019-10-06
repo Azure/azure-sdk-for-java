@@ -10,11 +10,11 @@ import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to asynchronously list, recover and purge deleted keys in a soft-delete setEnabled key vault.
+ * Sample demonstrates how to asynchronously list, recover and purge deleted keys in a soft-delete enabled key vault.
  */
 public class ManagingDeletedKeysAsync {
     /**
-     * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted keys in a soft-delete setEnabled key vault.
+     * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted keys in a soft-delete enabled key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -22,7 +22,7 @@ public class ManagingDeletedKeysAsync {
      */
     public static void main(String[] args) throws InterruptedException {
 
-        // NOTE: To manage deleted keys, your key vault needs to have soft-delete setEnabled. Soft-delete allows deleted keys
+        // NOTE: To manage deleted keys, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
         // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if
         // a key needs to be permanently deleted then it needs to be purged.
 
@@ -35,18 +35,18 @@ public class ManagingDeletedKeysAsync {
                 .buildAsyncClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
-        // already exists in the key vault, then a new getVersion of the key is getCreated.
+        // already exists in the key vault, then a new version of the key is created.
         keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is getCreated with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is getCreated with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
@@ -58,7 +58,7 @@ public class ManagingDeletedKeysAsync {
         Thread.sleep(30000);
 
         // We accidentally deleted Cloud Ec key. Let's recover it.
-        // A deleted key can only be recovered if the key vault is soft-delete setEnabled.
+        // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyAsyncClient.recoverDeletedKey("CloudEcKey").subscribe(recoveredKeyResponse ->
             System.out.printf("Recovered Key with name %s %n", recoveredKeyResponse.getName()));
 
@@ -75,13 +75,13 @@ public class ManagingDeletedKeysAsync {
         // To ensure key is deleted on server side.
         Thread.sleep(30000);
 
-        // You can list all the deleted and non-purged keys, assuming key vault is soft-delete setEnabled.
+        // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
         keyAsyncClient.listDeletedKeys().subscribe(deletedKey ->
             System.out.printf("Deleted key's recovery Id %s %n", deletedKey.getRecoveryId()));
 
         Thread.sleep(15000);
 
-        // If the keyvault is soft-delete setEnabled, then for permanent deletion  deleted keys need to be purged.
+        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
             System.out.printf("Storage account key purge status response %d %n", purgeResponse.getStatusCode()));
 

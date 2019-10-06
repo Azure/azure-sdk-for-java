@@ -64,9 +64,9 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the {@link OffsetDateTime getNotBefore} UTC time.
+     * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore The getNotBefore UTC time to set
+     * @param notBefore The notBefore UTC time to set
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
@@ -76,7 +76,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the {@link OffsetDateTime getExpires} UTC time.
+     * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires The expiry time to set for the key.
      * @return the RsaKeyCreateOptions object itself.
@@ -88,9 +88,9 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the getTags to be associated with the key.
+     * Set the gags to be associated with the key.
      *
-     * @param tags The getTags to set
+     * @param tags The tags to set
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
@@ -100,9 +100,9 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the setEnabled value.
+     * Set the enabled value.
      *
-     * @param enabled The setEnabled value to set
+     * @param enabled The enabled value to set
      * @return the RsaKeyCreateOptions object itself.
      */
     public RsaKeyCreateOptions setEnabled(Boolean enabled) {
@@ -111,7 +111,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set whether the key being getCreated is of hsm type or not.
+     * Set whether the key being created is of hsm type or not.
      * @param hsm The hsm value to set.
      * @return the RsaKeyCreateOptions object itself.
      */
@@ -122,7 +122,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Get the hsm value of the key being getCreated.
+     * Get the hsm value of the key being created.
      * @return the hsm value.
      */
     public Boolean isHsm() {

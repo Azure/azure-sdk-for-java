@@ -91,7 +91,7 @@ public class Secret {
      * @return the updated secret object
      */
     public Secret setProperties(SecretProperties properties) {
-        Objects.requireNonNull(properties)
+        Objects.requireNonNull(properties);
         properties.name = this.properties.name;
         this.properties = properties;
         return this;

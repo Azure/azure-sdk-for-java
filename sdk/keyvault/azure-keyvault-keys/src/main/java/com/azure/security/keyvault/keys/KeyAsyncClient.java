@@ -42,7 +42,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 /**
  * The KeyAsyncClient provides asynchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Key keys}.
- * The client also supports listing {@link DeletedKey deleted keys} for a soft-delete setEnabled Azure Key Vault.
+ * The client also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the async client</strong></p>
  *
@@ -79,7 +79,7 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It requires the
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
      * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
@@ -87,16 +87,16 @@ public final class KeyAsyncClient {
      * {@link KeyType#OCT OCT}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly getCreated key details when
+     * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
      * a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKey#string-keyType}
      *
-     * @param name The getName of the key being getCreated.
+     * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
-     * @return A {@link Mono} containing the {@link Key getCreated key}.
-     * @throws ResourceModifiedException if {@code getName} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code getName} is empty string.
+     * @return A {@link Mono} containing the {@link Key created key}.
+     * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
+     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(String name, KeyType keyType) {
@@ -105,7 +105,7 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It requires the
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
      * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
@@ -113,16 +113,16 @@ public final class KeyAsyncClient {
      * {@link KeyType#OCT OCT}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly getCreated key details when
+     * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
      * a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKeyWithResponse#keyCreateOptions}
      *
-     * @param keyCreateOptions The key configuration object containing information about the key being getCreated.
+     * @param keyCreateOptions The key configuration object containing information about the key being created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
-     *     getCreated key}.
-     * @throws ResourceModifiedException if {@code getName} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code getName} is empty string.
+     *     created key}.
+     * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
+     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions) {
@@ -140,11 +140,11 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It requires the
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() getExpires} and {@link
-     * KeyCreateOptions#notBefore() getNotBefore} values are optional. The {@link KeyCreateOptions#setEnabled(Boolean) setEnabled}
+     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
+     * KeyCreateOptions#notBefore() notBefore} values are optional. The {@link KeyCreateOptions#setEnabled(Boolean) enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
@@ -152,16 +152,15 @@ public final class KeyAsyncClient {
      * and {@link KeyType#OCT OCT}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new Rsa key which activates in one day and getExpires in one year. Subscribes to the call
-     * asynchronously and prints out the newly getCreated key details when a response has been received.</p>
+     * <p>Creates a new Rsa key which activates in one day and expires in one year. Subscribes to the call
+     * asynchronously and prints out the newly created key details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKey#keyCreateOptions}
      *
-     * @param keyCreateOptions The key configuration object containing information about the key being getCreated.
-     * @return A {@link Mono} containing the {@link Key getCreated key}.
+     * @param keyCreateOptions The key configuration object containing information about the key being created.
+     * @return A {@link Mono} containing the {@link Key created key}.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
@@ -183,29 +182,28 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa
-     * key type in key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It
+     * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
-     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() getExpires} and
-     * {@link RsaKeyCreateOptions#notBefore() getNotBefore} values are optional. The
-     * {@link RsaKeyCreateOptions#setEnabled(Boolean) setEnabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and
+     * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The
+     * {@link RsaKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new RSA key with size 2048 which activates in one day and getExpires in one year. Subscribes to the
-     * call asynchronously and prints out the newly getCreated key details when a response has been received.</p>
+     * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Subscribes to the
+     * call asynchronously and prints out the newly created key details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createRsaKey#RsaKeyCreateOptions}
      *
      * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being
-     *     getCreated.
-     * @return A {@link Mono} containing the {@link Key getCreated key}.
+     *     created.
+     * @return A {@link Mono} containing the {@link Key created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
@@ -214,13 +212,13 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa
-     * key type in key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It
+     * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
-     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() getExpires} and
-     * {@link RsaKeyCreateOptions#notBefore() getNotBefore} values are optional. The {@link
-     * RsaKeyCreateOptions#setEnabled(Boolean) setEnabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and
+     * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link
+     * RsaKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
      * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
@@ -228,12 +226,11 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions}
      *
      * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being
-     *     getCreated.
+     *     created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
-     *     getCreated key}.
+     *     created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions) {
@@ -256,30 +253,29 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new Ec key and stores it in the key vault. The create Ec key operation can be used to create any Ec key
-     * type in key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It requires
+     * type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires
      * the {@code keys/create} permission.
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() getExpires} and {@link EcKeyCreateOptions#notBefore() getNotBefore}
-     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) setEnabled} field is set to true by Azure Key Vault,
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault,
      * if not specified.</p>
      *
      * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and getExpires in one year.
-     * Subscribes to the call asynchronously and prints out the newly getCreated ec key details when a response has been
+     * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year.
+     * Subscribes to the call asynchronously and prints out the newly created ec key details when a response has been
      * received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createEcKey#EcKeyCreateOptions}
      *
-     * @param ecKeyCreateOptions The key options object containing information about the ec key being getCreated.
-     * @return A {@link Mono} containing the {@link Key getCreated key}.
+     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
+     * @return A {@link Mono} containing the {@link Key created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
@@ -288,31 +284,30 @@ public final class KeyAsyncClient {
 
     /**
      * Creates a new Ec key and stores it in the key vault. The create Ec key operation can be used to create any Ec key
-     * type in key vault. If the named key already exists, Azure Key Vault creates a new getVersion of the key. It requires
+     * type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires
      * the {@code keys/create} permission.
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() getExpires} and {@link EcKeyCreateOptions#notBefore() getNotBefore}
-     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) setEnabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
      * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and getExpires in one year.
-     * Subscribes to the call asynchronously and prints out the newly getCreated ec key details when a response has been
+     * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year.
+     * Subscribes to the call asynchronously and prints out the newly created ec key details when a response has been
      * received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions}
      *
-     * @param ecKeyCreateOptions The key options object containing information about the ec key being getCreated.
+     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
-     *     getCreated key}.
+     *     created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions) {
@@ -334,8 +329,8 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Imports an externally getCreated key and stores it in key vault. The import key operation may be used to import any
-     * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new getVersion of the
+     * Imports an externally created key and stores it in key vault. The import key operation may be used to import any
+     * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
      * <p><strong>Code Samples</strong></p>
@@ -344,15 +339,15 @@ public final class KeyAsyncClient {
      *
      * <pre>
      * keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with getName %s and getId %s \n", keyResponse.value().getName(), keyResponse.value
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(), keyResponse.value
      *   ().getId()));
      * </pre>
      *
-     * @param name The getName for the imported key.
+     * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     imported key}.
-     * @throws HttpRequestException if {@code getName} is empty string.
+     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(String name, JsonWebKey keyMaterial) {
@@ -369,14 +364,14 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Imports an externally getCreated key and stores it in key vault. The import key operation may be used to import any
-     * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new getVersion of the
+     * Imports an externally created key and stores it in key vault. The import key operation may be used to import any
+     * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() getName} and {@link
-     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() getExpires} and
-     * {@link KeyImportOptions#getNotBefore() getNotBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() setEnabled} field is set to true and the
+     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
+     * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
+     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() enabled} field is set to true and the
      * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -385,10 +380,10 @@ public final class KeyAsyncClient {
      * <pre>
      * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
      *   .hsm(true)
-     *   .getExpires(OffsetDateTime.now().plusDays(60));
+     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
      * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with getName %s and getId %s \n", keyResponse.value().getName(),
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(),
      *   keyResponse.value().getId()));
      * </pre>
      *
@@ -396,7 +391,6 @@ public final class KeyAsyncClient {
      *     being imported.
      * @return A {@link Mono} containing the {@link Key imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
@@ -404,14 +398,14 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Imports an externally getCreated key and stores it in key vault. The import key operation may be used to import any
-     * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new getVersion of the
+     * Imports an externally created key and stores it in key vault. The import key operation may be used to import any
+     * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() getName} and {@link
-     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() getExpires} and
-     * {@link KeyImportOptions#getNotBefore() getNotBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() setEnabled}
+     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
+     * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
+     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() enabled}
      * field is set to true and the {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they
      * are not specified.</p>
      *
@@ -422,10 +416,10 @@ public final class KeyAsyncClient {
      * <pre>
      * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
      *   .hsm(true)
-     *   .getExpires(OffsetDateTime.now().plusDays(60));
+     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
      * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with getName %s and getId %s \n", keyResponse.value().getName(),
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(),
      *   keyResponse.value().getId()));
      * </pre>
      *
@@ -434,7 +428,6 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code getName} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions) {
@@ -455,22 +448,22 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Gets the public part of the specified key and key getVersion. The get key operation is applicable to all key types
+     * Gets the public part of the specified key and key version. The get key operation is applicable to all key types
      * and it requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific getVersion of the key in the key vault. Subscribes to the call asynchronously and prints out the
+     * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#string-string}
      *
-     * @param name The getName of the key, cannot be null
-     * @param version The getVersion of the key to retrieve. If this is an empty String or null, this call is
-     *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest getVersion being retrieved.
+     * @param name The name of the key, cannot be null
+     * @param version The version of the key to retrieve. If this is an empty String or null, this call is
+     *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing the requested {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} and {@code getVersion} doesn't exist in the key
+     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
      *     vault.
-     * @throws HttpRequestException if {@code getName} or {@code getVersion} is empty string.
+     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name, String version) {
@@ -478,23 +471,23 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Gets the public part of the specified key and key getVersion. The get key operation is applicable to all key types
+     * Gets the public part of the specified key and key version. The get key operation is applicable to all key types
      * and it requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific getVersion of the key in the key vault. Subscribes to the call asynchronously and prints out the
+     * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string-string}
      *
-     * @param name The getName of the key, cannot be null
-     * @param version The getVersion of the key to retrieve. If this is an empty String or null, this call is
-     *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest getVersion being retrieved.
+     * @param name The name of the key, cannot be null
+     * @param version The version of the key to retrieve. If this is an empty String or null, this call is
+     *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} and {@code getVersion} doesn't exist in the key
+     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
      *     vault.
-     * @throws HttpRequestException if {@code getName} or {@code getVersion} is empty string.
+     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(String name, String version) {
@@ -509,19 +502,19 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Get the public part of the latest getVersion of the specified key from the key vault. The get key operation is
+     * Get the public part of the latest version of the specified key from the key vault. The get key operation is
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest getVersion of the key in the key vault. Subscribes to the call asynchronously and prints out the
+     * <p>Gets latest version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#string}
      *
-     * @param name The getName of the key.
+     * @param name The name of the key.
      * @return A {@link Mono} containing the requested {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name) {
@@ -540,9 +533,9 @@ public final class KeyAsyncClient {
      *
      * @param keyProperties The {@link KeyProperties base key} holding attributes of the key being requested.
      * @return A {@link Mono} containing the requested {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() getName} and {@link KeyProperties#getVersion()
-     *     getVersion} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName()}  getName} or {@link KeyProperties#getVersion() getVersion} is empty
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
+     *     version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -563,9 +556,9 @@ public final class KeyAsyncClient {
      * @param keyProperties The {@link KeyProperties base key} holding attributes of the key being requested.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() getName} and {@link KeyProperties#getVersion()
-     *     getVersion} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName()}  getName} or {@link KeyProperties#getVersion() getVersion} is empty
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
+     *     version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -582,18 +575,18 @@ public final class KeyAsyncClient {
      * be changed. This operation requires the {@code keys/set} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest getVersion of the key, changes its getNotBefore time and then updates it in the Azure Key Vault.
+     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault.
      * Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyProperties#KeyProperties}
      *
-     * @param key The {@link KeyProperties base key} object with getUpdated properties.
-     * @return A {@link Mono} containing the {@link KeyProperties getUpdated key}.
+     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @return A {@link Mono} containing the {@link KeyProperties updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() getName} and {@link KeyProperties#getVersion()
-     *     getVersion} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() getName} or {@link KeyProperties#getVersion() getVersion} is empty
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
+     *     version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -620,20 +613,20 @@ public final class KeyAsyncClient {
      * material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest getVersion of the key, changes its getNotBefore time and then updates it in the Azure Key Vault.
+     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault.
      * Subscribes to the call asynchronously and prints out the returned key details when a response has been received.
      * </p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyProperties base key} object with getUpdated properties.
-     * @param keyOperations The getUpdated key operations to associate with the key.
+     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @param keyOperations The updated key operations to associate with the key.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     KeyProperties getUpdated key}.
+     *     KeyProperties updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() getName} and {@link KeyProperties#getVersion()
-     *     getVersion} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() getName} or {@link KeyProperties#getVersion() getVersion} is empty
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
+     *     version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -648,19 +641,19 @@ public final class KeyAsyncClient {
      * material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest getVersion of the key, changes its getNotBefore time and then updates it in the Azure Key Vault.
+     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault.
      * Subscribes to the call asynchronously and prints out the returned key details when a response has been received.
      * </p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyProperties#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyProperties base key} object with getUpdated properties.
-     * @param keyOperations The getUpdated key operations to associate with the key.
-     * @return A {@link Mono} containing the {@link KeyProperties getUpdated key}.
+     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @param keyOperations The updated key operations to associate with the key.
+     * @return A {@link Mono} containing the {@link KeyProperties updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() getName} and {@link KeyProperties#getVersion()
-     *     getVersion} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() getName} or {@link KeyProperties#getVersion() getVersion} is empty
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
+     *     version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -682,9 +675,9 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Deletes a key of any type from the key vault. If soft-delete is setEnabled on the key vault then the key is placed
+     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
      * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
-     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual getVersion
+     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
      * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
      * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
      * {@code keys/delete} permission.
@@ -695,10 +688,10 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#string}
      *
-     * @param name The getName of the key to be deleted.
+     * @param name The name of the key to be deleted.
      * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> deleteKey(String name) {
@@ -706,9 +699,9 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Deletes a key of any type from the key vault. If soft-delete is setEnabled on the key vault then the key is placed
+     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
      * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
-     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual getVersion
+     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
      * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
      * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
      * {@code keys/delete} permission.
@@ -719,11 +712,11 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string}
      *
-     * @param name The getName of the key to be deleted.
+     * @param name The name of the key to be deleted.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedKey deleted key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> deleteKeyWithResponse(String name) {
@@ -738,20 +731,20 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Gets the public part of a deleted key. The Get Deleted Key operation is applicable for soft-delete setEnabled
+     * Gets the public part of a deleted key. The Get Deleted Key operation is applicable for soft-delete enabled
      * vaults. This operation requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted key from the key vault setEnabled for soft-delete. Subscribes to the call asynchronously and
+     * <p> Gets the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the deleted key details when a response has been received.</p>
-     * //Assuming key is deleted on a soft-delete setEnabled vault.
+     * //Assuming key is deleted on a soft-delete enabled vault.
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKey#string}
      *
-     * @param name The getName of the deleted key.
+     * @param name The name of the deleted key.
      * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
@@ -759,21 +752,21 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Gets the public part of a deleted key. The Get Deleted Key operation is applicable for soft-delete setEnabled
+     * Gets the public part of a deleted key. The Get Deleted Key operation is applicable for soft-delete enabled
      * vaults. This operation requires the {@code keys/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted key from the key vault setEnabled for soft-delete. Subscribes to the call asynchronously and
+     * <p> Gets the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the deleted key details when a response has been received.</p>
      *
-     * //Assuming key is deleted on a soft-delete setEnabled vault.
+     * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKeyWithResponse#string}
      *
-     * @param name The getName of the deleted key.
+     * @param name The name of the deleted key.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedKey deleted key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
@@ -789,19 +782,19 @@ public final class KeyAsyncClient {
 
     /**
      * Permanently deletes the specified key without the possibility of recovery. The Purge Deleted Key operation is
-     * applicable for soft-delete setEnabled vaults. This operation requires the {@code keys/purge} permission.
+     * applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted key from the key vault setEnabled for soft-delete. Subscribes to the call asynchronously and
+     * <p>Purges the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the status code from the server response when a response has been received.</p>
      *
-     * //Assuming key is deleted on a soft-delete setEnabled vault.
+     * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string}
      *
-     * @param name The getName of the deleted key.
+     * @param name The name of the deleted key.
      * @return An empty {@link Mono}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedKey(String name) {
@@ -810,19 +803,19 @@ public final class KeyAsyncClient {
 
     /**
      * Permanently deletes the specified key without the possibility of recovery. The Purge Deleted Key operation is
-     * applicable for soft-delete setEnabled vaults. This operation requires the {@code keys/purge} permission.
+     * applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted key from the key vault setEnabled for soft-delete. Subscribes to the call asynchronously and
+     * <p>Purges the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the status code from the server response when a response has been received.</p>
      *
-     * //Assuming key is deleted on a soft-delete setEnabled vault.
+     * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKeyWithResponse#string}
      *
-     * @param name The getName of the deleted key.
+     * @param name The name of the deleted key.
      * @return A {@link Mono} containing a Response containing status code and HTTP headers.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
@@ -837,20 +830,20 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Recovers the deleted key in the key vault to its latest getVersion and can only be performed on a soft-delete
-     * setEnabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
-     * delete operation on soft-delete setEnabled vaults. This operation requires the {@code keys/recover} permission.
+     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
+     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
+     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault setEnabled for soft-delete. Subscribes to the call asynchronously and
+     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the recovered key details when a response has been received.</p>
-     * //Assuming key is deleted on a soft-delete setEnabled vault.
+     * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string}
      *
-     * @param name The getName of the deleted key to be recovered.
+     * @param name The name of the deleted key to be recovered.
      * @return A {@link Mono} containing the {@link Key recovered key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> recoverDeletedKey(String name) {
@@ -858,21 +851,21 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Recovers the deleted key in the key vault to its latest getVersion and can only be performed on a soft-delete
-     * setEnabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
-     * delete operation on soft-delete setEnabled vaults. This operation requires the {@code keys/recover} permission.
+     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
+     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
+     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault setEnabled for soft-delete. Subscribes to the call asynchronously and
+     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the recovered key details when a response has been received.</p>
-     * //Assuming key is deleted on a soft-delete setEnabled vault.
+     * //Assuming key is deleted on a soft-delete enabled vault.
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string}
      *
-     * @param name The getName of the deleted key to be recovered.
+     * @param name The name of the deleted key to be recovered.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     recovered key}.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> recoverDeletedKeyWithResponse(String name) {
@@ -905,10 +898,10 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.backupKey#string}
      *
-     * @param name The getName of the key.
+     * @param name The name of the key.
      * @return A {@link Mono} containing the backed up key blob.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
@@ -933,11 +926,11 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.backupKeyWithResponse#string}
      *
-     * @param name The getName of the key.
+     * @param name The name of the key.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the backed up
      *     key blob.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
@@ -957,10 +950,10 @@ public final class KeyAsyncClient {
      * Restores a backed up key to a vault. Imports a previously backed up key into Azure Key Vault, restoring the key,
      * its key identifier, attributes and access control policies. The restore operation may be used to import a
      * previously backed up key. The individual versions of a key cannot be restored. The key is restored in its
-     * entirety with the same key getName as it had when it was backed up. If the key getName is not available in the target
-     * Key Vault, the restore operation will be rejected. While the key getName is retained during restore, the final key
+     * entirety with the same key name as it had when it was backed up. If the key name is not available in the target
+     * Key Vault, the restore operation will be rejected. While the key name is retained during restore, the final key
      * identifier will change if the key is restored to a different vault. Restore will restore all versions and
-     * preserve getVersion identifiers. The restore operation is subject to security constraints: The target Key Vault must
+     * preserve version identifiers. The restore operation is subject to security constraints: The target Key Vault must
      * be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have restore permission
      * in the target Key Vault. This operation requires the {@code keys/restore} permission.
      *
@@ -984,10 +977,10 @@ public final class KeyAsyncClient {
      * Restores a backed up key to a vault. Imports a previously backed up key into Azure Key Vault, restoring the key,
      * its key identifier, attributes and access control policies. The restore operation may be used to import a
      * previously backed up key. The individual versions of a key cannot be restored. The key is restored in its
-     * entirety with the same key getName as it had when it was backed up. If the key getName is not available in the target
-     * Key Vault, the restore operation will be rejected. While the key getName is retained during restore, the final key
+     * entirety with the same key name as it had when it was backed up. If the key name is not available in the target
+     * Key Vault, the restore operation will be rejected. While the key name is retained during restore, the final key
      * identifier will change if the key is restored to a different vault. Restore will restore all versions and
-     * preserve getVersion identifiers. The restore operation is subject to security constraints: The target Key Vault must
+     * preserve version identifiers. The restore operation is subject to security constraints: The target Key Vault must
      * be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have restore permission
      * in the target Key Vault. This operation requires the {@code keys/restore} permission.
      *
@@ -1020,7 +1013,7 @@ public final class KeyAsyncClient {
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the flux is represented by {@link KeyProperties} as only the base key identifier, attributes and getTags are
+     * response in the flux is represented by {@link KeyProperties} as only the base key identifier, attributes and tags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
@@ -1074,11 +1067,11 @@ public final class KeyAsyncClient {
 
     /**
      * Lists {@link DeletedKey deleted keys} of the key vault. The deleted keys are retrieved as JSON Web Key structures
-     * that contain the public part of a deleted key. The Get Deleted Keys operation is applicable for vaults setEnabled
+     * that contain the public part of a deleted key. The Get Deleted Keys operation is applicable for vaults enabled
      * for soft-delete. This operation requires the {@code keys/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the deleted keys in the key vault. Subscribes to the call asynchronously and prints out the recovery getId
+     * <p>Lists the deleted keys in the key vault. Subscribes to the call asynchronously and prints out the recovery id
      * of each deleted key when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listDeletedKeys}
@@ -1128,7 +1121,7 @@ public final class KeyAsyncClient {
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
-     * as only the base key identifier, attributes and getTags are provided in the response. The key material values are
+     * as only the base key identifier, attributes and tags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link
@@ -1137,11 +1130,11 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeyVersions}
      *
-     * @param name The getName of the key.
+     * @param name The name of the key.
      * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the versions of the specified key in the vault.
-     *     Flux is empty if key with {@code getName} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code getName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code getName} is empty string.
+     *     Flux is empty if key with {@code name} does not exist in key vault.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listKeyVersions(String name) {

@@ -42,14 +42,14 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a key can be getCreated in the key vault.
+     * Tests that a key can be created in the key vault.
      */
     public void setKey() {
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
 
     /**
-     * Tests that an attempt to create a key with empty string getName throws an error.
+     * Tests that an attempt to create a key with empty string name throws an error.
      */
     public void setKeyEmptyName() {
         assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
@@ -72,7 +72,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a key is able to be getUpdated when it exists.
+     * Tests that a key is able to be updated when it exists.
      */
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
@@ -84,7 +84,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a key is able to be getUpdated when it is disabled.
+     * Tests that a key is able to be updated when it is disabled.
      */
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
@@ -106,7 +106,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a specific getVersion of the key can be retrieved.
+     * Tests that a specific version of the key can be retrieved.
      */
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
@@ -147,7 +147,7 @@ public class KeyClientTest extends KeyClientTestBase {
 
 
     /**
-     * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete setEnabled vault.
+     * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void getDeletedKeyNotFound() {
         assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -155,7 +155,7 @@ public class KeyClientTest extends KeyClientTestBase {
 
 
     /**
-     * Tests that a deleted key can be recovered on a soft-delete setEnabled vault.
+     * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
     public void recoverDeletedKey() {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
@@ -170,7 +170,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete setEnabled vault.
+     * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
         assertRestException(() -> client.recoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
@@ -247,7 +247,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a deleted key can be retrieved on a soft-delete setEnabled vault.
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
      */
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {

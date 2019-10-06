@@ -32,7 +32,7 @@ public class ListOperations {
                 .buildClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
-        // already exists in the key vault, then a new getVersion of the key is getCreated.
+        // already exists in the key vault, then a new verison of the key is created.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048));
@@ -48,7 +48,7 @@ public class ListOperations {
         }
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
-        // Calling createRsaKey on an existing key creates a new getVersion of the key in the key vault with the new specified size.
+        // Calling createRsaKey on an existing key creates a new verison of the key in the key vault with the new specified size.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(4096));
@@ -56,7 +56,7 @@ public class ListOperations {
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
         for (KeyProperties key : keyClient.listKeyVersions("CloudRsaKey")) {
             Key keyWithMaterial  = keyClient.getKey(key);
-            System.out.printf("Received key's getVersion with name %s, type %s and getVersion %s", keyWithMaterial.getName(), keyWithMaterial.getKeyMaterial().getKty(), keyWithMaterial.getProperties().getVersion());
+            System.out.printf("Received key's verison with name %s, type %s and verison %s", keyWithMaterial.getName(), keyWithMaterial.getKeyMaterial().getKty(), keyWithMaterial.getProperties().getVersion());
         }
     }
 }

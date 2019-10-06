@@ -37,7 +37,7 @@ public class BackupAndRestoreOperations {
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
-        // already exists in the key vault, then a new getVersion of the key is getCreated.
+        // already exists in the key vault, then a new version of the key is created.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048));
@@ -54,7 +54,7 @@ public class BackupAndRestoreOperations {
         //To ensure key is deleted on server side.
         Thread.sleep(30000);
 
-        // If the vault is soft-delete setEnabled, then you need to purge the key as well for permanent deletion.
+        // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
         keyClient.purgeDeletedKey("CloudRsaKey");
 
         //To ensure key is purged on server side.

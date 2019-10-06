@@ -134,7 +134,7 @@ public class JsonWebKey {
     private byte[] t;
 
     /**
-     * Elliptic curve getName. For valid values, see KeyCurveName. Possible
+     * Elliptic curve name. For valid values, see KeyCurveName. Possible
      * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
      */
     @JsonProperty(value = "crv")

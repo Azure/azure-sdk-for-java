@@ -34,7 +34,7 @@ public class HelloWorld {
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
-        // already exists in the key vault, then a new getVersion of the key is getCreated.
+        // already exists in the key vault, then a new version of the key is created.
         Response<Key> createKeyResponse = keyClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
                                                                                  .setExpires(OffsetDateTime.now().plusYears(1))
                                                                                  .setKeySize(2048), new Context("key1", "value1"));
@@ -51,10 +51,10 @@ public class HelloWorld {
         // The update method can be used to update the expiry attribute of the key.
         cloudRsaKey.getProperties().setExpires(cloudRsaKey.getProperties().getExpires().plusYears(1));
         Key updatedKey = keyClient.updateKeyProperties(cloudRsaKey.getProperties());
-        System.out.printf("Key's getUpdated expiry time %s \n", updatedKey.getProperties().getExpires());
+        System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires());
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
-        // Calling createRsaKey on an existing key creates a new getVersion of the key in the key vault with the new specified size.
+        // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
         keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(4096));
@@ -65,7 +65,7 @@ public class HelloWorld {
         // To ensure key is deleted on server side.
         Thread.sleep(30000);
 
-        // If the keyvault is soft-delete setEnabled, then for permanent deletion  deleted keys need to be purged.
+        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
         keyClient.purgeDeletedKey("CloudRsaKey");
     }
 }
