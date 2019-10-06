@@ -9,6 +9,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
@@ -93,7 +94,8 @@ public class SimpleProxy implements ProxyServer {
         public void completed(AsynchronousSocketChannel client, AsynchronousServerSocketChannel serverSocket) {
             try {
                 logger.info("Client connected from: {}", client.getRemoteAddress());
-            } catch (IOException ignore) {
+            } catch (IOException error) {
+                logger.error("Unable to get socket address for: {}", client, error);
             }
 
             // Invoke again to accept additional client connections.
@@ -110,7 +112,12 @@ public class SimpleProxy implements ProxyServer {
         @Override
         public void failed(Throwable exc, AsynchronousServerSocketChannel attachment) {
             isRunning.set(false);
-            onErrorHandler.accept(exc);
+
+            if (exc instanceof AsynchronousCloseException) {
+                logger.info("Closed proxy server.");
+            } else {
+                onErrorHandler.accept(exc);
+            }
         }
     }
 
@@ -124,8 +131,8 @@ public class SimpleProxy implements ProxyServer {
             final AsynchronousSocketChannel serviceSocket = AsynchronousSocketChannel.open();
             connection = new ConnectionProperties(ProxyConnectionState.PROXY_NOT_STARTED,
                 clientSocket, serviceSocket, onError);
-            final ReadWriteState state = new ReadWriteState(false, ByteBuffer.allocate(PROXY_BUFFER_SIZE),
-                true);
+            final ReadWriteState state = new ReadWriteState(ReadWriteState.Target.SERVICE,
+                ByteBuffer.allocate(PROXY_BUFFER_SIZE), true);
 
             clientSocket.read(state.getBuffer(), state, new ReadWriteHandler(connection));
         }

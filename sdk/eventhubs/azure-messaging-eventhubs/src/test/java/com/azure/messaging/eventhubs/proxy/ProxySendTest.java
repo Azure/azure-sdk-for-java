@@ -38,7 +38,6 @@ import java.util.UUID;
 
 public class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8899;
-    private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
     private static final String PARTITION_ID = "1";
     private static final int NUMBER_OF_EVENTS = 25;
 
@@ -60,7 +59,7 @@ public class ProxySendTest extends IntegrationTestBase {
 
     @BeforeClass
     public static void initialize() throws Exception {
-        proxyServer = new SimpleProxy(SIMPLE_PROXY_ADDRESS.getHostName(), SIMPLE_PROXY_ADDRESS.getPort());
+        proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(t -> {
         });
 
@@ -68,7 +67,7 @@ public class ProxySendTest extends IntegrationTestBase {
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
-                return Collections.singletonList(new Proxy(Proxy.Type.HTTP, SIMPLE_PROXY_ADDRESS));
+                return Collections.singletonList(new Proxy(Proxy.Type.HTTP, proxyServer.getHost()));
             }
 
             @Override

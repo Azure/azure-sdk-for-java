@@ -74,15 +74,15 @@ class ConnectionProperties implements Closeable {
         SocketAddress clientAddress = null;
         try {
             clientAddress = clientSocket.getRemoteAddress();
-        } catch (IOException e) {
-            logger.warning("Unable to get client remote address.", e);
+        } catch (IOException ignored) {
+            // It's possible to get this IOException when we've closed the socket after disposing of our connection.
         }
 
         SocketAddress serviceAddress = null;
         try {
             serviceAddress = outgoingSocket.getRemoteAddress();
-        } catch (IOException e) {
-            logger.warning("Unable to get service remote address.", e);
+        } catch (IOException ignored) {
+            // It's possible to get this IOException when we've closed the socket after disposing of the client.
         }
 
         return String.format("ConnectionProperties [state='%s', client='%s', service='%s']",

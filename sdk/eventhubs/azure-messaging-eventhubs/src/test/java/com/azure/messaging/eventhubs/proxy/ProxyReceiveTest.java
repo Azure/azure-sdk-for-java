@@ -23,7 +23,6 @@ import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
@@ -37,7 +36,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class ProxyReceiveTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8899;
-    private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 25;
@@ -61,16 +59,15 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @BeforeClass
     public static void setup() throws IOException {
-        proxyServer = new SimpleProxy(SIMPLE_PROXY_ADDRESS.getHostName(), SIMPLE_PROXY_ADDRESS.getPort());
-        proxyServer.start(t -> {
-        });
+        proxyServer = new SimpleProxy(PROXY_PORT);
+        proxyServer.start(null);
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
                 List<Proxy> proxies = new ArrayList<>();
-                proxies.add(new Proxy(Proxy.Type.HTTP, SIMPLE_PROXY_ADDRESS));
+                proxies.add(new Proxy(Proxy.Type.HTTP, proxyServer.getHost()));
                 return proxies;
             }
 

@@ -7,33 +7,48 @@ import java.nio.ByteBuffer;
 
 class ReadWriteState {
     // flag used by PROXY_CONNECTED state to decide which socketchannel to write bytes toz
-    private final Boolean isClientWriter;
+    private final Target writeTarget;
     private final ByteBuffer buffer;
     private volatile boolean isReading;
 
     /**
      * Creates a new instance.
      *
-     * @param isClientWriter {@code true} if writing to the client socket. {@code false} if writing to the service
-     *     socket.
+     * @param writeTarget Target socket to write to if is in a write state.
      * @param buffer The buffer to write/read contents to/from.
      * @param isReading {@code true} if reading from the socket. {@code false} if we should be writing to socket.
      */
-    ReadWriteState(boolean isClientWriter, ByteBuffer buffer, boolean isReading) {
-        this.isClientWriter = isClientWriter;
+    ReadWriteState(Target writeTarget, ByteBuffer buffer, boolean isReading) {
+        this.writeTarget = writeTarget;
         this.buffer = buffer;
         this.isReading = isReading;
     }
 
     @Override
     public String toString() {
-        return String.format("ReadWriteState[%sWriter, %s]",
-            isClientWriter ? "client" : "service",
-            isReading ? "reading" : "writing");
+        final String writer;
+        switch (writeTarget) {
+            case CLIENT:
+                writer = "ClientWriter";
+                break;
+            case SERVICE:
+                writer = "ServiceWriter";
+                break;
+            default:
+                writer = "";
+                break;
+        }
+
+        return String.format("ReadWriteState[%s, %s]", writer, isReading ? "reading" : "writing");
     }
 
-    boolean isClientWriter() {
-        return isClientWriter;
+    /**
+     * Gets the target socket to write to.
+     *
+     * @return The target socket to write to.
+     */
+    Target getWriteTarget() {
+        return writeTarget;
     }
 
     /**
@@ -51,5 +66,13 @@ class ReadWriteState {
 
     ByteBuffer getBuffer() {
         return buffer;
+    }
+
+    /**
+     * Indicates which socket to target when performing a read or write.
+     */
+    enum Target {
+        CLIENT,
+        SERVICE,
     }
 }
