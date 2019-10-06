@@ -32,8 +32,8 @@ public class SimpleProxy implements ProxyServer {
     private final InetSocketAddress host;
     private final List<ProxyNegotiationHandler> connectedClients = new ArrayList<>();
 
-    private volatile Consumer<Throwable> onErrorHandler;
-    private volatile AsynchronousServerSocketChannel serverSocket;
+    private Consumer<Throwable> onErrorHandler;
+    private AsynchronousServerSocketChannel serverSocket;
 
     public SimpleProxy(final int port) {
         this.host = new InetSocketAddress(HOSTNAME, port);
