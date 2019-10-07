@@ -54,14 +54,12 @@ public class GenericDocumentSearchExample {
         String apiKey = "";
         String dnsSuffix = "search.windows.net";
         String indexName = "";
-        String apiVersion = "2019-05-06";
 
 
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
             .serviceName(searchServiceName)
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
-            .apiVersion(apiVersion)
             .credential(apiKey)
             .buildAsyncClient();
 

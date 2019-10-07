@@ -54,6 +54,7 @@ public class SearchIndexClientBuilder {
      */
     public SearchIndexClientBuilder() {
         searchDnsSuffix = "search.windows.net";
+        apiVersion = "2019-05-06";
         httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
         policies = new ArrayList<>();
     }
