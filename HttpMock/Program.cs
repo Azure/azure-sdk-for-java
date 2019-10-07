@@ -54,6 +54,16 @@ namespace HttpMock
 
         static void Run()
         {
+            var allHeaders = Options.Headers.Concat(ServiceHeaders.Get(Options.Service));
+
+            Console.WriteLine("=== Headers ===");
+            foreach (var header in allHeaders)
+            {
+                Console.WriteLine(header);
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("=== Startup ===");
             new WebHostBuilder()
                 .UseKestrel(options =>
                 {
@@ -71,7 +81,7 @@ namespace HttpMock
                         var request = context.Request;
                         var response = context.Response;
 
-                        var key = new RequestCacheKey(request, Options.Headers.Concat(ServiceHeaders.Get(Options.Service)));
+                        var key = new RequestCacheKey(request, allHeaders);
 
                         if (_cache.TryGetValue(key, out var upstreamResponse))
                         {
