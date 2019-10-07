@@ -84,10 +84,15 @@ public final class BlobServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String}
      *
-     * @param containerName The name of the container to point to.
+     * @param containerName The name of the container to point to. A value of null or empty string will be interpreted
+     *                      as pointing to the root container and will be replaced by "$root".
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
+        if (containerName == null || containerName.isEmpty()) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
+
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
