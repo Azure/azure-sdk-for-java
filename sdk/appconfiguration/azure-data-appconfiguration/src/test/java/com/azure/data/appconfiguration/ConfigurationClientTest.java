@@ -55,6 +55,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
+            if (configurationSetting.isLocked()) {
+                client.clearReadOnlyWithResponse(configurationSetting, Context.NONE);
+            }
             client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
 
@@ -233,6 +236,86 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void deleteSettingNullKey() {
         assertRunnableThrowsException(() -> client.deleteSetting(null, null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteSettingWithResponse(null, false, Context.NONE).getValue(), NullPointerException.class);
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnly() {
+
+        lockUnlockRunner((expected) -> {
+            // lock setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnly(expected.getKey(), expected.getLabel());
+
+            // unsuccessfully delete
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                ResourceModifiedException.class, 409);
+        });
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnly() {
+        lockUnlockRunner((expected) -> {
+            // lock setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnlyWithResponse(expected, Context.NONE).getValue();
+
+            // unsuccessfully delete
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                ResourceModifiedException.class, 409);
+
+            // unlock setting and delete
+            client.clearReadOnly(expected.getKey(), expected.getLabel());
+
+            // successfully deleted
+            assertConfigurationEquals(expected,
+                client.deleteSettingWithResponse(expected, false, Context.NONE).getValue());
+        });
+    }
+
+    /**
+     * Tests assert that the setting can not be deleted after lock the setting.
+     */
+    public void setReadOnlyWithConfigurationSetting() {
+        lockUnlockRunner((expected) -> {
+            // lock setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnlyWithResponse(expected, Context.NONE);
+
+            // unsuccessfully delete
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                ResourceModifiedException.class, 409);
+        });
+    }
+
+    /**
+     * Tests assert that the setting can be deleted after unlock the setting.
+     */
+    public void clearReadOnlyWithConfigurationSetting() {
+        lockUnlockRunner((expected) -> {
+
+            // lock setting
+            client.addSettingWithResponse(expected, Context.NONE);
+            client.setReadOnlyWithResponse(expected, Context.NONE);
+
+            // unsuccessfully deleted
+            assertRestException(() ->
+                client.deleteSettingWithResponse(expected, false, Context.NONE),
+                ResourceModifiedException.class, 409);
+
+            // unlock setting and delete
+            client.clearReadOnlyWithResponse(expected, Context.NONE);
+
+            // successfully deleted
+            assertConfigurationEquals(expected,
+                client.deleteSettingWithResponse(expected, false, Context.NONE).getValue());
+        });
     }
 
     /**

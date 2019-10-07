@@ -236,6 +236,25 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void deleteSettingNullKey();
 
     @Test
+    public abstract void setReadOnly();
+
+    @Test
+    public abstract void clearReadOnly();
+
+    @Test
+    public abstract void setReadOnlyWithConfigurationSetting();
+
+    @Test
+    public abstract void clearReadOnlyWithConfigurationSetting();
+
+    void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
+        String key = getKey();
+
+        final ConfigurationSetting lockConfiguration = new ConfigurationSetting().setKey(key).setValue("myValue");
+        testRunner.accept(lockConfiguration);
+    }
+
+    @Test
     public abstract void listWithKeyAndLabel();
 
     @Test
@@ -399,6 +418,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertConfigurationEquals(ConfigurationSetting expected, Response<ConfigurationSetting> response, final int expectedStatusCode) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
+
         assertConfigurationEquals(expected, response.getValue());
     }
 
@@ -417,26 +437,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             assertTrue(false);
         }
 
-        assertEquals(expected.getKey(), actual.getKey());
-        assertEquals(expected.getLabel(), actual.getLabel());
-        assertEquals(expected.getValue(), actual.getValue());
-        assertEquals(expected.getETag(), actual.getETag());
-        assertEquals(expected.getLastModified(), actual.getLastModified());
-        assertEquals(expected.getContentType(), actual.getContentType());
-
-        final Map<String, String> expectedTags = expected.getTags();
-        final Map<String, String> actualTags = actual.getTags();
-
-        boolean expectedIsNullOrEmpty = ImplUtils.isNullOrEmpty(expectedTags);
-        boolean actualIsNullOrEmpty = ImplUtils.isNullOrEmpty(actualTags);
-
-        if (expectedIsNullOrEmpty) {
-            assertTrue(actualIsNullOrEmpty);
-        } else {
-            assertEquals(expectedTags, actualTags);
-
-            assertTrue(true);
-        }
+        equals(expected, actual);
     }
 
     /**
@@ -511,6 +512,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         }
     }
 
+
     /**
      * Helper method to verify that two configuration setting are equal. Users can defined their equal method.
      *
@@ -518,7 +520,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
      * @param o2 ConfigurationSetting object 2
      * @return boolean value that defines if two ConfigurationSettings are equal
      */
-    boolean equals(ConfigurationSetting o1, ConfigurationSetting o2) {
+    static boolean equals(ConfigurationSetting o1, ConfigurationSetting o2) {
         if (o1 == o2) {
             return true;
         }
@@ -548,7 +550,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
      * @param settings2 Another List of ConfigurationSetting
      * @return boolean value that defines if two ConfigurationSetting lists are equal
      */
-    boolean equalsArray(List<ConfigurationSetting> settings1, List<ConfigurationSetting> settings2) {
+    static boolean equalsArray(List<ConfigurationSetting> settings1, List<ConfigurationSetting> settings2) {
         if (settings1 == settings2) {
             return true;
         }
@@ -569,5 +571,4 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         }
         return true;
     }
-
 }
