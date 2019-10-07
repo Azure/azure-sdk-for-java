@@ -357,4 +357,14 @@ public final class FileServiceClient {
         Mono<Response<Void>> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.fileServiceAsyncClient.getAccountName();
+    }
 }

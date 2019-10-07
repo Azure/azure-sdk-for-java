@@ -12,6 +12,7 @@ import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.util.Configuration;
@@ -100,8 +101,8 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
      * {@inheritDoc}
      */
     @Override
-    public KeyEncryptionKeyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        super.httpLogDetailLevel(logLevel);
+    public KeyEncryptionKeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        super.httpLogOptions(logOptions);
         return this;
     }
 

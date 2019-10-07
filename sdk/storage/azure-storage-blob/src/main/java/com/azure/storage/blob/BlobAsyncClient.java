@@ -69,13 +69,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
+
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
-        super(azureBlobStorage, snapshot, cpk);
+    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
+        super(azureBlobStorage, snapshot, cpk, accountName);
     }
 
     /**
@@ -89,7 +90,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), getSnapshotId(), getCustomerProvidedKey());
+            .build(), getSnapshotId(), getCustomerProvidedKey(), accountName);
     }
 
     /**

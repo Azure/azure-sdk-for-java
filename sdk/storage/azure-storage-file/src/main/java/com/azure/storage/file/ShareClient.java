@@ -791,4 +791,13 @@ public class ShareClient {
     public String getShareName() {
         return this.client.getShareName();
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
+    }
 }

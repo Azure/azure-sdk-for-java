@@ -51,14 +51,16 @@ import reactor.core.publisher.Mono;
 public final class QueueServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
+    private final String accountName;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
      *
      * @param azureQueueStorage Client that interacts with the service interfaces.
      */
-    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage) {
+    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName) {
         this.client = azureQueueStorage;
+        this.accountName = accountName;
     }
 
     /**
@@ -77,7 +79,7 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        return new QueueAsyncClient(client, queueName);
+        return new QueueAsyncClient(client, queueName, accountName);
     }
 
     /**
@@ -120,7 +122,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName);
+        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName);
 
         return postProcessResponse(queueAsyncClient.createWithResponse(metadata, context))
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -161,7 +163,7 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        return new QueueAsyncClient(client, queueName).deleteWithResponse(context);
+        return new QueueAsyncClient(client, queueName, accountName).deleteWithResponse(context);
     }
 
     /**
@@ -414,5 +416,15 @@ public final class QueueServiceAsyncClient {
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
         return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 }

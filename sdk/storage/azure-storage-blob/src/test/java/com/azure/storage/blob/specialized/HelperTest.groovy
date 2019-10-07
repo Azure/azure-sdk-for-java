@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobSasPermission
 import com.azure.storage.blob.BlobContainerSasPermission
 import com.azure.storage.blob.BlobUrlParts
@@ -650,6 +651,17 @@ class HelperTest extends APISpec {
         splitParts[1].contains("sp=r")
         splitParts[1].contains("sig=")
         splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig & se
+    }
+
+    def "BlobURLParts implicit root"() {
+        when:
+        def bup = new BlobUrlParts()
+            .setScheme("http")
+            .setHost("host")
+            .setBlobName("blob")
+
+        then:
+        new BlobUrlParts().parse(bup.toURL()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
     }
 
     def "URLParser"() {

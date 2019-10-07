@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class BlobAsyncClientBaseJavaDocCodeSnippets {
-    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, null);
+    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, null, null);
     private String leaseId = "leaseId";
     private String copyId = "copyId";
     private URL url = new URL("https://sample.com");

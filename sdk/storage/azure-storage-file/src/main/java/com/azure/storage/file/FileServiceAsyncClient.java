@@ -52,14 +52,16 @@ import reactor.core.publisher.Mono;
 public final class FileServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(FileServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
+    private final String accountName;
 
     /**
      * Creates a FileServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
      *
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
-    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage) {
+    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName) {
         this.azureFileStorageClient = azureFileStorage;
+        this.accountName = accountName;
     }
 
     /**
@@ -97,7 +99,7 @@ public final class FileServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot);
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName);
     }
 
     /**
@@ -372,7 +374,7 @@ public final class FileServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null);
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null, accountName);
 
         return postProcessResponse(shareAsyncClient.createWithResponse(metadata, quotaInGB, context))
             .map(response -> new SimpleResponse<>(response, shareAsyncClient));
@@ -428,5 +430,14 @@ public final class FileServiceAsyncClient {
         return postProcessResponse(azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 }

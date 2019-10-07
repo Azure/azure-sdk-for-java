@@ -12,6 +12,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -64,7 +65,7 @@ public final class KeyClientBuilder {
     private HttpPipeline pipeline;
     private URL endpoint;
     private HttpClient httpClient;
-    private HttpLogDetailLevel httpLogDetailLevel;
+    private HttpLogOptions httpLogOptions;
     private final RetryPolicy retryPolicy;
     private Configuration configuration;
 
@@ -73,7 +74,7 @@ public final class KeyClientBuilder {
      */
     public KeyClientBuilder() {
         retryPolicy = new RetryPolicy();
-        httpLogDetailLevel = HttpLogDetailLevel.NONE;
+        httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
     }
 
@@ -139,7 +140,7 @@ public final class KeyClientBuilder {
         policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -180,17 +181,15 @@ public final class KeyClientBuilder {
     }
 
     /**
-     * Sets the logging level for HTTP requests and responses.
+     * Sets the logging configuration for HTTP requests and responses.
      *
-     * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated {@link KeyClientBuilder} object.
-     * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
-    public KeyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        Objects.requireNonNull(logLevel);
-        httpLogDetailLevel = logLevel;
+    public KeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
         return this;
     }
 

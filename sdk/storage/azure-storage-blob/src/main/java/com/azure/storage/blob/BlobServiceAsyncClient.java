@@ -76,15 +76,17 @@ public final class BlobServiceAsyncClient {
 
     private final AzureBlobStorageImpl azureBlobStorage;
     private final CpkInfo customerProvidedKey;
+    private final String accountName;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo customerProvidedKey) {
+    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo customerProvidedKey, String accountName) {
         this.azureBlobStorage = azureBlobStorage;
         this.customerProvidedKey = customerProvidedKey;
+        this.accountName = accountName;
     }
 
     /**
@@ -96,14 +98,19 @@ public final class BlobServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String}
      *
-     * @param containerName The name of the container to point to.
+     * @param containerName The name of the container to point to. A value of null or empty string will be interpreted
+     * as pointing to the root container and will be replaced by "$root".
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
+        if (containerName == null || containerName.isEmpty()) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
+
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), customerProvidedKey);
+            .build(), customerProvidedKey, accountName);
     }
 
     /**
@@ -113,6 +120,15 @@ public final class BlobServiceAsyncClient {
      */
     public HttpPipeline getHttpPipeline() {
         return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     /**
@@ -532,7 +548,7 @@ public final class BlobServiceAsyncClient {
                     setStatusCodeAndHeaders(batchOperationResponse, subResponseSections[1]);
 
                     // The third section will contain the body.
-                    if (subResponseSections.length >2) {
+                    if (subResponseSections.length > 2) {
                         // The body is optional and may not exist.
                         setBodyOrPotentiallyThrow(batchOperationResponse, subResponseSections[2], throwOnAnyFailure);
                     }

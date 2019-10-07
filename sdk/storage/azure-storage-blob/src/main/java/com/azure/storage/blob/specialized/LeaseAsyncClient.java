@@ -52,14 +52,16 @@ public final class LeaseAsyncClient {
     private final boolean isBlob;
     private final String leaseId;
     private final AzureBlobStorageImpl client;
+    private final String accountName;
 
-    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob) {
+    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
             .build();
+        this.accountName = accountName;
     }
 
     /**
@@ -324,5 +326,14 @@ public final class LeaseAsyncClient {
                     .switchIfEmpty(Mono.just(""))
                     .flatMap(body -> Mono.error(new StorageException(resume, body)))
             ));
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 }
