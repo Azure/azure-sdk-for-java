@@ -176,12 +176,12 @@ public class SearchIndexClientBuildersTest {
     }
 
     @Test
-    public void buildAsyncClientUsingDefaultApiVersionTest() {
+    public void whenBuildAsyncClientUsingDefaultApiVersionThenSuccess() {
         buildAsyncClient(searchServiceName, indexName, apiKey, dnsSuffix);
     }
 
     @Test
-    public void buildClientAndVerifyPropertiesTest() {
+    public void whenBuildClientAndVerifyPropertiesThenSuccess() {
         buildClientAndVerifyInternal(false);
         buildClientAndVerifyInternal(true);
     }
