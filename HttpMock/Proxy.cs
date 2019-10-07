@@ -16,8 +16,7 @@ namespace HttpMock
             // Only applies to request between client and proxy
             "Proxy-Connection",
 
-            // Only allowed to be set on HttpContent (not HttpRequestMessage).  However, StreamContent appears to set
-            // this automatically based on the content stream, so it seems fine to just exclude.
+            // Only allowed to be set on HttpContent (not HttpRequestMessage)
             "Content-Length"
         };
 
@@ -44,10 +43,11 @@ namespace HttpMock
                 {
                     upstreamRequest.Headers.Add(header.Key, values: header.Value);
                 }
-
+                
                 if (request.ContentLength > 0)
                 {
                     upstreamRequest.Content = new StreamContent(request.Body);
+                    upstreamRequest.Content.Headers.ContentLength = request.ContentLength;
                 }
 
                 using (var upstreamResponseMessage = await _httpClient.SendAsync(upstreamRequest))
