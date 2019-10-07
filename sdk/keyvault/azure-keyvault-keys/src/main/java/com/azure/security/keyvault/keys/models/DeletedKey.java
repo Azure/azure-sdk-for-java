@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
@@ -10,6 +12,14 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
+/**
+ * Deleted Key is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
+ * inherited from {@link Key}.
+ * It is managed by Key Service.
+ *
+ * @see KeyClient
+ * @see KeyAsyncClient
+ */
 public final class DeletedKey extends Key {
 
     /**

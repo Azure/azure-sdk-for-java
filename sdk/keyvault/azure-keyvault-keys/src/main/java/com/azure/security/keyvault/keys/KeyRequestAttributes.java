@@ -30,7 +30,7 @@ class KeyRequestAttributes {
 
     /**
      * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
-     * KeyCreateOptions.setEnabled fields
+     * KeyCreateOptions.isEnabled fields
      * from {@code keyOptions}
      * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
      */

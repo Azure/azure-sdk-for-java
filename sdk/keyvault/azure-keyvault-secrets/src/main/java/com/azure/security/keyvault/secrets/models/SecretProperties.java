@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +24,7 @@ import java.util.Objects;
  *  @see SecretAsyncClient
  */
 public class SecretProperties {
+    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 
     /**
      * The secret id.
@@ -252,7 +254,7 @@ public class SecretProperties {
      * Set the tags to be associated with the secret.
      *
      * @param tags The tags to set
-     * @return the SecretProperties object itself.
+     * @return the updated SecretProperties object itself.
      */
     public SecretProperties setTags(Map<String, String> tags) {
         this.tags = tags;
@@ -318,7 +320,8 @@ public class SecretProperties {
                 this.name = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                // Should never come here.
+                logger.error("Received Malformed Secret Id URL from KV Service");
             }
         }
     }

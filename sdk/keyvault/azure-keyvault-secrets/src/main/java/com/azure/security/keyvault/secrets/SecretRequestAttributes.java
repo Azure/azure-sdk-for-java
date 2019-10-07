@@ -16,8 +16,8 @@ import java.time.ZoneOffset;
 class SecretRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads secretBase.notBefore, secretBase.expires and
-     * secretBase.enabled fields from {@code secretBase}
+     * Creates an instance of SecretRequestAttributes. Reads secretProperties.notBefore, secretProperties.expires and
+     * secretProperties.enabled fields from {@code secretProperties}
      * @param secretProperties the {@link SecretProperties} object with populated attributes
      */
     SecretRequestAttributes(SecretProperties secretProperties) {
@@ -169,5 +169,4 @@ class SecretRequestAttributes {
         }
         return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
     }
-
 }
