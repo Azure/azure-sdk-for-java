@@ -20,26 +20,24 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
-    protected static final String INDEX_NAME = "hotels";
-    protected static final String BOOKS_INDEX_NAME = "books";
-    protected static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-    protected static final String PUBLISH_DATE_FIELD = "PublishDate";
-    protected static final String ISBN_FIELD = "ISBN";
-    protected static final String ISBN1 = "1";
-    protected static final String ISBN2 = "2";
-    protected static final String DATE_UTC = "2010-06-27T00:00:00Z";
-    protected SearchServiceClient searchServiceClient;
+    static final String INDEX_NAME = "hotels";
+    static final String BOOKS_INDEX_NAME = "books";
+    static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    static final String PUBLISH_DATE_FIELD = "PublishDate";
+    static final String ISBN_FIELD = "ISBN";
+    static final String ISBN1 = "1";
+    static final String ISBN2 = "2";
+    static final String DATE_UTC = "2010-06-27T00:00:00Z";
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         initializeClient();
+    }
 
-        if (searchServiceClient == null) {
-            SearchCredentials searchCredentials = new SearchCredentials(apiKey);
-            searchServiceClient = new SearchServiceClientImpl(searchCredentials)
-                .withSearchServiceName(searchServiceName);
-        }
+    protected SearchServiceClient getSearchServiceClient() {
+        SearchCredentials searchCredentials = new SearchCredentials(apiKeyCredentials.getApiKey());
+        return new SearchServiceClientImpl(searchCredentials).withSearchServiceName(searchServiceName);
     }
 
     @Test

@@ -1,44 +1,44 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/docs/search.index?api-version=2019-05-06",
+      "Uri": "https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8880baa3-a1de-4047-8bf7-ed4988bce947",
+        "request-id": "8880baa3-a1de-4047-8bf7-ed4988bce947",
       "StatusCode" : "200",
-      "Date" : "Mon, 30 Sep 2019 20:06:07 GMT",
+        "Date": "Mon, 30 Sep 2019 20:06:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "109",
+        "elapsed-time": "109",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "230",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+        "Body": "{\"@odata.context\":\"https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/docs('1')?api-version=2019-05-06",
+      "Uri": "https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/docs('1')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6a205558-501b-4bd4-a79b-8f7f9dc7758a",
+        "request-id": "6a205558-501b-4bd4-a79b-8f7f9dc7758a",
       "StatusCode" : "200",
-      "Date" : "Mon, 30 Sep 2019 20:06:07 GMT",
+        "Date": "Mon, 30 Sep 2019 20:06:07 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "8",
+        "elapsed-time": "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "123",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/$metadata#docs(*)/$entity\",\"ID\":\"1\"}",
+        "Body": "{\"@odata.context\":\"https://azs-sdk3e7856456273.search.windows.net/indexes('prototype')/$metadata#docs(*)/$entity\",\"ID\":\"1\"}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

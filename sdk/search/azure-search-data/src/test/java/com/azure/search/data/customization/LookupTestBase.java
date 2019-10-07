@@ -103,7 +103,7 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKey);
+                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
             try {
                 searchIndexService.initialize();
             } catch (IOException e) {

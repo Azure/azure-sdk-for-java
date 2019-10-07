@@ -37,7 +37,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                BOOKS_INDEX_JSON, searchServiceName, apiKey);
+                BOOKS_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
             try {
                 searchIndexService.initialize();
             } catch (IOException e) {

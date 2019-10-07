@@ -3,6 +3,7 @@
 
 package com.azure.search.data;
 
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.azure.search.test.environment.setup.SearchIndexDocs;
 import com.azure.search.test.environment.setup.SearchIndexService;
@@ -52,7 +53,7 @@ public class CreateTestResources {
 
         // Uploading Documents:
         try {
-            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, apiAdminKey,
+            SearchIndexDocs searchIndexDocs = new SearchIndexDocs(serviceName, new ApiKeyCredentials(apiAdminKey),
                 searchIndexService.indexName(),
                 "search.windows.net",
                 "2019-05-06");

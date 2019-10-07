@@ -5,6 +5,7 @@ package com.azure.search.data.customization;
 
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,8 +13,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class SearchIndexClientBuildersTest {
+    private ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("");
     private String searchServiceName = "";
-    private String apiKey = "";
     private String indexName = "";
     private String apiVersion = "";
     private String dnsSuffix = "";
@@ -21,13 +22,13 @@ public class SearchIndexClientBuildersTest {
     /**
      * Builds a Sync Search Index client
      */
-    private SearchIndexClientImpl buildClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
+    private SearchIndexClientImpl buildClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexClient client = clientBuilder
             .serviceName(searchServiceName)
             .indexName(indexName)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .apiVersion(apiVersion)
             .searchDnsSuffix(dnsSuffix)
             .buildClient();
@@ -41,13 +42,14 @@ public class SearchIndexClientBuildersTest {
     /**
      * Builds a Sync Search Index client
      */
-    private SearchIndexClientImpl buildClient(String searchServiceName, String indexName, String apiKey, String dnsSuffix) {
+    private SearchIndexClientImpl buildClient(
+        String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexClient client = clientBuilder
             .serviceName(searchServiceName)
             .indexName(indexName)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .searchDnsSuffix(dnsSuffix)
             .buildClient();
 
@@ -60,13 +62,13 @@ public class SearchIndexClientBuildersTest {
     /**
      * Builds an Async Search Index client
      */
-    private SearchIndexAsyncClientImpl buildAsyncClient(String searchServiceName, String indexName, String apiKey, String apiVersion, String dnsSuffix) {
+    private SearchIndexAsyncClientImpl buildAsyncClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client = clientBuilder
             .serviceName(searchServiceName)
             .indexName(indexName)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .apiVersion(apiVersion)
             .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
@@ -80,13 +82,14 @@ public class SearchIndexClientBuildersTest {
     /**
      * Builds an Async Search Index client
      */
-    private SearchIndexAsyncClientImpl buildAsyncClient(String searchServiceName, String indexName, String apiKey, String dnsSuffix) {
+    private SearchIndexAsyncClientImpl buildAsyncClient(
+        String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client = clientBuilder
             .serviceName(searchServiceName)
             .indexName(indexName)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .searchDnsSuffix(dnsSuffix)
             .buildAsyncClient();
 
@@ -99,10 +102,10 @@ public class SearchIndexClientBuildersTest {
     private void buildClientAndVerifyInternal(boolean isAsync) {
         SearchIndexBaseClient client;
         if (isAsync) {
-            client = buildClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+            client = buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
 
         } else {
-            client = buildAsyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+            client = buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
         }
 
         assert (client.getIndexName().equals(indexName));
@@ -118,23 +121,23 @@ public class SearchIndexClientBuildersTest {
                                                String expectedMsg,
                                                String searchServiceName,
                                                String indexName,
-                                               String apiKey,
+                                               ApiKeyCredentials apiKeyCredentials,
                                                String apiVersion,
                                                String dnsSuffix) {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage(expectedMsg);
 
         if (isAsync) {
-            buildAsyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+            buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
         } else {
-            buildClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+            buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
         }
     }
 
     @Before
     public void initialize() {
+        apiKeyCredentials = new ApiKeyCredentials("0123");
         searchServiceName = "servicename";
-        apiKey = "0123";
         indexName = "myindex";
         apiVersion = "2019-05-06";
         dnsSuffix = "search.windows.net";
@@ -142,42 +145,45 @@ public class SearchIndexClientBuildersTest {
 
     @Test
     public void buildSyncClientTest() {
-        buildClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+        buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        buildClient(searchServiceName, indexName, apiKey, dnsSuffix);
+        buildClient(searchServiceName, indexName, apiKeyCredentials, dnsSuffix);
     }
 
     @Test
     public void buildAsyncClientTest() {
-        buildAsyncClient(searchServiceName, indexName, apiKey, apiVersion, dnsSuffix);
+        buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void whenApiVersionNotSpecifiedThenDefaultValueExists() {
-        SearchIndexClient searchIndexClient = buildClient(searchServiceName, indexName, apiKey, dnsSuffix);
+        SearchIndexClient searchIndexClient = buildClient(searchServiceName, indexName, apiKeyCredentials, dnsSuffix);
         String expectedVersion = "2019-05-06";
         Assert.assertEquals(expectedVersion, searchIndexClient.getApiVersion());
 
-        SearchIndexAsyncClient searchIndexAsyncClient = buildAsyncClient(searchServiceName, indexName, apiKey, dnsSuffix);
+        SearchIndexAsyncClient searchIndexAsyncClient = buildAsyncClient(
+            searchServiceName, indexName, apiKeyCredentials, dnsSuffix);
         Assert.assertEquals(expectedVersion, searchIndexAsyncClient.getApiVersion());
     }
 
     @Test
     public void whenApiVersionSpecifiedThenSpecifiedValueExists() {
         String apiToTest = "abc";
-        SearchIndexClient searchIndexClient = buildClient(searchServiceName, indexName, apiKey, apiToTest, dnsSuffix);
+        SearchIndexClient searchIndexClient = buildClient(
+            searchServiceName, indexName, apiKeyCredentials, apiToTest, dnsSuffix);
         Assert.assertEquals(apiToTest, searchIndexClient.getApiVersion());
 
-        SearchIndexAsyncClient searchIndexAsyncClient = buildAsyncClient(searchServiceName, indexName, apiKey, apiToTest, dnsSuffix);
+        SearchIndexAsyncClient searchIndexAsyncClient = buildAsyncClient(
+            searchServiceName, indexName, apiKeyCredentials, apiToTest, dnsSuffix);
         Assert.assertEquals(apiToTest, searchIndexAsyncClient.getApiVersion());
     }
 
     @Test
     public void whenBuildAsyncClientUsingDefaultApiVersionThenSuccess() {
-        buildAsyncClient(searchServiceName, indexName, apiKey, dnsSuffix);
+        buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, dnsSuffix);
     }
 
     @Test
@@ -193,121 +199,121 @@ public class SearchIndexClientBuildersTest {
     @Test
     public void verifyNullSearchServiceNameIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid searchServiceName", null,
-            indexName, apiKey, apiVersion, dnsSuffix);
+                indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyNullSearchServiceNameIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid searchServiceName", null,
-            indexName, apiKey, apiVersion, dnsSuffix);
+                indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptySearchServiceNameIsInvalidAsyncTest() {
         buildClientAndExpectException(false, "Invalid searchServiceName", "",
-            indexName, apiKey, apiVersion, dnsSuffix);
+                indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptySearchServiceNameIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid searchServiceName", "",
-            indexName, apiKey, apiVersion, dnsSuffix);
+            indexName, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyNullIndexNameIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid indexName", searchServiceName,
-            null, apiKey, apiVersion, dnsSuffix);
+            null, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyNullIndexNameIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid indexName", searchServiceName,
-            null, apiKey, apiVersion, dnsSuffix);
+                null, apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptyIndexNameIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid indexName", searchServiceName,
-            "", apiKey, apiVersion, dnsSuffix);
+                "", apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptyIndexNameIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid indexName", searchServiceName,
-            "", apiKey, apiVersion, dnsSuffix);
+                "", apiKeyCredentials, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyNullApiKeyIsInvalidAsyncTest() {
-        buildClientAndExpectException(true, "Empty apiKey", searchServiceName,
-            indexName, null, apiVersion, dnsSuffix);
+        buildClientAndExpectException(true, "Empty apiKeyCredentials", searchServiceName,
+                indexName, null, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyNullApiKeyIsInvalidTest() {
-        buildClientAndExpectException(false, "Empty apiKey", searchServiceName,
-            indexName, null, apiVersion, dnsSuffix);
+        buildClientAndExpectException(false, "Empty apiKeyCredentials", searchServiceName,
+                indexName, null, apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptyApiKeyIsInvalidAsyncTest() {
-        buildClientAndExpectException(true, "Empty apiKey", searchServiceName,
-            indexName, "", apiVersion, dnsSuffix);
+        buildClientAndExpectException(true, "Empty apiKeyCredentials", searchServiceName,
+                indexName, new ApiKeyCredentials(""), apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyEmptyApiKeyIsInvalidTest() {
-        buildClientAndExpectException(false, "Empty apiKey", searchServiceName,
-            indexName, "", apiVersion, dnsSuffix);
+        buildClientAndExpectException(false, "Empty apiKeyCredentials", searchServiceName,
+                indexName, new ApiKeyCredentials(""), apiVersion, dnsSuffix);
     }
 
     @Test
     public void verifyNullApiVersionIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
-            indexName, apiKey, null, dnsSuffix);
+                indexName, apiKeyCredentials, null, dnsSuffix);
     }
 
     @Test
     public void verifyNullApiVersionIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
-            indexName, apiKey, null, dnsSuffix);
+                indexName, apiKeyCredentials, null, dnsSuffix);
     }
 
     @Test
     public void verifyEmptyApiVersionIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid apiVersion", searchServiceName,
-            indexName, apiKey, "", dnsSuffix);
+                indexName, apiKeyCredentials, "", dnsSuffix);
     }
 
     @Test
     public void verifyEmptyApiVersionIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid apiVersion", searchServiceName,
-            indexName, apiKey, "", dnsSuffix);
+                indexName, apiKeyCredentials, "", dnsSuffix);
     }
 
     @Test
     public void verifyNullDnsSuffixIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
-            indexName, apiKey, apiVersion, null);
+                indexName, apiKeyCredentials, apiVersion, null);
     }
 
     @Test
     public void verifyNullDnsSuffixIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
-            indexName, apiKey, apiVersion, null);
+                indexName, apiKeyCredentials, apiVersion, null);
     }
 
     @Test
     public void verifyEmptyDnsSuffixIsInvalidAsyncTest() {
         buildClientAndExpectException(true, "Invalid searchDnsSuffix", searchServiceName,
-            indexName, apiKey, apiVersion, "");
+                indexName, apiKeyCredentials, apiVersion, "");
     }
 
     @Test
     public void verifyEmptyDnsSuffixIsInvalidTest() {
         buildClientAndExpectException(false, "Invalid searchDnsSuffix", searchServiceName,
-            indexName, apiKey, apiVersion, "");
+                indexName, apiKeyCredentials, apiVersion, "");
     }
 
     /**
@@ -319,12 +325,12 @@ public class SearchIndexClientBuildersTest {
         SearchIndexAsyncClient client = clientBuilder
             .serviceName(searchServiceName)
             .indexName(indexName)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .apiVersion(apiVersion)
             .buildAsyncClient();
 
         assert (client != null);
-        assert (client.getSearchDnsSuffix() == "search.windows.net");
+        assert (client.getSearchDnsSuffix().equals("search.windows.net"));
     }
 
     /**
@@ -334,7 +340,7 @@ public class SearchIndexClientBuildersTest {
     public void verifyIndexNameIsChangeableTest() {
 
         String originalIndexName = "firstOne";
-        SearchIndexAsyncClientImpl client = buildAsyncClient(searchServiceName, originalIndexName, apiKey, apiVersion, dnsSuffix);
+        SearchIndexAsyncClientImpl client = buildAsyncClient(searchServiceName, originalIndexName, apiKeyCredentials, apiVersion, dnsSuffix);
         assert (client.getIndexName().equals(originalIndexName));
 
         String otherIndexName = "ImTheSecond";

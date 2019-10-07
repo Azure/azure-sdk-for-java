@@ -4,6 +4,7 @@
 package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.SearchResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -24,10 +25,10 @@ public class SearchIndexClientExample {
      * @param args arguments
      */
     public static void main(String[] args) {
-        String searchServiceName = "";
-        String apiKey = "";
+        ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("<apiKeyCredentials>");
+        String searchServiceName = "<searchServiceName>";
         String dnsSuffix = "search.windows.net";
-        String indexName = "";
+        String indexName = "<indexName>";
         String apiVersion = "2019-05-06";
 
 
@@ -36,7 +37,7 @@ public class SearchIndexClientExample {
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
             .apiVersion(apiVersion)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .buildAsyncClient();
 
         List<SearchResult> results = searchClient

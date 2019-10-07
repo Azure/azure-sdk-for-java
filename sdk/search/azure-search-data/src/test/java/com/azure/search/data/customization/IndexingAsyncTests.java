@@ -216,7 +216,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .withFields(Collections.singletonList(new Field().withName("ID").withType(DataType.EDM_STRING).withKey(Boolean.TRUE)));
 
         if (!interceptorManager.isPlaybackMode()) {
-            searchServiceClient.indexes().create(indexWithReservedName);
+            getSearchServiceClient().indexes().create(indexWithReservedName);
         }
 
         Map<String, Object> indexData = new HashMap<>();
@@ -273,7 +273,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(BOOKS_INDEX_JSON));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
         if (!interceptorManager.isPlaybackMode()) {
-            searchServiceClient.indexes().create(index);
+            getSearchServiceClient().indexes().create(index);
         }
 
         // Upload and retrieve book documents
@@ -337,7 +337,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(BOOKS_INDEX_JSON));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
         if (!interceptorManager.isPlaybackMode()) {
-            searchServiceClient.indexes().create(index);
+            getSearchServiceClient().indexes().create(index);
         }
 
         // Upload and retrieve book documents

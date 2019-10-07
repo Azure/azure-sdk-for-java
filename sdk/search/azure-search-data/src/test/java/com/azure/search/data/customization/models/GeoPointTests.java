@@ -46,7 +46,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                INDEX_JSON_GEO_POINTS, searchServiceName, apiKey);
+                INDEX_JSON_GEO_POINTS, searchServiceName, apiKeyCredentials.getApiKey());
             try {
                 searchIndexService.initialize();
             } catch (IOException e) {

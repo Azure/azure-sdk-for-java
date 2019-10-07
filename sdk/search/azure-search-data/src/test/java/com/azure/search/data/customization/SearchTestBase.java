@@ -197,7 +197,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKey);
+                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
             searchIndexService.initialize();
         }
     }
@@ -206,7 +206,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                NON_NULLABLE_INDEX_JSON, searchServiceName, apiKey);
+                NON_NULLABLE_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
             searchIndexService.initialize();
         }
     }

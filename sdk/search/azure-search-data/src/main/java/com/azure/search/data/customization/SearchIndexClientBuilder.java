@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchApiKeyPipelinePolicy;
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import java.util.List;
 @ServiceClientBuilder(serviceClients = SearchIndexClientImpl.class)
 public class SearchIndexClientBuilder {
 
-    private String apiKey;
+    private ApiKeyCredentials apiKeyCredentials;
     private String apiVersion;
     private String serviceName;
     private String indexName;
@@ -105,15 +106,15 @@ public class SearchIndexClientBuilder {
 
     /**
      * Sets the api key to use for requests authentication.
-     * @param apiKey api key for requests authentication
+     * @param apiKeyCredentials api key for requests authentication
      * @throws IllegalArgumentException when the api key is empty
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilder credential(String apiKey) {
-        if (StringUtils.isBlank(apiKey)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKey"));
+    public SearchIndexClientBuilder credential(ApiKeyCredentials apiKeyCredentials) {
+        if (apiKeyCredentials == null || StringUtils.isBlank(apiKeyCredentials.getApiKey())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Empty apiKeyCredentials"));
         }
-        this.apiKey = apiKey;
+        this.apiKeyCredentials = apiKeyCredentials;
         return this;
     }
 
@@ -150,8 +151,8 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
-        if (StringUtils.isNotBlank(apiKey)) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(apiKey));
+        if (apiKeyCredentials != null) {
+            this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
         }
 
         return new SearchIndexAsyncClientImpl(serviceName,

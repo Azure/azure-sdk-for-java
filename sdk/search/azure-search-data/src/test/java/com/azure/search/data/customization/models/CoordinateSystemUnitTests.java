@@ -3,7 +3,6 @@
 
 package com.azure.search.data.customization.models;
 
-import com.azure.search.data.customization.models.CoordinateSystem;
 import org.junit.Assert;
 import org.junit.Test;
 

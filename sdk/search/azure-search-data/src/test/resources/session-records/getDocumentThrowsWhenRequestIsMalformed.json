@@ -1,37 +1,37 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkdd303566f678.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+      "Uri": "https://azs-sdkdd303566f678.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b4a04aeb-0773-4a6c-a63e-686031599ff3",
+        "request-id": "b4a04aeb-0773-4a6c-a63e-686031599ff3",
       "StatusCode" : "200",
-      "Date" : "Mon, 30 Sep 2019 20:16:10 GMT",
+        "Date": "Mon, 30 Sep 2019 20:16:10 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "94",
+        "elapsed-time": "94",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "227",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkdd303566f678.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+        "Body": "{\"@odata.context\":\"https://azs-sdkdd303566f678.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
-    "Exception" : null
+      "Exception": null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkdd303566f678.search.windows.net/indexes('hotels')/docs('2')?$select=HotelId%2cThisFieldDoesNotExist&api-version=2019-05-06",
+      "Uri": "https://azs-sdkdd303566f678.search.windows.net/indexes('hotels')/docs('2')?$select=HotelId%2cThisFieldDoesNotExist&api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0da1d054-5913-45e7-bf9e-26529f96093f",
+        "request-id": "0da1d054-5913-45e7-bf9e-26529f96093f",
       "StatusCode" : "400",
-      "Date" : "Mon, 30 Sep 2019 20:16:12 GMT",
+        "Date": "Mon, 30 Sep 2019 20:16:12 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "3",
@@ -43,7 +43,7 @@
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
-    "Exception" : null
+      "Exception": null
   } ],
   "variables" : [ ]
 }

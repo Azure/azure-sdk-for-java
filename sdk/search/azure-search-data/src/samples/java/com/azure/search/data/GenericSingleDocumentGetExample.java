@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.data;
 
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.Document;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import reactor.core.publisher.Mono;
@@ -40,20 +41,17 @@ public class GenericSingleDocumentGetExample {
          */
     }
 
-    public static SearchIndexAsyncClient getSearchClient(){
-        String searchServiceName = "";
-        String apiKey = "";
+    private static SearchIndexAsyncClient getSearchClient() {
+        ApiKeyCredentials apiKeyCredentials = new ApiKeyCredentials("<apiKeyCredentials>");
+        String searchServiceName = "<searchServiceName>";
         String dnsSuffix = "search.windows.net";
-        String indexName = "";
+        String indexName = "<indexName>";
 
-
-        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
+        return new SearchIndexClientBuilder()
             .serviceName(searchServiceName)
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
-            .credential(apiKey)
+            .credential(apiKeyCredentials)
             .buildAsyncClient();
-
-        return searchClient;
     }
 }

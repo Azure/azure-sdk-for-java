@@ -4,6 +4,7 @@
 package com.azure.search.test.environment.setup;
 
 import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,7 +19,7 @@ public class SearchIndexDocs {
     public static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
     private String searchServiceName;
-    private String apiAdminKey;
+    private ApiKeyCredentials apiAdminKey;
     private String indexName;
     private String dnsSuffix;
     private String apiVersion;
@@ -36,7 +37,7 @@ public class SearchIndexDocs {
      * @param apiVersion        used API version
      */
     public SearchIndexDocs(
-        String searchServiceName, String apiAdminKey, String indexName,
+        String searchServiceName, ApiKeyCredentials apiAdminKey, String indexName,
         String dnsSuffix, String apiVersion) {
         this.searchServiceName = searchServiceName;
         this.apiAdminKey = apiAdminKey;

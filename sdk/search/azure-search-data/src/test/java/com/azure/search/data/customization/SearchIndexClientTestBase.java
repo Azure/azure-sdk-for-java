@@ -13,6 +13,7 @@ import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.SearchIndexClient;
+import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.api.Type;
@@ -41,7 +42,8 @@ public class SearchIndexClientTestBase extends TestBase {
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     protected String searchServiceName;
-    protected String apiKey;
+    protected String indexName;
+    protected ApiKeyCredentials apiKeyCredentials;
     protected SearchIndexService searchServiceHotelsIndex;
 
     private static AzureSearchResources azureSearchResources;
@@ -131,7 +133,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
                 .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
-                .credential(apiKey)
+                .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .addPolicy(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
@@ -140,9 +142,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .serviceName("searchServiceName")
                 .searchDnsSuffix("search.windows.net")
                 .apiVersion("2019-05-06")
-                .httpClient(interceptorManager.getPlaybackClient())
-                .credential("apiKey")
-                .addPolicy(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
+                .httpClient(interceptorManager.getPlaybackClient());
         }
     }
 
@@ -163,12 +163,13 @@ public class SearchIndexClientTestBase extends TestBase {
 
     private String createSearchServiceIndex() {
         searchServiceName = azureSearchResources.getSearchServiceName();
-        apiKey = azureSearchResources.getSearchAdminKey();
+        apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
         String indexName = null;
 
         try {
             //Creating Index:
-            searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, apiKey);
+            searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName,
+                apiKeyCredentials.getApiKey());
             searchServiceHotelsIndex.initialize();
             indexName = searchServiceHotelsIndex.indexName();
 
