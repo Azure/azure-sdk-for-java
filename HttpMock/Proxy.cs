@@ -15,9 +15,12 @@ namespace HttpMock
         private static readonly string[] _excludedRequestHeaders = new string[] {
             // Only applies to request between client and proxy
             "Proxy-Connection",
+        };
 
-            // Only allowed to be set on HttpContent (not HttpRequestMessage)
-            "Content-Length"
+        // Headers which must be set on HttpContent instead of HttpRequestMessage
+        private static readonly string[] _contentRequestHeaders = new string[] {
+            "Content-Length",
+            "Content-Type",
         };
 
         public static async Task<UpstreamResponse> SendUpstreamRequest(HttpRequest request)
@@ -39,17 +42,21 @@ namespace HttpMock
 
             using (var upstreamRequest = new HttpRequestMessage(new HttpMethod(request.Method), upstreamUri))
             {
-                foreach (var header in request.Headers.Where(h => !_excludedRequestHeaders.Contains(h.Key)))
+                if (request.ContentLength > 0)
+                {
+                    upstreamRequest.Content = new StreamContent(request.Body);
+
+                    foreach (var header in request.Headers.Where(h => _contentRequestHeaders.Contains(h.Key)))
+                    {
+                        upstreamRequest.Content.Headers.Add(header.Key, values: header.Value);
+                    }
+                }
+
+                foreach (var header in request.Headers.Where(h => !_excludedRequestHeaders.Contains(h.Key) && !_contentRequestHeaders.Contains(h.Key)))
                 {
                     upstreamRequest.Headers.Add(header.Key, values: header.Value);
                 }
                 
-                if (request.ContentLength > 0)
-                {
-                    upstreamRequest.Content = new StreamContent(request.Body);
-                    upstreamRequest.Content.Headers.ContentLength = request.ContentLength;
-                }
-
                 using (var upstreamResponseMessage = await _httpClient.SendAsync(upstreamRequest))
                 {
                     var headers = new List<KeyValuePair<string, StringValues>>();
