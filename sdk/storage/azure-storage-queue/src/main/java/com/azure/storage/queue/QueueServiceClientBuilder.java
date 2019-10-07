@@ -59,6 +59,8 @@ import java.util.Objects;
 public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<QueueServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 
+    private String accountName;
+
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
      * and {@link QueueServiceAsyncClient QueueServiceAsyncClients}.
@@ -99,7 +101,7 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
      * has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
-        return new QueueServiceAsyncClient(constructImpl());
+        return new QueueServiceAsyncClient(constructImpl(), accountName);
     }
 
     /**
@@ -139,6 +141,8 @@ public final class QueueServiceClientBuilder extends BaseQueueClientBuilder<Queu
         try {
             URL fullURL = new URL(endpoint);
             super.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
+
+            this.accountName = Utility.getAccountName(fullURL);
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new QueueServiceSasQueryParameters(

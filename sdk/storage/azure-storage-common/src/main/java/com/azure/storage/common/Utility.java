@@ -454,6 +454,31 @@ public final class Utility {
     }
 
     /**
+     * Strips the account name from host part of the URL object.
+     *
+     * @param url URL having its  hostanme
+     * @return account name.
+     */
+    public static String getAccountName(URL url) {
+        UrlBuilder builder = UrlBuilder.parse(url);
+        String accountName =  null;
+        String host = builder.getHost();
+        //Parse host to get account name
+        // host will look like this : <accountname>.blob.core.windows.net
+        if (!ImplUtils.isNullOrEmpty(host)) {
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                // host only contains account name
+                accountName = host;
+            } else {
+                // if host is separated by .
+                accountName = host.substring(0, accountNameIndex);
+            }
+        }
+        return accountName;
+    }
+
+    /**
      * Strips the last path segment from the passed URL.
      *
      * @param baseURL URL having its last path segment stripped

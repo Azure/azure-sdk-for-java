@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing core cryptography interfaces
+ * Package containing core cryptography interfaces.
  */
 package com.azure.core.cryptography;

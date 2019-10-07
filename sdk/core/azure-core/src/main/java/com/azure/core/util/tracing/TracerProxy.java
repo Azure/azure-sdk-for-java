@@ -9,6 +9,8 @@ import java.util.ServiceLoader;
 /**
  * This class provides a means for all client libraries to augment the context information they have received from an
  * end user with additional distributed tracing information, that may then be passed on to a backend for analysis.
+ *
+ * @see Tracer
  */
 public final class TracerProxy {
 
@@ -19,15 +21,16 @@ public final class TracerProxy {
     }
 
     /**
-     * For each tracer plugged into the SDK a new tracing span is created.
+     * A new tracing span is created for each {@link Tracer tracer} plugged into the SDK.
      *
-     * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
-     * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
-     * start calls will use the created span as the parent.
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
-     * @return An updated context object.
+     *
+     * @return An updated {@link Context} object.
      */
     public static Context start(String methodName, Context context) {
         Context local = context;
@@ -39,8 +42,8 @@ public final class TracerProxy {
     }
 
     /**
-     * For each tracer plugged into the SDK metadata to its current span. The {@code context} is checked for having span
-     * information, if no span information is found in the context no metadata is added.
+     * For each {@link Tracer tracer} plugged into the SDK, the key-value pair metadata is added to its current span. If
+     * the {@code context} does not contain a span, then no metadata is added.
      *
      * @param key Name of the metadata.
      * @param value Value of the metadata.
@@ -51,10 +54,10 @@ public final class TracerProxy {
     }
 
     /**
-     * For each tracer plugged into the SDK the current tracing span is marked as completed.
+     * For each {@link Tracer tracer} plugged into the SDK, its current tracing span is marked as completed.
      *
      * @param responseCode Response status code if the span is in a HTTP call context.
-     * @param error Potential throwable that happened during the span.
+     * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void end(int responseCode, Throwable error, Context context) {
@@ -62,11 +65,12 @@ public final class TracerProxy {
     }
 
     /**
-     * For each tracer plugged into the SDK the span name is set.
+     * Sets the span name for each {@link Tracer tracer} plugged into the SDK.
      *
      * @param spanName Name of the span.
      * @param context Additional metadata that is passed through the call stack.
-     * @return An updated context object.
+     *
+     * @return An updated {@link Context} object.
      */
     public static Context setSpanName(String spanName, Context context) {
         Context local = context;
