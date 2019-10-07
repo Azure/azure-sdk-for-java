@@ -29,16 +29,16 @@ import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
  * context propagation. Singleton OpenCensus tracer capable of starting and exporting spans.
  *
  * <p>
- * This helper class supports W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP
- * and AMQP requests.
+ * This helper class supports W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP and AMQP
+ * requests.
  */
 public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
     private static final Tracer TRACER = Tracing.getTracer();
 
     // standard attributes with AMQP request
-    private static final String COMPONENT = "component";
-    private static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
-    private static final String PEER_ENDPOINT = "peer.address";
+    static final String COMPONENT = "component";
+    static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
+    static final String PEER_ENDPOINT = "peer.address";
 
     private final ClientLogger logger = new ClientLogger(OpenCensusTracer.class);
 
@@ -46,11 +46,11 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
-    public Context start(String methodName, Context context) {
-        Objects.requireNonNull(methodName, "'methodName' cannot be null.");
+    public Context start(String spanName, Context context) {
+        Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        SpanBuilder spanBuilder = getSpanBuilder(methodName, context);
+        SpanBuilder spanBuilder = getSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
 
         return context.addData(PARENT_SPAN_KEY, span);
@@ -61,7 +61,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context start(String spanName, Context context, ProcessKind processKind) {
-        Objects.requireNonNull(spanName, "'methodName' cannot be null.");
+        Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(processKind, "'processKind' cannot be null.");
 
@@ -80,7 +80,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
             case RECEIVE:
                 spanBuilder = getSpanBuilder(spanName, context);
                 span = spanBuilder.startSpan();
-                // Add diagnostic Id and traceheaders to Context
+                // Add diagnostic Id and trace-headers to Context
                 context = setContextData(span);
                 return context.addData(PARENT_SPAN_KEY, span);
             case PROCESS:
@@ -191,7 +191,6 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      * @return The returned {@link Span} and the scope in a {@link Context} object.
      */
     private Context startScopedSpan(String spanName, Context context) {
-        Objects.requireNonNull(spanName, "'spanName' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
         Span span;
         SpanContext spanContext = getSpanContext(context);
@@ -240,7 +239,6 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     private void addSpanRequestAttributes(Span span, Context context, String spanName) {
         Objects.requireNonNull(span, "'span' cannot be null.");
-
         span.putAttribute(COMPONENT, AttributeValue.stringAttributeValue(parseComponentValue(spanName)));
         span.putAttribute(
             MESSAGE_BUS_DESTINATION,
@@ -251,13 +249,20 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts component name from the given span name.
+     * Extracts the component name from the given span name.
      *
      * @param spanName The spanName containing the component name.
      * @return The component name contained in the context.
      */
     private static String parseComponentValue(String spanName) {
-        return spanName.substring(spanName.indexOf(".") + 1, spanName.lastIndexOf("."));
+        if (spanName != null && spanName.length() > 0) {
+            int componentNameStartIndex = spanName.indexOf(".");
+            int componentNameEndIndex = spanName.lastIndexOf(".");
+            if (componentNameStartIndex != -1 && componentNameEndIndex != -1) {
+                return spanName.substring(componentNameStartIndex + 1, componentNameEndIndex);
+            }
+        }
+        return "";
     }
 
     /**
