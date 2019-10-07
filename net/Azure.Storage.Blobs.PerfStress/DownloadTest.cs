@@ -32,7 +32,14 @@ namespace Azure.Storage.Blobs.PerfStress
 
         public override void Dispose()
         {
-            BlobClient.Delete();
+            try
+            {
+                BlobClient.Delete();
+            }
+            catch (StorageRequestFailedException)
+            {
+            }
+
             base.Dispose();
         }
     }
