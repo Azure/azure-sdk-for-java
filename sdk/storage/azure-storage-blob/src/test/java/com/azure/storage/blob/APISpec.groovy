@@ -36,8 +36,8 @@ import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
-
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.implementation.credentials.SasTokenCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires

@@ -20,14 +20,13 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -48,7 +47,7 @@ public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Creates a FileClient that wraps a FileAsyncClient and blocks requests.
+     * Creates a FileClient that wraps a FileAsyncClient and requests.
      *
      * @param fileAsyncClient FileAsyncClient that is used to send requests
      */
@@ -63,6 +62,53 @@ public class FileClient {
      */
     public String getFileUrl() {
         return fileAsyncClient.getFileUrl();
+    }
+
+    /**
+     * Opens a file input stream to download the file.
+     * <p>
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileInputStream openInputStream() {
+        return openInputStream(new FileRange(0));
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file.
+     * <p>
+     *
+     * @param range {@link FileRange}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileInputStream openInputStream(FileRange range) {
+        return new StorageFileInputStream(fileAsyncClient, range.getStart(), range.getEnd());
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileOutputStream getFileOutputStream() {
+        return getFileOutputStream(0);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileOutputStream getFileOutputStream(long offset) {
+        return new StorageFileOutputStream(fileAsyncClient, offset);
     }
 
     /**
@@ -877,6 +923,16 @@ public class FileClient {
      */
     public String getFilePath() {
         return this.fileAsyncClient.getFilePath();
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.fileAsyncClient.getAccountName();
     }
 }
 

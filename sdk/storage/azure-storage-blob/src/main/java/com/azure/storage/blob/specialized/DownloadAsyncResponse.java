@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.blob.HTTPGetterInfo;
+import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.common.Utility;
@@ -31,16 +31,16 @@ import java.util.function.Function;
  * retry mechanism.
  */
 public final class DownloadAsyncResponse {
-    private final HTTPGetterInfo info;
+    private final HttpGetterInfo info;
 
     private final ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> rawResponse;
 
-    private final Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter;
+    private final Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter;
 
 
     // The constructor is package-private because customers should not be creating their own responses.
     DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> response,
-        HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
+        HttpGetterInfo info, Function<HttpGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
         Utility.assertNotNull("info.eTag", info.getETag());

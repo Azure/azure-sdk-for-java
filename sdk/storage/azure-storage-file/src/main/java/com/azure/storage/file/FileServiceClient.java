@@ -15,10 +15,9 @@ import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a fileServiceAsyncClient that contains all the operations for interacting with a file account in
@@ -357,5 +356,15 @@ public final class FileServiceClient {
                                                   Context context) {
         Mono<Response<Void>> response = fileServiceAsyncClient.deleteShareWithResponse(shareName, snapshot, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.fileServiceAsyncClient.getAccountName();
     }
 }

@@ -209,6 +209,68 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates code sample for using {@link ConfigurationClient#setReadOnly(String, String)}
+     */
+    public void lockSettingsCodeSnippet() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string
+        ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS");
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string
+
+        /**
+         * Generates code sample for using {@link ConfigurationClient#setReadOnly(ConfigurationSetting)}
+         */
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting
+        ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), Context.NONE).getValue();
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting
+
+        /**
+         * Generates code sample for using {@link ConfigurationClient#setSettingWithResponse(ConfigurationSetting, Context)}
+         */
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context
+        Response<ConfigurationSetting> responseSetting = configurationClient
+            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
+                new Context(key2, value2));
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(),
+            responseSetting.getValue().getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#clearReadOnly(String, String)}
+     */
+    public void unlockSettingsCodeSnippet() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.clearReadOnly#string-string
+        ConfigurationSetting result = configurationClient.setReadOnly("prodDBConnection", "westUS");
+        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.clearReadOnly#string-string
+
+        /**
+         * Generates code sample for using {@link ConfigurationClient#clearReadOnly(ConfigurationSetting)}
+         */
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting
+        ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse(
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), Context.NONE).getValue();
+        System.out.printf("Key: %s, Value: %s", resultSetting.getKey(), resultSetting.getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.clearReadOnly#ConfigurationSetting
+
+        /**
+         * Generates code sample for using {@link ConfigurationClient#setSettingWithResponse(ConfigurationSetting, Context)}
+         */
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context
+        Response<ConfigurationSetting> responseSetting = configurationClient
+            .setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
+                new Context(key2, value2));
+        System.out.printf("Key: %s, Value: %s", responseSetting.getValue().getKey(),
+            responseSetting.getValue().getValue());
+        // END: com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context
+    }
+
+    /**
      * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector)}
      */
     public void listSettings() {

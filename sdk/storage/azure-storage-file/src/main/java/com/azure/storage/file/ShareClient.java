@@ -17,11 +17,10 @@ import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
@@ -791,5 +790,14 @@ public class ShareClient {
      */
     public String getShareName() {
         return this.client.getShareName();
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
     }
 }

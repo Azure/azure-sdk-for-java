@@ -97,7 +97,7 @@ class CPKTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
-            .generateSASQueryParameters(primaryCredential)
+            .generateSasQueryParameters(primaryCredential)
             .encode()
 
         def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
@@ -152,7 +152,7 @@ class CPKTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
-            .generateSASQueryParameters(primaryCredential)
+            .generateSasQueryParameters(primaryCredential)
             .encode()
 
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -203,7 +203,7 @@ class CPKTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
-            .generateSASQueryParameters(primaryCredential)
+            .generateSasQueryParameters(primaryCredential)
             .encode()
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
             null, null, null, null, null, null)

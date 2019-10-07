@@ -3,6 +3,9 @@
 
 package com.azure.storage.file;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.PostProcessor.postProcessResponse;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -29,17 +32,13 @@ import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a share in Azure
@@ -64,6 +63,7 @@ public class ShareAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String snapshot;
+    private final String accountName;
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
@@ -73,11 +73,11 @@ public class ShareAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param shareName Name of the share
      */
-    ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot) {
+    ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName) {
         Objects.requireNonNull(shareName);
         this.shareName = shareName;
         this.snapshot = snapshot;
-
+        this.accountName = accountName;
         this.azureFileStorageClient = client;
     }
 
@@ -117,7 +117,7 @@ public class ShareAsyncClient {
      * @return a {@link DirectoryAsyncClient} that interacts with the directory in the share
      */
     public DirectoryAsyncClient getDirectoryClient(String directoryName) {
-        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot);
+        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName);
     }
 
     /**
@@ -130,7 +130,7 @@ public class ShareAsyncClient {
      * @return a {@link FileAsyncClient} that interacts with the file in the share
      */
     public FileAsyncClient getFileClient(String filePath) {
-        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot);
+        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName);
     }
 
     /**
@@ -887,6 +887,15 @@ public class ShareAsyncClient {
      */
     public String getShareName() {
         return shareName;
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {

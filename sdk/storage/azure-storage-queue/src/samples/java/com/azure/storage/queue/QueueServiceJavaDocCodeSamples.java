@@ -8,7 +8,6 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
