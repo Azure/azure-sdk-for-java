@@ -22,9 +22,9 @@ namespace Azure.Storage.Blobs.PerfStress
             BlobClient.Upload(RandomStream, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
         }
 
-        public override Task RunAsync(CancellationToken cancellationToken)
+        public override async Task RunAsync(CancellationToken cancellationToken)
         {
-            return BlobClient.UploadAsync(RandomStream, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
+            await BlobClient.UploadAsync(RandomStream, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
         }
 
         public override void Dispose()
