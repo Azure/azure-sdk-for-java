@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
 
 public class ConfigurationClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTest.class);
@@ -590,7 +589,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         configurationSettingPagedIterable.iterator().forEachRemaining(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
 
-        assertArrayEquals(configurationSettingList1.toArray(), configurationSettingList2.toArray());
+        equalsArray(configurationSettingList1, configurationSettingList2);
     }
 
     /**

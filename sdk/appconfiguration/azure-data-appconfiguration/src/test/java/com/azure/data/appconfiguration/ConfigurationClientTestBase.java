@@ -38,6 +38,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
@@ -264,7 +265,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
-        testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual))));
+        testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual))));
         assertTrue(expectedSelection.isEmpty());
     }
 
@@ -277,7 +278,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
 
         for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -344,7 +345,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
         for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -362,7 +363,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
         for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -431,6 +432,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertConfigurationEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
         if (expected != null && actual != null) {
             actual = cleanResponse(expected, actual);
+        } else if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertFalse("One of input settings is null", true);
         }
 
         equals(expected, actual);
