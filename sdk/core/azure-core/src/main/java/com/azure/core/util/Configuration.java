@@ -131,7 +131,7 @@ public class Configuration implements Cloneable {
     };
 
     /**
-     * TODO
+     * Gets the global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
@@ -155,7 +155,9 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * @return the global configuration store.
+     * Gets the global configuration store shared by all client libraries.
+     *
+     * @return The global configuration store.
      */
     public static Configuration getGlobalConfiguration() {
         return GLOBAL_CONFIGURATION;
