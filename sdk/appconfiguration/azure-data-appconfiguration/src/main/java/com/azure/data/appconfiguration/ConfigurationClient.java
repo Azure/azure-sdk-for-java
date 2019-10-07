@@ -61,7 +61,7 @@ public final class ConfigurationClient {
      * label is desired.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
-     * is an invalid value(which will also throw ServiceRequestException described below).
+     * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -85,7 +85,7 @@ public final class ConfigurationClient {
      * @param setting The setting to add to the configuration service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the the {@link ConfigurationSetting} that was created, or {@code null}, if a
-     * key collision occurs or the key is an invalid value(which will also throw ServiceRequestException described
+     * key collision occurs or the key is an invalid value (which will also throw ServiceRequestException described
      * below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
@@ -111,7 +111,7 @@ public final class ConfigurationClient {
      * label is desired.
      * @param value The value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
-     * value(which will also throw ServiceRequestException described below).
+     * value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -140,7 +140,7 @@ public final class ConfigurationClient {
      * @param ifUnchanged A boolean indicates if using setting's ETag as If-Match's value.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
-     * value, the setting is locked, or an etag was provided but does not match the service's current etag value(which
+     * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
      * will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
@@ -168,7 +168,7 @@ public final class ConfigurationClient {
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
      * label is desired.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
-     * not exist or the key is an invalid value(which will also throw ServiceRequestException described below).
+     * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -194,7 +194,7 @@ public final class ConfigurationClient {
      * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
      * asOfDateTime is desired.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
-     * not exist or the key is an invalid value(which will also throw ServiceRequestException described below).
+     * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -219,7 +219,7 @@ public final class ConfigurationClient {
      * @param ifChanged A boolean value indicates if using setting's ETag value to If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response contains the {@link ConfigurationSetting} stored in the service, or {@code null}, if the
-     * configuration value does not exist or the key is an invalid value(which will also throw ServiceRequestException
+     * configuration value does not exist or the key is an invalid value (which will also throw ServiceRequestException
      * described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
@@ -245,7 +245,7 @@ public final class ConfigurationClient {
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
      * label is desired.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
-     * {@code key} is an invalid value(which will also throw ServiceRequestException described below).
+     * {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -301,7 +301,7 @@ public final class ConfigurationClient {
      * @param key The key of the configuration setting to lock.
      * @param label The label of the configuration setting to lock.
      * @return The {@link ConfigurationSetting} that was locked, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -343,7 +343,7 @@ public final class ConfigurationClient {
      * @param key The key of the configuration setting to unlock.
      * @param label The label of the configuration setting to unlock.
      * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */

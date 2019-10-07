@@ -82,7 +82,7 @@ public final class ConfigurationAsyncClient {
      * label is desired.
      * @param value The value associated with this configuration setting key.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -106,7 +106,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
@@ -130,7 +130,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The setting to add to the configuration service.
      * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
-     * or the key is an invalid value(which will also throw HttpResponseException described below).
+     * or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
@@ -168,7 +168,7 @@ public final class ConfigurationAsyncClient {
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
      * label is desired.
      * @param value The value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value(which will
+     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid value (which will
      * also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the setting exists and is locked.
@@ -245,7 +245,7 @@ public final class ConfigurationAsyncClient {
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
      * label is desired.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
-     * key is an invalid value(which will also throw HttpResponseException described below).
+     * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -271,7 +271,7 @@ public final class ConfigurationAsyncClient {
      * @param asOfDateTime Datetime used to retrieve the state of the configuration at that time. If null the current
      * state will be retrieved asOfDateTime is desired.
      * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
-     * key is an invalid value(which will also throw HttpResponseException described below).
+     * key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -299,7 +299,7 @@ public final class ConfigurationAsyncClient {
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration
-     * value does not exist or the key is an invalid value(which will also throw HttpResponseException described
+     * value does not exist or the key is an invalid value (which will also throw HttpResponseException described
      * below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
@@ -339,7 +339,7 @@ public final class ConfigurationAsyncClient {
      * @param label The label of the configuration setting to delete, or optionally, null if a setting with
      * label is desired.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
-     * {@code key} is an invalid value(which will also throw HttpResponseException described below).
+     * {@code key} is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -408,7 +408,7 @@ public final class ConfigurationAsyncClient {
      * @param label The label of the configuration setting to lock, or optionally, null if a setting with
      * label is desired.
      * @return The {@link ConfigurationSetting} that was locked, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -430,7 +430,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The ConfigurationSetting to unlock.
      * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -462,7 +462,7 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the configuration setting to add.
      * @param label The label of the configuration setting to add.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -483,7 +483,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param setting The ConfigurationSetting to unlock.
      * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value(which will also throw HttpResponseException described below).
+     * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
