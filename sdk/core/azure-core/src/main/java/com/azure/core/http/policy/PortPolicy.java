@@ -41,7 +41,7 @@ public class PortPolicy implements HttpPipelinePolicy {
                 context.getHttpRequest().setUrl(urlBuilder.setPort(port).toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(new RuntimeException(
-                    String.format("Failed to set port %d to http request.", port), e));
+                    String.format("Failed to set the HTTP request port to %d.", port), e));
             }
         }
         return next.process();

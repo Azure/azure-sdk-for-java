@@ -25,6 +25,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
@@ -117,12 +118,14 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     public String serializeRaw(Object object) {
+        final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
         if (object == null) {
             return null;
         }
         try {
             return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
         } catch (IOException ex) {
+            logger.warning("Failed to serialize {} to JSON.", object.getClass());
             return null;
         }
     }

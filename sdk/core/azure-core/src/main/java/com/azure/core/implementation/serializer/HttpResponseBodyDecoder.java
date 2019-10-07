@@ -17,6 +17,7 @@ import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.TypeUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,6 +49,7 @@ final class HttpResponseBodyDecoder {
     static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer,
                                HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
+        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         //
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
@@ -61,6 +63,8 @@ final class HttpResponseBodyDecoder {
                         } catch (IOException | MalformedValueException ignored) {
                             // This translates in RestProxy as a RestException with no deserialized body.
                             // The response content will still be accessible via the .response() member.
+                            logger.warning("Failed to deserialize the error entity. Error details: "
+                                + ignored.getMessage());
                         }
                         return Mono.empty();
                     });
@@ -383,6 +387,8 @@ final class HttpResponseBodyDecoder {
                         token = t;
                     }
                 } catch (ClassNotFoundException ignored) {
+                    throw new RuntimeException("Failed to find the class "
+                        + "'com.azure.core.management.implementation.OperationStatus'");
                 }
             }
 
@@ -397,7 +403,9 @@ final class HttpResponseBodyDecoder {
                     // Get Type of 'T' from OperationStatus<T>
                     token = TypeUtil.getTypeArgument(token);
                 }
-            } catch (Exception ignored) {
+            } catch (ClassNotFoundException ignored) {
+                throw new RuntimeException("Failed to find the class "
+                    + "'com.azure.core.management.implementation.OperationStatus'");
             }
         }
         return token;

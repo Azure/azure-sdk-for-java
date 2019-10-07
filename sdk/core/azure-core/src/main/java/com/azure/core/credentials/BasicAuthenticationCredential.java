@@ -44,7 +44,6 @@ public class BasicAuthenticationCredential implements TokenCredential {
         String credential = username + ":" + password;
         String encodedCredential;
         try {
-            // Please change the error message everytime you update the named charset.
             encodedCredential = Base64Util.encodeToString(credential.getBytes("UTF8"));
         } catch (UnsupportedEncodingException e) {
             // The encoding is hard-coded, so if it's unsupported, it needs to be fixed right here.
