@@ -37,7 +37,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedfluxbase.pages
@@ -51,7 +51,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
@@ -96,7 +96,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out
                 .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedfluxbase.bypage
@@ -108,7 +108,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.getItems()))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .subscribe();
         // END: com.azure.core.http.rest.pagedfluxbase.bypage#String

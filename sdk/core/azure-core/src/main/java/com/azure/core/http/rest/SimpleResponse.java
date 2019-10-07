@@ -38,9 +38,9 @@ public class SimpleResponse<T> implements Response<T> {
      * @param value the value to put into the new response
      */
     public SimpleResponse(Response<?> response, T value) {
-        this.request = response.request();
-        this.statusCode = response.statusCode();
-        this.headers = response.headers();
+        this.request = response.getRequest();
+        this.statusCode = response.getStatusCode();
+        this.headers = response.getHeaders();
         this.value = value;
     }
 
@@ -48,7 +48,7 @@ public class SimpleResponse<T> implements Response<T> {
      * @return the request which resulted in this RestResponse.
      */
     @Override
-    public HttpRequest request() {
+    public HttpRequest getRequest() {
         return request;
     }
 
@@ -56,7 +56,7 @@ public class SimpleResponse<T> implements Response<T> {
      * @return the status code of the HTTP response.
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -64,7 +64,7 @@ public class SimpleResponse<T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
@@ -72,7 +72,7 @@ public class SimpleResponse<T> implements Response<T> {
      * @return the deserialized value of the HTTP response.
      */
     @Override
-    public T value() {
+    public T getValue() {
         return value;
     }
 }

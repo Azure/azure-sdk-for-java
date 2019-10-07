@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -46,7 +46,7 @@ public final class AppendPositionAccessConditions {
      *
      * @return the maxSize value.
      */
-    public Long maxSize() {
+    public Long getMaxSize() {
         return this.maxSize;
     }
 
@@ -61,7 +61,7 @@ public final class AppendPositionAccessConditions {
      * @param maxSize the maxSize value to set.
      * @return the AppendPositionAccessConditions object itself.
      */
-    public AppendPositionAccessConditions maxSize(Long maxSize) {
+    public AppendPositionAccessConditions setMaxSize(Long maxSize) {
         this.maxSize = maxSize;
         return this;
     }
@@ -76,7 +76,7 @@ public final class AppendPositionAccessConditions {
      *
      * @return the appendPosition value.
      */
-    public Long appendPosition() {
+    public Long getAppendPosition() {
         return this.appendPosition;
     }
 
@@ -91,7 +91,7 @@ public final class AppendPositionAccessConditions {
      * @param appendPosition the appendPosition value to set.
      * @return the AppendPositionAccessConditions object itself.
      */
-    public AppendPositionAccessConditions appendPosition(Long appendPosition) {
+    public AppendPositionAccessConditions setAppendPosition(Long appendPosition) {
         this.appendPosition = appendPosition;
         return this;
     }

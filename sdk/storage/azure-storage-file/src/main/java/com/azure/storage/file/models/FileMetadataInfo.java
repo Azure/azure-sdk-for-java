@@ -12,7 +12,7 @@ public class FileMetadataInfo {
         this.isServerEncrypted = isServerEncrypted;
     }
 
-    public String eTag() {
+    public String getETag() {
         return eTag;
     }
 

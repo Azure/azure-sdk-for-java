@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
  * The response of a REST request.
  *
  * @param <H> The deserialized type of the response headers.
- * @param <T> The deserialized type of the response value, available from {@link #value()}.
+ * @param <T> The deserialized type of the response value, available from {@link Response#getValue()}.
  */
 public class ResponseBase<H, T> implements Response<T> {
     private final HttpRequest request;
@@ -39,7 +39,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * @return the request which resulted in this RestResponseBase.
      */
     @Override
-    public HttpRequest request() {
+    public HttpRequest getRequest() {
         return request;
     }
 
@@ -47,7 +47,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -55,7 +55,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
@@ -64,7 +64,7 @@ public class ResponseBase<H, T> implements Response<T> {
      *
      * @return an instance of header type H, containing the HTTP response headers.
      */
-    public H deserializedHeaders() {
+    public H getDeserializedHeaders() {
         return deserializedHeaders;
     }
 
@@ -72,7 +72,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public T value() {
+    public T getValue() {
         return value;
     }
 }

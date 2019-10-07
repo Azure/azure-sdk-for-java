@@ -363,19 +363,23 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("continuationToken must be a non-empty string");
         }
 
-        return this.leaseUpdater.updateLease(
-            lease,
-            this.createItemForLease(lease.getId()),
-            this.requestOptionsFactory.createRequestOptions(lease),
-            serverLease -> {
-                if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                    logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
-                    throw new LeaseLostException(lease);
-                }
-                serverLease.setContinuationToken(continuationToken);
+        CosmosItem itemForLease = this.createItemForLease(lease.getId());
 
-                return serverLease;
-            });
+        return this.leaseDocumentClient.readItem(itemForLease, this.requestOptionsFactory.createRequestOptions(lease))
+            .map( documentResourceResponse -> ServiceItemLease.fromDocument(documentResourceResponse.properties()))
+            .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
+                refreshedLease,
+                this.createItemForLease(lease.getId()),
+                this.requestOptionsFactory.createRequestOptions(lease),
+                serverLease -> {
+                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                        logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
+                        throw new LeaseLostException(lease);
+                    }
+                    serverLease.setContinuationToken(continuationToken);
+
+                    return serverLease;
+                }));
     }
 
     @Override

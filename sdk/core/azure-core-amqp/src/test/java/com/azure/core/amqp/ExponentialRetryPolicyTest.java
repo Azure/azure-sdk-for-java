@@ -19,10 +19,10 @@ public class ExponentialRetryPolicyTest {
     private final Duration tolerance = Duration.ofSeconds(1);
     private final int retryAttempts = 5;
     private final RetryOptions options = new RetryOptions()
-        .delay(minBackoff)
-        .maxDelay(maxBackoff)
-        .maxRetries(retryAttempts)
-        .retryMode(RetryMode.EXPONENTIAL);
+        .setDelay(minBackoff)
+        .setMaxDelay(maxBackoff)
+        .setMaxRetries(retryAttempts)
+        .setRetryMode(RetryMode.EXPONENTIAL);
 
     /**
      * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
@@ -73,10 +73,10 @@ public class ExponentialRetryPolicyTest {
         final ExponentialRetryPolicy policy = new ExponentialRetryPolicy(options);
 
         final RetryOptions otherOptions = new RetryOptions()
-            .delay(minBackoff)
-            .maxDelay(maxBackoff)
-            .maxRetries(retryAttempts)
-            .retryMode(RetryMode.EXPONENTIAL);
+            .setDelay(minBackoff)
+            .setMaxDelay(maxBackoff)
+            .setMaxRetries(retryAttempts)
+            .setRetryMode(RetryMode.EXPONENTIAL);
         final ExponentialRetryPolicy otherPolicy = new ExponentialRetryPolicy(otherOptions);
 
         // Assert

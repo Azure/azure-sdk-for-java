@@ -35,6 +35,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
                 put("clientId", clientId);
                 put("port", port);
             }});
-        return new InteractiveBrowserCredential(clientId, port, identityClientOptions);
+        return new InteractiveBrowserCredential(clientId, tenantId, port, identityClientOptions);
     }
 }

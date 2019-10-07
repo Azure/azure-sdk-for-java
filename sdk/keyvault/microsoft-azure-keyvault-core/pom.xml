@@ -14,7 +14,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-core</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Key Vault Core</name>

@@ -4,8 +4,8 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -53,7 +53,7 @@ public final class EnqueuedMessage {
      *
      * @return the messageId value.
      */
-    public String messageId() {
+    public String getMessageId() {
         return this.messageId;
     }
 
@@ -63,7 +63,7 @@ public final class EnqueuedMessage {
      * @param messageId the messageId value to set.
      * @return the EnqueuedMessage object itself.
      */
-    public EnqueuedMessage messageId(String messageId) {
+    public EnqueuedMessage setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -74,11 +74,11 @@ public final class EnqueuedMessage {
      *
      * @return the insertionTime value.
      */
-    public OffsetDateTime insertionTime() {
+    public OffsetDateTime getInsertionTime() {
         if (this.insertionTime == null) {
             return null;
         }
-        return this.insertionTime.dateTime();
+        return this.insertionTime.getDateTime();
     }
 
     /**
@@ -88,7 +88,7 @@ public final class EnqueuedMessage {
      * @param insertionTime the insertionTime value to set.
      * @return the EnqueuedMessage object itself.
      */
-    public EnqueuedMessage insertionTime(OffsetDateTime insertionTime) {
+    public EnqueuedMessage setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -103,11 +103,11 @@ public final class EnqueuedMessage {
      *
      * @return the expirationTime value.
      */
-    public OffsetDateTime expirationTime() {
+    public OffsetDateTime getExpirationTime() {
         if (this.expirationTime == null) {
             return null;
         }
-        return this.expirationTime.dateTime();
+        return this.expirationTime.getDateTime();
     }
 
     /**
@@ -117,7 +117,7 @@ public final class EnqueuedMessage {
      * @param expirationTime the expirationTime value to set.
      * @return the EnqueuedMessage object itself.
      */
-    public EnqueuedMessage expirationTime(OffsetDateTime expirationTime) {
+    public EnqueuedMessage setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -133,7 +133,7 @@ public final class EnqueuedMessage {
      *
      * @return the popReceipt value.
      */
-    public String popReceipt() {
+    public String getPopReceipt() {
         return this.popReceipt;
     }
 
@@ -145,7 +145,7 @@ public final class EnqueuedMessage {
      * @param popReceipt the popReceipt value to set.
      * @return the EnqueuedMessage object itself.
      */
-    public EnqueuedMessage popReceipt(String popReceipt) {
+    public EnqueuedMessage setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
     }
@@ -156,11 +156,11 @@ public final class EnqueuedMessage {
      *
      * @return the timeNextVisible value.
      */
-    public OffsetDateTime timeNextVisible() {
+    public OffsetDateTime getTimeNextVisible() {
         if (this.timeNextVisible == null) {
             return null;
         }
-        return this.timeNextVisible.dateTime();
+        return this.timeNextVisible.getDateTime();
     }
 
     /**
@@ -170,7 +170,7 @@ public final class EnqueuedMessage {
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the EnqueuedMessage object itself.
      */
-    public EnqueuedMessage timeNextVisible(OffsetDateTime timeNextVisible) {
+    public EnqueuedMessage setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
         } else {

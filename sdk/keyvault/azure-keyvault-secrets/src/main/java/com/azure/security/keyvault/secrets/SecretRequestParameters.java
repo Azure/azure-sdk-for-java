@@ -41,7 +41,7 @@ class SecretRequestParameters {
      *
      * @return the value value
      */
-    public String value() {
+    public String getValue() {
         return this.value;
     }
 
@@ -51,7 +51,7 @@ class SecretRequestParameters {
      * @param value the value value to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters value(String value) {
+    public SecretRequestParameters setValue(String value) {
         this.value = value;
         return this;
     }
@@ -61,7 +61,7 @@ class SecretRequestParameters {
      *
      * @return the tags value
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -71,7 +71,7 @@ class SecretRequestParameters {
      * @param tags the tags value to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters tags(Map<String, String> tags) {
+    public SecretRequestParameters setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -81,7 +81,7 @@ class SecretRequestParameters {
      *
      * @return the contentType value
      */
-    public String contentType() {
+    public String getContentType() {
         return this.contentType;
     }
 
@@ -91,7 +91,7 @@ class SecretRequestParameters {
      * @param contentType the contentType value to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters contentType(String contentType) {
+    public SecretRequestParameters setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -101,7 +101,7 @@ class SecretRequestParameters {
      *
      * @return the SecretRequestAttributes value
      */
-    public SecretRequestAttributes secretAttributes() {
+    public SecretRequestAttributes getSecretAttributes() {
         return this.secretRequestAttributes;
     }
 
@@ -111,7 +111,7 @@ class SecretRequestParameters {
      * @param secretRequestAttributes the secretRequestAttributes to set
      * @return the SecretRequestParameters object itself.
      */
-    public SecretRequestParameters secretAttributes(SecretRequestAttributes secretRequestAttributes) {
+    public SecretRequestParameters setSecretAttributes(SecretRequestAttributes secretRequestAttributes) {
         this.secretRequestAttributes = secretRequestAttributes;
         return this;
     }

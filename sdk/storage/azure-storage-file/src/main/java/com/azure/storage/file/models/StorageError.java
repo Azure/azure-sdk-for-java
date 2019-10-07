@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -25,7 +25,7 @@ public final class StorageError {
      *
      * @return the message value.
      */
-    public String message() {
+    public String getMessage() {
         return this.message;
     }
 
@@ -35,7 +35,7 @@ public final class StorageError {
      * @param message the message value to set.
      * @return the StorageError object itself.
      */
-    public StorageError message(String message) {
+    public StorageError setMessage(String message) {
         this.message = message;
         return this;
     }

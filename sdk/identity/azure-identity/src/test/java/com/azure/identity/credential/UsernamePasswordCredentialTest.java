@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -16,6 +16,7 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -39,19 +40,19 @@ public class UsernamePasswordCredentialTest {
         String password = "P@ssw0rd";
         String token1 = "token1";
         String token2 = "token2";
-        String[] scopes1 = new String[] { "https://management.azure.com" };
-        String[] scopes2 = new String[] { "https://vault.azure.net" };
+        TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithUsernamePassword(scopes1, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
+        when(identityClient.authenticateWithUsernamePassword(request1, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
-                String[] argument = (String[]) invocation.getArguments()[0];
-                if (argument.length == 1 && argument[0].equals(scopes2[0])) {
+                TokenRequest argument = (TokenRequest) invocation.getArguments()[0];
+                if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                     return TestUtils.getMockMsalToken(token2, expiresOn);
-                } else if (argument.length == 1 && argument[0].equals(scopes1[0])) {
+                } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                     return Mono.error(new UnsupportedOperationException("nothing cached"));
                 } else {
                     throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
@@ -60,13 +61,16 @@ public class UsernamePasswordCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
-        AccessToken token = credential.getToken(scopes1).block();
-        Assert.assertEquals(token1, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
-        token = credential.getToken(scopes2).block();
-        Assert.assertEquals(token2, token.token());
-        Assert.assertEquals(expiresOn.getSecond(), token.expiresOn().getSecond());
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(password).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
+        StepVerifier.create(credential.getToken(request2))
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+            .verifyComplete();
     }
 
     @Test
@@ -74,23 +78,21 @@ public class UsernamePasswordCredentialTest {
         // setup
         String username = "testuser";
         String badPassword = "Password";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithUsernamePassword(scopes, username, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
+        when(identityClient.authenticateWithUsernamePassword(request, username, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
-            credential.getToken(scopes).block();
-            fail();
-        } catch (MsalServiceException e) {
-            Assert.assertEquals("bad credential", e.getMessage());
-        }
+        UsernamePasswordCredential credential =
+            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).password(badPassword).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof MsalServiceException && "bad credential".equals(t.getMessage()))
+            .verify();
     }
 
     @Test
@@ -99,12 +101,12 @@ public class UsernamePasswordCredentialTest {
         String username = "testuser";
         String password = "P@ssw0rd";
         String token1 = "token1";
-        String[] scopes = new String[] { "https://management.azure.com" };
+        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithUsernamePassword(scopes, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
+        when(identityClient.authenticateWithUsernamePassword(request, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
@@ -112,21 +114,20 @@ public class UsernamePasswordCredentialTest {
         // test
         try {
             UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().username(username).password(password).build();
-            credential.getToken(scopes).block();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
-            credential.getToken(scopes).block();
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("password"));
         }
         try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
-            credential.getToken(scopes).block();
+            UsernamePasswordCredential credential =
+                new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("username"));

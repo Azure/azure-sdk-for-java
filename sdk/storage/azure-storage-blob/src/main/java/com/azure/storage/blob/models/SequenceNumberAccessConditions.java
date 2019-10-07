@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -43,7 +43,7 @@ public final class SequenceNumberAccessConditions {
      *
      * @return the ifSequenceNumberLessThanOrEqualTo value.
      */
-    public Long ifSequenceNumberLessThanOrEqualTo() {
+    public Long getIfSequenceNumberLessThanOrEqualTo() {
         return this.ifSequenceNumberLessThanOrEqualTo;
     }
 
@@ -56,7 +56,7 @@ public final class SequenceNumberAccessConditions {
      * ifSequenceNumberLessThanOrEqualTo value to set.
      * @return the SequenceNumberAccessConditions object itself.
      */
-    public SequenceNumberAccessConditions ifSequenceNumberLessThanOrEqualTo(Long ifSequenceNumberLessThanOrEqualTo) {
+    public SequenceNumberAccessConditions setIfSequenceNumberLessThanOrEqualTo(Long ifSequenceNumberLessThanOrEqualTo) {
         this.ifSequenceNumberLessThanOrEqualTo = ifSequenceNumberLessThanOrEqualTo;
         return this;
     }
@@ -68,7 +68,7 @@ public final class SequenceNumberAccessConditions {
      *
      * @return the ifSequenceNumberLessThan value.
      */
-    public Long ifSequenceNumberLessThan() {
+    public Long getIfSequenceNumberLessThan() {
         return this.ifSequenceNumberLessThan;
     }
 
@@ -81,7 +81,7 @@ public final class SequenceNumberAccessConditions {
      * set.
      * @return the SequenceNumberAccessConditions object itself.
      */
-    public SequenceNumberAccessConditions ifSequenceNumberLessThan(Long ifSequenceNumberLessThan) {
+    public SequenceNumberAccessConditions setIfSequenceNumberLessThan(Long ifSequenceNumberLessThan) {
         this.ifSequenceNumberLessThan = ifSequenceNumberLessThan;
         return this;
     }
@@ -92,7 +92,7 @@ public final class SequenceNumberAccessConditions {
      *
      * @return the ifSequenceNumberEqualTo value.
      */
-    public Long ifSequenceNumberEqualTo() {
+    public Long getIfSequenceNumberEqualTo() {
         return this.ifSequenceNumberEqualTo;
     }
 
@@ -103,7 +103,7 @@ public final class SequenceNumberAccessConditions {
      * @param ifSequenceNumberEqualTo the ifSequenceNumberEqualTo value to set.
      * @return the SequenceNumberAccessConditions object itself.
      */
-    public SequenceNumberAccessConditions ifSequenceNumberEqualTo(Long ifSequenceNumberEqualTo) {
+    public SequenceNumberAccessConditions setIfSequenceNumberEqualTo(Long ifSequenceNumberEqualTo) {
         this.ifSequenceNumberEqualTo = ifSequenceNumberEqualTo;
         return this;
     }

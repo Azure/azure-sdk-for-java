@@ -12,10 +12,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
@@ -61,18 +60,18 @@ import java.util.Objects;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public final class CryptographyClientBuilder {
-    private final List<HttpPipelinePolicy> policies;
+public class CryptographyClientBuilder {
+    final List<HttpPipelinePolicy> policies;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
-    private TokenCredential credential;
-    private HttpPipeline pipeline;
-    private JsonWebKey jsonWebKey;
-    private String keyId;
-    private HttpClient httpClient;
-    private HttpLogDetailLevel httpLogDetailLevel;
-    private final RetryPolicy retryPolicy;
-    private Configuration configuration;
+    TokenCredential credential;
+    HttpPipeline pipeline;
+    JsonWebKey jsonWebKey;
+    String keyId;
+    HttpClient httpClient;
+    HttpLogDetailLevel httpLogDetailLevel;
+    final RetryPolicy retryPolicy;
+    Configuration configuration;
 
     /**
      * The constructor with defaults.
@@ -125,9 +124,6 @@ public final class CryptographyClientBuilder {
      *     CryptographyClientBuilder#jsonWebKey(JsonWebKey)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        Configuration buildConfiguration =
-            (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
-
         if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
@@ -146,6 +142,19 @@ public final class CryptographyClientBuilder {
                 "Key Vault credentials are required to build the Cryptography async client"));
         }
 
+        HttpPipeline pipeline = setupPipeline();
+
+        if (jsonWebKey != null) {
+            return new CryptographyAsyncClient(jsonWebKey, pipeline);
+        } else {
+            return new CryptographyAsyncClient(keyId, pipeline);
+        }
+    }
+
+    HttpPipeline setupPipeline() {
+        Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
@@ -157,16 +166,10 @@ public final class CryptographyClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-
-        if (jsonWebKey != null) {
-            return new CryptographyAsyncClient(jsonWebKey, pipeline);
-        } else {
-            return new CryptographyAsyncClient(keyId, pipeline);
-        }
     }
 
     /**
@@ -176,7 +179,7 @@ public final class CryptographyClientBuilder {
      * cryptography operations.</p>
      *
      * @param keyId The jsonWebKey identifier representing the jsonWebKey stored in jsonWebKey vault.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder keyIdentifier(String keyId) {
         this.keyId = keyId;
@@ -190,7 +193,7 @@ public final class CryptographyClientBuilder {
      * operations.</p>
      *
      * @param jsonWebKey The Json web jsonWebKey to be used for cryptography operations.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
         this.jsonWebKey = jsonWebKey;
@@ -201,7 +204,7 @@ public final class CryptographyClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public CryptographyClientBuilder credential(TokenCredential credential) {
@@ -216,7 +219,7 @@ public final class CryptographyClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public CryptographyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -226,11 +229,10 @@ public final class CryptographyClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after {@link CryptographyAsyncClient} and {@link
-     * CryptographyClient} required policies.
+     * Adds a policy to the set of existing policies that are executed after the client required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -243,7 +245,7 @@ public final class CryptographyClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CryptographyClientBuilder httpClient(HttpClient client) {
@@ -255,13 +257,11 @@ public final class CryptographyClientBuilder {
     /**
      * Sets the HTTP pipeline to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * ({@link CryptographyClientBuilder#keyIdentifier(String) jsonWebKey identifier} or {@link
-     * CryptographyClientBuilder#jsonWebKey(JsonWebKey) json web jsonWebKey} to build {@link CryptographyClient} or
-     * {@link CryptographyAsyncClient}.
+     * If {@code pipeline} is set, all other settings are ignored, aside from jsonWebKey identifier
+     * or jsonWebKey to build the clients.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return the updated {@link CryptographyClientBuilder} object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
@@ -272,11 +272,11 @@ public final class CryptographyClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated CryptographyClientBuilder object.
+     * @return the updated builder object.
      */
     public CryptographyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

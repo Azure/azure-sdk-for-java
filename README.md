@@ -14,27 +14,31 @@ To get started with a specific library, see the **README.md** file located in th
 For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 
 ### Prerequisites
-Java 8 or later is required to use the July 2019 client preview libraries, otherwise Java 7 or later is required.
+Java 8 or later is required to use the October 2019 client preview libraries, otherwise Java 7 or later is required.
 
 ## Packages available
 Each service might have a number of libraries available from each of the following categories:
 
-* [Client - July 2019 Preview](#Client-July-2019-Preview)
+* [Client - October 2019 Preview](#Client-October-2019-Preview)
 * [Client - Stable](#Client-Stable)
 * [Management](#Management)
 
-### Client: July 2019 Preview
+### Client: October 2019 Preview
 New wave of packages that we are currently releasing in **preview**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](core). 
 
 These preview libraries can be easily identified by their folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the July 2019 preview:
+The libraries released in the October 2019 preview:
 - [App Configuration](sdk/appconfiguration/azure-data-appconfiguration/README.md)
 - [Event Hubs](sdk/eventhubs/azure-messaging-eventhubs/README.md)
+- [Event Hubs Checkpoint Store](sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md)
 - [Identity](sdk/identity/azure-identity/README.md)
+- [Key Vault Certificates](sdk/keyvault/azure-keyvault-certificates/README.md)
 - [Key Vault Keys](sdk/keyvault/azure-keyvault-keys/README.md)
-- [Key Vault Secrets](sdk/keyvault/client/azure-keyvault-secrets/README.md)
+- [Key Vault Secrets](sdk/keyvault/azure-keyvault-secrets/README.md)
 - [Storage Blobs](sdk/storage/azure-storage-blob/README.md)
+- [Storage Files](sdk/storage/azure-storage-file/README.md)
+- [Storage Queues](sdk/storage/azure-storage-queue/README.md)
 
 >NOTE: If you need to ensure your code is ready for production, use one of the stable libraries.
 

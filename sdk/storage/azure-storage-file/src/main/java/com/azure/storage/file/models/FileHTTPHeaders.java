@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -60,7 +60,7 @@ public final class FileHTTPHeaders {
      *
      * @return the fileContentType value.
      */
-    public String fileContentType() {
+    public String getFileContentType() {
         return this.fileContentType;
     }
 
@@ -71,7 +71,7 @@ public final class FileHTTPHeaders {
      * @param fileContentType the fileContentType value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders fileContentType(String fileContentType) {
+    public FileHTTPHeaders setFileContentType(String fileContentType) {
         this.fileContentType = fileContentType;
         return this;
     }
@@ -82,7 +82,7 @@ public final class FileHTTPHeaders {
      *
      * @return the fileContentEncoding value.
      */
-    public String fileContentEncoding() {
+    public String getFileContentEncoding() {
         return this.fileContentEncoding;
     }
 
@@ -93,7 +93,7 @@ public final class FileHTTPHeaders {
      * @param fileContentEncoding the fileContentEncoding value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders fileContentEncoding(String fileContentEncoding) {
+    public FileHTTPHeaders setFileContentEncoding(String fileContentEncoding) {
         this.fileContentEncoding = fileContentEncoding;
         return this;
     }
@@ -104,7 +104,7 @@ public final class FileHTTPHeaders {
      *
      * @return the fileContentLanguage value.
      */
-    public String fileContentLanguage() {
+    public String getFileContentLanguage() {
         return this.fileContentLanguage;
     }
 
@@ -115,7 +115,7 @@ public final class FileHTTPHeaders {
      * @param fileContentLanguage the fileContentLanguage value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders fileContentLanguage(String fileContentLanguage) {
+    public FileHTTPHeaders setFileContentLanguage(String fileContentLanguage) {
         this.fileContentLanguage = fileContentLanguage;
         return this;
     }
@@ -126,7 +126,7 @@ public final class FileHTTPHeaders {
      *
      * @return the fileCacheControl value.
      */
-    public String fileCacheControl() {
+    public String getFileCacheControl() {
         return this.fileCacheControl;
     }
 
@@ -137,7 +137,7 @@ public final class FileHTTPHeaders {
      * @param fileCacheControl the fileCacheControl value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders fileCacheControl(String fileCacheControl) {
+    public FileHTTPHeaders setFileCacheControl(String fileCacheControl) {
         this.fileCacheControl = fileCacheControl;
         return this;
     }
@@ -147,7 +147,7 @@ public final class FileHTTPHeaders {
      *
      * @return the fileContentMD5 value.
      */
-    public byte[] fileContentMD5() {
+    public byte[] getFileContentMD5() {
         return ImplUtils.clone(this.fileContentMD5);
     }
 
@@ -157,7 +157,7 @@ public final class FileHTTPHeaders {
      * @param fileContentMD5 the fileContentMD5 value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders fileContentMD5(byte[] fileContentMD5) {
+    public FileHTTPHeaders setFileContentMD5(byte[] fileContentMD5) {
         this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
@@ -168,7 +168,7 @@ public final class FileHTTPHeaders {
      *
      * @return the fileContentDisposition value.
      */
-    public String fileContentDisposition() {
+    public String getFileContentDisposition() {
         return this.fileContentDisposition;
     }
 
@@ -179,7 +179,7 @@ public final class FileHTTPHeaders {
      * @param fileContentDisposition the fileContentDisposition value to set.
      * @return the FileHTTPHeaders object itself.
      */
-    public FileHTTPHeaders fileContentDisposition(String fileContentDisposition) {
+    public FileHTTPHeaders setFileContentDisposition(String fileContentDisposition) {
         this.fileContentDisposition = fileContentDisposition;
         return this;
     }

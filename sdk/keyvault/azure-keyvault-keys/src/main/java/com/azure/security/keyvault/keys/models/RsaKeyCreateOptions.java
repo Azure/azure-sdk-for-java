@@ -36,7 +36,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      *
      * @return the keySize value
      */
-    public Integer keySize() {
+    public Integer getKeySize() {
         return this.keySize;
     }
 
@@ -46,7 +46,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @param keySize The keySize value to set
      * @return the RsaKeyCreateOptions object itself.
      */
-    public RsaKeyCreateOptions keySize(Integer keySize) {
+    public RsaKeyCreateOptions setKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -58,7 +58,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions keyOperations(KeyOperation... keyOperations) {
+    public RsaKeyCreateOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
@@ -70,8 +70,8 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions notBefore(OffsetDateTime notBefore) {
-        super.notBefore(notBefore);
+    public RsaKeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
+        super.setNotBefore(notBefore);
         return this;
     }
 
@@ -82,8 +82,8 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions expires(OffsetDateTime expires) {
-        super.expires(expires);
+    public RsaKeyCreateOptions setExpires(OffsetDateTime expires) {
+        super.setExpires(expires);
         return this;
     }
 
@@ -94,8 +94,8 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions tags(Map<String, String> tags) {
-        super.tags(tags);
+    public RsaKeyCreateOptions setTags(Map<String, String> tags) {
+        super.setTags(tags);
         return this;
     }
 
@@ -105,8 +105,8 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @param enabled The enabled value to set
      * @return the RsaKeyCreateOptions object itself.
      */
-    public RsaKeyCreateOptions enabled(Boolean enabled) {
-        super.enabled(enabled);
+    public RsaKeyCreateOptions setEnabled(Boolean enabled) {
+        super.setEnabled(enabled);
         return this;
     }
 
@@ -115,7 +115,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @param hsm The hsm value to set.
      * @return the RsaKeyCreateOptions object itself.
      */
-    public RsaKeyCreateOptions hsm(Boolean hsm) {
+    public RsaKeyCreateOptions setHsm(Boolean hsm) {
         this.hsm = hsm;
         this.keyType = hsm ? KeyType.RSA_HSM : KeyType.RSA;
         return this;
@@ -125,7 +125,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * Get the hsm value of the key being created.
      * @return the hsm value.
      */
-    public Boolean hsm() {
+    public Boolean isHsm() {
         return this.hsm;
     }
 }

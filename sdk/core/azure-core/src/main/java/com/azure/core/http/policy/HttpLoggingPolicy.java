@@ -60,21 +60,21 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final ClientLogger logger = new ClientLogger(callerMethod);
         final long startNs = System.nanoTime();
         //
-        Mono<Void> logRequest = logRequest(logger, context.httpRequest());
+        Mono<Void> logRequest = logRequest(logger, context.getHttpRequest());
         Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate =
-            logResponseDelegate(logger, context.httpRequest().url(), startNs);
+            logResponseDelegate(logger, context.getHttpRequest().getUrl(), startNs);
         //
         return logRequest.then(next.process()).flatMap(logResponseDelegate)
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
     }
 
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
-        if (detailLevel.shouldLogURL()) {
-            logger.info("--> {} {}", request.httpMethod(), request.url());
+        if (detailLevel.shouldLogUrl()) {
+            logger.info("--> {} {}", request.getHttpMethod(), request.getUrl());
         }
 
         if (detailLevel.shouldLogHeaders()) {
-            for (HttpHeader header : request.headers()) {
+            for (HttpHeader header : request.getHeaders()) {
                 logger.info(header.toString());
             }
         }
@@ -82,25 +82,25 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         Mono<Void> reqBodyLoggingMono = Mono.empty();
         //
         if (detailLevel.shouldLogBody()) {
-            if (request.body() == null) {
+            if (request.getBody() == null) {
                 logger.info("(empty body)");
-                logger.info("--> END {}", request.httpMethod());
+                logger.info("--> END {}", request.getHttpMethod());
             } else {
                 boolean isHumanReadableContentType =
-                    !"application/octet-stream".equalsIgnoreCase(request.headers().value("Content-Type"));
-                final long contentLength = getContentLength(request.headers());
+                    !"application/octet-stream".equalsIgnoreCase(request.getHeaders().getValue("Content-Type"));
+                final long contentLength = getContentLength(request.getHeaders());
 
                 if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
-                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.body());
+                        Mono<byte[]> collectedBytes = FluxUtil.collectBytesInByteBufferStream(request.getBody());
                         reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
                             String bodyString = new String(bytes, StandardCharsets.UTF_8);
                             bodyString = prettyPrintIfNeeded(
                                 logger,
-                                request.headers().value("Content-Type"),
+                                request.getHeaders().getValue("Content-Type"),
                                 bodyString);
                             logger.info("{}-byte body:%n{}", contentLength, bodyString);
-                            logger.info("--> END {}", request.httpMethod());
+                            logger.info("--> END {}", request.getHttpMethod());
                             return Mono.empty();
                         });
                     } catch (Exception e) {
@@ -108,7 +108,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                     }
                 } else {
                     logger.info("{}-byte body: (content not logged)", contentLength);
-                    logger.info("--> END {}", request.httpMethod());
+                    logger.info("--> END {}", request.getHttpMethod());
                 }
             }
         }
@@ -120,7 +120,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
             //
-            String contentLengthString = response.headerValue("Content-Length");
+            String contentLengthString = response.getHeaderValue("Content-Length");
             String bodySize;
             if (contentLengthString == null || contentLengthString.isEmpty()) {
                 bodySize = "unknown-length";
@@ -129,23 +129,23 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             //            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
-            if (detailLevel.shouldLogURL()) {
-                logger.info("<-- {} {} ({} ms, {} body)", response.statusCode(), url, tookMs, bodySize);
+            if (detailLevel.shouldLogUrl()) {
+                logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
             }
 
             if (detailLevel.shouldLogHeaders()) {
-                for (HttpHeader header : response.headers()) {
+                for (HttpHeader header : response.getHeaders()) {
                     logger.info(header.toString());
                 }
             }
 
             if (detailLevel.shouldLogBody()) {
-                long contentLength = getContentLength(response.headers());
-                final String contentTypeHeader = response.headerValue("Content-Type");
+                long contentLength = getContentLength(response.getHeaders());
+                final String contentTypeHeader = response.getHeaderValue("Content-Type");
                 if (!"application/octet-stream".equalsIgnoreCase(contentTypeHeader)
                     && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
                     final HttpResponse bufferedResponse = response.buffer();
-                    return bufferedResponse.bodyAsString().map(bodyStr -> {
+                    return bufferedResponse.getBodyAsString().map(bodyStr -> {
                         bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
                         logger.info("Response body:\n{}", bodyStr);
                         logger.info("<-- END HTTP");
@@ -179,7 +179,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private long getContentLength(HttpHeaders headers) {
         long contentLength = 0;
         try {
-            contentLength = Long.parseLong(headers.value("content-length"));
+            contentLength = Long.parseLong(headers.getValue("content-length"));
         } catch (NumberFormatException | NullPointerException ignored) {
         }
 

@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -30,23 +30,23 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.getSecret#secretBase
         for (SecretBase secret : secretClient.listSecrets()) {
-            Secret secretWithValue  = secretClient.getSecret(secret);
-            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.name(),
-                    secretWithValue.value());
+            Secret secretWithValue = secretClient.getSecret(secret);
+            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.getName(),
+                secretWithValue.getValue());
         }
         // END: com.azure.security.keyvault.secretclient.getSecret#secretBase
 
         // BEGIN: com.azure.security.keyvault.secretclient.getSecret#string-string
         String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
         Secret secretWithVersion = secretClient.getSecret("secretName", secretVersion);
-        System.out.printf("Secret is returned with name %s and value %s \n",
-            secretWithVersion.name(), secretWithVersion.value());
+        System.out.printf("Secret is returned with name %s and value %s %n",
+            secretWithVersion.getName(), secretWithVersion.getValue());
         // END: com.azure.security.keyvault.secretclient.getSecret#string-string
 
         // BEGIN: com.azure.security.keyvault.secretclient.getSecret#string
         Secret secretWithoutVersion = secretClient.getSecret("secretName", secretVersion);
-        System.out.printf("Secret is returned with name %s and value %s \n",
-            secretWithoutVersion.name(), secretWithoutVersion.value());
+        System.out.printf("Secret is returned with name %s and value %s %n",
+            secretWithoutVersion.getName(), secretWithoutVersion.getValue());
         // END: com.azure.security.keyvault.secretclient.getSecret#string
     }
 
@@ -57,18 +57,18 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.getSecretWithResponse#secretBase
         for (SecretBase secret : secretClient.listSecrets()) {
-            Secret secretWithValue  = secretClient.getSecretWithResponse(secret, new Context(key2, value2)).value();
-            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.name(),
-                    secretWithValue.value());
+            Secret secretWithValue = secretClient.getSecretWithResponse(secret, new Context(key2, value2)).getValue();
+            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.getName(),
+                secretWithValue.getValue());
         }
         // END: com.azure.security.keyvault.secretclient.getSecretWithResponse#secretBase
 
         // BEGIN: com.azure.security.keyvault.secretclient.getSecretWithResponse#string-string-Context
         String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
         Secret secretWithVersion = secretClient.getSecretWithResponse("secretName", secretVersion,
-            new Context(key2, value2)).value();
-        System.out.printf("Secret is returned with name %s and value %s \n",
-            secretWithVersion.name(), secretWithVersion.value());
+            new Context(key2, value2)).getValue();
+        System.out.printf("Secret is returned with name %s and value %s %n",
+            secretWithVersion.getName(), secretWithVersion.getValue());
         // END: com.azure.security.keyvault.secretclient.getSecretWithResponse#string-string-Context
     }
 
@@ -78,14 +78,15 @@ public final class SecretClientJavaDocCodeSnippets {
     public void setSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.setSecret#secret
-        Secret newSecret = new Secret("secretName", "secretValue").expires(OffsetDateTime.now().plusDays(60));
+        Secret newSecret = new Secret("secretName", "secretValue").setExpires(OffsetDateTime.now().plusDays(60));
         Secret returnedSecret = secretClient.setSecret(newSecret);
-        System.out.printf("Secret is created with name %s and value %s \n", returnedSecret.name(), returnedSecret.value());
+        System.out.printf("Secret is created with name %s and value %s %n", returnedSecret.getName(),
+            returnedSecret.getValue());
         // END: com.azure.security.keyvault.secretclient.setSecret#secret
 
         // BEGIN: com.azure.security.keyvault.secretclient.setSecret#string-string
         Secret secret = secretClient.setSecret("secretName", "secretValue");
-        System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
+        System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
         // END: com.azure.security.keyvault.secretclient.setSecret#string-string
     }
 
@@ -95,9 +96,9 @@ public final class SecretClientJavaDocCodeSnippets {
     public void setSecretWithResponseCodeSnippets() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.setSecretWithResponse#secret-Context
-        Secret newSecret = new Secret("secretName", "secretValue").expires(OffsetDateTime.now().plusDays(60));
-        Secret secret = secretClient.setSecretWithResponse(newSecret, new Context(key1, value1)).value();
-        System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
+        Secret newSecret = new Secret("secretName", "secretValue").setExpires(OffsetDateTime.now().plusDays(60));
+        Secret secret = secretClient.setSecretWithResponse(newSecret, new Context(key1, value1)).getValue();
+        System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
         // END: com.azure.security.keyvault.secretclient.setSecretWithResponse#secret-Context
     }
 
@@ -108,11 +109,11 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.updateSecret#secretBase
         Secret secret = secretClient.getSecret("secretName");
-        secret.expires(OffsetDateTime.now().plusDays(60));
+        secret.setExpires(OffsetDateTime.now().plusDays(60));
         SecretBase updatedSecretBase = secretClient.updateSecret(secret);
-        Secret updatedSecret = secretClient.getSecret(updatedSecretBase.name());
-        System.out.printf("Updated Secret is returned with name %s, value %s and expires %s \n",
-            updatedSecret.name(), updatedSecret.value(), updatedSecret.expires());
+        Secret updatedSecret = secretClient.getSecret(updatedSecretBase.getName());
+        System.out.printf("Updated Secret is returned with name %s, value %s and expires %s %n",
+            updatedSecret.getName(), updatedSecret.getValue(), updatedSecret.getExpires());
         // END: com.azure.security.keyvault.secretclient.updateSecret#secretBase
     }
 
@@ -123,11 +124,12 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.updateSecretWithResponse#secretBase-Context
         Secret secret = secretClient.getSecret("secretName");
-        secret.expires(OffsetDateTime.now().plusDays(60));
-        SecretBase updatedSecretBase = secretClient.updateSecretWithResponse(secret, new Context(key2, value2)).value();
-        Secret updatedSecret = secretClient.getSecret(updatedSecretBase.name());
-        System.out.printf("Updated Secret is returned with name %s, value %s and expires %s \n",
-            updatedSecret.name(), updatedSecret.value(), updatedSecret.expires());
+        secret.setExpires(OffsetDateTime.now().plusDays(60));
+        SecretBase updatedSecretBase = secretClient.updateSecretWithResponse(secret, new Context(key2, value2))
+            .getValue();
+        Secret updatedSecret = secretClient.getSecret(updatedSecretBase.getName());
+        System.out.printf("Updated Secret is returned with name %s, value %s and expires %s %n",
+            updatedSecret.getName(), updatedSecret.getValue(), updatedSecret.getExpires());
         // END: com.azure.security.keyvault.secretclient.updateSecretWithResponse#secretBase-Context
     }
 
@@ -138,7 +140,7 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
         DeletedSecret deletedSecret = secretClient.deleteSecret("secretName");
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
         // END: com.azure.security.keyvault.secretclient.deleteSecret#string
     }
 
@@ -149,8 +151,8 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecretWithResponse#string-Context
         DeletedSecret deletedSecret = secretClient.deleteSecretWithResponse("secretName",
-            new Context(key2, value2)).value();
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId());
+            new Context(key2, value2)).getValue();
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
         // END: com.azure.security.keyvault.secretclient.deleteSecretWithResponse#string-Context
     }
 
@@ -161,7 +163,7 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.getDeletedSecret#string
         DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName");
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
         // END: com.azure.security.keyvault.secretclient.getDeletedSecret#string
     }
 
@@ -172,8 +174,8 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.getDeletedSecretWithResponse#string-Context
         DeletedSecret deletedSecret = secretClient.getDeletedSecretWithResponse("secretName",
-            new Context(key2, value2)).value();
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId());
+            new Context(key2, value2)).getValue();
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
         // END: com.azure.security.keyvault.secretclient.getDeletedSecretWithResponse#string-Context
     }
 
@@ -182,15 +184,22 @@ public final class SecretClientJavaDocCodeSnippets {
      */
     public void purgeDeletedSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
-        VoidResponse purgeResponse = secretClient.purgeDeletedSecret("secretName");
-        System.out.printf("Purge Status Code: %d", purgeResponse.statusCode());
-        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
 
-        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context
-        VoidResponse purgedResponse = secretClient.purgeDeletedSecret("secretName", new Context(key2, value2));
-        System.out.printf("Purge Status Code: %d", purgedResponse.statusCode());
-        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context
+        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
+        secretClient.purgeDeletedSecret("secretName");
+        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecret#string
+    }
+
+    /**
+     * Method to insert code snippets for {@link SecretClient#purgeDeletedSecretWithResponse(String, Context)}
+     */
+    public void purgeDeletedSecretWithResponseCodeSnippets() {
+        SecretClient secretClient = getSecretClient();
+        // BEGIN: com.azure.security.keyvault.secretclient.purgeDeletedSecretWithResponse#string-Context
+        Response<Void> purgeResponse = secretClient.purgeDeletedSecretWithResponse("secretName",
+            new Context(key1, value1));
+        System.out.printf("Purge Status Code: %d", purgeResponse.getStatusCode());
+        // END: com.azure.security.keyvault.secretclient.purgeDeletedSecretWithResponse#string-Context
     }
 
     /**
@@ -200,7 +209,7 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
         Secret recoveredSecret = secretClient.recoverDeletedSecret("secretName");
-        System.out.printf("Recovered Secret with name %s", recoveredSecret.name());
+        System.out.printf("Recovered Secret with name %s", recoveredSecret.getName());
         // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
     }
 
@@ -211,8 +220,8 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context
         Secret recoveredSecret = secretClient.recoverDeletedSecretWithResponse("secretName",
-            new Context(key1, value1)).value();
-        System.out.printf("Recovered Secret with name %s", recoveredSecret.name());
+            new Context(key1, value1)).getValue();
+        System.out.printf("Recovered Secret with name %s", recoveredSecret.getName());
         // END: com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context
     }
 
@@ -234,7 +243,7 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.backupSecretWithResponse#string-Context
         byte[] secretBackup = secretClient.backupSecretWithResponse("secretName",
-            new Context(key1, value1)).value();
+            new Context(key1, value1)).getValue();
         System.out.printf("Secret's Backup Byte array's length %s", secretBackup.length);
         // END: com.azure.security.keyvault.secretclient.backupSecretWithResponse#string-Context
     }
@@ -247,7 +256,8 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.restoreSecret#byte
         byte[] secretBackupByteArray = {};
         Secret restoredSecret = secretClient.restoreSecret(secretBackupByteArray);
-        System.out.printf("Restored Secret with name %s and value %s", restoredSecret.name(), restoredSecret.value());
+        System.out
+            .printf("Restored Secret with name %s and value %s", restoredSecret.getName(), restoredSecret.getValue());
         // END: com.azure.security.keyvault.secretclient.restoreSecret#byte
     }
 
@@ -259,8 +269,9 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.restoreSecretWithResponse#byte-Context
         byte[] secretBackupByteArray = {};
         Secret restoredSecret = secretClient.restoreSecretWithResponse(secretBackupByteArray,
-            new Context(key2, value2)).value();
-        System.out.printf("Restored Secret with name %s and value %s", restoredSecret.name(), restoredSecret.value());
+            new Context(key2, value2)).getValue();
+        System.out
+            .printf("Restored Secret with name %s and value %s", restoredSecret.getName(), restoredSecret.getValue());
         // END: com.azure.security.keyvault.secretclient.restoreSecretWithResponse#byte-Context
     }
 
@@ -271,28 +282,28 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.listSecrets
         for (SecretBase secret : secretClient.listSecrets()) {
-            Secret secretWithValue  = secretClient.getSecret(secret);
+            Secret secretWithValue = secretClient.getSecret(secret);
             System.out.printf("Received secret with name %s and value %s",
-                secretWithValue.name(), secretWithValue.value());
+                secretWithValue.getName(), secretWithValue.getValue());
         }
         // END: com.azure.security.keyvault.secretclient.listSecrets
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecrets#Context
         for (SecretBase secret : secretClient.listSecrets(new Context(key1, value2))) {
-            Secret secretWithValue  = secretClient.getSecret(secret);
+            Secret secretWithValue = secretClient.getSecret(secret);
             System.out.printf("Received secret with name %s and value %s",
-                secretWithValue.name(), secretWithValue.value());
+                secretWithValue.getName(), secretWithValue.getValue());
         }
         // END: com.azure.security.keyvault.secretclient.listSecrets#Context
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecrets.iterableByPage
         secretClient.listSecrets().iterableByPage().forEach(resp -> {
-            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.headers(),
-                resp.request().url(), resp.statusCode());
-            resp.items().forEach(value -> {
-                Secret secretWithValue  = secretClient.getSecret(value);
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+                resp.getRequest().getUrl(), resp.getStatusCode());
+            resp.getItems().forEach(value -> {
+                Secret secretWithValue = secretClient.getSecret(value);
                 System.out.printf("Received secret with name %s and value %s",
-                    secretWithValue.name(), secretWithValue.value());
+                    secretWithValue.getName(), secretWithValue.getValue());
             });
         });
         // END: com.azure.security.keyvault.secretclient.listSecrets.iterableByPage
@@ -305,22 +316,22 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.listDeletedSecrets
         for (DeletedSecret deletedSecret : secretClient.listDeletedSecrets()) {
-            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
+            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.getRecoveryId());
         }
         // END: com.azure.security.keyvault.secretclient.listDeletedSecrets
 
         // BEGIN: com.azure.security.keyvault.secretclient.listDeletedSecrets#Context
         for (DeletedSecret deletedSecret : secretClient.listDeletedSecrets(new Context(key1, value2))) {
-            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
+            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.getRecoveryId());
         }
         // END: com.azure.security.keyvault.secretclient.listDeletedSecrets#Context
 
         // BEGIN: com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage
         secretClient.listDeletedSecrets().iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.request().url(), resp.statusCode());
-            resp.items().forEach(value -> {
-                System.out.printf("Deleted secret's recovery Id %s", value.recoveryId());
+                resp.getRequest().getUrl(), resp.getStatusCode());
+            resp.getItems().forEach(value -> {
+                System.out.printf("Deleted secret's recovery Id %s", value.getRecoveryId());
             });
         });
         // END: com.azure.security.keyvault.secretclient.listDeletedSecrets.iterableByPage
@@ -333,28 +344,28 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string
         for (SecretBase secret : secretClient.listSecretVersions("secretName")) {
-            Secret secretWithValue  = secretClient.getSecret(secret);
+            Secret secretWithValue = secretClient.getSecret(secret);
             System.out.printf("Received secret's version with name %s and value %s",
-                secretWithValue.name(), secretWithValue.value());
+                secretWithValue.getName(), secretWithValue.getValue());
         }
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context
         for (SecretBase secret : secretClient.listSecretVersions("secretName", new Context(key1, value2))) {
-            Secret secretWithValue  = secretClient.getSecret(secret);
+            Secret secretWithValue = secretClient.getSecret(secret);
             System.out.printf("Received secret's version with name %s and value %s",
-                secretWithValue.name(), secretWithValue.value());
+                secretWithValue.getName(), secretWithValue.getValue());
         }
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
         secretClient.listSecretVersions("secretName", new Context(key1, value2)).iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.request().url(), resp.statusCode());
-            resp.items().forEach(value -> {
-                Secret secretWithValue  = secretClient.getSecret(value);
+                resp.getRequest().getUrl(), resp.getStatusCode());
+            resp.getItems().forEach(value -> {
+                Secret secretWithValue = secretClient.getSecret(value);
                 System.out.printf("Received secret's version with name %s and value %s",
-                    secretWithValue.name(), secretWithValue.value());
+                    secretWithValue.getName(), secretWithValue.getValue());
             });
         });
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
@@ -362,6 +373,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
     /**
      * Implementation for sync SecretClient
+     *
      * @return sync SecretClient
      */
     private SecretClient getSyncSecretClientCodeSnippets() {
@@ -378,6 +390,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
     /**
      * Implementation not provided for this method
+     *
      * @return {@code null}
      */
     private SecretClient getSecretClient() {

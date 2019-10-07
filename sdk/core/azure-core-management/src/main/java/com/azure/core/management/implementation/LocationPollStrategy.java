@@ -86,7 +86,7 @@ public final class LocationPollStrategy extends PollStrategy {
     public Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         return ensureExpectedStatus(httpPollResponse, new int[]{202})
             .map(response -> {
-                final int httpStatusCode = response.statusCode();
+                final int httpStatusCode = response.getStatusCode();
                 updateDelayInMillisecondsFrom(response);
                 if (httpStatusCode == 202) {
                     String newLocationUrl = getHeader(response);
@@ -130,7 +130,7 @@ public final class LocationPollStrategy extends PollStrategy {
         if (locationUrl != null && !locationUrl.isEmpty()) {
             if (locationUrl.startsWith("/")) {
                 try {
-                    final URL originalRequestUrl = originalHttpRequest.url();
+                    final URL originalRequestUrl = originalHttpRequest.getUrl();
                     pollUrl = new URL(originalRequestUrl, locationUrl);
                 } catch (MalformedURLException ignored) {
                 }
@@ -152,11 +152,11 @@ public final class LocationPollStrategy extends PollStrategy {
     }
 
     static String getHeader(HttpResponse httpResponse) {
-        return httpResponse.headerValue(HEADER_NAME);
+        return httpResponse.getHeaderValue(HEADER_NAME);
     }
 
     @Override
-    public Serializable strategyData() {
+    public Serializable getStrategyData() {
         return this.data;
     }
 }

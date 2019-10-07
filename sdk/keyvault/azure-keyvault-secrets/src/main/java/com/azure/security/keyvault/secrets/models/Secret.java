@@ -47,7 +47,7 @@ public class Secret extends SecretBase {
      *
      * @return the secret value
      */
-    public String value() {
+    public String getValue() {
         return this.value;
     }
 
@@ -58,8 +58,8 @@ public class Secret extends SecretBase {
      * @return the Secret object itself.
      */
     @Override
-    public Secret enabled(Boolean enabled) {
-        super.enabled(enabled);
+    public Secret setEnabled(Boolean enabled) {
+        super.setEnabled(enabled);
         return this;
     }
 
@@ -70,8 +70,8 @@ public class Secret extends SecretBase {
      * @return the Secret object itself.
      */
     @Override
-    public Secret notBefore(OffsetDateTime notBefore) {
-        super.notBefore(notBefore);
+    public Secret setNotBefore(OffsetDateTime notBefore) {
+        super.setNotBefore(notBefore);
         return this;
     }
 
@@ -82,8 +82,8 @@ public class Secret extends SecretBase {
      * @return the Secret object itself.
      */
     @Override
-    public Secret expires(OffsetDateTime expires) {
-        super.expires(expires);
+    public Secret setExpires(OffsetDateTime expires) {
+        super.setExpires(expires);
         return this;
     }
 
@@ -94,8 +94,8 @@ public class Secret extends SecretBase {
      * @return the Secret object itself.
      */
     @Override
-    public Secret id(String id) {
-        super.id(id);
+    public Secret setId(String id) {
+        super.setId(id);
         return this;
     }
 
@@ -106,8 +106,8 @@ public class Secret extends SecretBase {
      * @return the Secret object itself.
      */
     @Override
-    public Secret contentType(String contentType) {
-        super.contentType(contentType);
+    public Secret setContentType(String contentType) {
+        super.setContentType(contentType);
         return this;
     }
 
@@ -118,8 +118,8 @@ public class Secret extends SecretBase {
      * @return the Secret object itself.
      */
     @Override
-    public Secret tags(Map<String, String> tags) {
-        super.tags(tags);
+    public Secret setTags(Map<String, String> tags) {
+        super.setTags(tags);
         return this;
     }
 

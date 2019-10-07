@@ -6,9 +6,11 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.RetryOptions;
+import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
 import org.junit.Assert;
@@ -48,6 +50,7 @@ public class EventHubConsumerTest {
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
+    private final MessageSerializer serializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -65,18 +68,50 @@ public class EventHubConsumerTest {
         when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .identifier("an-identifier")
-            .prefetchCount(PREFETCH)
-            .retry(new RetryOptions())
-            .scheduler(Schedulers.elastic());
-        EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, options);
-        consumer = new EventHubConsumer(asyncConsumer, options.retry().tryTimeout());
+            .setIdentifier("an-identifier")
+            .setPrefetchCount(PREFETCH)
+            .setRetry(new RetryOptions())
+            .setScheduler(Schedulers.elastic());
+        EventHubAsyncConsumer asyncConsumer = new EventHubAsyncConsumer(receiveLinkMono, serializer, options);
+        consumer = new EventHubConsumer(asyncConsumer, options.getRetry().getTryTimeout());
     }
 
     @After
     public void teardown() throws IOException {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+    }
+
+    /**
+     * Verify that by default, lastEnqueuedInformation is null if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()}
+     * is not set.
+     */
+    @Test
+    public void lastEnqueuedEventInformationIsNull() {
+        // Assert
+        Assert.assertNull(consumer.getLastEnqueuedEventProperties());
+    }
+
+    /**
+     * Verify that the default information is set and is null because no information has been received.
+     */
+    @Test
+    public void lastEnqueuedEventInformationCreated() {
+        // Arrange
+        final EventHubAsyncConsumer runtimeConsumer = new EventHubAsyncConsumer(
+            Mono.just(amqpReceiveLink),
+            serializer,
+            new EventHubConsumerOptions().setTrackLastEnqueuedEventProperties(true));
+
+        // Act
+        final LastEnqueuedEventProperties lastEnqueuedEventProperties = runtimeConsumer.getLastEnqueuedEventProperties();
+
+        // Assert
+        Assert.assertNotNull(lastEnqueuedEventProperties);
+        Assert.assertNull(lastEnqueuedEventProperties.getOffset());
+        Assert.assertNull(lastEnqueuedEventProperties.getSequenceNumber());
+        Assert.assertNull(lastEnqueuedEventProperties.getRetrievalTime());
+        Assert.assertNull(lastEnqueuedEventProperties.getEnqueuedTime());
     }
 
     /**
@@ -95,7 +130,7 @@ public class EventHubConsumerTest {
         // Assert
         final Map<Integer, EventData> actual = receive.stream()
             .collect(Collectors.toMap(e -> {
-                final String value = String.valueOf(e.properties().get(MESSAGE_POSITION_ID));
+                final String value = String.valueOf(e.getProperties().get(MESSAGE_POSITION_ID));
                 return Integer.valueOf(value);
             }, Function.identity()));
 
@@ -165,7 +200,7 @@ public class EventHubConsumerTest {
     }
 
     private static Integer getPositionId(EventData event) {
-        final String value = String.valueOf(event.properties().get(MESSAGE_POSITION_ID));
+        final String value = String.valueOf(event.getProperties().get(MESSAGE_POSITION_ID));
         return Integer.valueOf(value);
     }
 

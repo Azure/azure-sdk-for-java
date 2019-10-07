@@ -5,10 +5,9 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.RetryOptions;
-import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ApiTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.apache.qpid.proton.Proton;
@@ -27,7 +26,6 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,10 +40,11 @@ import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class InteropAmqpPropertiesTest extends ApiTestBase {
+public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
 
+    private final MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
     private EventHubAsyncProducer producer;
     private EventHubAsyncConsumer consumer;
@@ -58,18 +57,17 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
+            .setPartitionId(PARTITION_ID)
+            .setRetry(new RetryOptions().setTryTimeout(Duration.ofSeconds(30)));
 
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID)
-            .retry(new RetryOptions().tryTimeout(Duration.ofSeconds(30)));
+        client = createBuilder().buildAsyncClient();
         producer = client.createProducer(producerOptions);
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }
@@ -84,8 +82,6 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
      */
     @Test
     public void interoperableWithDirectProtonAmqpMessage() {
-        skipIfNotRecordMode();
-
         // Arrange
         final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
         final String messageTrackingValue = UUID.randomUUID().toString();
@@ -122,7 +118,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         message.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
 
         message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
-        final EventData msgEvent = new EventData(message);
+        final EventData msgEvent = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
@@ -145,53 +141,53 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
     private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,
                                         Map<String, Object> applicationProperties, EventData actual) {
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.MESSAGE_ID.getValue()));
-        Assert.assertEquals(message.getMessageId(), actual.systemProperties().get(MessageConstant.MESSAGE_ID.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.MESSAGE_ID.getValue()));
+        Assert.assertEquals(message.getMessageId(), actual.getSystemProperties().get(MessageConstant.MESSAGE_ID.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.USER_ID.getValue()));
-        Assert.assertEquals(new String(message.getUserId()), new String((byte[]) actual.systemProperties().get(MessageConstant.USER_ID.getValue())));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.USER_ID.getValue()));
+        Assert.assertEquals(new String(message.getUserId()), new String((byte[]) actual.getSystemProperties().get(MessageConstant.USER_ID.getValue())));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.TO.getValue()));
-        Assert.assertEquals(message.getAddress(), actual.systemProperties().get(MessageConstant.TO.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.TO.getValue()));
+        Assert.assertEquals(message.getAddress(), actual.getSystemProperties().get(MessageConstant.TO.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CONTENT_TYPE.getValue()));
-        Assert.assertEquals(message.getContentType(), actual.systemProperties().get(MessageConstant.CONTENT_TYPE.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.CONTENT_TYPE.getValue()));
+        Assert.assertEquals(message.getContentType(), actual.getSystemProperties().get(MessageConstant.CONTENT_TYPE.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CONTENT_ENCODING.getValue()));
-        Assert.assertEquals(message.getContentEncoding(), actual.systemProperties().get(MessageConstant.CONTENT_ENCODING.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.CONTENT_ENCODING.getValue()));
+        Assert.assertEquals(message.getContentEncoding(), actual.getSystemProperties().get(MessageConstant.CONTENT_ENCODING.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CORRELATION_ID.getValue()));
-        Assert.assertEquals(message.getCorrelationId(), actual.systemProperties().get(MessageConstant.CORRELATION_ID.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.CORRELATION_ID.getValue()));
+        Assert.assertEquals(message.getCorrelationId(), actual.getSystemProperties().get(MessageConstant.CORRELATION_ID.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CREATION_TIME.getValue()));
-        Assert.assertEquals(message.getCreationTime(), actual.systemProperties().get(MessageConstant.CREATION_TIME.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.CREATION_TIME.getValue()));
+        Assert.assertEquals(message.getCreationTime(), actual.getSystemProperties().get(MessageConstant.CREATION_TIME.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.SUBJECT.getValue()));
-        Assert.assertEquals(message.getSubject(), actual.systemProperties().get(MessageConstant.SUBJECT.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.SUBJECT.getValue()));
+        Assert.assertEquals(message.getSubject(), actual.getSystemProperties().get(MessageConstant.SUBJECT.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.GROUP_ID.getValue()));
-        Assert.assertEquals(message.getGroupId(), actual.systemProperties().get(MessageConstant.GROUP_ID.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.GROUP_ID.getValue()));
+        Assert.assertEquals(message.getGroupId(), actual.getSystemProperties().get(MessageConstant.GROUP_ID.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
-        Assert.assertEquals(message.getReplyToGroupId(), actual.systemProperties().get(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assert.assertEquals(message.getReplyToGroupId(), actual.getSystemProperties().get(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.REPLY_TO.getValue()));
-        Assert.assertEquals(message.getReplyTo(), actual.systemProperties().get(MessageConstant.REPLY_TO.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.REPLY_TO.getValue()));
+        Assert.assertEquals(message.getReplyTo(), actual.getSystemProperties().get(MessageConstant.REPLY_TO.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
-        Assert.assertEquals(message.getExpiryTime(), actual.systemProperties().get(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
+        Assert.assertTrue(actual.getSystemProperties().containsKey(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
+        Assert.assertEquals(message.getExpiryTime(), actual.getSystemProperties().get(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
 
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(actual.body()).toString());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(actual.getBody()).toString());
 
         messageAnnotations.forEach((key, value) -> {
-            Assert.assertTrue(actual.systemProperties().containsKey(key.toString()));
-            Assert.assertEquals(value, actual.systemProperties().get(key.toString()));
+            Assert.assertTrue(actual.getSystemProperties().containsKey(key.toString()));
+            Assert.assertEquals(value, actual.getSystemProperties().get(key.toString()));
         });
 
-        Assert.assertEquals(applicationProperties.size(), actual.properties().size());
+        Assert.assertEquals(applicationProperties.size(), actual.getProperties().size());
         applicationProperties.forEach((key, value) -> {
-            Assert.assertTrue(actual.properties().containsKey(key));
-            Assert.assertEquals(value, actual.properties().get(key));
+            Assert.assertTrue(actual.getProperties().containsKey(key));
+            Assert.assertEquals(value, actual.getProperties().get(key));
         });
 
     }

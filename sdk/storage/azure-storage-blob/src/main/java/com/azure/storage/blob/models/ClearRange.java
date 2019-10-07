@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -31,7 +31,7 @@ public final class ClearRange {
      *
      * @return the start value.
      */
-    public long start() {
+    public long getStart() {
         return this.start;
     }
 
@@ -41,7 +41,7 @@ public final class ClearRange {
      * @param start the start value to set.
      * @return the ClearRange object itself.
      */
-    public ClearRange start(long start) {
+    public ClearRange setStart(long start) {
         this.start = start;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ClearRange {
      *
      * @return the end value.
      */
-    public long end() {
+    public long getEnd() {
         return this.end;
     }
 
@@ -61,7 +61,7 @@ public final class ClearRange {
      * @param end the end value to set.
      * @return the ClearRange object itself.
      */
-    public ClearRange end(long end) {
+    public ClearRange setEnd(long end) {
         this.end = end;
         return this;
     }

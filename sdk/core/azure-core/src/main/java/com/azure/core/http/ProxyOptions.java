@@ -26,14 +26,14 @@ public class ProxyOptions {
     /**
      * @return the address of the proxy.
      */
-    public InetSocketAddress address() {
+    public InetSocketAddress getAddress() {
         return address;
     }
 
     /**
      * @return the type of the proxy.
      */
-    public Type type() {
+    public Type getType() {
         return type;
     }
 

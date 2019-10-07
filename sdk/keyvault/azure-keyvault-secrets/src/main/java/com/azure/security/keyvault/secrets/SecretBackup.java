@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 class SecretBackup {
@@ -18,7 +18,7 @@ class SecretBackup {
      *
      * @return the secret backup value
      */
-    public byte[] value() {
+    public byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }

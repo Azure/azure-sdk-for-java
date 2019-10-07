@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -64,7 +64,7 @@ public final class BlobHTTPHeaders {
      *
      * @return the blobCacheControl value.
      */
-    public String blobCacheControl() {
+    public String getBlobCacheControl() {
         return this.blobCacheControl;
     }
 
@@ -76,7 +76,7 @@ public final class BlobHTTPHeaders {
      * @param blobCacheControl the blobCacheControl value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders blobCacheControl(String blobCacheControl) {
+    public BlobHTTPHeaders setBlobCacheControl(String blobCacheControl) {
         this.blobCacheControl = blobCacheControl;
         return this;
     }
@@ -88,7 +88,7 @@ public final class BlobHTTPHeaders {
      *
      * @return the blobContentType value.
      */
-    public String blobContentType() {
+    public String getBlobContentType() {
         return this.blobContentType;
     }
 
@@ -100,7 +100,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentType the blobContentType value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders blobContentType(String blobContentType) {
+    public BlobHTTPHeaders setBlobContentType(String blobContentType) {
         this.blobContentType = blobContentType;
         return this;
     }
@@ -112,7 +112,7 @@ public final class BlobHTTPHeaders {
      *
      * @return the blobContentMD5 value.
      */
-    public byte[] blobContentMD5() {
+    public byte[] getBlobContentMD5() {
         return ImplUtils.clone(this.blobContentMD5);
     }
 
@@ -124,7 +124,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentMD5 the blobContentMD5 value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders blobContentMD5(byte[] blobContentMD5) {
+    public BlobHTTPHeaders setBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
         return this;
     }
@@ -136,7 +136,7 @@ public final class BlobHTTPHeaders {
      *
      * @return the blobContentEncoding value.
      */
-    public String blobContentEncoding() {
+    public String getBlobContentEncoding() {
         return this.blobContentEncoding;
     }
 
@@ -148,7 +148,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentEncoding the blobContentEncoding value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders blobContentEncoding(String blobContentEncoding) {
+    public BlobHTTPHeaders setBlobContentEncoding(String blobContentEncoding) {
         this.blobContentEncoding = blobContentEncoding;
         return this;
     }
@@ -160,7 +160,7 @@ public final class BlobHTTPHeaders {
      *
      * @return the blobContentLanguage value.
      */
-    public String blobContentLanguage() {
+    public String getBlobContentLanguage() {
         return this.blobContentLanguage;
     }
 
@@ -172,7 +172,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentLanguage the blobContentLanguage value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders blobContentLanguage(String blobContentLanguage) {
+    public BlobHTTPHeaders setBlobContentLanguage(String blobContentLanguage) {
         this.blobContentLanguage = blobContentLanguage;
         return this;
     }
@@ -183,7 +183,7 @@ public final class BlobHTTPHeaders {
      *
      * @return the blobContentDisposition value.
      */
-    public String blobContentDisposition() {
+    public String getBlobContentDisposition() {
         return this.blobContentDisposition;
     }
 
@@ -194,7 +194,7 @@ public final class BlobHTTPHeaders {
      * @param blobContentDisposition the blobContentDisposition value to set.
      * @return the BlobHTTPHeaders object itself.
      */
-    public BlobHTTPHeaders blobContentDisposition(String blobContentDisposition) {
+    public BlobHTTPHeaders setBlobContentDisposition(String blobContentDisposition) {
         this.blobContentDisposition = blobContentDisposition;
         return this;
     }

@@ -45,8 +45,8 @@ public class PublishEventDataBatch {
 
         // Creating a batch where we want the events ending up in the same partition by setting the partition key.
         final BatchOptions options = new BatchOptions()
-            .partitionKey("sandwiches")
-            .maximumSizeInBytes(256);
+            .setPartitionKey("sandwiches")
+            .setMaximumSizeInBytes(256);
         final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 

@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -38,7 +38,7 @@ public final class AccessPolicy {
      *
      * @return the start value.
      */
-    public OffsetDateTime start() {
+    public OffsetDateTime getStart() {
         return this.start;
     }
 
@@ -48,7 +48,7 @@ public final class AccessPolicy {
      * @param start the start value to set.
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy start(OffsetDateTime start) {
+    public AccessPolicy setStart(OffsetDateTime start) {
         this.start = start;
         return this;
     }
@@ -58,7 +58,7 @@ public final class AccessPolicy {
      *
      * @return the expiry value.
      */
-    public OffsetDateTime expiry() {
+    public OffsetDateTime getExpiry() {
         return this.expiry;
     }
 
@@ -68,7 +68,7 @@ public final class AccessPolicy {
      * @param expiry the expiry value to set.
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy expiry(OffsetDateTime expiry) {
+    public AccessPolicy setExpiry(OffsetDateTime expiry) {
         this.expiry = expiry;
         return this;
     }
@@ -78,7 +78,7 @@ public final class AccessPolicy {
      *
      * @return the permission value.
      */
-    public String permission() {
+    public String getPermission() {
         return this.permission;
     }
 
@@ -88,7 +88,7 @@ public final class AccessPolicy {
      * @param permission the permission value to set.
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy permission(String permission) {
+    public AccessPolicy setPermission(String permission) {
         this.permission = permission;
         return this;
     }

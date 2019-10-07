@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.customvision.prediction;
 
-import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.implementation.PredictionEndpointImpl;
+import com.microsoft.azure.cognitiveservices.vision.customvision.prediction.implementation.CustomVisionPredictionClientImpl;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
@@ -21,7 +21,7 @@ public class CustomVisionPredictionManager {
      * @param apiKey the Custom Vision Prediction API key
      * @return the Computer Vision API client
      */
-    public static PredictionEndpoint authenticate(String apiKey) {
+    public static CustomVisionPredictionClient authenticate(String apiKey) {
         return authenticate("https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/", apiKey);
     }
 
@@ -32,7 +32,7 @@ public class CustomVisionPredictionManager {
      * @param apiKey the Custom Vision Prediction API key
      * @return the Custom Vision Prediction API client
      */
-    public static PredictionEndpoint authenticate(String baseUrl, final String apiKey) {
+    public static CustomVisionPredictionClient authenticate(String baseUrl, final String apiKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
             @Override
             public void applyCredentialsFilter(OkHttpClient.Builder builder) {
@@ -48,7 +48,7 @@ public class CustomVisionPredictionManager {
      * @param apiKey the Custom Vision Prediction API key
      * @return the Computer Vision API client
      */
-    public static PredictionEndpoint authenticate(ServiceClientCredentials credentials, final String apiKey) {
+    public static CustomVisionPredictionClient authenticate(ServiceClientCredentials credentials, final String apiKey) {
         return authenticate("https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/", credentials, apiKey);
     }
 
@@ -60,8 +60,8 @@ public class CustomVisionPredictionManager {
      * @param apiKey the Custom Vision Prediction API key
      * @return the Custom Vision Prediction API client
      */
-    public static PredictionEndpoint authenticate(String baseUrl, ServiceClientCredentials credentials, final String apiKey) {
-        return new PredictionEndpointImpl(baseUrl, credentials).withApiKey(apiKey);
+    public static CustomVisionPredictionClient authenticate(String baseUrl, ServiceClientCredentials credentials, final String apiKey) {
+        return new CustomVisionPredictionClientImpl(baseUrl, credentials).withApiKey(apiKey);
     }
 
     /**
@@ -71,7 +71,7 @@ public class CustomVisionPredictionManager {
      * @param apiKey the Custom Vision Prediction API key
      * @return the Custom Vision Prediction API client
      */
-    public static PredictionEndpoint authenticate(RestClient restClient, final String apiKey) {
-        return new PredictionEndpointImpl(restClient).withApiKey(apiKey);
+    public static CustomVisionPredictionClient authenticate(RestClient restClient, final String apiKey) {
+        return new CustomVisionPredictionClientImpl(restClient).withApiKey(apiKey);
     }
 }

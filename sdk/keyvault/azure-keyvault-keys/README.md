@@ -14,8 +14,50 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-keys</artifactId>
-    <version>4.0.0-preview.2</version>
+    <version>4.0.0-preview.4</version>
 </dependency>
+```
+
+### Default HTTP Client
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+KeyVault Keys to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
+
+```xml
+<!-- Add KeyVault Keys dependency without Netty HTTP client -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-keyvault-keys</artifactId>
+    <version>4.0.0-preview.4</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
+</dependency>
+
+<!-- Add OkHTTP client to use with KeyVault Keys -->
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-okhttp</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+
+### Configuring HTTP Clients
+When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-key-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
+
+For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+```java
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .port(8080)
+    .wiretap(true)
+    .build();
 ```
 
 ### Prerequisites

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenRequest;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
@@ -19,8 +20,8 @@ class ScopeTokenCache {
     private AccessToken cache;
     private final ReplayProcessor<AccessToken> emitterProcessor = ReplayProcessor.create(1);
     private final FluxSink<AccessToken> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final Function<String[], Mono<AccessToken>> getNew;
-    private String[] scopes;
+    private final Function<TokenRequest, Mono<AccessToken>> getNew;
+    private TokenRequest request;
 
 
     /**
@@ -28,13 +29,13 @@ class ScopeTokenCache {
      *
      * @param getNew a method to get a new token
      */
-    ScopeTokenCache(Function<String[], Mono<AccessToken>> getNew) {
+    ScopeTokenCache(Function<TokenRequest, Mono<AccessToken>> getNew) {
         this.wip = new AtomicBoolean(false);
         this.getNew = getNew;
     }
 
-    public void scopes(String... scopes) {
-        this.scopes = scopes;
+    public void setTokenRequest(TokenRequest request) {
+        this.request = request;
     }
 
     /**
@@ -47,7 +48,7 @@ class ScopeTokenCache {
         }
         return Mono.defer(() -> {
             if (!wip.getAndSet(true)) {
-                return getNew.apply(scopes).doOnNext(ac -> cache = ac)
+                return getNew.apply(request).doOnNext(ac -> cache = ac)
                         .doOnNext(sink::next)
                         .doOnError(sink::error)
                         .doOnTerminate(() -> wip.set(false));
