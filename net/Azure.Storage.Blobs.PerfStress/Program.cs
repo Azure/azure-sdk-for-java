@@ -1,12 +1,13 @@
 ﻿using Azure.Test.PerfStress;
+using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            PerfStressProgram.Main(typeof(Program).Assembly, args);
+            await PerfStressProgram.Main(typeof(Program).Assembly, args);
         }
     }
 }

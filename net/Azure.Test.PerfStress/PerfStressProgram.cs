@@ -17,21 +17,24 @@ namespace Azure.Test.PerfStress
         private static int _completedOperations;
         private static TimeSpan[] _lastCompletionTimes;
 
-        public static void Main(Assembly assembly, string[] args)
+        public static async Task Main(Assembly assembly, string[] args)
         {
             var testTypes = assembly.ExportedTypes.Where(t => typeof(IPerfStressTest).IsAssignableFrom(t) && !t.IsAbstract);
 
             var optionTypes = GetOptionTypes(testTypes);
 
-            var result = Parser.Default.ParseArguments(args, optionTypes).WithParsed<PerfStressOptions>(o =>
-            {
-                var verbName = o.GetType().GetCustomAttribute<VerbAttribute>().Name;
-                var testType = testTypes.Where(t => GetVerbName(t.Name) == verbName).Single();
-                Run(testType, o);
-            });
+            await Parser.Default.ParseArguments(args, optionTypes).MapResult<PerfStressOptions, Task>(
+                async o =>
+                {
+                    var verbName = o.GetType().GetCustomAttribute<VerbAttribute>().Name;
+                    var testType = testTypes.Where(t => GetVerbName(t.Name) == verbName).Single();
+                    await Run(testType, o);
+                },
+                errors => Task.CompletedTask
+            );
         }
 
-        private static void Run(Type testType, PerfStressOptions options)
+        private static async Task Run(Type testType, PerfStressOptions options)
         {
             if (!GCSettings.IsServerGC)
             {
@@ -73,12 +76,11 @@ namespace Azure.Test.PerfStress
                 else
                 {
                     var tasks = new Task[options.Parallel];
-
                     for (var i = 0; i < options.Parallel; i++)
                     {
                         tasks[i] = RunLoopAsync(test, cancellationToken);
                     }
-                    Task.WhenAll(tasks).Wait();
+                    await Task.WhenAll(tasks);
                 }
 
                 var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();
@@ -120,8 +122,13 @@ namespace Azure.Test.PerfStress
                     var count = Interlocked.Increment(ref _completedOperations);
                     _lastCompletionTimes[count % _lastCompletionTimes.Length] = sw.Elapsed;
                 }
-                catch (OperationCanceledException)
+                catch (Exception e)
                 {
+                    // Ignore if any part of the exception chain is type OperationCanceledException
+                    if (!ContainsOperationCanceledException(e))
+                    {
+                        throw;
+                    }
                 }
             }
         }
@@ -143,6 +150,22 @@ namespace Azure.Test.PerfStress
             }
 
             Console.WriteLine();
+        }
+
+        private static bool ContainsOperationCanceledException(Exception e)
+        {
+            if (e is OperationCanceledException)
+            {
+                return true;
+            }
+            else if (e.InnerException != null)
+            {
+                return ContainsOperationCanceledException(e.InnerException);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // Dynamically create option types with a "Verb" attribute
