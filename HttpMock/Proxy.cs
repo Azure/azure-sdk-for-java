@@ -12,6 +12,15 @@ namespace HttpMock
     {
         private static readonly HttpClient _httpClient = new HttpClient();
 
+        private static readonly string[] _excludedRequestHeaders = new string[] {
+            // Only applies to request between client and proxy
+            "Proxy-Connection",
+
+            // Only allowed to be set on HttpContent (not HttpRequestMessage).  However, StreamContent appears to set
+            // this automatically based on the content stream, so it seems fine to just exclude.
+            "Content-Length"
+        };
+
         public static async Task<UpstreamResponse> SendUpstreamRequest(HttpRequest request)
         {
             var upstreamUriBuilder = new UriBuilder()
@@ -31,7 +40,7 @@ namespace HttpMock
 
             using (var upstreamRequest = new HttpRequestMessage(new HttpMethod(request.Method), upstreamUri))
             {
-                foreach (var header in request.Headers.Where(h => h.Key != "Proxy-Connection"))
+                foreach (var header in request.Headers.Where(h => !_excludedRequestHeaders.Contains(h.Key)))
                 {
                     upstreamRequest.Headers.Add(header.Key, values: header.Value);
                 }
