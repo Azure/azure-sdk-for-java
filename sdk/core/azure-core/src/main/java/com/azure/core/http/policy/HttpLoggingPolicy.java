@@ -180,7 +180,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 logger.info("<-- {} {} ({} ms, {} body)", response.getStatusCode(), url, tookMs, bodySize);
             }
 
-            formatAllowableHeaders(httpLogOptions.getAllowedHeaderNames(), response.getHeaders(), logger);
+            if (httpLogLevel.shouldLogHeaders()) {
+                formatAllowableHeaders(httpLogOptions.getAllowedHeaderNames(), response.getHeaders(), logger);
+            }
 
             if (httpLogLevel.shouldLogBody()) {
                 long contentLength = getContentLength(response.getHeaders());
