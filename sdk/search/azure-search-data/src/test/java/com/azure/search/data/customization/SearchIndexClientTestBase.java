@@ -22,6 +22,8 @@ import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
@@ -40,14 +42,29 @@ public class SearchIndexClientTestBase extends TestBase {
 
     protected String searchServiceName;
     protected String apiKey;
-    protected String indexName;
     protected SearchIndexService searchServiceHotelsIndex;
 
-    private AzureSearchResources azureSearchResources;
+    private static AzureSearchResources azureSearchResources;
     private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
 
     @Rule
     public TestName testName = new TestName();
+
+    @BeforeClass
+    public static void beforeClass() {
+        initializeAzureResources();
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        azureSearchResources.deleteResourceGroup();
+    }
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+        azureSearchResources.deleteService();
+    }
 
     @Override
     public String testName() {
@@ -103,7 +120,10 @@ public class SearchIndexClientTestBase extends TestBase {
 
     protected SearchIndexClientBuilder builderSetup() {
         if (!interceptorManager.isPlaybackMode()) {
-            createAzureTestEnvironment();
+            azureSearchResources.initialize();
+            azureSearchResources.createResourceGroup();
+            azureSearchResources.createService();
+            String indexName = createSearchServiceIndex();
 
             return new SearchIndexClientBuilder()
                 .serviceName(searchServiceName)
@@ -126,13 +146,7 @@ public class SearchIndexClientTestBase extends TestBase {
         }
     }
 
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-        deleteAzureTestEnvironment();
-    }
-
-    private void createAzureTestEnvironment() {
+    private static void initializeAzureResources() {
         String appId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_CLIENT_ID);
         String azureDomainId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TENANT_ID);
         String secret = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_CLIENT_SECRET);
@@ -144,12 +158,13 @@ public class SearchIndexClientTestBase extends TestBase {
             secret,
             AzureEnvironment.AZURE);
 
-        azureSearchResources = new AzureSearchResources(
-            applicationTokenCredentials, subscriptionId, Region.US_EAST);
-        azureSearchResources.initialize();
+        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
+    }
 
+    private String createSearchServiceIndex() {
         searchServiceName = azureSearchResources.getSearchServiceName();
         apiKey = azureSearchResources.getSearchAdminKey();
+        String indexName = null;
 
         try {
             //Creating Index:
@@ -160,12 +175,7 @@ public class SearchIndexClientTestBase extends TestBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void deleteAzureTestEnvironment() {
-        if (azureSearchResources != null) {
-            azureSearchResources.cleanup();
-        }
+        return indexName;
     }
 
     protected void waitForIndexing() {

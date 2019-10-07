@@ -102,7 +102,7 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
 
     @Override
     public Long countDocuments() {
-        Mono<Long> result = asyncClient.countDocuments();
+        Mono<Long> result = asyncClient.getDocumentCount();
         return blockWithOptionalTimeout(result, null);
     }
 

@@ -143,7 +143,7 @@ public interface SearchIndexAsyncClient {
      *
      * @return the number of documents
      */
-    Mono<Long> countDocuments();
+    Mono<Long> getDocumentCount();
 
     /**
      * Searches for documents in the Azure Search index.
