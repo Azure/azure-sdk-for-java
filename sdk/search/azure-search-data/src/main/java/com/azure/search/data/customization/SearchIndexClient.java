@@ -5,8 +5,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.generated.models.AutocompleteItem;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.DocumentIndexResult;
@@ -22,97 +20,173 @@ import java.time.Duration;
 
 import java.util.List;
 
-public class SearchIndexClientImpl extends SearchIndexBaseClient implements SearchIndexClient {
+public class SearchIndexClient {
 
-    private final SearchIndexAsyncClientImpl asyncClient;
+    private final SearchIndexAsyncClient asyncClient;
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      * @param searchIndexAsyncClient Async SearchIndex Client
      */
-    public SearchIndexClientImpl(SearchIndexAsyncClient searchIndexAsyncClient) {
-        this.asyncClient = (SearchIndexAsyncClientImpl) searchIndexAsyncClient;
+    public SearchIndexClient(SearchIndexAsyncClient searchIndexAsyncClient) {
+        this.asyncClient = searchIndexAsyncClient;
     }
 
-    @Override
+    /**
+     * Gets the name of the Azure Search index.
+     *
+     * @return the indexName value.
+     */
     public String getIndexName() {
         return asyncClient.getIndexName();
     }
 
-    @Override
+    /**
+     * Uploads a document to the target index.
+     *
+     * @param document the document to upload to the target Index
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> DocumentIndexResult uploadDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().upload(document).build());
     }
 
-    @Override
+    /**
+     * Uploads a collection of documents to the target index
+     *
+     * @param documents collection of documents to upload to the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
     public <T> DocumentIndexResult uploadDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().upload(documents).build());
     }
 
-    @Override
+    /**
+     * Merges a document with an existing document in the target index.
+     *
+     * @param document the document to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> DocumentIndexResult mergeDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().merge(document).build());
     }
 
-    @Override
+    /**
+     * Merges a collection of documents with existing documents in the target index.
+     *
+     * @param documents collection of documents to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> DocumentIndexResult mergeDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().merge(documents).build());
     }
 
-    @Override
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param document the document to be merged, if exists, otherwise uploaded as a new document
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> DocumentIndexResult mergeOrUploadDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().mergeOrUpload(document).build());
     }
 
-    @Override
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> DocumentIndexResult mergeOrUploadDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().mergeOrUpload(documents).build());
     }
 
-    @Override
+    /**
+     * Deletes a document from the target index.
+     * Note that any field you specify in a delete operation, other than the key field, will be ignored.
+     *
+     * @param document the document to delete from the target Index
+     * @param <T> The type of object to serialize
+     * @return document index result
+     */
     public <T> DocumentIndexResult deleteDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().delete(document).build());
     }
 
-    @Override
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
     public <T> DocumentIndexResult deleteDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().delete(documents).build());
     }
 
-    @Override
+    /**
+     * Gets Client Api Version.
+     *
+     * @return the apiVersion value.
+     */
     public String getApiVersion() {
         return asyncClient.getApiVersion();
     }
 
-    @Override
+    /**
+     * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     *
+     * @return the searchDnsSuffix value.
+     */
     public String getSearchDnsSuffix() {
         return asyncClient.getSearchDnsSuffix();
     }
 
-    @Override
+    /**
+     * Gets The name of the Azure Search service.
+     *
+     * @return the searchServiceName value.
+     */
     public String getSearchServiceName() {
         return asyncClient.getSearchServiceName();
     }
 
-    @Override
-    public SearchIndexClientImpl setIndexName(String indexName) {
-        asyncClient.setIndexName(indexName);
-        return this;
-    }
-
-    @Override
+    /**
+     * Gets the number of documents
+     *
+     * @return the number of documents.
+     */
     public Long countDocuments() {
         Mono<Long> result = asyncClient.getDocumentCount();
         return blockWithOptionalTimeout(result, null);
     }
 
-    @Override
+    /**
+     * Searches for documents in the Azure Search index
+     *
+     * @return A {@link PagedIterable} of SearchResults
+     */
     public PagedIterable<SearchResult> search() {
         PagedFlux<SearchResult> result = asyncClient.search();
         return new PagedIterable<>(result);
     }
 
-    @Override
+    /**
+     * Searches for documents in the Azure Search index
+     *
+     * @param searchText Search Test
+     * @param searchParameters Search Parameters
+     * @param searchRequestOptions Search Request Options
+     * @return A {@link PagedIterable} of SearchResults
+     */
     public PagedIterable<SearchResult> search(String searchText,
                                               SearchParameters searchParameters,
                                               SearchRequestOptions searchRequestOptions) {
@@ -120,25 +194,51 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
         return new PagedIterable<>(result);
     }
 
-    @Override
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key the name of the document
+     * @return document object
+     */
     public Document getDocument(String key) {
         Mono<Document> results = asyncClient.getDocument(key);
         return blockWithOptionalTimeout(results, null);
     }
 
-    @Override
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key document key
+     * @param selectedFields selected fields to return
+     * @param searchRequestOptions search request options
+     * @return document object
+     */
     public Document getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
         Mono<Document> results = asyncClient.getDocument(key, selectedFields, searchRequestOptions);
         return blockWithOptionalTimeout(results, null);
     }
 
-    @Override
+    /**
+     * Suggests documents in the Azure Search index that match the given partial query text.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @return suggests result
+     */
     public PagedIterable<SuggestResult> suggest(String searchText, String suggesterName) {
         PagedFlux<SuggestResult> result = asyncClient.suggest(searchText, suggesterName);
         return new PagedIterable<>(result);
     }
 
-    @Override
+    /**
+     * Suggests documents in the Azure Search index that match the given partial query text.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param suggestParameters suggest parameters
+     * @param searchRequestOptions search request options
+     * @return suggests results
+     */
     public PagedIterable<SuggestResult> suggest(String searchText,
                                                 String suggesterName,
                                                 SuggestParameters suggestParameters,
@@ -150,19 +250,39 @@ public class SearchIndexClientImpl extends SearchIndexBaseClient implements Sear
         return new PagedIterable<>(result);
     }
 
-    @Override
+    /**
+     * Sends a batch of document write to the Azure Search index.
+     *
+     * @param batch batch of documents to send to the index with the requested action
+     * @param <T> The type of document to be indexed
+     * @return document index result
+     */
     public <T> DocumentIndexResult index(IndexBatch<T> batch) {
         Mono<DocumentIndexResult> results = asyncClient.index(batch);
         return blockWithOptionalTimeout(results, null);
     }
 
-    @Override
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @return auto complete result
+     */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
         PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText, suggesterName, null, null);
         return new PagedIterable<>(result);
     }
 
-    @Override
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param searchRequestOptions search request options
+     * @param autocompleteParameters auto complete parameters
+     * @return auto complete result
+     */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
                                                         SearchRequestOptions searchRequestOptions,

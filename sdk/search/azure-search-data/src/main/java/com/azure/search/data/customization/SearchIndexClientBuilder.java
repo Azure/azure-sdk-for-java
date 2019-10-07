@@ -8,8 +8,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchApiKeyPipelinePolicy;
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +17,7 @@ import java.util.List;
 
 /**
  * Fluent SearchIndexClientBuilder
- * for instantiating a {@link SearchIndexClientImpl} or a {@link SearchIndexAsyncClientImpl}
+ * for instantiating a {@link SearchIndexClient} or a {@link SearchIndexAsyncClient}
  * using {@link SearchIndexClientBuilder#buildClient()} or {@link SearchIndexClientBuilder#buildAsyncClient()}
  *
  * <p>
@@ -34,10 +32,9 @@ import java.util.List;
  *
  * <p>
  * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link SearchIndexClientImpl} or {@code .buildAsyncClient()} to create a
- *  * {@link SearchIndexAsyncClientImpl}
+ * {@link SearchIndexClient} or {@code .buildAsyncClient()} to create a {@link SearchIndexAsyncClient}
  */
-@ServiceClientBuilder(serviceClients = SearchIndexClientImpl.class)
+@ServiceClientBuilder(serviceClients = { SearchIndexClient.class, SearchIndexAsyncClient.class})
 public class SearchIndexClientBuilder {
 
     private ApiKeyCredentials apiKeyCredentials;
@@ -144,7 +141,7 @@ public class SearchIndexClientBuilder {
      * @return a {@link SearchIndexClient} created from the configurations in this builder.
      */
     public SearchIndexClient buildClient() {
-        return new SearchIndexClientImpl(buildAsyncClient());
+        return new SearchIndexClient(buildAsyncClient());
     }
 
     /**
@@ -155,7 +152,7 @@ public class SearchIndexClientBuilder {
             this.policies.add(new SearchApiKeyPipelinePolicy(apiKeyCredentials));
         }
 
-        return new SearchIndexAsyncClientImpl(serviceName,
+        return new SearchIndexAsyncClient(serviceName,
             searchDnsSuffix,
             indexName,
             apiVersion,

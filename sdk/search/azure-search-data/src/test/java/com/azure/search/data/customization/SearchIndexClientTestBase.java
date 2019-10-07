@@ -11,8 +11,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
@@ -23,11 +21,13 @@ import com.azure.search.test.environment.setup.AzureSearchResources;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import org.junit.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -42,7 +42,7 @@ public class SearchIndexClientTestBase extends TestBase {
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     protected String searchServiceName;
-    protected String indexName;
+    protected String searchAdminKey;
     protected ApiKeyCredentials apiKeyCredentials;
     protected SearchIndexService searchServiceHotelsIndex;
 
@@ -63,6 +63,18 @@ public class SearchIndexClientTestBase extends TestBase {
     }
 
     @Override
+    protected void beforeTest() {
+        if (!interceptorManager.isPlaybackMode()) {
+            azureSearchResources.initialize();
+            azureSearchResources.createResourceGroup();
+            azureSearchResources.createService();
+
+            searchServiceName = azureSearchResources.getSearchServiceName();
+            searchAdminKey = azureSearchResources.getSearchAdminKey();
+        }
+    }
+
+    @Override
     protected void afterTest() {
         super.afterTest();
         azureSearchResources.deleteService();
@@ -73,60 +85,51 @@ public class SearchIndexClientTestBase extends TestBase {
         return testName.getMethodName();
     }
 
-    protected <T> void uploadDocuments(SearchIndexClient client, String indexName, List<T> uploadDoc) {
-        client.setIndexName(indexName)
-            .uploadDocuments(uploadDoc);
+    protected <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
+        client.uploadDocuments(uploadDoc);
         waitForIndexing();
     }
 
-    protected <T> void uploadDocuments(SearchIndexAsyncClient client, String indexName, List<T> uploadDoc) {
-        client.setIndexName(indexName)
-            .uploadDocuments(uploadDoc)
+    protected <T> void uploadDocuments(SearchIndexAsyncClient client, List<T> uploadDoc) {
+        client.uploadDocuments(uploadDoc)
             .block();
         waitForIndexing();
     }
 
-    protected <T> void uploadDocument(SearchIndexClient client, String indexName, T uploadDoc) {
-        client.setIndexName(indexName)
-            .uploadDocument(uploadDoc);
+    protected <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
+        client.uploadDocument(uploadDoc);
         waitForIndexing();
     }
 
-    protected <T> void uploadDocument(SearchIndexAsyncClient client, String indexName, T uploadDoc) {
-        client.setIndexName(indexName)
-            .uploadDocument(uploadDoc)
+    protected <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
+        client.uploadDocument(uploadDoc)
             .block();
         waitForIndexing();
     }
 
     protected List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexAsyncClient client, String indexName, String dataJson) {
+        SearchIndexAsyncClient client, String dataJson) {
         List<Map<String, Object>> documents =
             jsonApi.readJsonFileToList(dataJson, new Type<List<Map<String, Object>>>() {
             });
 
-        uploadDocuments(client, indexName, documents);
+        uploadDocuments(client, documents);
         return documents;
     }
 
     protected List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexClient client, String indexName, String dataJson) {
+        SearchIndexClient client, String dataJson) {
         List<Map<String, Object>> documents =
             jsonApi.readJsonFileToList(dataJson, new Type<List<Map<String, Object>>>() {
             });
 
-        uploadDocuments(client, indexName, documents);
+        uploadDocuments(client, documents);
 
         return documents;
     }
 
-    protected SearchIndexClientBuilder builderSetup() {
+    protected SearchIndexClientBuilder getClientBuilder(String indexName) {
         if (!interceptorManager.isPlaybackMode()) {
-            azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup();
-            azureSearchResources.createService();
-            String indexName = createSearchServiceIndex();
-
             return new SearchIndexClientBuilder()
                 .serviceName(searchServiceName)
                 .searchDnsSuffix("search.windows.net")
@@ -141,8 +144,35 @@ public class SearchIndexClientTestBase extends TestBase {
             return new SearchIndexClientBuilder()
                 .serviceName("searchServiceName")
                 .searchDnsSuffix("search.windows.net")
+                .indexName(indexName)
                 .apiVersion("2019-05-06")
                 .httpClient(interceptorManager.getPlaybackClient());
+        }
+    }
+
+    protected void createHotelIndex() {
+        if (!interceptorManager.isPlaybackMode()) {
+            try {
+                //Creating Index:
+                searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, searchAdminKey);
+                searchServiceHotelsIndex.initialize();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void setupIndexFromJsonFile(String jsonFile) {
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                jsonFile, searchServiceName, searchAdminKey);
+            try {
+                searchIndexService.initialize();
+            } catch (IOException e) {
+                Assert.fail(e.getMessage());
+            }
         }
     }
 
@@ -159,24 +189,6 @@ public class SearchIndexClientTestBase extends TestBase {
             AzureEnvironment.AZURE);
 
         azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
-    }
-
-    private String createSearchServiceIndex() {
-        searchServiceName = azureSearchResources.getSearchServiceName();
-        apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
-        String indexName = null;
-
-        try {
-            //Creating Index:
-            searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName,
-                apiKeyCredentials.getApiKey());
-            searchServiceHotelsIndex.initialize();
-            indexName = searchServiceHotelsIndex.indexName();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return indexName;
     }
 
     protected void waitForIndexing() {

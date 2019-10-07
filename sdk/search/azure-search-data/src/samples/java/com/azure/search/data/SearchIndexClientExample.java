@@ -4,6 +4,7 @@
 package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.data.customization.SearchIndexAsyncClient;
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.SearchResult;

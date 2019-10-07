@@ -7,11 +7,8 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
-import com.azure.search.test.environment.setup.SearchIndexService;
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,13 +22,13 @@ import static java.lang.Double.POSITIVE_INFINITY;
 public abstract class LookupTestBase extends SearchIndexClientTestBase {
 
     static final String INDEX_NAME = "hotels";
-    static final String MODEL_WITH_VALUE_TYPES_INDEX_NAME = "data-types-tests-index";
-    private static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
+
+    protected static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
+    protected static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        initializeClient();
     }
 
     Hotel prepareExpectedHotel() throws ParseException {
@@ -100,17 +97,6 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
     }
 
     ModelWithPrimitiveCollections preparePrimitivesModel() throws ParseException {
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
-            try {
-                searchIndexService.initialize();
-            } catch (IOException e) {
-                Assert.fail(e.getMessage());
-            }
-        }
-
         return new ModelWithPrimitiveCollections()
             .key("1")
             .bools(new Boolean[]{true, false})
@@ -156,6 +142,4 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException;
-
-    protected abstract void initializeClient();
 }

@@ -4,7 +4,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -32,7 +31,8 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        asyncClient = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
+        createHotelIndex();
+        asyncClient = getClientBuilder(INDEX_NAME).buildAsyncClient();
     }
 
     @Test
@@ -107,7 +107,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             "Location",
             jsonApi.convertObjectToType(GeoPoint.create(40.760586, -73.975403), Map.class));
 
-        uploadDocument(asyncClient, INDEX_NAME, expectedDoc);
+        uploadDocument(asyncClient, expectedDoc);
 
         Mono<Document> futureDoc = asyncClient.getDocument("1");
 
@@ -136,7 +136,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         selectedFields.add("HotelId");
         selectedFields.add("ThisFieldDoesNotExist");
 
-        uploadDocument(asyncClient, INDEX_NAME, hotelDoc);
+        uploadDocument(asyncClient, hotelDoc);
 
         Mono futureDoc = asyncClient.getDocument("2", selectedFields, null);
 

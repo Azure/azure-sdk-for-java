@@ -1,46 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-      "Uri": "https://azs-sdkef375539f19e.search.windows.net/indexes('non-nullable-index')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0f040876c116.search.windows.net/indexes('non-nullable-index')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "660be187-84bf-4533-a4a3-e38d47a3c7a0",
+      "request-id" : "7c9d6b5b-99af-4492-a626-387468aac3ac",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:23:27 GMT",
+      "Date" : "Fri, 04 Oct 2019 04:55:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "115",
+      "elapsed-time" : "112",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "306",
-        "Body": "{\"@odata.context\":\"https://azs-sdkef375539f19e.search.windows.net/indexes('non-nullable-index')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk0f040876c116.search.windows.net/indexes('non-nullable-index')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"456\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
       "Exception": null
   }, {
     "Method" : "POST",
-      "Uri": "https://azs-sdkef375539f19e.search.windows.net/indexes('non-nullable-index')/docs/search.post.search?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk0f040876c116.search.windows.net/indexes('non-nullable-index')/docs/search.post.search?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "9c3b97e7-d844-40c7-b829-58772d947f41",
+      "request-id" : "f148371e-265c-4695-90a5-e5faf73d83bf",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:23:29 GMT",
+      "Date" : "Fri, 04 Oct 2019 04:55:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "20",
+      "elapsed-time" : "18",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "548",
-        "Body": "{\"@odata.context\":\"https://azs-sdkef375539f19e.search.windows.net/indexes('non-nullable-index')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"Rating\":5,\"Count\":3,\"IsEnabled\":true,\"Ratio\":3.14,\"StartDate\":\"2010-06-01T00:00:00Z\",\"EndDate\":\"2010-06-15T00:00:00Z\",\"TopLevelBucket\":{\"BucketName\":\"A\",\"Count\":12},\"Buckets\":[{\"BucketName\":\"B\",\"Count\":20},{\"BucketName\":\"C\",\"Count\":7}]},{\"@search.score\":1.0,\"Key\":\"456\",\"Rating\":0,\"Count\":0,\"IsEnabled\":false,\"Ratio\":0.0,\"StartDate\":null,\"EndDate\":null,\"TopLevelBucket\":null,\"Buckets\":[]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk0f040876c116.search.windows.net/indexes('non-nullable-index')/$metadata#docs(*)\",\"value\":[{\"@search.score\":1.0,\"Key\":\"123\",\"Rating\":5,\"Count\":3,\"IsEnabled\":true,\"Ratio\":3.14,\"StartDate\":\"2010-06-01T00:00:00Z\",\"EndDate\":\"2010-06-15T00:00:00Z\",\"TopLevelBucket\":{\"BucketName\":\"A\",\"Count\":12},\"Buckets\":[{\"BucketName\":\"B\",\"Count\":20},{\"BucketName\":\"C\",\"Count\":7}]},{\"@search.score\":1.0,\"Key\":\"456\",\"Rating\":0,\"Count\":0,\"IsEnabled\":false,\"Ratio\":0.0,\"StartDate\":null,\"EndDate\":null,\"TopLevelBucket\":null,\"Buckets\":[]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

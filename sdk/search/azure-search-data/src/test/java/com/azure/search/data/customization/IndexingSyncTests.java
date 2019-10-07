@@ -3,7 +3,6 @@
 package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexBatch;
@@ -16,14 +15,11 @@ import com.azure.search.test.environment.models.LoudHotel;
 import com.azure.search.service.models.DataType;
 import com.azure.search.service.models.Field;
 import com.azure.search.service.models.Index;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +41,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void countingDocsOfNewIndexGivesZero() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         Long actual = client.countDocuments();
         Long expected = 0L;
 
@@ -53,6 +52,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void indexDoesNotThrowWhenAllActionsSucceed() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
 
@@ -67,6 +69,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canIndexWithPascalCaseFields() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         String expectedHotelId = "1";
         Long expectedHotelCount = 1L;
 
@@ -85,6 +90,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canDeleteBatchByKeys() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         client.uploadDocuments(Arrays.asList(
             new Hotel().hotelId("1"),
             new Hotel().hotelId("2")
@@ -108,6 +116,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Hotel document = new Hotel().hotelId("1").category("Luxury");
 
         client.uploadDocuments(Arrays.asList(document));
@@ -125,6 +136,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         Document document = new Document();
         document.put("HotelId", "1");
         document.put("Category", "Luxury");
@@ -143,6 +157,9 @@ public class IndexingSyncTests extends IndexingTestBase {
     }
 
     public void canIndexStaticallyTypedDocuments() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         Hotel hotel1 = prepareStaticallyTypedHotel("1");
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
         Hotel hotel3 = prepareStaticallyTypedHotel("3");
@@ -186,6 +203,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canIndexDynamicDocuments() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         Document hotel1 = prepareDynamicallyTypedHotel("1");
         Document hotel2 = prepareDynamicallyTypedHotel("2");
         Document hotel3 = prepareDynamicallyTypedHotel("3");
@@ -228,6 +248,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void indexWithInvalidDocumentThrowsException() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("The request is invalid. Details: actions : 0: Document key cannot be missing or empty.");
 
@@ -237,18 +260,21 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canUseIndexWithReservedName() {
+        String indexName = "prototype";
         Index indexWithReservedName = new Index()
-            .withName("prototype")
+            .withName(indexName)
             .withFields(Collections.singletonList(new Field().withName("ID").withType(DataType.EDM_STRING).withKey(Boolean.TRUE)));
 
         if (!interceptorManager.isPlaybackMode()) {
             getSearchServiceClient().indexes().create(indexWithReservedName);
         }
+
+        client = getClientBuilder(indexName).buildClient();
+
         Map<String, Object> indexData = new HashMap<>();
         indexData.put("ID", "1");
 
-        client.setIndexName(indexWithReservedName.name())
-            .uploadDocument(indexData);
+        client.uploadDocument(indexData);
 
         Document actual = client.getDocument("1");
         Assert.assertNotNull(actual);
@@ -256,6 +282,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canRoundtripBoundaryValues() throws Exception {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
         client.uploadDocuments(boundaryConditionDocs);
@@ -271,6 +300,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void dynamicDocumentDateTimesRoundTripAsUtc() throws Exception {
+        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
+        client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        
         // Book 1's publish date is in UTC format, and book 2's is unspecified.
         List<HashMap<String, Object>> books = Arrays.asList(
             new HashMap<String, Object>() {
@@ -287,16 +319,8 @@ public class IndexingSyncTests extends IndexingTestBase {
             }
         );
 
-        // Create 'books' index
-        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(BOOKS_INDEX_JSON));
-        Index index = new ObjectMapper().readValue(indexData, Index.class);
-        if (!interceptorManager.isPlaybackMode()) {
-            getSearchServiceClient().indexes().create(index);
-        }
-
         // Upload and retrieve book documents
-        client.setIndexName(BOOKS_INDEX_NAME)
-            .uploadDocuments(books);
+        client.uploadDocuments(books);
         waitForIndexing();
 
         Document actualBook1 = client.getDocument(ISBN1);
@@ -309,6 +333,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void staticallyTypedDateTimesRoundTripAsUtc() throws Exception {
+        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
+        client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        
         // Book 1's publish date is in UTC format, and book 2's is unspecified.
         DateFormat dateFormatUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         DateFormat dateFormatUnspecifiedTimezone = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -321,16 +348,8 @@ public class IndexingSyncTests extends IndexingTestBase {
                 .publishDate(dateFormatUnspecifiedTimezone.parse("2010-06-27 00:00:00"))
         );
 
-        // Create 'books' index
-        Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(BOOKS_INDEX_JSON));
-        Index index = new ObjectMapper().readValue(indexData, Index.class);
-        if (!interceptorManager.isPlaybackMode()) {
-            getSearchServiceClient().indexes().create(index);
-        }
-
         // Upload and retrieve book documents
-        client.setIndexName(BOOKS_INDEX_NAME)
-            .uploadDocuments(books);
+        client.uploadDocuments(books);
         Document actualBook1 = client.getDocument(ISBN1);
         Document actualBook2 = client.getDocument(ISBN2);
 
@@ -341,6 +360,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canMergeStaticallyTypedDocuments() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         // Define commonly used values
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         String hotelId = "1";
@@ -446,6 +468,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws Exception {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         Hotel hotel = prepareStaticallyTypedHotel("1");
 
         try {
@@ -463,6 +488,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         LoudHotel originalDoc = new LoudHotel()
@@ -575,6 +603,9 @@ public class IndexingSyncTests extends IndexingTestBase {
 
     @Override
     public void canMergeDynamicDocuments() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+        
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -716,10 +747,5 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         actualDoc = client.getDocument("1");
         Assert.assertEquals(originalDoc, actualDoc);
-    }
-
-    @Override
-    protected void initializeClient() {
-        client = builderSetup().indexName(INDEX_NAME).buildClient();
     }
 }

@@ -5,22 +5,20 @@ package com.azure.search.data.customization.models;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.SearchPagedResponse;
 
+import com.azure.search.data.customization.SearchIndexClient;
 import com.azure.search.data.customization.SearchIndexClientTestBase;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.data.generated.models.SearchResult;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -41,18 +39,6 @@ public class GeoPointTests extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = builderSetup().indexName(INDEX_NAME_HOTELS).buildClient();
-
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                INDEX_JSON_GEO_POINTS, searchServiceName, apiKeyCredentials.getApiKey());
-            try {
-                searchIndexService.initialize();
-            } catch (IOException e) {
-                Assert.fail("Unable to create geopoints index: " + e.getMessage());
-            }
-        }
     }
 
     private List<Map<String, Object>> uploadDocuments() throws Exception {
@@ -69,6 +55,9 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canDeserializeGeoPoint() throws Exception {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME_HOTELS).buildClient();
+
         uploadDocuments();
         SearchParameters searchParameters = new SearchParameters().filter("HotelId eq '1'");
         PagedIterable<SearchResult> results = client.search("Location", searchParameters, new SearchRequestOptions());
@@ -89,8 +78,11 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSerializeGeoPoint() {
+        setupIndexFromJsonFile(INDEX_JSON_GEO_POINTS);
+        client = getClientBuilder(INDEX_NAME_GEO_POINTS).buildClient();
+
         Map<String, Object> indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(1.0, 100.0));
-        DocumentIndexResult indexResult = client.setIndexName(INDEX_NAME_GEO_POINTS).uploadDocument(indexObjectMap);
+        DocumentIndexResult indexResult = client.uploadDocument(indexObjectMap);
         Assert.assertNotNull(indexResult);
         Assert.assertTrue(indexResult.results().get(0).succeeded());
     }

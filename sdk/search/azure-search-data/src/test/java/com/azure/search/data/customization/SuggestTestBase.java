@@ -10,12 +10,10 @@ import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.generated.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -33,20 +31,7 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        initializeClient();
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                BOOKS_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
-            try {
-                searchIndexService.initialize();
-            } catch (IOException e) {
-                Assert.fail("Unable to create books index: " + e.getMessage());
-            }
-        }
     }
-
-    protected abstract void initializeClient();
 
     protected void verifyFuzzySuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
@@ -114,14 +99,14 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
 
     protected void verifyTopDocumentSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
-        Assert.assertEquals(3, suggestResultPagedResponse.value().size());
+        Assert.assertEquals(2, suggestResultPagedResponse.value().size());
         List<String> resultIds = suggestResultPagedResponse
             .value()
             .stream()
             .map(hotel -> hotel.additionalProperties().as(Hotel.class).hotelId())
             .collect(Collectors.toList());
 
-        Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
+        Assert.assertEquals(Arrays.asList("10", "8"), resultIds);
     }
 
     protected void verifyCanSuggestWithDateTimeInStaticModel(PagedResponse<SuggestResult> suggestResultPagedResponse) {

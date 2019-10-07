@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.data.customization;
 
-import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -12,12 +11,10 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,13 +29,14 @@ import static java.lang.Double.POSITIVE_INFINITY;
 
 public class LookupAsyncTests extends LookupTestBase {
     private SearchIndexAsyncClient client;
-    private static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
-    private static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
     @Override
     public void canGetStaticallyTypedDocument() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Hotel expected = prepareExpectedHotel();
-        uploadDocument(client, INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
 
@@ -49,8 +47,11 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Hotel expected = prepareEmptyHotel();
-        uploadDocument(client, INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
 
@@ -61,8 +62,11 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Hotel expected = preparePascalCaseFieldsHotel();
-        uploadDocument(client, INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Mono<Document> result = client.getDocument(expected.hotelId());
 
@@ -73,8 +77,11 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void canRoundtripStaticallyTypedPrimitiveCollections() throws ParseException {
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
+        
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
-        uploadDocument(client, MODEL_WITH_VALUE_TYPES_INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Mono<Document> result = client.getDocument(expected.key);
 
@@ -85,6 +92,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Hotel indexedDoc = prepareSelectedFieldsHotel();
 
         Hotel expected = new Hotel()
@@ -95,7 +105,7 @@ public class LookupAsyncTests extends LookupTestBase {
             .address(new HotelAddress().city("Durham"))
             .rooms(Arrays.asList(new HotelRoom().baseRate(2.44), new HotelRoom().baseRate(7.69)));
 
-        uploadDocument(client, INDEX_NAME, indexedDoc);
+        uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Mono<Document> result = client.getDocument(indexedDoc.hotelId(), selectedFields, new SearchRequestOptions());
@@ -107,6 +117,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Document expectedDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -131,7 +144,7 @@ public class LookupAsyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, expectedDoc);
+        uploadDocument(client, expectedDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
@@ -143,6 +156,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -165,7 +181,7 @@ public class LookupAsyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
@@ -177,6 +193,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
+        
         String docKey = "3";
 
         Document originalDoc = new Document() {
@@ -205,8 +224,7 @@ public class LookupAsyncTests extends LookupTestBase {
             }
         };
 
-        setupIndex();
-        uploadDocument(client, DATA_TYPES_INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
 
         Mono<Document> result = client.getDocument(docKey);
         StepVerifier.create(result)
@@ -216,6 +234,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -266,7 +287,7 @@ public class LookupAsyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
         Mono<Document> result = client.getDocument("1", selectedFields, new SearchRequestOptions());
@@ -277,6 +298,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+        
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -312,7 +336,7 @@ public class LookupAsyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Mono<Document> result = client.getDocument("1", selectedFields, new SearchRequestOptions());
@@ -323,6 +347,9 @@ public class LookupAsyncTests extends LookupTestBase {
 
     @Override
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException {
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildAsyncClient();
+        
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         String docKey = "1";
         String dateTimeString = "2019-08-13T14:30:00Z";
@@ -355,31 +382,11 @@ public class LookupAsyncTests extends LookupTestBase {
             }
         };
 
-        setupIndex();
-        uploadDocument(client, DATA_TYPES_INDEX_NAME, indexedDoc);
+        uploadDocument(client, indexedDoc);
 
         Mono<Document> result = client.getDocument(docKey);
         StepVerifier.create(result)
             .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
-    }
-
-    void setupIndex() {
-        client.setIndexName(DATA_TYPES_INDEX_NAME);
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_DATA_TYPES_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
-            try {
-                searchIndexService.initialize();
-            } catch (IOException e) {
-                Assert.fail(e.getMessage());
-            }
-        }
-    }
-
-    @Override
-    protected void initializeClient() {
-        client = builderSetup().indexName(INDEX_NAME).buildAsyncClient();
     }
 }

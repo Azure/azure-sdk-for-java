@@ -18,7 +18,9 @@ public class SyncTests extends SearchIndexClientTestBase {
     @Override
     void beforeTest() {
         super.beforeTest();
-        asyncClient = builderSetup().indexName("IndexName").buildAsyncClient();
+
+        createHotelIndex();
+        asyncClient = getClientBuilder("hotels").buildAsyncClient();
     }
 
     @Test

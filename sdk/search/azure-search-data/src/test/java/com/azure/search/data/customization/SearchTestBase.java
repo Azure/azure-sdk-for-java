@@ -5,7 +5,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.customization.models.CoordinateSystem;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
@@ -39,10 +38,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String HOTELS_INDEX_NAME = "hotels";
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     private static final String SEARCH_SCORE_FIELD = "@search.score";
-    private static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
+    static final String MODEL_WITH_VALUE_TYPES_INDEX_JSON = "ModelWithValueTypesIndexData.json";
     static final String MODEL_WITH_VALUE_TYPES_DOCS_JSON = "ModelWithValueTypesDocsData.json";
     static final String MODEL_WITH_INDEX_TYPES_INDEX_NAME = "testindex";
-    private static final String NON_NULLABLE_INDEX_JSON = "NonNullableIndexData.json";
+    static final String NON_NULLABLE_INDEX_JSON = "NonNullableIndexData.json";
     static final String NON_NULLABLE_INDEX_NAME = "non-nullable-index";
 
     protected List<Map<String, Object>> hotels;
@@ -53,7 +52,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        initializeClient();
     }
 
     List<Map<String, Object>> createHotelsList(int count) {
@@ -193,24 +191,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             "Tags,sort:value"));
     }
 
-    void createIndexForModelWithValueTypesTest() throws Exception {
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_VALUE_TYPES_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
-            searchIndexService.initialize();
-        }
-    }
-
-    void createIndexForNonNullableTest() throws Exception {
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                NON_NULLABLE_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
-            searchIndexService.initialize();
-        }
-    }
-
     void prepareHotelsSynonymMap(String name, String synonyms, String fieldName) {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
@@ -326,8 +306,4 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     public abstract void canSearchWithSynonyms();
 
     abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
-
-    abstract void initializeClient();
-
-    protected abstract void setIndexName(String indexName);
 }

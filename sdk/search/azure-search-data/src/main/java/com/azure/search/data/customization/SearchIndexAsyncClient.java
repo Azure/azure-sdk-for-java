@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
-import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.AutoCompletePagedResponse;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
@@ -39,7 +38,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 
-public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements SearchIndexAsyncClient {
+public class SearchIndexAsyncClient {
 
     /**
      * The lazily-created serializer for search index client.
@@ -64,7 +63,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     /**
      * The name of the Azure Search index.
      */
-    private String indexName;
+    private final String indexName;
 
     /**
      * The Http Client to be used.
@@ -78,7 +77,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     private Integer skip;
 
-    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClientImpl.class);
+    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
 
 
     /**
@@ -89,7 +88,7 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClientImpl(
+    SearchIndexAsyncClient(
             String searchServiceName, String searchDnsSuffix, String indexName, String apiVersion,
             HttpClient httpClient,
             List<HttpPipelinePolicy> policies) {
@@ -137,79 +136,147 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .build();
     }
 
-    @Override
+    /**
+     * Gets the name of the Azure Search index.
+     *
+     * @return the indexName value.
+     */
     public String getIndexName() {
         return this.indexName;
     }
 
-    @Override
-    public SearchIndexAsyncClientImpl setIndexName(String indexName) {
-        this.indexName = indexName;
-        restClient.setIndexName(indexName);
-        return this;
-    }
-
-    @Override
+    /**
+     * Uploads a document to the target index.
+     *
+     * @param document the document to upload to the target Index
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> uploadDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().upload(document).build());
     }
 
-    @Override
+    /**
+     * Uploads a collection of documents to the target index
+     *
+     * @param documents collection of documents to upload to the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
     public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().upload(documents).build());
     }
 
-    @Override
+    /**
+     * Merges a document with an existing document in the target index.
+     *
+     * @param document the document to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> mergeDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().merge(document).build());
     }
 
-    @Override
+    /**
+     * Merges a collection of documents with existing documents in the target index.
+     *
+     * @param documents collection of documents to be merged
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> mergeDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().merge(documents).build());
     }
 
-    @Override
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param document the document to be merged, if exists, otherwise uploaded as a new document
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> mergeOrUploadDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().mergeOrUpload(document).build());
     }
 
-    @Override
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param <T> the type of object to serialize
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> mergeOrUploadDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().mergeOrUpload(documents).build());
     }
 
-    @Override
+    /**
+     * Deletes a document from the target index.
+     * Note that any field you specify in a delete operation, other than the key field, will be ignored.
+     *
+     * @param document the document to delete from the target Index
+     * @param <T> The type of object to serialize
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> deleteDocument(T document) {
         return this.index(new IndexBatchBuilder<T>().delete(document).build());
     }
 
-    @Override
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @param <T> The type of object to serialize.
+     * @return document index result.
+     */
     public <T> Mono<DocumentIndexResult> deleteDocuments(List<T> documents) {
         return this.index(new IndexBatchBuilder<T>().delete(documents).build());
     }
 
-    @Override
+    /**
+     * Gets Client Api Version.
+     *
+     * @return the apiVersion value.
+     */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    @Override
+    /**
+     * Gets The DNS suffix of the Azure Search service. The default is search.windows.net.
+     *
+     * @return the searchDnsSuffix value.
+     */
     public String getSearchDnsSuffix() {
         return this.searchDnsSuffix;
     }
 
-    @Override
+    /**
+     * Gets The name of the Azure Search service.
+     *
+     * @return the searchServiceName value.
+     */
     public String getSearchServiceName() {
         return this.searchServiceName;
     }
 
-    @Override
+    /**
+     * Gets the number of documents
+     *
+     * @return the number of documents.
+     */
     public Mono<Long> getDocumentCount() {
         return restClient.documents().countAsync();
     }
 
-    @Override
+    /**
+     * Searches for documents in the Azure Search index
+     *
+     * @return A {@link PagedFlux} of SearchResults
+     */
     public PagedFlux<SearchResult> search() {
         SearchRequest searchRequest = new SearchRequest();
         Mono<PagedResponse<SearchResult>> first = restClient.documents()
@@ -222,10 +289,16 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             });
         return new PagedFlux<>(() -> first,
             nextLink -> searchPostNextWithRestResponseAsync(searchRequest, nextLink));
-
     }
 
-    @Override
+    /**
+     * Searches for documents in the Azure Search index
+     *
+     * @param searchText Search Test
+     * @param searchParameters Search Parameters
+     * @param searchRequestOptions Search Request Options
+     * @return A {@link PagedFlux} of SearchResults
+     */
     public PagedFlux<SearchResult> search(String searchText,
                                           SearchParameters searchParameters,
                                           SearchRequestOptions searchRequestOptions) {
@@ -242,7 +315,12 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
     }
 
-    @Override
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key the name of the document
+     * @return document object
+     */
     public Mono<Document> getDocument(String key) {
         return restClient
             .documents()
@@ -253,7 +331,14 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
             .doOnError(e -> logger.error("An error occurred in getDocument(key): " + e.getMessage()));
     }
 
-    @Override
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key document key
+     * @param selectedFields selected fields to return
+     * @param searchRequestOptions search request options
+     * @return document object
+     */
     public Mono<Document> getDocument(
             String key, List<String> selectedFields,
             SearchRequestOptions searchRequestOptions) {
@@ -270,12 +355,26 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
                 + "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
     }
 
-    @Override
+    /**
+     * Suggests documents in the Azure Search index that match the given partial query text.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @return suggests result
+     */
     public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null);
     }
 
-    @Override
+    /**
+     * Suggests documents in the Azure Search index that match the given partial query text.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param suggestParameters suggest parameters
+     * @param searchRequestOptions search request options
+     * @return suggests results
+     */
     public PagedFlux<SuggestResult> suggest(
             String searchText,
             String suggesterName,
@@ -289,7 +388,13 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
 
     }
 
-    @Override
+    /**
+     * Sends a batch of document actions to the Azure Search index.
+     *
+     * @param batch batch of documents to send to the index with the requested action
+     * @param <T> The type of document to be indexed
+     * @return document index result
+     */
     public <T> Mono<DocumentIndexResult> index(IndexBatch<T> batch) {
         Mono<SimpleResponse<DocumentIndexResult>> responseMono = restClient
             .documents()
@@ -305,12 +410,26 @@ public class SearchIndexAsyncClientImpl extends SearchIndexBaseClient implements
         });
     }
 
-    @Override
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @return auto complete result
+     */
     public PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
         return autocomplete(searchText, suggesterName, null, null);
     }
 
-    @Override
+    /**
+     * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
+     *
+     * @param searchText search text
+     * @param suggesterName suggester name
+     * @param searchRequestOptions search request options
+     * @param autocompleteParameters auto complete parameters
+     * @return auto complete result
+     */
     public PagedFlux<AutocompleteItem> autocomplete(
             String searchText,
             String suggesterName,

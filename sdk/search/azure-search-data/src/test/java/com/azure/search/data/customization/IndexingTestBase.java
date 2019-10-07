@@ -32,7 +32,6 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        initializeClient();
     }
 
     protected SearchServiceClient getSearchServiceClient() {
@@ -184,8 +183,6 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canMergeDynamicDocuments();
-
-    protected abstract void initializeClient();
 
     protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
         Assert.assertEquals(key, result.key());

@@ -4,7 +4,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.AutocompleteItem;
 import com.azure.search.data.generated.models.AutocompleteMode;
 import com.azure.search.data.generated.models.AutocompleteParameters;
@@ -26,8 +25,9 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
 
     @Override
     protected void initializeClient() {
-        client = builderSetup().indexName(HOTELS_INDEX_NAME).buildAsyncClient();
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg");
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         params.autocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         params.autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("looking for very po", "sg", null, params);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         params.useFuzzyMatching(false);
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("very po", "sg", null, params);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         params.autocompleteMode(AutocompleteMode.TWO_TERMS);
 
         PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -230,7 +230,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("very polit", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -245,7 +245,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -260,7 +260,7 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     @Override
@@ -276,16 +276,16 @@ public class AutocompleteAsyncTests extends AutocompleteTestBase {
         PagedFlux<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
         Assert.assertNotNull(results);
-        validateResults(expectedText, expectedQueryPlusText, results);
+        validateResults(results, expectedText, expectedQueryPlusText);
     }
 
     /**
      * Validate the text and query plus text results
+     * @param results
      * @param expectedText
      * @param expectedQueryPlusText
-     * @param results
      */
-    private void validateResults(List<String> expectedText, List<String> expectedQueryPlusText, PagedFlux<AutocompleteItem> results) {
+    private void validateResults(PagedFlux<AutocompleteItem> results, List<String> expectedText, List<String> expectedQueryPlusText) {
         StepVerifier.create(results.byPage()).assertNext(pageResult -> {
             List<String> textResults = new ArrayList<>();
             List<String> queryPlusTextResults = new ArrayList<>();

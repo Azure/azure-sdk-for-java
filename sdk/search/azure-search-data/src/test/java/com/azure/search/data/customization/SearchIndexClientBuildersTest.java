@@ -3,8 +3,6 @@
 
 package com.azure.search.data.customization;
 
-import com.azure.search.data.SearchIndexAsyncClient;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +20,7 @@ public class SearchIndexClientBuildersTest {
     /**
      * Builds a Sync Search Index client
      */
-    private SearchIndexClientImpl buildClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
+    private SearchIndexClient buildClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexClient client = clientBuilder
@@ -33,16 +31,17 @@ public class SearchIndexClientBuildersTest {
             .searchDnsSuffix(dnsSuffix)
             .buildClient();
 
-        Assert.assertNotNull(client);
-        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexClientImpl.class.getSimpleName());
 
-        return (SearchIndexClientImpl) client;
+        Assert.assertNotNull(client);
+        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexClient.class.getSimpleName());
+
+        return client;
     }
 
     /**
      * Builds a Sync Search Index client
      */
-    private SearchIndexClientImpl buildClient(
+    private SearchIndexClient buildClient(
         String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
@@ -54,16 +53,16 @@ public class SearchIndexClientBuildersTest {
             .buildClient();
 
         Assert.assertNotNull(client);
-        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexClientImpl.class.getSimpleName());
+        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexClient.class.getSimpleName());
 
-        return (SearchIndexClientImpl) client;
+        return client;
     }
 
     /**
      * Builds an Async Search Index client
      */
-    private SearchIndexAsyncClientImpl buildAsyncClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
 
+    private SearchIndexAsyncClient buildAsyncClient(String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String apiVersion, String dnsSuffix) {
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
         SearchIndexAsyncClient client = clientBuilder
             .serviceName(searchServiceName)
@@ -74,15 +73,15 @@ public class SearchIndexClientBuildersTest {
             .buildAsyncClient();
 
         Assert.assertNotNull(client);
-        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexAsyncClientImpl.class.getSimpleName());
+        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexAsyncClient.class.getSimpleName());
 
-        return (SearchIndexAsyncClientImpl) client;
+        return client;
     }
 
     /**
      * Builds an Async Search Index client
      */
-    private SearchIndexAsyncClientImpl buildAsyncClient(
+    private SearchIndexAsyncClient buildAsyncClient(
         String searchServiceName, String indexName, ApiKeyCredentials apiKeyCredentials, String dnsSuffix) {
 
         SearchIndexClientBuilder clientBuilder = new SearchIndexClientBuilder();
@@ -94,24 +93,25 @@ public class SearchIndexClientBuildersTest {
             .buildAsyncClient();
 
         Assert.assertNotNull(client);
-        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexAsyncClientImpl.class.getSimpleName());
-
-        return (SearchIndexAsyncClientImpl) client;
+        Assert.assertEquals(client.getClass().getSimpleName(), SearchIndexAsyncClient.class.getSimpleName());
+        return client;
     }
 
     private void buildClientAndVerifyInternal(boolean isAsync) {
-        SearchIndexBaseClient client;
         if (isAsync) {
-            client = buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
-
+            SearchIndexAsyncClient client = buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
+            assert (client.getIndexName().equals(indexName));
+            assert (client.getSearchServiceName().equals(searchServiceName));
+            assert (client.getApiVersion().equals(apiVersion));
+            assert (client.getSearchDnsSuffix().equals(dnsSuffix));
         } else {
-            client = buildAsyncClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
-        }
+            SearchIndexClient client = buildClient(searchServiceName, indexName, apiKeyCredentials, apiVersion, dnsSuffix);
+            assert (client.getIndexName().equals(indexName));
+            assert (client.getSearchServiceName().equals(searchServiceName));
+            assert (client.getApiVersion().equals(apiVersion));
+            assert (client.getSearchDnsSuffix().equals(dnsSuffix));
 
-        assert (client.getIndexName().equals(indexName));
-        assert (client.getSearchServiceName().equals(searchServiceName));
-        assert (client.getApiVersion().equals(apiVersion));
-        assert (client.getSearchDnsSuffix().equals(dnsSuffix));
+        }
     }
 
     /**
@@ -331,20 +331,5 @@ public class SearchIndexClientBuildersTest {
 
         assert (client != null);
         assert (client.getSearchDnsSuffix().equals("search.windows.net"));
-    }
-
-    /**
-     * Verify that the index name can be changed after the client was already created
-     */
-    @Test
-    public void verifyIndexNameIsChangeableTest() {
-
-        String originalIndexName = "firstOne";
-        SearchIndexAsyncClientImpl client = buildAsyncClient(searchServiceName, originalIndexName, apiKeyCredentials, apiVersion, dnsSuffix);
-        assert (client.getIndexName().equals(originalIndexName));
-
-        String otherIndexName = "ImTheSecond";
-        client.setIndexName(otherIndexName);
-        assert (client.getIndexName().equals(otherIndexName));
     }
 }

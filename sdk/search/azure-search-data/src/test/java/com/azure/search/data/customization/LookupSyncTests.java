@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.data.customization;
 
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
@@ -12,10 +11,8 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,13 +26,14 @@ import static java.lang.Double.POSITIVE_INFINITY;
 
 public class LookupSyncTests extends LookupTestBase {
     private SearchIndexClient client;
-    private static final String DATA_TYPES_INDEX_NAME = "data-types-tests-index";
-    private static final String MODEL_WITH_DATA_TYPES_INDEX_JSON = "DataTypesTestsIndexData.json";
 
     @Override
     public void canGetStaticallyTypedDocument() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Hotel expected = prepareExpectedHotel();
-        uploadDocument(client, INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = result.as(Hotel.class);
@@ -44,8 +42,11 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Hotel expected = prepareEmptyHotel();
-        uploadDocument(client, INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = result.as(Hotel.class);
@@ -54,8 +55,11 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Hotel expected = preparePascalCaseFieldsHotel();
-        uploadDocument(client, INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = result.as(Hotel.class);
@@ -64,8 +68,11 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void canRoundtripStaticallyTypedPrimitiveCollections() throws ParseException {
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
+
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
-        uploadDocument(client, MODEL_WITH_VALUE_TYPES_INDEX_NAME, expected);
+        uploadDocument(client, expected);
 
         Document result = client.getDocument(expected.key);
         ModelWithPrimitiveCollections actual = result.as(ModelWithPrimitiveCollections.class);
@@ -74,15 +81,17 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
-        Hotel indexedDoc = prepareSelectedFieldsHotel();
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
 
+        Hotel indexedDoc = prepareSelectedFieldsHotel();
         Hotel expected = new Hotel()
             .hotelName("Countryside Hotel")
             .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.")
             .address(new HotelAddress().city("Durham"))
             .rooms(Arrays.asList(new HotelRoom().baseRate(2.44), new HotelRoom().baseRate(7.69)));
 
-        uploadDocument(client, INDEX_NAME, indexedDoc);
+        uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
         Document result = client.getDocument(indexedDoc.hotelId(), selectedFields, new SearchRequestOptions());
@@ -92,6 +101,9 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Document expectedDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -116,7 +128,7 @@ public class LookupSyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, expectedDoc);
+        uploadDocument(client, expectedDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
@@ -126,6 +138,9 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -148,7 +163,7 @@ public class LookupSyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
@@ -158,6 +173,9 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
+
         String docKey = "3";
 
         Document originalDoc = new Document() {
@@ -186,8 +204,7 @@ public class LookupSyncTests extends LookupTestBase {
             }
         };
 
-        setupIndex();
-        uploadDocument(client, DATA_TYPES_INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
 
         Document actualDoc = client.getDocument(docKey);
         Assert.assertEquals(expectedDoc, actualDoc);
@@ -195,6 +212,9 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -245,7 +265,7 @@ public class LookupSyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
         Document actualDoc = client.getDocument("1", selectedFields, new SearchRequestOptions());
@@ -254,6 +274,9 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
         Document originalDoc = new Document() {
             {
                 put("HotelId", "1");
@@ -289,7 +312,7 @@ public class LookupSyncTests extends LookupTestBase {
             }
         };
 
-        uploadDocument(client, INDEX_NAME, originalDoc);
+        uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Document actualDoc = client.getDocument("1", selectedFields, new SearchRequestOptions());
@@ -298,6 +321,9 @@ public class LookupSyncTests extends LookupTestBase {
 
     @Override
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() throws ParseException {
+        setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
+        client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
+
         JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         String docKey = "1";
         String dateTimeString = "2019-08-13T14:30:00Z";
@@ -330,29 +356,9 @@ public class LookupSyncTests extends LookupTestBase {
             }
         };
 
-        setupIndex();
-        uploadDocument(client, DATA_TYPES_INDEX_NAME, indexedDoc);
+        uploadDocument(client, indexedDoc);
 
         Document actualDoc = client.getDocument(docKey);
         Assert.assertEquals(expectedDoc, actualDoc);
-    }
-
-    @Override
-    protected void initializeClient() {
-        client = builderSetup().indexName(INDEX_NAME).buildClient();
-    }
-
-    void setupIndex() {
-        client.setIndexName(DATA_TYPES_INDEX_NAME);
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                MODEL_WITH_DATA_TYPES_INDEX_JSON, searchServiceName, apiKeyCredentials.getApiKey());
-            try {
-                searchIndexService.initialize();
-            } catch (IOException e) {
-                Assert.fail(e.getMessage());
-            }
-        }
     }
 }

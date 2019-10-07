@@ -3,7 +3,7 @@
 
 package com.azure.search.test.environment.setup;
 
-import com.azure.search.data.SearchIndexAsyncClient;
+import com.azure.search.data.customization.SearchIndexAsyncClient;
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,7 +79,5 @@ public class SearchIndexDocs {
                         System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
             .doOnError(e -> System.out.println(e.getMessage()))
             .block();
-
-
     }
 }

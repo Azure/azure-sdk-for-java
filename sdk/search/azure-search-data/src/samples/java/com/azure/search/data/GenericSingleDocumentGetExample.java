@@ -4,6 +4,7 @@ package com.azure.search.data;
 
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.Document;
+import com.azure.search.data.customization.SearchIndexAsyncClient;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import reactor.core.publisher.Mono;
 

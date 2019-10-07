@@ -1,111 +1,111 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-      "Uri": "https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "eca159df-b6a8-44fa-907e-8207acddf0f9",
+      "request-id" : "52c9ddb5-be5b-4460-9d01-fecd0e664acc",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:07:09 GMT",
+      "Date" : "Fri, 04 Oct 2019 17:35:23 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "94",
+      "elapsed-time" : "105",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "227",
-        "Body": "{\"@odata.context\":\"https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-      "Uri": "https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "6bca9ccd-4f77-4095-b99c-1a8d87f96bac",
+      "request-id" : "4e5fd617-53a6-43b5-9b01-28200571e79f",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:07:11 GMT",
+      "Date" : "Fri, 04 Oct 2019 17:35:25 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "31",
+      "elapsed-time" : "27",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "227",
-        "Body": "{\"@odata.context\":\"https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-      "Uri": "https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "3c89ff8f-2160-4f1b-b79f-8cd14d87ded7",
+      "request-id" : "fa068438-a8e5-4431-889f-d66fd2ff4402",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:07:13 GMT",
+      "Date" : "Fri, 04 Oct 2019 17:35:28 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "14",
+      "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1006",
-        "Body": "{\"@odata.context\":\"https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Secret Point Motel\",\"Description\":null,\"Description_fr\":\"L'h\\u00f4tel est id\\u00e9alement situ\\u00e9 sur la principale art\\u00e8re commerciale de la ville en plein c\\u0153ur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'int\\u00e9r\\u00eat qui font de New York l'une des villes les plus attractives et cosmopolites de l'Am\\u00e9rique.\",\"Category\":\"Economy\",\"Tags\":[\"pool\",\"air conditioning\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":null,\"Rating\":3,\"Location\":null,\"Address\":{\"StreetAddress\":\"677 5th Ave\",\"City\":\"New York\",\"StateProvince\":\"NY\",\"PostalCode\":\"10022\",\"Country\":\"USA\"},\"Rooms\":[{\"Description\":null,\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":10.5,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"balcony\"]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Secret Point Motel\",\"Description\":null,\"Description_fr\":\"L'h\\u00f4tel est id\\u00e9alement situ\\u00e9 sur la principale art\\u00e8re commerciale de la ville en plein c\\u0153ur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'int\\u00e9r\\u00eat qui font de New York l'une des villes les plus attractives et cosmopolites de l'Am\\u00e9rique.\",\"Category\":\"Economy\",\"Tags\":[\"pool\",\"air conditioning\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":null,\"Rating\":3,\"Location\":null,\"Address\":{\"StreetAddress\":\"677 5th Ave\",\"City\":\"New York\",\"StateProvince\":\"NY\",\"PostalCode\":\"10022\",\"Country\":\"USA\"},\"Rooms\":[{\"Description\":null,\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":10.5,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"balcony\"]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-      "Uri": "https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "bc94963e-fea0-4ec0-a6f0-c57300904fb2",
+      "request-id" : "c689168f-daab-4aa4-8642-8fb60956a771",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:07:13 GMT",
+      "Date" : "Fri, 04 Oct 2019 17:35:28 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "26",
+      "elapsed-time" : "22",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "227",
-        "Body": "{\"@odata.context\":\"https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":200}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-      "Uri": "https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/docs('1')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-        "request-id": "01e38883-5e59-4b5a-8f9a-9430fd282330",
+      "request-id" : "610e2b6b-e67c-422e-bf4d-b6ddc05fab1e",
       "StatusCode" : "200",
-        "Date": "Mon, 30 Sep 2019 20:07:15 GMT",
+      "Date" : "Fri, 04 Oct 2019 17:35:30 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-        "elapsed-time": "5",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "1777",
-        "Body": "{\"@odata.context\":\"https://azs-sdkeae5496173d2.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Secret Point Motel\",\"Description\":\"The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.\",\"Description_fr\":\"L'h\\u00f4tel est id\\u00e9alement situ\\u00e9 sur la principale art\\u00e8re commerciale de la ville en plein c\\u0153ur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'int\\u00e9r\\u00eat qui font de New York l'une des villes les plus attractives et cosmopolites de l'Am\\u00e9rique.\",\"Category\":\"Boutique\",\"Tags\":[\"pool\",\"air conditioning\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":4,\"Location\":{\"type\":\"Point\",\"coordinates\":[-73.975403,40.760586],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"677 5th Ave\",\"City\":\"New York\",\"StateProvince\":\"NY\",\"PostalCode\":\"10022\",\"Country\":\"USA\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed (Cityside)\",\"Description_fr\":\"Chambre \\u00c9conomique, 1 grand lit (c\\u00f4t\\u00e9 ville)\",\"Type\":\"Budget Room\",\"BaseRate\":9.69,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\"]},{\"Description\":\"Budget Room, 1 King Bed (Mountain View)\",\"Description_fr\":\"Chambre \\u00c9conomique, 1 tr\\u00e8s grand lit (Mountain View)\",\"Type\":\"Budget Room\",\"BaseRate\":8.09,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"jacuzzi tub\"]}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk2b0641014804.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelId\":\"1\",\"HotelName\":\"Secret Point Motel\",\"Description\":\"The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.\",\"Description_fr\":\"L'h\\u00f4tel est id\\u00e9alement situ\\u00e9 sur la principale art\\u00e8re commerciale de la ville en plein c\\u0153ur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'int\\u00e9r\\u00eat qui font de New York l'une des villes les plus attractives et cosmopolites de l'Am\\u00e9rique.\",\"Category\":\"Boutique\",\"Tags\":[\"pool\",\"air conditioning\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":4,\"Location\":{\"type\":\"Point\",\"coordinates\":[-73.975403,40.760586],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"677 5th Ave\",\"City\":\"New York\",\"StateProvince\":\"NY\",\"PostalCode\":\"10022\",\"Country\":\"USA\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed (Cityside)\",\"Description_fr\":\"Chambre \\u00c9conomique, 1 grand lit (c\\u00f4t\\u00e9 ville)\",\"Type\":\"Budget Room\",\"BaseRate\":9.69,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\"]},{\"Description\":\"Budget Room, 1 King Bed (Mountain View)\",\"Description_fr\":\"Chambre \\u00c9conomique, 1 tr\\u00e8s grand lit (Mountain View)\",\"Type\":\"Budget Room\",\"BaseRate\":8.09,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"jacuzzi tub\"]}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },

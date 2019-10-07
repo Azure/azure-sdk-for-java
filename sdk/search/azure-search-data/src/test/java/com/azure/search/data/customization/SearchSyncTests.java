@@ -5,7 +5,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
@@ -47,23 +46,19 @@ public class SearchSyncTests extends SearchTestBase {
     @Override
     protected void search(
         String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
         PagedIterable<SearchResult> results = client.search(searchText, searchParameters, searchRequestOptions);
         results.iterableByPage().iterator().next();
     }
 
     @Override
-    protected void initializeClient() {
-        client = builderSetup().indexName(HOTELS_INDEX_NAME).buildClient();
-    }
-
-    @Override
-    protected void setIndexName(String indexName) {
-        client.setIndexName(indexName);
-    }
-
-    @Override
     public void canSearchDynamicDocuments() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -89,7 +84,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchStaticallyTypedDocuments() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -127,6 +125,9 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canRoundTripNonNullableValueTypes() throws Exception {
+        setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
+        client = getClientBuilder(NON_NULLABLE_INDEX_NAME).buildClient();
+
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
             .count(3)
@@ -140,8 +141,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
 
-        createIndexForNonNullableTest();
-        uploadDocuments(client, NON_NULLABLE_INDEX_NAME, Arrays.asList(doc1, doc2));
+        uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -156,8 +156,11 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithDateInStaticModel() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
         // check if deserialization of Date type object is successful
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         Date expected = DATE_FORMAT.parse("2010-06-27T00:00:00Z");
 
         PagedIterable<SearchResult> results = client
@@ -174,7 +177,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithSelectedFields() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         // Ask JUST for the following two fields
         SearchParameters sp = new SearchParameters();
@@ -217,7 +223,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canUseTopAndSkipForClientSidePaging() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         List<String> orderBy = Stream.of("HotelId").collect(Collectors.toList());
         SearchParameters parameters = new SearchParameters().top(3).skip(0).orderBy(orderBy);
@@ -232,7 +241,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void searchWithoutOrderBySortsByScore() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Iterator<SearchResult> results = client
             .search("*", new SearchParameters().filter("Rating lt 4"), new SearchRequestOptions()).iterator();
@@ -243,7 +255,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void orderByProgressivelyBreaksTies() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         List<String> orderByValues = new ArrayList<>();
         orderByValues.add("Rating desc");
@@ -259,7 +274,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canFilter() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters()
             .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
@@ -275,7 +293,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithRangeFacets() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SearchResult> results = client.search("*", getSearchParametersForRangeFacets(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -293,7 +314,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithValueFacets() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SearchResult> results = client.search("*", getSearchParametersForValueFacets(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -359,6 +383,11 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithLuceneSyntax() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
         Map<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("HotelName", "Roach Motel");
         expectedResult.put("Rating", 1);
@@ -374,9 +403,11 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canFilterNonNullableType() throws Exception {
-        createIndexForModelWithValueTypesTest();
+        setupIndexFromJsonFile(MODEL_WITH_VALUE_TYPES_INDEX_JSON);
+        client = getClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildClient();
+
         List<Map<String, Object>> expectedDocsList =
-            uploadDocumentsJson(client, MODEL_WITH_INDEX_TYPES_INDEX_NAME, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
+            uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
                 .stream().filter(d -> !d.get("Key").equals("789")).collect(
                 Collectors.toList());
 
@@ -394,7 +425,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithSearchModeAll() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         List<Map<String, Object>> response = getSearchResults(client
             .search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL),
@@ -405,7 +439,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void defaultSearchModeIsAny() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()));
         Assert.assertEquals(7, response.size());
@@ -416,7 +453,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canGetResultCountInSearch() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -428,7 +468,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithRegex() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters()
             .queryType(QueryType.FULL)
@@ -450,7 +493,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithEscapedSpecialCharsInRegex() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL);
 
         PagedIterable<SearchResult> results = client
@@ -465,7 +511,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void searchWithScoringProfileBoostsScore() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchParameters searchParameters = new SearchParameters()
             .scoringProfile("nearest")
             .scoringParameters(Collections.singletonList("myloc-'-122','49'"))
@@ -481,7 +530,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithMinimumCoverage() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         PagedIterable<SearchResult> results = client
             .search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -492,7 +544,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canUseHitHighlighting() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         //arrange
         String description = "Description";
@@ -538,7 +593,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithSynonyms() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         String fieldName = "HotelName";
         prepareHotelsSynonymMap("names", "luxury,fancy", fieldName);

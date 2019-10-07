@@ -5,6 +5,7 @@ package com.azure.search.data;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.data.customization.SearchIndexClient;
 import com.azure.search.data.common.credentials.ApiKeyCredentials;
 import com.azure.search.data.customization.SearchIndexClientBuilder;
 import com.azure.search.data.generated.models.SuggestParameters;
@@ -82,5 +83,4 @@ public class SearchSuggestionExample {
             .credential(apiKeyCredentials)
             .buildClient();
     }
-
 }

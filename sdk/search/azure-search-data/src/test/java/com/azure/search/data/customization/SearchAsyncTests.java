@@ -5,7 +5,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.Config;
@@ -44,20 +43,13 @@ public class SearchAsyncTests extends SearchTestBase {
 
     private SearchIndexAsyncClient client;
 
-    @Override
-    protected void initializeClient() {
-        client = builderSetup().indexName(HOTELS_INDEX_NAME).buildAsyncClient();
-    }
-
-    @Override
-    protected void setIndexName(String indexName) {
-        client.setIndexName(indexName);
-    }
-
     @Test
     public void canContinueSearch() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
         hotels = createHotelsList(100);
-        uploadDocuments(client, HOTELS_INDEX_NAME, hotels);
+        uploadDocuments(client, hotels);
 
         SearchParameters searchParameters = new SearchParameters().select(Collections.singletonList("HotelId"))
             .orderBy(Collections.singletonList("HotelId asc"));
@@ -71,21 +63,24 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
                 Assert.assertEquals(50, firstPage.value().size());
-                assertEqual(expectedId.subList(0, 50), firstPage.value());
+                assertHotelIdsEqual(expectedId.subList(0, 50), firstPage.value());
                 Assert.assertNotEquals(null, firstPage.nextLink());
             })
             .assertNext(nextPage -> {
                 Assert.assertEquals(50, nextPage.value().size());
-                assertEqual(expectedId.subList(50, 100), nextPage.value());
+                assertHotelIdsEqual(expectedId.subList(50, 100), nextPage.value());
                 Assert.assertNull(nextPage.nextLink());
             }).verifyComplete();
     }
 
     @Test
     public void canContinueSearchWithTop() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
         // upload large documents batch
         hotels = createHotelsList(2000);
-        uploadDocuments(client, HOTELS_INDEX_NAME, hotels);
+        uploadDocuments(client, hotels);
 
         SearchParameters searchParameters = new SearchParameters().top(2000).select(
             Collections.singletonList("HotelId"))
@@ -100,26 +95,22 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
                 Assert.assertEquals(1000, firstPage.value().size());
-                assertEqual(expectedId.subList(0, 1000), firstPage.value());
+                assertHotelIdsEqual(expectedId.subList(0, 1000), firstPage.value());
                 Assert.assertNotNull(firstPage.nextLink());
             })
             .assertNext(nextPage -> {
                 Assert.assertEquals(1000, nextPage.value().size());
-                assertEqual(expectedId.subList(1000, 2000), nextPage.value());
+                assertHotelIdsEqual(expectedId.subList(1000, 2000), nextPage.value());
                 Assert.assertNull(nextPage.nextLink());
             }).verifyComplete();
     }
 
-    private void assertEqual(List<String> expected, List<SearchResult> actual) {
-        Assert.assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
-            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
-        Assert.assertEquals(expected, actualKeys);
-    }
-
     @Override
     public void canSearchWithSelectedFields() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         HashMap<String, Object> expectedHotel1 = new HashMap<>();
         expectedHotel1.put("HotelName", "Fancy Stay");
@@ -158,24 +149,29 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canUseTopAndSkipForClientSidePaging() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters parameters = new SearchParameters().top(3).skip(0).orderBy(
             Collections.singletonList("HotelId"));
 
         Flux<SearchResult> results = client.search("*", parameters, new SearchRequestOptions()).log();
-        assertHotelIdSequenceEqual(results, Arrays.asList("1", "10", "2"));
+        assertHotelIdSequenceEqual(Arrays.asList("1", "10", "2"), results);
 
         parameters.skip(3);
         results = client.search("*", parameters, new SearchRequestOptions());
-        assertHotelIdSequenceEqual(results, Arrays.asList("3", "4", "5"));
+        assertHotelIdSequenceEqual(Arrays.asList("3", "4", "5"), results);
     }
 
     @Override
     public void canFilterNonNullableType() throws Exception {
-        createIndexForModelWithValueTypesTest();
+        setupIndexFromJsonFile(MODEL_WITH_VALUE_TYPES_INDEX_JSON);
+        client = getClientBuilder(MODEL_WITH_INDEX_TYPES_INDEX_NAME).buildAsyncClient();
+
         List<Map<String, Object>> expectedDocsList =
-            uploadDocumentsJson(client, MODEL_WITH_INDEX_TYPES_INDEX_NAME, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
+            uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
                 .stream().filter(d -> !d.get("Key").equals("789")).collect(
                 Collectors.toList());
 
@@ -194,7 +190,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void searchWithoutOrderBySortsByScore() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedFlux<SearchResult> results = client.search("*", new SearchParameters().filter("Rating lt 4"),
             new SearchRequestOptions());
@@ -209,19 +208,25 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void orderByProgressivelyBreaksTies() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         List<String> orderByValues = Arrays.asList("Rating desc", "LastRenovationDate asc");
         List<String> expected = Arrays.asList("1", "9", "3", "4", "5", "10", "2", "6", "7", "8");
 
         Flux<SearchResult> results = client.search("*", new SearchParameters().orderBy(orderByValues),
             new SearchRequestOptions()).log();
-        assertHotelIdSequenceEqual(results, expected);
+        assertHotelIdSequenceEqual(expected, results);
     }
 
     @Override
     public void canFilter() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters()
             .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
@@ -239,7 +244,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithRangeFacets() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedFlux<SearchResult> results = client
             .search("*", getSearchParametersForRangeFacets(), new SearchRequestOptions());
@@ -259,7 +267,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithValueFacets() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedFlux<SearchResult> results = client
             .search("*", getSearchParametersForValueFacets(), new SearchRequestOptions());
@@ -327,7 +338,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithLuceneSyntax() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         HashMap<String, Object> expectedResult = new HashMap<>();
         expectedResult.put("HotelName", "Roach Motel");
@@ -348,7 +362,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchDynamicDocuments() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedFlux<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -375,7 +392,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchStaticallyTypedDocuments() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedFlux<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -413,6 +433,9 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canRoundTripNonNullableValueTypes() throws Exception {
+        setupIndexFromJsonFile(NON_NULLABLE_INDEX_JSON);
+        client = getClientBuilder(NON_NULLABLE_INDEX_NAME).buildAsyncClient();
+
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
             .count(3)
@@ -426,8 +449,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
 
-        createIndexForNonNullableTest();
-        uploadDocuments(client, NON_NULLABLE_INDEX_NAME, Arrays.asList(doc1, doc2));
+        uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         PagedFlux<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
@@ -440,8 +462,11 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithDateInStaticModel() throws ParseException {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
         // check if deserialization of Date type object is successful
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         Date expected = DATE_FORMAT.parse("2010-06-27T00:00:00Z");
 
         Flux<SearchResult> results = client.search("Fancy", new SearchParameters(), new SearchRequestOptions()).log();
@@ -454,7 +479,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithSynonyms() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         String fieldName = "HotelName";
         prepareHotelsSynonymMap("names", "luxury,fancy", fieldName);
@@ -477,7 +505,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithSearchModeAll() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Flux<SearchResult> response = client
             .search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL),
@@ -488,16 +519,22 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void defaultSearchModeIsAny() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Flux<SearchResult> response = client
             .search("Cheapest hotel", new SearchParameters(), new SearchRequestOptions()).log();
-        assertHotelIdSequenceEqual(response, Arrays.asList("2", "10", "3", "4", "5", "1", "9"));
+        assertHotelIdSequenceEqual(Arrays.asList("2", "10", "3", "4", "5", "1", "9"), response);
     }
 
     @Override
     public void canGetResultCountInSearch() {
-        hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         Flux<PagedResponse<SearchResult>> results = client
             .search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions()).byPage();
         StepVerifier.create(results)
@@ -507,7 +544,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithRegex() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Map<String, Object> expectedHotel = new HashMap<>();
         expectedHotel.put("HotelName", "Roach Motel");
@@ -528,7 +568,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canSearchWithEscapedSpecialCharsInRegex() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL);
 
@@ -544,7 +587,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void searchWithScoringProfileBoostsScore() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters()
             .scoringProfile("nearest")
@@ -552,12 +598,15 @@ public class SearchAsyncTests extends SearchTestBase {
             .filter("Rating eq 5 or Rating eq 1");
 
         Flux<SearchResult> response = client.search("hotel", searchParameters, new SearchRequestOptions()).log();
-        assertHotelIdSequenceEqual(response, Arrays.asList("2", "1"));
+        assertHotelIdSequenceEqual(Arrays.asList("2", "1"), response);
     }
 
     @Override
     public void canSearchWithMinimumCoverage() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Flux<PagedResponse<SearchResult>> results = client
             .search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions()).byPage();
@@ -570,7 +619,10 @@ public class SearchAsyncTests extends SearchTestBase {
 
     @Override
     public void canUseHitHighlighting() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         //arrange
         String description = "Description";
@@ -613,11 +665,21 @@ public class SearchAsyncTests extends SearchTestBase {
     @Override
     protected void search(
         String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions) {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
         PagedFlux<SearchResult> results = client.search(searchText, searchParameters, searchRequestOptions);
         results.log().blockFirst();
     }
 
-    private void assertHotelIdSequenceEqual(Flux<SearchResult> results, List<String> expectedIds) {
+    private void assertHotelIdsEqual(List<String> expected, List<SearchResult> results) {
+        Assert.assertNotNull(results);
+        List<String> actualKeys = results.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
+            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        Assert.assertEquals(expected, actualKeys);
+    }
+
+    private void assertHotelIdSequenceEqual(List<String> expectedIds, Flux<SearchResult> results) {
         Assert.assertNotNull(results);
         StepVerifier.FirstStep<SearchResult> sv = StepVerifier.create(results);
         expectedIds.forEach(k -> sv.assertNext(res -> Assert.assertEquals(k, getSearchResultId(res, "HotelId"))));

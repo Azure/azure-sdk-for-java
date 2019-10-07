@@ -5,7 +5,6 @@ package com.azure.search.data.customization;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.SearchIndexClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
@@ -28,14 +27,12 @@ public class SuggestSyncTests extends SuggestTestBase {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Override
-    protected void initializeClient() {
-        client = builderSetup().indexName(HOTELS_INDEX_NAME).buildClient();
-    }
-
     @Test
     public void canSuggestDynamicDocuments() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
             .orderBy(Collections.singletonList("HotelId"));
 
@@ -48,7 +45,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Test
     public void searchFieldsExcludesFieldsFromSuggest() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
             .searchFields(Collections.singletonList("HotelName"));
 
@@ -61,7 +61,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Test
     public void canUseSuggestHitHighlighting() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
             .highlightPreTag("<b>")
             .highlightPostTag("</b>")
@@ -77,7 +80,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Test
     public void canGetFuzzySuggestions() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
             .useFuzzyMatching(true);
 
@@ -90,7 +96,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void canSuggestStaticallyTypedDocuments() {
-        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
             .orderBy(Collections.singletonList("HotelId"));
@@ -105,6 +114,9 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void canSuggestWithDateTimeInStaticModel() throws Exception {
+        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
+        client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
+
         Author tolkien = new Author();
         tolkien.firstName("J.R.R.");
         tolkien.lastName("Tolkien");
@@ -117,7 +129,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         doc2.ISBN("456");
         doc2.title("War and Peace");
         doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
-        uploadDocuments(client, BOOKS_INDEX_NAME, Arrays.asList(doc1, doc2));
+        uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate"));
@@ -130,7 +142,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void fuzzyIsOffByDefault() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", null, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -140,6 +155,9 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void suggestThrowsWhenGivenBadSuggesterName() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("The specified suggester name 'Suggester does not exist' "
             + "does not exist in this index definition.");
@@ -150,10 +168,13 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void suggestThrowsWhenRequestIsMalformed() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
 
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
             .orderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
 
@@ -163,7 +184,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void testCanSuggestWithMinimumCoverage() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
@@ -183,7 +207,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void testTopTrimsResults() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
             .orderBy(Collections.singletonList("HotelId"))
@@ -202,7 +229,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void testCanFilter() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestParameters suggestParams = new SuggestParameters()
             .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
@@ -219,7 +249,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
     @Override
     public void testOrderByProgressivelyBreaksTies() {
-        uploadDocumentsJson(client, HOTELS_INDEX_NAME, HOTELS_DATA_JSON);
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestParameters suggestParams = new SuggestParameters()
             .orderBy(Arrays.asList("Rating desc",
