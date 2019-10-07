@@ -4,16 +4,16 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobURLParts;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -68,7 +68,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
+        return new AppendBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
+        return new BlockBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -121,7 +121,7 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey);
+        return new PageBlobAsyncClient(constructImpl(), snapshot, customerProvidedKey, accountName);
     }
 
     private AzureBlobStorageImpl constructImpl() {
@@ -202,17 +202,16 @@ public final class SpecializedBlobClientBuilder extends BaseBlobClientBuilder<Sp
     public SpecializedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential =
-                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = parts.getSasQueryParameters().encode();
+            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(

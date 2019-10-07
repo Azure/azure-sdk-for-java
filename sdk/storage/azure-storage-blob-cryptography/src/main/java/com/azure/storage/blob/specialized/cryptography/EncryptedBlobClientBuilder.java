@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -13,13 +14,13 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BaseBlobClientBuilder;
-import com.azure.storage.blob.BlobURLParts;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.credentials.SASTokenCredential;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -75,8 +76,15 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     }
 
     private AzureBlobStorageImpl constructImpl() {
-        Objects.requireNonNull(containerName);
-        Objects.requireNonNull(blobName);
+        Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        if (Objects.isNull(containerName) || containerName.isEmpty()) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
 
         checkValidEncryptionParameters();
 
@@ -111,7 +119,8 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
                 client.getHttpPipeline().getHttpClient()))
             .build();
 
-        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), this.keyWrapper, this.keyWrapAlgorithm);
+        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), client.getAccountName(), this.keyWrapper,
+            this.keyWrapAlgorithm);
     }
 
     /**
@@ -134,8 +143,8 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
                 client.getHttpPipeline().getHttpClient()))
             .build();
 
-        return new EncryptedBlockBlobClient(
-            new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), this.keyWrapper, this.keyWrapAlgorithm));
+        return new EncryptedBlockBlobClient(new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
+            client.getAccountName(), this.keyWrapper, this.keyWrapAlgorithm));
     }
 
     /**
@@ -163,8 +172,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient() {
-        return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot,
-            this.keyWrapper, this.keyWrapAlgorithm);
+        return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot, accountName, keyWrapper, keyWrapAlgorithm);
     }
 
     /**
@@ -177,17 +185,17 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     public EncryptedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
+            this.accountName = parts.getAccountName();
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential =
-                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = parts.getSasQueryParameters().encode();
+            if (ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(
@@ -206,10 +214,9 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * Sets the name of the container this client is connecting to.
      * @param containerName the name of the container
      * @return the updated EncryptedBlobClientBuilder  object
-     * @throws NullPointerException If {@code containerName} is {@code null}
      */
     public EncryptedBlobClientBuilder containerName(String containerName) {
-        this.containerName = Objects.requireNonNull(containerName);
+        this.containerName = containerName;
         return this;
     }
 

@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
@@ -69,7 +70,7 @@ public class CryptographyClientBuilder {
     JsonWebKey jsonWebKey;
     String keyId;
     HttpClient httpClient;
-    HttpLogDetailLevel httpLogDetailLevel;
+    HttpLogOptions httpLogOptions;
     final RetryPolicy retryPolicy;
     Configuration configuration;
 
@@ -78,7 +79,7 @@ public class CryptographyClientBuilder {
      */
     public CryptographyClientBuilder() {
         retryPolicy = new RetryPolicy();
-        httpLogDetailLevel = HttpLogDetailLevel.NONE;
+        httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
     }
 
@@ -164,7 +165,7 @@ public class CryptographyClientBuilder {
         policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -214,17 +215,15 @@ public class CryptographyClientBuilder {
     }
 
     /**
-     * Sets the logging level for HTTP requests and responses.
+     * Sets the logging configuration for HTTP requests and responses.
      *
-     * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated builder object.
-     * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
-    public CryptographyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        Objects.requireNonNull(logLevel);
-        httpLogDetailLevel = logLevel;
+    public CryptographyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
         return this;
     }
 

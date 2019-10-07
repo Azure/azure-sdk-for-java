@@ -50,7 +50,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.5</version>
 </dependency>
 ```
 
@@ -156,7 +156,7 @@ Create a BlobServiceClient using the [`sasToken`](#get-credentials) generated ab
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .endpoint("<your-storage-blob-url>")
-        .credential("<your-sasToken>")
+        .sasToken("<your-sasToken>")
         .buildClient();
 ```
 
@@ -173,7 +173,7 @@ Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) g
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
          .endpoint("<your-storage-blob-url>")
-         .credential("<your-sasToken>")
+         .sasToken("<your-sasToken>")
          .containerName("mycontainer")
          .buildClient();
 ```
@@ -182,7 +182,7 @@ BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
 
 Create a BlobClient if container client exists.
 ```java
-BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
+BlobClient blobClient = blobContainerClient.getBlobClient("myblob").getBlockBlobClient();
 ```
 
 or
@@ -191,7 +191,7 @@ Create the BlobClient from the builder [`sasToken`](#get-credentials) generated 
 ```java
 BlobClient blobClient = new BlobClientBuilder()
          .endpoint("<your-storage-blob-url>")
-         .credential("<your-sasToken>")
+         .sasToken("<your-sasToken>")
          .containerName("mycontainer")
          .blobName("myblob")
          .buildBlobClient();
@@ -216,7 +216,7 @@ blobContainerClient.create();
 Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = blobContainerClient.getBlockBlobClient("myblockblob");
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
@@ -228,7 +228,8 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 Upload a file to a blob using BlockBlobClient generated from BlobContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = blobContainerClient.getBlockBlobClient("myblockblob");
+
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
 blockBlobClient.uploadFromFile("local-file.jpg");
 ```
 

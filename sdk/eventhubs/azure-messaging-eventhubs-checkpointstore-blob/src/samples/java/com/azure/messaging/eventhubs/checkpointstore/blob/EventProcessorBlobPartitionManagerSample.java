@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
@@ -13,7 +14,6 @@ import com.azure.messaging.eventhubs.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import java.util.concurrent.TimeUnit;
 import reactor.core.publisher.Mono;
 
@@ -51,12 +51,11 @@ public class EventProcessorBlobPartitionManagerSample {
             .connectionString(EH_CONNECTION_STRING)
             .buildAsyncClient();
 
-        SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString(SAS_TOKEN_STRING);
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName("")
-            .credential(sasTokenCredential)
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .sasToken(SAS_TOKEN_STRING)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
         EventProcessorBuilder eventProcessorBuilder = new EventProcessorBuilder()

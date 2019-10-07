@@ -247,4 +247,14 @@ public final class LeaseClient {
         return Utility.blockWithOptionalTimeout(this.client
             .changeLeaseWithResponse(proposedId, modifiedAccessConditions, context), timeout);
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return client.getAccountName();
+    }
+
 }

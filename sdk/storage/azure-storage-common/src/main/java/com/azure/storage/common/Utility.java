@@ -75,7 +75,7 @@ public final class Utility {
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
-    public static TreeMap<String, String> parseQueryString(final String queryString) {
+    public static Map<String, String> parseQueryString(final String queryString) {
         return parseQueryStringHelper(queryString, Utility::urlDecode);
     }
 
@@ -86,11 +86,11 @@ public final class Utility {
      * @param queryString Query string to parse
      * @return a mapping of query string pieces as key-value pairs.
      */
-    public static TreeMap<String, String[]> parseQueryStringSplitValues(final String queryString) {
+    public static Map<String, String[]> parseQueryStringSplitValues(final String queryString) {
         return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
-    private static <T> TreeMap<String, T> parseQueryStringHelper(final String queryString,
+    private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
         Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
@@ -451,6 +451,31 @@ public final class Utility {
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException(ex);
         }
+    }
+
+    /**
+     * Strips the account name from host part of the URL object.
+     *
+     * @param url URL having its  hostanme
+     * @return account name.
+     */
+    public static String getAccountName(URL url) {
+        UrlBuilder builder = UrlBuilder.parse(url);
+        String accountName =  null;
+        String host = builder.getHost();
+        //Parse host to get account name
+        // host will look like this : <accountname>.blob.core.windows.net
+        if (!ImplUtils.isNullOrEmpty(host)) {
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                // host only contains account name
+                accountName = host;
+            } else {
+                // if host is separated by .
+                accountName = host.substring(0, accountNameIndex);
+            }
+        }
+        return accountName;
     }
 
     /**

@@ -68,8 +68,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
-        super(azureBlobStorage, snapshot, cpk);
+    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
+        super(azureBlobStorage, snapshot, cpk, accountName);
     }
 
     /**

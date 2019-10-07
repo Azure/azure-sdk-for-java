@@ -11,6 +11,7 @@ import org.junit.Ignore;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
+import java.net.URI;
 
 public class IdentityClientIntegrationTests {
     private static final String AZURE_TENANT_ID = "AZURE_TENANT_ID";
@@ -76,6 +77,21 @@ public class IdentityClientIntegrationTests {
     public void usernamePasswordCanGetToken() {
         IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithUsernamePassword(request, System.getenv("username"), System.getenv("password")).block();
+        Assert.assertNotNull(token);
+        Assert.assertNotNull(token.getToken());
+        Assert.assertNotNull(token.getExpiresOn());
+        Assert.assertFalse(token.isExpired());
+        token = client.authenticateWithUserRefreshToken(new TokenRequest().addScopes("https://vault.azure.net/.default"), token).block();
+        Assert.assertNotNull(token);
+        Assert.assertNotNull(token.getToken());
+        Assert.assertNotNull(token.getExpiresOn());
+        Assert.assertFalse(token.isExpired());
+    }
+
+    @Ignore("Integration tests")
+    public void authCodeCanGetToken() throws Exception {
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), new IdentityClientOptions());
+        MsalToken token = client.authenticateWithAuthorizationCode(request, System.getenv("AZURE_AUTH_CODE"), new URI("http://localhost:8000")).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresOn());

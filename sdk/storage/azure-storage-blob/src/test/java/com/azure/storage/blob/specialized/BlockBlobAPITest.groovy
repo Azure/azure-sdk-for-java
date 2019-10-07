@@ -9,10 +9,12 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
+import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
@@ -42,11 +44,13 @@ class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
     BlockBlobAsyncClient bac
     BlobAsyncClient blobac
+    BlobClient blobClient
     String blobName
 
     def setup() {
         blobName = generateBlobName()
-        bc = cc.getBlobClient(blobName).getBlockBlobClient()
+        blobClient = cc.getBlobClient(blobName)
+        bc = blobClient.getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
         blobac = ccAsync.getBlobAsyncClient(generateBlobName())
         bac = blobac.getBlockBlobAsyncClient()
@@ -602,7 +606,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file.getAbsolutePath())
+        blobClient.uploadFromFile(file.getAbsolutePath())
 
         then:
         bc.download(outStream)
@@ -617,7 +621,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        bc.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
+        blobClient.uploadFromFile(file.getAbsolutePath(), null, null, metadata, null, null, null)
 
         then:
         metadata == bc.getProperties().getMetadata()
@@ -804,7 +808,7 @@ class BlockBlobAPITest extends APISpec {
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(bufferSize).setNumBuffers(numBuffs)
-        bac.upload(Flux.just(data), parallelTransferOptions).block()
+        blobac.upload(Flux.just(data), parallelTransferOptions).block()
         data.position(0)
 
         then:
@@ -852,7 +856,7 @@ class BlockBlobAPITest extends APISpec {
             .setBlockSize(bufferSize).setNumBuffers(numBuffers)
         def dataList = [] as List
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        bac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
+        blobac.upload(Flux.fromIterable(dataList), parallelTransferOptions).block()
 
         expect:
         compareListToBuffer(dataList, collectBytesInBuffer(bac.download()).block())
@@ -926,7 +930,7 @@ class BlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Buffered upload metadata"() {
         setup:
-        def metadata = [] as Map<String, String>
+        def metadata = [:] as Map<String, String>
         if (key1 != null) {
             metadata.put(key1, value1)
         }
@@ -1010,6 +1014,32 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
+    // (discovered when a leaseId was invalid)
+    @Unroll
+    def "UploadBufferPool lock three or more buffers"() {
+        setup:
+        bac.upload(defaultFlux, defaultDataSize).block()
+        def leaseID = setupBlobLeaseCondition(bac, garbageLeaseID)
+        def accessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+
+        when:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize as int)
+            .setNumBuffers(numBuffers as int)
+        blobac.uploadWithResponse(Flux.just(getRandomData(dataLength as int)), parallelTransferOptions, null, null,
+            null, accessConditions).block()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        dataLength | blockSize | numBuffers
+        16         | 7         | 2
+        16         | 5         | 2
+    }
+
     /*def "Upload NRF progress"() {
         setup:
         def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
@@ -1078,7 +1108,7 @@ class BlockBlobAPITest extends APISpec {
             .credential(primaryCredential)
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())

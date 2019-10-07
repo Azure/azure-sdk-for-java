@@ -5,9 +5,9 @@ package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.common.credentials.SASTokenCredential;
 
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -75,8 +75,15 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(containerName, "'containerName' cannot be null.");
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        if (Objects.isNull(containerName) || containerName.isEmpty()) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
 
         HttpPipeline pipeline = super.getPipeline();
         if (pipeline == null) {
@@ -86,11 +93,17 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline)
-            .build(), snapshot, customerProvidedKey);
+            .build(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
+     *
+     * <p>If the endpoint is to a blob in the root container, this method will fail as it will interpret the blob name
+     * as the container name. With only one path element, it is impossible to distinguish between a container name
+     * and a blob in the root container, so it is assumed to be the container name as this is much more common. When
+     * working with blobs in the root container, it is best to set the endpoint to the account url and specify the blob
+     * name separately using the {@link BlobClientBuilder#blobName(String) blobName} method.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -104,17 +117,17 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
     public BlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
+            this.accountName = parts.getAccountName();
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
-            SASTokenCredential sasTokenCredential =
-                SASTokenCredential.fromSASTokenString(parts.getSasQueryParameters().encode());
-            if (sasTokenCredential != null) {
-                super.credential(sasTokenCredential);
+            String sasToken = parts.getSasQueryParameters().encode();
+            if (ImplUtils.isNullOrEmpty(sasToken)) {
+                super.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(
@@ -130,12 +143,13 @@ public final class BlobClientBuilder extends BaseBlobClientBuilder<BlobClientBui
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
      *
-     * @param containerName the name of the container
+     * @param containerName the name of the container. If the value is set to null or empty, it will be interpreted as
+     *                      the root container, and "$root" will be inserted as the container name.
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code containerName} is {@code null}
      */
     public BlobClientBuilder containerName(String containerName) {
-        this.containerName = Objects.requireNonNull(containerName, "'containerName' cannot be null.");
+        this.containerName = containerName;
         return this;
     }
 

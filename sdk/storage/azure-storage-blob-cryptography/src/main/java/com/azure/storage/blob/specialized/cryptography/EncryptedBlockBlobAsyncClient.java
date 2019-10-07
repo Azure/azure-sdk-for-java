@@ -65,9 +65,9 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      */
-    EncryptedBlockBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot,
+    EncryptedBlockBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot, String accountName,
         AsyncKeyEncryptionKey key, KeyWrapAlgorithm keyWrapAlgorithm) {
-        super(constructImpl, snapshot, null);
+        super(constructImpl, snapshot, null, accountName);
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
     }

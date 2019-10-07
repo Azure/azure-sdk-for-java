@@ -5,7 +5,6 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.BlobURLParts
 
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
@@ -55,7 +54,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def setup() {
         keyId = "keyId"
         fakeKey = new FakeKey(keyId, 256)
-        fakeKeyResolver = new FakeKeyResolver(keyResolver)
+        fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         cc = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
@@ -219,7 +218,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         when:
         beac.upload(Flux.just(byteBuffer), null).block()
-        cc.getBlobClient(BlobURLParts.parse(new URL(beac.getBlobUrl())).getBlobName()).download(os)
+        cc.getBlobClient(beac.getBlobName()).download(os)
 
         ByteBuffer outputByteBuffer = ByteBuffer.wrap(os.toByteArray())
 
