@@ -52,9 +52,16 @@ namespace Azure.Test.PerfStress
 
             var duration = TimeSpan.FromSeconds(options.Duration);
 
-            using (var test = (IPerfStressTest)Activator.CreateInstance(testType, options))
-            using (var cts = new CancellationTokenSource(duration))
+            var tests = new IPerfStressTest[options.Parallel];
+
+            try
             {
+                for (var i = 0; i < options.Parallel; i++)
+                {
+                    tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, options);
+                }
+
+                using var cts = new CancellationTokenSource(duration);
                 var cancellationToken = cts.Token;
 
                 _ = PrintStatusAsync(cancellationToken);
@@ -65,7 +72,7 @@ namespace Azure.Test.PerfStress
 
                     for (var i = 0; i < options.Parallel; i++)
                     {
-                        threads[i] = new Thread(() => RunLoop(test, cancellationToken));
+                        threads[i] = new Thread(() => RunLoop(tests[i], cancellationToken));
                         threads[i].Start();
                     }
                     for (var i = 0; i < options.Parallel; i++)
@@ -78,20 +85,27 @@ namespace Azure.Test.PerfStress
                     var tasks = new Task[options.Parallel];
                     for (var i = 0; i < options.Parallel; i++)
                     {
-                        tasks[i] = RunLoopAsync(test, cancellationToken);
+                        tasks[i] = RunLoopAsync(tests[i], cancellationToken);
                     }
                     await Task.WhenAll(tasks);
                 }
-
-                var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();
-                var operationsPerSecond = _completedOperations / averageElapsedSeconds;
-                var secondsPerOperation = 1 / operationsPerSecond;
-
-                Console.WriteLine("=== Results ===");
-                Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
-                    $"({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
-                Console.WriteLine();
             }
+            finally
+            {
+                for (var i = 0; i < options.Parallel; i++)
+                {
+                    tests[i]?.Dispose();
+                }
+            }
+
+            var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();
+            var operationsPerSecond = _completedOperations / averageElapsedSeconds;
+            var secondsPerOperation = 1 / operationsPerSecond;
+
+            Console.WriteLine("=== Results ===");
+            Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
+                $"({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
+            Console.WriteLine();
         }
 
         private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)
