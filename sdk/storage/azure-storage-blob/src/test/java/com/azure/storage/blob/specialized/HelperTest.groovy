@@ -655,13 +655,13 @@ class HelperTest extends APISpec {
 
     def "BlobURLParts implicit root"() {
         when:
-        def bup = new BlobURLParts()
+        def bup = new BlobUrlParts()
             .setScheme("http")
             .setHost("host")
             .setBlobName("blob")
 
         then:
-        BlobURLParts.parse(bup.toURL()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        new BlobUrlParts().parse(bup.toURL()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
     }
 
     def "URLParser"() {
