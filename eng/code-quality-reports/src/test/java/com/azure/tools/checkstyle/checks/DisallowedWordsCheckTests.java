@@ -33,8 +33,8 @@ public class DisallowedWordsCheckTests extends AbstractModuleTestSupport {
     @Test
     public void disallowedWordsTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(2, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorURLCase")),
-            expectedErrorMessage(4, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorHTTPMethod"))
+            expectedErrorMessage(3, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "errorHTTPMethod")),
+            expectedErrorMessage(9, 5, String.format(DISALLOWED_WORD_ERROR_MESSAGE, "invalidXMLMethod"))
         };
         verify(checker, getPath("DisallowedWordsTestData.java"), expected);
     }

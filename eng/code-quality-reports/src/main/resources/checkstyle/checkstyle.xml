@@ -385,7 +385,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- 3. variableName -->
     <!-- 4. longerVariableOrMethodName -->
     <!--<module name="com.azure.tools.checkstyle.checks.DisallowedWordsCheck">-->
-    <!--<property name="disallowedWords" value="URL, HTTP, XML" />-->
+    <!--<property name="disallowedWords" value="URL, HTTP, XML, JSON, SAS, CPK" />-->
     <!--</module>-->
 
     <!-- CUSTOM CHECKS -->
