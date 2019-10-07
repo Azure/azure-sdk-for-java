@@ -253,7 +253,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
         final ConfigurationSetting lockConfiguration = new ConfigurationSetting().setKey(key).setValue("myValue");
         testRunner.accept(lockConfiguration);
-        testRunner.accept(lockConfiguration.setLabel(label));
     }
 
     @Test
