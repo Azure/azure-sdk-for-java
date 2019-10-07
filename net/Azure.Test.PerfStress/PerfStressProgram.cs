@@ -56,17 +56,7 @@ namespace Azure.Test.PerfStress
 
                 _ = PrintStatusAsync(cancellationToken);
 
-                if (options.Async)
-                {
-                    var tasks = new Task[options.Parallel];
-
-                    for (var i = 0; i < options.Parallel; i++)
-                    {
-                        tasks[i] = RunLoopAsync(test, cancellationToken);
-                    }
-                    Task.WhenAll(tasks).Wait();
-                }
-                else
+                if (options.Sync)
                 {
                     var threads = new Thread[options.Parallel];
 
@@ -79,6 +69,16 @@ namespace Azure.Test.PerfStress
                     {
                         threads[i].Join();
                     }
+                }
+                else
+                {
+                    var tasks = new Task[options.Parallel];
+
+                    for (var i = 0; i < options.Parallel; i++)
+                    {
+                        tasks[i] = RunLoopAsync(test, cancellationToken);
+                    }
+                    Task.WhenAll(tasks).Wait();
                 }
 
                 var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();

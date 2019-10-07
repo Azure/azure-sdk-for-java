@@ -4,8 +4,8 @@ namespace Azure.Test.PerfStress
 {
     public class PerfStressOptions
     {
-        [Option('a', "async", Default = true)]
-        public bool Async { get; set; }
+        [Option("sync")]
+        public bool Sync { get; set; }
 
         [Option('d', "duration", Default = 10, HelpText = "Duration of test in seconds")]
         public int Duration { get; set; }
