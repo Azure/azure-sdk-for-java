@@ -374,6 +374,7 @@ final class HttpResponseBodyDecoder {
      */
     private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
         Type token = decodeData.getReturnType();
+        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         if (token != null) {
             if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
                 token = TypeUtil.getTypeArgument(token);
@@ -387,8 +388,7 @@ final class HttpResponseBodyDecoder {
                         token = t;
                     }
                 } catch (ClassNotFoundException ignored) {
-                    throw new RuntimeException("Failed to find the class "
-                        + "'com.azure.core.management.implementation.OperationStatus'");
+                    logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus");
                 }
             }
 
@@ -404,8 +404,7 @@ final class HttpResponseBodyDecoder {
                     token = TypeUtil.getTypeArgument(token);
                 }
             } catch (ClassNotFoundException ignored) {
-                throw new RuntimeException("Failed to find the class "
-                    + "'com.azure.core.management.implementation.OperationStatus'");
+                logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus");
             }
         }
         return token;
