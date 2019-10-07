@@ -11,26 +11,24 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
+import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -49,6 +47,7 @@ import java.util.function.Consumer;
  */
 public final class BlobBatch {
     private static final String BATCH_REQUEST_CONTENT_ID = "Batch-Request-Content-Id";
+    private static final String BATCH_REQUEST_URL_PATH = "Batch-Request-Url-Path";
     private static final String CONTENT_ID = "Content-Id";
     private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
     private static final String CONTENT_TYPE = "Content-Type: application/http";
@@ -63,8 +62,7 @@ public final class BlobBatch {
 
     private final ClientLogger logger = new ClientLogger(BlobBatch.class);
 
-    private final String accountUrl;
-    private final HttpPipeline batchPipeline;
+    private final BlobAsyncClient batchClient;
 
     private final Deque<Mono<? extends Response>> batchOperationQueue;
     private final List<ByteBuffer> batchRequest;
@@ -75,10 +73,24 @@ public final class BlobBatch {
 
     private BlobBatchType batchType;
 
+    /**
+     * Constructs a {@link BlobBatch} using the {@link BlobServiceClient#getHttpPipeline()
+     * BlobServiceClient's HttpPipeline} to build a modified {@link HttpPipeline} that is used to prepare the requests
+     * in the batch.
+     *
+     * @param client {@link BlobServiceClient} used to construct the batch.
+     */
     public BlobBatch(BlobServiceClient client) {
         this(client.getAccountUrl(), client.getHttpPipeline());
     }
 
+    /**
+     * Constructs a {@link BlobBatch} using the {@link BlobServiceAsyncClient#getHttpPipeline()
+     * BlobServiceAsyncClient's HttpPipeline} to build a modified {@link HttpPipeline} that is used to prepare the
+     * requests in the batch.
+     *
+     * @param client {@link BlobServiceAsyncClient} used to construct the batch.
+     */
     public BlobBatch(BlobServiceAsyncClient client) {
         this(client.getAccountUrl(), client.getHttpPipeline());
     }
@@ -87,38 +99,33 @@ public final class BlobBatch {
         this.contentId = new AtomicInteger(0);
         this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
 
-        this.accountUrl = accountUrl;
-
         boolean batchHeadersPolicySet = false;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy policy = pipeline.getPolicy(i);
 
-            // Don't want these policies in the dummy pipeline.
-            if (policy instanceof HttpLoggingPolicy
-                || policy instanceof RetryPolicy
-                || policy instanceof RequestRetryPolicy
-                || policy instanceof UserAgentPolicy) {
-                continue;
-            }
-
             if (policy instanceof SharedKeyCredentialPolicy) {
                 batchHeadersPolicySet = true;
                 // The batch policy needs to be added before the SharedKey policy to run preparation cleanup.
-                policies.add(new BatchHeadersPolicy());
+                policies.add(this::cleanseHeaders);
             }
 
             policies.add(pipeline.getPolicy(i));
         }
 
         if (!batchHeadersPolicySet) {
-            policies.add(new BatchHeadersPolicy());
+            policies.add(this::cleanseHeaders);
         }
 
-        this.batchPipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(new BatchClient(this::sendCallback))
-            .build();
+        this.batchClient = new BlobClientBuilder()
+            .endpoint(accountUrl)
+            .containerName("dummy")
+            .blobName("dummy")
+            .pipeline(new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(new BatchClient(this::sendCallback))
+                .build())
+            .buildAsyncClient();
 
         this.batchOperationQueue = new ConcurrentLinkedDeque<>();
         this.batchRequest = new ArrayList<>();
@@ -135,7 +142,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> delete(String containerName, String blobName) {
-        return deleteHelper(buildClient(containerName, blobName), null, null);
+        return deleteHelper(String.format("%s/%s", containerName, blobName), null, null);
     }
 
     /**
@@ -151,7 +158,7 @@ public final class BlobBatch {
      */
     public Response<Void> delete(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
-        return deleteHelper(buildClient(containerName, blobName), deleteOptions, blobAccessConditions);
+        return deleteHelper(String.format("%s/%s", containerName, blobName), deleteOptions, blobAccessConditions);
     }
 
     /**
@@ -163,7 +170,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> delete(String blobUrl) {
-        return deleteHelper(buildClient(blobUrl), null, null);
+        return deleteHelper(getUrlPath(blobUrl), null, null);
     }
 
     /**
@@ -178,20 +185,14 @@ public final class BlobBatch {
      */
     public Response<Void> delete(String blobUrl, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
-        return deleteHelper(buildClient(blobUrl), deleteOptions, blobAccessConditions);
+        return deleteHelper(getUrlPath(blobUrl), deleteOptions, blobAccessConditions);
     }
 
-    private Response<Void> deleteHelper(BlobAsyncClientBase client, DeleteSnapshotsOptionType deleteOptions,
+    private Response<Void> deleteHelper(String urlPath, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
-        if (this.batchType == null) {
-            this.batchType = BlobBatchType.DELETE;
-        } else if (this.batchType != BlobBatchType.DELETE) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
-                "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
-        }
-
-        return createAndReturnBatchOperation(client.deleteWithResponse(deleteOptions, blobAccessConditions),
-            EXPECTED_DELETE_STATUS_CODES);
+        setBatchType(BlobBatchType.DELETE);
+        return createBatchOperation(batchClient.deleteWithResponse(deleteOptions, blobAccessConditions),
+            urlPath, EXPECTED_DELETE_STATUS_CODES);
     }
 
     /**
@@ -205,7 +206,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setTier(String containerName, String blobName, AccessTier accessTier) {
-        return setTierHelper(buildClient(containerName, blobName), accessTier, null);
+        return setTierHelper(String.format("%s/%s", containerName, blobName), accessTier, null);
     }
 
     /**
@@ -221,7 +222,7 @@ public final class BlobBatch {
      */
     public Response<Void> setTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        return setTierHelper(buildClient(containerName, blobName), accessTier, leaseAccessConditions);
+        return setTierHelper(String.format("%s/%s", containerName, blobName), accessTier, leaseAccessConditions);
     }
 
     /**
@@ -234,7 +235,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setTier(String blobUrl, AccessTier accessTier) {
-        return setTierHelper(buildClient(blobUrl), accessTier, null);
+        return setTierHelper(getUrlPath(blobUrl), accessTier, null);
     }
 
     /**
@@ -248,45 +249,38 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setTier(String blobUrl, AccessTier accessTier, LeaseAccessConditions leaseAccessConditions) {
-        return setTierHelper(buildClient(blobUrl), accessTier, leaseAccessConditions);
+        return setTierHelper(getUrlPath(blobUrl), accessTier, leaseAccessConditions);
     }
 
-    private Response<Void> setTierHelper(BlobAsyncClientBase client, AccessTier accessTier,
+    private Response<Void> setTierHelper(String urlPath, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        if (this.batchType == null) {
-            this.batchType = BlobBatchType.SET_TIER;
-        } else if (this.batchType != BlobBatchType.SET_TIER) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
-                "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
-        }
-
-        return createAndReturnBatchOperation(client.setAccessTierWithResponse(accessTier, null, leaseAccessConditions),
-            EXPECTED_SET_TIER_STATUS_CODES);
+        setBatchType(BlobBatchType.SET_TIER);
+        return createBatchOperation(batchClient.setAccessTierWithResponse(accessTier, null, leaseAccessConditions),
+            urlPath, EXPECTED_SET_TIER_STATUS_CODES);
     }
 
-    private <T> Response<T> createAndReturnBatchOperation(Mono<Response<T>> response, int... expectedStatusCodes) {
+    private <T> Response<T> createBatchOperation(Mono<Response<T>> response, String urlPath,
+        int... expectedStatusCodes) {
         int contentId = this.contentId.getAndIncrement();
-        this.batchOperationQueue.add(response.subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, contentId)));
+        this.batchOperationQueue.add(response
+            .subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, contentId, BATCH_REQUEST_URL_PATH, urlPath)));
 
         BlobBatchOperationResponse<T> batchOperationResponse = new BlobBatchOperationResponse<>(expectedStatusCodes);
         this.batchMapping.put(contentId, batchOperationResponse);
         return batchOperationResponse;
     }
 
-    private BlobAsyncClientBase buildClient(String containerName, String blobName) {
-        return new BlobClientBuilder()
-            .endpoint(accountUrl)
-            .containerName(containerName)
-            .blobName(blobName)
-            .pipeline(batchPipeline)
-            .buildAsyncClient();
+    private String getUrlPath(String url) {
+        return UrlBuilder.parse(url).getPath();
     }
 
-    private BlobAsyncClientBase buildClient(String blobUrl) {
-        return new BlobClientBuilder()
-            .endpoint(blobUrl)
-            .pipeline(batchPipeline)
-            .buildAsyncClient();
+    private void setBatchType(BlobBatchType batchType) {
+        if (this.batchType == null) {
+            this.batchType = batchType;
+        } else if (this.batchType != batchType) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
+                "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
+        }
     }
 
     private void sendCallback(HttpRequest request) {
@@ -328,13 +322,13 @@ public final class BlobBatch {
             throw logger.logExceptionAsError(new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
-        while (!batchOperationQueue.isEmpty()) {
-            Mono<? extends Response> batchOperation = batchOperationQueue.pop();
-            Disposable disposable = batchOperation.subscribe();
-            while (!disposable.isDisposed()) {
-                // Wait until the batch operation has processed in the pipeline.
-                // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
-            }
+        Disposable disposable = Flux.fromStream(batchOperationQueue.stream())
+            .flatMap(batchOperation -> batchOperation)
+            .subscribe();
+
+        while (!disposable.isDisposed()) {
+            // Wait until the batch operation has processed in the pipeline.
+            // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
         }
 
         this.batchRequest.add(ByteBuffer
@@ -389,25 +383,32 @@ public final class BlobBatch {
     }
 
     /*
-     * This HttpPipelinePolicy performs some cleanup operations that would be handled when the request is sent through
-     * Netty or OkHttp. Additionally, it removed the "x-ms-version" header from the request as batch operation request
-     * cannot have this and it adds the header "Content-Id" that allows for the request to be mapped to the response.
+     * This performs a cleanup operation that would be handled when the request is sent through Netty or OkHttp.
+     * Additionally, it removes the "x-ms-version" header from the request as batch operation requests cannot have this
+     * and it adds the header "Content-Id" that allows the request to be mapped to the response.
      */
-    private static class BatchHeadersPolicy implements HttpPipelinePolicy {
-        @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            // Remove the "x-ms-header" as it shouldn't be included in the batch operation request.
-            context.getHttpRequest().getHeaders().remove(Constants.HeaderConstants.VERSION);
+    private Mono<HttpResponse> cleanseHeaders(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        // Remove the "x-ms-header" as it shouldn't be included in the batch operation request.
+        context.getHttpRequest().getHeaders().remove(Constants.HeaderConstants.VERSION);
 
-            // Remove any null headers (this is done in Netty and OkHttp normally).
-            Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
-            headers.entrySet().removeIf(header -> header.getValue() == null);
+        // Remove any null headers (this is done in Netty and OkHttp normally).
+        Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
+        headers.entrySet().removeIf(header -> header.getValue() == null);
 
-            context.getHttpRequest().setHeaders(new HttpHeaders(headers));
+        context.getHttpRequest().setHeaders(new HttpHeaders(headers));
 
-            // Add the "Content-Id" header which allows this request to be mapped to the response.
-            context.getHttpRequest().setHeader(CONTENT_ID, context.getData(BATCH_REQUEST_CONTENT_ID).get().toString());
-            return next.process();
+        // Add the "Content-Id" header which allows this request to be mapped to the response.
+        context.getHttpRequest().setHeader(CONTENT_ID, context.getData(BATCH_REQUEST_CONTENT_ID).get().toString());
+
+        // Set the request URL to the correct endpoint.
+        try {
+            UrlBuilder requestUrl = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
+            context.getHttpRequest().setUrl(requestUrl.toURL());
+        } catch (MalformedURLException ex) {
+            throw Exceptions.propagate(logger.logExceptionAsError(new IllegalStateException(ex)));
         }
+
+        return next.process();
     }
 }
