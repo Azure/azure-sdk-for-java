@@ -30,6 +30,7 @@ import org.junit.rules.TestName;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -97,12 +98,18 @@ public class SearchIndexClientTestBase extends TestBase {
     }
 
     protected <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
-        client.uploadDocument(uploadDoc);
+        List<T> docs = new ArrayList<>();
+        docs.add(uploadDoc);
+
+        client.uploadDocuments(docs);
         waitForIndexing();
     }
 
     protected <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
-        client.uploadDocument(uploadDoc)
+        List<T> docs = new ArrayList<>();
+        docs.add(uploadDoc);
+
+        client.uploadDocuments(docs)
             .block();
         waitForIndexing();
     }

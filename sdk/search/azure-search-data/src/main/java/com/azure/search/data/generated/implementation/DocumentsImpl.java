@@ -30,7 +30,7 @@ import com.azure.search.data.generated.models.AutocompleteResult;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.DocumentSearchResult;
 import com.azure.search.data.generated.models.DocumentSuggestResult;
-import com.azure.search.data.generated.models.IndexBatch;
+import com.azure.search.data.customization.IndexBatch;
 import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchMode;
 import com.azure.search.data.generated.models.SearchParameters;

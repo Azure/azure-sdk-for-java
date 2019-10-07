@@ -81,8 +81,9 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         setupIndexFromJsonFile(INDEX_JSON_GEO_POINTS);
         client = getClientBuilder(INDEX_NAME_GEO_POINTS).buildClient();
 
-        Map<String, Object> indexObjectMap = createGeoPointIndexMap("1", "test", GeoPoint.create(1.0, 100.0));
-        DocumentIndexResult indexResult = client.uploadDocument(indexObjectMap);
+        List<Map<String, Object>> docs = new ArrayList<>();
+        docs.add(createGeoPointIndexMap("1", "test", GeoPoint.create(1.0, 100.0)));
+        DocumentIndexResult indexResult = client.uploadDocuments(docs);
         Assert.assertNotNull(indexResult);
         Assert.assertTrue(indexResult.results().get(0).succeeded());
     }

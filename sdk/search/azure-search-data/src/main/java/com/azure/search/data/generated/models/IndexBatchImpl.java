@@ -13,7 +13,7 @@ import java.util.List;
  * index.
  */
 @Fluent
-public final class IndexBatch<T> {
+public class IndexBatchImpl<T> {
     /*
      * The actions in the batch.
      */
@@ -33,9 +33,9 @@ public final class IndexBatch<T> {
      * Set the actions property: The actions in the batch.
      *
      * @param actions the actions value to set.
-     * @return the IndexBatch object itself.
+     * @return the IndexBatchImpl object itself.
      */
-    public IndexBatch<T> actions(List<IndexAction<T>> actions) {
+    protected IndexBatchImpl<T> actions(List<IndexAction<T>> actions) {
         this.actions = actions;
         return this;
     }

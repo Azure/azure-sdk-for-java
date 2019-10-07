@@ -17,9 +17,6 @@ cp -r azure-rest-api-spec/specification/search/data-plane/Microsoft.Azure.Search
 cp -r azure-rest-api-spec/specification/search/data-plane//Microsoft.Azure.Search.Service/stable/2019-05-06/* 2019-05-06/service/.
 rm -rf azure-rest-api-spec
 
-# Tweaking a bit the spec file
-sed 's/SearchIndexClient/SearchIndexRestClient/g' 2019-05-06/data/searchindex.json > 2019-05-06/data/modifiedSearchIndex.json
-
 # Generate the data api
 autorest --use=$AUTOREST_JAVA_DIR ./data-readme.md
 

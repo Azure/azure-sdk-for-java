@@ -4,15 +4,16 @@ package com.azure.search.data.customization;
 
 import com.azure.search.data.generated.models.IndexAction;
 import com.azure.search.data.generated.models.IndexActionType;
-import com.azure.search.data.generated.models.IndexBatch;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class IndexBatchBuilderTests {
+public class IndexBatchTests {
 
     @Test
     public void uploadDocument() {
@@ -24,10 +25,10 @@ public class IndexBatchBuilderTests {
             .document(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
-            .actions(Arrays.asList(indexAction));
+            .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatchBuilder<Document>()
-            .upload(document).build();
+        IndexBatch<Document> actual = new IndexBatch<Document>()
+            .addUploadAction(document);
 
         validate(expected, actual);
     }
@@ -46,18 +47,18 @@ public class IndexBatchBuilderTests {
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
         List<IndexAction<Document>> indexActions = new LinkedList<>();
 
-        for (int i = 0; i < docs.size(); i++) {
+        for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
                     .actionType(IndexActionType.UPLOAD)
-                    .document(docs.get(i))
+                    .document(doc)
             );
         }
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>().actions(indexActions);
+        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+            .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatchBuilder<Document>()
-            .upload(docs)
-            .build();
+        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+            .addUploadAction(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -72,10 +73,10 @@ public class IndexBatchBuilderTests {
             .document(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
-            .actions(Arrays.asList(indexAction));
+            .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatchBuilder<Document>()
-            .merge(document).build();
+        IndexBatch<Document> actual = new IndexBatch<Document>()
+            .addMergeAction(document);
 
         validate(expected, actual);
     }
@@ -94,18 +95,18 @@ public class IndexBatchBuilderTests {
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
         List<IndexAction<Document>> indexActions = new LinkedList<>();
 
-        for (int i = 0; i < docs.size(); i++) {
+        for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
                     .actionType(IndexActionType.MERGE)
-                    .document(docs.get(i))
+                    .document(doc)
             );
         }
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>().actions(indexActions);
+        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+            .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatchBuilder<Document>()
-            .merge(docs)
-            .build();
+        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+            .addMergeAction(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -120,10 +121,10 @@ public class IndexBatchBuilderTests {
             .document(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
-            .actions(Arrays.asList(indexAction));
+            .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatchBuilder<Document>()
-            .mergeOrUpload(document).build();
+        IndexBatch<Document> actual = new IndexBatch<Document>()
+            .addMergeOrUploadAction(document);
 
         validate(expected, actual);
     }
@@ -142,18 +143,18 @@ public class IndexBatchBuilderTests {
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
         List<IndexAction<Document>> indexActions = new LinkedList<>();
 
-        for (int i = 0; i < docs.size(); i++) {
+        for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
                     .actionType(IndexActionType.MERGE_OR_UPLOAD)
-                    .document(docs.get(i))
+                    .document(doc)
             );
         }
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>().actions(indexActions);
+        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+            .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatchBuilder<Document>()
-            .mergeOrUpload(docs)
-            .build();
+        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+            .addMergeOrUploadAction(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -168,10 +169,10 @@ public class IndexBatchBuilderTests {
             .document(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
-            .actions(Arrays.asList(indexAction));
+            .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatchBuilder<Document>()
-            .delete(document).build();
+        IndexBatch<Document> actual = new IndexBatch<Document>()
+            .addDeleteAction(document);
 
         validate(expected, actual);
     }
@@ -190,18 +191,18 @@ public class IndexBatchBuilderTests {
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
         List<IndexAction<Document>> indexActions = new LinkedList<>();
 
-        for (int i = 0; i < docs.size(); i++) {
+        for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
                     .actionType(IndexActionType.DELETE)
-                    .document(docs.get(i))
+                    .document(doc)
             );
         }
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>().actions(indexActions);
+        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+            .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatchBuilder<Document>()
-            .delete(docs)
-            .build();
+        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+            .addDeleteAction(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -240,69 +241,56 @@ public class IndexBatchBuilderTests {
         IndexBatch<Document> expected = new IndexBatch<Document>()
             .actions(Arrays.asList(mergeAction, mergeOrUploadAction, deleteAction, uploadAction));
 
-        IndexBatch<Document> actual = new IndexBatchBuilder<Document>()
-            .merge(documentToMerge)
-            .mergeOrUpload(documentToMergeOrUpload)
-            .delete(documentToDelete)
-            .upload(documentToUpload)
-            .build();
+        IndexBatch<Document> actual = new IndexBatch<Document>()
+            .addMergeAction(documentToMerge)
+            .addMergeOrUploadAction(documentToMergeOrUpload)
+            .addDeleteAction(documentToDelete)
+            .addUploadAction(documentToUpload);
 
         validate(expected, actual);
     }
 
     @Test
     public void canBuildIndexBatchWithMultipleActionsAndMultipleDocuments() {
-        List<Document> documentsToMerge = Arrays.asList(
-            new Document() {
-                {
-                    put("Id", "merge1");
-                }
-            },
-            new Document() {
-                {
-                    put("Id", "merge2");
-                }
-            }
-        );
+        List<Document> documentsToMerge = new ArrayList<>();
 
-        List<Document> documentsToDelete = Arrays.asList(
-            new Document() {
-                {
-                    put("Id", "delete1");
-                }
-            },
-            new Document() {
-                {
-                    put("Id", "delete2");
-                }
-            }
-        );
+        Document merge1 = new Document();
+        merge1.put("Id", "merge1");
+        documentsToMerge.add(merge1);
 
-        List<Document> documentsToMergeOrUpload = Arrays.asList(
-            new Document() {
-                {
-                    put("Id", "mergeOrUpload1");
-                }
-            },
-            new Document() {
-                {
-                    put("Id", "mergeOrUpload2");
-                }
-            }
-        );
+        Document merge2 = new Document();
+        merge2.put("Id", "merge2");
+        documentsToMerge.add(merge2);
 
-        List<Document> documentsToUpload = Arrays.asList(
-            new Document() {
-                {
-                    put("Id", "upload1");
-                }
-            },
-            new Document() {
-                {
-                    put("Id", "upload2");
-                }
-            }
-        );
+        List<Document> documentsToDelete = new ArrayList<>();
+
+        Document delete1 = new Document();
+        delete1.put("Id", "delete1");
+        documentsToDelete.add(delete1);
+
+        Document delete2 = new Document();
+        delete2.put("Id", "delete2");
+        documentsToDelete.add(delete2);
+
+        List<Document> documentsToMergeOrUpload = new ArrayList<>();
+
+        Document mergeOrUpload1 = new Document();
+        mergeOrUpload1.put("Id", "mergeOrUpload1");
+        documentsToMergeOrUpload.add(mergeOrUpload1);
+
+        Document mergeOrUpload2 = new Document();
+        mergeOrUpload2.put("Id", "mergeOrUpload2");
+        documentsToMergeOrUpload.add(mergeOrUpload2);
+
+        List<Document> documentsToUpload = new ArrayList<>();
+
+        Document upload1 = new Document();
+        upload1.put("Id", "upload1");
+        documentsToUpload.add(upload1);
+
+        Document upload2 = new Document();
+        upload2.put("Id", "upload2");
+        documentsToUpload.add(upload2);
 
         IndexAction<Document> mergeAction1 = new IndexAction<Document>()
             .actionType(IndexActionType.MERGE)
@@ -350,12 +338,11 @@ public class IndexBatchBuilderTests {
                 )
             );
 
-        IndexBatch<Document> actual = new IndexBatchBuilder<Document>()
-            .merge(documentsToMerge)
-            .mergeOrUpload(documentsToMergeOrUpload)
-            .delete(documentsToDelete)
-            .upload(documentsToUpload)
-            .build();
+        IndexBatch<Document> actual = new IndexBatch<Document>()
+            .addMergeAction(documentsToMerge)
+            .addMergeOrUploadAction(documentsToMergeOrUpload)
+            .addDeleteAction(documentsToDelete)
+            .addUploadAction(documentsToUpload);
 
         validate(expected, actual);
     }

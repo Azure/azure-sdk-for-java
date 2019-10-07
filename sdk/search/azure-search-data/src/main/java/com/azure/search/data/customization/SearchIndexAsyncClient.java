@@ -21,7 +21,6 @@ import com.azure.search.data.generated.models.AutocompleteItem;
 import com.azure.search.data.generated.models.AutocompleteParameters;
 import com.azure.search.data.generated.models.AutocompleteRequest;
 import com.azure.search.data.generated.models.DocumentIndexResult;
-import com.azure.search.data.generated.models.IndexBatch;
 import com.azure.search.data.generated.models.SearchParameters;
 import com.azure.search.data.generated.models.SearchRequest;
 import com.azure.search.data.generated.models.SearchRequestOptions;
@@ -146,59 +145,25 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Uploads a document to the target index.
-     *
-     * @param document the document to upload to the target Index
-     * @param <T> the type of object to serialize
-     * @return document index result
-     */
-    public <T> Mono<DocumentIndexResult> uploadDocument(T document) {
-        return this.index(new IndexBatchBuilder<T>().upload(document).build());
-    }
-
-    /**
      * Uploads a collection of documents to the target index
      *
      * @param documents collection of documents to upload to the target Index.
-     * @param <T> The type of object to serialize.
      * @return document index result.
      */
-    public <T> Mono<DocumentIndexResult> uploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder<T>().upload(documents).build());
-    }
-
-    /**
-     * Merges a document with an existing document in the target index.
-     *
-     * @param document the document to be merged
-     * @param <T> the type of object to serialize
-     * @return document index result
-     */
-    public <T> Mono<DocumentIndexResult> mergeDocument(T document) {
-        return this.index(new IndexBatchBuilder<T>().merge(document).build());
+    @SuppressWarnings("unchecked")
+    public Mono<DocumentIndexResult> uploadDocuments(Iterable<?> documents) {
+        return this.index(new IndexBatch().addUploadAction(documents));
     }
 
     /**
      * Merges a collection of documents with existing documents in the target index.
      *
      * @param documents collection of documents to be merged
-     * @param <T> the type of object to serialize
      * @return document index result
      */
-    public <T> Mono<DocumentIndexResult> mergeDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder<T>().merge(documents).build());
-    }
-
-    /**
-     * This action behaves like merge if a document with the given key already exists in the index.
-     * If the document does not exist, it behaves like upload with a new document.
-     *
-     * @param document the document to be merged, if exists, otherwise uploaded as a new document
-     * @param <T> the type of object to serialize
-     * @return document index result
-     */
-    public <T> Mono<DocumentIndexResult> mergeOrUploadDocument(T document) {
-        return this.index(new IndexBatchBuilder<T>().mergeOrUpload(document).build());
+    @SuppressWarnings("unchecked")
+    public Mono<DocumentIndexResult> mergeDocuments(Iterable<?> documents) {
+        return this.index(new IndexBatch().addMergeAction(documents));
     }
 
     /**
@@ -206,34 +171,22 @@ public class SearchIndexAsyncClient {
      * If the document does not exist, it behaves like upload with a new document.
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
-     * @param <T> the type of object to serialize
      * @return document index result
      */
-    public <T> Mono<DocumentIndexResult> mergeOrUploadDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder<T>().mergeOrUpload(documents).build());
-    }
-
-    /**
-     * Deletes a document from the target index.
-     * Note that any field you specify in a delete operation, other than the key field, will be ignored.
-     *
-     * @param document the document to delete from the target Index
-     * @param <T> The type of object to serialize
-     * @return document index result
-     */
-    public <T> Mono<DocumentIndexResult> deleteDocument(T document) {
-        return this.index(new IndexBatchBuilder<T>().delete(document).build());
+    @SuppressWarnings("unchecked")
+    public  Mono<DocumentIndexResult> mergeOrUploadDocuments(Iterable<?> documents) {
+        return this.index(new IndexBatch().addMergeOrUploadAction(documents));
     }
 
     /**
      * Deletes a collection of documents from the target index
      *
      * @param documents collection of documents to delete from the target Index.
-     * @param <T> The type of object to serialize.
      * @return document index result.
      */
-    public <T> Mono<DocumentIndexResult> deleteDocuments(List<T> documents) {
-        return this.index(new IndexBatchBuilder<T>().delete(documents).build());
+    @SuppressWarnings("unchecked")
+    public Mono<DocumentIndexResult> deleteDocuments(Iterable<?> documents) {
+        return this.index(new IndexBatch().addDeleteAction(documents));
     }
 
     /**
@@ -312,7 +265,7 @@ public class SearchIndexAsyncClient {
                 return new SearchPagedResponse(res);
             });
         return new PagedFlux<>(() -> first,
-            nextLink -> searchPostNextWithRestResponseAsync(searchRequest, (String) nextLink));
+            nextLink -> searchPostNextWithRestResponseAsync(searchRequest, nextLink));
     }
 
     /**
@@ -392,10 +345,9 @@ public class SearchIndexAsyncClient {
      * Sends a batch of document actions to the Azure Search index.
      *
      * @param batch batch of documents to send to the index with the requested action
-     * @param <T> The type of document to be indexed
      * @return document index result
      */
-    public <T> Mono<DocumentIndexResult> index(IndexBatch<T> batch) {
+    public Mono<DocumentIndexResult> index(IndexBatch<?> batch) {
         Mono<SimpleResponse<DocumentIndexResult>> responseMono = restClient
             .documents()
             .indexWithRestResponseAsync(batch);
