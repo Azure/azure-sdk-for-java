@@ -105,7 +105,7 @@ public class KeyCreateOptions {
     /**
      * Get the notBefore UTC time.
      *
-     * @return the nNotBefore UTC time.
+     * @return the notBefore UTC time.
      */
     public OffsetDateTime notBefore() {
         return notBefore;
