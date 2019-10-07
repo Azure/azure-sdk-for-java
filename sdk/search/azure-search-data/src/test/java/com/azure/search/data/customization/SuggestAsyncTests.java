@@ -6,15 +6,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
-
+import com.azure.search.test.environment.models.Author;
+import com.azure.search.test.environment.models.Book;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_DATA_JSON;
@@ -23,6 +20,7 @@ import static com.azure.search.data.customization.SearchTestBase.HOTELS_INDEX_NA
 public class SuggestAsyncTests extends SuggestTestBase {
 
     private SearchIndexAsyncClient client;
+    private static final String BOOKS_INDEX_NAME = "books";
 
     @Override
     protected void initializeClient() {
@@ -104,7 +102,30 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() {
+    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+
+        Author tolkien = new Author();
+        tolkien.firstName("J.R.R.");
+        tolkien.lastName("Tolkien");
+        Book doc1 = new Book();
+        doc1.ISBN("123");
+        doc1.title("Lord of the Rings");
+        doc1.author(tolkien);
+
+        Book doc2 = new Book();
+        doc2.ISBN("456");
+        doc2.title("War and Peace");
+        doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
+        uploadDocuments(client, BOOKS_INDEX_NAME, Arrays.asList(doc1, doc2));
+
+        SuggestParameters suggestParams = new SuggestParameters();
+        suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate"));
+        PagedFlux<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
+
+        StepVerifier
+            .create(suggestResult.byPage())
+            .assertNext(this::verifyCanSuggestWithDateTimeInStaticModel)
+            .verifyComplete();
     }
 
     @Override
