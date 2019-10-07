@@ -45,7 +45,7 @@ class KeyRequestAttributes {
     }
 
     /**
-     * Determines whether the object is setEnabled.
+     * Determines whether the object is enabled.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
@@ -99,7 +99,7 @@ class KeyRequestAttributes {
      *
      * @return the notBefore value
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         if (this.notBefore == null) {
             return null;
         }

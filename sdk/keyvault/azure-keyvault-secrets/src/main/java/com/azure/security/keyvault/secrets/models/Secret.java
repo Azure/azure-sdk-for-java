@@ -62,9 +62,8 @@ public class Secret {
      *
      * @return the secret identifier.
      */
-    public Secret getId() {
-        properties.getId();
-        return this;
+    public String getId() {
+        return properties.getId();
     }
 
     /**

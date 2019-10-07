@@ -88,7 +88,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     }
 
     /**
-     * Set the gags to be associated with the key.
+     * Set the tags to be associated with the key.
      *
      * @param tags The tags to set
      * @return the RsaKeyCreateOptions object itself.

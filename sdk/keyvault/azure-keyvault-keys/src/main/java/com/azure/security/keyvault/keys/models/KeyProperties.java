@@ -79,8 +79,8 @@ public class KeyProperties {
     private Map<String, String> tags;
 
     /**
-     * True if the key's lifetime is isManaged by key vault. If this is a key
-     * backing a certificate, then isManaged will be true.
+     * True if the key's lifetime is managed by key vault. If this is a key
+     * backing a certificate, then managed will be true.
      */
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean managed;
