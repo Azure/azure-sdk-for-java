@@ -79,7 +79,7 @@ public class CryptographyClientBuilder {
      */
     public CryptographyClientBuilder() {
         retryPolicy = new RetryPolicy();
-        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+        httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
     }
 
@@ -217,14 +217,13 @@ public class CryptographyClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
-     * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated builder object.
-     * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public CryptographyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        httpLogOptions = Objects.requireNonNull(logOptions, "Http log options cannot be null.");
+        httpLogOptions = logOptions;
         return this;
     }
 

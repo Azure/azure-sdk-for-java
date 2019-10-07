@@ -70,7 +70,7 @@ public final class CertificateClientBuilder {
      */
     public CertificateClientBuilder() {
         retryPolicy = new RetryPolicy();
-        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+        httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
     }
 
@@ -172,12 +172,13 @@ public final class CertificateClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated {@link CertificateClientBuilder} object.
-     * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public CertificateClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        httpLogOptions = Objects.requireNonNull(logOptions, "Http log options cannot be null.");
+        httpLogOptions = logOptions;
         return this;
     }
 

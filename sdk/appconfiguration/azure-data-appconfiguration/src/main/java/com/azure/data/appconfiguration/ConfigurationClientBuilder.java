@@ -91,7 +91,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder() {
         policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+        httpLogOptions = new HttpLogOptions();
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
@@ -210,12 +210,13 @@ public final class ConfigurationClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
     public ConfigurationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        httpLogOptions = Objects.requireNonNull(logOptions, "Http log options cannot be null.");
+        httpLogOptions = logOptions;
         return this;
     }
 

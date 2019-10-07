@@ -16,6 +16,7 @@ public class HttpLogOptions {
     private Set<String> allowedQueryParamNames;
 
     public HttpLogOptions() {
+        logLevel = HttpLogDetailLevel.NONE;
         allowedHeaderNames = new HashSet<>();
         allowedQueryParamNames = new HashSet<>();
     }
@@ -32,12 +33,13 @@ public class HttpLogOptions {
     /**
      * Sets the level of detail to log on Http messages.
      *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
      * @param logLevel The {@link HttpLogDetailLevel}.
      * @return The updated HttpLogOptions object.
-     * @throws NullPointerException If {@code logLevel} is {@code null}.
      */
     public HttpLogOptions setLogLevel(final HttpLogDetailLevel logLevel) {
-        this.logLevel = Objects.requireNonNull(logLevel);
+        this.logLevel = logLevel == null ? HttpLogDetailLevel.NONE : logLevel;
         return this;
     }
 
@@ -58,7 +60,7 @@ public class HttpLogOptions {
      * @throws NullPointerException If {@code allowedHeaderNames} is {@code null}.
      */
     public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = Objects.requireNonNull(allowedHeaderNames);
+        this.allowedHeaderNames = allowedHeaderNames;
         return this;
     }
 
@@ -89,10 +91,9 @@ public class HttpLogOptions {
      *
      * @param allowedQueryParamNames The list of whitelisted query params from the user.
      * @return The updated HttpLogOptions object.
-     * @throws NullPointerException If {@code allowedQueryParamNames} is {@code null}.
      */
     public HttpLogOptions setAllowedQueryParamNames(final Set<String> allowedQueryParamNames) {
-        this.allowedQueryParamNames = Objects.requireNonNull(allowedQueryParamNames);
+        this.allowedQueryParamNames = allowedQueryParamNames;
         return this;
     }
 
@@ -104,7 +105,6 @@ public class HttpLogOptions {
      * @throws NullPointerException If {@code allowedQueryParamName} is {@code null}.
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
-        Objects.requireNonNull(allowedQueryParamName);
         this.allowedQueryParamNames.add(allowedQueryParamName);
         return this;
     }

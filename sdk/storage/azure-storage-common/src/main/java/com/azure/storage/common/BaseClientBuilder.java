@@ -58,7 +58,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
     private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private Configuration configuration;
 
@@ -274,12 +274,13 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     /**
      * Sets the logging configuration for service requests
      *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated builder
-     * @throws NullPointerException If {@code logOptions} is {@code null}
      */
     public final T httpLogOptions(HttpLogOptions logOptions) {
-        httpLogOptions = Objects.requireNonNull(logOptions, "Http log options cannot be null.");
+        httpLogOptions = logOptions;
         return getClazz().cast(this);
     }
 

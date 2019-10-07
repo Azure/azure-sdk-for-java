@@ -74,7 +74,7 @@ public final class KeyClientBuilder {
      */
     public KeyClientBuilder() {
         retryPolicy = new RetryPolicy();
-        httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
+        httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
     }
 
@@ -183,12 +183,13 @@ public final class KeyClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated {@link KeyClientBuilder} object.
-     * @throws NullPointerException if {@code logOptions} is {@code null}.
      */
     public KeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        httpLogOptions = Objects.requireNonNull(logOptions, "Http log options cannot be null.");
+        httpLogOptions = logOptions;
         return this;
     }
 
