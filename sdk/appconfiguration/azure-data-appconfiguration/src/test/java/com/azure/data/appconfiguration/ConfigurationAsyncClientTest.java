@@ -6,6 +6,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -39,13 +40,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credential(credentials)
                     .httpClient(interceptorManager.getPlaybackClient())
-                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credential(credentials)
                     .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())
                     .buildAsyncClient());

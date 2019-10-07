@@ -3,6 +3,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -37,13 +38,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                 .credential(credentials)
                 .httpClient(interceptorManager.getPlaybackClient())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
                 .credential(credentials)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
                 .buildClient());

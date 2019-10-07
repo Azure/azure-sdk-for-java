@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -46,7 +47,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         RecordedData networkData = new RecordedData();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).build();
         CertificateAsyncClient keyClient = new CertificateClientBuilder()
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .pipeline(pipeline)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .addPolicy(new RecordNetworkCallPolicy(networkData))
@@ -65,7 +67,7 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         CertificateAsyncClient secretAsyncClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://myvault.vault.azure.net/")
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation
         return secretAsyncClient;

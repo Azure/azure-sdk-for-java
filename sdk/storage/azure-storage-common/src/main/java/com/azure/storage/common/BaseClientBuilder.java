@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
@@ -58,7 +59,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
     private HttpClient httpClient;
-    private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private Configuration configuration;
 
@@ -94,7 +95,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
         policies.add(makeValidationPolicy());
 
-        policies.add(new HttpLoggingPolicy(logLevel));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -272,14 +273,15 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     }
 
     /**
-     * Sets the logging level for service requests
+     * Sets the logging configuration for service requests
      *
-     * @param logLevel logging level
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated builder
-     * @throws NullPointerException If {@code logLevel} is {@code null}
      */
-    public final T httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = Objects.requireNonNull(logLevel);
+    public final T httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
         return getClazz().cast(this);
     }
 
