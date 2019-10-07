@@ -434,7 +434,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         } else if (expected == actual) {
             return;
         } else if (expected == null || actual == null) {
-            assertTrue(false);
+            assertFalse("One of input settings is null", true);
         }
 
         equals(expected, actual);
