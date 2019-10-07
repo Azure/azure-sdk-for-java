@@ -35,8 +35,8 @@ class KeyRequestAttributes {
      * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
      */
     KeyRequestAttributes(KeyCreateOptions keyOptions) {
-        if (keyOptions.notBefore() != null) {
-            this.notBefore = keyOptions.notBefore().toEpochSecond();
+        if (keyOptions.getNotBefore() != null) {
+            this.notBefore = keyOptions.getNotBefore().toEpochSecond();
         }
         if (keyOptions.getExpires() != null) {
             this.expires = keyOptions.getExpires().toEpochSecond();

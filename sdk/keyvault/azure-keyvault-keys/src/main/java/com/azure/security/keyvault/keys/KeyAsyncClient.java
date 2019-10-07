@@ -144,10 +144,10 @@ public final class KeyAsyncClient {
      * {@code keys/create} permission.
      *
      * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
-     * KeyCreateOptions#notBefore() notBefore} values are optional. The {@link KeyCreateOptions#setEnabled(Boolean) enabled}
+     * KeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link KeyCreateOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link KeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
      * and {@link KeyType#OCT OCT}.</p>
      *
@@ -170,7 +170,7 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
         Objects.requireNonNull(keyCreateOptions, "The key create options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(keyCreateOptions.keyType())
+            .setKty(keyCreateOptions.getKeyType())
             .setKeyOps(keyCreateOptions.keyOperations())
             .setKeyAttributes(new KeyRequestAttributes(keyCreateOptions));
         return service.createKey(endpoint, keyCreateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
@@ -187,10 +187,10 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and
-     * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The
-     * {@link RsaKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * {@link RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The
+     * {@link RsaKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -217,10 +217,10 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and
-     * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link
-     * RsaKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * {@link RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link
+     * RsaKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions}
@@ -240,7 +240,7 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
         Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(rsaKeyCreateOptions.keyType())
+            .setKty(rsaKeyCreateOptions.getKeyType())
             .setKeySize(rsaKeyCreateOptions.getKeySize())
             .setKeyOps(rsaKeyCreateOptions.keyOperations())
             .setKeyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
@@ -258,11 +258,11 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault,
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault,
      * if not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -289,11 +289,11 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -317,7 +317,7 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
         Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(ecKeyCreateOptions.keyType())
+            .setKty(ecKeyCreateOptions.getKeyType())
             .setCurve(ecKeyCreateOptions.getCurve())
             .setKeyOps(ecKeyCreateOptions.keyOperations())
             .setKeyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
@@ -563,7 +563,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(KeyProperties keyProperties) {
-        Objects.requireNonNull(keyProperties, "The Key Base parameter cannot be null.");
+        Objects.requireNonNull(keyProperties, "The Key Properties parameter cannot be null.");
         return withContext(context -> getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? ""
             : keyProperties.getVersion(), context));
     }
@@ -595,7 +595,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context) {
-        Objects.requireNonNull(keyProperties, "The key input parameter cannot be null.");
+        Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
             .setKeyAttributes(new KeyRequestAttributes(keyProperties));
@@ -662,7 +662,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
-        Objects.requireNonNull(keyProperties, "The key input parameter cannot be null.");
+        Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
             .setKeyOps(Arrays.asList(keyOperations))

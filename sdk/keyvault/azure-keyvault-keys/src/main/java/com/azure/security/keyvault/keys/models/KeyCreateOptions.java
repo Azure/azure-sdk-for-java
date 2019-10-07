@@ -87,7 +87,7 @@ public class KeyCreateOptions {
      *
      * @return the key type.
      */
-    public KeyType keyType() {
+    public KeyType getKeyType() {
         return this.keyType;
     }
 
@@ -107,7 +107,7 @@ public class KeyCreateOptions {
      *
      * @return the notBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
@@ -147,7 +147,7 @@ public class KeyCreateOptions {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 

@@ -7,11 +7,15 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.*;
-import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.models.KeyCreateOptions;
+import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 
 import java.time.OffsetDateTime;
 

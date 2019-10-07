@@ -78,10 +78,10 @@ public final class KeyClient {
      * {@code keys/create} permission.
      *
      * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
-     * KeyCreateOptions#notBefore() notBefore} values are optional. The {@link KeyCreateOptions#setEnabled(Boolean)} enabled} field
+     * KeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link KeyCreateOptions#isEnabled()} enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link KeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
      * and {@link KeyType#OCT OCT}.</p>
      *
@@ -104,10 +104,10 @@ public final class KeyClient {
      * {@code keys/create} permission.
      *
      * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
-     * KeyCreateOptions#notBefore() notBefore} values are optional. The {@link KeyCreateOptions#setEnabled(Boolean) enabled} field
+     * KeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link KeyCreateOptions#isEnabled() enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link KeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
      * and {@link KeyType#OCT OCT}.</p>
      *
@@ -132,10 +132,10 @@ public final class KeyClient {
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and {@link
-     * RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#setEnabled(Boolean) enabled}
+     * RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -160,10 +160,10 @@ public final class KeyClient {
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
      * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and {@link
-     * RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#setEnabled(Boolean) enabled}
+     * RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -188,11 +188,11 @@ public final class KeyClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean) enabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -216,11 +216,11 @@ public final class KeyClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#setEnabled(Boolean)} enabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#isEnabled()} enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
@@ -421,7 +421,7 @@ public final class KeyClient {
      *     string.
      */
     public Response<Key> getKeyWithResponse(KeyProperties keyProperties, Context context) {
-        Objects.requireNonNull(keyProperties, "The Key Base parameter cannot be null.");
+        Objects.requireNonNull(keyProperties, "The Key properties parameter cannot be null.");
         return client
             .getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? "" : keyProperties.getVersion(), context).block();
     }
@@ -765,7 +765,7 @@ public final class KeyClient {
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the list is represented by {@link KeyProperties} as only the key identifier, attributes and getTags are
+     * response in the list is represented by {@link KeyProperties} as only the key identifier, attributes and tags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
@@ -789,7 +789,7 @@ public final class KeyClient {
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the list is represented by {@link KeyProperties} as only the key identifier, attributes and getTags are
+     * response in the list is represented by {@link KeyProperties} as only the key identifier, attributes and tags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
@@ -854,7 +854,7 @@ public final class KeyClient {
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
-     * as only the key identifier, attributes and getTags are provided in the response. The key material values are
+     * as only the key identifier, attributes and tags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
@@ -880,7 +880,7 @@ public final class KeyClient {
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
-     * as only the key identifier, attributes and getTags are provided in the response. The key material values are
+     * as only the key identifier, attributes and tags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the

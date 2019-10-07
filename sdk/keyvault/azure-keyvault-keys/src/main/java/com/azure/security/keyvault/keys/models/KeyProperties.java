@@ -117,7 +117,7 @@ public class KeyProperties {
      * Set the enabled value.
      *
      * @param enabled The enabled value to set
-     * @return the KeyProperties object itself.
+     * @return the updated KeyProperties object itself.
      */
     public KeyProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
@@ -137,7 +137,7 @@ public class KeyProperties {
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
      * @param notBefore The notBefore UTC time to set
-     * @return the KeyProperties object itself.
+     * @return the updated KeyProperties object itself.
      */
     public KeyProperties setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
@@ -160,7 +160,7 @@ public class KeyProperties {
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires The expiry time to set for the key.
-     * @return the KeyProperties object itself.
+     * @return the updated KeyProperties object itself.
      */
     public KeyProperties setExpires(OffsetDateTime expires) {
         this.expires = expires;
@@ -208,7 +208,7 @@ public class KeyProperties {
      * Set the tags to be associated with the key.
      *
      * @param tags The tags to set
-     * @return the KeyProperties object itself.
+     * @return the updated KeyProperties object itself.
      */
     public KeyProperties setTags(Map<String, String> tags) {
         this.tags = tags;

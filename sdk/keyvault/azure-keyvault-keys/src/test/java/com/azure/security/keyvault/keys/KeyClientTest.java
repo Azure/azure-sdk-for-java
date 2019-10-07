@@ -60,7 +60,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void setKeyNullType() {
         setKeyEmptyValueRunner((key) -> {
-            assertRestException(() -> client.createKey(key.getName(), key.keyType()), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
+            assertRestException(() -> client.createKey(key.getName(), key.getKeyType()), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
         });
     }
 
@@ -164,7 +164,7 @@ public class KeyClientTest extends KeyClientTestBase {
             pollOnKeyDeletion(keyToDeleteAndRecover.getName());
             Key recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.getName());
             assertEquals(keyToDeleteAndRecover.getName(), recoveredKey.getName());
-            assertEquals(keyToDeleteAndRecover.notBefore(), recoveredKey.getProperties().getNotBefore());
+            assertEquals(keyToDeleteAndRecover.getNotBefore(), recoveredKey.getProperties().getNotBefore());
             assertEquals(keyToDeleteAndRecover.getExpires(), recoveredKey.getProperties().getExpires());
         });
     }
@@ -238,7 +238,7 @@ public class KeyClientTest extends KeyClientTestBase {
                 if (keys.containsKey(actualKey.getName())) {
                     KeyCreateOptions expectedKey = keys.get(actualKey.getName());
                     assertEquals(expectedKey.getExpires(), actualKey.getExpires());
-                    assertEquals(expectedKey.notBefore(), actualKey.getNotBefore());
+                    assertEquals(expectedKey.getNotBefore(), actualKey.getNotBefore());
                     keys.remove(actualKey.getName());
                 }
             }

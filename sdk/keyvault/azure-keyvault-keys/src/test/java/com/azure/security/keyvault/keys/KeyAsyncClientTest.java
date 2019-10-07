@@ -215,7 +215,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(client.recoverDeletedKey(keyToDeleteAndRecover.getName()))
                 .assertNext(keyResponse -> {
                     assertEquals(keyToDeleteAndRecover.getName(), keyResponse.getName());
-                    assertEquals(keyToDeleteAndRecover.notBefore(), keyResponse.getProperties().getNotBefore());
+                    assertEquals(keyToDeleteAndRecover.getNotBefore(), keyResponse.getProperties().getNotBefore());
                     assertEquals(keyToDeleteAndRecover.getExpires(), keyResponse.getProperties().getExpires());
                 }).verifyComplete();
         });
@@ -277,7 +277,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(client.restoreKey(backup))
                 .assertNext(response -> {
                     assertEquals(keyToBackupAndRestore.getName(), response.getName());
-                    assertEquals(keyToBackupAndRestore.notBefore(), response.getProperties().getNotBefore());
+                    assertEquals(keyToBackupAndRestore.getNotBefore(), response.getProperties().getNotBefore());
                     assertEquals(keyToBackupAndRestore.getExpires(), response.getProperties().getExpires());
                 }).verifyComplete();
         });
@@ -418,7 +418,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 if (keys.containsKey(actualKey.getName())) {
                     KeyCreateOptions expectedKey = keys.get(actualKey.getName());
                     assertEquals(expectedKey.getExpires(), actualKey.getExpires());
-                    assertEquals(expectedKey.notBefore(), actualKey.getNotBefore());
+                    assertEquals(expectedKey.getNotBefore(), actualKey.getNotBefore());
                     keys.remove(actualKey.getName());
                 }
             }

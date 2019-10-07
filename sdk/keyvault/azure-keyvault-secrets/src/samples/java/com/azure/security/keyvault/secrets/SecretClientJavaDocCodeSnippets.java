@@ -362,14 +362,15 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
         secretClient.listSecretVersions("secretName", new Context(key1, value2))
-            .iterableByPage().forEach(resp -> { System.out.printf("Got response headers . Url: %s, Status code: %d %n",
-                resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(value -> {
-                Secret secretWithValue = secretClient.getSecret(value);
-                System.out.printf("Received secret's version with name %s and value %s",
-                    secretWithValue.getName(), secretWithValue.getValue());
-            });
-        });
+                    .iterableByPage().forEach(resp -> {
+                        System.out.printf("Got response headers . Url: %s, Status code: %d %n",
+                            resp.getRequest().getUrl(), resp.getStatusCode());
+                        resp.getItems().forEach(value -> {
+                            Secret secretWithValue = secretClient.getSecret(value);
+                            System.out.printf("Received secret's version with name %s and value %s",
+                                secretWithValue.getName(), secretWithValue.getValue());
+                        });
+                    });
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
     }
 

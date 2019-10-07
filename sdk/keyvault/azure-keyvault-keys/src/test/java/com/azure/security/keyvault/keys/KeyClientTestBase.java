@@ -330,9 +330,9 @@ public abstract class KeyClientTestBase extends TestBase {
      */
     static void assertKeyEquals(KeyCreateOptions expected, Key actual) {
         assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.keyType(), actual.getKeyMaterial().getKty());
+        assertEquals(expected.getKeyType(), actual.getKeyMaterial().getKty());
         assertEquals(expected.getExpires(), actual.getProperties().getExpires());
-        assertEquals(expected.notBefore(), actual.getProperties().getNotBefore());
+        assertEquals(expected.getNotBefore(), actual.getProperties().getNotBefore());
     }
 
     public String getEndpoint() {
