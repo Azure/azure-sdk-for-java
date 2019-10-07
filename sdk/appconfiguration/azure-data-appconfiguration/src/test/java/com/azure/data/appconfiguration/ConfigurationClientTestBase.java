@@ -249,7 +249,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
-        String label = getLabel();
 
         final ConfigurationSetting lockConfiguration = new ConfigurationSetting().setKey(key).setValue("myValue");
         testRunner.accept(lockConfiguration);
