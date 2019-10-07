@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime;
 
@@ -30,6 +31,9 @@ namespace HttpMock
 
             [Option('h', "headers")]
             public IEnumerable<string> Headers { get; set; }
+
+            [Option('s', "service")]
+            public Service? Service { get; set; }
         }
 
         public static HttpMockOptions Options { get; private set; }
@@ -50,11 +54,6 @@ namespace HttpMock
 
         static void Run()
         {
-            foreach (var header in Options.Headers)
-            {
-                Console.WriteLine(header);
-            }
-
             new WebHostBuilder()
                 .UseKestrel(options =>
                 {
@@ -72,7 +71,7 @@ namespace HttpMock
                         var request = context.Request;
                         var response = context.Response;
 
-                        var key = new RequestCacheKey(request, Options.Headers);
+                        var key = new RequestCacheKey(request, Options.Headers.Concat(ServiceHeaders.Get(Options.Service)));
 
                         if (_cache.TryGetValue(key, out var upstreamResponse))
                         {

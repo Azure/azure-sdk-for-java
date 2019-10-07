@@ -10,7 +10,7 @@
   "profiles": {
     "HttpMock": {
       "commandName": "Project",
-      "commandLineArgs": "--dots -h x-ms-range",
+      "commandLineArgs": "--dots -s storageblob",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
