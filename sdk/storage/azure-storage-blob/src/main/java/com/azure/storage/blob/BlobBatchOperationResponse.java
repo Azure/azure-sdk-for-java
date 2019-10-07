@@ -102,7 +102,7 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
     }
 
     HttpResponse asHttpResponse(String body) {
-        return new BlobBatchOperationHttpResponse(request, statusCode, headers, body);
+        return initResponse(request, statusCode, headers, body);
     }
 
     private void assertResponseReceived() {
@@ -116,51 +116,42 @@ public class BlobBatchOperationResponse<T> implements Response<T> {
         }
     }
 
-    private static class BlobBatchOperationHttpResponse extends HttpResponse {
-        private final int statusCode;
-        private final HttpHeaders headers;
-        private final String body;
+    private HttpResponse initResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
+        return new HttpResponse(request) {
+            @Override
+            public int getStatusCode() {
+                return statusCode;
+            }
 
-        BlobBatchOperationHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
-            super(request);
-            this.statusCode = statusCode;
-            this.headers = headers;
-            this.body = body;
-        }
+            @Override
+            public String getHeaderValue(String name) {
+                return headers.getValue(name);
+            }
 
-        @Override
-        public int getStatusCode() {
-            return statusCode;
-        }
+            @Override
+            public HttpHeaders getHeaders() {
+                return headers;
+            }
 
-        @Override
-        public String getHeaderValue(String name) {
-            return headers.getValue(name);
-        }
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return Flux.just(ByteBuffer.wrap(body.getBytes(StandardCharsets.UTF_8)));
+            }
 
-        @Override
-        public HttpHeaders getHeaders() {
-            return headers;
-        }
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(body.getBytes(StandardCharsets.UTF_8));
+            }
 
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return Flux.just(ByteBuffer.wrap(body.getBytes(StandardCharsets.UTF_8)));
-        }
+            @Override
+            public Mono<String> getBodyAsString() {
+                return Mono.just(body);
+            }
 
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return Mono.just(body.getBytes(StandardCharsets.UTF_8));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return Mono.just(body);
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return Mono.just(body);
-        }
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just(body);
+            }
+        };
     }
 }

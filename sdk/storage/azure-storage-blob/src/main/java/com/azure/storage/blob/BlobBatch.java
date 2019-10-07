@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -40,7 +39,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 /**
  * This class provides
@@ -123,7 +121,7 @@ public final class BlobBatch {
             .blobName("dummy")
             .pipeline(new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(new BatchClient(this::sendCallback))
+                .httpClient(this::setupBatchOperation)
                 .build())
             .buildAsyncClient();
 
@@ -283,40 +281,6 @@ public final class BlobBatch {
         }
     }
 
-    private void sendCallback(HttpRequest request) {
-        int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
-
-        StringBuilder batchRequestBuilder = new StringBuilder();
-        appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
-        appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
-        appendWithNewline(batchRequestBuilder, CONTENT_TRANSFER_ENCODING);
-        appendWithNewline(batchRequestBuilder, String.format(CONTENT_ID_TEMPLATE, contentId));
-        batchRequestBuilder.append("\r\n");
-
-        String method = request.getHttpMethod().toString();
-        String urlPath = request.getUrl().getPath();
-        String urlQuery = request.getUrl().getQuery();
-        if (!ImplUtils.isNullOrEmpty(urlQuery)) {
-            urlPath = urlPath + "?" + urlQuery;
-        }
-        appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
-
-        request.getHeaders().stream()
-            .filter(header -> !Constants.HeaderConstants.VERSION.equalsIgnoreCase(header.getName()))
-            .forEach(header -> appendWithNewline(batchRequestBuilder,
-                String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
-
-        batchRequestBuilder.append("\r\n");
-
-        batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
-
-        this.batchMapping.get(contentId).setRequest(request);
-    }
-
-    private void appendWithNewline(StringBuilder stringBuilder, String value) {
-        stringBuilder.append(value).append("\r\n");
-    }
-
     Flux<ByteBuffer> getBody() {
         if (batchOperationQueue.isEmpty()) {
             throw logger.logExceptionAsError(new UnsupportedOperationException("Empty batch requests aren't allowed."));
@@ -364,25 +328,6 @@ public final class BlobBatch {
     }
 
     /*
-     * This HttpClient is a dummy client that simply triggers the batch operation request to be written into the
-     * overall batch request.
-     */
-    private static class BatchClient implements HttpClient {
-        private final Consumer<HttpRequest> sendCallback;
-
-        BatchClient(Consumer<HttpRequest> sendCallback) {
-            this.sendCallback = sendCallback;
-        }
-
-        @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
-            // Trigger the batch operation request to be added into the overall batch.
-            sendCallback.accept(request);
-            return Mono.empty();
-        }
-    }
-
-    /*
      * This performs a cleanup operation that would be handled when the request is sent through Netty or OkHttp.
      * Additionally, it removes the "x-ms-version" header from the request as batch operation requests cannot have this
      * and it adds the header "Content-Id" that allows the request to be mapped to the response.
@@ -410,5 +355,45 @@ public final class BlobBatch {
         }
 
         return next.process();
+    }
+
+    /*
+     * This will "send" the batch operation request when triggered, it simply acts as a way to build and write the
+     * batch operation into the overall request and then ends.
+     */
+    private Mono<HttpResponse> setupBatchOperation(HttpRequest request) {
+        int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
+
+        StringBuilder batchRequestBuilder = new StringBuilder();
+        appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
+        appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
+        appendWithNewline(batchRequestBuilder, CONTENT_TRANSFER_ENCODING);
+        appendWithNewline(batchRequestBuilder, String.format(CONTENT_ID_TEMPLATE, contentId));
+        batchRequestBuilder.append("\r\n");
+
+        String method = request.getHttpMethod().toString();
+        String urlPath = request.getUrl().getPath();
+        String urlQuery = request.getUrl().getQuery();
+        if (!ImplUtils.isNullOrEmpty(urlQuery)) {
+            urlPath = urlPath + "?" + urlQuery;
+        }
+        appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
+
+        request.getHeaders().stream()
+            .filter(header -> !Constants.HeaderConstants.VERSION.equalsIgnoreCase(header.getName()))
+            .forEach(header -> appendWithNewline(batchRequestBuilder,
+                String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
+
+        batchRequestBuilder.append("\r\n");
+
+        batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
+
+        this.batchMapping.get(contentId).setRequest(request);
+
+        return Mono.empty();
+    }
+
+    private void appendWithNewline(StringBuilder stringBuilder, String value) {
+        stringBuilder.append(value).append("\r\n");
     }
 }
