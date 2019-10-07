@@ -238,7 +238,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
             return Mono.error(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
-                + "permission/not supported for key with getId %s", key.getKid())));
+                + "permission/not supported for key with id %s", key.getKid())));
         }
         return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
     }
@@ -321,7 +321,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
             return Mono.error(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
-                + "key with getId %s", key.getKid())));
+                + "key with id %s", key.getKid())));
         }
         return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData,
             authenticationTag, context, key);
@@ -366,7 +366,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with getId %s", key.getKid())));
+                + "with id %s", key.getKid())));
         }
 
         return localKeyCryptographyClient.signAsync(algorithm, digest, context, key);
@@ -412,7 +412,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
-                + "key with getId %s", key.getKid())));
+                + "key with id %s", key.getKid())));
         }
         return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
     }
@@ -453,7 +453,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
-                + "key with getId %s", this.key.getKid())));
+                + "key with id %s", this.key.getKid())));
         }
 
         return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
@@ -499,7 +499,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
-                + "for key with getId %s", this.key.getKid())));
+                + "for key with id %s", this.key.getKid())));
         }
         return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
     }
@@ -544,7 +544,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with getId %s", this.key.getKid())));
+                + "with id %s", this.key.getKid())));
         }
         return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
     }
@@ -590,7 +590,7 @@ public class CryptographyAsyncClient {
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
             return Mono.error(new UnsupportedOperationException(String.format(
-                "Verify Operation is not allowed for key with getId %s", this.key.getKid())));
+                "Verify Operation is not allowed for key with id %s", this.key.getKid())));
         }
         return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
     }
@@ -606,11 +606,11 @@ public class CryptographyAsyncClient {
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
             String version = (tokens.length >= 4 ? tokens[3] : null);
             if (Strings.isNullOrEmpty(endpoint)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Key endpoint in key getId is invalid"));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key endpoint in key id is invalid"));
             } else if (Strings.isNullOrEmpty(keyName)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Key name in key getId is invalid"));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key name in key id is invalid"));
             } else if (Strings.isNullOrEmpty(version)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Key version in key getId is invalid"));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Key version in key id is invalid"));
             }
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed", e));

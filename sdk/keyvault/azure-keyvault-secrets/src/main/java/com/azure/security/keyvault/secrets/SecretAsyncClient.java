@@ -311,7 +311,7 @@ public final class SecretAsyncClient {
      * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and {@link SecretProperties#getVersion()
      * version} cannot be null.</p>
      *
-     * @param secret The {@link SecretProperties secret properties} object with updated properties.
+     * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
      * @return A {@link Mono} containing the {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -320,8 +320,8 @@ public final class SecretAsyncClient {
      *     empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretProperties> updateSecretProperties(SecretProperties secret) {
-        return updateSecretPropertiesWithResponse(secret).flatMap(FluxUtil::toMono);
+    public Mono<SecretProperties> updateSecretProperties(SecretProperties secretProperties) {
+        return updateSecretPropertiesWithResponse(secretProperties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -338,7 +338,7 @@ public final class SecretAsyncClient {
      * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and {@link SecretProperties#getVersion()
      * version} cannot be null.</p>
      *
-     * @param secret The {@link SecretProperties secret properties} object with updated properties.
+     * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -348,22 +348,22 @@ public final class SecretAsyncClient {
      *     empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secret) {
-        return withContext(context -> updateSecretPropertiesWithResponse(secret, context));
+    public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
+        return withContext(context -> updateSecretPropertiesWithResponse(secretProperties, context));
     }
 
-    Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secret, Context context) {
-        Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
+    Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
+        Objects.requireNonNull(secretProperties, "The secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
-            .setTags(secret.getTags())
-            .setContentType(secret.getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secret));
+            .setTags(secretProperties.getTags())
+            .setContentType(secretProperties.getContentType())
+            .setSecretAttributes(new SecretRequestAttributes(secretProperties));
 
-        return service.updateSecret(endpoint, secret.getName(), secret.getVersion(), API_VERSION, ACCEPT_LANGUAGE,
+        return service.updateSecret(endpoint, secretProperties.getName(), secretProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE,
             parameters, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Updating secret - {}", secret.getName()))
+            .doOnRequest(ignored -> logger.info("Updating secret - {}", secretProperties.getName()))
             .doOnSuccess(response -> logger.info("Updated secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update secret - {}", secret.getName(), error));
+            .doOnError(error -> logger.warning("Failed to update secret - {}", secretProperties.getName(), error));
     }
 
     /**

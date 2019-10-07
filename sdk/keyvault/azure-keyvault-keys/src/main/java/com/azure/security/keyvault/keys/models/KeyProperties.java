@@ -109,7 +109,7 @@ public class KeyProperties {
      *
      * @return the enabled value
      */
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 

@@ -268,7 +268,7 @@ public final class KeyClient {
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
      * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
      * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() enabled} field is set to true and the
+     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled} field is set to true and the
      * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -300,7 +300,7 @@ public final class KeyClient {
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
      * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
      * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() enabled} field is set to true and the
+     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled} field is set to true and the
      * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -388,11 +388,11 @@ public final class KeyClient {
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
-     * the {@link List} containing {@link KeyProperties base key} as output excluding the key material of the key. This
+     * the {@link List} containing {@link KeyProperties key properties} as output excluding the key material of the key. This
      * operation can then be used to get the full key with its key material from {@code keyProperties}. </p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#KeyProperties}
      *
-     * @param keyProperties The {@link KeyProperties base key} holding attributes of the key being requested.
+     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @return The requested {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
@@ -408,11 +408,11 @@ public final class KeyClient {
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
-     * the {@link List} containing {@link KeyProperties base key} as output excluding the key material of the key. This
+     * the {@link List} containing {@link KeyProperties key properties} as output excluding the key material of the key. This
      * operation can then be used to get the full key with its key material from {@code keyProperties}. </p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context}
      *
-     * @param keyProperties The {@link KeyProperties base key} holding attributes of the key being requested.
+     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
@@ -436,16 +436,16 @@ public final class KeyClient {
      * <p>Gets the latest version of the key, changes its expiry time and the updates the key in the key vault.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties}
      *
-     * @param key The {@link KeyProperties base key} object with updated properties.
-     * @return The {@link KeyProperties updated key}.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
+     * @return The {@link Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Key updateKeyProperties(KeyProperties key) {
-        return client.updateKeyPropertiesWithResponse(key, Context.NONE).block().getValue();
+    public Key updateKeyProperties(KeyProperties keyProperties) {
+        return updateKeyPropertiesWithResponse(keyProperties, Context.NONE).getValue();
     }
 
     /**
@@ -459,17 +459,17 @@ public final class KeyClient {
      * key vault.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyProperties updated key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Key updateKeyProperties(KeyProperties key, KeyOperation... keyOperations) {
-        return updateKeyPropertiesWithResponse(key, Context.NONE, keyOperations).getValue();
+    public Key updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
+        return updateKeyPropertiesWithResponse(keyProperties, Context.NONE, keyOperations).getValue();
     }
 
     /**
@@ -483,18 +483,18 @@ public final class KeyClient {
      * key vault.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations-Context}
      *
-     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyProperties updated key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Response<Key> updateKeyPropertiesWithResponse(KeyProperties key, Context context, KeyOperation... keyOperations) {
-        return client.updateKeyPropertiesWithResponse(key, context, keyOperations).block();
+    public Response<Key> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
+        return client.updateKeyPropertiesWithResponse(keyProperties, context, keyOperations).block();
     }
 
     /**
@@ -765,18 +765,18 @@ public final class KeyClient {
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the list is represented by {@link KeyProperties} as only the base key identifier, attributes and getTags are
+     * response in the list is represented by {@link KeyProperties} as only the key identifier, attributes and getTags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyProperties key}
-     * and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link Key key} with key material
+     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key material
      * included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyProperties
-     * key} by page and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link Key key} with key
+     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key
      * material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
@@ -789,18 +789,18 @@ public final class KeyClient {
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the list is represented by {@link KeyProperties} as only the base key identifier, attributes and getTags are
+     * response in the list is represented by {@link KeyProperties} as only the key identifier, attributes and getTags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyProperties key}
-     * and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link Key key} with key material
+     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key material
      * included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyProperties
-     * key} by page and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link Key key} with key
+     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key
      * material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
@@ -854,17 +854,17 @@ public final class KeyClient {
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
-     * as only the base key identifier, attributes and getTags are provided in the response. The key material values are
+     * as only the key identifier, attributes and getTags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
-     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link Key keys}
+     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key keys}
      * with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get full keys with key material for each version from this information. Iterate over all
-     * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link
+     * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link
      * Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
      *
@@ -880,17 +880,17 @@ public final class KeyClient {
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
-     * as only the base key identifier, attributes and getTags are provided in the response. The key material values are
+     * as only the key identifier, attributes and getTags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
-     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the {@link Key keys}
+     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key keys}
      * with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get full keys with key material for each version from this information. Iterate over all
-     * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties baseKey)}. This will return the
+     * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the
      * {@link Key keys} with key material included of the specified versions.</p>
      *
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}

@@ -25,7 +25,7 @@ class KeyRequestAttributes {
         if (keyProperties.getExpires() != null) {
             this.expires = keyProperties.getExpires().toEpochSecond();
         }
-        this.enabled = keyProperties.getEnabled();
+        this.enabled = keyProperties.isEnabled();
     }
 
     /**

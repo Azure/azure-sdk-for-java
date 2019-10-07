@@ -226,7 +226,7 @@ public final class SecretClient {
      * </p>
      * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretPropertiesWithResponse#secretProperties-Context}
      *
-     * @param secret The {@link SecretProperties secret properties} object with updated properties.
+     * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -235,8 +235,8 @@ public final class SecretClient {
      * @throws HttpRequestException if {@link SecretProperties#getName() name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
-    public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secret, Context context) {
-        return client.updateSecretPropertiesWithResponse(secret, context).block();
+    public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
+        return client.updateSecretPropertiesWithResponse(secretProperties, context).block();
     }
 
     /**
@@ -253,7 +253,7 @@ public final class SecretClient {
      * vault.</p>
      * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretProperties#secretProperties}
      *
-     * @param secret The {@link SecretProperties secret properties} object with updated properties.
+     * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
      * @return The {@link SecretProperties updated secret}.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretProperties#getName() name} and {@link
@@ -261,8 +261,8 @@ public final class SecretClient {
      * @throws HttpRequestException if {@link SecretProperties#getName() name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
-    public SecretProperties updateSecretProperties(SecretProperties secret) {
-        return updateSecretPropertiesWithResponse(secret, Context.NONE).getValue();
+    public SecretProperties updateSecretProperties(SecretProperties secretProperties) {
+        return updateSecretPropertiesWithResponse(secretProperties, Context.NONE).getValue();
     }
 
     /**

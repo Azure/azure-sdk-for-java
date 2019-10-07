@@ -13,16 +13,16 @@ abstract class Algorithm {
 
     Algorithm(String name) {
         if (Strings.isNullOrWhiteSpace(name)) {
-            throw new IllegalArgumentException("getName");
+            throw new IllegalArgumentException("name");
         }
 
         this.name = name;
     }
 
     /*
-     * Gets the getName of the algorithm.
+     * Gets the name of the algorithm.
      * 
-     * @return The getName of the algorithm.
+     * @return The name of the algorithm.
      */
     public String getName() {
         return name;

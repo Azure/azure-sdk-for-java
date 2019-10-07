@@ -371,7 +371,7 @@ public final class KeyAsyncClient {
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
      * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
      * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() enabled} field is set to true and the
+     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled} field is set to true and the
      * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -405,7 +405,7 @@ public final class KeyAsyncClient {
      * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
      * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
      * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#getEnabled() enabled}
+     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled}
      * field is set to true and the {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they
      * are not specified.</p>
      *
@@ -526,12 +526,12 @@ public final class KeyAsyncClient {
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)}
-     * return the {@link Flux} containing {@link KeyProperties base key} as output excluding the key material of the key.
+     * return the {@link Flux} containing {@link KeyProperties key properties} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyProperties}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties}
      *
-     * @param keyProperties The {@link KeyProperties base key} holding attributes of the key being requested.
+     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @return A {@link Mono} containing the requested {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
@@ -548,12 +548,12 @@ public final class KeyAsyncClient {
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)}
-     * return the {@link Flux} containing {@link KeyProperties base key} as output excluding the key material of the key.
+     * return the {@link Flux} containing {@link KeyProperties key properties} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyProperties}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties}
      *
-     * @param keyProperties The {@link KeyProperties base key} holding attributes of the key being requested.
+     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
@@ -581,8 +581,8 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyProperties#KeyProperties}
      *
-     * @param key The {@link KeyProperties base key} object with updated properties.
-     * @return A {@link Mono} containing the {@link KeyProperties updated key}.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
+     * @return A {@link Mono} containing the {@link Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
@@ -590,20 +590,20 @@ public final class KeyAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> updateKeyProperties(KeyProperties key) {
-        return withContext(context -> updateKeyPropertiesWithResponse(key, context).flatMap(FluxUtil::toMono));
+    public Mono<Key> updateKeyProperties(KeyProperties keyProperties) {
+        return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context).flatMap(FluxUtil::toMono));
     }
 
-    Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties key, Context context) {
-        Objects.requireNonNull(key, "The key input parameter cannot be null.");
+    Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context) {
+        Objects.requireNonNull(keyProperties, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setTags(key.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(key));
-        return service.updateKey(endpoint, key.getName(), key.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+            .setTags(keyProperties.getTags())
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+        return service.updateKey(endpoint, keyProperties.getName(), keyProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Updating key - {}", key.getName()))
+            .doOnRequest(ignored -> logger.info("Updating key - {}", keyProperties.getName()))
             .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update key - {}", key.getName(), error));
+            .doOnError(error -> logger.warning("Failed to update key - {}", keyProperties.getName(), error));
     }
 
     /**
@@ -619,10 +619,10 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     KeyProperties updated key}.
+     *     Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
@@ -630,8 +630,8 @@ public final class KeyAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties key, KeyOperation... keyOperations) {
-        return withContext(context -> updateKeyPropertiesWithResponse(key, context, keyOperations));
+    public Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, KeyOperation... keyOperations) {
+        return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context, keyOperations));
     }
 
     /**
@@ -647,9 +647,9 @@ public final class KeyAsyncClient {
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyProperties#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyProperties base key} object with updated properties.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Mono} containing the {@link KeyProperties updated key}.
+     * @return A {@link Mono} containing the {@link Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
@@ -657,21 +657,21 @@ public final class KeyAsyncClient {
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> updateKeyProperties(KeyProperties key, KeyOperation... keyOperations) {
-        return updateKeyPropertiesWithResponse(key, keyOperations).flatMap(FluxUtil::toMono);
+    public Mono<Key> updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
+        return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties key, Context context, KeyOperation... keyOperations) {
-        Objects.requireNonNull(key, "The key input parameter cannot be null.");
+    Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
+        Objects.requireNonNull(keyProperties, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setTags(key.getTags())
+            .setTags(keyProperties.getTags())
             .setKeyOps(Arrays.asList(keyOperations))
-            .setKeyAttributes(new KeyRequestAttributes(key));
-        return service.updateKey(endpoint, key.getName(), key.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+        return service.updateKey(endpoint, keyProperties.getName(), keyProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Updating key - {}", key.getName()))
+            .doOnRequest(ignored -> logger.info("Updating key - {}", keyProperties.getName()))
             .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update key - {}", key.getName(), error));
+            .doOnError(error -> logger.warning("Failed to update key - {}", keyProperties.getName(), error));
     }
 
     /**
@@ -1013,13 +1013,13 @@ public final class KeyAsyncClient {
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the flux is represented by {@link KeyProperties} as only the base key identifier, attributes and tags are
+     * response in the flux is represented by {@link KeyProperties} as only the key identifier, attributes and tags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Convert the {@link Flux} containing
-     * {@link KeyProperties base key} to {@link Flux} containing {@link Key key} using
-     * {@link KeyAsyncClient#getKey(KeyProperties baseKey)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link KeyProperties key properties} to {@link Flux} containing {@link Key key} using
+     * {@link KeyAsyncClient#getKey(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeys}
      *
@@ -1121,12 +1121,12 @@ public final class KeyAsyncClient {
 
     /**
      * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
-     * as only the base key identifier, attributes and tags are provided in the response. The key material values are
+     * as only the key identifier, attributes and tags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link
-     * Flux} containing {@link KeyProperties base key} to {@link Flux} containing {@link Key key} using
-     * {@link KeyAsyncClient#getKey(KeyProperties baseKey)} within {@link Flux#flatMap(Function)}.</p>
+     * Flux} containing {@link KeyProperties key properties} to {@link Flux} containing {@link Key key} using
+     * {@link KeyAsyncClient#getKey(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeyVersions}
      *

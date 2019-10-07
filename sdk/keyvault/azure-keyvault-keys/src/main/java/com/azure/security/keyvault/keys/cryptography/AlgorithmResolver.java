@@ -35,9 +35,9 @@ class AlgorithmResolver {
     private final Map<String, Algorithm> algorithms = new ConcurrentHashMap<>();
 
     /**
-     * Returns the implementation for an algorithm getName.
+     * Returns the implementation for an algorithm name.
      *
-     * @param algorithmName The algorithm getName.
+     * @param algorithmName The algorithm name.
      * @return The implementation for the algorithm or null.
      */
     public Algorithm get(String algorithmName) {
@@ -47,7 +47,7 @@ class AlgorithmResolver {
     /**
      * Add/Update a named algorithm implementation.
      *
-     * @param algorithmName The algorithm getName.
+     * @param algorithmName The algorithm name.
      * @param provider The implementation of the algorithm.
      */
     public void put(String algorithmName, Algorithm provider) {
@@ -57,7 +57,7 @@ class AlgorithmResolver {
     /**
      * Remove a named algorithm implementation.
      *
-     * @param algorithmName The algorithm getName
+     * @param algorithmName The algorithm name
      */
     public void remove(String algorithmName) {
         algorithms.remove(algorithmName);

@@ -46,17 +46,6 @@ public final class DeletedSecret extends Secret {
     }
 
     /**
-     * Set the recoveryId identifier.
-     *
-     * @param recoveryId The recoveryId identifier to set
-     * @return the DeletedSecret object itself.
-     */
-    public DeletedSecret setRecoveryId(String recoveryId) {
-        this.recoveryId = recoveryId;
-        return this;
-    }
-
-    /**
      * Get the scheduled purge UTC time.
      *
      * @return the scheduledPurgeDate UTC time.
