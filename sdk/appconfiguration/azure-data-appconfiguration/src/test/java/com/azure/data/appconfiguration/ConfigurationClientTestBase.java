@@ -247,6 +247,15 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void clearReadOnlyWithConfigurationSetting();
 
+    void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
+        String key = getKey();
+        String label = getLabel();
+
+        final ConfigurationSetting lockConfiguration = new ConfigurationSetting().setKey(key).setValue("myValue");
+        testRunner.accept(lockConfiguration);
+        testRunner.accept(lockConfiguration.setLabel(label));
+    }
+
     @Test
     public abstract void listWithKeyAndLabel();
 
@@ -426,7 +435,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             actual = cleanResponse(expected, actual);
         }
 
-        assertEquals(expected, actual);
+        equals(expected, actual);
     }
 
     /**
@@ -499,5 +508,65 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         } catch (Exception ex) {
             assertEquals(exception, ex.getClass());
         }
+    }
+
+
+    /**
+     * Helper method to verify that two configuration setting are equal. Users can defined their equal method.
+     *
+     * @param o1 ConfigurationSetting object 1
+     * @param o2 ConfigurationSetting object 2
+     * @return boolean value that defines if two ConfigurationSettings are equal
+     */
+    static boolean equals(ConfigurationSetting o1, ConfigurationSetting o2) {
+        if (o1 == o2) {
+            return true;
+        }
+
+        if (!Objects.equals(o1.getKey(), o2.getKey())
+            || !Objects.equals(o1.getLabel(), o2.getLabel())
+            || !Objects.equals(o1.getValue(), o2.getValue())
+            || !Objects.equals(o1.getETag(), o2.getETag())
+            || !Objects.equals(o1.getLastModified(), o2.getLastModified())
+            || !Objects.equals(o1.isLocked(), o2.isLocked())
+            || !Objects.equals(o1.getContentType(), o2.getContentType())
+            || ImplUtils.isNullOrEmpty(o1.getTags()) != ImplUtils.isNullOrEmpty(o2.getTags())) {
+            return false;
+        }
+
+        if (!ImplUtils.isNullOrEmpty(o1.getTags())) {
+            return Objects.equals(o1.getTags(), o2.getTags());
+        }
+
+        return true;
+    }
+
+    /**
+     * A helper method to verify that two lists of ConfigurationSetting are equal each other.
+     *
+     * @param settings1 List of ConfigurationSetting
+     * @param settings2 Another List of ConfigurationSetting
+     * @return boolean value that defines if two ConfigurationSetting lists are equal
+     */
+    static boolean equalsArray(List<ConfigurationSetting> settings1, List<ConfigurationSetting> settings2) {
+        if (settings1 == settings2) {
+            return true;
+        }
+
+        if (settings1 == null || settings2 == null) {
+            return false;
+        }
+
+        if (settings1.size() != settings2.size()) {
+            return false;
+        }
+
+        final int size = settings1.size();
+        for (int i = 0; i < size; i++) {
+            if (!equals(settings1.get(i), settings2.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
