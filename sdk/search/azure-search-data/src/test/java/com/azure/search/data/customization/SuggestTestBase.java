@@ -10,10 +10,12 @@ import com.azure.search.data.common.jsonwrapper.api.JsonApi;
 import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.generated.models.SuggestResult;
 import com.azure.search.test.environment.models.Hotel;
+import com.azure.search.test.environment.setup.SearchIndexService;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -26,11 +28,22 @@ import static org.junit.Assert.assertTrue;
 public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     protected JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
     static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    protected static final String BOOKS_INDEX_NAME = "books";
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         initializeClient();
+        if (!interceptorManager.isPlaybackMode()) {
+            // In RECORDING mode (only), create a new index:
+            SearchIndexService searchIndexService = new SearchIndexService(
+                BOOKS_INDEX_JSON, searchServiceName, apiKey);
+            try {
+                searchIndexService.initialize();
+            } catch (IOException e) {
+                Assert.fail("Unable to create books index: " + e.getMessage());
+            }
+        }
     }
 
     protected abstract void initializeClient();
@@ -109,6 +122,14 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
             .collect(Collectors.toList());
 
         Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
+    }
+
+    protected void verifyCanSuggestWithDateTimeInStaticModel(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+        List<SuggestResult> books = suggestResultPagedResponse.value();
+        List<Document> docs = suggestResultPagedResponse.value().stream().map(h -> h.additionalProperties()).collect(Collectors.toList());
+
+        Assert.assertEquals(1, docs.size());
+        Assert.assertEquals("War and Peace", books.get(0).text());
     }
 
     @Test
