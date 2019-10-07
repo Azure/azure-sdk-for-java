@@ -3,11 +3,11 @@ using System.IO;
 
 namespace Azure.Storage.Blobs.PerfStress.Core
 {
-    public abstract class RandomDataTest<TOptions> : StorageTest<TOptions> where TOptions : SizeOptions
+    public abstract class RandomDataV11Test<TOptions> : StorageV11Test<TOptions> where TOptions : SizeOptions
     {
         private readonly byte[] _randomData;
 
-        public RandomDataTest(TOptions options) : base(options)
+        public RandomDataV11Test(TOptions options) : base(options)
         {
             _randomData = new byte[1024 * 1024];
             (new Random(0)).NextBytes(_randomData);
