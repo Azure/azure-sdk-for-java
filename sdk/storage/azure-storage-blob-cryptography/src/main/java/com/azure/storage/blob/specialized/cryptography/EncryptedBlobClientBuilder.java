@@ -35,8 +35,12 @@ import java.util.Objects;
  * <ul>
  * <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of
  * {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
+ * <li>if the container and blob name are not specified, they must be specified through {@code .blobName90} and
+ * {@code .containerName()}.
  * <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly
  * accessible.
+ * <li>the key and key wrapping algorithm (for encryption) and/or key resolver (for decryption) must be specified
+ * through {@code .key()} and {@code .keyResolver()}
  * </ul>
  *
  * <p>
@@ -102,13 +106,12 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         checkValidEncryptionParameters();
 
         AzureBlobStorageImpl impl = new AzureBlobStorageBuilder()
-            .url(client.getBlobUrl().toString())
+            .url(client.getBlobUrl())
             .pipeline(addDecryptionPolicy(client.getHttpPipeline(),
                 client.getHttpPipeline().getHttpClient()))
             .build();
 
-        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-            new BlobEncryptionPolicy(this.keyWrapper, this.keyWrapAlgorithm));
+        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), this.keyWrapper, this.keyWrapAlgorithm);
     }
 
     /**
@@ -126,27 +129,15 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         checkValidEncryptionParameters();
 
         AzureBlobStorageImpl impl = new AzureBlobStorageBuilder()
-            .url(client.getBlobUrl().toString())
+            .url(client.getBlobUrl())
             .pipeline(addDecryptionPolicy(client.getHttpPipeline(),
                 client.getHttpPipeline().getHttpClient()))
             .build();
 
         return new EncryptedBlockBlobClient(
-            new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-                new BlobEncryptionPolicy(this.keyWrapper, this.keyWrapAlgorithm)));
+            new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), this.keyWrapper, this.keyWrapAlgorithm));
     }
 
-    private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() + 1];
-        policies[0] = new BlobDecryptionPolicy(keyWrapper, keyResolver);
-        for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
-            policies[i + 1] = originalPipeline.getPolicy(i);
-        }
-        return new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(policies)
-            .build();
-    }
     /**
      * Creates a {@link EncryptedBlockBlobClient} based on options set in the Builder.
      *
@@ -173,7 +164,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      */
     public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient() {
         return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot,
-            new BlobEncryptionPolicy(this.keyWrapper, this.keyWrapAlgorithm));
+            this.keyWrapper, this.keyWrapAlgorithm);
     }
 
     /**
@@ -189,7 +180,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
             BlobURLParts parts = BlobURLParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
-            this.containerName = parts.getContainerName();
+            this.containerName = parts.getBlobContainerName();
             this.blobName = parts.getBlobName();
             this.snapshot = parts.getSnapshot();
 
@@ -289,6 +280,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         if (this.keyWrapper == null && this.keyResolver == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
         }
+        // If the key is provided, ensure the key wrap algorithm is also provided.
         if (this.keyWrapper != null && this.keyWrapAlgorithm == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Key Wrap Algorithm must be specified with "
                 + "the Key."));
@@ -300,4 +292,15 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         return EncryptedBlobClientBuilder.class;
     }
 
+    private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
+        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() + 1];
+        policies[0] = new BlobDecryptionPolicy(keyWrapper, keyResolver);
+        for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
+            policies[i + 1] = originalPipeline.getPolicy(i);
+        }
+        return new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(policies)
+            .build();
+    }
 }

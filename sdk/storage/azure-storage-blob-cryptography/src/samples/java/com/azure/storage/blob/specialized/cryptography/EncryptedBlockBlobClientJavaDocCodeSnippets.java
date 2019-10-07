@@ -3,14 +3,11 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 
 import java.io.ByteArrayInputStream;
@@ -20,8 +17,9 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Code snippet for {@link EncryptedBlockBlobClient}
@@ -44,48 +42,8 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
      */
     public EncryptedBlockBlobClientJavaDocCodeSnippets() {
     }
-
     /**
-     * Code snippet for {@link BlockBlobClient#upload(InputStream, long)}
-     *
-     * @throws IOException If an I/O error occurs
-     */
-    public void upload() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.upload#InputStream-long
-        System.out.printf("Uploaded BlockBlob MD5 is %s%n",
-            Base64.getEncoder().encodeToString(client.upload(data, length).getContentMD5()));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.upload#InputStream-long
-    }
-
-    /**
-     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration, Context)}
-     *
-     * @throws IOException If an I/O error occurs
-     */
-    public void upload2() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
-        BlobHTTPHeaders headers = new BlobHTTPHeaders()
-            .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
-            .setBlobContentLanguage("en-US")
-            .setBlobContentType("binary");
-
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
-        Context context = new Context("key", "value");
-
-        System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
-            .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
-                accessConditions, timeout, context)
-                .getValue()
-                .getContentMD5()));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context
-    }
-
-    /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String)}
+     * Code snippet for {@link EncryptedBlockBlobClient#uploadFromFile(String)}
      *
      * @throws IOException If an I/O error occurs
      */
@@ -101,18 +59,18 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Metadata, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link EncryptedBlockBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
 
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
@@ -128,6 +86,6 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
     }
 }

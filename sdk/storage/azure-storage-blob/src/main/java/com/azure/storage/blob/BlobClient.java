@@ -49,7 +49,7 @@ public class BlobClient extends BlobClientBase {
      * Protected constructor for use by {@link BlobClientBuilder}.
      * @param client the async blob client
      */
-    BlobClient(BlobAsyncClient client) {
+    protected BlobClient(BlobAsyncClient client) {
         super(client);
         this.client = client;
     }

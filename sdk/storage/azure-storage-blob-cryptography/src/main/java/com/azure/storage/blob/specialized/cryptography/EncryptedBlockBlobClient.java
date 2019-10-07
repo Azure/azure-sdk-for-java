@@ -3,32 +3,23 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Objects;
+import java.util.Map;
 
-public class EncryptedBlockBlobClient extends BlobClientBase {
-
+public class EncryptedBlockBlobClient extends BlobClient {
+    private final ClientLogger logger = new ClientLogger(EncryptedBlockBlobClient.class);
     private final EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient;
 
     /**
@@ -43,72 +34,9 @@ public class EncryptedBlockBlobClient extends BlobClientBase {
         return new BlobClientBuilder()
             .pipeline(EncryptedBlockBlobAsyncClient.removeDecryptionPolicy(getHttpPipeline(),
                 getHttpPipeline().getHttpClient()))
-            .endpoint(getBlobUrl().toString())
-            .buildBlobClient()
-            .asBlockBlobClient();
-    }
-
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
-     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
-     * and PutBlockList on a regular BlockBlob client. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.upload#InputStream-long}
-     *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
-     * @return The information of the uploaded block blob.
-     * @throws IOException If an I/O error occurs
-     */
-    public BlockBlobItem upload(InputStream data, long length) throws IOException {
-        return uploadWithResponse(data, length, null, null, null, null, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
-     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
-     * and PutBlockList. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration-Context}
-     *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
-     * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The information of the uploaded block blob.
-     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
-     * @throws NullPointerException if the input data is null.
-     * @throws IOException If an I/O error occurs
-     */
-    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
-        Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
-        Context context) throws IOException {
-        Objects.requireNonNull(data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            EncryptedBlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
-        Mono<Response<BlockBlobItem>> upload = encryptedBlockBlobAsyncClient
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier,
-                accessConditions, context);
-
-        try {
-            return Utility.blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw e.getCause();
-        }
+            .endpoint(getBlobUrl())
+            .buildClient()
+            .getBlockBlobClient();
     }
 
     /**
@@ -119,9 +47,8 @@ public class EncryptedBlockBlobClient extends BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
-     * @throws IOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath) throws IOException {
+    public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
 
@@ -130,28 +57,28 @@ public class EncryptedBlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Metadata-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHTTPHeaders}
-     * @param metadata {@link Metadata}
+     * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Metadata metadata, AccessTier tier, BlobAccessConditions accessConditions,
-        Duration timeout) throws IOException {
+        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Duration timeout) throws UncheckedIOException {
         Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
             headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw e.getCause();
+            throw logger.logExceptionAsError(e);
         }
     }
 

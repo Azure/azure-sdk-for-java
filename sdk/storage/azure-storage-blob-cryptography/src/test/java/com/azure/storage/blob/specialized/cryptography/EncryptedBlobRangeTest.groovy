@@ -7,7 +7,7 @@ import spock.lang.Unroll
 class EncryptedBlobRangeTest extends APISpec {
 
     @Unroll
-    @Requires({ APISpec.liveMode() })
+    @Requires({ liveMode() })
     def "Test constructor"() {
         setup:
         BlobRange range
@@ -40,7 +40,7 @@ class EncryptedBlobRangeTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ APISpec.liveMode() })
+    @Requires({ liveMode() })
     def "Test from blob range header"() {
         setup:
         BlobRange range

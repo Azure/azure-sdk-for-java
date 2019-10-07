@@ -14,7 +14,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.Metadata;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -33,7 +32,9 @@ import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -95,6 +96,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  */
                 encryptedRange.withAdjustedDownloadCount(Long.parseLong(responseHeaders.getValue(
                     CryptographyConstants.CONTENT_LENGTH)));
+                /*
+                 We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
+                 block size
+                 */
+
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
                 String encryptedDataString = extractEncryptedDataFromResponse(responseHeaders);
@@ -111,7 +117,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     /**
      * Decrypted all or part of an encrypted Block-, Page- or AppendBlob.
      *
-     * @param encryptedDataString The Blob's encrypted data in the {@link com.azure.storage.blob.models.Metadata}
+     * @param encryptedDataString The Blob's encrypted data in the metadata
      * @param encryptedFlux The encrypted Flux of ByteBuffer to decrypt
      * @param encryptedBlobRange A {@link EncryptedBlobRange} indicating the range to decrypt
      * @param padding Boolean indicating if the padding mode should be set or not.
@@ -342,10 +348,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         2. If resolver is not specified but a key is specified, match the key id on the key and and use it.
         */
 
-        Mono<AsyncKeyEncryptionKey> keyMono;
+        Mono<? extends AsyncKeyEncryptionKey> keyMono;
 
         if (this.keyResolver != null) {
-            keyMono = this.keyResolver.resolveKey(encryptionData.wrappedContentKey().keyId())
+            keyMono = this.keyResolver.buildAsyncKeyEncryptionKey(encryptionData.wrappedContentKey().keyId())
                 .onErrorResume(NullPointerException.class, e -> {
                     /*
                     keyResolver returns null if it cannot find the key, but RX throws on null values
@@ -362,7 +368,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             }
         }
 
-        return keyMono.flatMap(keyEncryptionKey -> this.keyWrapper.unwrapKey(
+        return keyMono.flatMap(keyEncryptionKey -> keyEncryptionKey.unwrapKey(
             encryptionData.wrappedContentKey().algorithm(),
             encryptionData.wrappedContentKey().encryptedKey()
         ));
@@ -419,7 +425,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     }
 
     private String extractEncryptedDataFromResponse(HttpHeaders headers) {
-        Metadata metadata = new Metadata();
+        Map<String, String> metadata = new HashMap<>();
         for (HttpHeader header : headers) {
             String key = header.getName();
             if (key.startsWith(CryptographyConstants.METADATA_HEADER)) {

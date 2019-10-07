@@ -70,6 +70,18 @@
       <artifactId>spock-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
+      <version>8.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-keyvault-cryptography</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
     <!--    <dependency>-->
 <!--      <groupId>io.projectreactor</groupId>-->
 <!--      <artifactId>reactor-test</artifactId>-->

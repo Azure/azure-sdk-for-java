@@ -1,5 +1,6 @@
 package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.credentials.BasicAuthenticationCredential
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.core.http.HttpClient
@@ -14,7 +15,9 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
+import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
+import com.azure.security.keyvault.keys.models.webkey.JsonWebKey
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobProperties
@@ -29,6 +32,7 @@ import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.crypto.SecretKey
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
@@ -71,6 +75,7 @@ class APISpec extends Specification {
     static SharedKeyCredential alternateCredential
     static SharedKeyCredential blobCredential
     static SharedKeyCredential premiumCredential
+    static String connectionString
     static TestMode testMode
     private boolean recordLiveMode
 
@@ -116,6 +121,7 @@ class APISpec extends Specification {
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONNECTION_STRING")
     }
 
     static TestMode setupTestMode() {
@@ -255,6 +261,14 @@ class APISpec extends Specification {
         }
 
         return builder
+    }
+
+    KeyEncryptionKeyClientBuilder getKeyClientBuilder(String keyId, SecretKey secretKey) {
+        return new KeyEncryptionKeyClientBuilder()
+        .jsonWebKey(JsonWebKey.fromAes(secretKey))
+        .keyIdentifier(keyId)
+        .credential(new BasicAuthenticationCredential("fakeuname", "fakepwd"))
+
     }
 
     def generateContainerName() {

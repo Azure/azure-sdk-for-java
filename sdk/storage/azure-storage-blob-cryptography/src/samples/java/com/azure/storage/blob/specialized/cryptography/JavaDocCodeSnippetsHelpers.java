@@ -26,15 +26,15 @@ final class JavaDocCodeSnippetsHelpers {
     static BlockBlobClient getBlockBlobClient(String connectionString) {
         return new BlobClientBuilder()
             .connectionString(connectionString)
-            .buildBlobClient()
-            .asBlockBlobClient();
+            .buildClient()
+            .getBlockBlobClient();
     }
 
     static BlockBlobAsyncClient getBlockBlobAsyncClient(String connectionString) {
         return new BlobClientBuilder()
             .connectionString(connectionString)
-            .buildBlobAsyncClient()
-            .asBlockBlobAsyncClient();
+            .buildAsyncClient()
+            .getBlockBlobAsyncClient();
     }
 
     static EncryptedBlockBlobAsyncClient getEncryptedBlockBlobAsyncClient(String blobName, String containerName) {
@@ -76,7 +76,7 @@ final class JavaDocCodeSnippetsHelpers {
     static AsyncKeyEncryptionKeyResolver getKeyResolver() {
         return new AsyncKeyEncryptionKeyResolver() {
             @Override
-            public Mono<AsyncKeyEncryptionKey> resolveKey(String keyId) {
+            public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
                 return null;
             }
         };

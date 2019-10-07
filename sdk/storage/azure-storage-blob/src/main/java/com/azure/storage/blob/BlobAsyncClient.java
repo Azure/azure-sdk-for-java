@@ -76,7 +76,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param snapshot The optional snapshot id of the snapshot blob
      * @param cpk The optional client provided key
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
+    protected BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
         super(azureBlobStorage, snapshot, cpk);
     }
 
@@ -264,10 +264,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
                     accessConditionsFinal.getLeaseAccessConditions())
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
-                    .map(x -> {
-                        pool.returnBuffer(buffer);
-                        return blockId;
-                    }).flux();
+                    .map(x -> blockId)
+                    .doFinally(x -> pool.returnBuffer(buffer))
+                    .flux();
 
             }) // TODO: parallelism?
             .collect(Collectors.toList())

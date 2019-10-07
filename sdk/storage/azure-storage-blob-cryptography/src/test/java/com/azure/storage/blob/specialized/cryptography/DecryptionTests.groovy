@@ -20,24 +20,17 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Requires
 import spock.lang.Unroll
 
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
-
 class DecryptionTests extends APISpec {
     String keyId
-    def symmetricKey
+    def fakeKey
     BlobDecryptionPolicy blobDecryptionPolicy
     String blobName
 
     def setup() {
         keyId = "keyId"
-        KeyGenerator keyGen = KeyGenerator.getInstance("AES")
-        keyGen.init(256)
-        SecretKey secretKey = keyGen.generateKey()
-//        symmetricKey = new SymmetricKey(keyId, secretKey.getEncoded())
+        fakeKey = new FakeKey(keyId, 256)
 
-        symmetricKey = null
-        blobDecryptionPolicy = new BlobDecryptionPolicy(symmetricKey, null)
+        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null)
 
         blobName = generateBlobName()
     }
@@ -46,7 +39,7 @@ class DecryptionTests extends APISpec {
     @Requires({ liveMode() })
     def "Decryption"() {
         setup:
-        def flow = new EncryptedFlux(testCase, symmetricKey, this)
+        def flow = new EncryptedFlux(testCase, fakeKey, this)
 
         def encryptionDataString = new ObjectMapper().writeValueAsString(flow.getEncryptionData())
         def desiredOutput = flow.getPlainText().position(EncryptedFlux.DATA_OFFSET)
