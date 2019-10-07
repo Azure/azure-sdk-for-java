@@ -150,7 +150,8 @@ public class Poller<T> {
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
      *      {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
+                  Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Null, negative or zero value for poll interval is not allowed."));
@@ -196,7 +197,8 @@ public class Poller<T> {
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
      * {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
+                  Consumer<Poller<T>> cancelOperation) {
         this(pollInterval, pollOperation, null, cancelOperation);
     }
 
