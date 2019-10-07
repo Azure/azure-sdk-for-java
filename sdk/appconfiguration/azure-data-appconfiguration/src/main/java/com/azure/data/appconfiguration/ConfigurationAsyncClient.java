@@ -147,16 +147,9 @@ public final class ConfigurationAsyncClient {
 
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
-        return service
-            .setKey(
-                serviceEndpoint,
-                setting.getKey(),
-                setting.getLabel(),
-                setting,
-                null,
-                getETagValue(ETAG_ANY),
-                context)
-            .doOnRequest(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
+                getETagValue(ETAG_ANY), context)
+            .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
@@ -183,8 +176,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(String key, String label, String value) {
-        return withContext(
-            context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
+        return withContext(context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
                 false, context))
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
@@ -235,14 +227,37 @@ public final class ConfigurationAsyncClient {
         // If no etag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting,
             ifMatchETag, null, context)
-            .doOnRequest(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
     }
 
     /**
+     * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} as optional
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the setting with the key "prodDBConnection" and a time that one minute before now at UTC-Zone</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime}
+     *
+     * @param key The key of the setting to retrieve.
+     * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
+     * label is desired.
+     * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does not exist or the
+     * key is an invalid value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> getSetting(String key, String label) {
+        return getSetting(key, label, null);
+    }
+
+    /**
      * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} as optional, and the
-     * {@code acceptDateTime} as optional.
+     * {@code asOfDateTime} as optional.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -306,7 +321,7 @@ public final class ConfigurationAsyncClient {
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             asOfDateTime == null ? null : asOfDateTime.toString(), null, ifNoneMatchETag, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
     }
@@ -375,9 +390,117 @@ public final class ConfigurationAsyncClient {
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), ifMatchETag,
             null, context)
-            .doOnRequest(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
+            .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
+    }
+
+    /**
+     * Lock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string}
+     *
+     * @param key The key of the configuration setting to lock.
+     * @param label The label of the configuration setting to lock, or optionally, null if a setting with
+     * label is desired.
+     * @return The {@link ConfigurationSetting} that was locked, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> setReadOnly(String key, String label) {
+        return withContext(context -> setReadOnly(
+            new ConfigurationSetting().setKey(key).setLabel(label), context))
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @return The {@link ConfigurationSetting} that was unlocked, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting) {
+        return withContext(context -> setReadOnly(setting, context));
+    }
+
+    Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+
+        return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
+            null, context)
+            .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting, error));
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.clearReadOnly#string-string}
+     *
+     * @param key The key of the configuration setting to add.
+     * @param label The label of the configuration setting to add.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> clearReadOnly(String key, String label) {
+        return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Unlock the {@link ConfigurationSetting} with a matching key, along with the given label.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.clearReadOnlyWithResponse#ConfigurationSetting}
+     *
+     * @param setting The ConfigurationSetting to unlock.
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
+     * value (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> clearReadOnlyWithResponse(ConfigurationSetting setting) {
+        return withContext(context -> clearReadOnly(setting, context));
+    }
+
+    Mono<Response<ConfigurationSetting>> clearReadOnly(ConfigurationSetting setting, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+
+        return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
+            null, null, context)
+            .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -411,7 +534,7 @@ public final class ConfigurationAsyncClient {
         }
 
         return service.listKeyValues(serviceEndpoint, continuationToken, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
                 error));
@@ -430,7 +553,7 @@ public final class ConfigurationAsyncClient {
         String labels = ImplUtils.arrayToString(options.getLabels(), label -> label);
 
         return service.listKeyValues(serviceEndpoint, keys, labels, fields, options.getAcceptDateTime(), context)
-            .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", options))
+            .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", options))
             .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", options))
             .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", options, error));
 
@@ -488,7 +611,7 @@ public final class ConfigurationAsyncClient {
 
     Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error));
@@ -503,7 +626,7 @@ public final class ConfigurationAsyncClient {
 
     private Flux<ConfigurationSetting> listSettings(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error));
