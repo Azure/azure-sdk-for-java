@@ -6,19 +6,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.search.data.SearchIndexAsyncClient;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
-
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_DATA_JSON;

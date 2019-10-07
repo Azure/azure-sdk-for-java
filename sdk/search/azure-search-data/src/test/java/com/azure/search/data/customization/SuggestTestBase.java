@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 public abstract class SuggestTestBase extends SearchIndexClientTestBase {
     protected JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
     static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    protected static final String BOOKS_INDEX_NAME = "books";
 
     @Override
     protected void beforeTest() {

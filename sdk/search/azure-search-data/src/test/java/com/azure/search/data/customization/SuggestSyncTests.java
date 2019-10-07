@@ -10,19 +10,12 @@ import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.search.data.customization.SearchTestBase.HOTELS_DATA_JSON;
@@ -31,7 +24,6 @@ import static com.azure.search.data.customization.SearchTestBase.HOTELS_INDEX_NA
 public class SuggestSyncTests extends SuggestTestBase {
 
     private SearchIndexClient client;
-    private static final String BOOKS_INDEX_NAME = "books";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
