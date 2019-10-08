@@ -71,6 +71,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <!-- The following two dependencies are to test for
+      cross platform compatibility within SDKs -->
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
       <version>8.3.0</version>

@@ -14,6 +14,8 @@
     <module>../core/azure-core-test</module>
     <module>../core/azure-core-http-netty</module>
     <module>../identity/azure-identity</module>
+    <module>../keyvault/microsoft-azure-keyvault-core</module>
+    <module>../keyvault/azure-keyvault-keys</module>
     <module>azure-storage-common</module>
     <module>azure-storage-blob</module>
     <module>azure-storage-blob-cryptography</module>
