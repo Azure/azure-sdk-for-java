@@ -52,11 +52,11 @@ public enum InkRecognitionUnitKind {
     WRITING_REGION("writingRegion");
 
     private String inkRecognitionKindString;
-    private static final Map<String, InkRecognitionUnitKind> map = new HashMap<>();
+    private static final Map<String, InkRecognitionUnitKind> MAP = new HashMap<>();
 
     static {
         for (InkRecognitionUnitKind inkRecognitionUnitKind : InkRecognitionUnitKind.values()) {
-            map.put(inkRecognitionUnitKind.toString().toLowerCase(Locale.getDefault()), inkRecognitionUnitKind);
+            MAP.put(inkRecognitionUnitKind.toString().toLowerCase(Locale.getDefault()), inkRecognitionUnitKind);
         }
     }
 
@@ -65,8 +65,8 @@ public enum InkRecognitionUnitKind {
     }
 
     static InkRecognitionUnitKind getInkRecognitionUnitKindOrDefault(String inkRecognitionKindString) {
-        if (inkRecognitionKindString != null && map.containsKey(inkRecognitionKindString.toLowerCase(Locale.getDefault()))) {
-            return map.get(inkRecognitionKindString.toLowerCase(Locale.getDefault()));
+        if (inkRecognitionKindString != null && MAP.containsKey(inkRecognitionKindString.toLowerCase(Locale.getDefault()))) {
+            return MAP.get(inkRecognitionKindString.toLowerCase(Locale.getDefault()));
         } else {
             return InkRecognitionUnitKind.UNKNOWN;
         }

@@ -20,7 +20,7 @@ public class InkRecognizerClientTest {
     private String endpoint = "https://api.cognitive.microsoft.com/inkrecognizer";
     private final int retryCount = 3;
     private final int retryTimeout = 300;
-    private ApplicationKind applicationKind = ApplicationKind.DRAWING;
+    private ApplicationKind applicationKind = ApplicationKind.WRITING;
     private String language = "en-US";
     private InkPointUnit unit = InkPointUnit.MM;
     private final float unitMultiple = 1.2f;
@@ -48,9 +48,9 @@ public class InkRecognizerClientTest {
 
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.CIRCLE_REQUEST_FILE);
         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(strokes);
-        Assert.assertTrue(response.body.length() > 0);
-        Assert.assertEquals(response.status, 200);
-        Assert.assertNotEquals(response.root, null);
+        Assert.assertTrue(response.body().length() > 0);
+        Assert.assertEquals(response.status(), 200);
+        Assert.assertNotEquals(response.root(), null);
 
     }
 
@@ -59,9 +59,9 @@ public class InkRecognizerClientTest {
 
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.ALL_INK_RECOGNITION_UNIT_KINDS_REQUEST_FILE);
         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(strokes);
-        Assert.assertTrue(response.body.length() > 0);
-        Assert.assertEquals(response.status, 200);
-        Assert.assertNotEquals(response.root, null);
+        Assert.assertTrue(response.body().length() > 0);
+        Assert.assertEquals(response.status(), 200);
+        Assert.assertNotEquals(response.root(), null);
 
     }
 
@@ -71,9 +71,9 @@ public class InkRecognizerClientTest {
         String customLanguage = "hi-IN";
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.TWO_STROKES_REQUEST_FILE);
         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(strokes, customLanguage);
-        Assert.assertTrue(response.body.length() > 0);
-        Assert.assertEquals(response.status, 200);
-        Assert.assertNotEquals(response.root, null);
+        Assert.assertTrue(response.body().length() > 0);
+        Assert.assertEquals(response.status(), 200);
+        Assert.assertNotEquals(response.root(), null);
 
     }
 
@@ -92,9 +92,9 @@ public class InkRecognizerClientTest {
             customMultiple,
             customApplicationKind,
             customLanguage);
-        Assert.assertTrue(response.body.length() > 0);
-        Assert.assertEquals(response.status, 200);
-        Assert.assertNotEquals(response.root, null);
+        Assert.assertTrue(response.body().length() > 0);
+        Assert.assertEquals(response.status(), 200);
+        Assert.assertNotEquals(response.root(), null);
 
     }
 
@@ -102,17 +102,17 @@ public class InkRecognizerClientTest {
     public void multiThreads() throws Exception {
 
         List<Thread> threads = new ArrayList<>();
-        int THREAD_COUNT = 30;
-        for (int i = 0; i < THREAD_COUNT; i++) {
+        int threadCount = 30;
+        for (int i = 0; i < threadCount; i++) {
             threads.add(new Thread("" + i) {
                 public void run() {
                     try {
                         int fileIndex = new Random().nextInt(TestUtils.FILES.length);
                         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.FILES[fileIndex]);
                         Response<InkRecognitionRoot> response = inkRecognizerClient.recognizeInk(strokes);
-                        Assert.assertTrue(response.body.length() > 0);
-                        Assert.assertEquals(response.status, 200);
-                        Assert.assertNotEquals(response.root, null);
+                        Assert.assertTrue(response.body().length() > 0);
+                        Assert.assertEquals(response.status(), 200);
+                        Assert.assertNotEquals(response.root(), null);
                     } catch (Exception e) {
                         Thread t = Thread.currentThread();
                         t.getUncaughtExceptionHandler().uncaughtException(t, e);
@@ -121,11 +121,11 @@ public class InkRecognizerClientTest {
             });
         }
 
-        for (int i = 0; i < THREAD_COUNT; i++) {
+        for (int i = 0; i < threadCount; i++) {
             threads.get(i).start();
         }
 
-        for (int i = 0; i < THREAD_COUNT; i++) {
+        for (int i = 0; i < threadCount; i++) {
             threads.get(i).join();
         }
 

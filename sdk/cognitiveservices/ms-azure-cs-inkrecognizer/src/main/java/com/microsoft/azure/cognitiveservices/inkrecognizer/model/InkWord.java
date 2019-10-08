@@ -33,6 +33,8 @@ public class InkWord extends InkRecognitionUnit {
                 }
 
             }
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new Exception("Error while parsing server response");
         }

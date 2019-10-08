@@ -37,17 +37,17 @@ class TestUtils {
     static final String MALFORMED_RESPONSE_MISSING_ID_FILE = "MalformedResponseMissingId.json";
     static final String MALFORMED_RESPONSE_MISSING_CATEGORY_FILE = "MalformedResponseMissingCategory.json";
 
-    private static final JsonNodeFactory factory = JsonNodeFactory.instance;
+    private static final JsonNodeFactory FACTORY = JsonNodeFactory.instance;
 
     static ObjectNode addBoundingRectangle(Rectangle boundingRectangle) {
-        return factory.objectNode().put("topX", boundingRectangle.x())
+        return FACTORY.objectNode().put("topX", boundingRectangle.x())
             .put("topY", boundingRectangle.y())
             .put("width", boundingRectangle.width())
             .put("height", boundingRectangle.height());
     }
 
     static ArrayNode addIds(long[] ids) {
-        ArrayNode jsonIds = factory.arrayNode();
+        ArrayNode jsonIds = FACTORY.arrayNode();
         for (long id : ids) {
             jsonIds.add(id);
         }
@@ -55,30 +55,30 @@ class TestUtils {
     }
 
     static ArrayNode addWritingAlternates(String[] alternates, String category) {
-        ArrayNode jsonAlternates = factory.arrayNode();
+        ArrayNode jsonAlternates = FACTORY.arrayNode();
         for (String alternate : alternates) {
-            jsonAlternates.add(factory.objectNode().put("category", category)
+            jsonAlternates.add(FACTORY.objectNode().put("category", category)
                 .put("recognizedString", alternate));
         }
         return jsonAlternates;
     }
 
     static ObjectNode addCenter(Point center) {
-        return factory.objectNode().put("x", center.x())
+        return FACTORY.objectNode().put("x", center.x())
             .put("y", center.y());
     }
 
     static ArrayNode addPointsArray(float[][] points) {
-        ArrayNode jsonPoints = factory.arrayNode();
+        ArrayNode jsonPoints = FACTORY.arrayNode();
         for (float[] point : points) {
-            jsonPoints.add(factory.objectNode().put("x", point[0]).put("y", point[1]));
+            jsonPoints.add(FACTORY.objectNode().put("x", point[0]).put("y", point[1]));
         }
         return jsonPoints;
     }
 
     static ArrayNode addAlternate(InkDrawingTest.Alternate alternate) {
-        ArrayNode jsonAlternates = factory.arrayNode();
-        ObjectNode jsonAlternate = factory.objectNode()
+        ArrayNode jsonAlternates = FACTORY.arrayNode();
+        ObjectNode jsonAlternate = FACTORY.objectNode()
             .put("category", alternate.alternateCategory)
             .put("confidence", alternate.alternateConfidence)
             .put("rotationAngle", alternate.alternateRotationAngle)

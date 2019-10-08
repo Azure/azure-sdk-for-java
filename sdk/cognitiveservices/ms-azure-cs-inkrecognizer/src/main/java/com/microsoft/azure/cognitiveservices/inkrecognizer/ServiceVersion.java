@@ -15,11 +15,11 @@ public enum ServiceVersion {
     PREVIEW_1_0_0("/v1.0-preview/recognize");
 
     private String serviceVersionString;
-    private static final Map<String, ServiceVersion> map = new HashMap<>();
+    private static final Map<String, ServiceVersion> MAP = new HashMap<>();
 
     static {
         for (ServiceVersion serviceVersion : ServiceVersion.values()) {
-            map.put(serviceVersion.toString().toLowerCase(Locale.getDefault()), serviceVersion);
+            MAP.put(serviceVersion.toString().toLowerCase(Locale.getDefault()), serviceVersion);
         }
     }
 
@@ -28,8 +28,8 @@ public enum ServiceVersion {
     }
 
     static ServiceVersion getServiceVersionOrDefault(String serviceVersionString) {
-        if (serviceVersionString != null && map.containsKey(serviceVersionString.toLowerCase(Locale.getDefault()))) {
-            return map.get(serviceVersionString.toLowerCase(Locale.getDefault()));
+        if (serviceVersionString != null && MAP.containsKey(serviceVersionString.toLowerCase(Locale.getDefault()))) {
+            return MAP.get(serviceVersionString.toLowerCase(Locale.getDefault()));
         } else {
             return PREVIEW_1_0_0;
         }

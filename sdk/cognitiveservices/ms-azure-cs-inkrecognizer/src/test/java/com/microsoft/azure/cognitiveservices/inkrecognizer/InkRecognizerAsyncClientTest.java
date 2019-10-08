@@ -50,9 +50,9 @@ public class InkRecognizerAsyncClientTest {
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.TWO_STROKES_REQUEST_FILE);
         Mono<Response<InkRecognitionRoot>> response = inkRecognizerAsyncClient.recognizeInk(strokes);
         response.subscribe((r) -> {
-            Assert.assertTrue(r.body.length() > 0);
-            Assert.assertEquals(r.status, 200);
-            Assert.assertNotEquals(r.root, null);
+            Assert.assertTrue(r.body().length() > 0);
+            Assert.assertEquals(r.status(), 200);
+            Assert.assertNotEquals(r.root(), null);
         });
         response.block();
 
@@ -64,9 +64,9 @@ public class InkRecognizerAsyncClientTest {
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.ALL_INK_RECOGNITION_UNIT_KINDS_REQUEST_FILE);
         Mono<Response<InkRecognitionRoot>> response = inkRecognizerAsyncClient.recognizeInk(strokes);
         response.subscribe((r) -> {
-            Assert.assertTrue(r.body.length() > 0);
-            Assert.assertEquals(r.status, 200);
-            Assert.assertNotEquals(r.root, null);
+            Assert.assertTrue(r.body().length() > 0);
+            Assert.assertEquals(r.status(), 200);
+            Assert.assertNotEquals(r.root(), null);
         });
         response.block();
 
@@ -79,9 +79,9 @@ public class InkRecognizerAsyncClientTest {
         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.TWO_STROKES_REQUEST_FILE);
         Mono<Response<InkRecognitionRoot>> response = inkRecognizerAsyncClient.recognizeInk(strokes, customLanguage);
         response.subscribe((r) -> {
-            Assert.assertTrue(r.body.length() > 0);
-            Assert.assertEquals(r.status, 200);
-            Assert.assertNotEquals(r.root, null);
+            Assert.assertTrue(r.body().length() > 0);
+            Assert.assertEquals(r.status(), 200);
+            Assert.assertNotEquals(r.root(), null);
         });
         response.block();
 
@@ -103,9 +103,9 @@ public class InkRecognizerAsyncClientTest {
             customApplicationKind,
             customLanguage);
         response.subscribe((r) -> {
-            Assert.assertTrue(r.body.length() > 0);
-            Assert.assertEquals(r.status, 200);
-            Assert.assertNotEquals(r.root, null);
+            Assert.assertTrue(r.body().length() > 0);
+            Assert.assertEquals(r.status(), 200);
+            Assert.assertNotEquals(r.root(), null);
         });
         response.block();
 
@@ -115,8 +115,8 @@ public class InkRecognizerAsyncClientTest {
     public void multiThreads() throws Exception {
 
         List<Thread> threads = new ArrayList<>();
-        int THREAD_COUNT = 30;
-        for (int i = 0; i < THREAD_COUNT; i++) {
+        int threadCount = 30;
+        for (int i = 0; i < threadCount; i++) {
             threads.add(new Thread("" + i) {
                 public void run() {
                     try {
@@ -124,9 +124,9 @@ public class InkRecognizerAsyncClientTest {
                         Iterable<InkStroke> strokes = TestUtils.loadStrokesFromJSON(TestUtils.FILES[fileIndex]);
                         Mono<Response<InkRecognitionRoot>> response = inkRecognizerAsyncClient.recognizeInk(strokes);
                         response.subscribe((r) -> {
-                            Assert.assertTrue(r.body.length() > 0);
-                            Assert.assertEquals(r.status, 200);
-                            Assert.assertNotEquals(r.root, null);
+                            Assert.assertTrue(r.body().length() > 0);
+                            Assert.assertEquals(r.status(), 200);
+                            Assert.assertNotEquals(r.root(), null);
                         });
                         response.block();
                     } catch (Exception e) {
@@ -137,11 +137,11 @@ public class InkRecognizerAsyncClientTest {
             });
         }
 
-        for (int i = 0; i < THREAD_COUNT; i++) {
+        for (int i = 0; i < threadCount; i++) {
             threads.get(i).start();
         }
 
-        for (int i = 0; i < THREAD_COUNT; i++) {
+        for (int i = 0; i < threadCount; i++) {
             threads.get(i).join();
         }
 
