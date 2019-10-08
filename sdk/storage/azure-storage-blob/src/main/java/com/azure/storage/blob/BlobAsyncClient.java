@@ -225,7 +225,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             ? new ParallelTransferOptions() : parallelTransferOptions;
         int blockSize = finalParallelTransferOptions.getBlockSize();
         int numBuffers = finalParallelTransferOptions.getNumBuffers();
-        IProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -323,7 +323,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions()
             : parallelTransferOptions;
-        IProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);

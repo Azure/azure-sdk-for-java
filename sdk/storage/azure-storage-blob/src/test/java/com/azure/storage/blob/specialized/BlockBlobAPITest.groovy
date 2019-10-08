@@ -16,7 +16,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.IProgressReceiver
+import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
@@ -846,7 +846,7 @@ class BlockBlobAPITest extends APISpec {
 
     /*      Reporter for testing Progress Receiver
     *        Will count the number of reports that are triggered         */
-    class Reporter implements IProgressReceiver {
+    class Reporter implements ProgressReceiver {
         private final long blockSize
         private long reportingCount
 

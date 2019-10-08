@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.IProgressReceiver;
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 
@@ -16,7 +16,7 @@ public class ParallelTransferOptions {
 
     private int blockSize;
     private int numBuffers;
-    private IProgressReceiver progressReceiver;
+    private ProgressReceiver progressReceiver;
 
     /**
      * Creates a new {@link ParallelTransferOptions} with default parameters applied.
@@ -49,7 +49,7 @@ public class ParallelTransferOptions {
      * Gets the Progress receiver for parallel reporting
      * @return the progress reporter
      */
-    public IProgressReceiver getProgressReceiver() {
+    public ProgressReceiver getProgressReceiver() {
         return this.progressReceiver;
     }
 
@@ -85,7 +85,7 @@ public class ParallelTransferOptions {
         return this;
     }
 
-    public ParallelTransferOptions setProgressReceiver(IProgressReceiver progressReceiver) {
+    public ParallelTransferOptions setProgressReceiver(ProgressReceiver progressReceiver) {
         this.progressReceiver = progressReceiver;
         return this;
     }

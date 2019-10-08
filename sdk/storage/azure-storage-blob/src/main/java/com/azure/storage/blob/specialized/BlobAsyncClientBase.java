@@ -16,7 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.HttpGetterInfo;
-import com.azure.storage.blob.IProgressReceiver;
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -567,7 +567,7 @@ public class BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions()
             : parallelTransferOptions;
-        IProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -584,7 +584,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
                 Response<BlobProperties> blobPropertiesResponse, BlobRange range, Integer blockSize,
                 ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
-                Context context, AtomicLong totalProgress, Lock progressLock, IProgressReceiver progressReceiver) {
+                Context context, AtomicLong totalProgress, Lock progressLock, ProgressReceiver progressReceiver) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
             blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->
             Flux.fromIterable(sliceBlobRange(rg, blockSize)))
