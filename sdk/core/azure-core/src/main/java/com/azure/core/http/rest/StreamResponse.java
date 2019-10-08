@@ -16,17 +16,19 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     /**
      * Creates StreamResponse.
      *
-     * @param request the request which resulted in this response
-     * @param statusCode the status code of the HTTP response
-     * @param headers the headers of the HTTP response
-     * @param value the streaming value
+     * @param request The request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param value The content of the HTTP response.
      */
     public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value) {
         super(request, statusCode, headers, value);
     }
 
     /**
-     * @return the stream content
+     * The content of the HTTP response as a stream of {@link ByteBuffer byte buffers}.
+     *
+     * @return The content of the HTTP response as a stream of {@link ByteBuffer byte buffers}.
      */
     @Override
     public Flux<ByteBuffer> getValue() {
