@@ -370,7 +370,9 @@ public final class BlobServiceClient {
      *
      * <p>If any request in a batch fails this will throw a {@link StorageException}.</p>
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.submitBatch#BlobBatch}
      *
      * @param batch Batch to submit.
      * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
@@ -384,6 +386,10 @@ public final class BlobServiceClient {
      *
      * <p>If {@code throwOnAnyFailure} is {@code true} a {@link StorageException} will be thrown if any request
      * fails.</p>
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet {@codesnippet com.azure.storage.blob.BlobServiceClient.submitBatchWithResponse#BlobBatch-boolean-Duration-Context}}
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.

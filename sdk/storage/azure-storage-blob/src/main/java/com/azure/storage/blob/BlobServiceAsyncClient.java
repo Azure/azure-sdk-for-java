@@ -483,6 +483,8 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.submitBatch#BlobBatch}
+     *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
      * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
@@ -498,6 +500,8 @@ public final class BlobServiceAsyncClient {
      * fails.</p>
      *
      * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.submitBatchWithResponse#BlobBatch-boolean}
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.

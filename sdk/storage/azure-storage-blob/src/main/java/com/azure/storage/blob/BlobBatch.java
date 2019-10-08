@@ -15,6 +15,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -41,7 +42,21 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * This class provides
+ * This class allows for batching of multiple Azure Storage operations in a single request via
+ * {@link BlobServiceClient#submitBatch(BlobBatch)} or {@link BlobServiceAsyncClient#submitBatch(BlobBatch)}.
+ *
+ * <p>Creating a batch requires either a {@link BlobServiceClient} or {@link BlobServiceAsyncClient}.</p>
+ *
+ * {@codesnippet com.azure.storage.blob.BlobBatch.createWithServiceClient}
+ * {@codesnippet com.azure.storage.blob.BlobBatch.createWithServiceAsyncClient}
+ *
+ * <p>Azure Storage Blob batches are homogeneous which means a {@link #delete(String) delete} and {@link
+ * #setTier(String, AccessTier) set tier} are not allowed to be in the same batch.</p>
+ *
+ * {@codesnippet com.azure.storage.blob.BlobBatch.illegalBatchOperation}
+ *
+ * <p>Please refer to the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/blob-batch">Azure Docs</a>
+ * for more information.</p>
  */
 public final class BlobBatch {
     private static final String BATCH_REQUEST_CONTENT_ID = "Batch-Request-Content-Id";
@@ -54,6 +69,7 @@ public final class BlobBatch {
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
+    private static final String NEWLINE = "\r\n";
 
     private static final int[] EXPECTED_DELETE_STATUS_CODES = { 202 };
     private static final int[] EXPECTED_SET_TIER_STATUS_CODES = { 200, 202 };
@@ -98,32 +114,27 @@ public final class BlobBatch {
         this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
 
         boolean batchHeadersPolicySet = false;
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpPipelineBuilder batchPipelineBuilder = new HttpPipelineBuilder().httpClient(this::setupBatchOperation);
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy policy = pipeline.getPolicy(i);
 
             if (policy instanceof SharedKeyCredentialPolicy) {
                 batchHeadersPolicySet = true;
                 // The batch policy needs to be added before the SharedKey policy to run preparation cleanup.
-                policies.add(this::cleanseHeaders);
+                batchPipelineBuilder.policies(this::cleanseHeaders);
             }
 
-            policies.add(pipeline.getPolicy(i));
+            batchPipelineBuilder.policies(pipeline.getPolicy(i));
         }
 
         if (!batchHeadersPolicySet) {
-            policies.add(this::cleanseHeaders);
+            batchPipelineBuilder.policies(this::cleanseHeaders);
         }
 
-        this.batchClient = new BlobClientBuilder()
-            .endpoint(accountUrl)
-            .containerName("dummy")
-            .blobName("dummy")
-            .pipeline(new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(this::setupBatchOperation)
-                .build())
-            .buildAsyncClient();
+        this.batchClient = new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .pipeline(batchPipelineBuilder.build())
+            .url(accountUrl)
+            .build(), null, null, null);
 
         this.batchOperationQueue = new ConcurrentLinkedDeque<>();
         this.batchRequest = new ArrayList<>();
@@ -132,6 +143,10 @@ public final class BlobBatch {
 
     /**
      * Adds a delete blob operation to the batch.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String-String}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -145,6 +160,10 @@ public final class BlobBatch {
 
     /**
      * Adds a delete blob operation to the batch.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String-String-DeleteSnapshotsOptionType-BlobAccessConditions}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -162,6 +181,10 @@ public final class BlobBatch {
     /**
      * Adds a delete blob operation to the batch.
      *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String}
+     *
      * @param blobUrl URI of the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
@@ -173,6 +196,10 @@ public final class BlobBatch {
 
     /**
      * Adds a delete blob operation to the batch.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String-DeleteSnapshotsOptionType-BlobAccessConditions}
      *
      * @param blobUrl URI of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
@@ -196,6 +223,10 @@ public final class BlobBatch {
     /**
      * Adds a set tier operation to the batch.
      *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-String-AccessTier}
+     *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
      * @param accessTier The tier to set on the blob.
@@ -209,6 +240,10 @@ public final class BlobBatch {
 
     /**
      * Adds a set tier operation to the batch.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-String-AccessTier-LeaseAccessConditions}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -226,6 +261,10 @@ public final class BlobBatch {
     /**
      * Adds a set tier operation to the batch.
      *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-AccessTier}
+     *
      * @param blobUrl URI of the blob.
      * @param accessTier The tier to set on the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -238,6 +277,10 @@ public final class BlobBatch {
 
     /**
      * Adds a set tier operation to the batch.
+     *
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-AccessTier-LeaseAccessConditions}
      *
      * @param blobUrl URI of the blob.
      * @param accessTier The tier to set on the blob.
@@ -294,6 +337,9 @@ public final class BlobBatch {
             // Wait until the batch operation has processed in the pipeline.
             // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
         }
+
+        this.batchRequest.add(ByteBuffer
+            .wrap(String.format("--%s--NEWLINE", batchBoundary).getBytes(StandardCharsets.UTF_8)));
 
         return Flux.fromIterable(batchRequest);
     }
@@ -366,7 +412,7 @@ public final class BlobBatch {
         appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
         appendWithNewline(batchRequestBuilder, CONTENT_TRANSFER_ENCODING);
         appendWithNewline(batchRequestBuilder, String.format(CONTENT_ID_TEMPLATE, contentId));
-        batchRequestBuilder.append("\r\n");
+        batchRequestBuilder.append(NEWLINE);
 
         String method = request.getHttpMethod().toString();
         String urlPath = request.getUrl().getPath();
@@ -381,7 +427,7 @@ public final class BlobBatch {
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
-        batchRequestBuilder.append("\r\n");
+        batchRequestBuilder.append(NEWLINE);
 
         batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
         batchMapping.get(contentId).setRequest(request);
@@ -390,6 +436,6 @@ public final class BlobBatch {
     }
 
     private void appendWithNewline(StringBuilder stringBuilder, String value) {
-        stringBuilder.append(value).append("\r\n");
+        stringBuilder.append(value).append(NEWLINE);
     }
 }
