@@ -15,12 +15,12 @@ import java.util.concurrent.locks.Lock;
  */
 public final class ProgressReporter {
 
-    private abstract static class ProgressReporterImpl implements IProgressReceiver {
+    private abstract static class ProgressReporterImpl implements ProgressReceiver {
         long blockProgress;
 
-        final IProgressReceiver progressReceiver;
+        final ProgressReceiver progressReceiver;
 
-        ProgressReporterImpl(IProgressReceiver progressReceiver) {
+        ProgressReporterImpl(ProgressReceiver progressReceiver) {
             this.blockProgress = 0;
             this.progressReceiver = progressReceiver;
         }
@@ -59,7 +59,7 @@ public final class ProgressReporter {
      * final.
      */
     private static class SequentialProgressReporter extends ProgressReporterImpl {
-        SequentialProgressReporter(IProgressReceiver progressReceiver) {
+        SequentialProgressReporter(ProgressReceiver progressReceiver) {
             super(progressReceiver);
         }
 
@@ -88,7 +88,7 @@ public final class ProgressReporter {
          */
         private final AtomicLong totalProgress;
 
-        ParallelProgressReporter(IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
+        ParallelProgressReporter(ProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
             super(progressReceiver);
             this.transferLock = lock;
             this.totalProgress = totalProgress;
@@ -133,11 +133,11 @@ public final class ProgressReporter {
      * emitted so far, or the "current position" of the Flux.
      *
      * @param data The data whose transfer progress is to be tracked.
-     * @param progressReceiver {@link IProgressReceiver}
+     * @param progressReceiver {@link ProgressReceiver}
      * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount of
      * data emitted so far.
      */
-    public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, IProgressReceiver progressReceiver) {
+    public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, ProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
             return data;
         } else {
@@ -152,7 +152,7 @@ public final class ProgressReporter {
      * of data emitted so far, or the "current position" of the Flux in parallel.
      *
      * @param data The data whose transfer progress is to be tracked.
-     * @param progressReceiver {@link IProgressReceiver}
+     * @param progressReceiver {@link ProgressReceiver}
      * @param lock This lock will be instantiated by the operation initiating the whole transfer to coordinate each
      * ProgressReporterImpl.
      * @param totalProgress We need an AtomicLong to be able to update the value referenced. Because we are already
@@ -161,7 +161,7 @@ public final class ProgressReporter {
      * data emitted so far.
      */
     public static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data,
-        IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
+        ProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;
         } else {
