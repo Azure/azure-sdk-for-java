@@ -99,14 +99,14 @@ public abstract class SuggestTestBase extends SearchIndexClientTestBase {
 
     protected void verifyTopDocumentSuggest(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         Assert.assertNotNull(suggestResultPagedResponse);
-        Assert.assertEquals(2, suggestResultPagedResponse.value().size());
+        Assert.assertEquals(3, suggestResultPagedResponse.value().size());
         List<String> resultIds = suggestResultPagedResponse
             .value()
             .stream()
             .map(hotel -> hotel.additionalProperties().as(Hotel.class).hotelId())
             .collect(Collectors.toList());
 
-        Assert.assertEquals(Arrays.asList("10", "8"), resultIds);
+        Assert.assertEquals(Arrays.asList("1", "10", "2"), resultIds);
     }
 
     protected void verifyCanSuggestWithDateTimeInStaticModel(PagedResponse<SuggestResult> suggestResultPagedResponse) {

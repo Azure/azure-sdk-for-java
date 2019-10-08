@@ -43,7 +43,6 @@ public class SearchIndexClientTestBase extends TestBase {
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     protected String searchServiceName;
-    protected String searchAdminKey;
     protected ApiKeyCredentials apiKeyCredentials;
     protected SearchIndexService searchServiceHotelsIndex;
 
@@ -71,8 +70,7 @@ public class SearchIndexClientTestBase extends TestBase {
             azureSearchResources.createService();
 
             searchServiceName = azureSearchResources.getSearchServiceName();
-            searchAdminKey = azureSearchResources.getSearchAdminKey();
-            apiKeyCredentials = new ApiKeyCredentials(searchAdminKey);
+            apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
         }
     }
 
@@ -162,7 +160,7 @@ public class SearchIndexClientTestBase extends TestBase {
         if (!interceptorManager.isPlaybackMode()) {
             try {
                 //Creating Index:
-                searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, searchAdminKey);
+                searchServiceHotelsIndex = new SearchIndexService(HOTELS_TESTS_INDEX_DATA_JSON, searchServiceName, apiKeyCredentials.getApiKey());
                 searchServiceHotelsIndex.initialize();
 
             } catch (Exception e) {
@@ -175,7 +173,7 @@ public class SearchIndexClientTestBase extends TestBase {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
-                jsonFile, searchServiceName, searchAdminKey);
+                jsonFile, searchServiceName, apiKeyCredentials.getApiKey());
             try {
                 searchIndexService.initialize();
             } catch (IOException e) {

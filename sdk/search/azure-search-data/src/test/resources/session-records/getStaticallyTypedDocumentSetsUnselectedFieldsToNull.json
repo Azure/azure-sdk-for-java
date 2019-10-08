@@ -1,48 +1,48 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdkd891306843c4.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbd146638d2ec.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a02cf7d7-2cd3-4436-8219-861a5bd3af73",
+      "request-id" : "3db13435-6385-4045-9ab6-c716107ee964",
       "StatusCode" : "200",
-      "Date" : "Fri, 04 Oct 2019 03:50:33 GMT",
+      "Date" : "Mon, 07 Oct 2019 19:57:18 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "255",
+      "elapsed-time" : "332",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "227",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkd891306843c4.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbd146638d2ec.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
-      "Exception": null
+    "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkd891306843c4.search.windows.net/indexes('hotels')/docs('2')?$select=Description%2cHotelName%2cAddress/City%2cRooms/BaseRate&api-version=2019-05-06",
+    "Uri" : "https://azs-sdkbd146638d2ec.search.windows.net/indexes('hotels')/docs('2')?$select=Description%2cHotelName%2cAddress/City%2cRooms/BaseRate&api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aaf62dfd-3ee4-40f5-aea9-cac2a03aad24",
+      "request-id" : "ee3c1fa8-0638-4c81-8edd-8b8afe31deda",
       "StatusCode" : "200",
-      "Date" : "Fri, 04 Oct 2019 03:50:35 GMT",
+      "Date" : "Mon, 07 Oct 2019 19:57:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "10",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "398",
-      "Body" : "{\"@odata.context\":\"https://azs-sdkd891306843c4.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelName\":\"Countryside Hotel\",\"Description\":\"Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.\",\"Address\":{\"City\":\"Durham\"},\"Rooms\":[{\"BaseRate\":2.44},{\"BaseRate\":7.69}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkbd146638d2ec.search.windows.net/indexes('hotels')/$metadata#docs(*)/$entity\",\"HotelName\":\"Countryside Hotel\",\"Description\":\"Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.\",\"Address\":{\"City\":\"Durham\"},\"Rooms\":[{\"BaseRate\":2.44},{\"BaseRate\":7.69}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
-      "Exception": null
+    "Exception" : null
   } ],
   "variables" : [ ]
 }
