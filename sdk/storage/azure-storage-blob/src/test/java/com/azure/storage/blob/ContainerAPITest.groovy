@@ -609,6 +609,7 @@ class ContainerAPITest extends APISpec {
 
     def "List page blobs flat"() {
         setup:
+        ccPremium.create()
         def name = generateBlobName()
         def bu = ccPremium.getBlobClient(name).getPageBlobClient()
         bu.create(512)
