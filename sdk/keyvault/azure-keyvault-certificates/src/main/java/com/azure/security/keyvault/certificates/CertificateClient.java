@@ -32,7 +32,7 @@ import java.util.Objects;
  * The CertificateClient provides synchronous methods to manage {@link Certificate certifcates} in the Azure Key Vault. The client
  * supports creating, retrieving, updating, merging, deleting, purging, backing up, restoring and listing the
  * {@link Certificate certificates}. The client also supports listing {@link DeletedCertificate deleted certificates} for
- * a soft-delete isEnabled Azure Key Vault.
+ * a soft-delete enabled Azure Key Vault.
  *
  * <p>The client further allows creating, retrieving, updating, deleting and listing the {@link Issuer certificate issuers}. The client also supports
  * creating, listing and deleting {@link Contact certificate contacts}</p>
@@ -182,7 +182,7 @@ public class CertificateClient {
      * stored certificate and attributes that are not specified in the request are left unchanged. This operation requires the certificates/update permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the certificate, changes its tags and isEnabled status and then updates it in the Azure Key Vault. Prints out the
+     * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure Key Vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties}
@@ -203,7 +203,7 @@ public class CertificateClient {
      * stored certificate and attributes that are not specified in the request are left unchanged. This operation requires the certificates/update permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the certificate, changes its tags and isEnabled status and then updates it in the Azure Key Vault. Prints out the
+     * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure Key Vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-Context}
@@ -223,7 +223,7 @@ public class CertificateClient {
 
     /**
      * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
-     * get deleted. If soft-delete is isEnabled on the key vault then the certificate is placed in the deleted state and requires to be
+     * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
      * purged for permanent deletion else the certificate is permanently deleted. The delete operation applies to any certificate stored in
      * Azure Key Vault but it cannot be applied to an individual version of a certificate. This operation requires the certificates/delete permission.
      *
@@ -245,7 +245,7 @@ public class CertificateClient {
 
     /**
      * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
-     * get deleted. If soft-delete is isEnabled on the key vault then the certificate is placed in the deleted state and requires to be
+     * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
      * purged for permanent deletion else the certificate is permanently deleted. The delete operation applies to any certificate stored in
      * Azure Key Vault but it cannot be applied to an individual version of a certificate. This operation requires the certificates/delete permission.
      *
@@ -268,11 +268,11 @@ public class CertificateClient {
 
     /**
      * Retrieves information about the specified deleted certificate. The GetDeletedCertificate operation  is applicable for soft-delete
-     * isEnabled vaults and additionally retrieves deleted certificate's attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation
+     * enabled vaults and additionally retrieves deleted certificate's attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation
      * requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted certificate from the key vault isEnabled for soft-delete. Prints out the
+     * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getDeletedCertificate#string}
@@ -289,11 +289,11 @@ public class CertificateClient {
 
     /**
      * Retrieves information about the specified deleted certificate. The GetDeletedCertificate operation  is applicable for soft-delete
-     * isEnabled vaults and additionally retrieves deleted certificate's attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation
+     * enabled vaults and additionally retrieves deleted certificate's attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation
      * requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted certificate from the key vault isEnabled for soft-delete. Prints out the
+     * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-Context}
@@ -311,10 +311,10 @@ public class CertificateClient {
 
     /**
      * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted Certificate operation is applicable for
-     * soft-delete isEnabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
+     * soft-delete enabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted certificate from the key vault isEnabled for soft-delete. Prints out the
+     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
 
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string}
@@ -330,10 +330,10 @@ public class CertificateClient {
 
     /**
      * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted Certificate operation is applicable for
-     * soft-delete isEnabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
+     * soft-delete enabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted certificate from the key vault isEnabled for soft-delete. Prints out the
+     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
 
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context}
@@ -350,12 +350,12 @@ public class CertificateClient {
     }
 
     /**
-     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete isEnabled vault.
+     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete enabled vault.
      * The RecoverDeletedCertificate operation performs the reversal of the Delete operation and must be issued during the retention interval
      * (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted certificate from the key vault isEnabled for soft-delete. Prints out the
+     * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
      * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.recoverDeletedCertificate#string}
@@ -371,12 +371,12 @@ public class CertificateClient {
     }
 
     /**
-     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete isEnabled vault.
+     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete enabled vault.
      * The RecoverDeletedCertificate operation performs the reversal of the Delete operation and must be issued during the retention interval
      * (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted certificate from the key vault isEnabled for soft-delete. Prints out the
+     * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
 
      * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.recoverDeletedCertificateWithResponse#String-Context}
@@ -514,7 +514,7 @@ public class CertificateClient {
 
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
-     * deletion-specific information and is applicable for vaults isEnabled for soft-delete. This operation requires the
+     * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
      * {@code certificates/get/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
@@ -533,7 +533,7 @@ public class CertificateClient {
 
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
-     * deletion-specific information and is applicable for vaults isEnabled for soft-delete. This operation requires the
+     * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
      * {@code certificates/get/list} permission.
      *
      * <p><strong>Code Samples</strong></p>

@@ -22,7 +22,7 @@ public class MergeCertificateOptions {
     private final List<byte[]> x509Certificates;
 
     /**
-     * Determines whether the object is isEnabled.
+     * Determines whether the object is enabled.
      */
     private boolean enabled;
 
@@ -57,8 +57,8 @@ public class MergeCertificateOptions {
     }
 
     /**
-     * Set the isEnabled status.
-     * @param enabled The isEnabled status to set.
+     * Set the enabled status.
+     * @param enabled The enabled status to set.
      * @return the MergeCertificateOptions object itself.
      */
     public MergeCertificateOptions setEnabled(Boolean enabled) {
@@ -67,9 +67,9 @@ public class MergeCertificateOptions {
     }
 
     /**
-     * Get the isEnabled status.
+     * Get the enabled status.
      *
-     * @return the isEnabled status
+     * @return the enabled status
      */
     public Boolean isEnabled() {
         return this.enabled;

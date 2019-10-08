@@ -43,9 +43,9 @@ public final class Issuer {
     private final IssuerProperties properties;
 
     /**
-     * Determines whether the issuer is isEnabled.
+     * Determines whether the issuer is enabled.
      */
-    @JsonProperty(value = "isEnabled")
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -169,16 +169,16 @@ public final class Issuer {
     }
 
     /**
-     * Get the isEnabled status
-     * @return the isEnabled status
+     * Get the enabled status
+     * @return the enabled status
      */
     public Boolean isEnabled() {
         return enabled;
     }
 
     /**
-     * Set the isEnabled status
-     * @param enabled the isEnabled status to set
+     * Set the enabled status
+     * @param enabled the enabled status to set
      * @return the Issuer object itself.
      */
     public Issuer setEnabled(Boolean enabled) {
@@ -232,7 +232,7 @@ public final class Issuer {
 
     @JsonProperty("attributes")
     private void unpackBaseAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("isEnabled");
+        this.enabled = (Boolean) attributes.get("enabled");
         this.created = epochToOffsetDateTime(attributes.get("created"));
         this.updated = epochToOffsetDateTime(attributes.get("updated"));
     }

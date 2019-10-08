@@ -80,7 +80,7 @@ public final class CertificatePolicy {
     private OffsetDateTime updated;
 
     /**
-     * Determines whether the object is isEnabled.
+     * Determines whether the object is enabled.
      */
     private Boolean enabled;
 
@@ -280,17 +280,17 @@ public final class CertificatePolicy {
 
 
     /**
-     * Get the isEnabled status.
+     * Get the enabled status.
      *
-     * @return the isEnabled status
+     * @return the enabled status
      */
     public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the isEnabled status.
-     * @param enabled The isEnabled status to set.
+     * Set the enabled status.
+     * @param enabled The enabled status to set.
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setEnabled(Boolean enabled) {
@@ -563,7 +563,7 @@ public final class CertificatePolicy {
 
     @JsonProperty("attributes")
     private void unpackAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("isEnabled");
+        this.enabled = (Boolean) attributes.get("enabled");
         this.created = epochToOffsetDateTime(attributes.get("created"));
         this.updated = epochToOffsetDateTime(attributes.get("updated"));
     }

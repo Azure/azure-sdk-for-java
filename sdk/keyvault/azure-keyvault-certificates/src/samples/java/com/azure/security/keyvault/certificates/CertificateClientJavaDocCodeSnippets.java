@@ -208,20 +208,20 @@ public final class CertificateClientJavaDocCodeSnippets {
         Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
-        // Update certificate isEnabled status
+        // Update certificate enabled status
         certificate.getProperties().setEnabled(false);
         Certificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
-        System.out.printf("Updated Certificate with name %s and isEnabled status %s", updatedCertificate.getProperties().getName(),
+        System.out.printf("Updated Certificate with name %s and enabled status %s", updatedCertificate.getProperties().getName(),
             updatedCertificate.getProperties().isEnabled());
         // END: com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-Context
         Certificate certificateToUpdate = certificateClient.getCertificateWithPolicy("certificateName");
-        // Update certificate isEnabled status
+        // Update certificate enabled status
         certificateToUpdate.getProperties().setEnabled(false);
         Response<Certificate> updatedCertificateResponse = certificateClient.
             updateCertificatePropertiesWithResponse(certificateToUpdate.getProperties(), new Context(key1, value1));
-        System.out.printf("Updated Certificate with name %s and isEnabled status %s",
+        System.out.printf("Updated Certificate with name %s and enabled status %s",
             updatedCertificateResponse.getValue().getProperties().getName(), updatedCertificateResponse.getValue().getProperties().isEnabled());
         // END: com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-Context
     }

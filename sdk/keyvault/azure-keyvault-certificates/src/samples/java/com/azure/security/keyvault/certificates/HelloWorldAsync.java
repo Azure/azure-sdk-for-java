@@ -61,16 +61,16 @@ public class HelloWorldAsync {
                 System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
                     certificateResponse.getSecretId()));
 
-        // After some time, we need to disable the certificate temporarily, so we update the isEnabled status of the certificate.
-        // The update method can be used to update the isEnabled status of the certificate.
+        // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
+        // The update method can be used to update the enabled status of the certificate.
         certificateAsyncClient.getCertificateWithPolicy("certificateName")
             .subscribe(certificateResponseValue -> {
                 Certificate certificate = certificateResponseValue;
-                //Update isEnabled status of the certificate
+                //Update enabled status of the certificate
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
                     .subscribe(certificateResponse ->
-                        System.out.printf("Certificate's isEnabled status %s %n",
+                        System.out.printf("Certificate's enabled status %s %n",
                             certificateResponse.getProperties().isEnabled().toString()));
             });
 
@@ -130,7 +130,7 @@ public class HelloWorldAsync {
         // To ensure certificate is deleted on server side.
         Thread.sleep(50000);
 
-        // If the keyvault is soft-delete isEnabled, then for permanent deletion  deleted certificates need to be purged.
+        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
         certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));

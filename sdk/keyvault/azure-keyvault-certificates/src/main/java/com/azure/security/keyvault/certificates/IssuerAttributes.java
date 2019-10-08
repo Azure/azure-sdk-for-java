@@ -12,9 +12,9 @@ import java.time.OffsetDateTime;
  */
 class IssuerAttributes {
     /**
-     * Determines whether the issuer is isEnabled.
+     * Determines whether the issuer is enabled.
      */
-    @JsonProperty(value = "isEnabled")
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -30,18 +30,18 @@ class IssuerAttributes {
     private OffsetDateTime updated;
 
     /**
-     * Get the isEnabled value.
+     * Get the enabled value.
      *
-     * @return the isEnabled value
+     * @return the enabled value
      */
     Boolean enabled() {
         return this.enabled;
     }
 
     /**
-     * Set the isEnabled value.
+     * Set the enabled value.
      *
-     * @param enabled the isEnabled value to set
+     * @param enabled the enabled value to set
      * @return the IssuerAttributes object itself.
      */
     IssuerAttributes enabled(Boolean enabled) {

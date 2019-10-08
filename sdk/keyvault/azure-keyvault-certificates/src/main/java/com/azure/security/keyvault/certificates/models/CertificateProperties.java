@@ -18,7 +18,7 @@ import java.util.Map;
 public class CertificateProperties {
 
     /**
-     * Determines whether the object is isEnabled.
+     * Determines whether the object is enabled.
      */
     private Boolean enabled;
 
@@ -180,17 +180,17 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the isEnabled status.
+     * Get the enabled status.
      *
-     * @return the isEnabled status
+     * @return the enabled status
      */
     public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
-     * Set the isEnabled status.
-     * @param enabled The isEnabled status to set.
+     * Set the enabled status.
+     * @param enabled The enabled status to set.
      * @return the CertificateProperties object itself.
      */
     public CertificateProperties setEnabled(Boolean enabled) {
@@ -209,7 +209,7 @@ public class CertificateProperties {
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
     void unpackBaseAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("isEnabled");
+        this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
         this.expires =  epochToOffsetDateTime(attributes.get("exp"));
         this.created = epochToOffsetDateTime(attributes.get("created"));

@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * </ul>
  *
  * <p><strong>Auto Polling</strong></p>
- * Auto-polling is isEnabled by-default. It means that the {@link Poller} starts polling as soon as its instance is created. The {@link Poller} will transparently call the poll operation every polling cycle
+ * Auto-polling is enabled by-default. It means that the {@link Poller} starts polling as soon as its instance is created. The {@link Poller} will transparently call the poll operation every polling cycle
  * and track the state of the long-running operation. Azure services can return {@link PollResponse#getRetryAfter()} to override the {@code Poller.pollInterval} defined in the {@link Poller}.
  * The {@link Poller#getStatus()} represents the status returned by the successful long-running operation at the time the last auto-polling or last manual polling, whichever happened most recently.
  *
@@ -361,7 +361,7 @@ public class Poller<T, R> {
     }
 
     /**
-     * Controls whether auto-polling is isEnabled or disabled. Refer to the {@link Poller} class-level JavaDoc for more details on auto-polling.
+     * Controls whether auto-polling is enabled or disabled. Refer to the {@link Poller} class-level JavaDoc for more details on auto-polling.
      *
      * @param autoPollingEnabled If true, auto-polling will occur transparently in the background, otherwise it requires
      *                           manual polling by the user to get the latest state.
@@ -404,8 +404,8 @@ public class Poller<T, R> {
     }
 
     /**
-     * Indicates if auto polling is isEnabled. Refer to the {@link Poller} class-level JavaDoc for more details on auto-polling.
-     * @return A boolean value representing if auto-polling is isEnabled or not..
+     * Indicates if auto polling is enabled. Refer to the {@link Poller} class-level JavaDoc for more details on auto-polling.
+     * @return A boolean value representing if auto-polling is enabled or not..
      */
     public boolean isAutoPollingEnabled() {
         return this.autoPollingEnabled;

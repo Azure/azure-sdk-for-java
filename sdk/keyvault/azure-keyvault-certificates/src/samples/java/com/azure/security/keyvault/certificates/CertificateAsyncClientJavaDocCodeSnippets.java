@@ -272,11 +272,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponseValue -> {
                 Certificate certificate = certificateResponseValue;
-                //Update isEnabled status of the certificate
+                //Update enabled status of the certificate
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
                     .subscribe(certificateResponse ->
-                        System.out.printf("Certificate's isEnabled status %s %n",
+                        System.out.printf("Certificate's enabled status %s %n",
                             certificateResponse.getProperties().isEnabled().toString()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties
@@ -292,11 +292,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponseValue -> {
                 Issuer issuer = issuerResponseValue;
-                //Update the isEnabled status of the issuer.
+                //Update the enabled status of the issuer.
                 issuer.setEnabled(false);
                 certificateAsyncClient.updateIssuer(issuer)
                     .subscribe(issuerResponse ->
-                        System.out.printf("Issuer's isEnabled status %s %n",
+                        System.out.printf("Issuer's enabled status %s %n",
                             issuerResponse.isEnabled().toString()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#IssuerProperties
@@ -306,11 +306,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponseValue -> {
                 Issuer issuer = issuerResponseValue;
-                //Update the isEnabled status of the issuer.
+                //Update the enabled status of the issuer.
                 issuer.setEnabled(false);
                 certificateAsyncClient.updateIssuerWithResponse(issuer)
                     .subscribe(issuerResponse ->
-                        System.out.printf("Issuer's isEnabled status %s %n",
+                        System.out.printf("Issuer's enabled status %s %n",
                             issuerResponse.getValue().isEnabled().toString()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuerWithResponse#IssuerProperties
@@ -362,11 +362,11 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponseValue -> {
                 Certificate certificate = certificateResponseValue;
-                //Update the isEnabled status of the certificate.
+                //Update the enabled status of the certificate.
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificatePropertiesWithResponse(certificate.getProperties())
                     .subscribe(certificateResponse ->
-                        System.out.printf("Certificate's isEnabled status %s %n",
+                        System.out.printf("Certificate's enabled status %s %n",
                             certificateResponse.getValue().getProperties().isEnabled().toString()));
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePropertiesWithResponse#CertificateProperties

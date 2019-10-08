@@ -73,7 +73,7 @@ public class BackupAndRestoreOperations {
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
-        // If the vault is soft-delete isEnabled, then you need to purge the certificate as well for permanent deletion.
+        // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
         certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
 
         //To ensure certificate is purged on server side.

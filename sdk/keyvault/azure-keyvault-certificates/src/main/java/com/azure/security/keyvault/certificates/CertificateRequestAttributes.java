@@ -16,7 +16,7 @@ import java.time.ZoneOffset;
 class CertificateRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads certificateProperties.notBefore, certificateProperties.expires and certificateProperties.isEnabled fields
+     * Creates an instance of SecretRequestAttributes. Reads certificateProperties.notBefore, certificateProperties.expires and certificateProperties.enabled fields
      * from {@code certificateProperties}
      * @param certificateProperties the {@link CertificateProperties} object with populated attributes
      */
@@ -47,9 +47,9 @@ class CertificateRequestAttributes {
     private String id;
 
     /**
-     * Determines whether the object is isEnabled.
+     * Determines whether the object is enabled.
      */
-    @JsonProperty(value = "isEnabled")
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -77,18 +77,18 @@ class CertificateRequestAttributes {
     private Long updated;
 
     /**
-     * Get the isEnabled value.
+     * Get the enabled value.
      *
-     * @return the isEnabled value
+     * @return the enabled value
      */
     public Boolean enabled() {
         return this.enabled;
     }
 
     /**
-     * Set the isEnabled value.
+     * Set the enabled value.
      *
-     * @param enabled the isEnabled value to set
+     * @param enabled the enabled value to set
      * @return the Attributes object itself.
      */
     CertificateRequestAttributes enabled(Boolean enabled) {

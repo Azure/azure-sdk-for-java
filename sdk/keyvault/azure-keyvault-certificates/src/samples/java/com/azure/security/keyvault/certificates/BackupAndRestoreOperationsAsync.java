@@ -78,7 +78,7 @@ public class BackupAndRestoreOperationsAsync {
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
-        // If the vault is soft-delete isEnabled, then you need to purge the certificate as well for permanent deletion.
+        // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
         certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));

@@ -28,7 +28,7 @@ public final class CertificateImportOptions {
     private String password;
 
     /**
-     * Determines whether the object is isEnabled.
+     * Determines whether the object is enabled.
      */
     private Boolean enabled;
 
@@ -63,8 +63,8 @@ public final class CertificateImportOptions {
     }
 
     /**
-     * Set the isEnabled status.
-     * @param enabled The isEnabled status to set.
+     * Set the enabled status.
+     * @param enabled The enabled status to set.
      * @return the CertificateImportOptions itself
      */
     public CertificateImportOptions setEnabled(Boolean enabled) {
@@ -73,9 +73,9 @@ public final class CertificateImportOptions {
     }
 
     /**
-     * Get the isEnabled status.
+     * Get the enabled status.
      *
-     * @return the isEnabled status
+     * @return the enabled status
      */
     public Boolean getEnabled() {
         return this.enabled;

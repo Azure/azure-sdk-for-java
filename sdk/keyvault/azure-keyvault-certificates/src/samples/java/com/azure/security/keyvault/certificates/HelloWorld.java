@@ -61,11 +61,11 @@ public class HelloWorld {
         System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.getProperties().getName(),
             certificate.getSecretId());
 
-        // After some time, we need to disable the certificate temporarily, so we update the isEnabled status of the certificate.
-        // The update method can be used to update the isEnabled status of the certificate.
+        // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
+        // The update method can be used to update the enabled status of the certificate.
         certificate.getProperties().setEnabled(false);
         Certificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
-        System.out.printf("Certificate's updated isEnabled status is %s \n", updatedCertificate.getProperties().isEnabled());
+        System.out.printf("Certificate's updated enabled status is %s \n", updatedCertificate.getProperties().isEnabled());
 
 
         //Let's create a certificate issuer.
@@ -101,7 +101,7 @@ public class HelloWorld {
         // To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
-        // If the keyvault is soft-delete isEnabled, then for permanent deletion  deleted certificates need to be purged.
+        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
         certificateClient.purgeDeletedCertificate("certificateName");
         certificateClient.purgeDeletedCertificate("myCertificate");
     }
