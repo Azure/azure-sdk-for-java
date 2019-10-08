@@ -9,6 +9,7 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-sdk-template</artifactId>
   <version>1.0.2</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
 

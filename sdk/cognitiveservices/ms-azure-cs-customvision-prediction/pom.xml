@@ -10,7 +10,7 @@
     <parent>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-sdk-parent</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
       <relativePath>../../../pom.data.xml</relativePath>
     </parent>
     <artifactId>azure-cognitiveservices-customvision-prediction</artifactId>
