@@ -27,102 +27,118 @@ public class BasicExample {
      * @throws RuntimeException If the downloaded data doesn't match the uploaded data
      */
     public static void main(String[] args) throws IOException {
+//
+//        /*
+//         * From the Azure portal, get your Storage account's name and account key.
+//         */
+//        String accountName = SampleHelper.getAccountName();
+//        String accountKey = SampleHelper.getAccountKey();
+//
+//        /*
+//         * Use your Storage account's name and key to create a credential object; this is used to access your account.
+//         */
+//        SharedKeyCredential credential = new SharedKeyCredential(accountName, accountKey);
+//
+//        /*
+//         * From the Azure portal, get your Storage account blob service URL endpoint.
+//         * The URL typically looks like this:
+//         */
+//        String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
+//
+//        /*
+//         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
+//         */
+//        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
+//
+//        /*
+//         * This example shows several common operations just to get you started.
+//         */
+//
+//        /*
+//         * Create a client that references a to-be-created container in your Azure Storage account. This returns a
+//         * ContainerClient object that wraps the container's endpoint, credential and a request pipeline (inherited from storageClient).
+//         * Note that container names require lowercase.
+//         */
+//        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
+//
+//        /*
+//         * Create a container in Storage blob account.
+//         */
+//        blobContainerClient.create();
+//
+//        /*
+//         * Create a client that references a to-be-created blob in your Azure Storage account's container.
+//         * This returns a BlockBlobClient object that wraps the blob's endpoint, credential and a request pipeline
+//         * (inherited from containerClient). Note that blob names can be mixed case.
+//         */
+//        BlockBlobClient blobClient = blobContainerClient.getBlobClient("HelloWorld.txt").getBlockBlobClient();
+//
+//        String data = "Hello world!";
+//        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+//
+//        /*
+//         * Create the blob with string (plain text) content.
+//         */
+//        blobClient.upload(dataStream, data.length());
+//
+//        dataStream.close();
+//
+//        /*
+//         * Download the blob's content to output stream.
+//         */
+//        int dataSize = (int) blobClient.getProperties().getBlobSize();
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(dataSize);
+//        blobClient.download(outputStream);
+//        outputStream.close();
+//
+//        /*
+//         * Verify that the blob data round-tripped correctly.
+//         */
+//        if (!data.equals(new String(outputStream.toByteArray(), StandardCharsets.UTF_8))) {
+//            throw new RuntimeException("The downloaded data does not match the uploaded data.");
+//        }
+//
+//        /*
+//         * Create more blobs before listing.
+//         */
+//        for (int i = 0; i < 3; i++) {
+//            String sampleData = "Samples";
+//            InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
+//            blobContainerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).getBlockBlobClient()
+//                .upload(dataInBlobs, sampleData.length());
+//            dataInBlobs.close();
+//        }
+//
+//        /*
+//         * List the blob(s) in our container.
+//         */
+//        blobContainerClient.listBlobsFlat()
+//            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
+//
+//        /*
+//         * Delete the blob we created earlier.
+//         */
+//        blobClient.delete();
+//
+//        /*
+//         * Delete the container we created earlier.
+//         */
+//        blobContainerClient.delete();
 
-        /*
-         * From the Azure portal, get your Storage account's name and account key.
-         */
-        String accountName = SampleHelper.getAccountName();
-        String accountKey = SampleHelper.getAccountKey();
+        System.out.println("This is the testing for throw message. " + b().getMessage());
+    }
 
-        /*
-         * Use your Storage account's name and key to create a credential object; this is used to access your account.
-         */
-        SharedKeyCredential credential = new SharedKeyCredential(accountName, accountKey);
 
-        /*
-         * From the Azure portal, get your Storage account blob service URL endpoint.
-         * The URL typically looks like this:
-         */
-        String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
-        /*
-         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
-         */
-        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildClient();
-
-        /*
-         * This example shows several common operations just to get you started.
-         */
-
-        /*
-         * Create a client that references a to-be-created container in your Azure Storage account. This returns a
-         * ContainerClient object that wraps the container's endpoint, credential and a request pipeline (inherited from storageClient).
-         * Note that container names require lowercase.
-         */
-        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
-
-        /*
-         * Create a container in Storage blob account.
-         */
-        blobContainerClient.create();
-
-        /*
-         * Create a client that references a to-be-created blob in your Azure Storage account's container.
-         * This returns a BlockBlobClient object that wraps the blob's endpoint, credential and a request pipeline
-         * (inherited from containerClient). Note that blob names can be mixed case.
-         */
-        BlockBlobClient blobClient = blobContainerClient.getBlobClient("HelloWorld.txt").getBlockBlobClient();
-
-        String data = "Hello world!";
-        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-
-        /*
-         * Create the blob with string (plain text) content.
-         */
-        blobClient.upload(dataStream, data.length());
-
-        dataStream.close();
-
-        /*
-         * Download the blob's content to output stream.
-         */
-        int dataSize = (int) blobClient.getProperties().getBlobSize();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(dataSize);
-        blobClient.download(outputStream);
-        outputStream.close();
-
-        /*
-         * Verify that the blob data round-tripped correctly.
-         */
-        if (!data.equals(new String(outputStream.toByteArray(), StandardCharsets.UTF_8))) {
-            throw new RuntimeException("The downloaded data does not match the uploaded data.");
+    private static Throwable b() {
+        try {
+            return a();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("this is b. Error: " + e.getMessage() , e);
         }
+    }
 
-        /*
-         * Create more blobs before listing.
-         */
-        for (int i = 0; i < 3; i++) {
-            String sampleData = "Samples";
-            InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
-            blobContainerClient.getBlobClient("myblobsforlisting" + System.currentTimeMillis()).getBlockBlobClient()
-                .upload(dataInBlobs, sampleData.length());
-            dataInBlobs.close();
-        }
-
-        /*
-         * List the blob(s) in our container.
-         */
-        blobContainerClient.listBlobsFlat()
-            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
-
-        /*
-         * Delete the blob we created earlier.
-         */
-        blobClient.delete();
-
-        /*
-         * Delete the container we created earlier.
-         */
-        blobContainerClient.delete();
+    private static Throwable a() {
+        throw new RuntimeException("this is a.", new IOException("It is IO exception"));
     }
 }

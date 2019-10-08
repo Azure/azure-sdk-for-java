@@ -131,7 +131,6 @@ final class ResponseConstructorsCache {
                                 bodyAsObject,
                                 null));
                         } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize 5-parameter"
                             throw logger.logExceptionAsError(new RuntimeException(
                                 "Failed to deserialize 5-parameter response without decoded headers.", e));
                         }
