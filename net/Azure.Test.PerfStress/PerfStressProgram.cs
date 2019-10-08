@@ -110,9 +110,10 @@ namespace Azure.Test.PerfStress
 
             for (var i=0; i < options.Parallel; i++)
             {
+                var j = i;
                 threads[i] = new Thread(() =>
                 {
-                    tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, i.ToString(), options);
+                    tests[j] = (IPerfStressTest)Activator.CreateInstance(testType, j.ToString(), options);
                 });
                 threads[i].Start();
             }
