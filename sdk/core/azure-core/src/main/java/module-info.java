@@ -73,6 +73,7 @@ module com.azure.core {
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.common,               // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.batch,           // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.serializer to
@@ -106,6 +107,7 @@ module com.azure.core {
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.common,               // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
+        com.azure.storage.blob.batch,           // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
         com.azure.storage.queue;                // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.exception to

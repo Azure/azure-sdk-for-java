@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.batch;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -15,7 +15,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -43,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class allows for batching of multiple Azure Storage operations in a single request via
- * {@link BlobServiceClient#submitBatch(BlobBatch)} or {@link BlobServiceAsyncClient#submitBatch(BlobBatch)}.
+ * {@link BlobBatchClient#submitBatch(BlobBatch)} or {@link BlobBatchAsyncClient#submitBatch(BlobBatch)}.
  *
  * <p>Creating a batch requires either a {@link BlobServiceClient} or {@link BlobServiceAsyncClient}.</p>
  *
@@ -131,10 +134,11 @@ public final class BlobBatch {
             batchPipelineBuilder.policies(this::cleanseHeaders);
         }
 
-        this.batchClient = new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .pipeline(batchPipelineBuilder.build())
-            .url(accountUrl)
-            .build(), null, null, null);
+        this.batchClient = new BlobClientBuilder()
+            .endpoint(accountUrl)
+            .blobName("")
+            .pipeline(pipeline)
+            .buildAsyncClient();
 
         this.batchOperationQueue = new ConcurrentLinkedDeque<>();
         this.batchRequest = new ArrayList<>();
