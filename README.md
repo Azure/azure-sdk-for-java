@@ -37,6 +37,8 @@ The libraries released in the October 2019 preview:
 - [Key Vault Keys](sdk/keyvault/azure-keyvault-keys/README.md)
 - [Key Vault Secrets](sdk/keyvault/azure-keyvault-secrets/README.md)
 - [Storage Blobs](sdk/storage/azure-storage-blob/README.md)
+- [Storage Blobs Batch](sdk/storage/azure-storage-blob-batch/README.md)
+- [Storage Blobs Cryptography](sdk/storage/azure-storage-blob-cryptography/README.md)
 - [Storage Files](sdk/storage/azure-storage-file/README.md)
 - [Storage Queues](sdk/storage/azure-storage-queue/README.md)
 
