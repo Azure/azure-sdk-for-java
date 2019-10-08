@@ -38,7 +38,7 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
- * {@link BlobAsyncClient#asPageBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
+ * {@link BlobAsyncClient#getPageBlobAsyncClient()}. This class does not hold any state about a particular blob, but is
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
@@ -70,8 +70,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
-        super(azureBlobStorage, snapshot, cpk);
+    PageBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
+        super(azureBlobStorage, snapshot, cpk, accountName);
     }
 
     /**

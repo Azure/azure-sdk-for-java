@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -34,12 +34,12 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
 /**
  * Client to an append blob. It may only be instantiated through a
  * {@link SpecializedBlobClientBuilder#buildAppendBlobAsyncClient()} or via the method
- * {@link BlobAsyncClient#asAppendBlobAsyncClient()}. This class does not hold any state about a particular blob, but
- * is instead a convenient way of sending appropriate requests to the resource on the service.
+ * {@link BlobAsyncClient#getAppendBlobAsyncClient()}. This class does not hold any state about a
+ * particular blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * This client contains operations on a blob. Operations on a container are available on {@link ContainerAsyncClient},
- * and operations on the service are available on {@link BlobServiceAsyncClient}.
+ * This client contains operations on a blob. Operations on a container are available on {@link
+ * BlobContainerAsyncClient}, and operations on the service are available on {@link BlobServiceAsyncClient}.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
@@ -68,8 +68,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param azureBlobStorage the API client for blob storage
      */
-    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk) {
-        super(azureBlobStorage, snapshot, cpk);
+    AppendBlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
+        super(azureBlobStorage, snapshot, cpk, accountName);
     }
 
     /**

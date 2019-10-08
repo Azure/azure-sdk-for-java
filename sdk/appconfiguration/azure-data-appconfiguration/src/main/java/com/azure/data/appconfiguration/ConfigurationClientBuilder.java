@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -13,7 +14,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.net.MalformedURLException;
@@ -80,24 +81,24 @@ public final class ConfigurationClientBuilder {
     private ConfigurationClientCredentials credential;
     private URL endpoint;
     private HttpClient httpClient;
-    private HttpLogDetailLevel httpLogDetailLevel;
+    private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
-    private final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
 
     /**
      * The constructor with defaults.
      */
     public ConfigurationClientBuilder() {
-        retryPolicy = new RetryPolicy();
-        httpLogDetailLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
+        httpLogOptions = new HttpLogOptions();
 
         headers = new HttpHeaders()
             .put(ECHO_REQUEST_ID_HEADER, "true")
             .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
             .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
+
     /**
      * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code buildClient()} is
      * called a new instance of {@link ConfigurationClient} is created.
@@ -160,11 +161,11 @@ public final class ConfigurationClientBuilder {
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -207,14 +208,15 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the logging level for HTTP requests and responses.
+     * Sets the logging configuration for HTTP requests and responses.
      *
-     * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated ConfigurationClientBuilder object.
-     * @throws NullPointerException If {@code logLevel} is {@code null}.
      */
-    public ConfigurationClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        httpLogDetailLevel = Objects.requireNonNull(logLevel);
+    public ConfigurationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
         return this;
     }
 
@@ -276,6 +278,19 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()}
+     * to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
+     * @param retryPolicy RetryPolicy applied to each request.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
