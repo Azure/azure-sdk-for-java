@@ -11,12 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="out\**" />
-    <EmbeddedResource Remove="out\**" />
-    <None Remove="out\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.0.0-dev.20191008.1" />
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.0" />
   </ItemGroup>
