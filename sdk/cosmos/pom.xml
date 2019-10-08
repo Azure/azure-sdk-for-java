@@ -55,11 +55,7 @@ Licensed under the MIT License.
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmos</artifactId>
-<<<<<<< HEAD
-        <version>3.3.0</version>
-=======
-        <version>3.2.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
->>>>>>> test commit to run automation
+        <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
       </dependency>
 
       <dependency>
