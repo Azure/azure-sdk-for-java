@@ -538,12 +538,12 @@ public final class Utility {
                 long count = pos + blockSize > length ? length - pos : blockSize;
                 byte[] cache = new byte[(int) count];
                 int lastIndex = data.read(cache);
-                currentTotalLength[0] += lastIndex;
-                if (lastIndex < count) {
+                if (lastIndex == -1 && currentTotalLength[0] < length) {
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                         String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
                 }
+                currentTotalLength[0] += lastIndex;
                 return ByteBuffer.wrap(cache);
             }))
             .doOnComplete(() -> {
@@ -555,7 +555,7 @@ public final class Utility {
                                 totalLength, length), totalLength, length));
                     }
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error deatils: "
+                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
                         + e.getMessage()));
                 }
             });
