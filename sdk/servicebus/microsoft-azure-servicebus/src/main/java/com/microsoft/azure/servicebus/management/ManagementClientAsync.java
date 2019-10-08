@@ -540,7 +540,7 @@ public class ManagementClientAsync {
 
     private CompletableFuture<QueueDescription> putQueueAsync(QueueDescription queueDescription, boolean isUpdate) {
         if (queueDescription == null) {
-            throw new IllegalArgumentException("queueDescription passed cannot be null");
+            throw new IllegalArgumentException("queueDescription passed cannot be null.");
         }
 
         QueueDescriptionSerializer.normalizeDescription(queueDescription, this.namespaceEndpointURI);
@@ -605,7 +605,7 @@ public class ManagementClientAsync {
 
     private CompletableFuture<TopicDescription> putTopicAsync(TopicDescription topicDescription, boolean isUpdate) {
         if (topicDescription == null) {
-            throw new IllegalArgumentException("topicDescription passed cannot be null");
+            throw new IllegalArgumentException("topicDescription passed cannot be null.");
         }
 
         String atomRequest = null;
@@ -682,7 +682,7 @@ public class ManagementClientAsync {
 
     private CompletableFuture<SubscriptionDescription> putSubscriptionAsync(SubscriptionDescription subscriptionDescription, boolean isUpdate) {
         if (subscriptionDescription == null) {
-            throw new IllegalArgumentException("queueDescription passed cannot be null");
+            throw new IllegalArgumentException("queueDescription passed cannot be null.");
         }
 
         SubscriptionDescriptionSerializer.normalizeDescription(subscriptionDescription, this.namespaceEndpointURI);
@@ -743,7 +743,7 @@ public class ManagementClientAsync {
         EntityNameHelper.checkValidTopicName(topicName);
         EntityNameHelper.checkValidSubscriptionName(subscriptionName);
         if (ruleDescription == null) {
-            throw new IllegalArgumentException("queueDescription passed cannot be null");
+            throw new IllegalArgumentException("queueDescription passed cannot be null.");
         }
 
         String atomRequest = null;
@@ -1164,7 +1164,7 @@ public class ManagementClientAsync {
         SecurityToken token = tokenProvider.getSecurityTokenAsync(url).get();
         return token.getTokenValue();
     }
-    
+
     private static int getPortNumberFromHost(String host) {
         if (host.endsWith("onebox.windows-int.net")) {
             return ONE_BOX_HTTPS_PORT;

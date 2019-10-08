@@ -517,7 +517,7 @@ public final class PageBlobURL extends BlobURL {
         context = context == null ? Context.NONE : context;
 
         if (prevSnapshot == null) {
-            throw new IllegalArgumentException("prevSnapshot cannot be null");
+            throw new IllegalArgumentException("prevSnapshot cannot be null.");
         }
 
         return postProcessResponse(this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(

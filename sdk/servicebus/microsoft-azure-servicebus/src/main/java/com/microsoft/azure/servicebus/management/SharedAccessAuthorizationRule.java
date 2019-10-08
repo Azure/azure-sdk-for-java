@@ -55,7 +55,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
     @Override
     public void setKeyName(String keyName) {
         if (keyName == null || keyName.isEmpty()) {
-            throw new IllegalArgumentException("Argument cannot be null");
+            throw new IllegalArgumentException("Argument cannot be null.");
         }
 
         if (keyName.length() > SecurityConstants.MAX_KEY_NAME_LENGTH) {
@@ -71,7 +71,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     public void setPrimaryKey(String primaryKey) {
         if (primaryKey == null || primaryKey.isEmpty()) {
-            throw new IllegalArgumentException("Argument cannot be null");
+            throw new IllegalArgumentException("Argument cannot be null.");
         }
 
         if (primaryKey.length() > SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH) {
@@ -87,7 +87,7 @@ public class SharedAccessAuthorizationRule extends AuthorizationRule {
 
     public void setSecondaryKey(String secondaryKey) {
         if (secondaryKey == null || secondaryKey.isEmpty()) {
-            throw new IllegalArgumentException("Argument cannot be null");
+            throw new IllegalArgumentException("Argument cannot be null.");
         }
 
         if (secondaryKey.length() > SharedAccessAuthorizationRule.SUPPORTED_SAS_KEY_LENGTH) {

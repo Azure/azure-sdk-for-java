@@ -46,7 +46,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @param okHttpClient the httpclient
      */
     public OkHttpAsyncHttpClientBuilder(OkHttpClient okHttpClient) {
-        this.okHttpClient = Objects.requireNonNull(okHttpClient, "okHttpClient cannot be null.");
+        this.okHttpClient = Objects.requireNonNull(okHttpClient, "'okHttpClient' cannot be null.");
     }
 
     /**
@@ -56,7 +56,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
     public OkHttpAsyncHttpClientBuilder addNetworkInterceptor(Interceptor networkInterceptor) {
-        Objects.requireNonNull(networkInterceptor);
+        Objects.requireNonNull(networkInterceptor, "'networkInterceptor' cannot be null.");
         this.networkInterceptors.add(networkInterceptor);
         return this;
     }
@@ -70,7 +70,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return the updated OkHttpAsyncHttpClientBuilder object
      */
     public OkHttpAsyncHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
-        this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "networkInterceptors cannot be null.");
+        this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "'networkInterceptors' cannot be null.");
         return this;
     }
 
@@ -110,7 +110,7 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
         // Null ConnectionPool is not allowed
-        this.connectionPool = Objects.requireNonNull(connectionPool, "connectionPool cannot be null.");
+        this.connectionPool = Objects.requireNonNull(connectionPool, "'connectionPool' cannot be null.");
         return this;
     }
 
@@ -122,7 +122,7 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
         // Null Dispatcher is not allowed
-        this.dispatcher = Objects.requireNonNull(dispatcher, "dispatcher cannot be null.");
+        this.dispatcher = Objects.requireNonNull(dispatcher, "'dispatcher' cannot be null.");
         return this;
     }
 
@@ -150,7 +150,7 @@ public class OkHttpAsyncHttpClientBuilder {
      */
     public OkHttpAsyncHttpClientBuilder proxyAuthenticator(Authenticator proxyAuthenticator) {
         // Null Authenticator is not allowed
-        this.proxyAuthenticator = Objects.requireNonNull(proxyAuthenticator, "proxyAuthenticator cannot be null.");
+        this.proxyAuthenticator = Objects.requireNonNull(proxyAuthenticator, "'proxyAuthenticator' cannot be null.");
         return this;
     }
 

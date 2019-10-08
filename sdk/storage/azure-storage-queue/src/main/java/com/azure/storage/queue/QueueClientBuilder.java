@@ -71,7 +71,7 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
     }
 
     private AzureQueueStorageImpl constructImpl() {
-        Objects.requireNonNull(queueName);
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
 
         if (!super.hasCredential()) {
             throw logger.logExceptionAsError(
@@ -143,7 +143,7 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
      */
     @Override
     public QueueClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         try {
             URL fullURL = new URL(endpoint);
             this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
@@ -179,7 +179,7 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
      * @throws NullPointerException If {@code queueName} is {@code null}.
      */
     public QueueClientBuilder queueName(String queueName) {
-        this.queueName = Objects.requireNonNull(queueName);
+        this.queueName = Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         return this;
     }
 

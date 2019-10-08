@@ -107,8 +107,8 @@ public class FileAsyncClient {
      */
     FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
                     String snapshot, String accountName) {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(filePath);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;

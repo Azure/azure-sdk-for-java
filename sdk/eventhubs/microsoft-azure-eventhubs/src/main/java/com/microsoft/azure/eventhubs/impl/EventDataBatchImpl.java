@@ -37,7 +37,7 @@ final class EventDataBatchImpl implements EventDataBatch {
     public boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
 
         if (eventData == null) {
-            throw new IllegalArgumentException("eventData cannot be null");
+            throw new IllegalArgumentException("eventData cannot be null.");
         }
 
         final EventDataImpl eventDataImpl = (EventDataImpl) eventData;

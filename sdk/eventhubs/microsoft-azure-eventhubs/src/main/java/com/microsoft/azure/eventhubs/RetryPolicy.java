@@ -26,7 +26,7 @@ public abstract class RetryPolicy {
 
     public static boolean isRetryableException(Exception exception) {
         if (exception == null) {
-            throw new IllegalArgumentException("exception cannot be null");
+            throw new IllegalArgumentException("exception cannot be null.");
         }
 
         if (exception instanceof EventHubException) {

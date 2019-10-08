@@ -38,8 +38,8 @@ public final class SharedKeyCredential {
      * @param accountKey The account access key used to authenticate the request.
      */
     public SharedKeyCredential(String accountName, String accountKey) {
-        Objects.requireNonNull(accountName);
-        Objects.requireNonNull(accountKey);
+        Objects.requireNonNull(accountName, "'accountName' cannot be null.");
+        Objects.requireNonNull(accountKey, "'accountKey' cannot be null.");
         this.accountName = accountName;
         this.accountKey = accountKey;
     }

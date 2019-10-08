@@ -35,7 +35,7 @@ public class TokenRequest {
      * @return the TokenRequest itself
      */
     public TokenRequest setScopes(List<String> scopes) {
-        Objects.requireNonNull(scopes);
+        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
         this.scopes.clear();
         this.scopes.addAll(scopes);
         return this;

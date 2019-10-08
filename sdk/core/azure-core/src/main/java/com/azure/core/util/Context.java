@@ -40,7 +40,7 @@ public class Context {
      */
     public Context(Object key, Object value) {
         if (key == null) {
-            throw new IllegalArgumentException("key cannot be null");
+            throw new IllegalArgumentException("key cannot be null.");
         }
         this.parent = null;
         this.key = key;

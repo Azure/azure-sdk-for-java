@@ -164,7 +164,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public CertificateClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential, "Token credential cannot be null");
+        Objects.requireNonNull(credential, "Token credential cannot be null.");
         this.credential = credential;
         return this;
     }
@@ -190,7 +190,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public CertificateClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "Http pipeline policy cannot be null");
+        Objects.requireNonNull(policy, "Http pipeline policy cannot be null.");
         policies.add(policy);
         return this;
     }
