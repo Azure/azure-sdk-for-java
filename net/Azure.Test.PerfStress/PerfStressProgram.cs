@@ -67,7 +67,8 @@ namespace Azure.Test.PerfStress
 
                     for (var i = 0; i < options.Parallel; i++)
                     {
-                        threads[i] = new Thread(() => RunLoop(tests[i], cancellationToken));
+                        var j = i;
+                        threads[i] = new Thread(() => RunLoop(tests[j], cancellationToken));
                         threads[i].Start();
                     }
                     for (var i = 0; i < options.Parallel; i++)
