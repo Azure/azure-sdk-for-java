@@ -47,8 +47,8 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         pagedFluxBase
             .byPage(continuationToken)
             .log()
-            .doOnSubscribe(
-                ignored -> System.out.println("Subscribed to paged flux processing pages starting from first page"))
+            .doOnSubscribe(ignored -> System.out.println(
+                "Subscribed to paged flux processing pages starting from: " + continuationToken))
             .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
                 error -> System.err.println("Error occurred " + error),
                 () -> System.out.println("Completed processing."));
@@ -97,7 +97,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 "Subscribed to paged flux processing pages starting from first page"))
             .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
                 error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));;
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedfluxbase.bypage
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage#String
@@ -120,8 +120,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.subscribe
-        pagedFluxBase.log()
-            .subscribe(new BaseSubscriber<Integer>() {
+        pagedFluxBase.subscribe(new BaseSubscriber<Integer>() {
                 @Override
                 protected void hookOnSubscribe(Subscription subscription) {
                     System.out.println("Subscribed to paged flux processing items");
