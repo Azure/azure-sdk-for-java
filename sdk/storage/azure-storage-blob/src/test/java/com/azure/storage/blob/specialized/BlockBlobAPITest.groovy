@@ -831,6 +831,39 @@ class BlockBlobAPITest extends APISpec {
         10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
     }
 
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @Requires({ liveMode() })
+    def "buffered upload in Sync mode"() {
+        when:
+        def data = getRandomData(dataSize)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(bufferSize).setNumBuffers(numBuffs)
+
+        blobClient.upload(new ByteArrayInputStream(data.array()), parallelTransferOptions)
+
+        then:
+        // Due to memory issues, this check only runs on small to medium sized data sets.
+        if (dataSize < 100 * 1024 * 1024) {
+            OutputStream d = new ByteArrayOutputStream();
+            blobClient.download(d)
+            assert d.toByteArray().length == dataSize
+        }
+
+        blobClient.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize           | bufferSize          | numBuffs || blockCount
+        350                | 50                  | 2        || 7 // Requires cycling through the same buffers multiple times.
+        350                | 50                  | 5        || 7 // Most buffers may only be used once.
+        10  * 1024 * 1024  | 1   * 1024 * 1024   | 2        || 10 // Larger data set.
+        10  * 1024 * 1024  | 1   * 1024 * 1024   | 5        || 10 // Larger number of Buffs.
+        10  * 1024 * 1024  | 1   * 1024 * 1024   | 10       || 10 // Exactly enough buffer space to hold all the data.
+        500 * 1024 * 1024  | 100 * 1024 * 1024   | 2        || 5 // Larger data.
+        100 * 1024 * 1024  | 20  * 1024 * 1024   | 4        || 5
+        10  * 1024 * 1024  | 3   * 512 * 1024    | 3        || 7 // Data does not squarely fit in buffers.
+    }
+
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)
         for (ByteBuffer buffer : buffers) {

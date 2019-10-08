@@ -567,6 +567,39 @@ public final class Utility {
             });
     }
 
+    /**
+     * A utility method for converting the input stream to Flux of ByteBuffer. Will check InputSteam length
+     * by getting available()
+     *
+     * @param data The input data which needs to convert to ByteBuffer.
+     * @param blockSize The size of each ByteBuffer.
+     * @return {@link ByteBuffer} which contains the input data.
+     * @throws UnexpectedLengthException when input data length mismatch input length.
+     * @throws RuntimeException When I/O error occurs.
+     */
+    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, int blockSize) {
+        Pair pair = new Pair();
+        return Flux.just(true)
+            .repeat()
+            .map(ignore -> {
+                byte[] buffer = new byte[blockSize];
+                try {
+                    int numBytes = data.read(buffer);
+                    if (numBytes > 0) {
+                        return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
+                    } else {
+                        return pair.buffer(null).readBytes(numBytes);
+                    }
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
+                        + e.getMessage()));
+                }
+            })
+            .takeUntil(p -> p.readBytes() == -1)
+            .filter(p -> p.readBytes() > 0)
+            .map(Pair::buffer);
+    }
+
     private static class Pair {
         private ByteBuffer byteBuffer;
         private int readBytes;
