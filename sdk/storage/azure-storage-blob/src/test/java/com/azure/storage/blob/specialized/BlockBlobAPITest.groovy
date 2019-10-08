@@ -16,6 +16,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.IProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
@@ -841,6 +842,52 @@ class BlockBlobAPITest extends APISpec {
             result.position(result.position() + buffer.remaining())
         }
         return result.remaining() == 0
+    }
+
+    /*      Reporter for testing Progress Receiver
+    *        Will count the number of reports that are triggered         */
+    class Reporter implements IProgressReceiver {
+        private final long blockSize
+        private long reportingCount
+
+        Reporter(long blockSize) {
+            this.blockSize = blockSize;
+        }
+
+        @Override
+        void reportProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload with reporter"() {
+        when:
+        def uploadReporter = new Reporter(blockSize);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize).setNumBuffers(bufferCount).setProgressReceiver(uploadReporter)
+
+        def response = blobac
+            .uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions, null, null, null, null)
+            .block()
+
+        then:
+        response.getStatusCode() == 201
+        uploadReporter.getReportingCount() == size / blockSize
+
+        where:
+        size        | blockSize | bufferCount
+        10          | 10        |           8
+        20          | 1         |           5
+        100         | 50        |           2
+        1024 * 1024 | 1024      |         100
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
