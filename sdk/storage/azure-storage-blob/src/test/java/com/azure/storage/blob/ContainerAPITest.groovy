@@ -609,6 +609,7 @@ class ContainerAPITest extends APISpec {
 
     def "List page blobs flat"() {
         setup:
+        ccPremium = premiumBlobServiceClient.getBlobContainerClient(containerName)
         ccPremium.create()
         def name = generateBlobName()
         def bu = ccPremium.getBlobClient(name).getPageBlobClient()
@@ -654,6 +655,9 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getAccessTier() == AccessTier.P10
         blob.getProperties().getArchiveStatus() == null
         blob.getProperties().getCreationTime() != null
+
+        cleanup:
+        ccPremium.delete()
     }
 
     def "List blobs flat min"() {
