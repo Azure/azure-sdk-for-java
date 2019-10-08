@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 import java.security.InvalidKeyException;

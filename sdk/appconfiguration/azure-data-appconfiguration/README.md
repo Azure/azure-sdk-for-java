@@ -124,7 +124,7 @@ The Label property of a Configuration Setting provides a way to separate Configu
 
 ### Configuration Client
 
-The client performs the interactions with the App Configuration service, getting, setting, updating, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
+The client performs the interactions with the App Configuration service, getting, setting, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 
 An application that needs to retrieve startup configurations is better suited using the synchronous client, for example setting up a SQL connection.
 
@@ -133,7 +133,8 @@ ConfigurationClient client = new ConfigurationClient()
         .credential(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildClient();
 
-String url = client.getSetting(urlKey).value();
+// urlLabel is optional
+String url = client.getSetting(urlKey, urlLabel).getValue();
 Connection conn;
 try {
     conn = DriverManager.getConnection(url);
@@ -171,7 +172,7 @@ Create a Configuration Setting to be stored in the Configuration Store. There ar
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-ConfigurationSetting setting = client.setSetting("some_key", "some_value");
+ConfigurationSetting setting = client.setSetting("some_key", "some_label", "some_value");
 ```
 
 ### Retrieve a Configuration Setting
@@ -181,19 +182,19 @@ Retrieve a previously stored Configuration Setting by calling getSetting.
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-client.setSetting("some_key", "some_value");
-ConfigurationSetting setting = client.getSetting("some_key");
+client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.getSetting("some_key", "some_label");
 ```
 
 ### Update an existing Configuration Setting
 
-Update an existing Configuration Setting by calling updateSetting.
+Update an existing Configuration Setting by calling setSetting.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-client.setSetting("some_key", "some_value");
-ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
+client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.setSetting("some_key", "some_label", "new_value");
 ```
 
 ### Delete a Configuration Setting
@@ -203,8 +204,8 @@ Delete an existing Configuration Setting by calling deleteSetting.
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-client.setSetting("some_key", "some_value");
-ConfigurationSetting setting = client.deleteSetting("some_key");
+client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.deleteSetting("some_key", "some_label");
 ```
 
 ## Troubleshooting
