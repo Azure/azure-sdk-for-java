@@ -52,15 +52,10 @@ namespace Azure.Test.PerfStress
 
             var duration = TimeSpan.FromSeconds(options.Duration);
 
-            var tests = new IPerfStressTest[options.Parallel];
+            var tests = CreateTests(testType, options);
 
             try
             {
-                Parallel.For(0, options.Parallel, new ParallelOptions() { MaxDegreeOfParallelism = options.Parallel }, i =>
-                {
-                    tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, i.ToString(), options);
-                });
-
                 using var cts = new CancellationTokenSource(duration);
                 var cancellationToken = cts.Token;
 
@@ -106,6 +101,27 @@ namespace Azure.Test.PerfStress
             Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
                 $"({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
             Console.WriteLine();
+        }
+
+        private static IPerfStressTest[] CreateTests(Type testType, PerfStressOptions options)
+        {
+            var tests = new IPerfStressTest[options.Parallel];
+            var threads = new Thread[options.Parallel];
+
+            for (var i=0; i < options.Parallel; i++)
+            {
+                threads[i] = new Thread(() =>
+                {
+                    tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, i.ToString(), options);
+                });
+                threads[i].Start();
+            }
+            for (var i = 0; i < options.Parallel; i++)
+            {
+                threads[i].Join();
+            }
+
+            return tests;
         }
 
         private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)
