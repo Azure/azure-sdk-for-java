@@ -1017,6 +1017,7 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
+    @Requires({liveMode()})
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
