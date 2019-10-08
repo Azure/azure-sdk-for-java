@@ -33,10 +33,10 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
- * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
+ * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, lock and unlock
  * ConfigurationSettings, and listing settings or revision of a setting based on a {@link SettingSelector filter}.
  *
- * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
+ * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
  * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
  *
@@ -69,11 +69,11 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Adds a configuration value in the service if that key does not exist.
+     * Adds a configuration value in the service if that key does not exist. The {@code label} is optional.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
+     * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string}
      *
@@ -81,8 +81,8 @@ public final class ConfigurationAsyncClient {
      * @param label The label of the configuration setting to add, or optionally, null if a setting with
      * label is desired.
      * @param value The value associated with this configuration setting key.
-     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key is an invalid
-     * value (which will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that was created, or {@code null} if a key collision occurs or the key
+     * is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -95,8 +95,7 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Adds a configuration value in the service if that key and label does not exist. The label value of the
-     * ConfigurationSetting is optional.
+     * Adds a configuration value in the service if that key and label does not exist. The label value is optional.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -156,11 +155,12 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key.
+     * Creates or updates a configuration value in the service with the given key. the {@code label} is optional.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
+     * <p>Add a setting with the key "prodDBConnection", "westUS" and value "db_connection"</p>
+     * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string}
      *
@@ -192,8 +192,11 @@ public final class ConfigurationAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean}
+     * // TODO: add etag codesnippet sample
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean.etag}
      *
      * @param setting The configuration setting to create or update.
      * @param ifUnchanged A boolean indicates if using setting's ETag as If-Match's value.
@@ -233,14 +236,14 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Attempts to get a ConfigurationSetting that matches the {@code key}, the {@code label} as optional
+     * Attempts to get a ConfigurationSetting that matches the {@code key}, and the {@code label} is optional.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the setting with the key "prodDBConnection" and a time that one minute before now at UTC-Zone</p>
+     * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime}
-     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string}
+
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
      * label is desired.
@@ -284,14 +287,13 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}, optional
-     * {@code asOfDateTime}
+     * Attempts to get the ConfigurationSetting given the {@code setting}, optional {@code asOfDateTime} and
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
@@ -513,18 +515,18 @@ public final class ConfigurationAsyncClient {
      *
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.listsettings}
      *
-     * @param options Optional. Options to filter configuration setting results from the service.
+     * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options) {
-        return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(options, context)),
+    public PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector) {
+        return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(selector, context)),
             continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
     }
 
-    PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        return new PagedFlux<>(() -> listFirstPageSettings(options, context),
+    PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector, Context context) {
+        return new PagedFlux<>(() -> listFirstPageSettings(selector, context),
             continuationToken -> listNextPageSettings(context, continuationToken));
     }
 
@@ -540,22 +542,22 @@ public final class ConfigurationAsyncClient {
                 error));
     }
 
-    private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector options, Context context) {
-        if (options == null) {
+    private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector selector, Context context) {
+        if (selector == null) {
             return service.listKeyValues(serviceEndpoint, null, null, null, null, context)
                 .doOnRequest(ignoredValue -> logger.info("Listing all ConfigurationSettings"))
                 .doOnSuccess(response -> logger.info("Listed all ConfigurationSettings"))
                 .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
         }
 
-        String fields = ImplUtils.arrayToString(options.getFields(), SettingFields::toStringMapper);
-        String keys = ImplUtils.arrayToString(options.getKeys(), key -> key);
-        String labels = ImplUtils.arrayToString(options.getLabels(), label -> label);
+        String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+        String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
+        String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
 
-        return service.listKeyValues(serviceEndpoint, keys, labels, fields, options.getAcceptDateTime(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", options))
-            .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", options))
-            .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", options, error));
+        return service.listKeyValues(serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
+            .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
+            .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
 
     }
 
