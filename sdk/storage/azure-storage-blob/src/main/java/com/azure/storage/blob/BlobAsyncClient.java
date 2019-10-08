@@ -41,6 +41,9 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -196,6 +199,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
+     * <p><strong>Using Progress Reporting</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
+     *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
@@ -218,11 +225,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             ? new ParallelTransferOptions() : parallelTransferOptions;
         int blockSize = finalParallelTransferOptions.getBlockSize();
         int numBuffers = finalParallelTransferOptions.getNumBuffers();
+        IProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
-        // TODO: Progress reporting.
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        /*AtomicLong totalProgress = new AtomicLong(0);
-        Lock progressLock = new ReentrantLock();*/
+        AtomicLong totalProgress = new AtomicLong(0);
+        Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
         UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
@@ -254,13 +261,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(buffer -> {
                 // Report progress as necessary.
-                /*Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
-                    optionsReal.progressReceiver(), progressLock, totalProgress);*/
+                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
+                        progressReceiver, progressLock, totalProgress);
+
 
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
-                return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, Flux.just(buffer), buffer.remaining(),
+                return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
                     accessConditionsFinal.getLeaseAccessConditions())
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> {
@@ -315,6 +323,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions()
             : parallelTransferOptions;
+        IProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+
+        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+        AtomicLong totalProgress = new AtomicLong(0);
+        Lock progressLock = new ReentrantLock();
 
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
             channel -> {
@@ -323,9 +336,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.getOffset());
+
+                        Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
+                            FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
+                            progressReceiver, progressLock, totalProgress);
+
                         return getBlockBlobAsyncClient()
-                            .stageBlockWithResponse(blockId, FluxUtil.readFile(channel, chunk.getOffset(),
-                                chunk.getCount()), chunk.getCount(), null);
+                            .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
                     })
                     .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
                         new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
