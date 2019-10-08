@@ -14,6 +14,7 @@ com.microsoft.azure:azure-cognitiveservices-customimagesearch;1.1.0-preview.1;1.
 com.microsoft.azure:azure-cognitiveservices-customsearch;1.1.0-preview.1;1.1.0-preview.1
 com.microsoft.azure:azure-cognitiveservices-entitysearch;1.1.0-preview.1;1.1.0-preview.1
 com.microsoft.azure:azure-cognitiveservices-imagesearch;1.1.0-preview.1;1.1.0-preview.1
+com.microsoft.azure:azure-cognitiveservices-inkrecognizer;1.1.0-preview.1;1.1.0-preview.1
 com.microsoft.azure:azure-cognitiveservices-newssearch;1.1.0-preview.1;1.1.0-preview.1
 com.microsoft.azure:azure-cognitiveservices-videosearch;1.1.0-preview.1;1.1.0-preview.1
 com.microsoft.azure:azure-cognitiveservices-visualsearch;1.1.0-preview.1;1.1.0-preview.1

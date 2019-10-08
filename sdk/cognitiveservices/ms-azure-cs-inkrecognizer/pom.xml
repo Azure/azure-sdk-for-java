@@ -10,12 +10,17 @@
 
     <name>Microsoft Azure SDK for Cognitive Service Ink Recognizer</name>
     <description>This package contains Microsoft Cognitive Service InkRecognizer SDK.</description>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>InkRecognizer</artifactId>
+    <version>1.0-SNAPSHOT</version> <!-- {x-version-update;com.microsoft.azure:azure-cognitiveservices-inkrecognizer;current} -->
+    <name>Microsoft Azure SDK for InkRecognizer</name>
+    <description>This package contains Microsoft Azure InkRecognizer SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <parent>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-sdk-parent</artifactId>
-      <version>1.2.0</version>
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
       <relativePath>../../../pom.data.xml</relativePath>
     </parent>
 
