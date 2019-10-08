@@ -342,8 +342,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             }, this::uploadFileCleanup);
     }
 
-
-    private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
+    /**
+     * Resource Supplier for UploadFile
+     * @param filePath The path for the file
+     * @return {@code AsynchronousFileChannel}
+     * @throws IOException an input output exception.
+     */
+    protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {

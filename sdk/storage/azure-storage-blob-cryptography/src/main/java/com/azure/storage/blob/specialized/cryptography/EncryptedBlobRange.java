@@ -103,28 +103,28 @@ final class EncryptedBlobRange {
     /**
      * @return The calculated {@link BlobRange}
      */
-    BlobRange originalRange() {
+    BlobRange getOriginalRange() {
         return this.originalRange;
     }
 
     /**
      * @return Offset from beginning of BlobRange, 0-31.
      */
-    int offsetAdjustment() {
+    int getOffsetAdjustment() {
         return this.offsetAdjustment;
     }
 
     /**
      * @return How many bytes to include in the range. Must be greater than or equal to 0 if specified.
      */
-    Long adjustedDownloadCount() {
+    Long getAdjustedDownloadCount() {
         return this.adjustedDownloadCount;
     }
 
     /**
      * @param count The adjustedDownloadCount
      */
-    void withAdjustedDownloadCount(long count) {
+    void setAdjustedDownloadCount(long count) {
         this.adjustedDownloadCount = count;
     }
 

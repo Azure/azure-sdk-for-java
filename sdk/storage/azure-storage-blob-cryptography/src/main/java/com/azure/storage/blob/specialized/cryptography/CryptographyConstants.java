@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 
-public final class CryptographyConstants {
+final class CryptographyConstants {
     static final String ENCRYPTION_PROTOCOL_V1 = "1.0";
 
     static final String AGENT_METADATA_KEY = "EncryptionLibrary";

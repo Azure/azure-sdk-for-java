@@ -3,17 +3,13 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -36,8 +32,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -47,9 +41,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
- * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
- * and deleting and un-deleting a blob.
+ * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
+ * Operations allowed by the client are uploading, downloading and copying a blob, retrieving and setting metadata,
+ * retrieving and setting HTTP headers, and deleting and un-deleting a blob. The upload and download operation allow for
+ * encryption and decryption of the data client side.
+ * <p> Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
+ * Docs For Client-Side Encryption</a> for more information.
  *
  * <p>
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
@@ -58,12 +56,14 @@ import java.util.Objects;
  * For operations on a specific blob type (i.e append, block, or page) use
  * {@link #getAppendBlobAsyncClient() getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient()
  * getBlockBlobAsyncClient}, or {@link #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that
- * allows blob specific operations. Note, these types do not support
+ * allows blob specific operations. Note, these types do not support client-side encryption, though decryption is
+ * possible in case the associated block/page/append blob contains encrypted data.
  *
  * <p>
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
 public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
@@ -88,32 +88,6 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
         super(constructImpl, snapshot, null, accountName);
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
-    }
-
-    public BlockBlobAsyncClient getBlockBlobAsyncClient() {
-        return new BlobClientBuilder()
-            .pipeline(removeDecryptionPolicy(getHttpPipeline(),
-                getHttpPipeline().getHttpClient()))
-            .endpoint(getBlobUrl())
-            .buildAsyncClient()
-            .getBlockBlobAsyncClient();
-    }
-
-    static HttpPipeline removeDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() - 1];
-        int index = 0;
-        for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
-            if (!(originalPipeline.getPolicy(i) instanceof BlobDecryptionPolicy)) {
-                policies[index] = originalPipeline.getPolicy(i);
-            } else {
-                index--;
-            }
-            index++;
-        }
-        return new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(policies)
-            .build();
     }
 
     /**
@@ -188,7 +162,6 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    // TODO (gapra) : Investigate best way to reuse all the code in the RegularBlobClient.
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHTTPHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
@@ -241,7 +214,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
             ? new ParallelTransferOptions()
             : parallelTransferOptions;
 
-        return Mono.using(() -> uploadFileResourceSupplier(filePath),
+        return Mono.using(() -> super.uploadFileResourceSupplier(filePath),
             channel -> this.uploadWithResponse(FluxUtil.readFile(channel), finalParallelTransferOptions, headers,
                 metadataFinal, tier, accessConditions)
                 .then()
@@ -252,14 +225,6 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
                         throw logger.logExceptionAsError(new UncheckedIOException(e));
                     }
                 }), this::uploadFileCleanup);
-    }
-
-    private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
-        try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
     }
 
     private void uploadFileCleanup(AsynchronousFileChannel channel) {
@@ -280,7 +245,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      * @throws InvalidKeyException If the key provided is invalid
      */
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) throws InvalidKeyException {
-        Objects.requireNonNull(this.keyWrapper);
+        Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance(CryptographyConstants.AES);
             keyGen.init(256);
@@ -302,13 +267,13 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
 
                     // Build EncryptionData
                     EncryptionData encryptionData = new EncryptionData()
-                        .withEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                        .withEncryptionAgent(
+                        .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
+                        .setEncryptionAgent(
                             new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
                                 EncryptionAlgorithm.AES_CBC_256))
-                        .withKeyWrappingMetadata(keyWrappingMetadata)
-                        .withContentEncryptionIV(cipher.getIV())
-                        .withWrappedContentKey(wrappedKey);
+                        .setKeyWrappingMetadata(keyWrappingMetadata)
+                        .setContentEncryptionIV(cipher.getIV())
+                        .setWrappedContentKey(wrappedKey);
 
                     // Encrypt plain text with content encryption key
                     Flux<ByteBuffer> encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
@@ -361,7 +326,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      *
      * @return A Mono containing the cipher text
      */
-    Mono<Flux<ByteBuffer>> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
+    private Mono<Flux<ByteBuffer>> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
         Map<String, String> metadata) {
         try {
             return this.encryptBlob(plainText)

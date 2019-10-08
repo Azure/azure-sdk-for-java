@@ -84,7 +84,7 @@ final class WrappedKey {
      *
      * @return this
      */
-    public WrappedKey setKeyId(String keyId) {
+    WrappedKey setKeyId(String keyId) {
         this.keyId = keyId;
         return this;
     }
@@ -96,7 +96,7 @@ final class WrappedKey {
      *
      * @return this
      */
-    public WrappedKey setEncryptedKey(byte[] encryptedKey) {
+    WrappedKey setEncryptedKey(byte[] encryptedKey) {
         this.encryptedKey = encryptedKey;
         return this;
     }
@@ -108,7 +108,7 @@ final class WrappedKey {
      *
      * @return this
      */
-    public WrappedKey setAlgorithm(String algorithm) {
+    WrappedKey setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
         return this;
     }

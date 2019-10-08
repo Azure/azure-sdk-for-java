@@ -74,7 +74,7 @@ final class EncryptionData {
      *
      * @return encryption mode
      */
-    public String encryptionMode() {
+    String getEncryptionMode() {
         return this.encryptionMode;
     }
 
@@ -84,7 +84,7 @@ final class EncryptionData {
      * @return A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the encrypted
      *         key bytes.
      */
-    public WrappedKey wrappedContentKey() {
+    WrappedKey getWrappedContentKey() {
         return this.wrappedContentKey;
     }
 
@@ -93,7 +93,7 @@ final class EncryptionData {
      *
      * @return an {@Link EncryptionAgent}.
      */
-    public EncryptionAgent encryptionAgent() {
+    EncryptionAgent getEncryptionAgent() {
         return this.encryptionAgent;
     }
 
@@ -102,7 +102,7 @@ final class EncryptionData {
      *
      * @return The content encryption IV.
      */
-    byte[] contentEncryptionIV() {
+    byte[] getContentEncryptionIV() {
         return this.contentEncryptionIV;
     }
 
@@ -111,7 +111,7 @@ final class EncryptionData {
      *
      * @return A HashMap containing the encryption metadata in a key-value format.
      */
-    public Map<String, String> keyWrappingMetadata() {
+    Map<String, String> getKeyWrappingMetadata() {
         return this.keyWrappingMetadata;
     }
 
@@ -122,7 +122,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    public EncryptionData withEncryptionMode(String encryptionMode) {
+    EncryptionData setEncryptionMode(String encryptionMode) {
         this.encryptionMode = encryptionMode;
         return this;
     }
@@ -135,7 +135,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    public EncryptionData withWrappedContentKey(WrappedKey wrappedContentKey) {
+    EncryptionData setWrappedContentKey(WrappedKey wrappedContentKey) {
         this.wrappedContentKey = wrappedContentKey;
         return this;
     }
@@ -147,7 +147,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    public EncryptionData withEncryptionAgent(EncryptionAgent encryptionAgent) {
+    EncryptionData setEncryptionAgent(EncryptionAgent encryptionAgent) {
         this.encryptionAgent = encryptionAgent;
         return this;
     }
@@ -159,7 +159,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    public EncryptionData withContentEncryptionIV(byte[] contentEncryptionIV) {
+    EncryptionData setContentEncryptionIV(byte[] contentEncryptionIV) {
         this.contentEncryptionIV = contentEncryptionIV;
         return this;
     }
@@ -171,7 +171,7 @@ final class EncryptionData {
      *
      * @return this
      */
-    public EncryptionData withKeyWrappingMetadata(Map<String, String> keyWrappingMetadata) {
+    EncryptionData setKeyWrappingMetadata(Map<String, String> keyWrappingMetadata) {
         this.keyWrappingMetadata = keyWrappingMetadata;
         return this;
     }

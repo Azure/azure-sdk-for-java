@@ -230,7 +230,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public EncryptedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName);
+        this.blobName = blobName;
         return this;
     }
 

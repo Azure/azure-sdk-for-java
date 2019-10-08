@@ -149,6 +149,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         BlockBlobAsyncClient normalClient = cac.getBlobAsyncClient(blobName).getBlockBlobAsyncClient()
 
+        normalClient.upload(defaultFlux, defaultDataSize).block()
+
         when:
         EncryptedBlockBlobAsyncClient client = new EncryptedBlobClientBuilder()
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP)
@@ -160,6 +162,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         normalClient.blobUrl == client.blobUrl
         normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
         normalClient.getHttpPipeline().httpClient == client.getHttpPipeline().httpClient
+
+        client.download().blockLast()
+
+        notThrown(StorageException)
     }
 
     @Requires({ liveMode() })
@@ -175,6 +181,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         BlockBlobClient normalClient = cc.getBlobClient(blobName).getBlockBlobClient()
 
+        normalClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
+
         when:
         EncryptedBlockBlobClient client = new EncryptedBlobClientBuilder()
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP)
@@ -186,26 +194,44 @@ class EncyptedBlockBlobAPITest extends APISpec {
         normalClient.blobUrl == client.blobUrl
         normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
         normalClient.getHttpPipeline().httpClient == client.getHttpPipeline().httpClient
+
+        client.download(new ByteArrayOutputStream())
+
+        notThrown(StorageException)
     }
 
     @Requires({ liveMode() })
     def "Test Async and Sync EncryptedBlockBlobClient to BlockBlobClient"() {
         when:
+        beac.upload(defaultFlux, null).block()
         BlockBlobAsyncClient normalAsyncClient = beac.getBlockBlobAsyncClient()
 
         then:
         normalAsyncClient.blobUrl == beac.blobUrl
-        normalAsyncClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount - 1
+        normalAsyncClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount
         normalAsyncClient.getHttpPipeline().httpClient == beac.getHttpPipeline().httpClient
 
+        and:
+        normalAsyncClient.download().blockLast()
+
+        then:
+        notThrown(StorageException)
+
         when:
+        bec.uploadFromFile(getRandomFile(KB).toPath().toString())
         BlockBlobClient normalClient = bec.getBlockBlobClient()
 
         // Check that an encrypted client has correct number of policies and important properties are the same
         then:
         normalClient.blobUrl == bec.blobUrl
-        normalClient.getHttpPipeline().policyCount == bec.getHttpPipeline().policyCount - 1
+        normalClient.getHttpPipeline().policyCount == bec.getHttpPipeline().policyCount
         normalClient.getHttpPipeline().httpClient == bec.getHttpPipeline().httpClient
+
+        and:
+        normalClient.download(new ByteArrayOutputStream())
+
+        then:
+        notThrown(StorageException)
 
     }
 

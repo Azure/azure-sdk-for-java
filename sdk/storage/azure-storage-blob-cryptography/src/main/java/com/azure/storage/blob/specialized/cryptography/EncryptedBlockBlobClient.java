@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -10,7 +11,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +18,30 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
+ * Operations allowed by the client are uploading, downloading and copying a blob, retrieving and setting metadata,
+ * retrieving and setting HTTP headers, and deleting and un-deleting a blob. The upload and download operation allow for
+ * encryption and decryption of the data client side.
+ * <p> Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
+ * Docs For Client-Side Encryption</a> for more information.
+ *
+ * <p>
+ * This client is instantiated through {@link EncryptedBlobClientBuilder}
+ *
+ * <p>
+ * For operations on a specific blob type (i.e append, block, or page) use
+ * {@link #getAppendBlobClient() getAppendBlobClient}, {@link #getBlockBlobClient()
+ * getBlockBlobClient}, or {@link #getPageBlobClient() getPageBlobAsyncClient} to construct a client that
+ * allows blob specific operations. Note, these types do not support client-side encryption, though decryption is
+ * possible in case the associated block/page/append blob contains encrypted data.
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Docs</a> for more information.
+ */
+@ServiceClient(builder = EncryptedBlobClientBuilder.class)
 public class EncryptedBlockBlobClient extends BlobClient {
     private final ClientLogger logger = new ClientLogger(EncryptedBlockBlobClient.class);
     private final EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient;
@@ -28,15 +52,6 @@ public class EncryptedBlockBlobClient extends BlobClient {
     EncryptedBlockBlobClient(EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient) {
         super(encryptedBlockBlobAsyncClient);
         this.encryptedBlockBlobAsyncClient = encryptedBlockBlobAsyncClient;
-    }
-
-    public BlockBlobClient getBlockBlobClient() {
-        return new BlobClientBuilder()
-            .pipeline(EncryptedBlockBlobAsyncClient.removeDecryptionPolicy(getHttpPipeline(),
-                getHttpPipeline().getHttpClient()))
-            .endpoint(getBlobUrl())
-            .buildClient()
-            .getBlockBlobClient();
     }
 
     /**
