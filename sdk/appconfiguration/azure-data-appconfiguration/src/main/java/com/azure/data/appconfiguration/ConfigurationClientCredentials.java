@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.appconfiguration.credentials;
+package com.azure.data.appconfiguration;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -37,7 +35,7 @@ import java.util.stream.Collectors;
  * @see ConfigurationCredentialsPolicy
  * @see ConfigurationClientBuilder
  */
-public class ConfigurationClientCredentials {
+class ConfigurationClientCredentials {
     private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
 
     private static final String HOST_HEADER = "Host";
@@ -58,7 +56,7 @@ public class ConfigurationClientCredentials {
      * @throws InvalidKeyException When the {@code connectionString} secret is invalid and cannot instantiate the
      *     HMAC-SHA256 algorithm.
      */
-    public ConfigurationClientCredentials(String connectionString)
+    ConfigurationClientCredentials(String connectionString)
         throws InvalidKeyException, NoSuchAlgorithmException {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
@@ -67,9 +65,9 @@ public class ConfigurationClientCredentials {
     /**
      * Gets the base URI of the Azure App Configuration instance based on the provided connection string.
      *
-     * @return The String of base URI of the configuration service extracted from connection string provided.
+     * @return The string value of the base URI of the configuration service extracted from connection string provided.
      */
-    public String getAppConfigurationURL() {
+    String getBaseUri() {
         return this.credentials.baseUri().toString();
     }
 
@@ -81,7 +79,7 @@ public class ConfigurationClientCredentials {
      * @return a flux of headers to add for authorization
      * @throws NoSuchAlgorithmException If the SHA-256 algorithm doesn't exist.
      */
-    public Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod,
+    Mono<Map<String, String>> getAuthorizationHeadersAsync(URL url, String httpMethod,
                                                                   Flux<ByteBuffer> contents) {
         return contents
             .collect(() -> {

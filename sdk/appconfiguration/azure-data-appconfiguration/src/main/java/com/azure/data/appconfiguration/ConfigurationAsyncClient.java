@@ -6,7 +6,6 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -25,7 +24,6 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -60,12 +58,12 @@ public final class ConfigurationAsyncClient {
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
-     * @param serviceEndpoint URL for the App Configuration service.
+     * @param serviceEndpoint The URL string for the App Configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
-    ConfigurationAsyncClient(URL serviceEndpoint, HttpPipeline pipeline) {
+    ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline) {
         this.service = RestProxy.create(ConfigurationService.class, pipeline);
-        this.serviceEndpoint = serviceEndpoint.toString();
+        this.serviceEndpoint = serviceEndpoint;
     }
 
     /**
