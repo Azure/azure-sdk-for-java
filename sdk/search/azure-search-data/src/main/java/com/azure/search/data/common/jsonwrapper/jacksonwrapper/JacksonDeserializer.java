@@ -3,6 +3,7 @@
 package com.azure.search.data.common.jsonwrapper.jacksonwrapper;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.data.implementation.SerializationUtil;
 import com.azure.search.data.common.jsonwrapper.api.Config;
 import com.azure.search.data.common.jsonwrapper.api.Deserializer;
 import com.azure.search.data.common.jsonwrapper.api.JsonApi;
@@ -23,11 +24,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 
 public class JacksonDeserializer implements JsonApi {
@@ -47,6 +46,11 @@ public class JacksonDeserializer implements JsonApi {
     private ObjectMapper objectMapper = new ObjectMapper();
     private final TypeFactory typeFactory = objectMapper.getTypeFactory();
 
+    public JacksonDeserializer() {
+        objectMapper.registerModule(new JavaTimeModule());
+        SerializationUtil.configureMapper(objectMapper);
+    }
+
     @Override
     public void configure(Config key, boolean value) {
         DeserializationFeature feature = CONFIG_MAP.get(key);
@@ -58,11 +62,7 @@ public class JacksonDeserializer implements JsonApi {
     }
 
     @Override
-    public void configureTimezone() {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getDefault());
-        objectMapper.setDateFormat(df);
-    }
+    public void configureTimezone() { }
 
     @Override
     public <T> void registerCustomDeserializer(final Deserializer<T> deserializer) {
@@ -79,10 +79,6 @@ public class JacksonDeserializer implements JsonApi {
         });
 
         objectMapper.registerModule(module);
-
-        // registry JavaTimeModule
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE, false);
     }
 
     /**

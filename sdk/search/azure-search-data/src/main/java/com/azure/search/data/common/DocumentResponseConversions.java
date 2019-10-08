@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Utility class for Document Respose conversions
+ * Utility class for Document Response conversions
  */
 public class DocumentResponseConversions {
 

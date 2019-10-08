@@ -51,6 +51,7 @@ public final class IndexAction<T> {
      * @param document the document value to set.
      * @return the IndexAction object itself.
      */
+    @SuppressWarnings("unchecked")
     public IndexAction<T> document(T document) {
         if (document instanceof Map) {
             this.properties = (Map<String, Object>) document;

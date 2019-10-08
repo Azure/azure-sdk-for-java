@@ -1,40 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk0fa84139f833.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk17b38164be87.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "1cf64993-93b1-4f0a-a1a9-a1abc7e27d1d",
+      "request-id" : "6b2c2e77-69c8-474a-a95a-e1555f778111",
       "StatusCode" : "200",
-      "Date" : "Fri, 04 Oct 2019 17:33:25 GMT",
+      "Date" : "Mon, 07 Oct 2019 21:11:14 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "108",
+      "elapsed-time" : "144",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "227",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk0fa84139f833.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Content-Length" : "228",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk17b38164be87.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk0fa84139f833.search.windows.net/indexes('hotels')/docs/$count?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk17b38164be87.search.windows.net/indexes('books')/docs/$count?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6bef6706-36aa-4641-9441-56c1a3b85c26",
+      "request-id" : "f103965f-e44e-4048-9895-a3dafdef5c15",
       "StatusCode" : "200",
-      "Date" : "Fri, 04 Oct 2019 17:33:27 GMT",
+      "Date" : "Mon, 07 Oct 2019 21:11:17 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "24",
+      "elapsed-time" : "23",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "4",

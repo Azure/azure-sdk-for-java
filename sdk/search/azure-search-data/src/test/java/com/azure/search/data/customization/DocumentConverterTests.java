@@ -5,10 +5,8 @@ package com.azure.search.data.customization;
 
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.search.data.implementation.SerializationUtil;
 import com.azure.search.data.customization.models.GeoPoint;
-import com.azure.search.data.customization.models.DateWrapper;
-import com.azure.search.data.customization.models.GeoPointList;
-import com.azure.search.data.customization.models.GeoPointWrapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,6 +34,8 @@ public class DocumentConverterTests {
         // in this case we simulate creation of the object created by azure-core
 
         JacksonAdapter adapter = new JacksonAdapter();
+        SerializationUtil.configureMapper(adapter.serializer());
+
         Document doc = new Document();
         try {
             doc = adapter.deserialize(json, Document.class, SerializerEncoding.JSON);
@@ -151,24 +151,12 @@ public class DocumentConverterTests {
         String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] } }";
         Document expectedDoc = new Document() {
             {
-                //put("field", GeoPoint.createWithDefaultCrs(-122.131577, 47.678581));
-                // TODO (Nava): replace with GeoPoint when azure-core will deserialize to a GeoPoint type and not to a map type
-                put("field", new Document() {
-                    {
-                        put("type", "Point");
-                        put("coordinates", Arrays.asList(-122.131577, 47.678581));
-                    }
-                });
+                put("field", GeoPoint.create(47.678581, -122.131577));
             }
         };
 
         Document actualDoc = deserialize(json);
         Assert.assertEquals(expectedDoc, actualDoc);
-
-        // validate that our custom deserialization works for this scenario
-        GeoPointWrapper geoPointWrapper = actualDoc.as(GeoPointWrapper.class);
-        GeoPointWrapper expected = new GeoPointWrapper().field(GeoPoint.create(47.678581, -122.131577));
-        Assert.assertEquals(expected, geoPointWrapper);
     }
 
     @Test
@@ -176,31 +164,15 @@ public class DocumentConverterTests {
         String json = "{ \"field\": [{ \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"type\": \"Point\", \"coordinates\": [-121, 49] }]}";
         Document expectedDoc = new Document() {
             {
-                // TODO (Nava): replace with GeoPoint when azure-core will deserialize to a GeoPoint type and not to a map type
                 put("field", Arrays.asList(
-                    new Document() {
-                        {
-                            put("type", "Point");
-                            put("coordinates", Arrays.asList(-122.131577, 47.678581));
-                        }
-                    },
-
-                    new Document() {
-                        {
-                            put("type", "Point");
-                            put("coordinates", Arrays.asList(-121, 49));
-                        }
-                    }));
+                    GeoPoint.create(47.678581, -122.131577),
+                    GeoPoint.create(49, -121))
+                );
             }
         };
 
         Document actualDoc = deserialize(json);
         Assert.assertEquals(expectedDoc, actualDoc);
-
-        // validate that our custom deserialization works for this scenario
-        GeoPointList geoPointList = actualDoc.as(GeoPointList.class);
-        GeoPointList expected = new GeoPointList().field(Arrays.asList(GeoPoint.create(47.678581, -122.131577), GeoPoint.create(49, -121)));
-        Assert.assertEquals(expected, geoPointList);
     }
 
     @Test
@@ -275,21 +247,15 @@ public class DocumentConverterTests {
     @Test
     public void dateTimeStringsAreReadAsDateTime() {
         String json = "{\"field1\":\"".concat(testDateString).concat("\",\"field2\" : [\"").concat(testDateString).concat("\", \"").concat(testDateString).concat("\"]}");
-        // TODO (Nava): replace with DateTime when azure-core will deserialize to a Date type and not to a string type
         Document expectedDoc = new Document() {
             {
-                put("field1", testDateString);
-                put("field2", Arrays.asList(testDateString, testDateString));
+                put("field1", testDate);
+                put("field2", Arrays.asList(testDate, testDate));
             }
         };
 
         Document actualDoc = deserialize(json);
         Assert.assertEquals(expectedDoc, actualDoc);
-
-        // validate that our custom deserialization works for this scenario
-        DateWrapper dateWrapper = actualDoc.as(DateWrapper.class);
-        DateWrapper expected = new DateWrapper().field1(testDate).field2(Arrays.asList(testDate, testDate));
-        Assert.assertEquals(expected, dateWrapper);
     }
 
     @Test
@@ -318,8 +284,7 @@ public class DocumentConverterTests {
         String json = "{ \"field\": [ \"hello\", \"".concat(testDateString).concat("\", \"123\" ] }}");
         Document expectedDoc = new Document() {
             {
-                // TODO (Nava): replace with DateTime when azure-core will deserialize to a Date type and not to a string type
-                put("field", Arrays.asList("hello", testDateString, "123"));
+                put("field", Arrays.asList("hello", testDate, "123"));
             }
         };
 

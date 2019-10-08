@@ -14,6 +14,7 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -99,13 +100,11 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         expectedDoc.put("Tags", tags);
         expectedDoc.put("ParkingIncluded", false);
         expectedDoc.put("SmokingAllowed", true);
-        expectedDoc.put("LastRenovationDate", "1970-01-18T00:00:00Z");
+        expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("1970-01-18T00:00:00Z"));
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        expectedDoc.put(
-            "Location",
-            jsonApi.convertObjectToType(GeoPoint.create(40.760586, -73.975403), Map.class));
+        expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
 
         uploadDocument(asyncClient, expectedDoc);
 

@@ -14,6 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -128,7 +129,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         Book doc2 = new Book();
         doc2.ISBN("456");
         doc2.title("War and Peace");
-        doc2.publishDate(DATE_FORMAT.parse("2015-08-18T00:00:00Z"));
+        doc2.publishDate(OffsetDateTime.parse("2015-08-18T00:00:00Z"));
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         SuggestParameters suggestParams = new SuggestParameters();
@@ -217,7 +218,7 @@ public class SuggestSyncTests extends SuggestTestBase {
             .top(3);
 
         //act
-        PagedIterable<SuggestResult> suggestResult = client.suggest("more",
+        PagedIterable<SuggestResult> suggestResult = client.suggest("hotel",
             "sg",
             suggestParams,
             null);

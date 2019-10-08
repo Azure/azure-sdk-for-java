@@ -23,6 +23,7 @@ import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
 
 import java.text.ParseException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -347,15 +348,13 @@ public class SearchSyncTests extends SearchTestBase {
                     new ValueFacetResult(1L, "Boutique"),
                     new ValueFacetResult(1L, "Luxury"))));
 
-            assertValueFacetsEqual(
-                getValueFacetsForField(facets, "LastRenovationDate", 6),
-                new ArrayList<>(Arrays.asList(
-                    new ValueFacetResult(1L, "1970-01-01T00:00:00Z"),
-                    new ValueFacetResult(1L, "1982-01-01T00:00:00Z"),
-                    new ValueFacetResult(2L, "1995-01-01T00:00:00Z"),
-                    new ValueFacetResult(1L, "1999-01-01T00:00:00Z"),
-                    new ValueFacetResult(1L, "2010-01-01T00:00:00Z"),
-                    new ValueFacetResult(1L, "2012-01-01T00:00:00Z"))));
+            assertValueFacetsEqual(getValueFacetsForField(facets, "LastRenovationDate", 6),
+                new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, OffsetDateTime.parse("1970-01-01T00:00:00Z")),
+                    new ValueFacetResult(1L, OffsetDateTime.parse("1982-01-01T00:00:00Z")),
+                    new ValueFacetResult(2L, OffsetDateTime.parse("1995-01-01T00:00:00Z")),
+                    new ValueFacetResult(1L, OffsetDateTime.parse("1999-01-01T00:00:00Z")),
+                    new ValueFacetResult(1L, OffsetDateTime.parse("2010-01-01T00:00:00Z")),
+                    new ValueFacetResult(1L, OffsetDateTime.parse("2012-01-01T00:00:00Z")))));
 
             assertValueFacetsEqual(
                 getValueFacetsForField(facets, "Rooms/BaseRate", 4),

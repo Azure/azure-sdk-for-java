@@ -4,7 +4,6 @@
 package com.azure.search.data.customization;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.search.data.customization.models.CoordinateSystem;
 import com.azure.search.data.generated.models.FacetResult;
 import com.azure.search.data.generated.models.QueryType;
 import com.azure.search.data.generated.models.SearchParameters;
@@ -19,6 +18,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.text.ParseException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +67,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             doc.put("Tags", Collections.singletonList("tag" + i));
             doc.put("ParkingIncluded", false);
             doc.put("SmokingAllowed", false);
-            doc.put("LastRenovationDate", "2010-06-27T00:00:00Z");
+            doc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T00:00:00Z"));
             doc.put("Rating", i);
 
             documents.add(doc);
@@ -93,10 +93,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Map<String, Object> result = searchIterator.next();
             Map<String, Object> hotel = hotelsIterator.next();
 
-            Map loc = (Map) hotel.get("Location");
-            if (loc != null) {
-                loc.put("crs", CoordinateSystem.create().createObjectMap());
-            }
             assertTrue(hotel.entrySet().stream().allMatch(e -> checkEquals(e, result)));
         }
 

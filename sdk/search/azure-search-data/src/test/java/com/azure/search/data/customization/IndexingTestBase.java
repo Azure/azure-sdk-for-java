@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,11 +24,6 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     static final String INDEX_NAME = "hotels";
     static final String BOOKS_INDEX_NAME = "books";
     static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-    static final String PUBLISH_DATE_FIELD = "PublishDate";
-    static final String ISBN_FIELD = "ISBN";
-    static final String ISBN1 = "1";
-    static final String ISBN2 = "2";
-    static final String DATE_UTC = "2010-06-27T00:00:00Z";
 
     @Override
     protected void beforeTest() {
@@ -46,7 +42,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     public abstract void indexDoesNotThrowWhenAllActionsSucceed();
 
     @Test
-    public abstract void canIndexWithPascalCaseFields();
+    public abstract void canIndexWithPascalCaseFields() throws Exception;
 
     @Test
     public abstract void canIndexStaticallyTypedDocuments() throws Exception;
@@ -135,7 +131,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         hotel.put("Location", null);
         hotel.put("Category", "Luxury");
         hotel.put("Tags", Arrays.asList("pool", "view", "wifi", "concierge"));
-        hotel.put("LastRenovationDate", "2019-01-30T00:00:00Z");
+        hotel.put("LastRenovationDate", OffsetDateTime.parse("2019-01-30T00:00:00Z"));
         hotel.put("ParkingIncluded", true);
         hotel.put("SmokingAllowed", true);
         hotel.put("Rating", 5);

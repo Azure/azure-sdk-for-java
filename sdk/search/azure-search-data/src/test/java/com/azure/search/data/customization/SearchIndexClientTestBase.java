@@ -72,6 +72,7 @@ public class SearchIndexClientTestBase extends TestBase {
 
             searchServiceName = azureSearchResources.getSearchServiceName();
             searchAdminKey = azureSearchResources.getSearchAdminKey();
+            apiKeyCredentials = new ApiKeyCredentials(searchAdminKey);
         }
     }
 

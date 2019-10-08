@@ -3,6 +3,8 @@
 package com.azure.search.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,7 +19,7 @@ public class Book {
     private Author author;
 
     @JsonProperty(value = "PublishDate")
-    private Date publishDate;
+    private OffsetDateTime publishDate;
 
     public String ISBN() {
         return this.ISBN;
@@ -46,11 +48,11 @@ public class Book {
         return this;
     }
 
-    public Date publishDate() {
+    public OffsetDateTime publishDate() {
         return this.publishDate;
     }
 
-    public Book publishDate(Date publishDate) {
+    public Book publishDate(OffsetDateTime publishDate) {
         this.publishDate = publishDate;
         return this;
     }

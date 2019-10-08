@@ -14,6 +14,7 @@ import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.search.data.common.AutoCompletePagedResponse;
 import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
+import com.azure.search.data.implementation.SerializationUtil;
 import com.azure.search.data.common.SuggestPagedResponse;
 import com.azure.search.data.generated.SearchIndexRestClient;
 import com.azure.search.data.generated.implementation.SearchIndexRestClientBuilder;
@@ -28,13 +29,12 @@ import com.azure.search.data.generated.models.SearchResult;
 import com.azure.search.data.generated.models.SuggestParameters;
 import com.azure.search.data.generated.models.SuggestRequest;
 import com.azure.search.data.generated.models.SuggestResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
 
 
 public class SearchIndexAsyncClient {
@@ -544,9 +544,8 @@ public class SearchIndexAsyncClient {
         if (serializer == null) {
             JacksonAdapter adapter = new JacksonAdapter();
 
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            df.setTimeZone(TimeZone.getDefault());
-            adapter.serializer().setDateFormat(df);
+            ObjectMapper mapper = adapter.serializer();
+            SerializationUtil.configureMapper(mapper);
 
             serializer = adapter;
         }

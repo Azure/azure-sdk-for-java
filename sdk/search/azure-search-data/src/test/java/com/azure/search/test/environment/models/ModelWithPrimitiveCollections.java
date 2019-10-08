@@ -5,6 +5,7 @@ package com.azure.search.test.environment.models;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class ModelWithPrimitiveCollections {
     public Boolean[] bools;
 
     @JsonProperty(value = "Dates")
-    public Date[] dates;
+    public OffsetDateTime[] dates;
 
     @JsonProperty(value = "Doubles")
     public Double[] doubles;
@@ -45,7 +46,7 @@ public class ModelWithPrimitiveCollections {
         return this;
     }
 
-    public ModelWithPrimitiveCollections dates(Date[] dates) {
+    public ModelWithPrimitiveCollections dates(OffsetDateTime[] dates) {
         this.dates = dates;
         return this;
     }

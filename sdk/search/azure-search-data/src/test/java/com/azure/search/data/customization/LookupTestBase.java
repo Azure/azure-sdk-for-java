@@ -10,10 +10,10 @@ import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -100,7 +100,9 @@ public abstract class LookupTestBase extends SearchIndexClientTestBase {
         return new ModelWithPrimitiveCollections()
             .key("1")
             .bools(new Boolean[]{true, false})
-            .dates(new Date[]{DATE_FORMAT.parse("2019-04-14T14:24:00Z"), DATE_FORMAT.parse("1999-12-31T23:59:59Z")})
+            .dates(new OffsetDateTime[]{
+                OffsetDateTime.parse("2019-04-14T14:24:00Z"),
+                OffsetDateTime.parse("1999-12-31T23:59:59Z")})
             .doubles(new Double[]{NEGATIVE_INFINITY, 0.0, 2.78, NaN, 3.14, POSITIVE_INFINITY})
             .ints(new int[]{1, 2, 3, 4, -13, 5, 0})
             .longs(new Long[]{-9_999_999_999_999_999L, 832_372_345_832_523L})

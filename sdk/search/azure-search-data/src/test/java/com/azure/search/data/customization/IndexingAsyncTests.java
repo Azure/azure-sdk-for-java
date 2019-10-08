@@ -6,6 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.DocumentIndexResult;
 import com.azure.search.data.generated.models.IndexingResult;
+import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.HotelAddress;
@@ -23,6 +24,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,32 +77,30 @@ public class IndexingAsyncTests extends IndexingTestBase {
     }
 
     @Override
-    public void canIndexWithPascalCaseFields() {
-        createHotelIndex();
-        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+    public void canIndexWithPascalCaseFields() throws Exception {
+        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
+        client = getClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
-        String expectedHotelId = "1";
-        Long expectedHotelCount = 1L;
-
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel()
-            .hotelId(expectedHotelId)
-            .hotelName("My Pascal Hotel")
-            .description("A Great Pascal Description.")
-            .category("Category Pascal")
+        List<Book> books = new ArrayList<>();
+        books.add(new Book()
+            .ISBN("123")
+            .title("Lord of the Rings")
+            .author(new Author()
+                .firstName("J.R.R")
+                .lastName("Tolkien"))
         );
 
-        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(hotels);
+        Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(books);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
             List<IndexingResult> result = res.results();
-            this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
+            this.assertIndexActionSucceeded("123", result.get(0), 201);
         }).verifyComplete();
 
         waitForIndexing();
 
         StepVerifier.create(client.getDocumentCount()).
-            expectNext(expectedHotelCount).
+            expectNext(1L).
             verifyComplete();
     }
 
@@ -282,35 +284,44 @@ public class IndexingAsyncTests extends IndexingTestBase {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
-        // Book 1's publish date is in UTC format, and book 2's is unspecified.
+        OffsetDateTime utcTime = OffsetDateTime.of(
+            LocalDateTime.of(2010, 1, 1, 0, 0, 0),
+            ZoneOffset.UTC
+        );
+        OffsetDateTime utcTimeMinusEight = OffsetDateTime.of(
+            // UTC-8
+            LocalDateTime.of(2010, 1, 1, 0, 0, 0),
+            ZoneOffset.ofHours(-8)
+        );
+
         List<Map<String, Object>> books = new ArrayList<>();
 
         Map<String, Object> book1 = new HashMap<>();
-        book1.put(ISBN_FIELD, ISBN1);
-        book1.put(PUBLISH_DATE_FIELD, DATE_UTC);
+        book1.put("ISBN", "1");
+        book1.put("PublishDate", utcTime);
         books.add(book1);
 
         Map<String, Object> book2 = new HashMap<>();
-        book2.put(ISBN_FIELD, ISBN2);
-        book2.put(PUBLISH_DATE_FIELD, "2010-06-27T00:00:00-00:00");
+        book2.put("ISBN", "2");
+        book2.put("PublishDate", utcTimeMinusEight);
         books.add(book2);
 
-        // Upload and retrieve book documents
         client.uploadDocuments(books)
             .block();
         waitForIndexing();
 
-        Mono<Document> actualBook1 = client.getDocument(ISBN1);
-        Mono<Document> actualBook2 = client.getDocument(ISBN2);
+        Mono<Document> actualBook1 = client.getDocument("1");
+        Mono<Document> actualBook2 = client.getDocument("2");
 
-        // Verify
         StepVerifier
             .create(actualBook1)
-            .assertNext(res -> Assert.assertEquals(DATE_UTC, res.get(PUBLISH_DATE_FIELD)))
+            .assertNext(res -> Assert.assertEquals(utcTime, res.get("PublishDate")))
             .verifyComplete();
+
+        // Azure Search normalizes to UTC, so we compare instants
         StepVerifier
             .create(actualBook2)
-            .assertNext(res -> Assert.assertEquals(DATE_UTC, res.get(PUBLISH_DATE_FIELD)))
+            .assertNext(res -> Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) res.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC)))
             .verifyComplete();
     }
 
@@ -340,30 +351,33 @@ public class IndexingAsyncTests extends IndexingTestBase {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
-        // Book 1's publish date is in UTC format, and book 2's is unspecified.
-        DateFormat dateFormatUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        DateFormat dateFormatUnspecifiedTimezone = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<Book> books = Arrays.asList(
             new Book()
-                .ISBN(ISBN1)
-                .publishDate(dateFormatUtc.parse(DATE_UTC)),
+                .ISBN("1")
+                .publishDate(OffsetDateTime.of(
+                    LocalDateTime.of(2010, 1, 1, 0, 0, 0),
+                    ZoneOffset.UTC
+                )),
             new Book()
-                .ISBN(ISBN2)
-                .publishDate(dateFormatUnspecifiedTimezone.parse("2010-06-27 00:00:00"))
+                .ISBN("2")
+                .publishDate(OffsetDateTime.of(
+                    LocalDateTime.of(2010, 1, 1, 0, 0, 0),
+                    ZoneOffset.ofHours(-8)
+                ))
         );
-        // Upload and retrieve book documents
         client.uploadDocuments(books).block();
-        Mono<Document> actualBook1 = client.getDocument(ISBN1);
-        Mono<Document> actualBook2 = client.getDocument(ISBN2);
 
-        // Verify
+        Mono<Document> actualBook1 = client.getDocument("1");
         StepVerifier
             .create(actualBook1)
             .assertNext(res -> Assert.assertEquals(books.get(0).publishDate(), res.as(Book.class).publishDate()))
             .verifyComplete();
+
+        // Azure Search normalizes to UTC, so we compare instants
+        Mono<Document> actualBook2 = client.getDocument("2");
         StepVerifier
             .create(actualBook2)
-            .assertNext(res -> Assert.assertEquals(books.get(1).publishDate(), res.as(Book.class).publishDate()))
+            .assertNext(res -> Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), res.as(Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC)))
             .verifyComplete();
     }
 
@@ -373,8 +387,6 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client = getClientBuilder(INDEX_NAME).buildAsyncClient();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-        // Define hotels
         Hotel originalDoc = new Hotel()
             .hotelId("1")
             .hotelName("Secret Point Motel")
@@ -730,21 +742,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
         originalDoc.put("Tags", Arrays.asList("pool", "air conditioning", "concierge"));
         originalDoc.put("ParkingIncluded", false);
         originalDoc.put("SmokingAllowed", true);
-        originalDoc.put("LastRenovationDate", "2010-06-27T00:00:00Z");
+        originalDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T00:00:00Z"));
         originalDoc.put("Rating", 4);
-
-        Map<String, Object> originalCrsProperties = new LinkedHashMap<>();
-        originalCrsProperties.put("name", "EPSG:4326");
-
-        Map<String, Object> originalCrs = new LinkedHashMap<>();
-        originalCrs.put("type", "name");
-        originalCrs.put("properties", originalCrsProperties);
-
-        Map<String, Object> originalPoint = new LinkedHashMap<>();
-        originalPoint.put("type", "Point");
-        originalPoint.put("coordinates", Arrays.asList(-73.975403, 40.760586));
-        originalPoint.put("crs", originalCrs);
-        originalDoc.put("Location", originalPoint);
+        originalDoc.put("Location", GeoPoint.create(40.760586, -73.965403));
 
         Document originalAddress = new Document();
         originalAddress.put("StreetAddress", "677 5th Ave");
@@ -762,7 +762,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         originalRoom1.put("BedOptions", "1 Queen Bed");
         originalRoom1.put("SleepsCount", 2);
         originalRoom1.put("SmokingAllowed", true);
-        originalRoom1.put("Tags", Arrays.asList("vcr/dvd"));
+        originalRoom1.put("Tags", Collections.singletonList("vcr/dvd"));
 
         Document originalRoom2 = new Document();
         originalRoom2.put("Description", "Budget Room, 1 King Bed (Mountain View)");
@@ -795,7 +795,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         updatedRoom1.put("SleepsCount", 2);
         updatedRoom1.put("SmokingAllowed", true);
         updatedRoom1.put("Tags", Arrays.asList("vcr/dvd", "balcony"));
-        updatedDoc.put("Rooms", Arrays.asList(updatedRoom1));
+        updatedDoc.put("Rooms", Collections.singletonList(updatedRoom1));
 
         Document expectedDoc = new Document();
         expectedDoc.put("HotelId", "1");

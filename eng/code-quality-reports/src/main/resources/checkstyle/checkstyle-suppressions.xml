@@ -194,6 +194,4 @@
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
-  <!-- Suppress EnforceFinalFieldsCheck for Azure Search Document -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.data.customization.Document.java"/>
 </suppressions>

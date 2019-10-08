@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.data.customization;
 
-import com.azure.search.data.common.jsonwrapper.JsonWrapper;
-import com.azure.search.data.common.jsonwrapper.api.JsonApi;
-import com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.data.customization.models.GeoPoint;
 import com.azure.search.data.generated.models.SearchRequestOptions;
 import com.azure.search.test.environment.models.Hotel;
@@ -14,11 +11,10 @@ import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.Assert;
 
 import java.text.ParseException;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
@@ -324,15 +320,14 @@ public class LookupSyncTests extends LookupTestBase {
         setupIndexFromJsonFile(MODEL_WITH_DATA_TYPES_INDEX_JSON);
         client = getClientBuilder(DATA_TYPES_INDEX_NAME).buildClient();
 
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
         String docKey = "1";
-        String dateTimeString = "2019-08-13T14:30:00Z";
+        OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
         Document indexedDoc = new Document() {
             {
                 put("Key", docKey);
-                put("Dates", new Date[]{DATE_FORMAT.parse(dateTimeString)});
+                put("Dates", new OffsetDateTime[]{dateTime});
                 put("Doubles", new Double[]{0.0, 5.8, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN});
                 put("Bools", new Boolean[]{true, false});
                 put("Longs", new Long[]{9999999999999999L, 832372345832523L});
@@ -351,8 +346,8 @@ public class LookupSyncTests extends LookupTestBase {
                 put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
                 put("Strings", Arrays.asList("hello", "bye"));
                 put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-                put("Points", Collections.singletonList(jsonApi.convertObjectToType(geoPoint, Map.class)));
-                put("Dates", Collections.singletonList(dateTimeString));
+                put("Points", Collections.singletonList(geoPoint));
+                put("Dates", Collections.singletonList(dateTime));
             }
         };
 
