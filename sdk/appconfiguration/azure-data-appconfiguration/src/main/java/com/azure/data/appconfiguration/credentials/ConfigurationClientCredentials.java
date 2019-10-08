@@ -67,10 +67,10 @@ public class ConfigurationClientCredentials {
     /**
      * Gets the base URI of the Azure App Configuration instance based on the provided connection string.
      *
-     * @return The base URI of the configuration service extracted from connection string provided.
+     * @return The String of base URI of the configuration service extracted from connection string provided.
      */
-    public URL getBaseUri() {
-        return this.credentials.baseUri();
+    public String getAppConfigurationURL() {
+        return this.credentials.baseUri().toString();
     }
 
     /**

@@ -184,11 +184,7 @@ public final class ConfigurationClientBuilder {
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public ConfigurationClientBuilder endpoint(String endpoint) {
-        try {
-            this.endpoint = new URL(endpoint);
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
-        }
+        this.endpoint = getURLFromString(endpoint);
 
         return this;
     }
@@ -203,7 +199,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder credential(ConfigurationClientCredentials credential) {
         this.credential = Objects.requireNonNull(credential);
-        this.endpoint = credential.getBaseUri();
+        this.endpoint = getURLFromString(credential.getAppConfigurationURL());
         return this;
     }
 
@@ -311,9 +307,17 @@ public final class ConfigurationClientBuilder {
         if (endpoint != null) {
             return endpoint;
         } else if (buildCredentials != null) {
-            return buildCredentials.getBaseUri();
+            return getURLFromString(buildCredentials.getAppConfigurationURL());
         } else {
             return null;
+        }
+    }
+
+    private URL getURLFromString(String endpoint) {
+        try {
+            return new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
     }
 }
