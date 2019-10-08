@@ -56,10 +56,10 @@ namespace Azure.Test.PerfStress
 
             try
             {
-                for (var i = 0; i < options.Parallel; i++)
+                Parallel.For(0, options.Parallel, new ParallelOptions() { MaxDegreeOfParallelism = options.Parallel }, i =>
                 {
-                    tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, options);
-                }
+                    tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, i.ToString(), options);
+                });
 
                 using var cts = new CancellationTokenSource(duration);
                 var cancellationToken = cts.Token;

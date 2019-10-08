@@ -5,10 +5,13 @@ namespace Azure.Test.PerfStress
 {
     public abstract class PerfStressTest<TOptions> : IPerfStressTest where TOptions : PerfStressOptions
     {
+        protected string Id { get; private set; }
+
         protected TOptions Options { get; private set; }
 
-        public PerfStressTest(TOptions options)
+        public PerfStressTest(string id, TOptions options)
         {
+            Id = id;
             Options = options;
         }
 

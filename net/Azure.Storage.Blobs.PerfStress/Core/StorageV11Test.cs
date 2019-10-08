@@ -13,9 +13,9 @@ namespace Azure.Storage.Blobs.PerfStress.Core
 
         protected CloudBlockBlob CloudBlockBlob { get; private set; }
 
-        public StorageV11Test(TOptions options) : base(options)
+        public StorageV11Test(string id, TOptions options) : base(id, options)
         {
-            var blobName = this.GetType().Name.ToLowerInvariant();
+            var blobName = this.GetType().Name.ToLowerInvariant() + id;
             var connectionString = Environment.GetEnvironmentVariable("STORAGE_CONNECTION_STRING");
 
             if (string.IsNullOrEmpty(connectionString))

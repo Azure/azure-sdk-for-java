@@ -8,7 +8,7 @@ namespace Azure.Storage.Blobs.PerfStress
 {
     public class UploadV11Test : RandomDataV11Test<SizeOptions>
     {
-        public UploadV11Test(SizeOptions options) : base(options)
+        public UploadV11Test(string id, SizeOptions options) : base(id, options)
         {
             try
             {

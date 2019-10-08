@@ -4,7 +4,7 @@ namespace Azure.Storage.Blobs.PerfStress.Core
 {
     public abstract class ParallelTransferTest<TOptions> : RandomDataTest<TOptions> where TOptions : ParallelTransferOptionsOptions
     {
-        public ParallelTransferTest(TOptions options) : base(options)
+        public ParallelTransferTest(string id, TOptions options) : base(id, options)
         {
             ParallelTransferOptions = new ParallelTransferOptions()
             {

@@ -7,7 +7,7 @@ namespace Azure.Storage.Blobs.PerfStress
 {
     public class DownloadTest : ParallelTransferTest<ParallelTransferOptionsOptions>
     {
-        public DownloadTest(ParallelTransferOptionsOptions options) : base(options)
+        public DownloadTest(string id, ParallelTransferOptionsOptions options) : base(id, options)
         {
             try
             {

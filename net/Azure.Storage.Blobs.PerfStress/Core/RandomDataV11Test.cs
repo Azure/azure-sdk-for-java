@@ -7,7 +7,7 @@ namespace Azure.Storage.Blobs.PerfStress.Core
     {
         private readonly byte[] _randomData;
 
-        public RandomDataV11Test(TOptions options) : base(options)
+        public RandomDataV11Test(string id, TOptions options) : base(id, options)
         {
             _randomData = new byte[1024 * 1024];
             (new Random(0)).NextBytes(_randomData);

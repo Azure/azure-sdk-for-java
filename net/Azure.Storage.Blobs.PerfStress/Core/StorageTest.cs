@@ -11,9 +11,9 @@ namespace Azure.Storage.Blobs.PerfStress
 
         protected BlobClient BlobClient { get; private set; }
 
-        public StorageTest(TOptions options) : base(options)
+        public StorageTest(string id, TOptions options) : base(id, options)
         {
-            var blobName = this.GetType().Name.ToLowerInvariant();
+            var blobName = this.GetType().Name.ToLowerInvariant() + id;
             var connectionString = Environment.GetEnvironmentVariable("STORAGE_CONNECTION_STRING");
 
             if (string.IsNullOrEmpty(connectionString))
