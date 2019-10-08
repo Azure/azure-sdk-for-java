@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
     /**
-     * Creates StreamResponse.
+     * Creates a {@link StreamResponse}.
      *
      * @param request The request which resulted in this response.
      * @param statusCode The status code of the HTTP response.
@@ -36,10 +36,14 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     }
 
     /**
-     * Disposes the connection associated with this StreamResponse.
+     * Disposes the connection associated with this {@link StreamResponse}.
      */
     @Override
     public void close() {
-        getValue().subscribe().dispose();
+        final Flux<ByteBuffer> value = getValue();
+
+        if (value != null) {
+            value.subscribe().dispose();
+        }
     }
 }
