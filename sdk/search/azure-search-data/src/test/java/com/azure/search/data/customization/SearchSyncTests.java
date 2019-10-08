@@ -5,7 +5,6 @@ package com.azure.search.data.customization;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.common.jsonwrapper.JsonWrapper;
 import com.azure.search.data.common.jsonwrapper.api.Config;
@@ -34,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -695,9 +695,61 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
-        return dropUnnecessaryFields(
-            DocumentResponseConversions.convertLinkedHashMapToMap(
+        return dropUnnecessaryFields(convertLinkedHashMapToMap(
                 (result.additionalProperties())));
+    }
+
+    /**
+     * Convert a Linked HashMap object to Map object
+     *
+     * @param linkedMapObject object to convert
+     * @return {@link Map}{@code <}{@link String}{@code ,}{@link Object}{@code >}
+     */
+    private static Map<String, Object> convertLinkedHashMapToMap(Object linkedMapObject) {
+        /** This SuppressWarnings is for the checkstyle
+         it is used because api return type can be anything and therefore is an Object
+         in our case we know and we use it only when the return type is LinkedHashMap
+         **/
+        @SuppressWarnings(value = "unchecked")
+        LinkedHashMap<String, Object> linkedMap = (LinkedHashMap<String, Object>) linkedMapObject;
+
+        Set<Map.Entry<String, Object>> entries = linkedMap.entrySet();
+
+        Map<String, Object> convertedMap = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : entries) {
+            Object value = entry.getValue();
+
+            if (value instanceof LinkedHashMap) {
+                value = convertLinkedHashMapToMap(entry.getValue());
+            }
+            if (value instanceof ArrayList) {
+                value = convertArray((ArrayList) value);
+
+            }
+
+            convertedMap.put(entry.getKey(), value);
+        }
+
+        return convertedMap;
+    }
+
+    /**
+     * Convert Array Object elements
+     *
+     * @param array which elements will be converted
+     * @return {@link ArrayList}{@code <}{@link Object}{@code >}
+     */
+    private static ArrayList<Object> convertArray(ArrayList array) {
+        ArrayList<Object> convertedArray = new ArrayList<>();
+        for (Object arrayValue : array) {
+            if (arrayValue instanceof LinkedHashMap) {
+                convertedArray.add(convertLinkedHashMapToMap(arrayValue));
+            } else {
+                convertedArray.add(arrayValue);
+            }
+        }
+        return convertedArray;
     }
 
     private void assertKeySequenceEqual(PagedIterable<SearchResult> results, List<String> expectedKeys) {

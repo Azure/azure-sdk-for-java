@@ -12,7 +12,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.search.data.common.AutoCompletePagedResponse;
-import com.azure.search.data.common.DocumentResponseConversions;
 import com.azure.search.data.common.SearchPagedResponse;
 import com.azure.search.data.implementation.SerializationUtil;
 import com.azure.search.data.common.SuggestPagedResponse;
