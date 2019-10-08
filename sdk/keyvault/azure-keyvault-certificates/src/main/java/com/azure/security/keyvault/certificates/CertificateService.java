@@ -24,18 +24,18 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.certificates.implementation.CertificateBasePage;
+import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesPage;
 import com.azure.security.keyvault.certificates.implementation.ContactPage;
 import com.azure.security.keyvault.certificates.implementation.DeletedCertificatePage;
-import com.azure.security.keyvault.certificates.implementation.IssuerBasePage;
+import com.azure.security.keyvault.certificates.implementation.IssuerPropertiesPage;
 import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.CertificateBase;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.Contact;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.IssuerBase;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import reactor.core.publisher.Mono;
 
 /**
@@ -111,26 +111,26 @@ interface CertificateService {
     @Get("certificates")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(CertificateBasePage.class)
-    Mono<PagedResponse<CertificateBase>> getCertificates(@HostParam("url") String url,
-                                                         @QueryParam("maxresults") Integer maxresults,
-                                                         @QueryParam("includePending") Boolean includePending,
-                                                         @QueryParam("api-version") String apiVersion,
-                                                         @HeaderParam("accept-language") String acceptLanguage,
-                                                         @HeaderParam("Content-Type") String type,
-                                                         Context context);
+    @ReturnValueWireType(CertificatePropertiesPage.class)
+    Mono<PagedResponse<CertificateProperties>> getCertificates(@HostParam("url") String url,
+                                                               @QueryParam("maxresults") Integer maxresults,
+                                                               @QueryParam("includePending") Boolean includePending,
+                                                               @QueryParam("api-version") String apiVersion,
+                                                               @HeaderParam("accept-language") String acceptLanguage,
+                                                               @HeaderParam("Content-Type") String type,
+                                                               Context context);
 
 
 
     @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(CertificateBasePage.class)
-    Mono<PagedResponse<CertificateBase>> getCertificates(@HostParam("url") String url,
-                                                         @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                         @HeaderParam("accept-language") String acceptLanguage,
-                                                         @HeaderParam("Content-Type") String type,
-                                                         Context context);
+    @ReturnValueWireType(CertificatePropertiesPage.class)
+    Mono<PagedResponse<CertificateProperties>> getCertificates(@HostParam("url") String url,
+                                                               @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                               @HeaderParam("accept-language") String acceptLanguage,
+                                                               @HeaderParam("Content-Type") String type,
+                                                               Context context);
 
     @Delete("certificates/{certificate-name}")
     @ExpectedResponses({200})
@@ -314,37 +314,37 @@ interface CertificateService {
     @Get("certificates/Issuers")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(IssuerBasePage.class)
-    Mono<PagedResponse<IssuerBase>> getCertificateIssuers(@HostParam("url") String url,
-                                                         @QueryParam("maxresults") Integer maxresults,
-                                                         @QueryParam("api-version") String apiVersion,
-                                                         @HeaderParam("accept-language") String acceptLanguage,
-                                                         @HeaderParam("Content-Type") String type,
-                                                         Context context);
-
-
-    @Get("{nextUrl}")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(IssuerBasePage.class)
-    Mono<PagedResponse<IssuerBase>> getCertificateIssuers(@HostParam("url") String url,
-                                                         @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                         @HeaderParam("accept-language") String acceptLanguage,
-                                                         @HeaderParam("Content-Type") String type,
-                                                         Context context);
-
-
-    @Get("certificates/{certificate-name}/versions")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(CertificateBasePage.class)
-    Mono<PagedResponse<CertificateBase>> getCertificateVersions(@HostParam("url") String url,
-                                                                @PathParam("certificate-name") String certificateName,
+    @ReturnValueWireType(IssuerPropertiesPage.class)
+    Mono<PagedResponse<IssuerProperties>> getCertificateIssuers(@HostParam("url") String url,
                                                                 @QueryParam("maxresults") Integer maxresults,
                                                                 @QueryParam("api-version") String apiVersion,
                                                                 @HeaderParam("accept-language") String acceptLanguage,
                                                                 @HeaderParam("Content-Type") String type,
                                                                 Context context);
+
+
+    @Get("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(IssuerPropertiesPage.class)
+    Mono<PagedResponse<IssuerProperties>> getCertificateIssuers(@HostParam("url") String url,
+                                                                @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                                @HeaderParam("accept-language") String acceptLanguage,
+                                                                @HeaderParam("Content-Type") String type,
+                                                                Context context);
+
+
+    @Get("certificates/{certificate-name}/versions")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(CertificatePropertiesPage.class)
+    Mono<PagedResponse<CertificateProperties>> getCertificateVersions(@HostParam("url") String url,
+                                                                      @PathParam("certificate-name") String certificateName,
+                                                                      @QueryParam("maxresults") Integer maxresults,
+                                                                      @QueryParam("api-version") String apiVersion,
+                                                                      @HeaderParam("accept-language") String acceptLanguage,
+                                                                      @HeaderParam("Content-Type") String type,
+                                                                      Context context);
 
 
     @Post("certificates/{certificate-name}/import")

@@ -22,7 +22,7 @@ class Action {
      *
      * @return the lifetimeActionType value
      */
-    LifetimeActionType actionType() {
+    LifetimeActionType getActionType() {
         return this.lifetimeActionType;
     }
 
@@ -32,7 +32,7 @@ class Action {
      * @param lifetimeActionType the lifetimeActionType value to set
      * @return the Action object itself.
      */
-    Action actionType(LifetimeActionType lifetimeActionType) {
+    Action setActionType(LifetimeActionType lifetimeActionType) {
         this.lifetimeActionType = lifetimeActionType;
         return this;
     }

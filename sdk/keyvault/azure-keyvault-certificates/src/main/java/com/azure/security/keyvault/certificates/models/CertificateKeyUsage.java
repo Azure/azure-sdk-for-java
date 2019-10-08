@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for KeyUsageType.
  */
-public enum KeyUsageType {
+public enum CertificateKeyUsage {
     DIGITAL_SIGNATURE("digitalSignature"),
 
     NON_REPUDIATION("nonRepudiation"),
@@ -33,7 +33,7 @@ public enum KeyUsageType {
      * Creates a custom value for KeyUsageType.
      * @param value the custom value
      */
-    KeyUsageType(String value) {
+    CertificateKeyUsage(String value) {
         this.value = value;
     }
 
@@ -48,8 +48,8 @@ public enum KeyUsageType {
      * @param value The value whose equivalent KeyUsageType is needed.
      * @return the KeyUsageType
      */
-    public static KeyUsageType fromString(String value) {
-        for (KeyUsageType keyUsageType : values()) {
+    public static CertificateKeyUsage fromString(String value) {
+        for (CertificateKeyUsage keyUsageType : values()) {
             if (keyUsageType.value.equalsIgnoreCase(value)) {
                 return keyUsageType;
             }

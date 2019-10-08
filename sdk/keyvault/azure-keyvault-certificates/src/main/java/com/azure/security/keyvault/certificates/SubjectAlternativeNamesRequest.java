@@ -41,9 +41,9 @@ class SubjectAlternativeNamesRequest {
 
     SubjectAlternativeNamesRequest(SubjectAlternativeNames subjectAlternativeNames) {
         if (subjectAlternativeNames != null) {
-            this.dnsNames = subjectAlternativeNames.dnsNames();
-            this.emails = subjectAlternativeNames.emails();
-            this.upns = subjectAlternativeNames.upns();
+            this.dnsNames = subjectAlternativeNames.getDnsNames();
+            this.emails = subjectAlternativeNames.getEmails();
+            this.upns = subjectAlternativeNames.getUserPrincipalNames();
         }
     }
 

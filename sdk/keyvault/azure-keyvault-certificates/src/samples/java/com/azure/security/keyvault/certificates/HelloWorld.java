@@ -3,17 +3,17 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.util.polling.PollResponse;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.EcKeyOptions;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.Issuer;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,81 +36,72 @@ public class HelloWorld {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         CertificateClient certificateClient = new CertificateClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .endpoint("https://cameravault.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create a self signed certificate valid for 1 year. if the certificate
       //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .subjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .keyOptions(new EcKeyOptions()
-                .reuseKey(true)
-                .curve(KeyCurveName.P_256))
-            .validityInMonths(12);
+            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setReuseKey(true)
+            .setKeyType(CertificateKeyType.EC)
+            .setKeyCurveName(CertificateKeyCurveName.P_256)
+            .setValidityInMonths(12);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        try {
-            CertificateOperation certificateOperation = certificateClient.createCertificate("certificateName",
-                policy, tags, Duration.ofMillis(60000));
-            System.out.printf("Certificate operation status %s \n", certificateOperation.status());
-        } catch (IllegalStateException e) {
-            // Certificate wasn't created in the specified duration.
-            // Log / Handle here
-        }
+        Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, tags);
+        certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
+
+        Certificate cert = certificatePoller.result().block();
 
         // Let's Get the latest version of the certificate from the key vault.
         Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
-        System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.name(),
-            certificate.secretId());
+        System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.getProperties().getName(),
+            certificate.getSecretId());
 
-        // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
-        // The update method can be used to update the enabled status of the certificate.
-        certificate.enabled(false);
-        Certificate updatedCertificate = certificateClient.updateCertificate(certificate);
-        System.out.printf("Certificate's updated enabled status is %s \n", updatedCertificate.enabled());
+        // After some time, we need to disable the certificate temporarily, so we update the isEnabled status of the certificate.
+        // The update method can be used to update the isEnabled status of the certificate.
+        certificate.getProperties().setEnabled(false);
+        Certificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
+        System.out.printf("Certificate's updated isEnabled status is %s \n", updatedCertificate.getProperties().isEnabled());
 
 
         //Let's create a certificate issuer.
         Issuer issuer = new Issuer("myIssuer", "Test");
-        Issuer myIssuer = certificateClient.createCertificateIssuer(issuer);
-        System.out.printf("Issuer created with name %s and provider %s", myIssuer.name(), myIssuer.provider());
+        Issuer myIssuer = certificateClient.createIssuer(issuer);
+        System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
 
         // Let's fetch the issuer we just created from the key vault.
-        myIssuer = certificateClient.getCertificateIssuer("myIssuer");
-        System.out.printf("Issuer retrieved with name %s and provider %s", myIssuer.name(), myIssuer.provider());
+        myIssuer = certificateClient.getIssuer("myIssuer");
+        System.out.printf("Issuer retrieved with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
 
 
         //Let's create a certificate signed by our issuer.
-        try {
-            CertificateOperation certificateOperation = certificateClient.createCertificate("myCertificate",
-                new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"), Duration.ofMillis(60000));
-            System.out.printf("Certificate operation status %s \n", certificateOperation.status());
-        } catch (IllegalStateException e) {
-            // Certificate wasn't created in the specified duration.
-            // Log / Handle here
-        }
+        certificateClient.beginCreateCertificate("myCertificate",
+            new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"), tags)
+            .blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
         // Let's Get the latest version of our certificate from the key vault.
         Certificate myCert = certificateClient.getCertificateWithPolicy("myCertificate");
-        System.out.printf("Certificate is returned with name %s and secret id %s \n", myCert.name(),
-            myCert.secretId());
+        System.out.printf("Certificate is returned with name %s and secret id %s \n", myCert.getProperties().getName(),
+            myCert.getSecretId());
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
         DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.name(), deletedCertificate.recoveryId());
+        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
 
         deletedCertificate = certificateClient.deleteCertificate("myCertificate");
-        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.name(), deletedCertificate.recoveryId());
+        System.out.printf("Certificate is deleted with name %s and its recovery id is %s \n", deletedCertificate.getName(), deletedCertificate.getRecoveryId());
 
-        Issuer deleteCertificateIssuer = certificateClient.deleteCertificateIssuer("myIssuer");
-        System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s \n", deleteCertificateIssuer.name(), deleteCertificateIssuer.provider());
+        Issuer deleteCertificateIssuer = certificateClient.deleteIssuer("myIssuer");
+        System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s \n", deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProperties().getProvider());
 
         // To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
+        // If the keyvault is soft-delete isEnabled, then for permanent deletion  deleted certificates need to be purged.
         certificateClient.purgeDeletedCertificate("certificateName");
         certificateClient.purgeDeletedCertificate("myCertificate");
     }

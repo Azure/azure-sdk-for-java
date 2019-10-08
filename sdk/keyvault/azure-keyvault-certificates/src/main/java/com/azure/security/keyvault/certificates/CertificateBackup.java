@@ -21,7 +21,7 @@ class CertificateBackup {
      *
      * @return the backup blob
      */
-    byte[] value() {
+    byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }

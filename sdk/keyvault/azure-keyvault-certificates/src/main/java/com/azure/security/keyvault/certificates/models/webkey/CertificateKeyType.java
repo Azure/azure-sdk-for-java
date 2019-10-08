@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for KeyType.
  */
-public enum KeyType {
+public enum CertificateKeyType {
      EC("EC"),
 
      EC_HSM("EC-HSM"),
@@ -25,7 +25,7 @@ public enum KeyType {
      * Creates a custom value for KeyType.
      * @param value The custom value
      */
-    KeyType(String value) {
+    CertificateKeyType(String value) {
         this.value = value;
     }
 
@@ -36,8 +36,8 @@ public enum KeyType {
     }
 
     /**
-     * Calculates the hashcode of this {@link KeyType} value
-     * @return the hashcode for {@link KeyType} value
+     * Calculates the hashcode of this {@link CertificateKeyType} value
+     * @return the hashcode for {@link CertificateKeyType} value
      */
     public int hashValue() {
         return value.hashCode();
@@ -48,8 +48,8 @@ public enum KeyType {
      * @param value The value whose equivalent KeyType is needed.
      * @return the KeyType.
      */
-    public static KeyType fromString(String value) {
-        for (KeyType keyType : values()) {
+    public static CertificateKeyType fromString(String value) {
+        for (CertificateKeyType keyType : values()) {
             if (keyType.value.equalsIgnoreCase(value)) {
                 return keyType;
             }

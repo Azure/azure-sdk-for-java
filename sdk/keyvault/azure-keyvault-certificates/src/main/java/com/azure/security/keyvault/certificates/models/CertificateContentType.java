@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for SecretContentType.
  */
-public enum SecretContentType {
+public enum CertificateContentType {
     PKCS12("application/x-pkcs12"),
 
     PEM("application/x-pem-file");
@@ -19,7 +19,7 @@ public enum SecretContentType {
      * Creates a custom value for KeyUsageType.
      * @param value the custom value
      */
-    SecretContentType(String value) {
+    CertificateContentType(String value) {
         this.value = value;
     }
 
@@ -34,8 +34,8 @@ public enum SecretContentType {
      * @param contentType The string value to parse content type from.
      * @return the SecretContentType
      */
-    public static SecretContentType fromString(String contentType) {
-        for (SecretContentType secretContentType : values()) {
+    public static CertificateContentType fromString(String contentType) {
+        for (CertificateContentType secretContentType : values()) {
             if (secretContentType.value.equals(contentType)) {
                 return secretContentType;
             }

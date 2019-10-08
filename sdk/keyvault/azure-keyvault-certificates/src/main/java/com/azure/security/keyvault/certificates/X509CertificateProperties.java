@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.certificates;
 
+import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.KeyUsageType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -14,11 +14,11 @@ import java.util.List;
 class X509CertificateProperties {
 
     X509CertificateProperties(CertificatePolicy certificatePolicy) {
-        this.subject = certificatePolicy.subjectName();
-        this.ekus = certificatePolicy.keyOptions() != null ? certificatePolicy.keyOptions().ekus() : null;
-        this.keyUsage = certificatePolicy.keyOptions() != null ? certificatePolicy.keyOptions().keyUsage() : null;
-        this.subjectAlternativeNamesRequest = new SubjectAlternativeNamesRequest(certificatePolicy.subjectAlternativeNames());
-        this.validityInMonths = certificatePolicy.validityInMonths();
+        this.subject = certificatePolicy.getSubjectName();
+        this.ekus = certificatePolicy.getEnhancedKeyUsage();
+        this.keyUsage = certificatePolicy.getKeyUsage();
+        this.subjectAlternativeNamesRequest = new SubjectAlternativeNamesRequest(certificatePolicy.getSubjectAlternativeNames());
+        this.validityInMonths = certificatePolicy.getValidityInMonths();
     }
 
     /**
@@ -43,7 +43,7 @@ class X509CertificateProperties {
      * List of key usages.
      */
     @JsonProperty(value = "key_usage")
-    private List<KeyUsageType> keyUsage;
+    private List<CertificateKeyUsage> keyUsage;
 
     /**
      * The duration that the ceritifcate is valid in months.
@@ -116,7 +116,7 @@ class X509CertificateProperties {
      *
      * @return the keyUsage value
      */
-    List<KeyUsageType> keyUsage() {
+    List<CertificateKeyUsage> keyUsage() {
         return this.keyUsage;
     }
 
@@ -126,7 +126,7 @@ class X509CertificateProperties {
      * @param keyUsage the keyUsage value to set
      * @return the X509CertificateProperties object itself.
      */
-    X509CertificateProperties keyUsage(List<KeyUsageType> keyUsage) {
+    X509CertificateProperties keyUsage(List<CertificateKeyUsage> keyUsage) {
         this.keyUsage = keyUsage;
         return this;
     }

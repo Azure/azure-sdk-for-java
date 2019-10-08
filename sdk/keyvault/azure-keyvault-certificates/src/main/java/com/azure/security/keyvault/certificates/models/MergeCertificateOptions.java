@@ -22,7 +22,7 @@ public class MergeCertificateOptions {
     private final List<byte[]> x509Certificates;
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the object is isEnabled.
      */
     private boolean enabled;
 
@@ -42,7 +42,7 @@ public class MergeCertificateOptions {
      * @param tags The tags to set
      * @return the MergeCertificateOptions object itself.
      */
-    public MergeCertificateOptions tags(Map<String, String> tags) {
+    public MergeCertificateOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -52,26 +52,26 @@ public class MergeCertificateOptions {
      *
      * @return the tags value
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
-     * Set the enabled status.
-     * @param enabled The enabled status to set.
+     * Set the isEnabled status.
+     * @param enabled The isEnabled status to set.
      * @return the MergeCertificateOptions object itself.
      */
-    public MergeCertificateOptions enabled(Boolean enabled) {
+    public MergeCertificateOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
     /**
-     * Get the enabled status.
+     * Get the isEnabled status.
      *
-     * @return the enabled status
+     * @return the isEnabled status
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -80,7 +80,7 @@ public class MergeCertificateOptions {
      *
      * @return the certificate name.
      */
-    public String name() {
+    public String getName() {
         return this.certificateName;
     }
 
@@ -89,7 +89,7 @@ public class MergeCertificateOptions {
      *
      * @return the x509 certficiates.
      */
-    public List<byte[]> x509Certificates() {
+    public List<byte[]> getX509Certificates() {
         return this.x509Certificates;
     }
 }

@@ -28,7 +28,7 @@ public final class CertificateImportOptions {
     private String password;
 
     /**
-     * Determines whether the object is enabled.
+     * Determines whether the object is isEnabled.
      */
     private Boolean enabled;
 
@@ -63,21 +63,21 @@ public final class CertificateImportOptions {
     }
 
     /**
-     * Set the enabled status.
-     * @param enabled The enabled status to set.
+     * Set the isEnabled status.
+     * @param enabled The isEnabled status to set.
      * @return the CertificateImportOptions itself
      */
-    public CertificateImportOptions enabled(Boolean enabled) {
+    public CertificateImportOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
     /**
-     * Get the enabled status.
+     * Get the isEnabled status.
      *
-     * @return the enabled status
+     * @return the isEnabled status
      */
-    public Boolean enabled() {
+    public Boolean getEnabled() {
         return this.enabled;
     }
 
@@ -85,7 +85,7 @@ public final class CertificateImportOptions {
      * Get the management policy for the certificate.
      * @return the management policy
      */
-    public CertificatePolicy certificatePolicy() {
+    public CertificatePolicy getCertificatePolicy() {
         return this.certificatePolicy;
     }
 
@@ -94,7 +94,7 @@ public final class CertificateImportOptions {
      * @param certificatePolicy the management policy for the certificate
      * @return the CertificateImportOptions itself
      */
-    public CertificateImportOptions certificatePolicy(CertificatePolicy certificatePolicy) {
+    public CertificateImportOptions setCertificatePolicy(CertificatePolicy certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }
@@ -104,7 +104,7 @@ public final class CertificateImportOptions {
      * @param tags The metadata to set.
      * @return the CertificateImportOptions itself
      */
-    public CertificateImportOptions tags(Map<String, String> tags) {
+    public CertificateImportOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -114,7 +114,7 @@ public final class CertificateImportOptions {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -123,7 +123,7 @@ public final class CertificateImportOptions {
      * @param password The password used to encrypt the certificate.
      * @return the CertificateImportOptions itself
      */
-    public CertificateImportOptions password(String password) {
+    public CertificateImportOptions setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -132,7 +132,7 @@ public final class CertificateImportOptions {
      * Get the password for encrypting the certificate, if its encrypted.
      * @return the password
      */
-    public String password() {
+    public String getPassword() {
         return this.password;
     }
 
@@ -140,7 +140,7 @@ public final class CertificateImportOptions {
      * Get the name of the certificate.
      * @return the name of the certificate.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -148,7 +148,7 @@ public final class CertificateImportOptions {
      * Get the file path of the certificate.
      * @return the file path of the certificate.
      */
-    public String filePath() {
+    public String getFilePath() {
         return this.filePath;
     }
 
@@ -157,7 +157,7 @@ public final class CertificateImportOptions {
      *
      * @return the notBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
@@ -166,7 +166,7 @@ public final class CertificateImportOptions {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         return this.expires;
     }
 
@@ -176,7 +176,7 @@ public final class CertificateImportOptions {
      * @param notBefore THe notBefore UTC time.
      * @return the notBefore UTC time.
      */
-    public CertificateImportOptions notBefore(OffsetDateTime notBefore) {
+    public CertificateImportOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -187,7 +187,7 @@ public final class CertificateImportOptions {
      * @param expires The expires UTC time.
      * @return the expires UTC time.
      */
-    public CertificateImportOptions expires(OffsetDateTime expires) {
+    public CertificateImportOptions setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }

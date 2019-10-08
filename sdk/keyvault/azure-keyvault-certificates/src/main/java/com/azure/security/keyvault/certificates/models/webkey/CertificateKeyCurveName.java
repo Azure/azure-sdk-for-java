@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for KeyCurveName.
  */
-public enum KeyCurveName {
+public enum CertificateKeyCurveName {
     P_256("P-256"),
 
     P_384("P-384"),
@@ -24,7 +24,7 @@ public enum KeyCurveName {
      * Creates a custom value for KeyCurveName.
      * @param value The custom value
      */
-    KeyCurveName(String value) {
+    CertificateKeyCurveName(String value) {
         this.value = value;
     }
 
@@ -36,7 +36,7 @@ public enum KeyCurveName {
 
     /**
      * Calculates the hashcode of the custom value
-     * @return the hashcode of custom value for {@link KeyCurveName}
+     * @return the hashcode of custom value for {@link CertificateKeyCurveName}
      */
     public int hashValue() {
         return value.hashCode();
@@ -47,8 +47,8 @@ public enum KeyCurveName {
      * @param value The value whose equivalent KeyCurveName is needed.
      * @return the KeyCurveName
      */
-    public static KeyCurveName fromString(String value) {
-        for (KeyCurveName keyCurve : values()) {
+    public static CertificateKeyCurveName fromString(String value) {
+        for (CertificateKeyCurveName keyCurve : values()) {
             if (keyCurve.value.equalsIgnoreCase(value)) {
                 return keyCurve;
             }

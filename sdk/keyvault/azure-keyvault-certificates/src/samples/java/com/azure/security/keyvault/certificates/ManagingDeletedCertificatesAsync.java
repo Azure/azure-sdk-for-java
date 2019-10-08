@@ -5,20 +5,19 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.EcKeyOptions;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Sample demonstrates how to asynchronously list, recover and purge deleted certificates in a soft-delete enabled key vault.
+ * Sample demonstrates how to asynchronously list, recover and purge deleted certificates in a soft-delete isEnabled key vault.
  */
 public class ManagingDeletedCertificatesAsync {
     /**
-     * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted certificates in a soft-delete enabled key vault.
+     * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted certificates in a soft-delete isEnabled key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -26,7 +25,7 @@ public class ManagingDeletedCertificatesAsync {
      */
     public static void main(String[] args) throws InterruptedException {
 
-        // NOTE: To manage deleted certificates, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
+        // NOTE: To manage deleted certificates, your key vault needs to have soft-delete isEnabled. Soft-delete allows deleted keys
         // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if
         // a key needs to be permanently deleted then it needs to be purged.
 
@@ -41,19 +40,18 @@ public class ManagingDeletedCertificatesAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .subjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .keyOptions(new EcKeyOptions()
-                .reuseKey(true)
-                .curve(KeyCurveName.P_256));
+            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setReuseKey(true)
+            .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.createCertificate("certificateName", policy, tags)
+        certificateAsyncClient.beginCreateCertificate("certificateName", policy, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
-                System.out.println(pollResponse.getValue().status());
-                System.out.println(pollResponse.getValue().statusDetails());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
             });
 
         Thread.sleep(22000);
@@ -61,16 +59,16 @@ public class ManagingDeletedCertificatesAsync {
         // The certificate is  no longer needed, need to delete it from the key vault.
         certificateAsyncClient.deleteCertificate("certificateName")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
 
         //To ensure certificates is deleted on server side.
         Thread.sleep(30000);
 
         // We accidentally deleted the certificate. Let's recover it.
-        // A deleted certificate can only be recovered if the key vault is soft-delete enabled.
+        // A deleted certificate can only be recovered if the key vault is soft-delete isEnabled.
         certificateAsyncClient.recoverDeletedCertificate("certificateName")
             .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Certificate with name %s %n", recoveredSecretResponse.name()));
+                System.out.printf("Recovered Certificate with name %s %n", recoveredSecretResponse.getProperties().getName()));
 
         //To ensure certificates is recovered on server side.
         Thread.sleep(10000);
@@ -78,19 +76,19 @@ public class ManagingDeletedCertificatesAsync {
         // The certificate is longer needed, need to delete them from the key vault.
         certificateAsyncClient.deleteCertificate("certificateName")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
 
         // To ensure certificate is deleted on server side.
         Thread.sleep(30000);
 
-        // You can list all the deleted and non-purged certificates, assuming key vault is soft-delete enabled.
+        // You can list all the deleted and non-purged certificates, assuming key vault is soft-delete isEnabled.
         certificateAsyncClient.listDeletedCertificates()
             .subscribe(deletedCertificateResponse ->  System.out.printf("Deleted Certificate's Recovery Id %s %n",
-                deletedCertificateResponse.recoveryId()));
+                deletedCertificateResponse.getRecoveryId()));
 
         Thread.sleep(15000);
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
+        // If the keyvault is soft-delete isEnabled, then for permanent deletion  deleted certificates need to be purged.
         certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));

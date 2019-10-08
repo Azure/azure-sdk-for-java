@@ -5,9 +5,8 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.EcKeyOptions;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 import com.azure.security.keyvault.certificates.models.Contact;
 
 import java.util.Arrays;
@@ -38,38 +37,37 @@ public class ListOperationsAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .subjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .keyOptions(new EcKeyOptions()
-                .reuseKey(true)
-                .curve(KeyCurveName.P_256));
+            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setReuseKey(true)
+            .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.createCertificate("certificatName", policy, tags)
+        certificateAsyncClient.beginCreateCertificate("certificatName", policy, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
-                System.out.println(pollResponse.getValue().status());
-                System.out.println(pollResponse.getValue().statusDetails());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
             });
 
         Thread.sleep(22000);
 
         //Let's create a certificate issuer.
-        certificateAsyncClient.createCertificateIssuer("myIssuer", "Test")
+        certificateAsyncClient.createIssuer("myIssuer", "Test")
             .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s\n", issuer.name(), issuer.provider());
+                System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProperties().getProvider());
             });
 
         Thread.sleep(2000);
 
         //Let's create a certificate signed by our issuer.
-        certificateAsyncClient.createCertificate("myCert", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), tags)
+        certificateAsyncClient.beginCreateCertificate("myCert", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
-                System.out.println(pollResponse.getValue().status());
-                System.out.println(pollResponse.getValue().statusDetails());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
             });
 
         Thread.sleep(22000);
@@ -78,7 +76,7 @@ public class ListOperationsAsync {
         certificateAsyncClient.listCertificates()
             .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s \n",
-                    certificateResponse.name(), certificateResponse.keyId())));
+                    certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
         Thread.sleep(5000);
 
@@ -86,36 +84,36 @@ public class ListOperationsAsync {
         certificateAsyncClient.listCertificateVersions("myCertificate")
             .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
                 .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s\n",
-                    certificateResponse.name(), certificateResponse.keyId())));
+                    certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
         Thread.sleep(5000);
 
         //Let's list all certificate issuers in the key vault.
-        certificateAsyncClient.listCertificateIssuers()
-            .subscribe(issuerBase -> certificateAsyncClient.getCertificateIssuer(issuerBase)
+        certificateAsyncClient.listIssuers()
+            .subscribe(issuerBase -> certificateAsyncClient.getIssuer(issuerBase)
                 .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s\n",
-                    issuerResponse.name(), issuerResponse.provider())));
+                    issuerResponse.getName(), issuerResponse.getProperties().getProvider())));
 
         Thread.sleep(5000);
 
         // Let's set certificate contacts on the Key vault.
         Contact oontactToAdd = new Contact("user", "useremail@exmaple.com");
-        certificateAsyncClient.setCertificateContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
-            System.out.printf("Contact name %s and email %s\n", contact.name(), contact.emailAddress())
+        certificateAsyncClient.setContacts(Arrays.asList(oontactToAdd)).subscribe(contact ->
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
         );
 
         Thread.sleep(3000);
 
         // Let's list all certificate contacts in the key vault.
-        certificateAsyncClient.listCertificateContacts().subscribe(contact ->
-            System.out.printf("Contact name %s and email %s\n", contact.name(), contact.emailAddress())
+        certificateAsyncClient.listContacts().subscribe(contact ->
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
         );
 
         Thread.sleep(3000);
 
         // Let's delete all certificate contacts in the key vault.
-        certificateAsyncClient.listCertificateContacts().subscribe(contact ->
-            System.out.printf("Deleted Contact name %s and email %s\n", contact.name(), contact.emailAddress())
+        certificateAsyncClient.listContacts().subscribe(contact ->
+            System.out.printf("Deleted Contact name %s and email %s\n", contact.getName(), contact.getEmailAddress())
         );
 
         Thread.sleep(2000);

@@ -296,7 +296,7 @@ List the certificates in the key vault by calling `listCertificates`.
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
 certificateAsyncClient.listCertificates()
-    .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties)
         .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
             certificateResponse.name(), certificateResponse.keyId())));
 ```
