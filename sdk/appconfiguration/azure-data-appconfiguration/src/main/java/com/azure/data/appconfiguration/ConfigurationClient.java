@@ -400,13 +400,13 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector}
      *
-     * @param options Optional. Options to filter configuration setting results from the service.
+     * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were
      * provided, the List contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector options) {
-        return listSettings(options, Context.NONE);
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector selector) {
+        return listSettings(selector, Context.NONE);
     }
 
     /**
@@ -419,14 +419,14 @@ public final class ConfigurationClient {
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector-context}
      *
-     * @param options Optional. Options to filter configuration setting results from the service.
+     * @param selector Optional. Selector to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were
      * provided, the {@link PagedIterable} contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        return new PagedIterable<>(client.listSettings(options, context));
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector selector, Context context) {
+        return new PagedIterable<>(client.listSettings(selector, context));
     }
 
     /**
