@@ -47,7 +47,7 @@ public abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> exte
      * @return the {@code UserAgentPolicy} that will be used in the {@link HttpPipeline}.
      */
     @Override
-    protected final UserAgentPolicy getUserAgentPolicy() {
+    protected UserAgentPolicy getUserAgentPolicy() {
         return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
     }
 

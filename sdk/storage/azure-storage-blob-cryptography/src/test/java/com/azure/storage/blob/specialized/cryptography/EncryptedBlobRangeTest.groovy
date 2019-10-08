@@ -6,13 +6,14 @@ import spock.lang.Unroll
 
 class EncryptedBlobRangeTest extends APISpec {
 
+    // This test checks that the EncryptedBlobRange cna be properly constructed from a BlobRange
     @Unroll
     @Requires({ liveMode() })
     def "Test constructor"() {
         setup:
         BlobRange range
         if (offset == null && count == null) {
-            range = new BlobRange()
+            range = new BlobRange(0)
         } else if (offset == null) {
             range = new BlobRange(offset)
         } else {
@@ -39,13 +40,14 @@ class EncryptedBlobRangeTest extends APISpec {
 
     }
 
+    // This test checks that the encrypted blob range can be correctly constructed from a BlobRange header string
     @Unroll
     @Requires({ liveMode() })
     def "Test from blob range header"() {
         setup:
         BlobRange range
         if (offset == null && count == null) {
-            range = new BlobRange()
+            range = new BlobRange(0)
         } else if (offset == null) {
             range = new BlobRange(offset)
         } else {

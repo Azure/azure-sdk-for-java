@@ -56,7 +56,7 @@ final class EncryptedBlobRange {
 
     EncryptedBlobRange(BlobRange originalRange) {
         if (originalRange == null) {
-            this.originalRange = new BlobRange();
+            this.originalRange = new BlobRange(0);
             this.offsetAdjustment = 0;
             return;
         }

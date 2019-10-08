@@ -28,10 +28,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  * to be available, and either store the incomplete buffer to be filled on the next write or return the filled buffer to
  * be sent. Filled buffers can be uploaded in parallel and should return buffers to the pool after the upload completes.
  * Once the source terminates, it should call flush.
- *
- * RESERVED FOR INTERNAL USE ONLY
  */
-public final class UploadBufferPool {
+final class UploadBufferPool {
     private final ClientLogger logger = new ClientLogger(UploadBufferPool.class);
 
     /*
@@ -55,7 +53,7 @@ public final class UploadBufferPool {
      * @param numBuffs The number of buffers in the buffer pool.
      * @param buffSize The size of the buffers
      */
-    public UploadBufferPool(final int numBuffs, final int buffSize) {
+    UploadBufferPool(final int numBuffs, final int buffSize) {
         /*
         We require at least two buffers because it is possible that a given write will spill over into a second buffer.
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
@@ -166,7 +164,7 @@ public final class UploadBufferPool {
      * Flushes the current buffer
      * @return the flushed buffer
      */
-    public Flux<ByteBuffer> flush() {
+    Flux<ByteBuffer> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
@@ -185,7 +183,7 @@ public final class UploadBufferPool {
      * Returns the ByteBuffer
      * @param b The ByteBuffer to reset and return
      */
-    public void returnBuffer(ByteBuffer b) {
+    void returnBuffer(ByteBuffer b) {
         // Reset the buffer.
         b.position(0);
         b.limit(b.capacity());

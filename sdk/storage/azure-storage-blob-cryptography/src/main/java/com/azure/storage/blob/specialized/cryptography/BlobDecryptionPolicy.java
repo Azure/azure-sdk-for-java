@@ -100,7 +100,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
                  block size
                  */
-
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
                 String encryptedDataString = extractEncryptedDataFromResponse(responseHeaders);
@@ -317,11 +316,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             }
 
             Objects.requireNonNull(encryptionData.contentEncryptionIV());
-            Objects.requireNonNull(encryptionData.wrappedContentKey().encryptedKey());
+            Objects.requireNonNull(encryptionData.wrappedContentKey().getEncryptedKey());
 
             // Throw if the encryption protocol on the message doesn't match the version that this client library
             // understands and is able to decrypt.
-            if (!CryptographyConstants.ENCRYPTION_PROTOCOL_V1.equals(encryptionData.encryptionAgent().protocol())) {
+            if (!CryptographyConstants.ENCRYPTION_PROTOCOL_V1.equals(encryptionData.encryptionAgent().getProtocol())) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
                     "Invalid Encryption Agent. This version of the client library does not understand the "
                         + "Encryption Agent set on the blob message: %s",
@@ -351,7 +350,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         Mono<? extends AsyncKeyEncryptionKey> keyMono;
 
         if (this.keyResolver != null) {
-            keyMono = this.keyResolver.buildAsyncKeyEncryptionKey(encryptionData.wrappedContentKey().keyId())
+            keyMono = this.keyResolver.buildAsyncKeyEncryptionKey(encryptionData.wrappedContentKey().getKeyId())
                 .onErrorResume(NullPointerException.class, e -> {
                     /*
                     keyResolver returns null if it cannot find the key, but RX throws on null values
@@ -360,7 +359,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     throw logger.logExceptionAsError(Exceptions.propagate(e));
                 });
         } else {
-            if (encryptionData.wrappedContentKey().keyId().equals(this.keyWrapper.getKeyId().block())) {
+            if (encryptionData.wrappedContentKey().getKeyId().equals(this.keyWrapper.getKeyId().block())) {
                 keyMono = Mono.just(this.keyWrapper);
             } else {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Key mismatch. The key id stored on "
@@ -369,8 +368,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         }
 
         return keyMono.flatMap(keyEncryptionKey -> keyEncryptionKey.unwrapKey(
-            encryptionData.wrappedContentKey().algorithm(),
-            encryptionData.wrappedContentKey().encryptedKey()
+            encryptionData.wrappedContentKey().getAlgorithm(),
+            encryptionData.wrappedContentKey().getEncryptedKey()
         ));
     }
 
@@ -390,7 +389,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Cipher getCipher(byte[] contentEncryptionKey, EncryptionData encryptionData, byte[] iv, boolean padding)
         throws InvalidKeyException {
         try {
-            switch (encryptionData.encryptionAgent().algorithm()) {
+            switch (encryptionData.encryptionAgent().getAlgorithm()) {
                 case AES_CBC_256:
                     Cipher cipher;
                     if (padding) {

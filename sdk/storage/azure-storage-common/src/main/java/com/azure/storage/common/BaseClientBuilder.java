@@ -51,7 +51,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     private HttpPipeline pipeline;
 
     // for when a user wants to add policies to our pre-constructed pipeline
-    protected final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
     protected String accountName;
     protected String endpoint;
@@ -110,7 +110,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      *
      * @return The validation policy.
      */
-    protected HttpPipelinePolicy makeValidationPolicy() {
+    private HttpPipelinePolicy makeValidationPolicy() {
         ResponseValidationPolicyBuilder builder = new ResponseValidationPolicyBuilder()
             .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID); // echo client request id
 

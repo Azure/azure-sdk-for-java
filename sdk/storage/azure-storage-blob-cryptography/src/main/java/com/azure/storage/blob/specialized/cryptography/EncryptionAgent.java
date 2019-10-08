@@ -46,7 +46,7 @@ final class EncryptionAgent {
      *
      * @return The protocol version used for encryption.
      */
-    public String protocol() {
+    String getProtocol() {
         return protocol;
     }
 
@@ -55,7 +55,7 @@ final class EncryptionAgent {
      *
      * @return The algorithm used for encryption.
      */
-    public EncryptionAlgorithm algorithm() {
+    EncryptionAlgorithm getAlgorithm() {
         return algorithm;
     }
 
@@ -66,7 +66,7 @@ final class EncryptionAgent {
      *
      * @return this
      */
-    public EncryptionAgent withProtocol(String protocol) {
+    public EncryptionAgent setProtocol(String protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -78,7 +78,7 @@ final class EncryptionAgent {
      *
      * @return this
      */
-    public EncryptionAgent withAlgorithm(EncryptionAlgorithm algorithm) {
+    public EncryptionAgent setAlgorithm(EncryptionAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }

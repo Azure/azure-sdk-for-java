@@ -18,15 +18,6 @@ public final class BlobRange {
     private final Long count;
 
     /**
-     * Specifies the download operation to start from the offset position (zero-based) and download the
-     * rest of the entire blob to the end. An empty BlobRange effectively specifies the whole blob.
-     */
-    public BlobRange() {
-        this.offset = 0;
-        this.count = null;
-    }
-
-    /**
      * Specifies the download operation to start from the offset position (zero-based) and download the rest of the
      * entire blob to the end.
      *

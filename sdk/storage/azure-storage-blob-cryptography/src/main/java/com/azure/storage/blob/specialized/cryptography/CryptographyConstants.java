@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.azure.storage.blob.BlobConfiguration;
 
 public final class CryptographyConstants {
     static final String ENCRYPTION_PROTOCOL_V1 = "1.0";
@@ -16,7 +15,7 @@ public final class CryptographyConstants {
 
     static final String AES = "AES";
 
-    static final String AGENT_METADATA_VALUE = "JavaTrack2" + BlobConfiguration.VERSION;
+    static final String AGENT_METADATA_VALUE = "JavaTrack2" + BlobCryptographyConfiguration.VERSION;
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 

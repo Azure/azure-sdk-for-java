@@ -54,7 +54,7 @@ final class WrappedKey {
      *
      * @return The key identifier string.
      */
-    String keyId() {
+    String getKeyId() {
         return keyId;
     }
 
@@ -63,7 +63,7 @@ final class WrappedKey {
      *
      * @return The encrypted content encryption key.
      */
-    public byte[] encryptedKey() {
+    byte[] getEncryptedKey() {
         return encryptedKey;
     }
 
@@ -72,7 +72,7 @@ final class WrappedKey {
      *
      * @return The algorithm used for wrapping.
      */
-    public String algorithm() {
+    String getAlgorithm() {
         return algorithm;
     }
 
@@ -84,7 +84,7 @@ final class WrappedKey {
      *
      * @return this
      */
-    public WrappedKey withKeyId(String keyId) {
+    public WrappedKey setKeyId(String keyId) {
         this.keyId = keyId;
         return this;
     }
@@ -96,7 +96,7 @@ final class WrappedKey {
      *
      * @return this
      */
-    public WrappedKey withEncryptedKey(byte[] encryptedKey) {
+    public WrappedKey setEncryptedKey(byte[] encryptedKey) {
         this.encryptedKey = encryptedKey;
         return this;
     }
@@ -108,7 +108,7 @@ final class WrappedKey {
      *
      * @return this
      */
-    public WrappedKey withAlgorithm(String algorithm) {
+    public WrappedKey setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
         return this;
     }

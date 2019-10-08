@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.core.http.HttpClient;
@@ -21,6 +22,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,14 +36,14 @@ import java.util.Objects;
  * The following information must be provided on this builder:
  *
  * <ul>
- * <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of
+ * <li>Endpoint set through {@link #endpoint(String)}, including the container name and blob name, in the format of
  * {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
- * <li>if the container and blob name are not specified, they must be specified through {@code .blobName90} and
- * {@code .containerName()}.
- * <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly
- * accessible.
- * <li>the key and key wrapping algorithm (for encryption) and/or key resolver (for decryption) must be specified
- * through {@code .key()} and {@code .keyResolver()}
+ * <li>Container and blob name if not specified in the {@link #endpoint(String)}, set through
+ * {@link #containerName(String)} and {@link #blobName(String)} respectively.
+ * <li>Credential set through {@link #credential(SharedKeyCredential)} , {@link #sasToken(String)}, or
+ * {@link #connectionString(String)} if the container is not publicly accessible.
+ * <li>Key and key wrapping algorithm (for encryption) and/or key resolver (for decryption) must be specified
+ * through {@link #key(AsyncKeyEncryptionKey, KeyWrapAlgorithm)} and {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}
  * </ul>
  *
  * <p>
@@ -82,7 +84,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (Objects.isNull(containerName) || containerName.isEmpty()) {
+        if (ImplUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
@@ -292,6 +294,16 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
             throw logger.logExceptionAsError(new IllegalArgumentException("Key Wrap Algorithm must be specified with "
                 + "the Key."));
         }
+    }
+
+    /**
+     * Gets the {@link UserAgentPolicy user agent policy} that is used to set the User-Agent header for each request.
+     *
+     * @return the {@code UserAgentPolicy} that will be used in the {@link HttpPipeline}.
+     */
+    protected final UserAgentPolicy getUserAgentPolicy() {
+        return new UserAgentPolicy(BlobCryptographyConfiguration.NAME, BlobCryptographyConfiguration.VERSION,
+            super.getConfiguration());
     }
 
     @Override
