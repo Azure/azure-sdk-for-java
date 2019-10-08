@@ -62,9 +62,9 @@ public final class BlobBatch {
 
     private final BlobAsyncClient batchClient;
 
-    private final Deque<Mono<? extends Response>> batchOperationQueue;
+    private final Deque<Mono<? extends Response<?>>> batchOperationQueue;
     private final List<ByteBuffer> batchRequest;
-    private final Map<Integer, BlobBatchOperationResponse> batchMapping;
+    private final Map<Integer, BlobBatchOperationResponse<?>> batchMapping;
 
     private final AtomicInteger contentId;
     private final String batchBoundary;
@@ -259,12 +259,12 @@ public final class BlobBatch {
 
     private <T> Response<T> createBatchOperation(Mono<Response<T>> response, String urlPath,
         int... expectedStatusCodes) {
-        int contentId = this.contentId.getAndIncrement();
-        this.batchOperationQueue.add(response
-            .subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, contentId, BATCH_REQUEST_URL_PATH, urlPath)));
+        int id = contentId.getAndIncrement();
+        batchOperationQueue.add(response
+            .subscriberContext(Context.of(BATCH_REQUEST_CONTENT_ID, id, BATCH_REQUEST_URL_PATH, urlPath)));
 
         BlobBatchOperationResponse<T> batchOperationResponse = new BlobBatchOperationResponse<>(expectedStatusCodes);
-        this.batchMapping.put(contentId, batchOperationResponse);
+        batchMapping.put(id, batchOperationResponse);
         return batchOperationResponse;
     }
 
@@ -295,10 +295,7 @@ public final class BlobBatch {
             // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
         }
 
-        this.batchRequest.add(ByteBuffer
-            .wrap(String.format("--%s--\r\n", batchBoundary).getBytes(StandardCharsets.UTF_8)));
-
-        return Flux.fromIterable(this.batchRequest);
+        return Flux.fromIterable(batchRequest);
     }
 
     long getContentLength() {
@@ -315,8 +312,8 @@ public final class BlobBatch {
         return String.format("multipart/mixed; boundary=%s", batchBoundary);
     }
 
-    BlobBatchOperationResponse getBatchRequest(int contentId) {
-        return this.batchMapping.get(contentId);
+    BlobBatchOperationResponse<?> getBatchRequest(int contentId) {
+        return batchMapping.get(contentId);
     }
 
     /*
@@ -359,7 +356,7 @@ public final class BlobBatch {
 
     /*
      * This will "send" the batch operation request when triggered, it simply acts as a way to build and write the
-     * batch operation into the overall request and then ends.
+     * batch operation into the overall request and then returns nothing as the response.
      */
     private Mono<HttpResponse> setupBatchOperation(HttpRequest request) {
         int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
@@ -387,8 +384,7 @@ public final class BlobBatch {
         batchRequestBuilder.append("\r\n");
 
         batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
-
-        this.batchMapping.get(contentId).setRequest(request);
+        batchMapping.get(contentId).setRequest(request);
 
         return Mono.empty();
     }

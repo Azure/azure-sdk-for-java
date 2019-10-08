@@ -481,7 +481,7 @@ public final class BlobServiceAsyncClient {
      *
      * <p>If any request in a batch fails this will throw a {@link StorageException}.</p>
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Code samples</strong></p>
      *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
@@ -496,6 +496,8 @@ public final class BlobServiceAsyncClient {
      *
      * <p>If {@code throwOnAnyFailure} is {@code true} a {@link StorageException} will be thrown if any request
      * fails.</p>
+     *
+     * <p><strong>Code samples</strong></p>
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
@@ -541,7 +543,7 @@ public final class BlobServiceAsyncClient {
                     String[] subResponseSections = subResponse.split("\r\n\r\n");
 
                     // The first section will contain batching metadata.
-                    BlobBatchOperationResponse batchOperationResponse =
+                    BlobBatchOperationResponse<?> batchOperationResponse =
                         getBatchOperation(batch, subResponseSections[0]);
 
                     // The second section will contain status code and header information.
@@ -558,7 +560,7 @@ public final class BlobServiceAsyncClient {
             });
     }
 
-    private BlobBatchOperationResponse getBatchOperation(BlobBatch batch, String responseBatchInfo) {
+    private BlobBatchOperationResponse<?> getBatchOperation(BlobBatch batch, String responseBatchInfo) {
         Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(responseBatchInfo);
 
         int contentId;
@@ -572,7 +574,7 @@ public final class BlobServiceAsyncClient {
         return batch.getBatchRequest(contentId).setResponseReceived();
     }
 
-    private void setStatusCodeAndHeaders(BlobBatchOperationResponse batchOperationResponse, String responseHeaders) {
+    private void setStatusCodeAndHeaders(BlobBatchOperationResponse<?> batchOperationResponse, String responseHeaders) {
         HttpHeaders headers = new HttpHeaders();
         for (String line : responseHeaders.split("\r\n")) {
             if (ImplUtils.isNullOrEmpty(line)) {
@@ -593,17 +595,18 @@ public final class BlobServiceAsyncClient {
         batchOperationResponse.setHeaders(headers);
     }
 
-    private void setBodyOrPotentiallyThrow(BlobBatchOperationResponse batchOperationResponse, String responseBody,
+    private void setBodyOrPotentiallyThrow(BlobBatchOperationResponse<?> batchOperationResponse, String responseBody,
         boolean throwOnError) {
-        if (batchOperationResponse.wasExpectedResponse()) {
-            // Deserialize into body. No batch operations return a success response body right now.
-        } else {
-            StorageException exception = new StorageException(new StorageErrorException(responseBody, batchOperationResponse.asHttpResponse(responseBody)), responseBody);
-            batchOperationResponse.setException(exception);
+        /*
+         * Currently no batching operations will return a success body, they will only return a body on an exception.
+         * For now this will only construct the exception and throw if it should throw on an error.
+         */
+        StorageException exception = new StorageException(new StorageErrorException(responseBody,
+            batchOperationResponse.asHttpResponse(responseBody)), responseBody);
+        batchOperationResponse.setException(exception);
 
-            if (throwOnError) {
-                throw logger.logExceptionAsError(exception);
-            }
+        if (throwOnError) {
+            throw logger.logExceptionAsError(exception);
         }
     }
 }

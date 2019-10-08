@@ -3,15 +3,21 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.Logging;
 import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.blob.models.StorageServiceProperties;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -239,5 +245,49 @@ public class BlobServiceClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.getAccountInfoWithResponse#Duration-Context
         StorageAccountInfo accountInfo = client.getAccountInfoWithResponse(timeout, context).getValue();
         // END: com.azure.storage.blob.BlobServiceClient.getAccountInfoWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#submitBatch(BlobBatch)}
+     */
+    public void submitBatch() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.submitBatch#BlobBatch
+        BlobBatch batch = new BlobBatch(client);
+
+        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
+        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+
+        try {
+            client.submitBatch(batch);
+            System.out.println("Batch submission completed successfully.");
+            System.out.printf("Delete operation 1 completed with status code: %d%n", deleteResponse1.getStatusCode());
+            System.out.printf("Delete operation 2 completed with status code: %d%n", deleteResponse2.getStatusCode());
+        } catch (StorageException error) {
+            System.err.printf("Batch submission failed. Error message: %s%n", error.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobServiceClient.submitBatch#BlobBatch
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#submitBatchWithResponse(BlobBatch, boolean, Duration, Context)}
+     */
+    public void submitBatchWithResponse() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.submitBatch#BlobBatch-boolean-Duration-Context
+        BlobBatch batch = new BlobBatch(client);
+
+        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
+        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+
+        try {
+            System.out.printf("Batch submission completed with status code: %d%n",
+                client.submitBatchWithResponse(batch, true, timeout, Context.NONE).getStatusCode());
+            System.out.printf("Delete operation 1 completed with status code: %d%n", deleteResponse1.getStatusCode());
+            System.out.printf("Delete operation 2 completed with status code: %d%n", deleteResponse2.getStatusCode());
+        } catch (StorageException error) {
+            System.err.printf("Batch submission failed. Error message: %s%n", error.getMessage());
+        }
+        // END: com.azure.storage.blob.BlobServiceClient.submitBatch#BlobBatch-boolean-Duration-Context
     }
 }

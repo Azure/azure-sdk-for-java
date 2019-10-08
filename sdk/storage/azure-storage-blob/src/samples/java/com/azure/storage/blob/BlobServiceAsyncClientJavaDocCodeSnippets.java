@@ -3,14 +3,19 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.Logging;
 import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageServiceProperties;
+
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -232,5 +237,43 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
             System.out.printf("Account kind: %s, SKU: %s%n", response.getValue().getAccountKind(),
                 response.getValue().getSkuName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#submitBatch(BlobBatch)}
+     */
+    public void submitBatch() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.submitBatch#BlobBatch
+        BlobBatch batch = new BlobBatch(client);
+
+        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
+        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+
+        client.submitBatch(batch).subscribe(response -> {
+            System.out.println("Batch submission completed successfully.");
+            System.out.printf("Delete operation 1 completed with status code: %d%n", deleteResponse1.getStatusCode());
+            System.out.printf("Delete operation 2 completed with status code: %d%n", deleteResponse2.getStatusCode());
+        }, error -> System.err.printf("Batch submission failed. Error message: %s%n", error.getMessage()));
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.submitBatch#BlobBatch
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#submitBatchWithResponse(BlobBatch, boolean)}
+     */
+    public void submitBatchWithResponse() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.submitBatch#BlobBatch-boolean
+        BlobBatch batch = new BlobBatch(client);
+
+        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
+        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+
+        client.submitBatchWithResponse(batch, true).subscribe(response -> {
+            System.out.printf("Batch submission completed with status code: %d%n", response.getStatusCode());
+            System.out.printf("Delete operation 1 completed with status code: %d%n", deleteResponse1.getStatusCode());
+            System.out.printf("Delete operation 2 completed with status code: %d%n", deleteResponse2.getStatusCode());
+        }, error -> System.err.printf("Batch submission failed. Error message: %s%n", error.getMessage()));
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.submitBatch#BlobBatch-boolean
     }
 }
