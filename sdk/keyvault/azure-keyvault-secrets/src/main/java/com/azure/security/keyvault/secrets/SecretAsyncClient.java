@@ -353,7 +353,7 @@ public final class SecretAsyncClient {
     }
 
     Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
-        Objects.requireNonNull(secretProperties, "The secret input parameter cannot be null.");
+        Objects.requireNonNull(secretProperties, "The secret properties input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
             .setTags(secretProperties.getTags())
             .setContentType(secretProperties.getContentType())

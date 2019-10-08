@@ -197,7 +197,7 @@ public final class KeyClientJavaDocCodeSnippets {
         key.getProperties().setExpires(OffsetDateTime.now().plusDays(60));
         Key updatedKey = keyClient.updateKeyPropertiesWithResponse(key.getProperties(),
             new Context(key1, value1), KeyOperation.ENCRYPT, KeyOperation.DECRYPT).getValue();
-        System.out.printf("Key is getUpdated with name %s and id %s %n", updatedKey.getName(), updatedKey.getId());
+        System.out.printf("Key is updated with name %s and id %s %n", updatedKey.getName(), updatedKey.getId());
         // END: com.azure.keyvault.keys.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations-Context
     }
 

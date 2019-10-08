@@ -43,7 +43,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that a key can be getCreated in the key vault.
+     * Tests that a key can be created in the key vault.
      */
     public void setKey() {
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))

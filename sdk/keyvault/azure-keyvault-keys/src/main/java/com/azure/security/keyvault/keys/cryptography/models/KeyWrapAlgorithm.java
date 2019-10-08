@@ -3,48 +3,62 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
+
 
 /**
- * Defines values for EncryptionAlgorithm.
+ * Defines values for KeyWrapAlgorithm.
  */
-public enum KeyWrapAlgorithm {
-
-    RSA_OAEP("RSA-OAEP"),
-    RSA_OAEP_256("RSA-OAEP-256"),
-    RSA1_5("RSA1_5"),
-    A192KW("A192KW"),
-    A128KW("A128KW"),
-    A256KW("A256KW");
-
-    private String value;
+public final class KeyWrapAlgorithm extends ExpandableStringEnum<KeyWrapAlgorithm> {
 
     /**
-     * Creates a custom value for KeyWrapAlgorithm.
+     * Static value Encrypt for KeyWrapAlgorithm.
+     */
+    public static final KeyWrapAlgorithm RSA_OAEP = fromString("RSA-OAEP");
+
+    /**
+     * Static value Decrypt for KeyWrapAlgorithm.
+     */
+    public static final KeyWrapAlgorithm RSA_OAEP_256 = fromString("RSA-OAEP-256");
+
+    /**
+     * Static value Sign for KeyWrapAlgorithm.
+     */
+    public static final KeyWrapAlgorithm RSA1_5 = fromString("RSA1_5");
+
+    /**
+     * Static value Verify for KeyWrapAlgorithm.
+     */
+    public static final KeyWrapAlgorithm A192KW = fromString("A192KW");
+
+    /**
+     * Static value Wrap Key for KeyWrapAlgorithm.
+     */
+    public static final KeyWrapAlgorithm A128KW = fromString("A128KW");
+
+    /**
+     * Static value Unwrap Key for KeyWrapAlgorithm.
+     */
+    public static final KeyWrapAlgorithm A256KW = fromString("A256KW");
+
+    /**
+     * Creates or finds a KeyWrapAlgorithm from its string representation.
      *
-     * @param value the custom value
+     * @param name a name to look for.
+     * @return the corresponding KeyWrapAlgorithm.
      */
-    KeyWrapAlgorithm(String value) {
-        this.value = value;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    @JsonCreator
+    public static KeyWrapAlgorithm fromString(String name) {
+        return fromString(name, KeyWrapAlgorithm.class);
     }
 
     /**
-     * Return the KeyWrapAlgorithm which maps to {@code value}
-     * @param value The value whose equivalent KeyWrapAlgorithm is needed.
-     * @return the KeyOperation
+     * @return known KeyWrapAlgorithm values.
      */
-    public static KeyWrapAlgorithm fromString(String value) {
-        for (KeyWrapAlgorithm algorithm : values()) {
-            if (algorithm.value.equalsIgnoreCase(value)) {
-                return algorithm;
-            }
-        }
-        return null;
+    public static Collection<KeyWrapAlgorithm> values() {
+        return values(KeyWrapAlgorithm.class);
     }
 }
