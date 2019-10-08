@@ -213,7 +213,7 @@ interface CertificateService {
                                          @HeaderParam("Content-Type") String type,
                                          Context context);
 
-    @Get("deletedsecrets")
+    @Get("deletedcertificates")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedCertificatePage.class)
