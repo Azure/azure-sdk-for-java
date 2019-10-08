@@ -82,7 +82,7 @@ public final class SecretClient {
      * @throws HttpRequestException if {@code name} or {@code value} is empty string.
      */
     public Secret setSecret(String name, String value) {
-        return client.setSecretWithResponse(name, value, Context.NONE).block().getValue();
+        return setSecretWithResponse(new Secret(name, value), Context.NONE).getValue();
     }
 
     /**

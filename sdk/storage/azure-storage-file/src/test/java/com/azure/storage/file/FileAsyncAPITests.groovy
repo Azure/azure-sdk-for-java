@@ -5,6 +5,7 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
@@ -54,7 +55,7 @@ class FileAsyncAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
-        def fileURL = primaryFileAsyncClient.getFileUrl().toString()
+        def fileURL = primaryFileAsyncClient.getFileUrl()
 
         then:
         expectURL == fileURL
@@ -385,7 +386,14 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def sasToken = primaryFileAsyncClient.generateSAS(new FileSASPermission().setReadPermission(true), getUTCNow().plusDays(1))
+        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def sasToken = new FileServiceSasSignatureValues()
+            .setExpiryTime(getUTCNow().plusDays(1))
+            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
+            .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
+            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .generateSASQueryParameters(credential)
+            .encode()
 
         when:
         FileAsyncClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
@@ -393,7 +401,7 @@ class FileAsyncAPITests extends APISpec {
             .buildFileAsyncClient()
 
         client.create(1024).block()
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() +"?" + sasToken).toURI()).block()
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() +"?" + sasToken).toURI()).block()
 
         then:
         def result = new String(client.downloadWithProperties().block().getBody().blockLast().array())
@@ -408,7 +416,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
-        def sourceURL = primaryFileAsyncClient.getFileUrl().toString()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
         def copyInfoVerifier = StepVerifier.create(primaryFileAsyncClient.startCopyWithResponse(sourceURL, null))

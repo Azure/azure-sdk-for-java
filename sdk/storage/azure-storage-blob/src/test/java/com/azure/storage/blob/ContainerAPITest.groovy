@@ -3,12 +3,13 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.ContainerAccessConditions
+import com.azure.storage.blob.models.BlobContainerAccessConditions
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.LeaseStateType
@@ -20,6 +21,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import spock.lang.Unroll
 
@@ -33,7 +35,7 @@ class ContainerAPITest extends APISpec {
     def "Create all null"() {
         setup:
         // Overwrite the existing cc, which has already been created
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         def response = cc.createWithResponse(null, null, null, null)
@@ -45,7 +47,7 @@ class ContainerAPITest extends APISpec {
 
     def "Create min"() {
         when:
-        def cc = primaryBlobServiceClient.createContainer(generateContainerName())
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
 
         then:
         cc.exists()
@@ -54,7 +56,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Create metadata"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         def metadata = new HashMap<String, String>()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -80,7 +82,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Create publicAccess"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.createWithResponse(null, publicAccess, null, null)
@@ -145,7 +147,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.getProperties()
@@ -156,7 +158,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         def metadata = new HashMap<String, String>()
         metadata.put("key", "value")
         cc.createWithResponse(metadata, null, null, null)
@@ -207,7 +209,7 @@ class ContainerAPITest extends APISpec {
     def "Set metadata AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
-        def cac = new ContainerAccessConditions()
+        def cac = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified))
@@ -225,7 +227,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set metadata AC fail"() {
         setup:
-        def cac = new ContainerAccessConditions()
+        def cac = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified))
@@ -251,7 +253,7 @@ class ContainerAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
 
         when:
-        cc.setMetadataWithResponse(null, new ContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
+        cc.setMetadataWithResponse(null, new BlobContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -265,7 +267,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set metadata error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.setMetadata(null)
@@ -352,7 +354,7 @@ class ContainerAPITest extends APISpec {
     def "Set access policy AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
-        def cac = new ContainerAccessConditions()
+        def cac = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified)
@@ -372,7 +374,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Set access policy AC fail"() {
         setup:
-        def cac = new ContainerAccessConditions()
+        def cac = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified)
@@ -397,7 +399,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        cc.setAccessPolicyWithResponse(null, null, new ContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
+        cc.setAccessPolicyWithResponse(null, null, new BlobContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -410,7 +412,7 @@ class ContainerAPITest extends APISpec {
 
     def "Set access policy error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.setAccessPolicy(null, null)
@@ -458,7 +460,7 @@ class ContainerAPITest extends APISpec {
 
     def "Get access policy error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.getAccessPolicy()
@@ -490,7 +492,7 @@ class ContainerAPITest extends APISpec {
     def "Delete AC"() {
         setup:
         leaseID = setupContainerLeaseCondition(cc, leaseID)
-        def cac = new ContainerAccessConditions()
+        def cac = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified)
@@ -510,7 +512,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "Delete AC fail"() {
         setup:
-        def cac = new ContainerAccessConditions()
+        def cac = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfModifiedSince(modified)
@@ -535,7 +537,7 @@ class ContainerAPITest extends APISpec {
         def mac = new ModifiedAccessConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
 
         when:
-        cc.deleteWithResponse(new ContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
+        cc.deleteWithResponse(new BlobContainerAccessConditions().setModifiedAccessConditions(mac), null, null)
 
         then:
         thrown(UnsupportedOperationException)
@@ -548,7 +550,7 @@ class ContainerAPITest extends APISpec {
 
     def "Delete error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.delete()
@@ -560,7 +562,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat"() {
         setup:
         def name = generateBlobName()
-        def bu = cc.getBlobClient(name).asPageBlobClient()
+        def bu = cc.getBlobClient(name).getPageBlobClient()
         bu.create(512)
 
         when:
@@ -614,12 +616,12 @@ class ContainerAPITest extends APISpec {
     }
 
     def setupListBlobsTest(String normalName, String copyName, String metadataName, String uncommittedName) {
-        def normal = cc.getBlobClient(normalName).asPageBlobClient()
+        def normal = cc.getBlobClient(normalName).getPageBlobClient()
         normal.create(512)
 
-        def copyBlob = cc.getBlobClient(copyName).asPageBlobClient()
+        def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
-        copyBlob.startCopyFromURL(normal.getBlobUrl())
+        copyBlob.startCopyFromURL(new URL(normal.getBlobUrl()))
         def start = OffsetDateTime.now()
         def status = CopyStatusType.PENDING
         while (status != CopyStatusType.SUCCESS) {
@@ -631,14 +633,14 @@ class ContainerAPITest extends APISpec {
             sleepIfRecord(1000)
         }
 
-        def metadataBlob = cc.getBlobClient(metadataName).asPageBlobClient()
+        def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
         metadataBlob.createWithResponse(512, null, null, metadata, null, null, null)
 
         def snapshotTime = normal.createSnapshot().getSnapshotId()
 
-        def uncommittedBlob = cc.getBlobClient(uncommittedName).asBlockBlobClient()
+        def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
 
         uncommittedBlob.stageBlock("0000", defaultInputStream.get(), defaultData.remaining())
 
@@ -647,7 +649,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options copy"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -671,7 +673,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options metadata"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setMetadata(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveMetadata(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -692,7 +694,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options snapshots"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setSnapshots(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveSnapshots(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -711,7 +713,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options uncommitted"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setUncommittedBlobs(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveUncommittedBlobs(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -731,12 +733,12 @@ class ContainerAPITest extends APISpec {
         setup:
         enableSoftDelete()
         def name = generateBlobName()
-        def bu = cc.getBlobClient(name).asAppendBlobClient()
+        def bu = cc.getBlobClient(name).getAppendBlobClient()
         bu.create()
         bu.delete()
 
         when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
         def blobs = cc.listBlobsFlat(options, null).iterator()
 
         then:
@@ -766,8 +768,8 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options maxResults"() {
         setup:
         def PAGE_SIZE = 2
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true)
-            .setSnapshots(true).setUncommittedBlobs(true)).setMaxResults(PAGE_SIZE)
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true)).setMaxResults(PAGE_SIZE)
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -792,7 +794,7 @@ class ContainerAPITest extends APISpec {
         def NUM_BLOBS = 10
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS ; i++) {
-            def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+            def bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
             bc.create(512)
         }
 
@@ -820,7 +822,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.listBlobsFlat().iterator().hasNext()
@@ -836,7 +838,7 @@ class ContainerAPITest extends APISpec {
 
         def blobs = [] as Collection<BlobClientBase>
         for (i in (1..NUM_BLOBS)) {
-            def blob = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+            def blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
             blob.upload(defaultInputStream.get(), defaultDataSize)
             blobs << blob
         }
@@ -855,7 +857,7 @@ class ContainerAPITest extends APISpec {
 
         def blobs = [] as Collection<BlobClientBase>
         for (i in (1..NUM_BLOBS)) {
-            def blob = cc.getBlobClient(generateBlobName()).asBlockBlobClient()
+            def blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
             blob.upload(defaultInputStream.get(), defaultDataSize)
             blobs << blob
         }
@@ -870,7 +872,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hierarchy"() {
         setup:
         def name = generateBlobName()
-        def bu = cc.getBlobClient(name).asPageBlobClient()
+        def bu = cc.getBlobClient(name).getPageBlobClient()
         bu.create(512)
 
         when:
@@ -896,7 +898,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options copy"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -920,7 +922,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options metadata"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setMetadata(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveMetadata(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -941,7 +943,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options uncommitted"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setUncommittedBlobs(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveUncommittedBlobs(true))
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -961,12 +963,12 @@ class ContainerAPITest extends APISpec {
         setup:
         enableSoftDelete()
         def name = generateBlobName()
-        def bc = cc.getBlobClient(name).asAppendBlobClient()
+        def bc = cc.getBlobClient(name).getAppendBlobClient()
         bc.create()
         bc.delete()
 
         when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setDeletedBlobs(true))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
         def blobs = cc.listBlobsHierarchy("", options, null).iterator()
 
         then:
@@ -996,8 +998,8 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier options maxResults"() {
         setup:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setCopy(true)
-                .setUncommittedBlobs(true)).setMaxResults(1)
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
+                .setRetrieveUncommittedBlobs(true)).setMaxResults(1)
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -1015,7 +1017,7 @@ class ContainerAPITest extends APISpec {
     @Unroll
     def "List blobs hier options fail"() {
         when:
-        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setSnapshots(snapshots))
+        def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveSnapshots(snapshots))
                 .setMaxResults(maxResults)
         cc.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
@@ -1032,7 +1034,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def blobNames = ["a", "b/a", "c", "d/a", "e", "f", "g/a"]
         for (def blobName : blobNames) {
-            def bu = cc.getBlobClient(blobName).asAppendBlobClient()
+            def bu = cc.getBlobClient(blobName).getAppendBlobClient()
             bu.create()
         }
 
@@ -1063,7 +1065,7 @@ class ContainerAPITest extends APISpec {
         def NUM_BLOBS = 10
         def PAGE_SIZE = 6
         for (int i = 0; i < NUM_BLOBS; i++) {
-            def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+            def bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
             bc.create(512)
         }
 
@@ -1089,7 +1091,7 @@ class ContainerAPITest extends APISpec {
         def NUM_BLOBS = 10
         def PAGE_SIZE = 3
         for (int i = 0; i < NUM_BLOBS; i++) {
-            def bc = cc.getBlobClient(generateBlobName()).asPageBlobClient()
+            def bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
             bc.create(512)
         }
 
@@ -1099,7 +1101,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier error"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(generateContainerName())
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
         cc.listBlobsHierarchy(".").iterator().hasNext()
@@ -1112,10 +1114,10 @@ class ContainerAPITest extends APISpec {
     def "Create URL special chars"() {
         // This test checks that we encode special characters in blob names correctly.
         setup:
-        def bu2 = cc.getBlobClient(name).asAppendBlobClient()
-        def bu3 = cc.getBlobClient(name + "2").asPageBlobClient()
-        def bu4 = cc.getBlobClient(name + "3").asBlockBlobClient()
-        def bu5 = cc.getBlobClient(name).asBlockBlobClient()
+        def bu2 = cc.getBlobClient(name).getAppendBlobClient()
+        def bu3 = cc.getBlobClient(name + "2").getPageBlobClient()
+        def bu4 = cc.getBlobClient(name + "3").getBlockBlobClient()
+        def bu5 = cc.getBlobClient(name).getBlockBlobClient()
 
         expect:
         bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
@@ -1143,13 +1145,13 @@ class ContainerAPITest extends APISpec {
 
     def "Root explicit"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cc.exists()) {
             cc.create()
         }
 
-        def bu = cc.getBlobClient("rootblob").asAppendBlobClient()
+        def bu = cc.getBlobClient("rootblob").getAppendBlobClient()
 
         expect:
         bu.createWithResponse(null, null, null, null, null).getStatusCode() == 201
@@ -1157,13 +1159,13 @@ class ContainerAPITest extends APISpec {
 
     def "Root explicit in endpoint"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
         if (!cc.exists()) {
             cc.create()
         }
 
-        def bu = cc.getBlobClient("rootblob").asAppendBlobClient()
+        def bu = cc.getBlobClient("rootblob").getAppendBlobClient()
 
         when:
         def createResponse = bu.createWithResponse(null, null, null, null, null)
@@ -1175,36 +1177,72 @@ class ContainerAPITest extends APISpec {
         propsResponse.getValue().getBlobType() == BlobType.APPEND_BLOB
     }
 
-    /*
-    def "Root implicit"() {
+    def "BlobClientBuilder Root implicit"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
-        if (!cc.exists().getValue()) {
-            cc.setCreate()
+        if (!cc.exists()) {
+            cc.create()
         }
 
         AppendBlobClient bc = new BlobClientBuilder()
-            .credential(primaryCreds)
-            .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/rootblob")
+            .credential(primaryCredential)
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .blobName("rootblob")
             .httpClient(getHttpClient())
-            .buildAppendBlobClient()
+            .pipeline(cc.getHttpPipeline())
+            .buildClient().getAppendBlobClient()
 
         when:
-        Response<AppendBlobItem> createResponse = bc.setCreate()
+        Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null)
 
-        Response<BlobProperties> propsResponse = bc.getProperties()
+        Response<BlobProperties> propsResponse = bc.getPropertiesWithResponse(null, null, null)
 
         then:
         createResponse.getStatusCode() == 201
         propsResponse.getStatusCode() == 200
         propsResponse.getValue().getBlobType() == BlobType.APPEND_BLOB
     }
-    */
+
+    def "ContainerClientBuilder root implicit"(){
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
+        // Create root container if not exist.
+        if (!cc.exists()) {
+            cc.create()
+        }
+
+        when:
+        cc = new BlobContainerClientBuilder()
+            .credential(primaryCredential)
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .containerName(null)
+            .pipeline(cc.getHttpPipeline())
+            .buildClient()
+
+        then:
+        cc.getProperties() != null
+        cc.getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+
+        when:
+        def bc = cc.getBlobClient("rootblob").getAppendBlobClient()
+        bc.create()
+
+        then:
+        bc.exists()
+    }
+
+    def "ServiceClient implicit root"() {
+        expect:
+        primaryBlobServiceClient.getBlobContainerClient(null).getBlobContainerName() ==
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        primaryBlobServiceClient.getBlobContainerClient("").getBlobContainerName() ==
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+    }
 
     def "Web container"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
         // Create root container if not exist.
         try {
             cc.create()
@@ -1214,7 +1252,7 @@ class ContainerAPITest extends APISpec {
                 throw se
             }
         }
-        def webContainer = primaryBlobServiceClient.getContainerClient(ContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
+        def webContainer = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME)
 
         when:
         // Validate some basic operation.
@@ -1243,9 +1281,9 @@ class ContainerAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl().toString())
+        def serviceURL = getServiceClient(primaryBlobServiceClient.getAccountUrl())
 
-        serviceURL.getContainerClient(generateContainerName()).getAccountInfo()
+        serviceURL.getBlobContainerClient(generateContainerName()).getAccountInfo()
 
         then:
         thrown(StorageException)
@@ -1254,8 +1292,8 @@ class ContainerAPITest extends APISpec {
     def "Get Container Name"() {
         given:
         def containerName = generateContainerName()
-        def newcc = primaryBlobServiceClient.getContainerClient(containerName)
+        def newcc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         expect:
-        containerName == newcc.getContainerName()
+        containerName == newcc.getBlobContainerName()
     }
 }

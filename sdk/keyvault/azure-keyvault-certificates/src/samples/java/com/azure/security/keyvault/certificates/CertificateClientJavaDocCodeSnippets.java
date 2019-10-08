@@ -5,6 +5,7 @@ package com.azure.security.keyvault.certificates;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
@@ -45,7 +46,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         CertificateClient certificateClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://myvault.vault.azure.net/")
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: com.azure.security.keyvault.certificates.CertificateClient.instantiation
         return certificateClient;

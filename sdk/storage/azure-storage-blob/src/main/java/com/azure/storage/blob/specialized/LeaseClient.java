@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.common.Utility;
 
@@ -17,7 +17,7 @@ import java.net.URL;
 import java.time.Duration;
 
 /**
- * This class provides a client that contains all the leasing operations for {@link ContainerClient containers} and
+ * This class provides a client that contains all the leasing operations for {@link BlobContainerClient containers} and
  * {@link BlobClient blobs}. This client acts as a supplement to those clients and only handles leasing operations.
  *
  * <p><strong>Instantiating a LeaseClient</strong></p>
@@ -49,8 +49,8 @@ public final class LeaseClient {
      *
      * @return URL of the lease client.
      */
-    public URL getLeaseUrl() {
-        return client.getLeaseUrl();
+    public String getResourceUrl() {
+        return client.getResourceUrl();
     }
 
     /**
@@ -247,4 +247,14 @@ public final class LeaseClient {
         return Utility.blockWithOptionalTimeout(this.client
             .changeLeaseWithResponse(proposedId, modifiedAccessConditions, context), timeout);
     }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return client.getAccountName();
+    }
+
 }

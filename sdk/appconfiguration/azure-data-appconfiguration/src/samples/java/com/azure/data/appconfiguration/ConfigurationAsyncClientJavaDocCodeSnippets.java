@@ -11,28 +11,30 @@ import reactor.util.context.Context;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 /**
  * Code snippets for {@link ConfigurationAsyncClient}
  */
 public class ConfigurationAsyncClientJavaDocCodeSnippets {
 
+    private static final String NO_LABEL = null;
     private String key1 = "key1";
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#addSetting(String, String)}
+     * Code snippets for {@link ConfigurationAsyncClient#addSetting(String, String, String)}
      */
     public void addSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string
-        client.addSetting("prodDBConnection", "db_connection")
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string
+        client.addSetting("prodDBConnection", "db_connection", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string-string
 
         /**
          * Code snippets for {@link ConfigurationAsyncClient#addSettins(ConfigurationSetting)}
@@ -60,46 +62,25 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#setSetting(String, String)}
+     * Code snippets for {@link ConfigurationAsyncClient#setSetting(String, String, String)}
      */
     public void setSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string
-        client.setSetting("prodDBConnection", "db_connection")
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string
+        client.setSetting("prodDBConnection", NO_LABEL, "db_connection")
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
         // Update the value of the setting to "updated_db_connection"
-        client.setSetting("prodDBConnection", "updated_db_connection")
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string
+        client.setSetting("prodDBConnection", NO_LABEL, "updated_db_connection")
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setSetting#string-string-string
 
         /**
-         * Code snippets for {@link ConfigurationAsyncClient#setSetting(ConfigurationSetting)}
+         * Code snippets for {@link ConfigurationAsyncClient#setSettingWithResponse(ConfigurationSetting, boolean)}
          */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setSetting#ConfigurationSetting
-        client.setSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // Update the value of the setting to "updated_db_connection"
-        client.setSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
-            .setValue("updated_db_connection"))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setSetting#ConfigurationSetting
-
-        /**
-         * Code snippets for {@link ConfigurationAsyncClient#setSettingWithResponse(ConfigurationSetting)}
-         */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean
         client.setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
-            .setValue("db_connection"))
+            .setValue("db_connection"), false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
@@ -107,82 +88,33 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             });
         // Update the value of the setting to "updated_db_connection"
         client.setSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
-            .setValue("updated_db_connection"))
+            .setValue("updated_db_connection"), false)
             .subscribe(response -> {
                 ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Value: %s", responseSetting.getKey(), responseSetting.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting-boolean
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#updateSetting(String, String)}
-     */
-    public void updateSettingsCodeSnippet() {
-        ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.updateSetting#string-string
-        client.updateSetting("prodDBConnection", "updated_db_connection")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.updateSetting#string-string
-
-        /**
-         * Code snippets for {@link ConfigurationAsyncClient#updateSetting(ConfigurationSetting)}
-         */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting
-        client.updateSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
-            .setValue("updated_db_connection"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting
-
-        /**
-         * Code snippets for {@link ConfigurationAsyncClient#updateSettingWithResponse(ConfigurationSetting)}
-         */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting
-        client.updateSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS")
-            .setValue("updated_db_connection"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                ConfigurationSetting responseSetting = response.getValue();
-                System.out.printf("Key: %s, Value: %s", responseSetting.getKey(), responseSetting.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting
-    }
-
-    /**
-     * Code snippets for {@link ConfigurationAsyncClient#getSetting(String)}
+     * Code snippets for {@link ConfigurationAsyncClient#getSetting(String, String, OffsetDateTime)}
      */
     public void getSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string
-        client.getSetting("prodDBConnection")
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime
+        client.getSetting("prodDBConnection", null, OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string
-
-        /**
-         * Code snippets for {@link ConfigurationAsyncClient#getSetting(ConfigurationSetting)}
-         */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting
-        client.getSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting
+        // END: com.azure.data.appconfiguration.configurationasyncclient.getSetting#string-string-OffsetDateTime
 
         /**
          * Code snippets for {@link ConfigurationAsyncClient#getSettingWithResponse(String, String)}
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting
-        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        client.getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), null,
+            false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
@@ -192,41 +124,77 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#deleteSetting(String)}
+     * Code snippets for {@link ConfigurationAsyncClient#deleteSetting(String, String)}
      */
     public void deleteSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string
-        client.deleteSetting("prodDBConnection")
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string-string
+        client.deleteSetting("prodDBConnection", null)
             .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
-            });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string-string
 
         /**
-         * Code snippets for {@link ConfigurationAsyncClient#deleteSetting(ConfigurationSetting)}
+         * Code snippets for {@link ConfigurationAsyncClient#deleteSettingWithResponse(ConfigurationSetting, boolean)}
          */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting
-        client.deleteSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting-boolean
+        client.deleteSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
-                System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue());
+                final ConfigurationSetting responseSetting = response.getValue();
+                System.out.printf("Key: %s, Value: %s", responseSetting.getKey(), responseSetting.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting
+        // END: com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting-boolean
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#setReadOnly(String, String)}
+     */
+    public void lockSettingsCodeSnippet() {
+        ConfigurationAsyncClient client = getAsyncClient();
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string
+        client.setReadOnly("prodDBConnection", "westUS")
+            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string
 
         /**
-         * Code snippets for {@link ConfigurationAsyncClient#deleteSettingWithResponse(String, String)}
+         * Code snippets for {@link ConfigurationAsyncClient#setReadOnlyWithResponse(ConfigurationSetting)}
          */
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting
-        client.deleteSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting
+        client.setReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
             });
-        // END: com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting
+        // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting
     }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#clearReadOnly(String, String)}
+     */
+    public void unlockSettingsCodeSnippet() {
+        ConfigurationAsyncClient client = getAsyncClient();
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.clearReadOnly#string-string
+        client.clearReadOnly("prodDBConnection", "westUS")
+            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.clearReadOnly#string-string
+
+        /**
+         * Code snippets for {@link ConfigurationAsyncClient#clearReadOnlyWithResponse(ConfigurationSetting)}
+         */
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.clearReadOnlyWithResponse#ConfigurationSetting
+        client.clearReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
+            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .subscribe(response -> {
+                ConfigurationSetting result = response.getValue();
+                System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
+            });
+        // END: com.azure.data.appconfiguration.configurationasyncclient.clearReadOnlyWithResponse#ConfigurationSetting
+    }
+
 
     /**
      * Code snippets for {@link ConfigurationAsyncClient#listSettings(SettingSelector)}
