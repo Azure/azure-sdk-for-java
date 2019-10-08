@@ -128,7 +128,7 @@ namespace Azure.Test.PerfStress
 
             Console.WriteLine("=== Results ===");
             Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
-                $"({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
+                $"({operationsPerSecond:N2} ops/s, {secondsPerOperation:N3} s/op)");
             Console.WriteLine();
         }
 
