@@ -438,33 +438,35 @@ class EncyptedBlockBlobAPITest extends APISpec {
     def "Download unencrypted data"() {
         setup:
         // Create an async client
-        BlobContainerAsyncClient cac = getServiceClientBuilder(primaryCredential,
+        BlobContainerClient cac = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .buildAsyncClient()
-            .getBlobContainerAsyncClient(generateContainerName())
+            .buildClient()
+            .getBlobContainerClient(generateContainerName())
 
-        cac.create().block()
+        cac.create()
         def blobName = generateBlobName()
 
-        BlockBlobAsyncClient normalClient = cac.getBlobAsyncClient(blobName).getBlockBlobAsyncClient()
+        BlockBlobClient normalClient = cac.getBlobClient(blobName).getBlockBlobClient()
 
         // Uses builder method that takes in regular blob clients
-        EncryptedBlockBlobAsyncClient client = new EncryptedBlobClientBuilder()
+        EncryptedBlockBlobClient client = new EncryptedBlobClientBuilder()
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP)
             .keyResolver(null)
-            .buildEncryptedBlockBlobAsyncClient(normalClient)
+            .buildEncryptedBlockBlobClient(normalClient)
 
         when:
 
         // Upload encrypted data with regular client
-        normalClient.uploadWithResponse(defaultFlux, defaultDataSize, null,
-            null, null, null).block()
+        normalClient.uploadWithResponse(new ByteArrayInputStream(defaultData.array()), defaultDataSize, null, null,
+            null, null, null, null)
 
         // Download data with encrypted client - command should fail
-        client.download().blockLast()
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        client.download(os)
 
         then:
-        thrown(IllegalStateException)
+        notThrown(IllegalStateException)
+        os.toByteArray() == defaultData.array()
     }
 
     // Tests key resolver

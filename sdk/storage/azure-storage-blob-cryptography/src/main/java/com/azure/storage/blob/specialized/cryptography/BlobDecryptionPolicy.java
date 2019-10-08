@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -40,6 +41,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 
+/**
+ * This is a decryption policy in an {@link com.azure.core.http.HttpPipeline} to decrypt data in an
+ * {@link EncryptedBlockBlobAsyncClient} or {@link EncryptedBlockBlobClient} download request. The range will be
+ * expanded for decryption purposes and then decrypt the body when the response comes in. This policy must only be used
+ * on encrypted blob clients.
+ */
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(BlobDecryptionPolicy.class);
@@ -63,8 +70,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * resolver if specified to get the key. 2. If resolver is not specified but a key is specified, match the key id on
      * the key and use it.
      *
-     * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
-     * @param keyResolver The key resolver used to select the correct key for decrypting existing blobs.
+     * @param key
+     *     An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
+     * @param keyResolver
+     *     The key resolver used to select the correct key for decrypting existing blobs.
      */
     BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver) {
         this.keyWrapper = key;
@@ -116,10 +125,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     /**
      * Decrypted all or part of an encrypted Block-, Page- or AppendBlob.
      *
-     * @param encryptedDataString The Blob's encrypted data in the metadata
-     * @param encryptedFlux The encrypted Flux of ByteBuffer to decrypt
-     * @param encryptedBlobRange A {@link EncryptedBlobRange} indicating the range to decrypt
-     * @param padding Boolean indicating if the padding mode should be set or not.
+     * @param encryptedDataString
+     *     The Blob's encrypted data in the metadata
+     * @param encryptedFlux
+     *     The encrypted Flux of ByteBuffer to decrypt
+     * @param encryptedBlobRange
+     *     A {@link EncryptedBlobRange} indicating the range to decrypt
+     * @param padding
+     *     Boolean indicating if the padding mode should be set or not.
      *
      * @return A Flux ByteBuffer that has been decrypted
      */
@@ -132,187 +145,202 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // The number of bytes that have been sent to the downstream so far.
         AtomicLong totalOutputBytes = new AtomicLong(0);
 
-        return getKeyEncryptionKey(encryptionData)
-            .flatMapMany(contentEncryptionKey -> {
+        Flux<Tuple2<ByteBuffer, Integer>> dataToTrim;
+        // Blob being downloaded is not encrypted
+        if (encryptionData == null) {
+            dataToTrim = encryptedFlux.flatMap(buffer -> Mono.just(buffer).zipWith(Mono.just(buffer.remaining())));
+        } else {
+            dataToTrim = getKeyEncryptionKey(encryptionData)
+                .flatMapMany(contentEncryptionKey -> {
 
-                /*
-                Calculate the IV.
-
-                If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
-                Rx makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
-                As a work around, we initialize the cipher with a garbage IV (empty byte array) and attempt to
-                decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
-                data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
-                of downloaded data are in position to be used as the IV for the data actually requested and we are
-                in the desired state.
-                 */
-                byte[] iv;
-                /*
-                Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
-                (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the key
-                is in the metadata.
-                 */
-                if (encryptedBlobRange.offsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
-                    iv = encryptionData.contentEncryptionIV();
-                } else {
-                    iv = new byte[ENCRYPTION_BLOCK_SIZE];
-                }
-
-                Cipher cipher;
-                try {
-                    cipher = getCipher(contentEncryptionKey, encryptionData, iv, padding);
-                } catch (InvalidKeyException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                }
-
-                return encryptedFlux.map(encryptedByteBuffer -> {
-                    ByteBuffer plaintextByteBuffer;
                     /*
-                    If we could potentially decrypt more bytes than encryptedByteBuffer can hold, allocate more
-                    room. Note that, because getOutputSize returns the size needed to store
-                    max(updateOutputSize, finalizeOutputSize), this is likely to produce a ByteBuffer slightly
-                    larger than what the real outputSize is. This is accounted for below.
+                    Calculate the IV.
+
+                    If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
+                    Rx makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
+                    As a work around, we initialize the cipher with a garbage IV (empty byte array) and attempt to
+                    decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
+                    data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
+                    of downloaded data are in position to be used as the IV for the data actually requested and we are
+                    in the desired state.
                      */
-                    int outputSize = cipher.getOutputSize(encryptedByteBuffer.remaining());
-                    if (outputSize > encryptedByteBuffer.remaining()) {
-                        plaintextByteBuffer = ByteBuffer.allocate(outputSize);
+                    byte[] iv;
+
+                    /*
+                    Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
+                    (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the key
+                    is in the metadata.
+                     */
+                    if (encryptedBlobRange.offsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
+                        iv = encryptionData.contentEncryptionIV();
                     } else {
-                        /*
-                        This is an ok optimization on download as the underlying buffer is not the customer's but
-                        the protocol layer's, which does not expect to be able to reuse it.
-                         */
-                        plaintextByteBuffer = encryptedByteBuffer.duplicate();
+                        iv = new byte[ENCRYPTION_BLOCK_SIZE];
                     }
 
-                    // First, determine if we should update or finalize and fill the output buffer.
+                    Cipher cipher;
+                    try {
+                        cipher = getCipher(contentEncryptionKey, encryptionData, iv, padding);
+                    } catch (InvalidKeyException e) {
+                        throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    }
 
-                    // We will have reached the end of the downloaded range. Finalize.
-                    int decryptedBytes;
-                    int bytesToInput = encryptedByteBuffer.remaining();
-                    if (totalInputBytes.longValue() + bytesToInput >= encryptedBlobRange.adjustedDownloadCount()) {
-                        try {
-                            decryptedBytes = cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
-                        } catch (GeneralSecurityException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+                    return encryptedFlux.flatMap(encryptedByteBuffer -> {
+                        ByteBuffer plaintextByteBuffer;
+                        /*
+                        If we could potentially decrypt more bytes than encryptedByteBuffer can hold, allocate more
+                        room. Note that, because getOutputSize returns the size needed to store
+                        max(updateOutputSize, finalizeOutputSize), this is likely to produce a ByteBuffer slightly
+                        larger than what the real outputSize is. This is accounted for below.
+                         */
+                        int outputSize = cipher.getOutputSize(encryptedByteBuffer.remaining());
+                        if (outputSize > encryptedByteBuffer.remaining()) {
+                            plaintextByteBuffer = ByteBuffer.allocate(outputSize);
+                        } else {
+                            /*
+                            This is an ok optimization on download as the underlying buffer is not the customer's but
+                            the protocol layer's, which does not expect to be able to reuse it.
+                             */
+                            plaintextByteBuffer = encryptedByteBuffer.duplicate();
                         }
-                    } else {
-                        // We will not have reached the end of the downloaded range. Update.
-                        try {
-                            decryptedBytes = cipher.update(encryptedByteBuffer, plaintextByteBuffer);
-                        } catch (ShortBufferException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
+
+                        // First, determine if we should update or finalize and fill the output buffer.
+
+                        // We will have reached the end of the downloaded range. Finalize.
+                        int decryptedBytes;
+                        int bytesToInput = encryptedByteBuffer.remaining();
+                        if (totalInputBytes.longValue() + bytesToInput >= encryptedBlobRange.adjustedDownloadCount()) {
+                            try {
+                                decryptedBytes = cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
+                            } catch (GeneralSecurityException e) {
+                                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            }
+                        } else {
+                            // We will not have reached the end of the downloaded range. Update.
+                            try {
+                                decryptedBytes = cipher.update(encryptedByteBuffer, plaintextByteBuffer);
+                            } catch (ShortBufferException e) {
+                                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            }
                         }
-                    }
-                    totalInputBytes.addAndGet(bytesToInput);
-                    plaintextByteBuffer.position(0); // Reset the position after writing.
-
-                    // Next, determine and set the position of the output buffer.
-
-                    /*
-                    The amount of data sent so far has not yet reached customer-requested data. i.e. it starts
-                    somewhere in either the IV or the range adjustment to align on a block boundary. We should
-                    advance the position so the customer does not read this data.
-                     */
-                    if (totalOutputBytes.longValue() <= encryptedBlobRange.offsetAdjustment()) {
-                        /*
-                        Note that the cast is safe because of the bounds on offsetAdjustment (see encryptedBlobRange
-                        for details), which here upper bounds totalInputBytes.
-                        Note that we do not simply set the position to be offsetAdjustment because of the (unlikely)
-                        case that some ByteBuffers were small enough to be entirely contained within the
-                        offsetAdjustment, so when we do reach customer-requested data, advancing the position by
-                        the whole offsetAdjustment would be too much.
-                         */
-                        int remainingAdjustment = encryptedBlobRange.offsetAdjustment()
-                            - (int) totalOutputBytes.longValue();
-
-                        /*
-                        Setting the position past the limit will throw. This is in the case of very small
-                        ByteBuffers that are entirely contained within the offsetAdjustment.
-                         */
-                        int newPosition = remainingAdjustment <= plaintextByteBuffer.limit()
-                            ? remainingAdjustment : plaintextByteBuffer.limit();
-
-                        plaintextByteBuffer.position(newPosition);
-
-                    }
-                    /*
-                    Else: The beginning of this ByteBuffer is somewhere after the offset adjustment. If it is in the
-                    middle of customer requested data, let it be. If it starts in the end adjustment, this will
-                    be trimmed effectively by setting the limit below.
-                     */
-
-                    // Finally, determine and set the limit of the output buffer.
-
-                    long beginningOfEndAdjustment; // read: beginning of end-adjustment.
-                    /*
-                    The user intended to download the whole blob, so the only extra we downloaded was padding, which
-                    is trimmed by the cipher automatically; there is effectively no beginning to the end-adjustment.
-                     */
-                    if (encryptedBlobRange.originalRange().getCount() == null) {
-                        beginningOfEndAdjustment = Long.MAX_VALUE;
-                    } else {
-                        // Calculate the end of the user-requested data so we can trim anything after.
-                        beginningOfEndAdjustment = encryptedBlobRange.offsetAdjustment()
-                            + encryptedBlobRange.originalRange().getCount();
-                    }
-
-                    /*
-                    The end of the Cipher output lies after customer requested data (in the end adjustment) and
-                    should be trimmed.
-                     */
-                    if (decryptedBytes + totalOutputBytes.longValue() > beginningOfEndAdjustment) {
-                        long amountPastEnd // past the end of user-requested data.
-                            = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
-                        /*
-                        Note that amountPastEnd can only be up to 16, so the cast is safe. We do not need to worry
-                        about limit() throwing because we allocated at least enough space for decryptedBytes and
-                        the newLimit will be less than that. In the case where this Cipher output starts after the
-                        beginning of the endAdjustment, we don't want to send anything back, so we set limit to be
-                        the same as position.
-                         */
-                        int newLimit = totalOutputBytes.longValue() <= beginningOfEndAdjustment
-                            ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
-                        plaintextByteBuffer.limit(newLimit);
-                    } else if (decryptedBytes + totalOutputBytes.longValue()
-                        > encryptedBlobRange.offsetAdjustment()) {
-                     /*
-                    The end of this Cipher output is before the end adjustment and after the offset adjustment, so
-                    it will lie somewhere in customer requested data. It is possible we allocated a ByteBuffer that
-                    is slightly too large, so we set the limit equal to exactly the amount we decrypted to be safe.
-                     */
-                        plaintextByteBuffer.limit(decryptedBytes);
-                    } else {
-                     /*
-                    Else: The end of this ByteBuffer will not reach the beginning of customer-requested data. Make
-                    it effectively empty.
-                     */
-                        plaintextByteBuffer.limit(plaintextByteBuffer.position());
-                    }
-
-                    totalOutputBytes.addAndGet(decryptedBytes);
-                    return plaintextByteBuffer;
+                        totalInputBytes.addAndGet(bytesToInput);
+                        plaintextByteBuffer.position(0); // Reset the position after writing.
+                        return Mono.just(plaintextByteBuffer).zipWith(Mono.just(decryptedBytes));
+                    });
                 });
-            });
+        }
+
+        return dataToTrim.map(tuple2 -> {
+            ByteBuffer plaintextByteBuffer = tuple2.getT1();
+            int decryptedBytes = tuple2.getT2();
+
+            // Next, determine and set the position of the output buffer.
+
+            /*
+            The amount of data sent so far has not yet reached customer-requested data. i.e. it starts
+            somewhere in either the IV or the range adjustment to align on a block boundary. We should
+            advance the position so the customer does not read this data.
+             */
+            if (totalOutputBytes.longValue() <= encryptedBlobRange.offsetAdjustment()) {
+                /*
+                Note that the cast is safe because of the bounds on offsetAdjustment (see encryptedBlobRange
+                for details), which here upper bounds totalInputBytes.
+                Note that we do not simply set the position to be offsetAdjustment because of the (unlikely)
+                case that some ByteBuffers were small enough to be entirely contained within the
+                offsetAdjustment, so when we do reach customer-requested data, advancing the position by
+                the whole offsetAdjustment would be too much.
+                 */
+                int remainingAdjustment = encryptedBlobRange.offsetAdjustment()
+                    - (int) totalOutputBytes.longValue();
+
+                /*
+                Setting the position past the limit will throw. This is in the case of very small
+                ByteBuffers that are entirely contained within the offsetAdjustment.
+                 */
+                int newPosition = remainingAdjustment <= plaintextByteBuffer.limit()
+                    ? remainingAdjustment : plaintextByteBuffer.limit();
+
+                plaintextByteBuffer.position(newPosition);
+
+            }
+            /*
+            Else: The beginning of this ByteBuffer is somewhere after the offset adjustment. If it is in the
+            middle of customer requested data, let it be. If it starts in the end adjustment, this will
+            be trimmed effectively by setting the limit below.
+             */
+
+            // Finally, determine and set the limit of the output buffer.
+
+            long beginningOfEndAdjustment; // read: beginning of end-adjustment.
+            /*
+            The user intended to download the whole blob, so the only extra we downloaded was padding, which
+            is trimmed by the cipher automatically; there is effectively no beginning to the end-adjustment.
+             */
+            if (encryptedBlobRange.originalRange().getCount() == null) {
+                beginningOfEndAdjustment = Long.MAX_VALUE;
+            } else {
+                // Calculate the end of the user-requested data so we can trim anything after.
+                beginningOfEndAdjustment = encryptedBlobRange.offsetAdjustment()
+                    + encryptedBlobRange.originalRange().getCount();
+            }
+
+            /*
+            The end of the Cipher output lies after customer requested data (in the end adjustment) and
+            should be trimmed.
+             */
+            if (decryptedBytes + totalOutputBytes.longValue() > beginningOfEndAdjustment) {
+                long amountPastEnd // past the end of user-requested data.
+                    = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
+                /*
+                Note that amountPastEnd can only be up to 16, so the cast is safe. We do not need to worry
+                about limit() throwing because we allocated at least enough space for decryptedBytes and
+                the newLimit will be less than that. In the case where this Cipher output starts after the
+                beginning of the endAdjustment, we don't want to send anything back, so we set limit to be
+                the same as position.
+                 */
+                int newLimit = totalOutputBytes.longValue() <= beginningOfEndAdjustment
+                    ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
+                plaintextByteBuffer.limit(newLimit);
+            } else if (decryptedBytes + totalOutputBytes.longValue()
+                > encryptedBlobRange.offsetAdjustment()) {
+                 /*
+                The end of this Cipher output is before the end adjustment and after the offset adjustment, so
+                it will lie somewhere in customer requested data. It is possible we allocated a ByteBuffer that
+                is slightly too large, so we set the limit equal to exactly the amount we decrypted to be safe.
+                 */
+                plaintextByteBuffer.limit(decryptedBytes);
+            } else {
+                 /*
+                Else: The end of this ByteBuffer will not reach the beginning of customer-requested data. Make
+                it effectively empty.
+                 */
+                plaintextByteBuffer.limit(plaintextByteBuffer.position());
+            }
+
+            totalOutputBytes.addAndGet(decryptedBytes);
+            return plaintextByteBuffer;
+
+        });
     }
 
     /**
      * Gets and validates {@link EncryptionData} from a Blob's metadata
      *
-     * @param encryptedDataString {@code String} of encrypted metadata
+     * @param encryptedDataString
+     *     {@code String} of encrypted metadata
      *
      * @return {@link EncryptionData}
      */
     private EncryptionData getAndValidateEncryptionData(String encryptedDataString) {
         if (encryptedDataString == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(CryptographyConstants.DECRYPT_UNENCRYPTED_BLOB));
+            return null;
         }
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             EncryptionData encryptionData = objectMapper.readValue(encryptedDataString, EncryptionData.class);
 
+            // Blob being downloaded is not null.
             if (encryptionData == null) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    CryptographyConstants.DECRYPT_UNENCRYPTED_BLOB));
+                return encryptionData;
             }
 
             Objects.requireNonNull(encryptionData.contentEncryptionIV());
@@ -336,7 +364,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * Returns the key encryption key for blob. First tries to get key encryption key from KeyResolver, then
      * falls back to IKey stored on this EncryptionPolicy.
      *
-     * @param encryptionData A {@link EncryptionData}
+     * @param encryptionData
+     *     A {@link EncryptionData}
      *
      * @return Key encryption key as a byte array
      */
@@ -376,15 +405,20 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     /**
      * Creates a {@link Cipher} using given content encryption key, encryption data, iv, and padding.
      *
-     * @param contentEncryptionKey The content encryption key, used to decrypt the contents of the blob.
-     * @param encryptionData {@link EncryptionData}
-     * @param iv IV used to initialize the Cipher.  If IV is null, encryptionData
-     * @param padding If cipher should use padding. Padding is necessary to decrypt all the way to end of a blob.
-     *         Otherwise, don't use padding.
+     * @param contentEncryptionKey
+     *     The content encryption key, used to decrypt the contents of the blob.
+     * @param encryptionData
+     *     {@link EncryptionData}
+     * @param iv
+     *     IV used to initialize the Cipher.  If IV is null, encryptionData
+     * @param padding
+     *     If cipher should use padding. Padding is necessary to decrypt all the way to end of a blob.
+     *     Otherwise, don't use padding.
      *
      * @return {@link Cipher}
      *
-     * @throws InvalidKeyException The key provided is invalid
+     * @throws InvalidKeyException
+     *     The key provided is invalid
      */
     private Cipher getCipher(byte[] contentEncryptionKey, EncryptionData encryptionData, byte[] iv, boolean padding)
         throws InvalidKeyException {

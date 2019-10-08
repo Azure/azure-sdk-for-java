@@ -301,7 +301,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      *
      * @return the {@code UserAgentPolicy} that will be used in the {@link HttpPipeline}.
      */
-    protected final UserAgentPolicy getUserAgentPolicy() {
+    protected UserAgentPolicy getUserAgentPolicy() {
         return new UserAgentPolicy(BlobCryptographyConfiguration.NAME, BlobCryptographyConfiguration.VERSION,
             super.getConfiguration());
     }

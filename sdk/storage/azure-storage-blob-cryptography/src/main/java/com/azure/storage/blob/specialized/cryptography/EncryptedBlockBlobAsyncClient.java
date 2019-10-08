@@ -46,6 +46,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
+ * the client are downloading and copying a blob, retrieving and setting metadata, retrieving and setting HTTP headers,
+ * and deleting and un-deleting a blob.
+ *
+ * <p>
+ * This client is instantiated through {@link EncryptedBlobClientBuilder}
+ *
+ * <p>
+ * For operations on a specific blob type (i.e append, block, or page) use
+ * {@link #getAppendBlobAsyncClient() getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient()
+ * getBlockBlobAsyncClient}, or {@link #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that
+ * allows blob specific operations. Note, these types do not support
+ *
+ * <p>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Docs</a> for more information.
+ */
 public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
