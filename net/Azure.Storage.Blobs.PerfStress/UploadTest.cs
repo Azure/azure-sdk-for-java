@@ -1,42 +1,34 @@
 ﻿using Azure.Storage.Blobs.PerfStress.Core;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class UploadTest : ParallelTransferTest<ParallelTransferOptionsOptions>
+    public class UploadTest : ContainerTest<ParallelTransferOptionsOptions>
     {
-        public UploadTest(string id, ParallelTransferOptionsOptions options) : base(id, options)
+        private readonly BlobClient _blobClient;
+
+        public UploadTest(ParallelTransferOptionsOptions options) : base(options)
         {
-            try
-            {
-                BlobClient.Delete();
-            }
-            catch (StorageRequestFailedException)
-            {
-            }
+            var blobName = "uploadtest-" + Guid.NewGuid().ToString();
+            _blobClient = BlobContainerClient.GetBlobClient(blobName);
         }
 
         public override void Run(CancellationToken cancellationToken)
         {
-            BlobClient.Upload(RandomStream, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
+            using var stream = RandomStream.Create(Options.Size);
+
+            // No need to delete file in Cleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
+            _blobClient.Upload(stream, parallelTransferOptions: Options.ParallelTransferOptions, cancellationToken: cancellationToken);
         }
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
-            await BlobClient.UploadAsync(RandomStream, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
-        }
+            using var stream = RandomStream.Create(Options.Size);
 
-        public override void Dispose()
-        {
-            try
-            {
-                BlobClient.Delete();
-            }
-            catch (StorageRequestFailedException)
-            {
-            }
-            base.Dispose();
+            // No need to delete file in Cleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
+            await _blobClient.UploadAsync(stream, parallelTransferOptions: Options.ParallelTransferOptions,  cancellationToken: cancellationToken);
         }
     }
 }

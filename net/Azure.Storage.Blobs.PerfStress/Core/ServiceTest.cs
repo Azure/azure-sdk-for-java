@@ -5,19 +5,12 @@ using System.Net.Http;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public abstract class StorageTest<TOptions> : PerfStressTest<TOptions> where TOptions: PerfStressOptions
+    public abstract class ServiceTest<TOptions> : PerfStressTest<TOptions> where TOptions: PerfStressOptions
     {
-        private const string _containerName = "perfstress";
-
         protected BlobServiceClient BlobServiceClient { get; private set; }
 
-        protected BlobContainerClient BlobContainerClient { get; private set; }
-
-        protected BlobClient BlobClient { get; private set; }
-
-        public StorageTest(string id, TOptions options) : base(id, options)
+        public ServiceTest(TOptions options) : base(options)
         {
-            var blobName = this.GetType().Name.ToLowerInvariant() + id;
             var connectionString = Environment.GetEnvironmentVariable("STORAGE_CONNECTION_STRING");
 
             if (string.IsNullOrEmpty(connectionString))
@@ -33,17 +26,6 @@ namespace Azure.Storage.Blobs.PerfStress
             blobClientOptions.Transport = new HttpClientTransport(httpClient);
 
             BlobServiceClient = new BlobServiceClient(connectionString, blobClientOptions);
-            try
-            {
-                BlobServiceClient.CreateBlobContainer(_containerName);
-            }
-            catch (StorageRequestFailedException)
-            {
-            }
-
-            BlobContainerClient = BlobServiceClient.GetBlobContainerClient(_containerName);
-
-            BlobClient = BlobContainerClient.GetBlobClient(blobName);
         }
     }
 }

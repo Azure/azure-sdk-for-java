@@ -86,5 +86,11 @@ namespace Azure.Storage.Blobs.PerfStress.Core
         {
             throw new NotImplementedException();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            _innerStream.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

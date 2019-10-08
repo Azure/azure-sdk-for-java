@@ -1,47 +1,38 @@
 ﻿using Azure.Storage.Blobs.PerfStress.Core;
-using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class DownloadV11Test : RandomDataV11Test<SizeOptions>
+    public class DownloadV11Test : ContainerV11Test<SizeOptions>
     {
-        public DownloadV11Test(string id, SizeOptions options) : base(id, options)
-        {
-            try
-            {
-                CloudBlockBlob.Delete();
-            }
-            catch (StorageException)
-            {
-            }
+        private readonly CloudBlockBlob _cloudBlockBlob;
 
-            CloudBlockBlob.UploadFromStream(RandomStream);
+        public DownloadV11Test(SizeOptions options) : base(options)
+        {
+            _cloudBlockBlob = CloudBlobContainer.GetBlockBlobReference("downloadv11test");
         }
-        
+
+        public override async Task GlobalSetup()
+        {
+            await base.GlobalSetup();
+
+            using var stream = RandomStream.Create(Options.Size);
+
+            // No need to delete file in GlobalCleanup(), since ContainerV11Test.GlobalCleanup() deletes the whole container
+            await _cloudBlockBlob.UploadFromStreamAsync(stream);
+        }
+
         public override void Run(CancellationToken cancellationToken)
         {
-            CloudBlockBlob.DownloadToStream(Stream.Null);
+            _cloudBlockBlob.DownloadToStream(Stream.Null);
         }
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
-             await CloudBlockBlob.DownloadToStreamAsync(Stream.Null, cancellationToken);
-        }
-
-        public override void Dispose()
-        {
-            try
-            {
-                CloudBlockBlob.Delete();
-            }
-            catch (StorageException)
-            {
-            }
-
-            base.Dispose();
+             await _cloudBlockBlob.DownloadToStreamAsync(Stream.Null, cancellationToken);
         }
     }
 }

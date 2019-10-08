@@ -5,42 +5,33 @@ using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class DownloadTest : ParallelTransferTest<ParallelTransferOptionsOptions>
+    public class DownloadTest : ContainerTest<ParallelTransferOptionsOptions>
     {
-        public DownloadTest(string id, ParallelTransferOptionsOptions options) : base(id, options)
-        {
-            try
-            {
-                BlobClient.Delete();
-            }
-            catch (StorageRequestFailedException)
-            {
-            }
+        private readonly BlobClient _blobClient;
 
-            BlobClient.Upload(RandomStream);
+        public DownloadTest(ParallelTransferOptionsOptions options) : base(options)
+        {
+            _blobClient = BlobContainerClient.GetBlobClient("downloadtest");
+        }
+
+        public override async Task GlobalSetup()
+        {
+            await base.GlobalSetup();
+
+            using var stream = RandomStream.Create(Options.Size);
+            
+            // No need to delete file in GlobalCleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
+            await _blobClient.UploadAsync(stream);
         }
 
         public override void Run(CancellationToken cancellationToken)
         {
-            BlobClient.Download(Stream.Null, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
+            _blobClient.Download(Stream.Null, parallelTransferOptions: Options.ParallelTransferOptions, cancellationToken: cancellationToken);
         }
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
-            await BlobClient.DownloadAsync(Stream.Null, parallelTransferOptions: ParallelTransferOptions, cancellationToken: cancellationToken);
-        }
-
-        public override void Dispose()
-        {
-            try
-            {
-                BlobClient.Delete();
-            }
-            catch (StorageRequestFailedException)
-            {
-            }
-
-            base.Dispose();
+            await _blobClient.DownloadAsync(Stream.Null, parallelTransferOptions: Options.ParallelTransferOptions, cancellationToken: cancellationToken);
         }
     }
 }

@@ -52,45 +52,73 @@ namespace Azure.Test.PerfStress
 
             var duration = TimeSpan.FromSeconds(options.Duration);
 
-            var tests = CreateTests(testType, options);
+            var tests = new IPerfStressTest[options.Parallel];            
+            for (var i = 0; i < options.Parallel; i++)
+            {
+                tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, options);
+            }
 
             try
             {
-                using var cts = new CancellationTokenSource(duration);
-                var cancellationToken = cts.Token;
+                await tests[0].GlobalSetup();
 
-                _ = PrintStatusAsync(cancellationToken);
-
-                if (options.Sync)
+                try
                 {
-                    var threads = new Thread[options.Parallel];
-
+                    var setupTasks = new Task[options.Parallel];
                     for (var i = 0; i < options.Parallel; i++)
                     {
-                        var j = i;
-                        threads[i] = new Thread(() => RunLoop(tests[j], cancellationToken));
-                        threads[i].Start();
+                        setupTasks[i] = tests[i].Setup();
                     }
-                    for (var i = 0; i < options.Parallel; i++)
+                    await Task.WhenAll(setupTasks);
+
+                    using var cts = new CancellationTokenSource(duration);
+                    var cancellationToken = cts.Token;
+
+                    _ = PrintStatusAsync(cancellationToken);
+
+                    if (options.Sync)
                     {
-                        threads[i].Join();
+                        var threads = new Thread[options.Parallel];
+
+                        for (var i = 0; i < options.Parallel; i++)
+                        {
+                            var j = i;
+                            threads[i] = new Thread(() => RunLoop(tests[j], cancellationToken));
+                            threads[i].Start();
+                        }
+                        for (var i = 0; i < options.Parallel; i++)
+                        {
+                            threads[i].Join();
+                        }
+                    }
+                    else
+                    {
+                        var tasks = new Task[options.Parallel];
+                        for (var i = 0; i < options.Parallel; i++)
+                        {
+                            tasks[i] = RunLoopAsync(tests[i], cancellationToken);
+                        }
+                        await Task.WhenAll(tasks);
                     }
                 }
-                else
+                finally
                 {
-                    var tasks = new Task[options.Parallel];
-                    for (var i = 0; i < options.Parallel; i++)
+                    if (!options.NoCleanup)
                     {
-                        tasks[i] = RunLoopAsync(tests[i], cancellationToken);
+                        var cleanupTasks = new Task[options.Parallel];
+                        for (var i = 0; i < options.Parallel; i++)
+                        {
+                            cleanupTasks[i] = tests[i].Cleanup();
+                        }
+                        await Task.WhenAll(cleanupTasks);
                     }
-                    await Task.WhenAll(tasks);
                 }
             }
             finally
             {
-                for (var i = 0; i < options.Parallel; i++)
+                if (!options.NoCleanup)
                 {
-                    tests[i]?.Dispose();
+                    await tests[0].GlobalCleanup();
                 }
             }
 
@@ -102,28 +130,6 @@ namespace Azure.Test.PerfStress
             Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
                 $"({operationsPerSecond:N1} ops/s, {secondsPerOperation:N3} s/op)");
             Console.WriteLine();
-        }
-
-        private static IPerfStressTest[] CreateTests(Type testType, PerfStressOptions options)
-        {
-            var tests = new IPerfStressTest[options.Parallel];
-            var threads = new Thread[options.Parallel];
-
-            for (var i=0; i < options.Parallel; i++)
-            {
-                var j = i;
-                threads[i] = new Thread(() =>
-                {
-                    tests[j] = (IPerfStressTest)Activator.CreateInstance(testType, j.ToString(), options);
-                });
-                threads[i].Start();
-            }
-            for (var i = 0; i < options.Parallel; i++)
-            {
-                threads[i].Join();
-            }
-
-            return tests;
         }
 
         private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)
@@ -210,7 +216,7 @@ namespace Azure.Test.PerfStress
 
             foreach (var t in testTypes)
             {
-                var baseOptionsType = t.GetConstructors().First().GetParameters()[1].ParameterType;
+                var baseOptionsType = t.GetConstructors().First().GetParameters()[0].ParameterType;
                 var tb = mb.DefineType(t.Name + "Options", TypeAttributes.Public, baseOptionsType);
 
                 var attrCtor = typeof(VerbAttribute).GetConstructor(new Type[] { typeof(string) });

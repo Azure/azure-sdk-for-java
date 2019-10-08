@@ -1,45 +1,35 @@
 ﻿using Azure.Storage.Blobs.PerfStress.Core;
-using Microsoft.Azure.Storage;
-using System.IO;
+using Microsoft.Azure.Storage.Blob;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class UploadV11Test : RandomDataV11Test<SizeOptions>
+    public class UploadV11Test : ContainerV11Test<SizeOptions>
     {
-        public UploadV11Test(string id, SizeOptions options) : base(id, options)
+        private readonly CloudBlockBlob _cloudBlockBlob;
+
+        public UploadV11Test(SizeOptions options) : base(options)
         {
-            try
-            {
-                CloudBlockBlob.Delete();
-            }
-            catch (StorageException)
-            {
-            }
+            var blobName = "uploadv11test-" + Guid.NewGuid().ToString();
+            _cloudBlockBlob = CloudBlobContainer.GetBlockBlobReference(blobName);
         }
 
         public override void Run(CancellationToken cancellationToken)
         {
-            CloudBlockBlob.UploadFromStream(RandomStream);
+            using var stream = RandomStream.Create(Options.Size);
+
+            // No need to delete file in Cleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
+            _cloudBlockBlob.UploadFromStream(stream);
         }
 
         public override async Task RunAsync(CancellationToken cancellationToken)
         {
-            await CloudBlockBlob.UploadFromStreamAsync(RandomStream, cancellationToken);
-        }
+            using var stream = RandomStream.Create(Options.Size);
 
-        public override void Dispose()
-        {
-            try
-            {
-                CloudBlockBlob.Delete();
-            }
-            catch (StorageException)
-            {
-            }
-
-            base.Dispose();
+            // No need to delete file in Cleanup(), since ContainerTest.GlobalCleanup() deletes the whole container
+            await _cloudBlockBlob.UploadFromStreamAsync(stream, cancellationToken);
         }
     }
 }

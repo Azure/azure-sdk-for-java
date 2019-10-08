@@ -5,22 +5,35 @@ namespace Azure.Test.PerfStress
 {
     public abstract class PerfStressTest<TOptions> : IPerfStressTest where TOptions : PerfStressOptions
     {
-        protected string Id { get; private set; }
-
         protected TOptions Options { get; private set; }
 
-        public PerfStressTest(string id, TOptions options)
+        public PerfStressTest(TOptions options)
         {
-            Id = id;
             Options = options;
+        }
+
+        public virtual Task GlobalSetup()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task Setup()
+        {
+            return Task.CompletedTask;
         }
 
         public abstract void Run(CancellationToken cancellationToken);
 
         public abstract Task RunAsync(CancellationToken cancellationToken);
 
-        public virtual void Dispose()
+        public virtual Task Cleanup()
         {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task GlobalCleanup()
+        {
+            return Task.CompletedTask;
         }
     }
 }
