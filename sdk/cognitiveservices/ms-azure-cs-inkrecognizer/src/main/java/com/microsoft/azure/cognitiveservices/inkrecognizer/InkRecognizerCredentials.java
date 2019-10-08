@@ -22,7 +22,7 @@ public class InkRecognizerCredentials {
      * Sets the required credential on the request.
      * @param request The request to set the credentials on.
      */
-    Request SetRequestCredentials(Request request) {
+    Request setRequestCredentials(Request request) {
         return request.newBuilder().addHeader("Ocp-Apim-Subscription-Key", key).build();
     }
 

@@ -28,8 +28,9 @@ public class InkList extends InkRecognitionUnit {
         if (recognizedText == null) {
             recognizedText = "";
             for (InkRecognitionUnit child : children()) {
-                recognizedText += ((Line) child).recognizedText();
-                return recognizedText;
+                if (child instanceof Line) {
+                    recognizedText += ((Line) child).recognizedText();
+                }
             }
         }
         return recognizedText;

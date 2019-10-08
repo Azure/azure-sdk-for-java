@@ -18,14 +18,14 @@ class TestUtils {
     static final String ALL_INK_RECOGNITION_UNIT_KINDS_REQUEST_FILE = "AllInkRecognitionUnitKindsRequest.json";
     static final String CIRCLE_REQUEST_FILE = "CircleRequest.json";
     static final String[] FILES = {TWO_STROKES_REQUEST_FILE, CIRCLE_REQUEST_FILE};
-    static private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static Iterable<InkStroke> loadStrokesFromJSON(String fileName) throws Exception {
 
         ClassLoader classLoader = TestUtils.class.getClassLoader();
         File file = new File(classLoader.getResource(fileName).getFile());
         String request = new String(Files.readAllBytes(file.toPath()));
-        JsonNode jsonRequest = objectMapper.readValue(request, JsonNode.class);
+        JsonNode jsonRequest = OBJECT_MAPPER.readValue(request, JsonNode.class);
 
         JsonNode jsonStrokes = jsonRequest.get("strokes");
         List<InkStroke> inkStrokes = new ArrayList<>();
@@ -58,7 +58,7 @@ class TestUtils {
 
     }
 
-    static private List<InkPoint> loadPoints(JsonNode jsonPoints) {
+    private static List<InkPoint> loadPoints(JsonNode jsonPoints) {
         List<InkPoint> inkPoints = new ArrayList<>();
 
         // Process array
@@ -67,9 +67,8 @@ class TestUtils {
                 inkPoints.add(new InkPointImplementor().setX(jsonPoint.get("x").asDouble())
                     .setY(jsonPoint.get("y").asDouble()));
             }
-        }
-        // or process string
-        else {
+        } else {
+            // or process string
             StringTokenizer st = new StringTokenizer(jsonPoints.asText(), ",");
             while (st.hasMoreTokens()) {
                 inkPoints.add(new InkPointImplementor().setX(Float.parseFloat(st.nextToken()))

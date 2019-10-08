@@ -29,7 +29,9 @@ public class WritingRegion extends InkRecognitionUnit {
         if (recognizedText == null) {
             recognizedText = "";
             for (InkRecognitionUnit child : children()) {
-                recognizedText += ((Paragraph) child).recognizedText();
+                if (child instanceof Paragraph) {
+                    recognizedText += ((Paragraph) child).recognizedText();
+                }
             }
             recognizedText += "\n";
         }
@@ -44,7 +46,9 @@ public class WritingRegion extends InkRecognitionUnit {
         List<Paragraph> paragraphs = new ArrayList<>();
         for (InkRecognitionUnit child : children()) {
             if (child.kind().equals(InkRecognitionUnitKind.PARAGRAPH)) {
-                paragraphs.add((Paragraph) child);
+                if (child instanceof Paragraph) {
+                    paragraphs.add((Paragraph) child);
+                }
             }
         }
         return paragraphs;

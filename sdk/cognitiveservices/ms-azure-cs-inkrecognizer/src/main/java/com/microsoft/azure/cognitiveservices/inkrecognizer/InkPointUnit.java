@@ -31,11 +31,11 @@ public enum InkPointUnit {
     INCH("in");
 
     private String inkPointUnitString;
-    private static final Map<String, InkPointUnit> map = new HashMap<>();
+    private static final Map<String, InkPointUnit> MAP = new HashMap<>();
 
     static {
         for (InkPointUnit inkPointUnit : InkPointUnit.values()) {
-            map.put(inkPointUnit.toString().toLowerCase(Locale.getDefault()), inkPointUnit);
+            MAP.put(inkPointUnit.toString().toLowerCase(Locale.getDefault()), inkPointUnit);
         }
     }
 
@@ -44,8 +44,8 @@ public enum InkPointUnit {
     }
 
     static InkPointUnit getInkPointUnitOrDefault(String inkPointUnitString) {
-        if (inkPointUnitString != null && map.containsKey(inkPointUnitString.toLowerCase(Locale.getDefault()))) {
-            return map.get(inkPointUnitString.toLowerCase(Locale.getDefault()));
+        if (inkPointUnitString != null && MAP.containsKey(inkPointUnitString.toLowerCase(Locale.getDefault()))) {
+            return MAP.get(inkPointUnitString.toLowerCase(Locale.getDefault()));
         } else {
             return InkPointUnit.MM;
         }
