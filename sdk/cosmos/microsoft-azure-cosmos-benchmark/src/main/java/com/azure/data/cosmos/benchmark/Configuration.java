@@ -29,6 +29,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 
 class Configuration {
 
@@ -113,6 +114,9 @@ class Configuration {
 
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
+
+    @Parameter(names = "-preferredLocations", description = "Comma-separated list of Preferred regions")
+    private List<String> preferredLocations;
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -222,6 +226,7 @@ class Configuration {
         ConnectionPolicy policy = new ConnectionPolicy();
         policy.connectionMode(connectionMode);
         policy.maxPoolSize(maxConnectionPoolSize);
+        policy.setPreferredLocations(preferredLocations);
         return policy;
     }
 
