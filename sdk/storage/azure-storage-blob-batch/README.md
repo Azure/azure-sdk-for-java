@@ -1,4 +1,4 @@
-# Azure Storage Blobs client library for Java
+# Azure Storage Blobs Batch client library for Java
 
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob
 storage is optimized for storing massive amounts of unstructured data.
