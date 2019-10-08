@@ -294,5 +294,12 @@
     "fconfig": {
       "\"moduleName\"": "\"StreamAnalytics\""
     }
+  },
+  "vmwarecloudsimple/resource-manager": {
+    "source": "specification/vmwarecloudsimple/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"VMwareCloudSimple\""
+    }
   }
 }
