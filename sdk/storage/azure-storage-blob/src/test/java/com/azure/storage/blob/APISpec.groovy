@@ -62,6 +62,9 @@ class APISpec extends Specification {
     BlobContainerClient cc
 
     @Shared
+    BlobContainerClient ccPremium
+
+    @Shared
     BlobContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
@@ -164,6 +167,8 @@ class APISpec extends Specification {
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
         cc.create()
+        ccPremium = premiumBlobServiceClient.getBlobContainerClient(containerName)
+        ccPremium.create()
     }
 
     def cleanup() {
