@@ -84,6 +84,73 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Override
+    public void canContinueSearch() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        // upload large documents batch
+        hotels = createHotelsList(100);
+        uploadDocuments(client, hotels);
+
+        SearchParameters searchParameters = new SearchParameters().select(Collections.singletonList("HotelId"))
+            .orderBy(Collections.singletonList("HotelId asc"));
+
+        List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
+            .collect(Collectors.toList());
+
+        PagedIterable<SearchResult> results =
+            client.search("*", searchParameters, new SearchRequestOptions());
+
+        Assert.assertNotNull(results);
+
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+
+        PagedResponse<SearchResult> firstPage = iterator.next();
+        Assert.assertEquals(50, firstPage.value().size());
+        assertListEqualHotelIds(expectedHotelIds.subList(0, 50), firstPage.value());
+        Assert.assertNotNull(firstPage.nextLink());
+
+        PagedResponse<SearchResult> secondPage = iterator.next();
+        Assert.assertEquals(50, secondPage.value().size());
+        assertListEqualHotelIds(expectedHotelIds.subList(50, 100), secondPage.value());
+        Assert.assertNull(secondPage.nextLink());
+    }
+
+    @Override
+    public void canContinueSearchWithTop() {
+        createHotelIndex();
+        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        // upload large documents batch
+        hotels = createHotelsList(2000);
+        uploadDocuments(client, hotels);
+
+        SearchParameters searchParameters = new SearchParameters().top(2000).select(
+            Collections.singletonList("HotelId"))
+            .orderBy(Collections.singletonList("HotelId asc"));
+
+        List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
+            .collect(Collectors.toList());
+
+        PagedIterable<SearchResult> results =
+            client.search("*", searchParameters, new SearchRequestOptions());
+
+        Assert.assertNotNull(results);
+
+        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+
+        PagedResponse<SearchResult> firstPage = iterator.next();
+        Assert.assertEquals(1000, firstPage.value().size());
+        assertListEqualHotelIds(expectedHotelIds.subList(0, 1000), firstPage.value());
+        Assert.assertNotNull(firstPage.nextLink());
+
+        PagedResponse<SearchResult> secondPage = iterator.next();
+        Assert.assertEquals(1000, secondPage.value().size());
+        assertListEqualHotelIds(expectedHotelIds.subList(1000, 2000), secondPage.value());
+        Assert.assertNull(secondPage.nextLink());
+    }
+
+    @Override
     public void canSearchStaticallyTypedDocuments() {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();

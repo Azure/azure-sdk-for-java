@@ -133,13 +133,15 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     List<RangeFacetResult> getRangeFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new RangeFacetResult(facetResult)).collect(Collectors.toList());
+        return facetCollection.stream().map(facetResult -> new RangeFacetResult(facetResult))
+            .collect(Collectors.toList());
     }
 
     List<ValueFacetResult> getValueFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new ValueFacetResult(facetResult)).collect(Collectors.toList());
+        return facetCollection.stream().map(facetResult -> new ValueFacetResult(facetResult))
+            .collect(Collectors.toList());
     }
 
     List<FacetResult> getFacetsForField(
@@ -213,6 +215,13 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         }
     }
 
+    void assertListEqualHotelIds(List<String> expected, List<SearchResult> actual) {
+        Assert.assertNotNull(actual);
+        List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
+            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        Assert.assertEquals(expected, actualKeys);
+    }
+
     @Test
     public void searchThrowsWhenRequestIsMalformed() {
         thrown.expect(HttpResponseException.class);
@@ -237,6 +246,12 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     @Test
     public abstract void canSearchDynamicDocuments();
+
+    @Test
+    public abstract void canContinueSearch();
+
+    @Test
+    public abstract void canContinueSearchWithTop();
 
     @Test
     public abstract void canSearchWithSelectedFields();

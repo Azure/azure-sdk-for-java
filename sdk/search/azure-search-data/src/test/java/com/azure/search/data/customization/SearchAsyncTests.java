@@ -20,7 +20,6 @@ import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
 import org.junit.Assert;
-import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -44,7 +43,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
     private SearchIndexAsyncClient client;
 
-    @Test
+    @Override
     public void canContinueSearch() {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -64,17 +63,17 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
                 Assert.assertEquals(50, firstPage.value().size());
-                assertHotelIdsEqual(expectedId.subList(0, 50), firstPage.value());
-                Assert.assertNotEquals(null, firstPage.nextLink());
+                assertListEqualHotelIds(expectedId.subList(0, 50), firstPage.value());
+                Assert.assertNotNull(firstPage.nextLink());
             })
             .assertNext(nextPage -> {
                 Assert.assertEquals(50, nextPage.value().size());
-                assertHotelIdsEqual(expectedId.subList(50, 100), nextPage.value());
+                assertListEqualHotelIds(expectedId.subList(50, 100), nextPage.value());
                 Assert.assertNull(nextPage.nextLink());
             }).verifyComplete();
     }
 
-    @Test
+    @Override
     public void canContinueSearchWithTop() {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
@@ -96,12 +95,12 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
                 Assert.assertEquals(1000, firstPage.value().size());
-                assertHotelIdsEqual(expectedId.subList(0, 1000), firstPage.value());
+                assertListEqualHotelIds(expectedId.subList(0, 1000), firstPage.value());
                 Assert.assertNotNull(firstPage.nextLink());
             })
             .assertNext(nextPage -> {
                 Assert.assertEquals(1000, nextPage.value().size());
-                assertHotelIdsEqual(expectedId.subList(1000, 2000), nextPage.value());
+                assertListEqualHotelIds(expectedId.subList(1000, 2000), nextPage.value());
                 Assert.assertNull(nextPage.nextLink());
             }).verifyComplete();
     }
