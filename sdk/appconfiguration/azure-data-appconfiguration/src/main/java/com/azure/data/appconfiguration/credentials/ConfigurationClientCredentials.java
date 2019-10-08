@@ -69,7 +69,7 @@ public class ConfigurationClientCredentials {
      *
      * @return The String of base URI of the configuration service extracted from connection string provided.
      */
-    public String getAppConfigurationURL() {
+    public String getAppConfigurationUrl() {
         return this.credentials.baseUri().toString();
     }
 
