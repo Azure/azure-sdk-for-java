@@ -111,8 +111,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             requiredAnnotationOptions.add(Delete.class);
             requiredAnnotationOptions.add(Post.class);
             requiredAnnotationOptions.add(Patch.class);
-            throw logger.logExceptionAsError(new MissingRequiredAnnotationException(requiredAnnotationOptions,
-                swaggerMethod));
+            throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
         }
 
         returnType = swaggerMethod.getGenericReturnType();

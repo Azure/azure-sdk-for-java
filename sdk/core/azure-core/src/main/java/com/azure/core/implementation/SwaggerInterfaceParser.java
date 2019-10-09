@@ -19,7 +19,6 @@ import java.util.Map;
  * interface.
  */
 public class SwaggerInterfaceParser {
-    private final ClientLogger logger = new ClientLogger(SwaggerInterfaceParser.class);
     private final String host;
     private final String serviceName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();

@@ -63,7 +63,7 @@ final class HttpResponseBodyDecoder {
                         } catch (IOException | MalformedValueException ex) {
                             // This translates in RestProxy as a RestException with no deserialized body.
                             // The response content will still be accessible via the .response() member.
-                            logger.warning("Failed to deserialize the error entity. ", ex);
+                            logger.warning("Failed to deserialize the error entity.", ex);
                         }
                         return Mono.empty();
                     });

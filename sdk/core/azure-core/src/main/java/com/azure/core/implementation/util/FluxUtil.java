@@ -61,8 +61,7 @@ public final class FluxUtil {
         try {
             byteOutputStream.write(byteBufferToArray(byteBuffer));
         } catch (IOException e) {
-            throw new RuntimeException("Error occurs when write ByteBuffer to ByteArrayOutputStream. "
-                + "Error details: " + e.getMessage(), e);
+            throw new RuntimeException("Error occurs when write ByteBuffer to ByteArrayOutputStream.", e);
         }
     }
 
@@ -262,8 +261,7 @@ public final class FluxUtil {
             long size = fileChannel.size();
             return readFile(fileChannel, DEFAULT_CHUNK_SIZE, 0, size);
         } catch (IOException e) {
-            return Flux.error(new RuntimeException("Failed to read the file. Error details:"
-                + e.getMessage(), e));
+            return Flux.error(new RuntimeException("Failed to read the file.", e));
         }
     }
 
