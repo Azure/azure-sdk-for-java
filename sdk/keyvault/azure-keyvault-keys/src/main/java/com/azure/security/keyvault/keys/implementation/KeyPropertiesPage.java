@@ -1,19 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.secrets.implementation;
+package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 /**
- * A page of Azure App Configuration {@link SecretBase} resources and a link to get the next page of
+ * A page of Azure App Configuration {@link KeyProperties} resources and a link to get the next page of
  * resources, if any.
  */
-public final class SecretBasePage implements Page<SecretBase> {
+public final class KeyPropertiesPage implements Page<KeyProperties> {
 
     /**
      * The link to the next page.
@@ -25,7 +25,7 @@ public final class SecretBasePage implements Page<SecretBase> {
      * The list of items.
      */
     @JsonProperty("value")
-    private List<SecretBase> items;
+    private List<KeyProperties> items;
 
     /**
      * Gets the link to the next page. Or {@code null} if there are no more resources to fetch.
@@ -38,12 +38,13 @@ public final class SecretBasePage implements Page<SecretBase> {
     }
 
     /**
-     * Gets the list of {@link SecretBase SecretBase} on this page.
+     * Gets the list of {@link KeyProperties KeyProperties} on this page.
      *
      * @return The list of items in {@link List}.
      */
     @Override
-    public List<SecretBase> getItems() {
+    public List<KeyProperties> getItems() {
         return items;
     }
 }
+

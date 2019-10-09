@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
@@ -36,13 +37,15 @@ public class ManagingDeletedSecretsAsync {
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
-                .setExpires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
+                .setProperties(new SecretProperties()
+                    .setExpires(OffsetDateTime.now().plusYears(1)))).subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-                .setExpires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
+                .setProperties(new SecretProperties()
+                    .setExpires(OffsetDateTime.now().plusYears(1)))).subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);

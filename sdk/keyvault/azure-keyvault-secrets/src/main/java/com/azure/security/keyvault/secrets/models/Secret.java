@@ -6,17 +6,18 @@ package com.azure.security.keyvault.secrets.models;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+
 import java.util.Map;
+import java.util.Objects;
 
 /**
- *  Secret is the resource consisting of name, value and its attributes inherited from {@link SecretBase}.
+ *  Secret is the resource consisting of name, value and its attributes specified in {@link SecretProperties}.
  *  It is managed by Secret Service.
  *
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
-public class Secret extends SecretBase {
+public class Secret {
 
     /**
      * The value of the secret.
@@ -25,10 +26,15 @@ public class Secret extends SecretBase {
     private String value;
 
     /**
+     * The secret properties.
+     */
+    private SecretProperties properties;
+
+    /**
      * Creates an empty instance of the Secret.
      */
-    public Secret() {
-
+    Secret() {
+        properties = new SecretProperties();
     }
 
     /**
@@ -38,7 +44,7 @@ public class Secret extends SecretBase {
      * @param value the value of the secret.
      */
     public Secret(String name, String value) {
-        this.name = name;
+        properties = new SecretProperties(name);
         this.value = value;
     }
 
@@ -52,76 +58,79 @@ public class Secret extends SecretBase {
     }
 
     /**
-     * Set enabled value.
+     * Get the secret identifier.
      *
-     * @param enabled The enabled value to set
-     * @return the Secret object itself.
+     * @return the secret identifier.
      */
-    @Override
-    public Secret setEnabled(Boolean enabled) {
-        super.setEnabled(enabled);
-        return this;
+    public String getId() {
+        return properties.getId();
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
+     * Get the secret name.
      *
-     * @param notBefore The not before time value to set
-     * @return the Secret object itself.
+     * @return the secret name.
      */
-    @Override
-    public Secret setNotBefore(OffsetDateTime notBefore) {
-        super.setNotBefore(notBefore);
-        return this;
+    public String getName() {
+        return properties.getName();
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
-     *
-     * @param expires The expiry time value to set
-     * @return the Secret object itself.
+     * Get the secret properties
+     * @return the Secret properties
      */
-    @Override
-    public Secret setExpires(OffsetDateTime expires) {
-        super.setExpires(expires);
-        return this;
+    public SecretProperties getProperties() {
+        return this.properties;
     }
 
     /**
-     * Set the secret identifier.
-     *
-     * @param id The secret identifier value to set
-     * @return the Secret object itself.
+     * Set the secret properties
+     * @param properties The Secret properties
+     * @throws NullPointerException if {@code properties} is null.
+     * @return the updated secret object
      */
-    @Override
-    public Secret setId(String id) {
-        super.setId(id);
+    public Secret setProperties(SecretProperties properties) {
+        Objects.requireNonNull(properties);
+        properties.name = this.properties.name;
+        this.properties = properties;
         return this;
+    }
+
+    @JsonProperty(value = "id")
+    private void unpackId(String id) {
+        properties.unpackId(id);
     }
 
     /**
-     * Set the content type of the secret.
-     *
-     * @param contentType The content type value to set
-     * @return the Secret object itself.
+     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
+     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
+     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
+     * @param attributes The key value mapping of the Secret attributes
      */
-    @Override
-    public Secret setContentType(String contentType) {
-        super.setContentType(contentType);
-        return this;
+    @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
+    private void unpackAttributes(Map<String, Object> attributes) {
+        properties.unpackAttributes(attributes);
     }
 
-    /**
-     * Set the tags.
-     *
-     * @param tags The tags value to set
-     * @return the Secret object itself.
-     */
-    @Override
-    public Secret setTags(Map<String, String> tags) {
-        super.setTags(tags);
-        return this;
+    @JsonProperty("managed")
+    private void unpackManaged(Boolean managed) {
+        properties.managed = managed;
     }
 
+    @JsonProperty("kid")
+    private void unpackKid(String kid) {
+        properties.keyId = kid;
+    }
+
+    @JsonProperty("contentType")
+    private void unpackContentType(String contentType) {
+        properties.contentType = contentType;
+    }
+
+    @JsonProperty("tags")
+    private void unpackTags(Map<String, String> tags) {
+        properties.tags = tags;
+    }
 }
 

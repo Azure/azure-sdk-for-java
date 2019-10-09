@@ -118,7 +118,6 @@ interface CryptographyService {
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
-
     @Get("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)

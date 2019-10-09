@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,50 +14,52 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * SecretBase is the resource containing all the properties of the secret except its value.
+ * SecretProperties is the resource containing all the properties of the secret except its value.
  * It is managed by the Secret Service.
  *
  *  @see SecretClient
  *  @see SecretAsyncClient
  */
-public class SecretBase {
+public class SecretProperties {
+    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 
     /**
      * The secret id.
      */
-    private String id;
+    String id;
 
     /**
      * The secret version.
      */
-    private String version;
+    String version;
 
     /**
      * Determines whether the object is enabled.
      */
-    private Boolean enabled;
+    Boolean enabled;
 
     /**
      * Not before date in UTC.
      */
-    private OffsetDateTime notBefore;
+    OffsetDateTime notBefore;
 
     /**
      * Expiry date in UTC.
      */
-    private OffsetDateTime expires;
+    OffsetDateTime expires;
 
     /**
      * Creation time in UTC.
      */
-    private OffsetDateTime created;
+    OffsetDateTime created;
 
     /**
      * Last updated time in UTC.
      */
-    private OffsetDateTime updated;
+    OffsetDateTime updated;
 
     /**
      * The secret name.
@@ -71,33 +74,42 @@ public class SecretBase {
      * include: 'Purgeable', 'Recoverable+Purgeable', 'Recoverable',
      * 'Recoverable+ProtectedSubscription'.
      */
-    private String recoveryLevel;
+    String recoveryLevel;
 
     /**
      * The content type of the secret.
      */
     @JsonProperty(value = "contentType")
-    private String contentType;
+    String contentType;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")
-    private Map<String, String> tags;
+    Map<String, String> tags;
 
     /**
      * If this is a secret backing a KV certificate, then this field specifies
      * the corresponding key backing the KV certificate.
      */
     @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
-    private String keyId;
+    String keyId;
 
     /**
      * True if the secret's lifetime is managed by key vault. If this is a
      * secret backing a certificate, then managed will be true.
      */
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean managed;
+    Boolean managed;
+
+    SecretProperties(String secretName) {
+        this.name = secretName;
+    }
+
+    /**
+     * Creates empty instance of SecretProperties.
+     */
+    public SecretProperties() { }
 
     /**
      * Get the secret name.
@@ -130,9 +142,11 @@ public class SecretBase {
      * Set the enabled value.
      *
      * @param enabled The enabled value to set
-     * @return the SecretBase object itself.
+     * @throws NullPointerException if {@code enabled} is null.
+     * @return the SecretProperties object itself.
      */
-    public SecretBase setEnabled(Boolean enabled) {
+    public SecretProperties setEnabled(Boolean enabled) {
+        Objects.requireNonNull(enabled);
         this.enabled = enabled;
         return this;
     }
@@ -150,9 +164,9 @@ public class SecretBase {
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
      * @param notBefore The notBefore UTC time to set
-     * @return the SecretBase object itself.
+     * @return the SecretProperties object itself.
      */
-    public SecretBase setNotBefore(OffsetDateTime notBefore) {
+    public SecretProperties setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -173,9 +187,9 @@ public class SecretBase {
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires The expiry time to set for the secret.
-     * @return the SecretBase object itself.
+     * @return the SecretProperties object itself.
      */
-    public SecretBase setExpires(OffsetDateTime expires) {
+    public SecretProperties setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }
@@ -208,17 +222,6 @@ public class SecretBase {
     }
 
     /**
-     * Set the secret identifier.
-     *
-     * @param id The secret identifier to set
-     * @return the SecretBase object itself.
-     */
-    public SecretBase setId(String id) {
-        unpackId(id);
-        return this;
-    }
-
-    /**
      * Get the content type.
      *
      * @return the content type.
@@ -231,9 +234,9 @@ public class SecretBase {
      * Set the contentType.
      *
      * @param contentType The contentType to set
-     * @return the SecretBase object itself.
+     * @return the updated SecretProperties object itself.
      */
-    public SecretBase setContentType(String contentType) {
+    public SecretProperties setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -251,9 +254,9 @@ public class SecretBase {
      * Set the tags to be associated with the secret.
      *
      * @param tags The tags to set
-     * @return the SecretBase object itself.
+     * @return the updated SecretProperties object itself.
      */
-    public SecretBase setTags(Map<String, String> tags) {
+    public SecretProperties setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -285,21 +288,6 @@ public class SecretBase {
         return this.version;
     }
 
-    @JsonProperty(value = "id")
-    private void unpackId(String id) {
-        if (id != null && id.length() > 0) {
-            this.id = id;
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 3 ? tokens[2] : null);
-                this.version = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
      * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
@@ -308,10 +296,10 @@ public class SecretBase {
      */
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
-    private void unpackAttributes(Map<String, Object> attributes) {
+    void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
-        this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
-        this.expires =  epochToOffsetDateTime(attributes.get("exp"));
+        this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
+        this.expires = epochToOffsetDateTime(attributes.get("exp"));
         this.created = epochToOffsetDateTime(attributes.get("created"));
         this.updated = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
@@ -320,6 +308,22 @@ public class SecretBase {
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
         unpackId((String) attributes.get("id"));
+    }
+
+    @JsonProperty(value = "id")
+    void unpackId(String id) {
+        if (id != null && id.length() > 0) {
+            this.id = id;
+            try {
+                URL url = new URL(id);
+                String[] tokens = url.getPath().split("/");
+                this.name = (tokens.length >= 3 ? tokens[2] : null);
+                this.version = (tokens.length >= 4 ? tokens[3] : null);
+            } catch (MalformedURLException e) {
+                // Should never come here.
+                logger.error("Received Malformed Secret Id URL from KV Service");
+            }
+        }
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
