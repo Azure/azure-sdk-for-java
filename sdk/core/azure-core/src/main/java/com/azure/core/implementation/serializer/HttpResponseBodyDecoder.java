@@ -60,10 +60,10 @@ final class HttpResponseBodyDecoder {
                                 decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                                 null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
                             return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
-                        } catch (IOException | MalformedValueException ignored) {
+                        } catch (IOException | MalformedValueException ex) {
                             // This translates in RestProxy as a RestException with no deserialized body.
                             // The response content will still be accessible via the .response() member.
-                            logger.warning("Failed to deserialize the error entity. ", ignored);
+                            logger.warning("Failed to deserialize the error entity. ", ex);
                         }
                         return Mono.empty();
                     });
