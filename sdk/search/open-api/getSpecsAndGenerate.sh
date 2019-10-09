@@ -14,11 +14,13 @@ mkdir 2019-05-06/data
 mkdir 2019-05-06/service
 
 cp -r azure-rest-api-spec/specification/search/data-plane/Microsoft.Azure.Search.Data/stable/2019-05-06/* 2019-05-06/data/.
-cp -r azure-rest-api-spec/specification/search/data-plane//Microsoft.Azure.Search.Service/stable/2019-05-06/* 2019-05-06/service/.
+cp -r azure-rest-api-spec/specification/search/data-plane/Microsoft.Azure.Search.Service/stable/2019-05-06/* 2019-05-06/service/.
 rm -rf azure-rest-api-spec
 
 # Generate the data api
 autorest --use=$AUTOREST_JAVA_DIR ./data-readme.md
+mv ../azure-search/src/main/java/com/azure/search/Documents.java ../azure-search/src/main/java/com/azure/search/implementation/Documents.java
+mv ../azure-search/src/main/java/com/azure/search/SearchIndexRestClient.java ../azure-search/src/main/java/com/azure/search/implementation/SearchIndexRestClient.java
 
 # Generate the service api
 # Todo: Uncomment when working on the Service API

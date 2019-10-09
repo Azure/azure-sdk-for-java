@@ -804,7 +804,7 @@
     <module>./sdk/storage/azure-storage-common</module>
     <module>./sdk/storage/azure-storage-file</module>
     <module>./sdk/storage/azure-storage-queue</module>
-    <module>./sdk/search/azure-search-data</module>
+    <module>./sdk/search/azure-search</module>
     <module>./sdk/search/azure-search-service</module>
   </modules>
 </project>

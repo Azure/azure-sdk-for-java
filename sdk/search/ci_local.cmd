@@ -2,7 +2,7 @@
 @REM ************************ DELETE THIS FILE BEFORE RETURNING TO MAIN REPO ************************
 @REM ************************************************************************************************
 
-SET SCOPE_DOWN=--projects com.azure.search:azure-search-data,com.azure:azure-client-sdk-parent --also-make
+SET SCOPE_DOWN=--projects com.azure.search:azure-search,com.azure:azure-client-sdk-parent --also-make
 
 @echo ************************************
 @echo Installing Code Quality Tools

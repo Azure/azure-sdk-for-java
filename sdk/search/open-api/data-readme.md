@@ -3,7 +3,8 @@
 This is the AutoRest configuration file for SearchIndexClient
 
 ## Building the SDK
-1. Install [AutoRest](https://github.com/Azure/autorest/blob/master/README.md#installing-autorest) 
+
+1. Install [AutoRest](https://github.com/Azure/autorest/blob/master/README.md#installing-autorest)
 2. Execute  autorest in this folder. It will use this readme file as the configuration:
 
 ```bash
@@ -23,50 +24,78 @@ directive:
     from: IndexBatch
     to: IndexBatchImpl
 java:
-  output-folder: ../azure-search-data
-  namespace: com.azure.search.data.generated
+  output-folder: ../azure-search
+  namespace: com.azure.search
   azure-arm: false
   add-credentials: true
   clear-output-folder: false
   generate-client-interfaces: true
   directive:
 
-  # Use Document rather than Map<String, Object>
-  - from: SearchResult.java
-    where: $
-    transform: >-
-      return $
-      .replace(/(package com.azure.search.data.generated.models;)/g, "$1\nimport com.azure.search.data.customization.Document;")
-      .replace(/(Map<String, Object>)/g, "Document")
-  
-  # Use Document rather than Map<String, Object>
+  # Move Documents to the implementation package
   - from: Documents.java
     where: $
     transform: >-
       return $
-      .replace(/(package com.azure.search.data.generated;)/g, "$1\nimport com.azure.search.data.customization.Document;")
-      .replace(/(Object)/g, "Document")
+      .replace(/(package com.azure.search;)/g, "package com.azure.search.implementation;")
 
-  # Use Document rather than Map<String, Object>
-  # Enable configuration of RestProxy serializer
-  - from: DocumentsImpl.java
+  # Update Documents references to point to implementation
+  - from: 
+    - DocumentsImpl.java
+    - SearchIndexRestClientImpl.java
     where: $
     transform: >-
       return $
-      .replace(/(package com.azure.search.data.generated.implementation;)/g, "$1\nimport com.azure.search.data.customization.Document;")
+      .replace(/(import com.azure.search.Documents;\n)/g, "")
+
+  # Move SearchIndexRestClient to the implementation package
+  - from: SearchIndexRestClient.java
+    where: $
+    transform: >-
+      return $
+      .replace(/(package com.azure.search;)/g, "package com.azure.search.implementation;")
+
+  # Update SearchIndexRestClient references to point to implementation
+  - from:
+    - SearchIndexRestClientBuilder.java
+    - SearchIndexRestClientImpl.java
+    where: $
+    transform: >-
+      return $
+      .replace(/(import com.azure.search.Documents;\n)/g, "")
+      .replace(/(import com.azure.search.implementation.Documents;\n)/g, "")
+      .replace(/(import com.azure.search.SearchIndexRestClient;\n)/g, "")
+  
+  # Use Document rather than Map<String, Object>
+  - from: 
+    - Documents.java
+    - DocumentsImpl.java
+    - SearchResult.java
+    where: $
+    transform: >-
+      return $
+      .replace(/(package com.azure.search.models;)/g, "$1\nimport com.azure.search.Document;")
+      .replace(/(package com.azure.search.implementation;)/g, "$1\nimport com.azure.search.Document;")
+      .replace(/(Map<String, Object>)/g, "Document")
       .replace(/(Object)/g, "Document")
-      .replace(/(import com.azure.core.implementation.serializer.jackson.JacksonAdapter;)/g, "$1\nimport com.azure.core.implementation.serializer.SerializerAdapter;")
-      .replace(/(@param client the instance of the service client containing this operation class.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
-      .replace(/(public DocumentsImpl\(SearchIndexRestClientImpl client\) {)/g, "public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {")
-      .replace(/(this.service = RestProxy.create\(DocumentsService.class, client.getHttpPipeline\(\)\);)/g, "this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);")
 
   # Use Document rather than Map<String, Object>
   - from: SuggestResult.java
     where: $
     transform: >-
-      return $
-      .replace(/(import java.util.Map;)/g, "$1\nimport com.azure.search.data.customization.Document;")
+      return $ 
+      .replace(/(import java.util.Map;\n)/g, "import com.azure.search.Document;")
       .replace(/(Map<String, Object>)/g, "Document")
+
+  # Enable configuration of RestProxy serializer
+  - from: DocumentsImpl.java
+    where: $
+    transform: >-
+      return $
+      .replace(/(import com.azure.core.implementation.serializer.jackson.JacksonAdapter;)/g, "$1\nimport com.azure.core.implementation.serializer.SerializerAdapter;")
+      .replace(/(@param client the instance of the service client containing this operation class.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
+      .replace(/(public DocumentsImpl\(SearchIndexRestClientImpl client\) {)/g, "public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {")
+      .replace(/(this.service = RestProxy.create\(DocumentsService.class, client.getHttpPipeline\(\)\);)/g, "this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);")
 
   # Enable public access to client setters
   # Enable configuration of RestProxy serializer
@@ -114,12 +143,11 @@ java:
       .replace(/(this.pipeline = RestProxy.createDefaultPipeline\(\);\s+})/g, "$1\n        if \(serializer == null\) {\n            this.serializer = JacksonAdapter.createDefaultSerializerAdapter\(\);\n        }")
 
   # Enable IndexBatchImpl to be used as a generic type
-  # TODO (Noel): Make IndexBatchImpl package private after reorganization
   - from: IndexBatchImpl.java
     where: $
     transform: >-
       return $
-      .replace(/(final class IndexBatchImpl)/g, "class IndexBatchImpl<T>")
+      .replace(/(public final class IndexBatchImpl)/g, "class IndexBatchImpl<T>")
       .replace(/(private List<IndexAction> actions;)/g, "private List<IndexAction<T>> actions;")
       .replace(/(public List<IndexAction> actions\(\) {)/g, "public List<IndexAction<T>> actions() {")
       .replace(/(public IndexBatchImpl actions\(List<IndexAction> actions\) {)/g, "protected IndexBatchImpl<T> actions(List<IndexAction<T>> actions) {")
@@ -132,7 +160,6 @@ java:
     transform: >-
       return $
       .replace(/(IndexBatchImpl)/g, "IndexBatch")
-      .replace(/(import com.azure.search.data.generated.models.IndexBatch)/g, "import com.azure.search.data.customization.IndexBatch")
       .replace(/(IndexBatch )/g, "IndexBatch<T> ")
       .replace(/(Mono<DocumentIndexResult> indexAsync)/g, "<T> $1")
       .replace(/(Mono<SimpleResponse<DocumentIndexResult>> index)/g, "<T> $1")

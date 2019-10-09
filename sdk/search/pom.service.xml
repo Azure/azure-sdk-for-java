@@ -11,7 +11,7 @@
   <modules>
     <module>../core/azure-core</module>
     <module>../core/azure-core-test</module>
-    <module>azure-search-data</module>
+    <module>azure-search</module>
     <module>azure-search-service</module>
   </modules>
 </project>

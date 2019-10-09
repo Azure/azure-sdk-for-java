@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.1.0</version>
+    <relativePath>../../../pom.client.xml</relativePath>
+  </parent>
+
+  <name>Microsoft Azure Search client for Java</name>
+  <description>This package contains client functionality for Microsoft Azure Search</description>
+
+  <groupId>com.azure.search</groupId>
+  <artifactId>azure-search</artifactId>
+  <version>1.0.0-preview.1</version>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.0.0-preview.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure</artifactId>
+      <version>1.24.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.search</groupId>
+      <artifactId>azure-search-service</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http</artifactId>
+      <version>4.1.38.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.4</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+</project>

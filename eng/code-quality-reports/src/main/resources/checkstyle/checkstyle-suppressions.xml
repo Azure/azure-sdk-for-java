@@ -85,7 +85,7 @@
   <!-- All auto generated files need to exclude from checkstyle -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
-  <suppress checks="." files=".*[/\\]search[/\\].*(generated|models).*.java"/>
+  <suppress checks="." files=".*[/\\]search[/\\].*(models|implementation).*.java"/>
   <suppress checks="." files=".*[/\\]search[/\\]azure-search-service[/\\].*.java"/>
 
   <!-- The constant name is public static. -->
@@ -193,5 +193,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.data.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
+
 </suppressions>
