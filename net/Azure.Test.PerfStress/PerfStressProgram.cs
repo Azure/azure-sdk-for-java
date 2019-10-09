@@ -58,7 +58,7 @@ namespace Azure.Test.PerfStress
 
             var duration = TimeSpan.FromSeconds(options.Duration);
 
-            var tests = new IPerfStressTest[options.Parallel];            
+            var tests = new IPerfStressTest[options.Parallel];
             for (var i = 0; i < options.Parallel; i++)
             {
                 tests[i] = (IPerfStressTest)Activator.CreateInstance(testType, options);
@@ -83,7 +83,19 @@ namespace Azure.Test.PerfStress
                     using var cts = new CancellationTokenSource(duration);
                     var cancellationToken = cts.Token;
 
-                    var progressStatusTask = PrintStatusAsync("=== Progress ===", () => _completedOperations, newLine: true, cancellationToken);
+                    var lastCompleted = 0;
+                    var progressStatusTask = PrintStatusAsync(
+                        "=== Progress ===" + Environment.NewLine +
+                        "Current\t\tTotal",
+                        () =>
+                        {
+                            var totalCompleted = _completedOperations;
+                            var currentCompleted = totalCompleted - lastCompleted;
+                            lastCompleted = totalCompleted;
+                            return currentCompleted + "\t\t" + totalCompleted;
+                        },
+                        newLine: true,
+                        cancellationToken);
 
                     if (options.Sync)
                     {
@@ -227,7 +239,7 @@ namespace Azure.Test.PerfStress
                 {
                 }
             }
-            
+
             if (needsExtraNewline)
             {
                 Console.WriteLine();
