@@ -387,7 +387,7 @@ final class HttpResponseBodyDecoder {
                         token = t;
                     }
                 } catch (ClassNotFoundException ignored) {
-                    logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus");
+                    logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
                 }
             }
 
@@ -403,7 +403,7 @@ final class HttpResponseBodyDecoder {
                     token = TypeUtil.getTypeArgument(token);
                 }
             } catch (ClassNotFoundException ignored) {
-                logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus");
+                logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
             }
         }
         return token;
