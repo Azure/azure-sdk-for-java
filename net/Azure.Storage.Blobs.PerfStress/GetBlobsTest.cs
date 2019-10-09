@@ -19,7 +19,7 @@ namespace Azure.Storage.Blobs.PerfStress
             var uploadTasks = new Task[Options.Count];
             for (var i = 0; i < uploadTasks.Length; i++)
             {
-                var blobName = "getblobstest-" + Guid.NewGuid().ToString();
+                var blobName = "getblobstest-" + Guid.NewGuid();
                 uploadTasks[i] = BlobContainerClient.UploadBlobAsync(blobName, Stream.Null);
             }
             await Task.WhenAll(uploadTasks);

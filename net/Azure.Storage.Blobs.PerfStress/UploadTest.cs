@@ -11,7 +11,7 @@ namespace Azure.Storage.Blobs.PerfStress
 
         public UploadTest(ParallelTransferOptionsOptions options) : base(options)
         {
-            var blobName = "uploadtest-" + Guid.NewGuid().ToString();
+            var blobName = "uploadtest-" + Guid.NewGuid();
             _blobClient = BlobContainerClient.GetBlobClient(blobName);
         }
 

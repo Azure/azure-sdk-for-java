@@ -12,7 +12,7 @@ namespace Azure.Storage.Blobs.PerfStress
 
         public UploadV11Test(SizeOptions options) : base(options)
         {
-            var blobName = "uploadv11test-" + Guid.NewGuid().ToString();
+            var blobName = "uploadv11test-" + Guid.NewGuid();
             _cloudBlockBlob = CloudBlobContainer.GetBlockBlobReference(blobName);
         }
 

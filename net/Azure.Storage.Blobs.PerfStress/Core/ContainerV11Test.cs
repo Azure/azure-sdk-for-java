@@ -12,7 +12,7 @@ namespace Azure.Storage.Blobs.PerfStress.Core
 
         static ContainerV11Test()
         {
-            ContainerName = _containerPrefix + "-" + Guid.NewGuid().ToString();
+            ContainerName = _containerPrefix + "-" + Guid.NewGuid();
         }
 
         protected CloudBlobContainer CloudBlobContainer { get; private set; }
