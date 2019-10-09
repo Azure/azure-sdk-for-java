@@ -75,13 +75,13 @@ public final class PollResponse<T> {
          *     <li>USER_CANCELLED</li>
          *     <li>FAILED</li>
          * </ul>
-         * @param currentOperationStatus
+         * @param operationStatus The status of current operation.RestProxyWithMockTests
          * @return true if operation is complete.
          */
-        public static boolean isComplete(OperationStatus currentOperationStatus) {
-            return currentOperationStatus != null && (currentOperationStatus == OperationStatus.SUCCESSFULLY_COMPLETED
-                || currentOperationStatus == OperationStatus.FAILED
-                || currentOperationStatus == OperationStatus.USER_CANCELLED);
+        public static boolean isComplete(OperationStatus operationStatus) {
+            return operationStatus != null && (operationStatus == OperationStatus.SUCCESSFULLY_COMPLETED
+                || operationStatus == OperationStatus.FAILED
+                || operationStatus == OperationStatus.USER_CANCELLED);
         }
     }
 

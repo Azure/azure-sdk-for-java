@@ -115,7 +115,7 @@ public class TokenCacheTests {
         }
 
         @Override
-        public OffsetDateTime getExpiresOn() {
+        public OffsetDateTime getExpiresAt() {
             return expiry;
         }
 

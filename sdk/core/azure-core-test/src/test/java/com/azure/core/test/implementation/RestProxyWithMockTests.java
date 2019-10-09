@@ -32,10 +32,10 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.ContentType;
+import com.azure.core.implementation.util.Base64Url;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.util.Base64Url;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.charset.StandardCharsets;
@@ -473,7 +473,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public String getNextLink() {
+        public String getContinuationToken() {
             return nextLink;
         }
     }
@@ -493,7 +493,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public String getNextLink() {
+        public String getContinuationToken() {
             return nextLink;
         }
     }
@@ -579,7 +579,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsync(page))
             .assertNext(r -> {
-                assertEquals(page.nextLink, r.getNextLink());
+                assertEquals(page.nextLink, r.getContinuationToken());
 
                 assertEquals(r.getItems().size(), 3);
                 for (KeyValue keyValue : r.getValue()) {
@@ -610,7 +610,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
-                assertEquals(page.nextLink(), response.getNextLink());
+                assertEquals(page.nextLink(), response.getContinuationToken());
                 assertNull(response.getItems());
             })
             .verifyComplete();
