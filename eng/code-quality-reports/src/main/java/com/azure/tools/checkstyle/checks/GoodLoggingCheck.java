@@ -157,7 +157,7 @@ public class GoodLoggingCheck extends AbstractCheck {
             final String className = classNameDeque.peek();
             if (!containerClassName.equals(className + ".class")) {
                 log(exprToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' "
-                    + "instead of ''%s''", className, containerClassName));
+                    + "instead of ''%s''.", className, containerClassName));
             }
             return true;
         });

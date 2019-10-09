@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
@@ -10,7 +12,15 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 
-public final class DeletedKey extends KeyBase {
+/**
+ * Deleted Key is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
+ * inherited from {@link Key}.
+ * It is managed by Key Service.
+ *
+ * @see KeyClient
+ * @see KeyAsyncClient
+ */
+public final class DeletedKey extends Key {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
@@ -19,7 +29,9 @@ public final class DeletedKey extends KeyBase {
     @JsonProperty(value = "recoveryId")
     private String recoveryId;
 
-
+    /**
+     * The Json Web Key
+     */
     @JsonProperty(value = "key")
     private JsonWebKey keyMaterial;
 
@@ -85,7 +97,7 @@ public final class DeletedKey extends KeyBase {
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
-        keyMaterial = createKeyMaterialFromJson(key);
+        keyMaterial = properties.createKeyMaterialFromJson(key);
     }
 
     /**

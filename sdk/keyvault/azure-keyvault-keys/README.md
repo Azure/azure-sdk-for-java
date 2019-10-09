@@ -191,14 +191,14 @@ KeyClient keyClient = new KeyClientBuilder()
         .buildClient();
 
 Key rsaKey = keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048));
-System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(2048));
+System.out.printf("Key is created with name %s and id %s \n", rsaKey.getName(), rsaKey.getId());
 
 Key ecKey = keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .curve(KeyCurveName.P_256)
-                .expires(OffsetDateTime.now().plusYears(1)));
-System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
+                .setCurve(KeyCurveName.P_256)
+                .setExpires(OffsetDateTime.now().plusYears(1)));
+System.out.printf("Key is created with name %s and id %s \n", ecKey.getName(), ecKey.getId());
 ```
 
 ### Retrieve a Key
@@ -206,7 +206,7 @@ System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKe
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
 Key key = keyClient.getKey("key_name");
-System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id());
+System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId());
 ```
 
 ### Update an existing Key
@@ -216,9 +216,9 @@ Update an existing Key by calling `updateKey`.
 // Get the key to update.
 Key key = keyClient.getKey("key_name");
 // Update the expiry time of the key.
-key.expires(OffsetDateTime.now().plusDays(30));
-Key updatedKey = keyClient.updateKey(key);
-System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString());
+key.getProperties().setExpires(OffsetDateTime.now().plusDays(30));
+Key updatedKey = keyClient.updateKeyProperties(key.getProperties());
+System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires().toString());
 ```
 
 ### Delete a Key
@@ -226,7 +226,7 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toStri
 Delete an existing Key by calling `deleteKey`.
 ```Java
 DeletedKey deletedKey = client.deleteKey("key_name");
-System.out.printf("Deleted Key's deletion date %s", deletedKey.deletedDate().toString());
+System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedDate().toString());
 ```
 
 ### List Keys
@@ -234,10 +234,11 @@ System.out.printf("Deleted Key's deletion date %s", deletedKey.deletedDate().toS
 List the keys in the key vault by calling `listKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
-for (KeyBase key : keyClient.listKeys()) {
-    Key keyWithMaterial = keyClient.getKey(key);
-    System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
+for (KeyProperties keyProperties : keyClient.listKeys()) {
+    Key keyWithMaterial = keyClient.getKey(keyProperties);
+    System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),   keyWithMaterial.getKeyMaterial().getKty());
 }
+
 ```
 
 ### Encrypt
@@ -254,7 +255,7 @@ new Random(0x1234567L).nextBytes(plainText);
 
 // Let's encrypt a simple plain text of size 100 bytes.
 EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
 ```
 
 ### Decrypt
@@ -267,8 +268,8 @@ new Random(0x1234567L).nextBytes(plainText);
 EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
 
 //Let's decrypt the encrypted result.
-DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText());
-System.out.printf("Returned plainText size is %d bytes \n", decryptResult.plainText().length);
+DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText());
+System.out.printf("Returned plainText size is %d bytes \n", decryptResult.getPlainText().length);
 ```
 
 ### Async API
@@ -297,15 +298,15 @@ KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
         .buildAsyncClient();
 
 keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-    .expires(OffsetDateTime.now().plusYears(1))
-    .keySize(2048))
+    .setExpires(OffsetDateTime.now().plusYears(1))
+    .setKeySize(2048))
     .subscribe(key ->
-       System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
+       System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
 
 keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-    .expires(OffsetDateTime.now().plusYears(1)))
+    .setExpires(OffsetDateTime.now().plusYears(1)))
     .subscribe(key ->
-      System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
+      System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Retrieve a Key Asynchronously
@@ -313,7 +314,7 @@ keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(key ->
-  System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id()));
+  System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Update an existing Key Asynchronously
@@ -324,9 +325,9 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
      Key key = keyResponse;
      // Update the expiry time of the key.
-     key.expires(OffsetDateTime.now().plusDays(50));
-     keyAsyncClient.updateKey(key).subscribe(updatedKey ->
-         System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString()));
+     key.getProperties().setExpires(OffsetDateTime.now().plusDays(50));
+     keyAsyncClient.updateKeyProperties(key.getProperties()).subscribe(updatedKey ->
+         System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires().toString()));
    });
 ```
 
@@ -335,7 +336,7 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 Delete an existing Key by calling `deleteKey`.
 ```java
 keyAsyncClient.deleteKey("keyName").subscribe(deletedKey ->
-   System.out.printf("Deleted Key's deletion time %s \n", deletedKey.deletedDate().toString()));
+   System.out.printf("Deleted Key's deletion time %s \n", deletedKey.getDeletedDate().toString()));
 ```
 
 ### List Keys Asynchronously
@@ -345,7 +346,7 @@ List the keys in the key vault by calling `listKeys`.
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listKeys()
   .flatMap(keyAsyncClient::getKey).subscribe(key ->
-    System.out.printf("Key returned with name %s and id %s \n", key.name(), key.id()));
+    System.out.printf("Key returned with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Encrypt Asynchronously
@@ -363,7 +364,7 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
     });
 ```
 
@@ -377,12 +378,11 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
         //Let's decrypt the encrypted response.
-        cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText())
-            .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.plainText().length));
+        cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText())
+            .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.getPlainText().length));
     });
-
 ```
 
 ## Troubleshooting

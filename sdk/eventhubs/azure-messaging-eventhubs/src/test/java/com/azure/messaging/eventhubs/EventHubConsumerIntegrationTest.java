@@ -227,45 +227,6 @@ public class EventHubConsumerIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    /**
-     * Verify that we can receive until the timeout multiple times.
-     */
-    @Test
-    public void receiveUntilTimeoutMultipleTimes() {
-        // Arrange
-        final int numberOfEvents = 15;
-        final int numberOfEvents2 = 3;
-        final String partitionId = "1";
-        final List<EventData> events = getEventsAsList(numberOfEvents);
-        final List<EventData> events2 = getEventsAsList(numberOfEvents2);
-
-        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-            EventPosition.fromEnqueuedTime(Instant.now()));
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().setPartitionId(partitionId));
-
-        try {
-            producer.send(events);
-
-            // Act
-            final IterableStream<EventData> receive = consumer.receive(100, Duration.ofSeconds(3));
-
-            logger.info("Sending second batch.");
-            producer.send(events2);
-
-            logger.info("Receiving second batch.");
-            final IterableStream<EventData> receive2 = consumer.receive(100, Duration.ofSeconds(5));
-
-            // Assert
-            final List<EventData> asList = receive.stream().collect(Collectors.toList());
-            Assert.assertEquals(numberOfEvents, asList.size());
-
-            final List<EventData> asList2 = receive2.stream().collect(Collectors.toList());
-            Assert.assertEquals(numberOfEvents2, asList2.size());
-        } finally {
-            dispose(consumer, producer);
-        }
-    }
-
     private static List<EventData> getEventsAsList(int numberOfEvents) {
         return TestUtils.getEvents(numberOfEvents, TestUtils.MESSAGE_TRACKING_ID).collectList().block();
     }
