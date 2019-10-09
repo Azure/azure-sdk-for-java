@@ -935,7 +935,7 @@ public class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig) {
-        Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null.");
+        Objects.requireNonNull(mergeCertificateConfig, "'mergeCertificateConfig' cannot be null.");
         return withContext(context -> mergeCertificateWithResponse(mergeCertificateConfig, context));
     }
 

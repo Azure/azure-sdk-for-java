@@ -164,7 +164,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public CertificateClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential, "Token credential cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
     }
@@ -190,7 +190,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public CertificateClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "Http pipeline policy cannot be null.");
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
         policies.add(policy);
         return this;
     }
@@ -203,7 +203,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public CertificateClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client, "Http client cannot be null.");
+        Objects.requireNonNull(client, "'client' cannot be null.");
         this.httpClient = client;
         return this;
     }
@@ -218,7 +218,7 @@ public final class CertificateClientBuilder {
      * @return the updated {@link CertificateClientBuilder} object.
      */
     public CertificateClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline, "Http Pipeline cannot be null.");
+        Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         this.pipeline = pipeline;
         return this;
     }
