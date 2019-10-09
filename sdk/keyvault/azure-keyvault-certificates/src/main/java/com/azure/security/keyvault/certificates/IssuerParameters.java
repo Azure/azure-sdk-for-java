@@ -15,10 +15,10 @@ class IssuerParameters {
 
     }
 
-    IssuerParameters(CertificatePolicy certificateBase) {
-        this.name = certificateBase.issuerName();
-        this.certificateType = certificateBase.issuerCertificateTypeRequest();
-        this.certificateTransparency = certificateBase.certificateTransparency();
+    IssuerParameters(CertificatePolicy certificatePolicy) {
+        this.name = certificatePolicy.getIssuerName();
+        this.certificateType = certificatePolicy.getCertificateType();
+        this.certificateTransparency = certificatePolicy.isCertificateTransparency();
     }
     /**
      * Name of the referenced issuer object or reserved names; for example,

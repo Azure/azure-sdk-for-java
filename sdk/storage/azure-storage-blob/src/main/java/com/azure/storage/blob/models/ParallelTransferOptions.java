@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 
@@ -15,6 +16,7 @@ public class ParallelTransferOptions {
 
     private int blockSize;
     private int numBuffers;
+    private ProgressReceiver progressReceiver;
 
     /**
      * Creates a new {@link ParallelTransferOptions} with default parameters applied.
@@ -24,6 +26,7 @@ public class ParallelTransferOptions {
     public ParallelTransferOptions() {
         this.blockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         this.numBuffers = BLOB_DEFAULT_NUMBER_OF_PARALLEL_TRANSFERS;
+        this.progressReceiver = null;
     }
 
     /**
@@ -40,6 +43,14 @@ public class ParallelTransferOptions {
      */
     public int getNumBuffers() {
         return this.numBuffers;
+    }
+
+    /**
+     * Gets the Progress receiver for parallel reporting
+     * @return the progress reporter
+     */
+    public ProgressReceiver getProgressReceiver() {
+        return this.progressReceiver;
     }
 
     /**
@@ -71,6 +82,11 @@ public class ParallelTransferOptions {
     public ParallelTransferOptions setNumBuffers(int numBuffers) {
         Utility.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
         this.numBuffers = numBuffers;
+        return this;
+    }
+
+    public ParallelTransferOptions setProgressReceiver(ProgressReceiver progressReceiver) {
+        this.progressReceiver = progressReceiver;
         return this;
     }
 }

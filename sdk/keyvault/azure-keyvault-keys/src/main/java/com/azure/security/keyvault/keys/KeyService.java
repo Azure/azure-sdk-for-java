@@ -25,10 +25,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
-import com.azure.security.keyvault.keys.implementation.KeyBasePage;
+import com.azure.security.keyvault.keys.implementation.KeyPropertiesPage;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.KeyBase;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import reactor.core.publisher.Mono;
 
 /**
@@ -104,14 +104,14 @@ interface KeyService {
     @Get("keys/{key-name}/versions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(KeyBasePage.class)
-    Mono<PagedResponse<KeyBase>> getKeyVersions(@HostParam("url") String url,
-                                                    @PathParam("key-name") String keyName,
-                                                    @QueryParam("maxresults") Integer maxresults,
-                                                    @QueryParam("api-version") String apiVersion,
-                                                    @HeaderParam("accept-language") String acceptLanguage,
-                                                    @HeaderParam("Content-Type") String type,
-                                                    Context context);
+    @ReturnValueWireType(KeyPropertiesPage.class)
+    Mono<PagedResponse<KeyProperties>> getKeyVersions(@HostParam("url") String url,
+                                                      @PathParam("key-name") String keyName,
+                                                      @QueryParam("maxresults") Integer maxresults,
+                                                      @QueryParam("api-version") String apiVersion,
+                                                      @HeaderParam("accept-language") String acceptLanguage,
+                                                      @HeaderParam("Content-Type") String type,
+                                                      Context context);
 
     @Post("keys/{key-name}/backup")
     @ExpectedResponses({200})
@@ -140,24 +140,24 @@ interface KeyService {
     @Get("keys")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(KeyBasePage.class)
-    Mono<PagedResponse<KeyBase>> getKeys(@HostParam("url") String url,
-                                         @QueryParam("maxresults") Integer maxresults,
-                                         @QueryParam("api-version") String apiVersion,
-                                         @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type,
-                                         Context context);
+    @ReturnValueWireType(KeyPropertiesPage.class)
+    Mono<PagedResponse<KeyProperties>> getKeys(@HostParam("url") String url,
+                                               @QueryParam("maxresults") Integer maxresults,
+                                               @QueryParam("api-version") String apiVersion,
+                                               @HeaderParam("accept-language") String acceptLanguage,
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
 
 
     @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(KeyBasePage.class)
-    Mono<PagedResponse<KeyBase>> getKeys(@HostParam("url") String url,
-                                         @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                         @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type,
-                                         Context context);
+    @ReturnValueWireType(KeyPropertiesPage.class)
+    Mono<PagedResponse<KeyProperties>> getKeys(@HostParam("url") String url,
+                                               @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                               @HeaderParam("accept-language") String acceptLanguage,
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
 
 
     @Get("deletedkeys")

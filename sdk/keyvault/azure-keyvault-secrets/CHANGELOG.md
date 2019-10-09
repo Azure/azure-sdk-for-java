@@ -1,4 +1,15 @@
 # Release History
+## 4.0.0-preview.4 (2019-09-08)
+For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
+
+- Updated to be fully compliant with the Java 9 Platform Module System.
+
+### Breaking changes
+- `SecretBase` has been renamed to `SecretProperties`.
+- `Secret` and `DeletedSecret` no longer extend `SecretProperties`, but instead contain a `SecretProperties` property named `Properties`.
+- `updateSecret` method has been renamed to `updateSecretProperties` in `SecretClient` and `SecretAsyncClient`.
+- Getters and setters were updated to use Java Bean notation.
+- Changed VoidResponse to Response<Void> on sync API, and Mono<VoidResponse> to Mono<Response<Void>> on async API.
 
 ## 4.0.0-preview.3 (2019-09-10)
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).

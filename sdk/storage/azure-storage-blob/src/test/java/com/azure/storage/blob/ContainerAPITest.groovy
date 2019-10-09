@@ -559,14 +559,64 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "List blobs flat"() {
+    def "List block blobs flat"() {
         setup:
         def name = generateBlobName()
-        def bu = cc.getBlobClient(name).getPageBlobClient()
+        def bu = cc.getBlobClient(name).getBlockBlobClient()
+        bu.upload(defaultInputStream.get(), 7)
+
+        when:
+        def blobs = cc.listBlobsFlat(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+
+        //ContainerListBlobFlatSegmentHeaders headers = response.headers()
+        //List<BlobItem> blobs = responseiterator()()
+
+        then:
+//        response.getStatusCode() == 200
+//        headers.contentType() != null
+//        headers.requestId() != null
+//        headers.getVersion() != null
+//        headers.date() != null
+        def blob = blobs.next()
+        !blobs.hasNext()
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().isIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMD5() != null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == null
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred()
+        blob.getProperties().getAccessTier() == AccessTier.HOT
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
+    }
+
+    def "List page blobs flat"() {
+        setup:
+        ccPremium = premiumBlobServiceClient.getBlobContainerClient(containerName)
+        ccPremium.create()
+        def name = generateBlobName()
+        def bu = ccPremium.getBlobClient(name).getPageBlobClient()
         bu.create(512)
 
         when:
-        def blobs = cc.listBlobsFlat().iterator()
+        def blobs = ccPremium.listBlobsFlat(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
 
         //ContainerListBlobFlatSegmentHeaders headers = response.headers()
         //List<BlobItem> blobs = responseiterator()()
@@ -602,9 +652,12 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getBlobSequenceNumber() == 0
         blob.getProperties().isServerEncrypted()
         blob.getProperties().isAccessTierInferred()
-        blob.getProperties().getAccessTier() == AccessTier.HOT
+        blob.getProperties().getAccessTier() == AccessTier.P10
         blob.getProperties().getArchiveStatus() == null
         blob.getProperties().getCreationTime() != null
+
+        cleanup:
+        ccPremium.delete()
     }
 
     def "List blobs flat min"() {

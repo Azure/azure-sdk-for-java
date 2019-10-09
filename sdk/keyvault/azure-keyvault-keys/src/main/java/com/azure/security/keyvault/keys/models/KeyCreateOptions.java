@@ -87,7 +87,7 @@ public class KeyCreateOptions {
      *
      * @return the key type.
      */
-    public KeyType keyType() {
+    public KeyType getKeyType() {
         return this.keyType;
     }
 
@@ -107,7 +107,7 @@ public class KeyCreateOptions {
      *
      * @return the notBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
@@ -127,7 +127,7 @@ public class KeyCreateOptions {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         return this.expires;
     }
 
@@ -147,7 +147,7 @@ public class KeyCreateOptions {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -167,7 +167,7 @@ public class KeyCreateOptions {
      *
      * @return the enabled value
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -176,7 +176,7 @@ public class KeyCreateOptions {
      *
      * @return the name of the key.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 

@@ -43,7 +43,7 @@ public final class LifetimeAction {
      *
      * @return the lifetimePercentage value
      */
-    public Integer lifetimePercentage() {
+    public Integer getLifetimePercentage() {
         return this.lifetimePercentage;
     }
 
@@ -51,9 +51,9 @@ public final class LifetimeAction {
      * Set the lifetimePercentage value.
      *
      * @param lifetimePercentage The lifetimePercentage value to set
-     * @return the Trigger object itself.
+     * @return the LifeTimeAction object itself.
      */
-    public LifetimeAction lifetimePercentage(Integer lifetimePercentage) {
+    public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
         return this;
     }
@@ -63,7 +63,7 @@ public final class LifetimeAction {
      *
      * @return the daysBeforeExpiry value
      */
-    public Integer daysBeforeExpiry() {
+    public Integer getDaysBeforeExpiry() {
         return this.daysBeforeExpiry;
     }
 
@@ -71,9 +71,9 @@ public final class LifetimeAction {
      * Set the daysBeforeExpiry value.
      *
      * @param daysBeforeExpiry The daysBeforeExpiry value to set
-     * @return the Trigger object itself.
+     * @return the LifeTimeAction object itself.
      */
-    public LifetimeAction daysBeforeExpiry(Integer daysBeforeExpiry) {
+    public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
         this.daysBeforeExpiry = daysBeforeExpiry;
         return this;
     }
@@ -83,20 +83,10 @@ public final class LifetimeAction {
      *
      * @return the lifetimeActionType value
      */
-    public LifetimeActionType actionType() {
+    public LifetimeActionType getActionType() {
         return this.lifetimeActionType;
     }
 
-    /**
-     * Set the lifetimeActionType value.
-     *
-     * @param lifetimeActionType The lifetimeActionType value to set
-     * @return the Action object itself.
-     */
-    public LifetimeAction actionType(LifetimeActionType lifetimeActionType) {
-        this.lifetimeActionType = lifetimeActionType;
-        return this;
-    }
 
     @JsonProperty(value = "action")
     private void unpackAction(Map<String, Object> action) {

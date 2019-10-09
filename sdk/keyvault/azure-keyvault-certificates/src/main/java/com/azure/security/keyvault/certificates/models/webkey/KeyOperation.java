@@ -3,62 +3,61 @@
 
 package com.azure.security.keyvault.certificates.models.webkey;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Defines values for KeyOperation.
  */
-public enum KeyOperation {
-
-    ENCRYPT("encrypt"),
-
-    DECRYPT("decrypt"),
-
-    SIGN("sign"),
-
-    VERIFY("verify"),
-
-    WRAP_KEY("wrapKey"),
-
-    UNWRAP_KEY("unwrapKey"),
-
-    OTHER("other");
-
-    private String value;
+public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
-     * Creates a custom value for KeyOperation.
-     * @param value The custom value
+     * Static value Encrypt for KeyOperation.
      */
-    KeyOperation(String value) {
-        this.value = value;
-    }
+    public static final KeyOperation ENCRYPT = fromString("encrypt");
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Static value Decrypt for KeyOperation.
+     */
+    public static final KeyOperation DECRYPT = fromString("decrypt");
+
+    /**
+     * Static value Sign for KeyOperation.
+     */
+    public static final KeyOperation SIGN = fromString("sign");
+
+    /**
+     * Static value Verify for KeyOperation.
+     */
+    public static final KeyOperation VERIFY = fromString("verify");
+
+    /**
+     * Static value Wrap Key for KeyOperation.
+     */
+    public static final KeyOperation WRAP_KEY = fromString("wrapKey");
+
+    /**
+     * Static value Unwrap Key for KeyOperation.
+     */
+    public static final KeyOperation UNWRAP_KEY = fromString("unwrapKey");
+
+    /**
+     * Creates or finds a KeyOperation from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding KeyOperation.
+     */
+    @JsonCreator
+    public static KeyOperation fromString(String name) {
+        return fromString(name, KeyOperation.class);
     }
 
     /**
-     * Calculates the hashcode of the custom value
-     * @return the hashcode of custom value for {@link KeyOperation}
+     * @return known KeyOperation values.
      */
-    public int hashValue() {
-        return value.hashCode();
-    }
-
-    /**
-     * Return the KeyOperation which maps to {@code value}
-     * @param value The value whose equivalent KeyOperation is needed.
-     * @return the KeyOperation
-     */
-    public static KeyOperation fromString(String value) {
-        for (KeyOperation keyOp : values()) {
-            if (keyOp.value.equalsIgnoreCase(value)) {
-                return keyOp;
-            }
-        }
-        return null;
+    public static Collection<KeyOperation> values() {
+        return values(KeyOperation.class);
     }
 }
