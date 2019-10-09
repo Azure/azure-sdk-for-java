@@ -37,7 +37,6 @@ import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.common.implementation.credentials.SasTokenCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -60,6 +59,9 @@ class APISpec extends Specification {
     // both sync and async clients point to same container
     @Shared
     BlobContainerClient cc
+
+    @Shared
+    BlobContainerClient ccPremium
 
     @Shared
     BlobContainerAsyncClient ccAsync
