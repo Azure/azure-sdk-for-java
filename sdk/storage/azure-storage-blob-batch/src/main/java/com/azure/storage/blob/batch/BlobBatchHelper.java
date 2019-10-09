@@ -22,6 +22,11 @@ import java.util.regex.Pattern;
  */
 class BlobBatchHelper {
     /*
+     * Newline characters used in HTTP
+     */
+    static final String HTTP_NEWLINE = "\r\n";
+
+    /*
      * This pattern matches finding the "Content-Id" of the batch response.
      */
     private static final Pattern CONTENT_ID_PATTERN = Pattern
@@ -59,7 +64,7 @@ class BlobBatchHelper {
                     }
 
                     // The batch operation response will be delimited by two new lines.
-                    String[] subResponseSections = subResponse.split("\r\n\r\n");
+                    String[] subResponseSections = subResponse.split(HTTP_NEWLINE + HTTP_NEWLINE);
 
                     // The first section will contain batching metadata.
                     BlobBatchOperationResponse<?> batchOperationResponse =
@@ -96,7 +101,7 @@ class BlobBatchHelper {
     private static void setStatusCodeAndHeaders(BlobBatchOperationResponse<?> batchOperationResponse,
         String responseHeaders) {
         HttpHeaders headers = new HttpHeaders();
-        for (String line : responseHeaders.split("\r\n")) {
+        for (String line : responseHeaders.split(HTTP_NEWLINE)) {
             if (ImplUtils.isNullOrEmpty(line)) {
                 continue;
             }

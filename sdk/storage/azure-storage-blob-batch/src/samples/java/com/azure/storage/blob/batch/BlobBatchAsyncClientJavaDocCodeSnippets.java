@@ -65,7 +65,7 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
      */
     public void deleteBlobs() {
         BlobClientBuilder blobClientBuilder = new BlobClientBuilder();
-        BlobClient blobClient1 =  blobClientBuilder.buildClient();
+        BlobClient blobClient1 = blobClientBuilder.buildClient();
         BlobClient blobClient2 = blobClientBuilder.buildClient();
         BlobClient blobClient3 = blobClientBuilder.buildClient();
 
@@ -76,8 +76,8 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
         blobUrls.add(blobClient3.getBlobUrl());
 
         batchAsyncClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).subscribe(response ->
-            System.out.printf("Deleting blob with URL %s completed with status code %d%n",
-                response.getRequest().getUrl(), response.getStatusCode()),
+                System.out.printf("Deleting blob with URL %s completed with status code %d%n",
+                    response.getRequest().getUrl(), response.getStatusCode()),
             error -> System.err.printf("Deleting blob failed with exception: %s%n", error.getMessage()));
         // END: com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType
     }
@@ -87,7 +87,7 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
      */
     public void setBlobsAccessTier() {
         BlobClientBuilder blobClientBuilder = new BlobClientBuilder();
-        BlobClient blobClient1 =  blobClientBuilder.buildClient();
+        BlobClient blobClient1 = blobClientBuilder.buildClient();
         BlobClient blobClient2 = blobClientBuilder.buildClient();
         BlobClient blobClient3 = blobClientBuilder.buildClient();
 

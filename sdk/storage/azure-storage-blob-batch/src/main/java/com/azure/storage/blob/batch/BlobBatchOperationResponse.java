@@ -150,7 +150,7 @@ final class BlobBatchOperationResponse<T> implements Response<T> {
 
             @Override
             public Mono<String> getBodyAsString(Charset charset) {
-                return Mono.just(body);
+                return getBodyAsByteArray().map(body -> new String(body, charset));
             }
         };
     }

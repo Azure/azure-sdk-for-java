@@ -90,6 +90,10 @@ public final class BlobBatchClient {
     /**
      * Delete multiple blobs in a single request to the service.
      *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType}
+     *
      * @param blobUrls Urls of the blobs to delete.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
@@ -101,7 +105,31 @@ public final class BlobBatchClient {
     }
 
     /**
+     * Delete multiple blobs in a single request to the service.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType-Duration-Context}
+     *
+     * @param blobUrls Urls of the blobs to delete.
+     * @param deleteOptions The deletion option for all blobs.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The status of each delete operation.
+     * @throws StorageException If any of the delete operations fail or the request is malformed.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions,
+        Duration timeout, Context context) {
+        return new PagedIterable<>(client.deleteBlobsWithTimeout(blobUrls, deleteOptions, timeout, context));
+    }
+
+    /**
      * Set access tier on multiple blobs in a single request to the service.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier}
      *
      * @param blobUrls Urls of the blobs to set their access tier.
      * @param accessTier {@link AccessTier} to set on each blob.
@@ -111,5 +139,24 @@ public final class BlobBatchClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
         return new PagedIterable<>(client.setBlobsAccessTier(blobUrls, accessTier));
+    }
+
+    /**
+     * Set access tier on multiple blobs in a single request to the service.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier-Duration-Context}
+     *
+     * @param blobUrls Urls of the blobs to set their access tier.
+     * @param accessTier {@link AccessTier} to set on each blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The status of each set tier operation.
+     * @throws StorageException If any of the set tier operations fail or the request is malformed.
+     */
+    public PagedIterable<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier,
+        Duration timeout, Context context) {
+        return new PagedIterable<>(client.setBlobsAccessTierWithTimeout(blobUrls, accessTier, timeout, context));
     }
 }

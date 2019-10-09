@@ -66,7 +66,6 @@ public final class BlobBatch {
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
-    private static final String NEWLINE = "\r\n";
 
     /*
      * Track the status codes expected for the batching operations here as the batch body does not get parsed in
@@ -77,7 +76,7 @@ public final class BlobBatch {
 
     private final ClientLogger logger = new ClientLogger(BlobBatch.class);
 
-    private final BlobAsyncClient batchClient;
+    private final BlobAsyncClient blobAsyncClient;
 
     private final Deque<Mono<? extends Response<?>>> batchOperationQueue;
     private final List<ByteBuffer> batchRequest;
@@ -112,7 +111,7 @@ public final class BlobBatch {
             batchPipelineBuilder.policies(this::cleanseHeaders);
         }
 
-        this.batchClient = new BlobClientBuilder()
+        this.blobAsyncClient = new BlobClientBuilder()
             .endpoint(accountUrl)
             .blobName("")
             .pipeline(batchPipelineBuilder.build())
@@ -198,7 +197,7 @@ public final class BlobBatch {
     private Response<Void> deleteHelper(String urlPath, DeleteSnapshotsOptionType deleteOptions,
         BlobAccessConditions blobAccessConditions) {
         setBatchType(BlobBatchType.DELETE);
-        return createBatchOperation(batchClient.deleteWithResponse(deleteOptions, blobAccessConditions),
+        return createBatchOperation(blobAsyncClient.deleteWithResponse(deleteOptions, blobAccessConditions),
             urlPath, EXPECTED_DELETE_STATUS_CODES);
     }
 
@@ -278,7 +277,7 @@ public final class BlobBatch {
     private Response<Void> setTierHelper(String urlPath, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
         setBatchType(BlobBatchType.SET_TIER);
-        return createBatchOperation(batchClient.setAccessTierWithResponse(accessTier, null, leaseAccessConditions),
+        return createBatchOperation(blobAsyncClient.setAccessTierWithResponse(accessTier, null, leaseAccessConditions),
             urlPath, EXPECTED_SET_TIER_STATUS_CODES);
     }
 
@@ -323,8 +322,8 @@ public final class BlobBatch {
             // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
         }
 
-        this.batchRequest.add(ByteBuffer
-            .wrap(String.format("--%s--%s", batchBoundary, NEWLINE).getBytes(StandardCharsets.UTF_8)));
+        this.batchRequest.add(ByteBuffer.wrap(
+            String.format("--%s--%s", batchBoundary, BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
 
         return Flux.fromIterable(batchRequest);
     }
@@ -389,7 +388,7 @@ public final class BlobBatch {
         appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TYPE);
         appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TRANSFER_ENCODING);
         appendWithNewline(batchRequestBuilder, String.format(BATCH_OPERATION_CONTENT_ID_TEMPLATE, contentId));
-        batchRequestBuilder.append(NEWLINE);
+        batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
         String method = request.getHttpMethod().toString();
         String urlPath = request.getUrl().getPath();
@@ -404,7 +403,7 @@ public final class BlobBatch {
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
-        batchRequestBuilder.append(NEWLINE);
+        batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
         batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
         batchMapping.get(contentId).setRequest(request);
@@ -413,6 +412,6 @@ public final class BlobBatch {
     }
 
     private void appendWithNewline(StringBuilder stringBuilder, String value) {
-        stringBuilder.append(value).append(NEWLINE);
+        stringBuilder.append(value).append(BlobBatchHelper.HTTP_NEWLINE);
     }
 }
