@@ -10,6 +10,9 @@ module com.azure.storage.blob {
     exports com.azure.storage.blob.models;
     exports com.azure.storage.blob.specialized;
 
+    exports com.azure.storage.blob.implementation to
+        com.azure.storage.blob.cryptography;        // FIXME this should not be a long-term solution
+
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,
         com.azure.core;

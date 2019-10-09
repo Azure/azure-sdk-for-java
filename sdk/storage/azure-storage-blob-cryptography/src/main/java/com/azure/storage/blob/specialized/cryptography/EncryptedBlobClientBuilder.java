@@ -258,16 +258,4 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     protected Class<EncryptedBlobClientBuilder> getClazz() {
         return EncryptedBlobClientBuilder.class;
     }
-
-    private HttpPipeline addDecryptionPolicy(HttpPipeline originalPipeline, HttpClient client) {
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[originalPipeline.getPolicyCount() + 1];
-        policies[0] = new BlobDecryptionPolicy(keyWrapper, keyResolver);
-        for (int i = 0; i < originalPipeline.getPolicyCount(); i++) {
-            policies[i + 1] = originalPipeline.getPolicy(i);
-        }
-        return new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(policies)
-            .build();
-    }
 }
