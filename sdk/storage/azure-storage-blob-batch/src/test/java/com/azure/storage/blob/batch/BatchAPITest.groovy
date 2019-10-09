@@ -24,10 +24,16 @@ class BatchAPITest extends APISpec {
             .build())
     }
 
+    BlobBatchClient batchClient
+
+    def setup() {
+        batchClient = new BlobBatchClientBuilder(primaryBlobServiceClient).buildClient()
+    }
+
     def "Empty batch"() {
         when:
-        def batch = new BlobBatch(primaryBlobServiceClient)
-        primaryBlobServiceClient.submitBatch(batch)
+        def batch = batchClient.getBlobBatch()
+        batchClient.submitBatch(batch)
 
         then:
         thrown(UnsupportedOperationException)
@@ -35,7 +41,7 @@ class BatchAPITest extends APISpec {
 
     def "Mixed batch"() {
         when:
-        def batch = new BlobBatch(primaryBlobServiceAsyncClient)
+        def batch = batchClient.getBlobBatch()
         batch.delete("container", "blob")
         batch.setTier("container", "blob2", AccessTier.HOT)
 
@@ -43,7 +49,7 @@ class BatchAPITest extends APISpec {
         thrown(UnsupportedOperationException)
 
         when:
-        batch = new BlobBatch(primaryBlobServiceAsyncClient)
+        batch = batchClient.getBlobBatch()
         batch.setTier("container", "blob", AccessTier.HOT)
         batch.delete("container", "blob2")
 
@@ -56,16 +62,16 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(APISpec.defaultInputStream.get(), APISpec.defaultDataSize)
-        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(APISpec.defaultInputStream.get(), APISpec.defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
         def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
-        primaryBlobServiceClient.submitBatch(batch)
+        batchClient.submitBatch(batch)
 
         then:
         notThrown(StorageException)
@@ -78,15 +84,15 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(APISpec.defaultInputStream.get(), APISpec.defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
         def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
-        primaryBlobServiceClient.submitBatch(batch)
+        batchClient.submitBatch(batch)
 
         then:
         thrown(StorageException)
@@ -104,15 +110,15 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
-        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(APISpec.defaultInputStream.get(), APISpec.defaultDataSize)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
         def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
-        primaryBlobServiceClient.submitBatchWithResponse(batch, false, null, Context.NONE)
+        batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
         notThrown(StorageException)
@@ -130,14 +136,14 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
 
         when:
         def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
         def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
-        primaryBlobServiceClient.submitBatch(batch)
+        batchClient.submitBatch(batch)
 
         then:
         thrown(StorageException)
@@ -160,14 +166,14 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
 
         when:
         def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
         def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
-        primaryBlobServiceClient.submitBatchWithResponse(batch, false, null, Context.NONE)
+        batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
         notThrown(StorageException)
@@ -190,7 +196,7 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
@@ -199,7 +205,7 @@ class BatchAPITest extends APISpec {
         when:
         def response1 = batch.delete(containerName, blobName1)
         def response2 = batch.delete(containerName, blobName2)
-        primaryBlobServiceClient.submitBatch(batch)
+        batchClient.submitBatch(batch)
 
         then:
         notThrown(StorageException)
@@ -212,7 +218,7 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
@@ -220,7 +226,7 @@ class BatchAPITest extends APISpec {
         when:
         def response1 = batch.delete(containerName, blobName1)
         def response2 = batch.delete(containerName, blobName2)
-        primaryBlobServiceClient.submitBatch(batch)
+        batchClient.submitBatch(batch)
 
         then:
         thrown(StorageException)
@@ -238,7 +244,7 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
@@ -246,7 +252,7 @@ class BatchAPITest extends APISpec {
         when:
         def response1 = batch.delete(containerName, blobName1)
         def response2 = batch.delete(containerName, blobName2)
-        primaryBlobServiceClient.submitBatchWithResponse(batch, false, null, Context.NONE)
+        batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
         notThrown(StorageException)
@@ -264,14 +270,14 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
 
         when:
         def response1 = batch.delete(containerName, blobName1)
         def response2 = batch.delete(containerName, blobName2)
-        primaryBlobServiceClient.submitBatch(batch)
+        batchClient.submitBatch(batch)
 
         then:
         thrown(StorageException)
@@ -294,14 +300,14 @@ class BatchAPITest extends APISpec {
         def containerName = generateContainerName()
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
-        def batch = new BlobBatch(primaryBlobServiceClient)
+        def batch = batchClient.getBlobBatch()
         def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
         containerClient.create()
 
         when:
         def response1 = batch.delete(containerName, blobName1)
         def response2 = batch.delete(containerName, blobName2)
-        primaryBlobServiceClient.submitBatchWithResponse(batch, false, null, Context.NONE)
+        batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
         notThrown(StorageException)
@@ -321,7 +327,7 @@ class BatchAPITest extends APISpec {
 
     def "Accessing batch request before submission throws"() {
         setup:
-        def batch = new BlobBatch(primaryBlobServiceAsyncClient)
+        def batch = batchClient.getBlobBatch()
 
         when:
         def batchRequest = batch.delete("blob", "container")

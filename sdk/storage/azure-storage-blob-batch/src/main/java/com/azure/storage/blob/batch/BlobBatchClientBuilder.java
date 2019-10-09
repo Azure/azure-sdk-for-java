@@ -3,14 +3,18 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 
 /**
- *
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link BlobBatchClient
+ * BlobBatchClients} and {@link BlobBatchAsyncClient BlobBatchAsyncClients} when {@link #buildClient() buildClient} and
+ * {@link #buildAsyncClient() buildAsyncClient} as called respectively.
  */
+@ServiceClientBuilder(serviceClients = {BlobBatchClient.class, BlobBatchAsyncClient.class})
 public final class BlobBatchClientBuilder {
     private final ClientLogger logger = new ClientLogger(BlobBatchClientBuilder.class);
 
@@ -18,8 +22,10 @@ public final class BlobBatchClientBuilder {
     private HttpPipeline pipeline;
 
     /**
+     * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobServiceClient#getAccountUrl() account URL} and
+     * {@link BlobServiceClient#getHttpPipeline() HttpPipeline} properties of the passed {@link BlobServiceClient}.
      *
-     * @param client
+     * @param client {@link BlobServiceClient} whose properties are used to configure the builder.
      */
     public BlobBatchClientBuilder(BlobServiceClient client) {
         this.accountUrl = client.getAccountUrl();
@@ -27,8 +33,11 @@ public final class BlobBatchClientBuilder {
     }
 
     /**
+     * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobServiceAsyncClient#getAccountUrl() account
+     * URL} and {@link BlobServiceAsyncClient#getHttpPipeline() HttpPipeline} properties of the passed {@link
+     * BlobServiceAsyncClient}.
      *
-     * @param client
+     * @param client {@link BlobServiceClient} whose properties are used to configure the builder.
      */
     public BlobBatchClientBuilder(BlobServiceAsyncClient client) {
         this.accountUrl = client.getAccountUrl();
@@ -36,16 +45,26 @@ public final class BlobBatchClientBuilder {
     }
 
     /**
+     * Creates a {@link BlobBatchClient} based on options set in the builder.
      *
-     * @return
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClientBuilder#buildClient}
+     *
+     * @return a {@link BlobBatchClient} created from the configurations in this builder.
      */
     public BlobBatchClient buildClient() {
         return new BlobBatchClient(buildAsyncClient());
     }
 
     /**
+     * Creates a {@link BlobBatchAsyncClient} based on options set in the builder.
      *
-     * @return
+     * <p><strong>Code sample</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClientBuilder#buildAsyncClient}
+     *
+     * @return a {@link BlobBatchAsyncClient} created from the configurations in this builder.
      */
     public BlobBatchAsyncClient buildAsyncClient() {
         return new BlobBatchAsyncClient(accountUrl, pipeline);

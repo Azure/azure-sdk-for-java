@@ -23,7 +23,7 @@ import java.util.Set;
  *
  * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  */
-public class BlobBatchOperationResponse<T> implements Response<T> {
+final class BlobBatchOperationResponse<T> implements Response<T> {
     private final ClientLogger logger = new ClientLogger(BlobBatchOperationResponse.class);
 
     private final Set<Integer> expectedStatusCodes;

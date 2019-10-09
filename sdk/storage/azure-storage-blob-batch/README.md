@@ -1,4 +1,4 @@
-# Azure Storage Blobs client library for Java
+# Azure Storage Blobs Batch client library for Java
 
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob
 storage is optimized for storing massive amounts of unstructured data.
@@ -20,24 +20,24 @@ definition, such as text or binary data.
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage-blob</artifactId>
+  <artifactId>azure-storage-blob-batch</artifactId>
   <version>12.0.0-preview.4</version>
 </dependency>
 ```
 
 ### Default HTTP Client
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-Storage Blob to use Netty HTTP client. 
+Storage Blob Batch to use Netty HTTP client. 
 
 ### Alternate HTTP client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
 ```xml
-<!-- Add Storage Blob dependency without Netty HTTP client -->
+<!-- Add Storage Blob Batch dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-blob</artifactId>
+    <artifactId>azure-storage-blob-batch</artifactId>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -46,7 +46,7 @@ Netty and include OkHTTP client in your pom.xml.
     </exclusions>
 </dependency>
 
-<!-- Add OkHTTP client to use with Storage Blob -->
+<!-- Add OkHTTP client to use with Storage Blob Batch -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>

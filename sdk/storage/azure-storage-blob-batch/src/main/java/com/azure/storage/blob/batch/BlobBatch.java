@@ -17,13 +17,10 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.common.Constants;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
@@ -48,11 +45,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This class allows for batching of multiple Azure Storage operations in a single request via
  * {@link BlobBatchClient#submitBatch(BlobBatch)} or {@link BlobBatchAsyncClient#submitBatch(BlobBatch)}.
  *
- * <p>Creating a batch requires either a {@link BlobServiceClient} or {@link BlobServiceAsyncClient}.</p>
- *
- * {@codesnippet com.azure.storage.blob.BlobBatch.createWithServiceClient}
- * {@codesnippet com.azure.storage.blob.BlobBatch.createWithServiceAsyncClient}
- *
  * <p>Azure Storage Blob batches are homogeneous which means a {@link #delete(String) delete} and {@link
  * #setTier(String, AccessTier) set tier} are not allowed to be in the same batch.</p>
  *
@@ -62,18 +54,24 @@ import java.util.concurrent.atomic.AtomicInteger;
  * for more information.</p>
  */
 public final class BlobBatch {
+    private static final String X_MS_VERSION = "x-ms-version";
     private static final String BATCH_REQUEST_CONTENT_ID = "Batch-Request-Content-Id";
     private static final String BATCH_REQUEST_URL_PATH = "Batch-Request-Url-Path";
     private static final String CONTENT_ID = "Content-Id";
     private static final String BATCH_BOUNDARY_TEMPLATE = "batch_%s";
-    private static final String CONTENT_TYPE = "Content-Type: application/http";
-    private static final String CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
-    private static final String CONTENT_ID_TEMPLATE = "Content-ID: %d";
+    private static final String REQUEST_CONTENT_TYPE_TEMPLATE = "multipart/mixed; boundary=%s";
+    private static final String BATCH_OPERATION_CONTENT_TYPE = "Content-Type: application/http";
+    private static final String BATCH_OPERATION_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
+    private static final String BATCH_OPERATION_CONTENT_ID_TEMPLATE = "Content-ID: %d";
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
     private static final String NEWLINE = "\r\n";
 
+    /*
+     * Track the status codes expected for the batching operations here as the batch body does not get parsed in
+     * Azure Core where this information is maintained.
+     */
     private static final int[] EXPECTED_DELETE_STATUS_CODES = { 202 };
     private static final int[] EXPECTED_SET_TIER_STATUS_CODES = { 200, 202 };
 
@@ -87,34 +85,14 @@ public final class BlobBatch {
 
     private final AtomicInteger contentId;
     private final String batchBoundary;
+    private final String contentType;
 
     private BlobBatchType batchType;
-
-    /**
-     * Constructs a {@link BlobBatch} using the {@link BlobServiceClient#getHttpPipeline()
-     * BlobServiceClient's HttpPipeline} to build a modified {@link HttpPipeline} that is used to prepare the requests
-     * in the batch.
-     *
-     * @param client {@link BlobServiceClient} used to construct the batch.
-     */
-    public BlobBatch(BlobServiceClient client) {
-        this(client.getAccountUrl(), client.getHttpPipeline());
-    }
-
-    /**
-     * Constructs a {@link BlobBatch} using the {@link BlobServiceAsyncClient#getHttpPipeline()
-     * BlobServiceAsyncClient's HttpPipeline} to build a modified {@link HttpPipeline} that is used to prepare the
-     * requests in the batch.
-     *
-     * @param client {@link BlobServiceAsyncClient} used to construct the batch.
-     */
-    public BlobBatch(BlobServiceAsyncClient client) {
-        this(client.getAccountUrl(), client.getHttpPipeline());
-    }
 
     BlobBatch(String accountUrl, HttpPipeline pipeline) {
         this.contentId = new AtomicInteger(0);
         this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
+        this.contentType = String.format(REQUEST_CONTENT_TYPE_TEMPLATE, batchBoundary);
 
         boolean batchHeadersPolicySet = false;
         HttpPipelineBuilder batchPipelineBuilder = new HttpPipelineBuilder().httpClient(this::setupBatchOperation);
@@ -137,7 +115,7 @@ public final class BlobBatch {
         this.batchClient = new BlobClientBuilder()
             .endpoint(accountUrl)
             .blobName("")
-            .pipeline(pipeline)
+            .pipeline(batchPipelineBuilder.build())
             .buildAsyncClient();
 
         this.batchOperationQueue = new ConcurrentLinkedDeque<>();
@@ -333,17 +311,20 @@ public final class BlobBatch {
             throw logger.logExceptionAsError(new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
+        // 'flatMap' the requests to trigger them to run through the pipeline.
         Disposable disposable = Flux.fromStream(batchOperationQueue.stream())
             .flatMap(batchOperation -> batchOperation)
             .subscribe();
 
+        /* Wait until the 'Flux' is disposed of (aka complete) instead of blocking as this will prevent Reactor from
+         * throwing an exception if this was ran in a Reactor thread.
+         */
         while (!disposable.isDisposed()) {
-            // Wait until the batch operation has processed in the pipeline.
             // This is used as opposed to block as it won't trigger an exception if ran in a Reactor thread.
         }
 
         this.batchRequest.add(ByteBuffer
-            .wrap(String.format("--%s--NEWLINE", batchBoundary).getBytes(StandardCharsets.UTF_8)));
+            .wrap(String.format("--%s--%s", batchBoundary, NEWLINE).getBytes(StandardCharsets.UTF_8)));
 
         return Flux.fromIterable(batchRequest);
     }
@@ -359,19 +340,11 @@ public final class BlobBatch {
     }
 
     String getContentType() {
-        return String.format("multipart/mixed; boundary=%s", batchBoundary);
+        return contentType;
     }
 
     BlobBatchOperationResponse<?> getBatchRequest(int contentId) {
         return batchMapping.get(contentId);
-    }
-
-    /*
-     * Enum class that indicates which type of operation this batch is using.
-     */
-    private enum BlobBatchType {
-        DELETE,
-        SET_TIER
     }
 
     /*
@@ -380,8 +353,8 @@ public final class BlobBatch {
      * and it adds the header "Content-Id" that allows the request to be mapped to the response.
      */
     private Mono<HttpResponse> cleanseHeaders(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // Remove the "x-ms-header" as it shouldn't be included in the batch operation request.
-        context.getHttpRequest().getHeaders().remove(Constants.HeaderConstants.VERSION);
+        // Remove the "x-ms-version" as it shouldn't be included in the batch operation request.
+        context.getHttpRequest().getHeaders().remove(X_MS_VERSION);
 
         // Remove any null headers (this is done in Netty and OkHttp normally).
         Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
@@ -413,9 +386,9 @@ public final class BlobBatch {
 
         StringBuilder batchRequestBuilder = new StringBuilder();
         appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
-        appendWithNewline(batchRequestBuilder, CONTENT_TYPE);
-        appendWithNewline(batchRequestBuilder, CONTENT_TRANSFER_ENCODING);
-        appendWithNewline(batchRequestBuilder, String.format(CONTENT_ID_TEMPLATE, contentId));
+        appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TYPE);
+        appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TRANSFER_ENCODING);
+        appendWithNewline(batchRequestBuilder, String.format(BATCH_OPERATION_CONTENT_ID_TEMPLATE, contentId));
         batchRequestBuilder.append(NEWLINE);
 
         String method = request.getHttpMethod().toString();
@@ -427,7 +400,7 @@ public final class BlobBatch {
         appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
         request.getHeaders().stream()
-            .filter(header -> !Constants.HeaderConstants.VERSION.equalsIgnoreCase(header.getName()))
+            .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder,
                 String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 

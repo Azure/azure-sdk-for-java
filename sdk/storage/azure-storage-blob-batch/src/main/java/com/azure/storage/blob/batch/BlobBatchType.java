@@ -3,5 +3,10 @@
 
 package com.azure.storage.blob.batch;
 
-public class BlobBatchClientJavaDocCodeSnippets {
+/*
+ * Enum class used to indicate the batch operation type.
+ */
+enum BlobBatchType {
+    DELETE,
+    SET_TIER
 }

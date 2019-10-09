@@ -3,7 +3,14 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
@@ -11,7 +18,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.StorageException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -21,6 +27,16 @@ import java.util.function.BiFunction;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
+/**
+ * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
+ *
+ * <p>This client offers the ability to delete and set access tier on multiple blobs at once and to submit a {@link
+ * BlobBatch}.</p>
+ *
+ * @see BlobBatch
+ * @see BlobBatchClientBuilder
+ */
+@ServiceClient(builder = BlobBatchClientBuilder.class, isAsync = true)
 public final class BlobBatchAsyncClient {
     private final AzureBlobStorageImpl client;
 
@@ -29,6 +45,15 @@ public final class BlobBatchAsyncClient {
             .url(accountUrl)
             .pipeline(pipeline)
             .build();
+    }
+
+    /**
+     * Gets a {@link BlobBatch} used to configure a batching operation to send to Azure Storage blobs.
+     *
+     * @return a new {@link BlobBatch} instance.
+     */
+    public BlobBatch getBlobBatch() {
+        return new BlobBatch(client.getUrl(), client.getHttpPipeline());
     }
 
     /**
@@ -44,6 +69,7 @@ public final class BlobBatchAsyncClient {
      * @return An empty response indicating that the batch operation has completed.
      * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> submitBatch(BlobBatch batch) {
         return withContext(context -> submitBatchWithResponse(batch, true, context)).flatMap(FluxUtil::toMono);
     }
@@ -65,40 +91,49 @@ public final class BlobBatchAsyncClient {
      * @throws StorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link BlobBatch}
      * failed or the batch request is malformed.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
         return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure, context));
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
-        return postProcessResponse(this.client.services().submitBatchWithRestResponseAsync(
+        return postProcessResponse(client.services().submitBatchWithRestResponseAsync(
             batch.getBody(), batch.getContentLength(), batch.getContentType(), context))
             .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure));
     }
 
     /**
-     * Deletes the passed blobs.
+     * Delete multiple blobs in a single request to the service.
      *
-     * @param blobUrls Blobs to delete.
-     * @return
-     * @throws StorageException If the batch is malformed or any of the delete operations fail.
+     * <p>This will delete the blob and all of its snapshots.</p>
+     *
+     * @param blobUrls Urls of the blobs to delete.
+     * @return The status of each delete operation.
+     * @throws StorageException If any of the delete operations fail or the request is malformed.
      */
-    public Flux<Response<Void>> deleteBlobs(String... blobUrls) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Response<Void>> deleteBlobs(String... blobUrls) {
         return batchingHelper(BlobBatch::delete, blobUrls);
     }
 
     /**
-     * Sets the {@link AccessTier} on the passed blobs.
+     * Set access tier on multiple blobs in a single request to the service.
      *
-     * @param accessTier {@link AccessTier} to set on the blobs.
-     * @param blobUrls Blobs to set the access tier.
-     * @return
-     * @throws StorageException If the batch is malformed or any of the set access tier operations fail.
+     * @param accessTier {@link AccessTier} to set on each blob.
+     * @param blobUrls Urls of the blobs to set their access tier.
+     * @return The status of each set tier operation.
+     * @throws StorageException If any of the set tier operations fail or the request is malformed.
      */
-    public Flux<Response<Void>> setBlobsAccessTier(AccessTier accessTier, String... blobUrls) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Response<Void>> setBlobsAccessTier(AccessTier accessTier, String... blobUrls) {
         return batchingHelper((batch, blobUrl) -> batch.setTier(blobUrl, accessTier), blobUrls);
     }
 
-    private <T> Flux<Response<T>> batchingHelper(BiFunction<BlobBatch, String, Response<T>> generator,
+    /*
+     * This helper method creates the batch request, applies the requested batching operation to each blob, sends the
+     * request to the service, and returns the responses.
+     */
+    private <T> PagedFlux<Response<T>> batchingHelper(BiFunction<BlobBatch, String, Response<T>> generator,
         String... blobUrls) {
         BlobBatch batch = new BlobBatch(client.getUrl(), client.getHttpPipeline());
 
@@ -107,7 +142,42 @@ public final class BlobBatchAsyncClient {
             responses.add(generator.apply(batch, blobUrl));
         }
 
-        return withContext(context -> submitBatchWithResponse(batch, true, context))
-            .thenMany(Flux.fromIterable(responses));
+        return new PagedFlux<Response<T>>(() -> withContext(context -> submitBatchWithResponse(batch, true, context)
+            .map(response -> new PagedResponse<Response<T>>() {
+
+                @Override
+                public void close() {
+                }
+
+                @Override
+                public List<Response<T>> getItems() {
+                    return responses;
+                }
+
+                @Override
+                public String getNextLink() {
+                    return null;
+                }
+
+                @Override
+                public int getStatusCode() {
+                    return response.getStatusCode();
+                }
+
+                @Override
+                public HttpHeaders getHeaders() {
+                    return response.getHeaders();
+                }
+
+                @Override
+                public HttpRequest getRequest() {
+                    return response.getRequest();
+                }
+
+                @Override
+                public List<Response<T>> getValue() {
+                    return responses;
+                }
+            })));
     }
 }

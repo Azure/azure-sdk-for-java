@@ -4,7 +4,6 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
@@ -18,16 +17,26 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+ * This class contains helper methods for dealing with batch requests.
+ */
 class BlobBatchHelper {
+    /*
+     * This pattern matches finding the "Content-Id" of the batch response.
+     */
     private static final Pattern CONTENT_ID_PATTERN = Pattern
         .compile("Content-ID:\\s?(\\d+)", Pattern.CASE_INSENSITIVE);
+
+    /*
+     * This pattern matches finding the status code of the batch response.
+     */
     private static final Pattern STATUS_CODE_PATTERN = Pattern
         .compile("HTTP\\/\\d\\.\\d\\s?(\\d+)\\s?\\w+", Pattern.CASE_INSENSITIVE);
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobBatchHelper.class);
 
     // This method connects the batch response values to the individual batch operations based on their Content-Id
-    static Mono<Response<Void>> mapBatchResponse(BlobBatch batch, ServicesSubmitBatchResponse batchResponse,
+    static Mono<SimpleResponse<Void>> mapBatchResponse(BlobBatch batch, ServicesSubmitBatchResponse batchResponse,
         boolean throwOnAnyFailure) {
         /*
          * Content-Type will contain the boundary for each batch response. The expected format is:

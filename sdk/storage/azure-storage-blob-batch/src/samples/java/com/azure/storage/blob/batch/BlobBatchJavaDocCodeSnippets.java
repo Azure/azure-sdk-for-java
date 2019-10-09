@@ -4,9 +4,7 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.rest.Response;
-import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.JavaDocCodeSnippetsHelpers;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -16,29 +14,8 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
  * Code snippets for {@link BlobBatch}
  */
 public class BlobBatchJavaDocCodeSnippets {
-    private BlobBatch batch = new BlobBatch(JavaDocCodeSnippetsHelpers.getBlobServiceClient());
-
-    /**
-     * Code snippet for {@link BlobBatch#BlobBatch(BlobServiceClient)}
-     */
-    public void createFromClient() {
-        BlobServiceClient blobServiceClient = JavaDocCodeSnippetsHelpers.getBlobServiceClient();
-
-        // BEGIN: com.azure.storage.blob.BlobBatch.createWithServiceClient
-        BlobBatch batch = new BlobBatch(blobServiceClient);
-        // END: com.azure.storage.blob.BlobBatch.createWithServiceClient
-    }
-
-    /**
-     * Code snippet for {@link BlobBatch#BlobBatch(BlobServiceAsyncClient)}
-     */
-    public void createWithAsyncServiceClient() {
-        BlobServiceAsyncClient blobServiceAsyncClient = JavaDocCodeSnippetsHelpers.getBlobServiceAsyncClient();
-
-        // BEGIN: com.azure.storage.blob.BlobBatch.createWithServiceAsyncClient
-        BlobBatch batch = new BlobBatch(blobServiceAsyncClient);
-        // END: com.azure.storage.blob.BlobBatch.createWithServiceAsyncClient
-    }
+    private BlobBatch batch = new BlobBatchClientBuilder(new BlobServiceClientBuilder().buildClient())
+        .buildClient().getBlobBatch();
 
     /**
      * Code snippet showing an example of an illegal batching operation.
