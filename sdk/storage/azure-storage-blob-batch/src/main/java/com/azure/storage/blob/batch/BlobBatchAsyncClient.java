@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
@@ -41,6 +42,8 @@ import static com.azure.storage.blob.implementation.PostProcessor.postProcessRes
  */
 @ServiceClient(builder = BlobBatchClientBuilder.class, isAsync = true)
 public final class BlobBatchAsyncClient {
+    private final ClientLogger logger = new ClientLogger(BlobBatchAsyncClient.class);
+
     private final AzureBlobStorageImpl client;
 
     BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline) {
@@ -102,7 +105,7 @@ public final class BlobBatchAsyncClient {
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
         return postProcessResponse(client.services().submitBatchWithRestResponseAsync(
             batch.getBody(), batch.getContentLength(), batch.getContentType(), context))
-            .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure));
+            .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure, logger));
     }
 
     /**

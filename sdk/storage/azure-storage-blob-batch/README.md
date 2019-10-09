@@ -76,54 +76,6 @@ az stoage account create \
     --location <location>
 ```
 
-### Authenticate the client
-
-In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
-To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
-
-#### Get credentials
-
-- **SAS Token**
-
-a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
-
-```Powershell
-az storage blob generate-sas
-    --name {queue name}
-    --expiry {date/time to expire SAS token}
-    --permission {permission to grant}
-    --connection-string {connection string of the storage account}
-    --services {storage services the SAS allows}
-    --resource-types {resource types the SAS allows}
-```
-
-```Powershell
-CONNECTION_STRING=<connection-string>
-
-az storage blob generate-sas
-    --name javasdksas
-    --expiry 2019-06-05
-    --permission rpau
-    --connection-string $CONNECTION_STRING
-```
-b. Alternatively, get the Account SAS Token from the Azure Portal.
-```
-Go to your storage account -> Shared access signature -> Click on Generate SAS and connection string (after setup)
-```
-
-- **Shared Key Credential**
-
-a. Use account name and account key. Account name is your storage account name.
-```
-// Here is where we get the key
-Go to your storage account -> Access keys -> Key 1/ Key 2 -> Key
-```
-b. Use the connection string
-```
-// Here is where we get the key
-Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
-```
-
 ## Key concepts
 
 Blob storage is designed for:
@@ -137,138 +89,81 @@ Blob storage is designed for:
 
 ## Examples
 
-The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
+The following sections provide several code snippets covering some of the most common Azure Storage Blob Batch tasks, including:
 
-- [Create BlobServiceClient](#create-blobserviceclient)
-- [Create ContainerClient](#create-containerclient)
-- [Create BlobClient](#create-blobclient)
-- [Create a container](#create-a-container)
-- [Upload a blob from InputStream](#uploading-a-blob-from-a-stream)
-- [Upload a blob from File](#uploading-a-blob-from-file)
-- [Download a blob to OutputStream](#downloading-a-blob-to-output-stream)
-- [Download a blob to File](#downloading-a-blob-to-local-path)
-- [Enumerating blobs](#enumerating-blobs)
-- [Authenticate with Azure.Identity](#authenticate-with-azureidentity)
+- [Creating BlobBatchClient](#create-blobbatchclient)
+- [Bulk Deleting Blobs](#bulk-deleting-blobs)
+- [Bulk Setting AccessTier](#bulk-setting-accesstier)
+- [Advanced Batching](#advanced-batching)
 
-### Create BlobServiceClient
+### Creating BlobBatchClient
 
-Create a BlobServiceClient using the [`sasToken`](#get-credentials) generated above.
+Create a BlobBatchClient from a [`BlobServiceClient`]().
 ```java
-BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .buildClient();
+BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
 
-### Create BlobContainerClient
+### Bulk Deleting Blobs
 
-Create a BlobContainerClient if a BlobServiceClient exists.
 ```java
-BlobContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
+blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
+    System.out.printf("Deleting blob with URL %s completed with status code %d%n",
+        response.getRequest().getUrl(), response.getStatusCode()));
 ```
 
-or
+### Bulk Setting AccessTier
 
-Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
-BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-         .endpoint("<your-storage-blob-url>")
-         .sasToken("<your-sasToken>")
-         .containerName("mycontainer")
-         .buildClient();
+blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
+    System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
+        response.getRequest().getUrl(), response.getStatusCode()));
 ```
 
-### Create BlobClient
+### Advanced Batching
 
-Create a BlobClient if container client exists.
+Deleting blobs in a batch that have different pre-requisites.
 ```java
-BlobClient blobClient = blobContainerClient.getBlobClient("myblob").getBlockBlobClient();
+BlobBatch blobBatch = blobBatchClient.getBlobBatch();
+
+// Delete a blob.
+Response<Void> deleteResponse = blobBatch.deleteBlob(blobUrl);
+        
+// Delete a specific blob snapshot.
+Response<Void> deleteSnapshotResponse =
+    blobBatch.deleteBlob(blobUrlWithSnapshot, DeleteSnapshotsOptionType.ONLY, null);
+        
+// Delete a blob that has a lease.
+Response<Void> deleteWithLeaseResponse =
+    blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobAccessConditions()
+        .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
+
+blobBatchClient.submitBatch(blobBatch);
+System.out.printf("Deleting blob completed with status code %d%n", deleteResponse.getStatusCode());
+System.out.printf("Deleting blob snapshot completed with status code %d%n",
+    deleteSnapshotResponse.getStatusCode());
+System.out.printf("Deleting blob with lease completed with status code %d%n",
+    deleteWithLeaseResponse.getStatusCode());
 ```
 
-or
-
-Create the BlobClient from the builder [`sasToken`](#get-credentials) generated above.
+Setting `AccessTier` on blobs in batch that have different pre-requisites. 
 ```java
-BlobClient blobClient = new BlobClientBuilder()
-         .endpoint("<your-storage-blob-url>")
-         .sasToken("<your-sasToken>")
-         .containerName("mycontainer")
-         .blobName("myblob")
-         .buildBlobClient();
-```
+BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
-### Create a container
+// Set AccessTier on a blob.
+Response<Void> setTierResponse = blobBatch.setBlobAccessTier(blobUrl, AccessTier.COOL);
 
-Create a container from a BlobServiceClient.
-```java
-blobServiceClient.createContainer("mycontainer");
-```
+// Set AccessTier on another blob.
+Response<Void> setTierResponse2 = blobBatch.setBlobAccessTier(blobUrl2, AccessTier.ARCHIVE);
 
-or
+// Set AccessTier on a blob that has a lease.
+Response<Void> setTierWithLeaseResponse = blobBatch.setBlobAccessTier(blobUrlWithLease, AccessTier.HOT, 
+    new LeaseAccessConditions().setLeaseId("leaseId"));
 
-Create a container using BlobContainerClient.
-```java
-blobContainerClient.create();
-```
-
-### Uploading a blob from a stream
-
-Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
-
-```java
-BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
-String dataSample = "samples";
-try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-    blockBlobClient.upload(dataStream, dataSample.length());
-}
-```
-
-### Uploading a blob from `File`
-
-Upload a file to a blob using BlockBlobClient generated from BlobContainerClient.
-
-```java
-
-BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
-blockBlobClient.uploadFromFile("local-file.jpg");
-```
-
-### Downloading a blob to output stream
-
-Download blob to output stream using BlobClient.
-
-```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-    blobClient.download(outputStream);
-}
-```
-
-### Downloading a blob to local path
-
-Download blob to local file using BlobClient.
-```java
-blobClient.downloadToFile("downloaded-file.jpg");
-```
-
-### Enumerating blobs
-
-Enumerating all blobs using BlobContainerClient
-```java
-blobContainerClient.listBlobsFlat()
-        .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
-        );
-```
-
-### Authenticate with Azure.Identity
-
-The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
-
-```java
-BlobServiceClient storageClient = new BlobServiceClientBuilder()
-        .endpoint(endpoint)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+blobBatchClient.submitBatch(blobBatch);
+System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse.getStatusCode());
+System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse2.getStatusCode());
+System.out.printf("Set AccessTier on  blob with lease completed with status code %d%n",
+    setTierWithLeaseResponse.getStatusCode());
 ```
 
 ## Troubleshooting
@@ -296,7 +191,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs.Batch%2FREADME.png)
 
 <!-- LINKS -->
 [source]: src

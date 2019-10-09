@@ -56,6 +56,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
+      <version>1.0.0-preview.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.5</version>
     </dependency>
     <dependency>
@@ -81,12 +86,6 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.5</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
       <version>1.0.0-preview.5</version>
       <scope>test</scope>
     </dependency>
@@ -267,7 +266,7 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-opens com.azure.storage.blob.batching/com.azure.storage.blob.batching=ALL-UNNAMED
+                --add-opens com.azure.storage.blob.batch/com.azure.storage.blob.batch=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

@@ -38,11 +38,9 @@ class BlobBatchHelper {
     private static final Pattern STATUS_CODE_PATTERN = Pattern
         .compile("HTTP\\/\\d\\.\\d\\s?(\\d+)\\s?\\w+", Pattern.CASE_INSENSITIVE);
 
-    private static final ClientLogger LOGGER = new ClientLogger(BlobBatchHelper.class);
-
     // This method connects the batch response values to the individual batch operations based on their Content-Id
     static Mono<SimpleResponse<Void>> mapBatchResponse(BlobBatch batch, ServicesSubmitBatchResponse batchResponse,
-        boolean throwOnAnyFailure) {
+        boolean throwOnAnyFailure, ClientLogger logger) {
         /*
          * Content-Type will contain the boundary for each batch response. The expected format is:
          * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
@@ -68,7 +66,7 @@ class BlobBatchHelper {
 
                     // The first section will contain batching metadata.
                     BlobBatchOperationResponse<?> batchOperationResponse =
-                        getBatchOperation(batch, subResponseSections[0]);
+                        getBatchOperation(batch, subResponseSections[0], logger);
 
                     // The second section will contain status code and header information.
                     setStatusCodeAndHeaders(batchOperationResponse, subResponseSections[1]);
@@ -76,7 +74,8 @@ class BlobBatchHelper {
                     // The third section will contain the body.
                     if (subResponseSections.length > 2) {
                         // The body is optional and may not exist.
-                        setBodyOrPotentiallyThrow(batchOperationResponse, subResponseSections[2], throwOnAnyFailure);
+                        setBodyOrPotentiallyThrow(batchOperationResponse, subResponseSections[2], throwOnAnyFailure,
+                            logger);
                     }
                 }
 
@@ -84,14 +83,15 @@ class BlobBatchHelper {
             });
     }
 
-    private static BlobBatchOperationResponse<?> getBatchOperation(BlobBatch batch, String responseBatchInfo) {
+    private static BlobBatchOperationResponse<?> getBatchOperation(BlobBatch batch, String responseBatchInfo,
+        ClientLogger logger) {
         Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(responseBatchInfo);
 
         int contentId;
         if (contentIdMatcher.find()) {
             contentId = Integer.parseInt(contentIdMatcher.group(1));
         } else {
-            throw LOGGER.logExceptionAsError(
+            throw logger.logExceptionAsError(
                 new IllegalStateException("Batch operation response doesn't contain a 'Content-Id' header."));
         }
 
@@ -121,7 +121,7 @@ class BlobBatchHelper {
     }
 
     private static void setBodyOrPotentiallyThrow(BlobBatchOperationResponse<?> batchOperationResponse,
-        String responseBody, boolean throwOnError) {
+        String responseBody, boolean throwOnError, ClientLogger logger) {
         /*
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
@@ -131,7 +131,7 @@ class BlobBatchHelper {
         batchOperationResponse.setException(exception);
 
         if (throwOnError) {
-            throw LOGGER.logExceptionAsError(exception);
+            throw logger.logExceptionAsError(exception);
         }
     }
 }
