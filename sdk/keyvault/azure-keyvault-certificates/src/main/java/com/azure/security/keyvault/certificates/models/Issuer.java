@@ -5,15 +5,17 @@ package com.azure.security.keyvault.certificates.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Represents certificate Issuer with all of its properties.
  */
-public final class Issuer extends IssuerBase {
+public final class Issuer {
 
     /**
      * The user name/account name/account id.
@@ -36,22 +38,69 @@ public final class Issuer extends IssuerBase {
     private List<Administrator> administrators;
 
     /**
+     * The Issuer properties
+     */
+    private final IssuerProperties properties;
+
+    /**
+     * Determines whether the issuer is enabled.
+     */
+    @JsonProperty(value = "enabled")
+    private Boolean enabled;
+
+    /**
+     * The created UTC time.
+     */
+    private OffsetDateTime created;
+
+    /**
+     * The updated UTC time.
+     */
+    private OffsetDateTime updated;
+
+    /**
      * Creates an instance of the issuer.
      *
      * @param name The name of the issuer.
      * @param provider The provider of the issuer.
      */
     public Issuer(String name, String provider) {
-        super(name, provider);
+        properties = new IssuerProperties(name, provider);
     }
 
-    Issuer() { }
+    Issuer() {
+        properties = new IssuerProperties();
+    }
+
+    /**
+     * Get the certificate properties.
+     * @return the certificate properties.
+     */
+    public IssuerProperties getProperties() {
+        return properties;
+    }
+
+    /**
+     * Get the certificate identifier
+     * @return the certificate identifier
+     */
+    public String getId() {
+        return properties.getId();
+    }
+
+    /**
+     * Get the certificate name
+     * @return the certificate name
+     */
+    public String getName() {
+        return properties.getName();
+    }
 
     /**
      * Get the account id of the isssuer.
      * @return the account id
      */
-    public String accountId() {
+    public String getAccountId() {
         return accountId;
     }
 
@@ -60,7 +109,7 @@ public final class Issuer extends IssuerBase {
      * @param accountId the account id to set.
      * @return the Issuer object itself.
      */
-    public Issuer accountId(String accountId) {
+    public Issuer setAccountId(String accountId) {
         this.accountId = accountId;
         return this;
     }
@@ -69,7 +118,7 @@ public final class Issuer extends IssuerBase {
      * Get the password of the isssuer.
      * @return the password
      */
-    public String password() {
+    public String getPassword() {
         return password;
     }
 
@@ -78,7 +127,7 @@ public final class Issuer extends IssuerBase {
      * @param password the password set.
      * @return the Issuer object itself.
      */
-    public Issuer password(String password) {
+    public Issuer setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -87,7 +136,7 @@ public final class Issuer extends IssuerBase {
      * Get the organization id of the isssuer.
      * @return the organization id
      */
-    public String organizationId() {
+    public String getOrganizationId() {
         return organizationId;
     }
 
@@ -96,7 +145,7 @@ public final class Issuer extends IssuerBase {
      * @param organizationId the org id to set.
      * @return the Issuer object itself.
      */
-    public Issuer organizationId(String organizationId) {
+    public Issuer setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
         return this;
     }
@@ -105,7 +154,7 @@ public final class Issuer extends IssuerBase {
      * Get the administrators of the isssuer.
      * @return the administrators
      */
-    public List<Administrator> administrators() {
+    public List<Administrator> getAdministrators() {
         return administrators;
     }
 
@@ -114,9 +163,43 @@ public final class Issuer extends IssuerBase {
      * @param administrators the administrators to set.
      * @return the Issuer object itself.
      */
-    public Issuer administrators(List<Administrator> administrators) {
+    public Issuer setAdministrators(List<Administrator> administrators) {
         this.administrators = administrators;
         return this;
+    }
+
+    /**
+     * Get the enabled status
+     * @return the enabled status
+     */
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Set the enabled status
+     * @param enabled the enabled status to set
+     * @return the Issuer object itself.
+     */
+    public Issuer setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get tje created UTC time.
+     * @return the created UTC time.
+     */
+    public OffsetDateTime getCreated() {
+        return created;
+    }
+
+    /**
+     * Get the updated UTC time.
+     * @return the updated UTC time.
+     */
+    public OffsetDateTime getUpdated() {
+        return updated;
     }
 
     @JsonProperty(value = "credentials")
@@ -145,5 +228,25 @@ public final class Issuer extends IssuerBase {
             output.add(new Administrator(firstName, lastName, email, phone));
         }
         return  output;
+    }
+
+    @JsonProperty("attributes")
+    private void unpackBaseAttributes(Map<String, Object> attributes) {
+        this.enabled = (Boolean) attributes.get("enabled");
+        this.created = epochToOffsetDateTime(attributes.get("created"));
+        this.updated = epochToOffsetDateTime(attributes.get("updated"));
+    }
+
+    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
+        if (epochValue != null) {
+            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
+            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
+        }
+        return null;
+    }
+
+    @JsonProperty(value = "id")
+    void unpackId(String id) {
+        properties.unpackId(id);
     }
 }

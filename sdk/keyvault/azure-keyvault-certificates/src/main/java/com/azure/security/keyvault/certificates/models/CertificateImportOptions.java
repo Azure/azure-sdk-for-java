@@ -3,8 +3,10 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import java.time.OffsetDateTime;
+import com.azure.core.implementation.util.ImplUtils;
+
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents the configuration used to import a certificate in the key vault.
@@ -14,7 +16,7 @@ public final class CertificateImportOptions {
     /**
      * The file location of the certificate.
      */
-    private final String filePath;
+    private final byte[] value;
 
     /**
      * The name of the certificate.
@@ -33,17 +35,7 @@ public final class CertificateImportOptions {
     private Boolean enabled;
 
     /**
-     * Not before date in UTC.
-     */
-    private OffsetDateTime notBefore;
-
-    /**
-     * Expiry date in UTC.
-     */
-    private OffsetDateTime expires;
-
-    /**
-     * The management policy for the certificate.
+     * The policy which governs the lifecycle of the imported certificate and it's properties when it is rotated.
      */
     private CertificatePolicy certificatePolicy;
 
@@ -55,11 +47,12 @@ public final class CertificateImportOptions {
     /**
      * Creates instance of CertificateImportOptions.
      * @param name The name of the key.
-     * @param filePath The file location of the certificate.
+     * @param value The PFX or PEM formatted value of the certificate containing both the x509 certificates and the private key.
      */
-    public CertificateImportOptions(String name, String filePath) {
+    public CertificateImportOptions(String name, byte[] value) {
+        Objects.requireNonNull(value, "The certificate value parameter cannot be null.");
         this.name = name;
-        this.filePath = filePath;
+        this.value = ImplUtils.clone(value);
     }
 
     /**
@@ -67,7 +60,7 @@ public final class CertificateImportOptions {
      * @param enabled The enabled status to set.
      * @return the CertificateImportOptions itself
      */
-    public CertificateImportOptions enabled(Boolean enabled) {
+    public CertificateImportOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -77,7 +70,7 @@ public final class CertificateImportOptions {
      *
      * @return the enabled status
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -85,16 +78,16 @@ public final class CertificateImportOptions {
      * Get the management policy for the certificate.
      * @return the management policy
      */
-    public CertificatePolicy certificatePolicy() {
+    public CertificatePolicy getCertificatePolicy() {
         return this.certificatePolicy;
     }
 
     /**
      * Set the management policy for the certificate.
      * @param certificatePolicy the management policy for the certificate
-     * @return the CertificateImportOptions itself
+     * @return the updated CertificateImportOptions itself
      */
-    public CertificateImportOptions certificatePolicy(CertificatePolicy certificatePolicy) {
+    public CertificateImportOptions setCertificatePolicy(CertificatePolicy certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }
@@ -102,9 +95,9 @@ public final class CertificateImportOptions {
     /**
      * Set the application specific maetadata.
      * @param tags The metadata to set.
-     * @return the CertificateImportOptions itself
+     * @return the updated CertificateImportOptions itself
      */
-    public CertificateImportOptions tags(Map<String, String> tags) {
+    public CertificateImportOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -114,16 +107,16 @@ public final class CertificateImportOptions {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
      * Set the password for encrypting the certificate, if its encrypted.
      * @param password The password used to encrypt the certificate.
-     * @return the CertificateImportOptions itself
+     * @return the updated CertificateImportOptions itself
      */
-    public CertificateImportOptions password(String password) {
+    public CertificateImportOptions setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -132,7 +125,7 @@ public final class CertificateImportOptions {
      * Get the password for encrypting the certificate, if its encrypted.
      * @return the password
      */
-    public String password() {
+    public String getPassword() {
         return this.password;
     }
 
@@ -140,55 +133,15 @@ public final class CertificateImportOptions {
      * Get the name of the certificate.
      * @return the name of the certificate.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
     /**
-     * Get the file path of the certificate.
-     * @return the file path of the certificate.
+     * Get the value of the certificate.
+     * @return the value of the certificate.
      */
-    public String filePath() {
-        return this.filePath;
-    }
-
-    /**
-     * Get the notBefore UTC time.
-     *
-     * @return the notBefore UTC time.
-     */
-    public OffsetDateTime notBefore() {
-        return notBefore;
-    }
-
-    /**
-     * Get the Certificate Expiry time in UTC.
-     *
-     * @return the expires UTC time.
-     */
-    public OffsetDateTime expires() {
-        return this.expires;
-    }
-
-    /**
-     * Set the notBefore UTC time.
-     *
-     * @param notBefore THe notBefore UTC time.
-     * @return the notBefore UTC time.
-     */
-    public CertificateImportOptions notBefore(OffsetDateTime notBefore) {
-        this.notBefore = notBefore;
-        return this;
-    }
-
-    /**
-     * Set the Certificate Expiry time in UTC.
-     *
-     * @param expires The expires UTC time.
-     * @return the expires UTC time.
-     */
-    public CertificateImportOptions expires(OffsetDateTime expires) {
-        this.expires = expires;
-        return this;
+    public byte[] getValue() {
+        return ImplUtils.clone(this.value);
     }
 }
