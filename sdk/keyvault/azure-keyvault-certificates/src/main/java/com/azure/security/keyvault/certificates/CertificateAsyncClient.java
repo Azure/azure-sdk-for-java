@@ -18,6 +18,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
@@ -32,15 +33,20 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.LifetimeActionType;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
+import com.azure.security.keyvault.certificates.models.CertificateKeyUsage;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
 
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.Consumer;
+
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -98,7 +104,7 @@ public class CertificateAsyncClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link Poller} polling on the create certificate operation status.
      */
-    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
+    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
         return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, tags), fetchResultOperation(name), cancelOperation(name));
     }
 
@@ -132,7 +138,37 @@ public class CertificateAsyncClient {
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
-        return beginCreateCertificate(name, policy, null);
+        return beginCreateCertificate(name, policy, true, null);
+    }
+
+    /**
+     * Creates a new certificate with the default policy. If this is the first version, the certificate resource is created. This operation requires
+     * the certificates/create permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long running operation. The {@link Poller poller} allows users to automatically poll on the create certificate
+     * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy}
+     *
+     * @param name The name of the certificate to be created.
+     * @throws ResourceModifiedException when certificate configuration is invalid.
+     * @return A {@link Poller} polling on the create certificate operation status.
+     */
+    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name) {
+        return beginCreateCertificate(name, getDefaultPolicy(), true, null);
+    }
+
+    private CertificatePolicy getDefaultPolicy() {
+        return new CertificatePolicy("Self", "CN=default")
+            .setKeyType(CertificateKeyType.RSA)
+            .setExportable(true)
+            .setReuseKey(false)
+            .setCertificateTransparency(false)
+            .setContentType(CertificateContentType.PKCS12)
+            .setKeyUsage(CertificateKeyUsage.CRL_SIGN, CertificateKeyUsage.DATA_ENCIPHERMENT,
+                CertificateKeyUsage.DIGITAL_SIGNATURE, CertificateKeyUsage.KEY_ENCIPHERMENT,
+                CertificateKeyUsage.KEY_AGREEMENT, CertificateKeyUsage.KEY_CERT_SIGN);
     }
 
     /*
@@ -1506,4 +1542,41 @@ public class CertificateAsyncClient {
             .doOnSuccess(response -> logger.info("Cancelled the certificate operation - {}", response.getValue().getStatus()))
             .doOnError(error -> logger.warning("Failed to cancel the certificate operation - {}", certificateName, error));
     }
+
+    /**
+     * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
+     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
+     *
+     * @param importOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Certificate imported certificate}.
+     */
+    public Mono<Certificate> importCertificate(CertificateImportOptions importOptions) {
+        return withContext(context -> importCertificateWithResponse(importOptions, context)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
+     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
+     *
+     * @param importOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Certificate imported certificate}.
+     */
+    public Mono<Response<Certificate>> importCertificateWithResponse(CertificateImportOptions importOptions) {
+        return withContext(context -> importCertificateWithResponse(importOptions, context));
+    }
+
+    Mono<Response<Certificate>> importCertificateWithResponse(CertificateImportOptions importOptions, Context context) {
+        CertificateImportParameters parameters = new CertificateImportParameters()
+            .base64EncodedCertificate(Base64Url.encode(importOptions.getValue()).toString())
+            .certificateAttributes(new CertificateRequestAttributes(importOptions))
+            .certificatePolicy(importOptions.getCertificatePolicy())
+            .password(importOptions.getPassword())
+            .tags(importOptions.getTags());
+
+        return service.importCertificate(endpoint, importOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+            CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
 }

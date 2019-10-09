@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,6 +29,10 @@ class CertificateRequestAttributes {
             this.expires = certificateProperties.getExpires().toEpochSecond();
         }
         this.enabled = certificateProperties.isEnabled();
+    }
+
+    CertificateRequestAttributes(CertificateImportOptions certificateImportOptions) {
+        this.enabled = certificateImportOptions.isEnabled();
     }
 
     CertificateRequestAttributes() {

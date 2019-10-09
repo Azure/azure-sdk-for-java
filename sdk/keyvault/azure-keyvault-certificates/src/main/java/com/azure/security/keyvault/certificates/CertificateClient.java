@@ -13,20 +13,22 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.certificates.models.Certificate;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.Contact;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.LifetimeActionType;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 
 /**
  * The CertificateClient provides synchronous methods to manage {@link Certificate certifcates} in the Azure Key Vault. The client
@@ -77,7 +79,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return  client.beginCreateCertificate(name, policy, tags);
+        return  client.beginCreateCertificate(name, policy, true, tags);
     }
 
     /**
@@ -98,6 +100,25 @@ public class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy) {
         return client.beginCreateCertificate(name, policy);
+    }
+
+    /**
+     * Creates a new certificate with the default policy. If this is the first version, the certificate resource
+     * is created. This operation requires the certificates/create permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
+     * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy}
+     *
+     * @param name The name of the certificate to be created.
+     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
+     * @return A {@link Poller} polling on the create certificate operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name) {
+        return client.beginCreateCertificate(name);
     }
 
     /**
@@ -1237,5 +1258,29 @@ public class CertificateClient {
     public Response<Certificate> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig, Context context) {
         Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null");
         return client.mergeCertificateWithResponse(mergeCertificateConfig, context).block();
+    }
+
+    /**
+     * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
+     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
+     *
+     * @param importOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @return the {@link Certificate imported certificate}.
+     */
+    public Certificate importCertificate(CertificateImportOptions importOptions) {
+        return importCertificateWithResponse(importOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
+     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
+     *
+     * @param importOptions The details of the certificate to import to the key vault
+     * @throws HttpRequestException when the {@code importOptions} are invalid.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Certificate imported certificate}.
+     */
+    public Response<Certificate> importCertificateWithResponse(CertificateImportOptions importOptions, Context context) {
+        return client.importCertificateWithResponse(importOptions, context).block();
     }
 }
