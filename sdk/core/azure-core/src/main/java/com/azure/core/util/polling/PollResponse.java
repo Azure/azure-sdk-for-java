@@ -67,6 +67,22 @@ public final class PollResponse<T> {
         public static OperationStatus fromString(String name) {
             return fromString(name, OperationStatus.class);
         }
+
+        /**
+         * An operation will be considered complete if it is in one of the following state:
+         * <ul>
+         *     <li>SUCCESSFULLY_COMPLETED</li>
+         *     <li>USER_CANCELLED</li>
+         *     <li>FAILED</li>
+         * </ul>
+         * @param currentOperationStatus
+         * @return true if operation is complete.
+         */
+        public static boolean isComplete(OperationStatus currentOperationStatus) {
+            return currentOperationStatus != null && (currentOperationStatus == OperationStatus.SUCCESSFULLY_COMPLETED
+                || currentOperationStatus == OperationStatus.FAILED
+                || currentOperationStatus == OperationStatus.USER_CANCELLED);
+        }
     }
 
     /**

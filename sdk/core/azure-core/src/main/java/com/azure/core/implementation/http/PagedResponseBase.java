@@ -27,7 +27,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
 
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
                              H deserializedHeaders) {
-        this(request, statusCode, headers, page.getItems(), page.getNextLink(), deserializedHeaders);
+        this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
 
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String nextLink,
@@ -52,7 +52,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public String getNextLink() {
+    public String getContinuationToken() {
         return nextLink;
     }
 

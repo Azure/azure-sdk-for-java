@@ -8,7 +8,9 @@ import reactor.core.publisher.Flux;
 import java.io.Serializable;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * The outgoing Http request.
@@ -128,6 +130,19 @@ public class HttpRequest implements Serializable {
      */
     public Flux<ByteBuffer> getBody() {
         return body;
+    }
+
+    /**
+     * Set the request content.
+     *
+     * @param content the request content
+     * @param charset @{link {@link Charset}} of the given {@code content}
+     * @return this HttpRequest
+     */
+    public HttpRequest setBody(String content, Charset charset) {
+        Objects.requireNonNull(charset, "'charset' cannot be null.");
+        final byte[] bodyBytes = content.getBytes(charset);
+        return setBody(bodyBytes);
     }
 
     /**

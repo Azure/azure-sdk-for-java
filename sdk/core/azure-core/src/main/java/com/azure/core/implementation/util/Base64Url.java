@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util;
-
-import com.azure.core.implementation.util.Base64Util;
-import com.azure.core.implementation.util.ImplUtils;
+package com.azure.core.implementation.util;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
