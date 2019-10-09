@@ -174,14 +174,8 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 ## Next steps
 
-Get started with our [Blob samples][samples]:
+Get started with our [Blob Batch samples][samples]:
 
-1. [Basic Examples][samples_basic]: Create storage, container, blob clients, Upload, download, and list blobs.
-1. [File Transfer Examples][samples_file_transfer]: Upload and download a large file through blobs.
-1. [Storage Error Examples][samples_storage_error]: Handle the exceptions from storage blob service side.
-1. [List Container Examples][samples_list_containers]: Create, list and delete containers.
-1. [Set metadata and HTTPHeaders Examples][samples_metadata]: Set metadata for container and blob, and set HTTPHeaders for blob.
-1. [Azure Identity Examples][samples_identity]: Use DefaultAzureCredential to do the authentication.
 
 ## Contributing
 
@@ -191,35 +185,19 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs.Batch%2FREADME.png)
-
 <!-- LINKS -->
 [source]: src
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
-[maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_ps]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_sub]: https://azure.microsoft.com/free/
-[identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: src/samples
-[samples_basic]: src/samples/java/com/azure/storage/blob/BasicExample.java
-[samples_file_transfer]: src/samples/java/com/azure/storage/blob/FileTransferExample.java
-[samples_storage_error]: src/samples/java/com/azure/storage/blob/StorageErrorHandlingExample.java
-[samples_list_containers]: src/samples/java/com/azure/storage/blob/ListContainersExample.java
-[samples_metadata]: src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
-[samples_identity]: src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/storage/azure-storage-blob-batch/README.png)

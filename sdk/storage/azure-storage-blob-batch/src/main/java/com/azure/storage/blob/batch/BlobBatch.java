@@ -380,7 +380,7 @@ public final class BlobBatch {
             requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
             context.getHttpRequest().setUrl(requestUrl.toURL());
         } catch (MalformedURLException ex) {
-            throw Exceptions.propagate(logger.logExceptionAsError(new IllegalStateException(ex)));
+            throw logger.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
         }
 
         return next.process();

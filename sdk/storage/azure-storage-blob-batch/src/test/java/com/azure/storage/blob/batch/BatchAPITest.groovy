@@ -5,6 +5,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.StorageException
 
 class BatchAPITest extends APISpec {
@@ -335,5 +336,41 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(UnsupportedOperationException)
+    }
+
+    def "Bulk delete blobs"() {
+        setup:
+        def blobUrls = new ArrayList<String>()
+        for (def i = 0; i < 10; i++) {
+            def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            pageBlobClient.create(512)
+            blobUrls.add(pageBlobClient.getBlobUrl())
+        }
+
+        when:
+        def responses = batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)
+
+        then:
+        for (def response : responses) {
+            assert response.getStatusCode() == 202
+        }
+    }
+
+    def "Bulk set access tier"() {
+        setup:
+        def blobUrls = new ArrayList<String>()
+        for (def i = 0; i < 10; i++) {
+            def pageBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+            pageBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+            blobUrls.add(pageBlobClient.getBlobUrl())
+        }
+
+        when:
+        def responses = batchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT)
+
+        then:
+        for (def response : responses) {
+            assert response.getStatusCode() == 200
+        }
     }
 }

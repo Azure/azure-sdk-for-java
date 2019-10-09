@@ -200,6 +200,8 @@
   <!-- Suppress CRUD operation names as they won't feel fluent -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.specialized.LeaseAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.batch.BlobBatchClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.batch.BlobBatchAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
 
@@ -208,4 +210,7 @@
 
   <!-- Allows the SasTokenCredentialPolicy in Implementation -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
+
+  <!-- Empty while loop waiting for Reactor stream completion -->
+  <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>
 </suppressions>

@@ -5,7 +5,6 @@ package com.azure.storage.blob.batch;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 
@@ -16,10 +15,8 @@ import com.azure.storage.blob.BlobServiceClient;
  */
 @ServiceClientBuilder(serviceClients = {BlobBatchClient.class, BlobBatchAsyncClient.class})
 public final class BlobBatchClientBuilder {
-    private final ClientLogger logger = new ClientLogger(BlobBatchClientBuilder.class);
-
-    private String accountUrl;
-    private HttpPipeline pipeline;
+    private final String accountUrl;
+    private final HttpPipeline pipeline;
 
     /**
      * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobServiceClient#getAccountUrl() account URL} and
