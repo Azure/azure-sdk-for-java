@@ -361,7 +361,7 @@ public class Poller<T> {
             .onErrorResume(throwable -> {
                 // We should never get here and since we want to continue polling
                 //Log the error
-                logger.warning("Failed to apply delay and call poll operation. ", throwable);
+                logger.warning("Failed to apply delay and call poll operation.", throwable); 
                 return Mono.empty();
             })
             .doOnEach(pollResponseSignal -> {
