@@ -54,26 +54,26 @@ public class BlobBatchJavaDocCodeSnippets {
      * Code snippet for {@link BlobBatch#deleteBlob(String, String, DeleteSnapshotsOptionType, BlobAccessConditions)}
      */
     public void addDeleteOperationWithNames() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotOptionsType-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("{lease ID}"));
 
         Response<Void> deleteResponse = batch.deleteBlob("{container name}", "{blob name}",
             DeleteSnapshotsOptionType.INCLUDE, blobAccessConditions);
-        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotOptionsType-BlobAccessConditions
+        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions
     }
 
     /**
      * Code snippet for {@link BlobBatch#deleteBlob(String, DeleteSnapshotsOptionType, BlobAccessConditions)}
      */
     public void addDeleteOperationWithUrl() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotOptionsType-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("{lease ID}"));
 
         Response<Void> deleteResponse = batch.deleteBlob("{url of blob}", DeleteSnapshotsOptionType.INCLUDE,
             blobAccessConditions);
-        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotOptionsType-BlobAccessConditions
+        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions
     }
 
     /**
