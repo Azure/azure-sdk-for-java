@@ -64,8 +64,7 @@ final class ResponseConstructorsCache {
                 try {
                     return (Constructor<? extends Response<?>>) constructor;
                 } catch (Throwable t) {
-                    throw logger.logExceptionAsError(new RuntimeException("Failed to cast the constructor to Response."
-                        + "Error Details: " + t.getMessage(), t));
+                    throw logger.logExceptionAsError(new RuntimeException(t));
                 }
             }
         }
