@@ -49,7 +49,7 @@ public class BackupAndRestoreOperationsAsync {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.beginCreateCertificate("certificateName", policy, tags)
+        certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());

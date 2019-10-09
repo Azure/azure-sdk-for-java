@@ -3,57 +3,76 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
- * Defines values for KeyUsageType.
+ * Defines values for CertificateKeyUsage.
  */
-public enum CertificateKeyUsage {
-    DIGITAL_SIGNATURE("digitalSignature"),
-
-    NON_REPUDIATION("nonRepudiation"),
-
-    KEY_ENCIPHERMENT("keyEncipherment"),
-
-    DATA_ENCIPHERMENT("dataEncipherment"),
-
-    KEY_AGREEMENT("keyAgreement"),
-
-    KEY_CERT_SIGN("keyCertSign"),
-
-    CRL_SIGN("cRLSign"),
-
-    ENCIPHER_ONLY("encipherOnly"),
-
-    DECIPHER_ONLY("decipherOnly");
-
-    private String value;
+public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateKeyUsage> {
+    
+    /**
+     * Static value Digital Signature for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage DIGITAL_SIGNATURE = fromString("digitalSignature");
 
     /**
-     * Creates a custom value for KeyUsageType.
-     * @param value the custom value
+     * Static value Non Repudiation for CertificateKeyUsage.
      */
-    CertificateKeyUsage(String value) {
-        this.value = value;
-    }
+    public static final CertificateKeyUsage NON_REPUDIATION = fromString("nonRepudiation");
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Static value Key Encipherment for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage KEY_ENCIPHERMENT = fromString("keyEncipherment");
+
+    /**
+     * Static value Data Encipherment for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage DATA_ENCIPHERMENT = fromString("dataEncipherment");
+
+    /**
+     * Static value Key Agreement for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage KEY_AGREEMENT = fromString("keyAgreement");
+    
+    /**
+     * Static value Key CertSign for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage KEY_CERT_SIGN = fromString("keyCertSign");
+
+    /**
+     * Static value CRLSign for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage CRL_SIGN = fromString("cRLSign");
+
+    /**
+     * Static value Encipher Only for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage ENCIPHER_ONLY = fromString("encipherOnly");
+
+    /**
+     * Static value Decipher Only for CertificateKeyUsage.
+     */
+    public static final CertificateKeyUsage DECIPHER_ONLY = fromString("decipherOnly");
+
+    /**
+     * Creates or finds a CertificateKeyUsage from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding CertificateKeyUsage.
+     */
+    @JsonCreator
+    public static CertificateKeyUsage fromString(String name) {
+        return fromString(name, CertificateKeyUsage.class);
     }
 
     /**
-     * Return the KeyUsageType which maps to {@code value}.
-     * @param value The value whose equivalent KeyUsageType is needed.
-     * @return the KeyUsageType
+     * @return known CertificateKeyUsage values.
      */
-    public static CertificateKeyUsage fromString(String value) {
-        for (CertificateKeyUsage keyUsageType : values()) {
-            if (keyUsageType.value.equalsIgnoreCase(value)) {
-                return keyUsageType;
-            }
-        }
-        return null;
+    public static Collection<CertificateKeyUsage> values() {
+        return values(CertificateKeyUsage.class);
     }
 }

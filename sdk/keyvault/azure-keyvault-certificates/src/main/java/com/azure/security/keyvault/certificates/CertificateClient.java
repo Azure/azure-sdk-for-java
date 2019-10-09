@@ -1277,6 +1277,7 @@ public class CertificateClient {
      * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
      * @param importOptions The details of the certificate to import to the key vault
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws HttpRequestException when the {@code importOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Certificate imported certificate}.
      */

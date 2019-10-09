@@ -45,7 +45,7 @@ public class HelloWorldAsync {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.beginCreateCertificate("certificateName", policy, tags)
+        certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
@@ -95,7 +95,7 @@ public class HelloWorldAsync {
         Thread.sleep(2000);
 
         //Let's create a certificate signed by our issuer.
-        certificateAsyncClient.beginCreateCertificate("myCertificate", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), tags)
+        certificateAsyncClient.beginCreateCertificate("myCertificate", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());

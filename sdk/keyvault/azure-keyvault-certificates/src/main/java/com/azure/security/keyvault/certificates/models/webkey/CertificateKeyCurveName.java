@@ -4,55 +4,52 @@
 
 package com.azure.security.keyvault.certificates.models.webkey;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
+
 
 /**
  * Defines values for CertificateKeyCurveName.
  */
-public enum CertificateKeyCurveName {
-    P_256("P-256"),
-
-    P_384("P-384"),
-
-    P_521("P-521"),
-
-    P_256K("P-256K");
-
-    private String value;
+public final class CertificateKeyCurveName extends ExpandableStringEnum<CertificateKeyCurveName> {
 
     /**
-     * Creates a custom value for CertificateKeyCurveName.
-     * @param value The custom value
+     * Static value P-256 for CertificateKeyCurveName.
      */
-    CertificateKeyCurveName(String value) {
-        this.value = value;
-    }
+    public static final CertificateKeyCurveName P_256 = fromString("P-256");
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Static value P-384 for CertificateKeyCurveName.
+     */
+    public static final CertificateKeyCurveName P_384 = fromString("P-384");
+
+    /**
+     * Static value P-521 for CertificateKeyCurveName.
+     */
+    public static final CertificateKeyCurveName P_521 = fromString("P-521");
+
+    /**
+     * Static value P-256K for KeyCurve.
+     */
+    public static final CertificateKeyCurveName P_256K = fromString("P-256K");
+
+    /**
+     * Creates or finds a CertificateKeyCurveName from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding KeyCurve.
+     */
+    @JsonCreator
+    public static CertificateKeyCurveName fromString(String name) {
+        return fromString(name, CertificateKeyCurveName.class);
     }
 
     /**
-     * Calculates the hashcode of the custom value
-     * @return the hashcode of custom value for {@link CertificateKeyCurveName}
+     * @return known CertificateKeyCurveName values.
      */
-    public int hashValue() {
-        return value.hashCode();
-    }
-
-    /**
-     * Return the CertificateKeyCurveName which maps to {@code value}.
-     * @param value The value whose equivalent CertificateKeyCurveName is needed.
-     * @return the CertificateKeyCurveName
-     */
-    public static CertificateKeyCurveName fromString(String value) {
-        for (CertificateKeyCurveName keyCurve : values()) {
-            if (keyCurve.value.equalsIgnoreCase(value)) {
-                return keyCurve;
-            }
-        }
-        return null;
+    public static Collection<CertificateKeyCurveName> values() {
+        return values(CertificateKeyCurveName.class);
     }
 }

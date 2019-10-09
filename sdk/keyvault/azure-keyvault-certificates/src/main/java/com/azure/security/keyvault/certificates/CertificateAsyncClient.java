@@ -96,24 +96,25 @@ public class CertificateAsyncClient {
      * <p>Create certificate is a long running operation. The {@link Poller poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy-Map}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createCertificate#String-CertificatePolicy-Boolean-Map}
      *
      * @param name The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
+     * @param enabled The enabled status for the certificate.
      * @param tags The application specific metadata to set.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, tags), fetchResultOperation(name), cancelOperation(name));
+        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, enabled, tags), fetchResultOperation(name), cancelOperation(name));
     }
 
     private Consumer<Poller<CertificateOperation, Certificate>> cancelOperation(String name) {
         return poller -> withContext(context -> cancelCertificateOperationWithResponse(name, context));
     }
 
-    private Supplier<Mono<CertificateOperation>> activationOperation(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return () -> withContext(context -> createCertificateWithResponse(name, policy, tags, context)
+    private Supplier<Mono<CertificateOperation>> activationOperation(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
+        return () -> withContext(context -> createCertificateWithResponse(name, policy, enabled, tags, context)
             .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue())));
     }
 
@@ -205,9 +206,10 @@ public class CertificateAsyncClient {
         return Mono.just(new PollResponse<>(status, certificateOperationResponse.getValue()));
     }
 
-    Mono<Response<CertificateOperation>> createCertificateWithResponse(String name, CertificatePolicy certificatePolicy, Map<String, String> tags, Context context) {
+    Mono<Response<CertificateOperation>> createCertificateWithResponse(String name, CertificatePolicy certificatePolicy, boolean enabled, Map<String, String> tags, Context context) {
         CertificateRequestParameters certificateRequestParameters = new CertificateRequestParameters()
             .certificatePolicy(new CertificatePolicyRequest(certificatePolicy))
+            .certificateAttributes(new CertificateRequestAttributes().enabled(enabled))
             .tags(tags);
         return service.createCertificate(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, certificateRequestParameters, CONTENT_TYPE_HEADER_VALUE, context);
     }

@@ -3,57 +3,56 @@
 
 package com.azure.security.keyvault.certificates.models.webkey;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Defines values for CertificateKeyType.
  */
-public enum CertificateKeyType {
-     EC("EC"),
-
-     EC_HSM("EC-HSM"),
-
-     RSA("RSA"),
-
-     RSA_HSM("RSA-HSM"),
-
-     OCT("oct");
-
-    private String value;
+public final class CertificateKeyType extends ExpandableStringEnum<CertificateKeyType> {
 
     /**
-     * Creates a custom value for CertificateKeyType.
-     * @param value The custom value
+     * Static value Encrypt for CertificateKeyType.
      */
-    CertificateKeyType(String value) {
-        this.value = value;
-    }
+    public static final CertificateKeyType EC = fromString("EC");
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Static value Decrypt for CertificateKeyType.
+     */
+    public static final CertificateKeyType EC_HSM = fromString("EC-HSM");
+
+    /**
+     * Static value Sign for CertificateKeyType.
+     */
+    public static final CertificateKeyType RSA = fromString("RSA");
+
+    /**
+     * Static value Verify for CertificateKeyType.
+     */
+    public static final CertificateKeyType RSA_HSM = fromString("RSA-HSM");
+
+    /**
+     * Static value Wrap Key for CertificateKeyType.
+     */
+    public static final CertificateKeyType OCT = fromString("oct");
+
+    /**
+     * Creates or finds a CertificateKeyType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding CertificateKeyType.
+     */
+    @JsonCreator
+    public static CertificateKeyType fromString(String name) {
+        return fromString(name, CertificateKeyType.class);
     }
 
     /**
-     * Calculates the hashcode of this {@link CertificateKeyType} value
-     * @return the hashcode for {@link CertificateKeyType} value
+     * @return known CertificateKeyType values.
      */
-    public int hashValue() {
-        return value.hashCode();
-    }
-
-    /**
-     * Return the CertificateKeyType which maps to {@code value}
-     * @param value The value whose equivalent CertificateKeyType is needed.
-     * @return the CertificateKeyType.
-     */
-    public static CertificateKeyType fromString(String value) {
-        for (CertificateKeyType keyType : values()) {
-            if (keyType.value.equalsIgnoreCase(value)) {
-                return keyType;
-            }
-        }
-        return null;
+    public static Collection<CertificateKeyType> values() {
+        return values(CertificateKeyType.class);
     }
 }

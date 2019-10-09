@@ -188,15 +188,15 @@ public final class CertificateClientJavaDocCodeSnippets {
             issuerResponse.getValue().getProperties().getProvider());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#string-context
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getIssuer#issuerBase
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getIssuer#issuerProperties
         for (IssuerProperties issuer : certificateClient.listIssuers()) {
             Issuer retrievedIssuer = certificateClient.getIssuer(issuer);
             System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
                 retrievedIssuer.getProperties().getProvider());
         }
-        // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuer#issuerBase
+        // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuer#issuerProperties
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#issuerBase-context
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#issuerProperties-context
         for (IssuerProperties issuer : certificateClient.listIssuers()) {
             Response<Issuer> retrievedIssuerResponse = certificateClient.getIssuerWithResponse(issuer,
                 new Context(key1, value1));
@@ -204,7 +204,7 @@ public final class CertificateClientJavaDocCodeSnippets {
                 retrievedIssuerResponse.getValue().getName(),
                 retrievedIssuerResponse.getValue().getProperties().getProvider());
         }
-        // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#issuerBase-context
+        // END: com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#issuerProperties-context
     }
 
     /**
