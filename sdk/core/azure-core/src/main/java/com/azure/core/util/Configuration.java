@@ -92,14 +92,7 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TELEMETRY_DISABLED = "AZURE_TELEMETRY_DISABLED";
 
     /**
-     * Enables logging by setting a log level. Log level values are:
-     * <ul>
-     *     <li>{@link ClientLogger#DISABLED_LEVEL}</li>
-     *     <li>{@link ClientLogger#ERROR_LEVEL}</li>
-     *     <li>{@link ClientLogger#WARNING_LEVEL}</li>
-     *     <li>{@link ClientLogger#INFORMATIONAL_LEVEL}</li>
-     *     <li>{@link ClientLogger#VERBOSE_LEVEL}</li>
-     * </ul>
+     * Enables logging by setting a log level.
      */
     public static final String PROPERTY_AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 

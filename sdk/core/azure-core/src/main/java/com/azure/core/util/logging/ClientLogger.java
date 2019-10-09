@@ -37,27 +37,27 @@ public class ClientLogger {
     /*
      * Indicates that log level is at verbose level.
      */
-    public static final int VERBOSE_LEVEL = 1;
+    private static final int VERBOSE_LEVEL = 1;
 
     /*
      * Indicates that log level is at information level.
      */
-    public static final int INFORMATIONAL_LEVEL = 2;
+    private static final int INFORMATIONAL_LEVEL = 2;
 
     /*
      * Indicates that log level is at warning level.
      */
-    public static final int WARNING_LEVEL = 3;
+    private static final int WARNING_LEVEL = 3;
 
     /*
      * Indicates that log level is at error level.
      */
-    public static final int ERROR_LEVEL = 4;
+    private static final int ERROR_LEVEL = 4;
 
     /*
      * Indicates that logging is disabled.
      */
-    public static final int DISABLED_LEVEL = 5;
+    private static final int DISABLED_LEVEL = 5;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
