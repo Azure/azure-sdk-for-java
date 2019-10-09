@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.APISpec;
-import com.azure.storage.blob.HTTPGetterInfo;
+import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.StorageErrorException;
@@ -30,7 +30,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
 
     private int scenario;
     private int tryNumber;
-    private HTTPGetterInfo info;
+    private HttpGetterInfo info;
     private ByteBuffer scenarioData;
 
     DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
@@ -147,7 +147,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
         }
     }
 
-    Mono<DownloadAsyncResponse> getter(HTTPGetterInfo info) {
+    Mono<DownloadAsyncResponse> getter(HttpGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());

@@ -15,7 +15,6 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.NtfsFileAttributes;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;

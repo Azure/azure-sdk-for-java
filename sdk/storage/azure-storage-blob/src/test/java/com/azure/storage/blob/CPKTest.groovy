@@ -1,6 +1,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -27,7 +28,7 @@ class CPKTest extends APISpec {
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
             .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(primaryCredential)
 
         addOptionalRecording(builder)
@@ -96,7 +97,7 @@ class CPKTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
-            .generateSASQueryParameters(primaryCredential)
+            .generateSasQueryParameters(primaryCredential)
             .encode()
 
         def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
@@ -151,7 +152,7 @@ class CPKTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
-            .generateSASQueryParameters(primaryCredential)
+            .generateSasQueryParameters(primaryCredential)
             .encode()
 
         def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -202,7 +203,7 @@ class CPKTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
-            .generateSASQueryParameters(primaryCredential)
+            .generateSasQueryParameters(primaryCredential)
             .encode()
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(new URL(sourceBlob.getBlobUrl().toString() + "?" + sas),
             null, null, null, null, null, null)

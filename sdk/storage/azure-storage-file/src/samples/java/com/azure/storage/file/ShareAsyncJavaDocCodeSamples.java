@@ -7,7 +7,6 @@ import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
 import com.azure.storage.file.models.SignedIdentifier;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

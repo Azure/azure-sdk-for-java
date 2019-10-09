@@ -14,8 +14,6 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
-import reactor.core.publisher.Flux;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -26,6 +24,7 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 
 /**
  * Code snippets for {@link BlobAsyncClient}

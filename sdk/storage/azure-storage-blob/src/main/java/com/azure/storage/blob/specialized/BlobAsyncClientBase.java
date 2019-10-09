@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
@@ -11,8 +14,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
-import com.azure.storage.blob.BlobURLParts;
-import com.azure.storage.blob.HTTPGetterInfo;
+import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
@@ -31,10 +34,6 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -47,9 +46,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -68,6 +67,7 @@ public class BlobAsyncClientBase {
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
+    protected final String accountName;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -76,11 +76,14 @@ public class BlobAsyncClientBase {
      * @param snapshot Optional. The snapshot identifier for the snapshot blob.
      * @param customerProvidedKey Optional. Customer provided key used during encryption of the blob's data on the
      * server.
+     * @param accountName The account name for storage account.
      */
-    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo customerProvidedKey) {
+    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot,
+                                  CpkInfo customerProvidedKey, String accountName) {
         this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
+        this.accountName = accountName;
     }
 
     /**
@@ -93,7 +96,7 @@ public class BlobAsyncClientBase {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
             .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
-            .build(), snapshot, customerProvidedKey);
+            .build(), snapshot, customerProvidedKey, accountName);
     }
 
     /**
@@ -123,7 +126,7 @@ public class BlobAsyncClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
     }
 
     /**
@@ -136,7 +139,7 @@ public class BlobAsyncClientBase {
      * @return The name of the blob.
      */
     public final String getBlobName() {
-        return BlobURLParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
+        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
     }
 
     /**
@@ -155,6 +158,15 @@ public class BlobAsyncClientBase {
      */
     public CpkInfo getCustomerProvidedKey() {
         return customerProvidedKey;
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     /**
@@ -456,7 +468,7 @@ public class BlobAsyncClientBase {
         range = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        HTTPGetterInfo info = new HTTPGetterInfo()
+        HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
             .setCount(range.getCount())
             .setETag(accessConditions.getModifiedAccessConditions().getIfMatch());

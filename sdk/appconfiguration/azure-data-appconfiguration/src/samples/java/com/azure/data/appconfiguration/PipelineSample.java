@@ -8,8 +8,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Flux;
@@ -46,7 +46,7 @@ class PipelineSample {
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
                 .credential(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
-                .httpLogDetailLevel(HttpLogDetailLevel.HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
                 .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.

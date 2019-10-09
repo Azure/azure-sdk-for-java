@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -28,7 +27,7 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class BlobAsyncClientBaseJavaDocCodeSnippets {
-    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, null);
+    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, null, null);
     private String leaseId = "leaseId";
     private String copyId = "copyId";
     private URL url = new URL("https://sample.com");

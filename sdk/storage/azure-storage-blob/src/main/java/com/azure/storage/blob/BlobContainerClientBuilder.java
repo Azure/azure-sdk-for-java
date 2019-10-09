@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
@@ -65,7 +64,13 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(containerName);
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        if (Objects.isNull(containerName) || containerName.isEmpty()) {
+            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
 
         HttpPipeline pipeline = super.getPipeline();
         if (pipeline == null) {
@@ -75,7 +80,7 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline)
-            .build(), customerProvidedKey);
+            .build(), customerProvidedKey, accountName);
     }
 
     /**
@@ -93,7 +98,7 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
     public BlobContainerClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            BlobURLParts parts = BlobURLParts.parse(url);
+            BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
             this.containerName = parts.getBlobContainerName();
@@ -117,7 +122,8 @@ public final class BlobContainerClientBuilder extends BaseBlobClientBuilder<Blob
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.containerName#String}
      *
-     * @param containerName the name of the container
+     * @param containerName the name of the container. If the value is set to null or empty, it will be interpreted as
+     *                      the root container, and "$root" will be inserted as the container name.
      * @return the updated ContainerClientBuilder object
      */
     public BlobContainerClientBuilder containerName(String containerName) {

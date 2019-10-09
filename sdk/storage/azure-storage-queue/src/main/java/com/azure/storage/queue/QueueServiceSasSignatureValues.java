@@ -5,7 +5,7 @@ package com.azure.storage.queue;
 
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
@@ -32,7 +32,7 @@ public final class QueueServiceSasSignatureValues {
 
     private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
-    private SASProtocol protocol;
+    private SasProtocol protocol;
 
     private OffsetDateTime startTime;
 
@@ -72,7 +72,7 @@ public final class QueueServiceSasSignatureValues {
         this.identifier = identifier;
     }
 
-    QueueServiceSasSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    QueueServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
                                    OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier) {
         if (version != null) {
             this.version = version;
@@ -106,19 +106,19 @@ public final class QueueServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * @return the {@link SasProtocol} which determines the protocols allowed by the SAS.
      */
-    public SASProtocol getProtocol() {
+    public SasProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * Sets the {@link SASProtocol} which determines the protocols allowed by the SAS.
+     * Sets the {@link SasProtocol} which determines the protocols allowed by the SAS.
      *
      * @param protocol Protocol for the SAS
      * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSasSignatureValues setProtocol(SASProtocol protocol) {
+    public QueueServiceSasSignatureValues setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
