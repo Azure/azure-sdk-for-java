@@ -357,13 +357,13 @@ public class EventHubAsyncProducer implements Closeable {
                     final AtomicReference<Boolean> isFirst = new AtomicReference<>(true);
                     return events.map(eventData -> {
                         Context parentContext = eventData.getContext();
-                        if (isFirst.get()) {
+                        if (isFirst.getAndSet(false)) {
                             // update sendSpanContext only once
                             Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
-                            sendSpanContext.set(tracerProvider
-                                .startSpan(entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
+                            sendSpanContext.set(tracerProvider.startSpan(
+                                entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
                         }
-                        isFirst.set(false);
+
                         // add span context on event data
                         return setSpanContext(eventData, parentContext);
                     }).collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
