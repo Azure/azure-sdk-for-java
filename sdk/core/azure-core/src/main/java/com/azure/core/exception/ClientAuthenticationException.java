@@ -20,7 +20,7 @@ import com.azure.core.http.HttpResponse;
 public class ClientAuthenticationException extends HttpResponseException {
 
     /**
-     * Initializes a new instance of the ClientAuthenticationException class.
+     * Initializes a new instance of the {@link ClientAuthenticationException} class.
      *
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response with the authorization failure.
@@ -30,7 +30,7 @@ public class ClientAuthenticationException extends HttpResponseException {
     }
 
     /**
-     * Initializes a new instance of the ClientAuthenticationException class.
+     * Initializes a new instance of the {@link ClientAuthenticationException} class.
      *
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response with the authorization failure.
@@ -41,10 +41,10 @@ public class ClientAuthenticationException extends HttpResponseException {
     }
 
     /**
-     * Initializes a new instance of the ClientAuthenticationException class.
+     * Initializes a new instance of the {@link ClientAuthenticationException} class.
      *
      * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response with teh authorization failure.
+     * @param response The HTTP response with the authorization failure.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public ClientAuthenticationException(final String message, final HttpResponse response, final Throwable cause) {
