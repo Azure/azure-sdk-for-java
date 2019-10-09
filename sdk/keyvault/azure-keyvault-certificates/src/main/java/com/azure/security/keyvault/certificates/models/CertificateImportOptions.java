@@ -77,7 +77,7 @@ public final class CertificateImportOptions {
      *
      * @return the enabled status
      */
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -92,7 +92,7 @@ public final class CertificateImportOptions {
     /**
      * Set the management policy for the certificate.
      * @param certificatePolicy the management policy for the certificate
-     * @return the CertificateImportOptions itself
+     * @return the updated CertificateImportOptions itself
      */
     public CertificateImportOptions setCertificatePolicy(CertificatePolicy certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
@@ -102,7 +102,7 @@ public final class CertificateImportOptions {
     /**
      * Set the application specific maetadata.
      * @param tags The metadata to set.
-     * @return the CertificateImportOptions itself
+     * @return the updated CertificateImportOptions itself
      */
     public CertificateImportOptions setTags(Map<String, String> tags) {
         this.tags = tags;
@@ -121,7 +121,7 @@ public final class CertificateImportOptions {
     /**
      * Set the password for encrypting the certificate, if its encrypted.
      * @param password The password used to encrypt the certificate.
-     * @return the CertificateImportOptions itself
+     * @return the updated CertificateImportOptions itself
      */
     public CertificateImportOptions setPassword(String password) {
         this.password = password;
@@ -174,7 +174,7 @@ public final class CertificateImportOptions {
      * Set the notBefore UTC time.
      *
      * @param notBefore THe notBefore UTC time.
-     * @return the notBefore UTC time.
+     * @return the updated CertificateImportOptions itself
      */
     public CertificateImportOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
@@ -185,7 +185,7 @@ public final class CertificateImportOptions {
      * Set the Certificate Expiry time in UTC.
      *
      * @param expires The expires UTC time.
-     * @return the expires UTC time.
+     * @return the updated CertificateImportOptions itself
      */
     public CertificateImportOptions setExpires(OffsetDateTime expires) {
         this.expires = expires;

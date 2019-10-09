@@ -51,7 +51,7 @@ public final class LifetimeAction {
      * Set the lifetimePercentage value.
      *
      * @param lifetimePercentage The lifetimePercentage value to set
-     * @return the Trigger object itself.
+     * @return the LifeTimeAction object itself.
      */
     public LifetimeAction setLifetimePercentage(Integer lifetimePercentage) {
         this.lifetimePercentage = lifetimePercentage;
@@ -71,7 +71,7 @@ public final class LifetimeAction {
      * Set the daysBeforeExpiry value.
      *
      * @param daysBeforeExpiry The daysBeforeExpiry value to set
-     * @return the Trigger object itself.
+     * @return the LifeTimeAction object itself.
      */
     public LifetimeAction setDaysBeforeExpiry(Integer daysBeforeExpiry) {
         this.daysBeforeExpiry = daysBeforeExpiry;
@@ -87,16 +87,6 @@ public final class LifetimeAction {
         return this.lifetimeActionType;
     }
 
-    /**
-     * Set the lifetimeActionType value.
-     *
-     * @param lifetimeActionType The lifetimeActionType value to set
-     * @return the Action object itself.
-     */
-    public LifetimeAction setActionType(LifetimeActionType lifetimeActionType) {
-        this.lifetimeActionType = lifetimeActionType;
-        return this;
-    }
 
     @JsonProperty(value = "action")
     private void unpackAction(Map<String, Object> action) {

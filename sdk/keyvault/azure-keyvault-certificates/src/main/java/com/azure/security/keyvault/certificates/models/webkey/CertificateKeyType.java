@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates.models.webkey;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for KeyType.
+ * Defines values for CertificateKeyType.
  */
 public enum CertificateKeyType {
      EC("EC"),
@@ -22,7 +22,7 @@ public enum CertificateKeyType {
     private String value;
 
     /**
-     * Creates a custom value for KeyType.
+     * Creates a custom value for CertificateKeyType.
      * @param value The custom value
      */
     CertificateKeyType(String value) {
@@ -44,9 +44,9 @@ public enum CertificateKeyType {
     }
 
     /**
-     * Return the KeyType which maps to {@code value}
-     * @param value The value whose equivalent KeyType is needed.
-     * @return the KeyType.
+     * Return the CertificateKeyType which maps to {@code value}
+     * @param value The value whose equivalent CertificateKeyType is needed.
+     * @return the CertificateKeyType.
      */
     public static CertificateKeyType fromString(String value) {
         for (CertificateKeyType keyType : values()) {

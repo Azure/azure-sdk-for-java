@@ -20,7 +20,7 @@ class Action {
     /**
      * Get the lifetimeActionType value.
      *
-     * @return the lifetimeActionType value
+     * @return the updated lifetimeActionType value
      */
     LifetimeActionType getActionType() {
         return this.lifetimeActionType;

@@ -7,7 +7,7 @@ package com.azure.security.keyvault.certificates.models.webkey;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for KeyCurveName.
+ * Defines values for CertificateKeyCurveName.
  */
 public enum CertificateKeyCurveName {
     P_256("P-256"),
@@ -21,7 +21,7 @@ public enum CertificateKeyCurveName {
     private String value;
 
     /**
-     * Creates a custom value for KeyCurveName.
+     * Creates a custom value for CertificateKeyCurveName.
      * @param value The custom value
      */
     CertificateKeyCurveName(String value) {
@@ -43,9 +43,9 @@ public enum CertificateKeyCurveName {
     }
 
     /**
-     * Return the KeyCurveName which maps to {@code value}.
-     * @param value The value whose equivalent KeyCurveName is needed.
-     * @return the KeyCurveName
+     * Return the CertificateKeyCurveName which maps to {@code value}.
+     * @param value The value whose equivalent CertificateKeyCurveName is needed.
+     * @return the CertificateKeyCurveName
      */
     public static CertificateKeyCurveName fromString(String value) {
         for (CertificateKeyCurveName keyCurve : values()) {

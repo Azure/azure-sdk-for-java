@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A page of Azure App Configuration {@link CertificateProperties} resources and a link to get the next page of
+ * A page of Certificate Properties {@link CertificateProperties} resources and a link to get the next page of
  * resources, if any.
  */
 public final class CertificatePropertiesPage implements Page<CertificateProperties> {

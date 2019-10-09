@@ -99,7 +99,7 @@ public class CertificateAsyncClient {
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, Map<String, String> tags) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, tags), fetcResultOperation(name), cancelOperation(name));
+        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, tags), fetchResultOperation(name), cancelOperation(name));
     }
 
     private Consumer<Poller<CertificateOperation, Certificate>> cancelOperation(String name) {
@@ -111,7 +111,7 @@ public class CertificateAsyncClient {
             .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue())));
     }
 
-    private Supplier<Mono<Certificate>> fetcResultOperation(String name) {
+    private Supplier<Mono<Certificate>> fetchResultOperation(String name) {
         return () -> withContext(context -> getCertificateWithResponse(name, "", context)
             .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue())));
     }
@@ -285,7 +285,7 @@ public class CertificateAsyncClient {
     }
 
     Mono<Response<Certificate>> updateCertificatePropertiesWithResponse(CertificateProperties certificateProperties, Context context) {
-        Objects.requireNonNull(certificateProperties, "The certificate input parameter cannot be null");
+        Objects.requireNonNull(certificateProperties, "The certificate properties input parameter cannot be null");
         CertificateUpdateParameters parameters = new CertificateUpdateParameters()
             .tags(certificateProperties.getTags())
             .certificateAttributes(new CertificateRequestAttributes(certificateProperties));

@@ -33,7 +33,7 @@ public final class CertificatePolicy {
     private SubjectAlternativeNames subjectAlternativeNames;
 
     /**
-     * The duration that the ceritifcate is valid in months.
+     * The duration that the certificate is valid in months.
      */
     @JsonProperty(value = "validity_months")
     private Integer validityInMonths;
@@ -187,7 +187,7 @@ public final class CertificatePolicy {
      *
      * @return the exportable value
      */
-    public Boolean getExportable() {
+    public Boolean isExportable() {
         return this.exportable;
     }
 
@@ -365,7 +365,7 @@ public final class CertificatePolicy {
      * Set the keySize value.
      *
      * @param keySize the keySize value to set
-     * @return the RsaKeyOptions object itself.
+     * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setKeySize(Integer keySize) {
         this.keySize = keySize;
@@ -419,7 +419,7 @@ public final class CertificatePolicy {
     /**
      * Get the subject value.
      *
-     * @return the subject value
+     * @return the subject name
      */
     public String getSubjectName() {
         return this.subjectName;

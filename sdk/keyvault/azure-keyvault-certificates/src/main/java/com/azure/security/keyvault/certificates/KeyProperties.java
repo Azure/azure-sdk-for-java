@@ -15,7 +15,7 @@ class KeyProperties {
 
     KeyProperties(CertificatePolicy certificatePolicy) {
         this.curve = certificatePolicy.getKeyCurveName();
-        this.exportable = certificatePolicy.getExportable();
+        this.exportable = certificatePolicy.isExportable();
         this.keySize = certificatePolicy.getKeySize();
         this.keyType = certificatePolicy.getKeyType();
         this.reuseKey = certificatePolicy.isReuseKey();

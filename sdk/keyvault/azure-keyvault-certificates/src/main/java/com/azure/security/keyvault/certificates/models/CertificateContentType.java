@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates.models;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SecretContentType.
+ * Defines values for CertificateContentType.
  */
 public enum CertificateContentType {
     PKCS12("application/x-pkcs12"),
@@ -32,12 +32,12 @@ public enum CertificateContentType {
     /**
      * Parse content type from string.
      * @param contentType The string value to parse content type from.
-     * @return the SecretContentType
+     * @return the CertificateContentType
      */
     public static CertificateContentType fromString(String contentType) {
-        for (CertificateContentType secretContentType : values()) {
-            if (secretContentType.value.equals(contentType)) {
-                return secretContentType;
+        for (CertificateContentType certificateContentType : values()) {
+            if (certificateContentType.value.equals(contentType)) {
+                return certificateContentType;
             }
         }
         return null;

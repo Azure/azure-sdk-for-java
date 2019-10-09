@@ -32,7 +32,7 @@ public final class SubjectAlternativeNames {
     /**
      * Get the emails.
      *
-     * @return the emails
+     * @return the list of emails
      */
     public List<String> getEmails() {
         return this.emails;
@@ -73,7 +73,7 @@ public final class SubjectAlternativeNames {
     /**
      * Get the dnsNames.
      *
-     * @return the dnsNames
+     * @return the list of dnsNames
      */
     public List<String> getDnsNames() {
         return this.dnsNames;
@@ -90,9 +90,9 @@ public final class SubjectAlternativeNames {
     }
 
     /**
-     * Get the upns value.
+     * Get the User Principal Names.
      *
-     * @return the upns value
+     * @return the list of  User Principal Names
      */
     public List<String> getUserPrincipalNames() {
         return this.upns;

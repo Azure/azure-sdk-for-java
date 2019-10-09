@@ -123,8 +123,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.getCertificateWithPolicy("certificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
-                    certificateResponse.getSecretId()));
+                System.out.printf("Certificate is returned with name %s and secretId %s %n",
+                    certificateResponse.getProperties().getName(), certificateResponse.getSecretId()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithPolicy#String
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#string-string
@@ -133,7 +133,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificateWithVersion ->
                 System.out.printf("Certificate is returned with name %s and secretId %s %n",
-                    certificateWithVersion.getValue().getProperties().getName(), certificateWithVersion.getValue().getSecretId()));
+                    certificateWithVersion.getValue().getProperties().getName(),
+                    certificateWithVersion.getValue().getSecretId()));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#string-string
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String-String
@@ -149,8 +150,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(certificate -> certificateAsyncClient.getCertificate(certificate.getProperties())
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
-                    certificateResponse.getSecretId())));
+                System.out.printf("Certificate is returned with name %s and secretId %s %n",
+                    certificateResponse.getProperties().getName(), certificateResponse.getSecretId())));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#CertificateProperties
     }
 
@@ -193,7 +194,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.createIssuer("issuerName", "providerName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer created with %s and %s", issuer.getName(),
+                    issuer.getProperties().getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#String-String
 
@@ -204,7 +206,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.createIssuer(issuer)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuerResponse -> {
-                System.out.printf("Issuer created with %s and %s", issuerResponse.getName(), issuerResponse.getProperties().getProvider());
+                System.out.printf("Issuer created with %s and %s", issuerResponse.getName(),
+                    issuerResponse.getProperties().getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#issuer
 
@@ -230,7 +233,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.getIssuer("issuerName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuer -> {
-                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
+                System.out.printf("Issuer returned with %s and %s", issuer.getName(),
+                    issuer.getProperties().getProvider());
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string
 
@@ -248,7 +252,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(issuer -> certificateAsyncClient.getIssuer(issuer.getProperties())
             .subscribe(issuerResponse -> {
-                System.out.printf("Issuer returned with %s and %s", issuerResponse.getName(), issuerResponse.getProperties().getProvider());
+                System.out.printf("Issuer returned with %s and %s", issuerResponse.getName(),
+                    issuerResponse.getProperties().getProvider());
             }));
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#issuerBase
 
@@ -470,14 +475,16 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
         certificateAsyncClient.recoverDeletedCertificate("deletedCertificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Certificate with name %s %n", recoveredSecretResponse.getProperties().getName()));
+                System.out.printf("Recovered Certificate with name %s %n",
+                    recoveredSecretResponse.getProperties().getName()));
         // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificate#string
 
         // BEGIN: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificateWithResponse#string
         certificateAsyncClient.recoverDeletedCertificateWithResponse("deletedCertificateName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Certificate with name %s %n", recoveredSecretResponse.getValue().getProperties().getName()));
+                System.out.printf("Recovered Certificate with name %s %n",
+                    recoveredSecretResponse.getValue().getProperties().getName()));
         // END: com.azure.security.certificatevault.certificates.CertificateAsyncClient.recoverDeletedCertificateWithResponse#string
     }
 
@@ -676,8 +683,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#config
         List<byte[]> x509CertificatesToMerge = new ArrayList<>();
-        MergeCertificateOptions config = new MergeCertificateOptions("certificateName", x509CertificatesToMerge)
-            .setEnabled(false);
+        MergeCertificateOptions config =
+            new MergeCertificateOptions("certificateName", x509CertificatesToMerge).setEnabled(false);
         certificateAsyncClient.mergeCertificate(config)
             .subscribe(certificate -> System.out.printf("Received Certificate with name %s and key id %s",
                 certificate.getProperties().getName(), certificate.getKeyId()));
@@ -685,8 +692,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#config
         List<byte[]> x509CertsToMerge = new ArrayList<>();
-        MergeCertificateOptions mergeConfig = new MergeCertificateOptions("certificateName", x509CertsToMerge)
-            .setEnabled(false);
+        MergeCertificateOptions mergeConfig =
+            new MergeCertificateOptions("certificateName", x509CertsToMerge).setEnabled(false);
         certificateAsyncClient.mergeCertificateWithResponse(mergeConfig)
             .subscribe(certificateResponse -> System.out.printf("Received Certificate with name %s and key id %s",
                 certificateResponse.getValue().getProperties().getName(), certificateResponse.getValue().getKeyId()));
