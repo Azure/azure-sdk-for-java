@@ -64,8 +64,18 @@ public class PerfStressProgram {
                 setupStatus.dispose();
 
                 long endNanoTime = System.nanoTime() + ((long)options.Duration * 1000000000);
-
-                Disposable progressStatus = PrintStatus("=== Progress ===", () -> _completedOperations.get(), true);
+ 
+                int[] lastCompleted = new int[] { 0 };
+                Disposable progressStatus = PrintStatus(
+                    "=== Progress ===" + System.lineSeparator() +
+                    "Current\t\tTotal",
+                    () -> {
+                        int totalCompleted = _completedOperations.get();
+                        int currentCompleted = totalCompleted - lastCompleted[0];
+                        lastCompleted[0] = totalCompleted;
+                        return currentCompleted + "\t\t" + totalCompleted;
+                    },
+                    true);
 
                 try {
                     forkJoinPool.submit(() -> {
