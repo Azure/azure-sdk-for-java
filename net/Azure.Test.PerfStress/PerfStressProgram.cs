@@ -48,6 +48,12 @@ namespace Azure.Test.PerfStress
             }));
             Console.WriteLine();
 
+            using var setupStatusCts = new CancellationTokenSource();
+            var setupStatusTask = PrintStatusAsync("=== Setup ===", () => ".", newLine: false, setupStatusCts.Token);
+
+            using var cleanupStatusCts = new CancellationTokenSource();
+            Task cleanupStatusTask = null;
+
             _lastCompletionTimes = new TimeSpan[options.Parallel];
 
             var duration = TimeSpan.FromSeconds(options.Duration);
@@ -71,10 +77,13 @@ namespace Azure.Test.PerfStress
                     }
                     await Task.WhenAll(setupTasks);
 
+                    setupStatusCts.Cancel();
+                    await setupStatusTask;
+
                     using var cts = new CancellationTokenSource(duration);
                     var cancellationToken = cts.Token;
 
-                    _ = PrintStatusAsync(cancellationToken);
+                    var progressStatusTask = PrintStatusAsync("=== Progress ===", () => _completedOperations, newLine: true, cancellationToken);
 
                     if (options.Sync)
                     {
@@ -100,11 +109,18 @@ namespace Azure.Test.PerfStress
                         }
                         await Task.WhenAll(tasks);
                     }
+
+                    await progressStatusTask;
                 }
                 finally
                 {
                     if (!options.NoCleanup)
                     {
+                        if (cleanupStatusTask == null)
+                        {
+                            cleanupStatusTask = PrintStatusAsync("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
+                        }
+
                         var cleanupTasks = new Task[options.Parallel];
                         for (var i = 0; i < options.Parallel; i++)
                         {
@@ -118,15 +134,27 @@ namespace Azure.Test.PerfStress
             {
                 if (!options.NoCleanup)
                 {
+                    if (cleanupStatusTask == null)
+                    {
+                        cleanupStatusTask = PrintStatusAsync("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
+                    }
+
                     await tests[0].GlobalCleanup();
                 }
             }
+
+            cleanupStatusCts.Cancel();
+            if (cleanupStatusTask != null)
+            {
+                await cleanupStatusTask;
+            }
+
+            Console.WriteLine("=== Results ===");
 
             var averageElapsedSeconds = _lastCompletionTimes.Select(t => t.TotalSeconds).Average();
             var operationsPerSecond = _completedOperations / averageElapsedSeconds;
             var secondsPerOperation = 1 / operationsPerSecond;
 
-            Console.WriteLine("=== Results ===");
             Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
                 $"({operationsPerSecond:N2} ops/s, {secondsPerOperation:N3} s/op)");
             Console.WriteLine();
@@ -171,20 +199,38 @@ namespace Azure.Test.PerfStress
             }
         }
 
-        static async Task PrintStatusAsync(CancellationToken token)
+        private static async Task PrintStatusAsync(string header, Func<object> status, bool newLine, CancellationToken token)
         {
-            Console.WriteLine("=== Progress ===");
+            Console.WriteLine(header);
+
+            bool needsExtraNewline = false;
 
             while (!token.IsCancellationRequested)
             {
                 try
                 {
                     await Task.Delay(TimeSpan.FromSeconds(1), token);
-                    Console.WriteLine(_completedOperations);
+
+                    var obj = status();
+
+                    if (newLine)
+                    {
+                        Console.WriteLine(obj);
+                    }
+                    else
+                    {
+                        Console.Write(obj);
+                        needsExtraNewline = true;
+                    }
                 }
                 catch (OperationCanceledException)
                 {
                 }
+            }
+            
+            if (needsExtraNewline)
+            {
+                Console.WriteLine();
             }
 
             Console.WriteLine();
