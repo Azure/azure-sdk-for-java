@@ -4,8 +4,8 @@
 package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
-import com.azure.core.http.rest.Response
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.rest.Response
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.common.Constants
@@ -14,6 +14,7 @@ import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.ShareSnapshotInfo
 import com.azure.storage.file.models.StorageErrorCode
 import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
@@ -55,13 +56,28 @@ class FileAPITests extends APISpec {
     def "Get file URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
-        def fileURL = primaryFileClient.getFileUrl().toString()
+        def fileURL = primaryFileClient.getFileUrl()
 
         then:
         expectURL == fileURL
+    }
+
+    def "Get share snapshot URL"() {
+        given:
+        def accoutName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accoutName, shareName, filePath)
+
+        when:
+        ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
+        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        FileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
+            .buildClient().getFileClient(filePath)
+        def fileURL = newFileClient.getFileUrl()
+        then:
+        expectURL.equals(fileURL)
     }
 
     def "Create file"() {
@@ -377,7 +393,14 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
-        def sasToken = primaryFileClient.generateSAS(getUTCNow().plusDays(1), new FileSASPermission().setReadPermission(true))
+        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def sasToken = new FileServiceSasSignatureValues()
+            .setExpiryTime(getUTCNow().plusDays(1))
+            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
+            .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
+            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .generateSASQueryParameters(credential)
+            .encode()
 
         when:
         FileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
@@ -385,7 +408,7 @@ class FileAPITests extends APISpec {
             .buildFileClient()
 
         client.create(1024)
-        client.uploadRangeFromURL(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath +"?" + sasToken).toURI())
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl() +"?" + sasToken).toURI())
 
         then:
         def result = new String(client.downloadWithProperties().getBody().blockLast().array())
@@ -400,7 +423,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
-        def sourceURL = primaryFileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath
+        def sourceURL = primaryFileClient.getFileUrl()
 
         when:
         Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null, null)

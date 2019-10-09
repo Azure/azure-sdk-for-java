@@ -13,7 +13,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.ContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -22,13 +22,12 @@ import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
- * This class provides a client that contains all the leasing operations for {@link ContainerAsyncClient containers}
+ * This class provides a client that contains all the leasing operations for {@link BlobContainerAsyncClient containers}
  * and {@link BlobAsyncClient blobs}. This client acts as a supplement to those clients and only handles leasing
  * operations.
  *
@@ -53,14 +52,16 @@ public final class LeaseAsyncClient {
     private final boolean isBlob;
     private final String leaseId;
     private final AzureBlobStorageImpl client;
+    private final String accountName;
 
-    LeaseAsyncClient(HttpPipeline pipeline, URL url, String leaseId, boolean isBlob) {
+    LeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isBlob, String accountName) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
-            .url(url.toString())
+            .url(url)
             .build();
+        this.accountName = accountName;
     }
 
     /**
@@ -70,12 +71,8 @@ public final class LeaseAsyncClient {
      *
      * @return URL of the lease client.
      */
-    public URL getLeaseUrl() {
-        try {
-            return new URL(this.client.getUrl());
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new RuntimeException("Unable to parse URL"));
-        }
+    public String getResourceUrl() {
+        return this.client.getUrl();
     }
 
     /**
@@ -329,5 +326,14 @@ public final class LeaseAsyncClient {
                     .switchIfEmpty(Mono.just(""))
                     .flatMap(body -> Mono.error(new StorageException(resume, body)))
             ));
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -292,7 +292,11 @@ public class EventHubAsyncProducer implements Closeable {
             return Mono.empty();
         }
 
-        logger.info("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getSize());
+        if (ImplUtils.isNullOrEmpty(batch.getPartitionKey())) {
+            logger.info("Sending batch with size[{}].", batch.getSize());
+        } else {
+            logger.info("Sending batch with size[{}], partitionKey[{}].", batch.getSize(), batch.getPartitionKey());
+        }
 
         final String partitionKey = batch.getPartitionKey();
         final List<Message> messages = batch.getEvents().stream().map(event -> {

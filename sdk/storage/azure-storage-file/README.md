@@ -23,30 +23,37 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file</artifactId>
-  <version>12.0.0-preview.3</version>
+  <version>12.0.0-preview.4</version>
 </dependency>
 ```
 
 ### Default HTTP Client
-All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+Storage File to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
 
 ```xml
+<!-- Add Storage File dependency without Netty HTTP client -->
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-netty</artifactId>
-  <version>1.0.0-preview.4</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-file</artifactId>
+      <version>12.0.0-preview.4</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
 </dependency>
-```
 
-This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
-
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
-
-```xml
+<!-- Add OkHTTP client to use with Storage File -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.5</version>
 </dependency>
 ```
 
@@ -137,8 +144,14 @@ https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ```
 
 ### Handling Exceptions
+Uses the `fileServiceClient` generated from [File Service Client](#file-service) section below.
+
 ```java
-// TODO
+try {
+    fileServiceClient.createShare("myShare");
+} catch (StorageException e) {
+    logger.error("Failed to create a share with error code: " + e.getErrorCode());
+}
 ```
 
 ### Resource Names
@@ -179,7 +192,7 @@ Once you have the SASToken, you can construct the file service client with `${ac
 ```java
 String fileServiceURL = String.format("https://%s.file.core.windows.net", accountName);
 FileServiceClient fileServiceClient = new FileServiceClientBuilder().endpoint(fileServiceURL)
-    .credential(sasToken).buildClient();
+    .sasToken(sasToken).buildClient();
 ```
 
 ### Share
@@ -189,7 +202,7 @@ Once you have the SASToken, you can construct the file service client with `${ac
 ```java
 String shareURL = String.format("https://%s.file.core.windows.net", accountName);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
-    .credential(sasToken).shareName(shareName).buildClient();
+    .sasToken(sasToken).shareName(shareName).buildClient();
 ```
 
 ### Directory
@@ -199,7 +212,7 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
 ```java
 String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", accountName, shareName, directoryPath, sasToken);
 DirectoryClient directoryClient = new DirectoryClientBuilder().endpoint(directoryURL)
-    .credential(sasToken).shareName(shareName).directoryName(directoryPath).buildClient();
+    .sasToken(sasToken).shareName(shareName).directoryName(directoryPath).buildClient();
 ```
 ### File
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
@@ -208,7 +221,7 @@ DirectoryClient directoryClient = new DirectoryClientBuilder().endpoint(director
 ```java
 String fileURL = String.format("https://%s.file.core.windows.net", accountName);
 FileClient fileClient = new FileClientBuilder().endpoint(fileURL)
-    .credential(sasToken).shareName(shareName).filePath(directoryPath + "/" + fileName).buildClient();
+    .sasToken(sasToken).shareName(shareName).filePath(directoryPath + "/" + fileName).buildClient();
 ```
 
 ## Examples
@@ -318,7 +331,7 @@ Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```Java
 String dirName = "testdir";
-shareClient.deleteDirectory(dirName)
+shareClient.deleteDirectory(dirName);
 ```
 
 ### Delete a subdirectory
@@ -326,7 +339,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String subDirName = "testsubdir";
-directoryClient.deleteSubDirectory(subDirName)
+directoryClient.deleteSubDirectory(subDirName);
 ```
 
 ### Delete a file
@@ -334,7 +347,7 @@ Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
 String fileName = "testfile";
-directoryClient.deleteFile(fileName)
+directoryClient.deleteFile(fileName);
 ```
 
 ### Copy a file
@@ -357,8 +370,9 @@ fileClient.abortCopy(copyId);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with data of "default" .
 
 ```Java
-ByteBuffer data = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-fileClient.upload(data, data.readableBytes());
+String uploadText = "default";
+ByteBuffer data = ByteBuffer.wrap(uploadText.getBytes(StandardCharsets.UTF_8));
+fileClient.upload(data, uploadText.length());
 ```
 
 ### Upload file to storage
@@ -371,8 +385,8 @@ fileClient.uploadFromFile(filePath);
 ### Download data from file range
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
-FileRange fileRange = new FileRange(1024, 2047);
-fileClient.downloadWithProperties(fileRange, false, null);
+FileRange fileRange = new FileRange(1024L, 2047L);
+fileClient.downloadWithPropertiesWithResponse(fileRange, false, null, Context.NONE);
 ```
 
 ### Download file from storage
@@ -395,8 +409,8 @@ Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-service
 ```Java
 FileServiceProperties properties = fileServiceClient.getProperties();
 
-properties.minuteMetrics().enabled(true);
-properties.hourMetrics().enabled(true);
+properties.getMinuteMetrics().setEnabled(true);
+properties.getHourMetrics().setEnabled(true);
 
 fileServiceClient.setProperties(properties);
 ```
@@ -420,11 +434,11 @@ shareClient.getAccessPolicy();
 Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```java
-AccessPolicy accessPolicy = new AccessPolicy().permission("r")
-            .start(OffsetDateTime.now(ZoneOffset.UTC))
-            .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
+    .setStart(OffsetDateTime.now(ZoneOffset.UTC))
+    .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
+SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 shareClient.setAccessPolicy(Collections.singletonList(permission));
 ```
 
@@ -432,15 +446,15 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory)
 
 ```Java
-Iterable<HandleItem> handleItems = directoryClient.listHandles(null, true);
+PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Force close handles on handle id
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) and the handle id returned above `${handleId}=[handleItems](#Get-handles-on-directory-file)`
 
 ```Java
-String handleId = result.iterator().next().handleId();
-directoryClient.forceCloseHandles(handleId);
+String handleId = handleItems.iterator().next().getHandleId();
+directoryClient.forceCloseHandles(handleId, true, Duration.ofSeconds(30), Context.NONE);
 ```
 
 ### Set quota on share
@@ -455,7 +469,7 @@ shareClient.setQuota(quotaOnGB);
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
-FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
+FileHTTPHeaders httpHeaders = new FileHTTPHeaders().setFileContentType("text/plain");
 long newFileSize = 1024;
 fileClient.setHttpHeaders(newFileSize, httpHeaders);
 ```

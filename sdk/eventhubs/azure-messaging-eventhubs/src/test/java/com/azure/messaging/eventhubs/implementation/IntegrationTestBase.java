@@ -6,10 +6,12 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.RetryOptions;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.ProxyAuthenticationType;
 import com.azure.core.amqp.models.ProxyConfiguration;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
@@ -28,10 +30,15 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+
+import static com.azure.core.amqp.models.ProxyConfiguration.PROXY_PASSWORD;
+import static com.azure.core.amqp.models.ProxyConfiguration.PROXY_USERNAME;
 
 /**
  * Test base for running integration tests.
@@ -41,6 +48,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static final RetryOptions RETRY_OPTIONS = new RetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
+    private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
@@ -92,6 +100,44 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected String getConnectionString() {
         return CONNECTION_STRING;
+    }
+
+    /**
+     * Gets the configured ProxyConfiguration from environment variables.
+     */
+    public ProxyConfiguration getProxyConfiguration() {
+        final String address = System.getenv(Configuration.PROPERTY_HTTP_PROXY);
+
+        if (address == null) {
+            return null;
+        }
+
+        final String[] host = address.split(":");
+        if (host.length < 2) {
+            logger.warning("Environment variable '{}' cannot be parsed into a proxy. Value: {}",
+                Configuration.PROPERTY_HTTP_PROXY, address);
+            return null;
+        }
+
+        final String hostname = host[0];
+        final int port = Integer.parseInt(host[1]);
+        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
+
+        final String username = System.getenv(PROXY_USERNAME);
+
+        if (username == null) {
+            logger.info("Environment variable '{}' is not set. No authentication used.");
+            return new ProxyConfiguration(ProxyAuthenticationType.NONE, proxy, null, null);
+        }
+
+        final String password = System.getenv(PROXY_PASSWORD);
+        final String authentication = System.getenv(PROXY_AUTHENTICATION_TYPE);
+
+        final ProxyAuthenticationType authenticationType = ImplUtils.isNullOrEmpty(authentication)
+            ? ProxyAuthenticationType.NONE
+            : ProxyAuthenticationType.valueOf(authentication);
+
+        return new ProxyConfiguration(authenticationType, proxy, username, password);
     }
 
     /**

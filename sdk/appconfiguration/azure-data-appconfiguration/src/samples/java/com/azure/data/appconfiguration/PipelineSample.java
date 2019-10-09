@@ -8,8 +8,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Flux;
@@ -46,12 +46,12 @@ class PipelineSample {
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
                 .credential(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
-                .httpLogDetailLevel(HttpLogDetailLevel.HEADERS)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
                 .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.
         final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().setKey("hello").setValue("world")),
-                client.setSetting(new ConfigurationSetting().setKey("newSetting").setValue("newValue")))
+                client.setSetting("newSetting", null, "newValue"))
                 .then(client.listSettings(new SettingSelector().setKeys("*")).collectList())
                 .block();
 
@@ -59,7 +59,8 @@ class PipelineSample {
         final Stream<ConfigurationSetting> stream = settings == null
                 ? Stream.empty()
                 : settings.stream();
-        Flux.merge(stream.map(client::deleteSetting).collect(Collectors.toList())).blockLast();
+        Flux.merge(stream.map(setting -> client.deleteSettingWithResponse(setting, false))
+            .collect(Collectors.toList())).blockLast();
 
         // Check what sort of HTTP method calls we made.
         tracker.print();

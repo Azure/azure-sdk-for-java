@@ -22,26 +22,33 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.0-preview.3</version>
+    <version>1.0.0-preview.4</version>
 </dependency>
 ```
 
 ### Default HTTP Client
-All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+AppConfiguration to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
 
 ```xml
+<!-- Add AppConfiguration dependency without Netty HTTP client -->
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-netty</artifactId>
-  <version>1.0.0-preview.4</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-appconfiguration</artifactId>
+    <version>1.0.0-preview.4</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
 </dependency>
-```
 
-This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
-
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
-
-```xml
+<!-- Add OkHTTP client to use with AppConfiguration -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
@@ -117,7 +124,7 @@ The Label property of a Configuration Setting provides a way to separate Configu
 
 ### Configuration Client
 
-The client performs the interactions with the App Configuration service, getting, setting, updating, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
+The client performs the interactions with the App Configuration service, getting, setting, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 
 An application that needs to retrieve startup configurations is better suited using the synchronous client, for example setting up a SQL connection.
 
@@ -126,7 +133,8 @@ ConfigurationClient client = new ConfigurationClient()
         .credential(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildClient();
 
-String url = client.getSetting(urlKey).value();
+// urlLabel is optional
+String url = client.getSetting(urlKey, urlLabel).getValue();
 Connection conn;
 try {
     conn = DriverManager.getConnection(url);
@@ -164,7 +172,7 @@ Create a Configuration Setting to be stored in the Configuration Store. There ar
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-ConfigurationSetting setting = client.setSetting("some_key", "some_value");
+ConfigurationSetting setting = client.setSetting("some_key", "some_label", "some_value");
 ```
 
 ### Retrieve a Configuration Setting
@@ -174,19 +182,19 @@ Retrieve a previously stored Configuration Setting by calling getSetting.
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-client.setSetting("some_key", "some_value");
-ConfigurationSetting setting = client.getSetting("some_key");
+client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.getSetting("some_key", "some_label");
 ```
 
 ### Update an existing Configuration Setting
 
-Update an existing Configuration Setting by calling updateSetting.
+Update an existing Configuration Setting by calling setSetting.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-client.setSetting("some_key", "some_value");
-ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
+client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.setSetting("some_key", "some_label", "new_value");
 ```
 
 ### Delete a Configuration Setting
@@ -196,8 +204,8 @@ Delete an existing Configuration Setting by calling deleteSetting.
 ConfigurationClient client = new ConfigurationClientBuilder()
         .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
-client.setSetting("some_key", "some_value");
-ConfigurationSetting setting = client.deleteSetting("some_key");
+client.setSetting("some_key", "some_label", "some_value");
+ConfigurationSetting setting = client.deleteSetting("some_key", "some_label");
 ```
 
 ## Troubleshooting

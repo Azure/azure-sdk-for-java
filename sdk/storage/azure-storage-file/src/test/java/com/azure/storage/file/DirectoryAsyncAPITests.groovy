@@ -6,10 +6,6 @@ package com.azure.storage.file
 
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.file.DirectoryAsyncClient
-import com.azure.storage.file.FileAsyncClient
-import com.azure.storage.file.FileSmbProperties
-import com.azure.storage.file.ShareClient
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
@@ -44,9 +40,9 @@ class DirectoryAsyncAPITests extends APISpec {
     def "Get directory URL"() {
         given:
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net", accountName)
+        def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath)
         when:
-        def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl().toString()
+        def directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl()
         then:
         expectURL.equals(directoryURL)
     }

@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -33,7 +30,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link DirectoryAsyncClient} with SAS token.
      * @return An instance of {@link DirectoryAsyncClient}
      */
     public DirectoryAsyncClient createAsyncClientWithSASToken() {
@@ -48,14 +45,14 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link DirectoryAsyncClient} with SAS token.
      * @return An instance of {@link DirectoryAsyncClient}
      */
     public DirectoryAsyncClient createAsyncClientWithCredential() {
         // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         DirectoryAsyncClient direcotryAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .resourcePath("mydirectory")
             .buildDirectoryAsyncClient();
@@ -424,7 +421,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         DirectoryAsyncClient directoryAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .resourcePath("mydirectory")
             .snapshot(currentTime.toString())

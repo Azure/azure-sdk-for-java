@@ -3,7 +3,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -38,6 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
@@ -188,72 +188,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test public abstract void setSettingNullKey();
 
     @Test
-    public abstract void updateNoExistingSetting();
-
-    void updateNoExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
-        final ConfigurationSetting expectedFail = new ConfigurationSetting().setKey(getKey()).setValue("myFailingUpdate");
-
-        testRunner.accept(expectedFail);
-        testRunner.accept(expectedFail.setLabel(getLabel()));
-    }
-
-    @Test
-    public abstract void updateSetting();
-
-    void updateSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
-        String key = getKey();
-        String label = getLabel();
-
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("first tag", "first value");
-        tags.put("second tag", "second value");
-        final ConfigurationSetting original = new ConfigurationSetting()
-            .setKey(key)
-            .setValue("myNewValue")
-            .setTags(tags)
-            .setContentType("json");
-
-        final Map<String, String> updatedTags = new HashMap<>(tags);
-        final ConfigurationSetting updated = new ConfigurationSetting()
-            .setKey(original.getKey())
-            .setValue("myUpdatedValue")
-            .setTags(updatedTags)
-            .setContentType("text");
-
-        testRunner.accept(original, updated);
-        testRunner.accept(original.setLabel(label), updated.setLabel(label));
-    }
-
-    @Test
-    public abstract void updateSettingOverload();
-
-    void updateSettingOverloadRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
-        String key = getKey();
-
-        ConfigurationSetting original = new ConfigurationSetting().setKey(key).setValue("A Value");
-        ConfigurationSetting updated = new ConfigurationSetting().setKey(key).setValue("A New Value");
-
-        testRunner.accept(original, updated);
-    }
-
-    @Test
-    public abstract void updateSettingNullKey();
-
-    @Test
-    public abstract void updateSettingIfEtag();
-
-    void updateSettingIfEtagRunner(Consumer<List<ConfigurationSetting>> testRunner) {
-        final String key = getKey();
-        final String label = getLabel();
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(key).setValue("myNewValue");
-        final ConfigurationSetting updateConfiguration = new ConfigurationSetting().setKey(key).setValue("myUpdateValue");
-        final ConfigurationSetting finalConfiguration = new ConfigurationSetting().setKey(key).setValue("myFinalValue");
-
-        testRunner.accept(Arrays.asList(newConfiguration, updateConfiguration, finalConfiguration));
-        testRunner.accept(Arrays.asList(newConfiguration.setLabel(label), updateConfiguration.setLabel(label), finalConfiguration.setLabel(label)));
-    }
-
-    @Test
     public abstract void getSetting();
 
     void getSettingRunner(Consumer<ConfigurationSetting> testRunner) {
@@ -302,6 +236,25 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     public abstract void deleteSettingNullKey();
 
     @Test
+    public abstract void setReadOnly();
+
+    @Test
+    public abstract void clearReadOnly();
+
+    @Test
+    public abstract void setReadOnlyWithConfigurationSetting();
+
+    @Test
+    public abstract void clearReadOnlyWithConfigurationSetting();
+
+    void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
+        String key = getKey();
+
+        final ConfigurationSetting lockConfiguration = new ConfigurationSetting().setKey(key).setValue("myValue");
+        testRunner.accept(lockConfiguration);
+    }
+
+    @Test
     public abstract void listWithKeyAndLabel();
 
     @Test
@@ -311,7 +264,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
-        testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual))));
+        testRunner.apply(setting, setting2).forEach(actual -> expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual))));
         assertTrue(expectedSelection.isEmpty());
     }
 
@@ -324,7 +277,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
 
         for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -391,7 +344,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
         for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -409,7 +362,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
         for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+            expectedSelection.removeIf(expected -> equals(expected, cleanResponse(expected, actual)));
         }
 
         assertTrue(expectedSelection.isEmpty());
@@ -478,9 +431,13 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertConfigurationEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
         if (expected != null && actual != null) {
             actual = cleanResponse(expected, actual);
+        } else if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertFalse("One of input settings is null", true);
         }
 
-        assertEquals(expected, actual);
+        equals(expected, actual);
     }
 
     /**
@@ -553,5 +510,65 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         } catch (Exception ex) {
             assertEquals(exception, ex.getClass());
         }
+    }
+
+
+    /**
+     * Helper method to verify that two configuration setting are equal. Users can defined their equal method.
+     *
+     * @param o1 ConfigurationSetting object 1
+     * @param o2 ConfigurationSetting object 2
+     * @return boolean value that defines if two ConfigurationSettings are equal
+     */
+    static boolean equals(ConfigurationSetting o1, ConfigurationSetting o2) {
+        if (o1 == o2) {
+            return true;
+        }
+
+        if (!Objects.equals(o1.getKey(), o2.getKey())
+            || !Objects.equals(o1.getLabel(), o2.getLabel())
+            || !Objects.equals(o1.getValue(), o2.getValue())
+            || !Objects.equals(o1.getETag(), o2.getETag())
+            || !Objects.equals(o1.getLastModified(), o2.getLastModified())
+            || !Objects.equals(o1.isLocked(), o2.isLocked())
+            || !Objects.equals(o1.getContentType(), o2.getContentType())
+            || ImplUtils.isNullOrEmpty(o1.getTags()) != ImplUtils.isNullOrEmpty(o2.getTags())) {
+            return false;
+        }
+
+        if (!ImplUtils.isNullOrEmpty(o1.getTags())) {
+            return Objects.equals(o1.getTags(), o2.getTags());
+        }
+
+        return true;
+    }
+
+    /**
+     * A helper method to verify that two lists of ConfigurationSetting are equal each other.
+     *
+     * @param settings1 List of ConfigurationSetting
+     * @param settings2 Another List of ConfigurationSetting
+     * @return boolean value that defines if two ConfigurationSetting lists are equal
+     */
+    static boolean equalsArray(List<ConfigurationSetting> settings1, List<ConfigurationSetting> settings2) {
+        if (settings1 == settings2) {
+            return true;
+        }
+
+        if (settings1 == null || settings2 == null) {
+            return false;
+        }
+
+        if (settings1.size() != settings2.size()) {
+            return false;
+        }
+
+        final int size = settings1.size();
+        for (int i = 0; i < size; i++) {
+            if (!equals(settings1.get(i), settings2.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

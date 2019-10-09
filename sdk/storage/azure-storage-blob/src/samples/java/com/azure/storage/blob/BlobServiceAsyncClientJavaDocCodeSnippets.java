@@ -4,24 +4,16 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.blob.models.ContainerListDetails;
-import com.azure.storage.blob.models.ListContainersOptions;
+import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.Logging;
-import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageServiceProperties;
-
-import java.util.Collections;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link BlobServiceAsyncClient}
@@ -32,111 +24,74 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     private BlobServiceAsyncClient client = JavaDocCodeSnippetsHelpers.getBlobServiceAsyncClient();
 
     /**
-     * Generates a code sample for using {@link BlobServiceAsyncClient#generateAccountSAS(AccountSASService,
-     * AccountSASResourceType, AccountSASPermission, OffsetDateTime, OffsetDateTime, String, IPRange, SASProtocol)}
-     */
-    public void generateAccountSAS() {
-        // BEGIN: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
-        AccountSASService service = new AccountSASService()
-            .setBlob(true)
-            .setFile(true)
-            .setQueue(true)
-            .setTable(true);
-        AccountSASResourceType resourceType = new AccountSASResourceType()
-            .setContainer(true)
-            .setObject(true)
-            .setService(true);
-        AccountSASPermission permission = new AccountSASPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setProcessMessages(true)
-            .setUpdatePermission(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-
-        String sas = client.generateAccountSAS(service, resourceType, permission, expiryTime, startTime, version,
-            ipRange, sasProtocol);
-        // END: com.azure.storage.blob.blobServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol
-    }
-
-    /**
-     * Code snippet for {@link BlobServiceAsyncClient#getContainerAsyncClient(String)}
+     * Code snippet for {@link BlobServiceAsyncClient#getBlobContainerAsyncClient(String)}
      */
     public void getContainerClient() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String
-        ContainerAsyncClient containerAsyncClient = client.getContainerAsyncClient("containerName");
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.getContainerAsyncClient#String
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String
+        BlobContainerAsyncClient blobContainerAsyncClient = client.getBlobContainerAsyncClient("containerName");
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.getBlobContainerAsyncClient#String
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#createContainer(String)}
+     * Code snippet for {@link BlobServiceAsyncClient#createBlobContainer(String)}
      */
     public void createContainer() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String
-        ContainerAsyncClient containerAsyncClient =
-            client.createContainer("containerName").block();
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainer#String
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String
+        BlobContainerAsyncClient blobContainerAsyncClient =
+            client.createBlobContainer("containerName").block();
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainer#String
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#createContainerWithResponse(String, Metadata, PublicAccessType)}
+     * Code snippet for {@link BlobServiceAsyncClient#createBlobContainerWithResponse(String, Map, PublicAccessType)}
      */
     public void createContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType
-        Metadata metadata = new Metadata(Collections.singletonMap("metadata", "value"));
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
 
-        ContainerAsyncClient containerClient =
-            client.createContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.createContainerWithResponse#String-Metadata-PublicAccessType
+        BlobContainerAsyncClient containerClient = client
+            .createBlobContainerWithResponse("containerName", metadata, PublicAccessType.CONTAINER).block().getValue();
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#deleteContainer(String)}
+     * Code snippet for {@link BlobServiceAsyncClient#deleteBlobContainer(String)}
      */
     public void deleteContainer() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainer#String
-        client.deleteContainer("containerName").subscribe(
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String
+        client.deleteBlobContainer("containerName").subscribe(
             response -> System.out.printf("Delete container completed%n"),
             error -> System.out.printf("Delete container failed: %s%n", error));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainer#String
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#deleteContainerWithResponse(String, Context)}
+     * Code snippet for {@link BlobServiceAsyncClient#deleteBlobContainerWithResponse(String, Context)}
      */
     public void deleteContainerWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context
         Context context = new Context("Key", "Value");
-        client.deleteContainerWithResponse("containerName").subscribe(response ->
+        client.deleteBlobContainerWithResponse("containerName").subscribe(response ->
             System.out.printf("Delete container completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteContainerWithResponse#String-Context
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainerWithResponse#String-Context
     }
 
     /**
-     * Code snippets for {@link BlobServiceAsyncClient#listContainers()} and
-     * {@link BlobServiceAsyncClient#listContainers(ListContainersOptions)}
+     * Code snippets for {@link BlobServiceAsyncClient#listBlobContainers()} and
+     * {@link BlobServiceAsyncClient#listBlobContainers(ListBlobContainersOptions)}
      */
     public void listContainers() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listContainers
-        client.listContainers().subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.listContainers
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers
+        client.listBlobContainers().subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers
 
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions
-        ListContainersOptions options = new ListContainersOptions()
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions
+        ListBlobContainersOptions options = new ListBlobContainersOptions()
             .setPrefix("containerNamePrefixToMatch")
-            .setDetails(new ContainerListDetails().setMetadata(true));
+            .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true));
 
-        client.listContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.listContainers#ListContainersOptions
+        client.listBlobContainers(options).subscribe(container -> System.out.printf("Name: %s%n", container.getName()));
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions
     }
 
     /**
