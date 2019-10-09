@@ -22,7 +22,8 @@ import java.util.Map;
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
  * Operations allowed by the client are uploading, downloading and copying a blob, retrieving and setting metadata,
  * retrieving and setting HTTP headers, and deleting and un-deleting a blob. The upload and download operation allow for
- * encryption and decryption of the data client side.
+ * encryption and decryption of the data client side. Note: setting metadata in particular is unsafe and should only be
+ * done so with caution.
  * <p> Please refer to the
  * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
@@ -42,16 +43,16 @@ import java.util.Map;
  * Docs</a> for more information.
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
-public class EncryptedBlockBlobClient extends BlobClient {
-    private final ClientLogger logger = new ClientLogger(EncryptedBlockBlobClient.class);
-    private final EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient;
+public class EncryptedBlobClient extends BlobClient {
+    private final ClientLogger logger = new ClientLogger(EncryptedBlobClient.class);
+    private final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      */
-    EncryptedBlockBlobClient(EncryptedBlockBlobAsyncClient encryptedBlockBlobAsyncClient) {
-        super(encryptedBlockBlobAsyncClient);
-        this.encryptedBlockBlobAsyncClient = encryptedBlockBlobAsyncClient;
+    EncryptedBlobClient(EncryptedBlobAsyncClient encryptedBlobAsyncClient) {
+        super(encryptedBlobAsyncClient);
+        this.encryptedBlobAsyncClient = encryptedBlobAsyncClient;
     }
 
     /**
@@ -59,7 +60,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
      */
@@ -72,7 +73,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -87,7 +88,7 @@ public class EncryptedBlockBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout) throws UncheckedIOException {
-        Mono<Void> upload = this.encryptedBlockBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
+        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
             headers, metadata, tier, accessConditions);
 
         try {

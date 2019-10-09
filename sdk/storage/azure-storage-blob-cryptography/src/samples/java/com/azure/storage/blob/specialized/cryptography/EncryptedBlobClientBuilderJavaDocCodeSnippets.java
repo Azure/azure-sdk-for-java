@@ -19,61 +19,30 @@ public class EncryptedBlobClientBuilderJavaDocCodeSnippets {
     private AsyncKeyEncryptionKeyResolver keyResolver = JavaDocCodeSnippetsHelpers.getKeyResolver();
     private KeyWrapAlgorithm keyWrapAlgorithm = KeyWrapAlgorithm.RSA_OAEP;
 
-    private BlockBlobAsyncClient blockBlobAsyncClient = JavaDocCodeSnippetsHelpers.getBlockBlobAsyncClient(
-        connectionString);
-    private BlockBlobClient blockBlobClient = JavaDocCodeSnippetsHelpers.getBlockBlobClient(connectionString);
-
-
     /**
-     * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobAsyncClient()}
+     * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlobAsyncClient()}
      */
     public void buildEncryptedBlockBlobAsyncClient() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient
-        EncryptedBlockBlobAsyncClient client = new EncryptedBlobClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient
+        EncryptedBlobAsyncClient client = new EncryptedBlobClientBuilder()
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
-            .buildEncryptedBlockBlobAsyncClient();
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient
+            .buildEncryptedBlobAsyncClient();
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient()}
+     * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlobClient()}
      */
     public void buildEncryptedBlockBlobClient() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient
-        EncryptedBlockBlobClient client = new EncryptedBlobClientBuilder()
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient
+        EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
-            .buildEncryptedBlockBlobClient();
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient
-    }
-
-    /**
-     * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobAsyncClient(BlockBlobAsyncClient)}
-     */
-    public void buildEncryptedBlockBlobAsyncClientFromClient() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient#blockblobasyncclient
-        EncryptedBlockBlobAsyncClient client = new EncryptedBlobClientBuilder()
-            .key(key, keyWrapAlgorithm)
-            .keyResolver(keyResolver)
-            .connectionString(connectionString)
-            .buildEncryptedBlockBlobAsyncClient(blockBlobAsyncClient);
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient#blockblobasyncclient
-    }
-
-    /**
-     * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient(BlockBlobClient)}
-     */
-    public void buildEncryptedBlockBlobClientFromClient() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient#blockblobclient
-        EncryptedBlockBlobClient builder = new EncryptedBlobClientBuilder()
-            .key(key, keyWrapAlgorithm)
-            .keyResolver(keyResolver)
-            .connectionString(connectionString)
-            .buildEncryptedBlockBlobClient(blockBlobClient);
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient#blockblobclient
+            .buildEncryptedBlobClient();
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient
     }
 
 }

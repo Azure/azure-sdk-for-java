@@ -41,9 +41,8 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 
 /**
  * This is a decryption policy in an {@link com.azure.core.http.HttpPipeline} to decrypt data in an
- * {@link EncryptedBlockBlobAsyncClient} or {@link EncryptedBlockBlobClient} download request. The range will be
- * expanded for decryption purposes and then decrypt the body when the response comes in. This policy must only be used
- * on encrypted blob clients.
+ * {@link EncryptedBlobAsyncClient} or {@link EncryptedBlobClient} download request. The range will be
+ * expanded for decryption purposes and then decrypt the body when the response comes in.
  */
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
@@ -158,11 +157,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  */
                     byte[] iv;
 
-                /*
-                Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
-                (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the key
-                is in the metadata.
-                 */
+                    /*
+                    Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
+                    (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the key
+                    is in the metadata.
+                     */
                     if (encryptedBlobRange.getOffsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
                         iv = encryptionData.getContentEncryptionIV();
                     } else {

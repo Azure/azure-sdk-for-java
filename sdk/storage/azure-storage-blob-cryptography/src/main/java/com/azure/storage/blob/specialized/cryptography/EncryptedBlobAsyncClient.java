@@ -44,7 +44,8 @@ import java.util.Objects;
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
  * Operations allowed by the client are uploading, downloading and copying a blob, retrieving and setting metadata,
  * retrieving and setting HTTP headers, and deleting and un-deleting a blob. The upload and download operation allow for
- * encryption and decryption of the data client side.
+ * encryption and decryption of the data client side. Note: setting metadata in particular is unsafe and should only be
+ * done so with caution.
  * <p> Please refer to the
  * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
@@ -64,11 +65,11 @@ import java.util.Objects;
  * Docs</a> for more information.
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
-public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
+public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
-    private final ClientLogger logger = new ClientLogger(EncryptedBlockBlobAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**
      * An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content key during encryption.
@@ -83,7 +84,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      */
-    EncryptedBlockBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot, String accountName,
+    EncryptedBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot, String accountName,
         AsyncKeyEncryptionKey key, KeyWrapAlgorithm keyWrapAlgorithm) {
         super(constructImpl, snapshot, null, accountName);
         this.keyWrapper = key;
@@ -114,7 +115,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobAsyncClient.upload#Flux-ParallelTransferOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -150,7 +151,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -178,7 +179,7 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobAsyncClient.uploadFromFile#String}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String}
      *
      * @param filePath Path to the upload file
      * @return An empty response
@@ -193,11 +194,10 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
-     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
-     *        transfers parameter is ignored.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file.
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -206,7 +206,6 @@ public class EncryptedBlockBlobAsyncClient extends BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
-    // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;

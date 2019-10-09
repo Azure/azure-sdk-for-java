@@ -140,7 +140,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
         this.testCase = testCase;
         this.plainText = spec.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
 
-        EncryptedBlob encryptedBlob = new EncryptedBlockBlobAsyncClient(null, null, null, key,
+        EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, null, null, key,
             KeyWrapAlgorithm.RSA_OAEP)
             .encryptBlob(Flux.just(this.plainText)).block();
         this.cipherText = APISpec.collectBytesInBuffer(encryptedBlob.getCiphertextFlux()).block();

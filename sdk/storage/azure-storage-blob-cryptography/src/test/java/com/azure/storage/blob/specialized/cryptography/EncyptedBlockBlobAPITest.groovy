@@ -16,8 +16,6 @@ import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.Constants
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.type.CollectionType
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions
@@ -30,16 +28,12 @@ import spock.lang.Shared
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 import java.security.MessageDigest
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
-    EncryptedBlockBlobClient bec // encrypted client
-    EncryptedBlockBlobAsyncClient beac // encrypted async client
+    EncryptedBlobClient bec // encrypted client
+    EncryptedBlobAsyncClient beac // encrypted async client
     BlobContainerClient cc
 
     String keyId
@@ -65,12 +59,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlockBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient()
 
         bec = getEncryptedClientBuilder(fakeKey, null, primaryCredential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
-            .buildEncryptedBlockBlobClient()
+            .buildEncryptedBlobClient()
     }
 
     // Key and key resolver null
@@ -80,7 +74,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac = getEncryptedClientBuilder(null, null, primaryCredential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlockBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient()
 
         then:
         thrown(IllegalArgumentException)
@@ -89,7 +83,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         bec = getEncryptedClientBuilder(null, null, primaryCredential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlockBlobClient()
+            .buildEncryptedBlobClient()
 
         then:
         thrown(IllegalArgumentException)
@@ -115,7 +109,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac = getEncryptedClientBuilder(key, keyResolver, primaryCredential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlockBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient()
 
         then:
         notThrown(IllegalArgumentException)
@@ -124,7 +118,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         bec = getEncryptedClientBuilder(key, keyResolver, primaryCredential,
             cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlockBlobClient()
+            .buildEncryptedBlobClient()
 
         then:
         notThrown(IllegalArgumentException)
@@ -134,70 +128,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
         true    | false
         false   | true
         true    | true
-    }
-
-    @Requires({ liveMode() })
-    def "Test BlockBlobAsyncClient wrap builder"() {
-        setup:
-        BlobContainerAsyncClient cac = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .buildAsyncClient()
-            .getBlobContainerAsyncClient(generateContainerName())
-
-        cac.create().block()
-        def blobName = generateBlobName()
-
-        BlockBlobAsyncClient normalClient = cac.getBlobAsyncClient(blobName).getBlockBlobAsyncClient()
-
-        normalClient.upload(defaultFlux, defaultDataSize).block()
-
-        when:
-        EncryptedBlockBlobAsyncClient client = new EncryptedBlobClientBuilder()
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP)
-            .keyResolver(null)
-            .buildEncryptedBlockBlobAsyncClient(normalClient)
-
-        // Check that an encrypted client has correct number of policies and important properties are the same
-        then:
-        normalClient.blobUrl == client.blobUrl
-        normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
-        normalClient.getHttpPipeline().httpClient == client.getHttpPipeline().httpClient
-
-        client.download().blockLast()
-
-        notThrown(StorageException)
-    }
-
-    @Requires({ liveMode() })
-    def "Test BlockBlobClient wrap builder"() {
-        setup:
-        BlobContainerClient cc = getServiceClientBuilder(primaryCredential,
-            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .buildClient()
-            .getBlobContainerClient(generateContainerName())
-
-        cc.create()
-        def blobName = generateBlobName()
-
-        BlockBlobClient normalClient = cc.getBlobClient(blobName).getBlockBlobClient()
-
-        normalClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
-
-        when:
-        EncryptedBlockBlobClient client = new EncryptedBlobClientBuilder()
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP)
-            .keyResolver(null)
-            .buildEncryptedBlockBlobClient(normalClient)
-
-        // Check that an encrypted client has correct number of policies and important properties are the same
-        then:
-        normalClient.blobUrl == client.blobUrl
-        normalClient.getHttpPipeline().policyCount == client.getHttpPipeline().policyCount - 1
-        normalClient.getHttpPipeline().httpClient == client.getHttpPipeline().httpClient
-
-        client.download(new ByteArrayOutputStream())
-
-        notThrown(StorageException)
     }
 
     @Requires({ liveMode() })
@@ -475,10 +405,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         BlockBlobClient normalClient = cac.getBlobClient(blobName).getBlockBlobClient()
 
         // Uses builder method that takes in regular blob clients
-        EncryptedBlockBlobClient client = new EncryptedBlobClientBuilder()
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP)
-            .keyResolver(null)
-            .buildEncryptedBlockBlobClient(normalClient)
+        EncryptedBlobClient client = getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null,
+            primaryCredential, cac.getBlobContainerUrl())
+            .blobName(blobName)
+            .buildEncryptedBlobClient()
 
         when:
 
@@ -502,16 +432,16 @@ class EncyptedBlockBlobAPITest extends APISpec {
         setup:
         def blobName = generateBlobName()
 
-        EncryptedBlockBlobAsyncClient decryptResolverClient =
+        EncryptedBlobAsyncClient decryptResolverClient =
             getEncryptedClientBuilder(null, fakeKeyResolver as AsyncKeyEncryptionKeyResolver, primaryCredential,
                 cc.getBlobContainerUrl())
             .blobName(blobName)
-            .buildEncryptedBlockBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient()
 
-        EncryptedBlockBlobAsyncClient encryptClient =
+        EncryptedBlobAsyncClient encryptClient =
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
                 .blobName(blobName)
-                .buildEncryptedBlockBlobAsyncClient()
+                .buildEncryptedBlobAsyncClient()
         when:
         def byteBufferList = []
 
@@ -564,10 +494,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         uploadOptions.setEncryptionPolicy(uploadPolicy)
         ByteArrayInputStream inputStream = new ByteArrayInputStream(defaultData.array())
 
-        EncryptedBlockBlobClient decryptClient =
+        EncryptedBlobClient decryptClient =
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential, cc.getBlobContainerUrl())
                 .blobName(blobName)
-                .buildEncryptedBlockBlobClient()
+                .buildEncryptedBlobClient()
 
         when:
         // Upload with v8
@@ -591,11 +521,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def blobName = generateBlobName()
         def containerName = cc.getBlobContainerName()
 
-        EncryptedBlockBlobAsyncClient encryptClient =
+        EncryptedBlobAsyncClient encryptClient =
             getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null, primaryCredential,
                 cc.getBlobContainerUrl())
                 .blobName(blobName)
-                .buildEncryptedBlockBlobAsyncClient()
+                .buildEncryptedBlobAsyncClient()
 
         CloudStorageAccount v8Account = CloudStorageAccount.parse(connectionString)
         CloudBlobClient blobClient = v8Account.createCloudBlobClient()
@@ -615,16 +545,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         stream.toByteArray() == defaultData.array()
-    }
-
-    def getTestData(String fileName) {
-        Path path = Paths.get(getClass().getClassLoader().getResource(fileName).toURI())
-        String json = new String(Files.readAllBytes(path), StandardCharsets.UTF_8)
-        ObjectMapper mapper = new ObjectMapper()
-        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class,
-            TestEncryptionBlob.class)
-        List<TestEncryptionBlob> list = mapper.readValue(json, collectionType)
-        return list
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

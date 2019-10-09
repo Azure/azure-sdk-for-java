@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Code snippet for {@link EncryptedBlockBlobClient}
+ * Code snippet for {@link EncryptedBlobClient}
  */
 @SuppressWarnings({"unused"})
-public class EncryptedBlockBlobClientJavaDocCodeSnippets {
-    private EncryptedBlockBlobClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlockBlobClient(
+public class EncryptedBlobClientJavaDocCodeSnippets {
+    private EncryptedBlobClient client = JavaDocCodeSnippetsHelpers.getEncryptedBlobClient(
         "blobName", "containerName");
     private InputStream data = new ByteArrayInputStream("data".getBytes(StandardCharsets.UTF_8));
     private long length = 4L;
@@ -40,31 +40,31 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
     /**
      *
      */
-    public EncryptedBlockBlobClientJavaDocCodeSnippets() {
+    public EncryptedBlobClientJavaDocCodeSnippets() {
     }
     /**
-     * Code snippet for {@link EncryptedBlockBlobClient#uploadFromFile(String)}
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String
         try {
             client.uploadFromFile(filePath);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String
     }
 
     /**
-     * Code snippet for {@link EncryptedBlockBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHTTPHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -86,6 +86,6 @@ public class EncryptedBlockBlobClientJavaDocCodeSnippets {
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlockBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration
     }
 }

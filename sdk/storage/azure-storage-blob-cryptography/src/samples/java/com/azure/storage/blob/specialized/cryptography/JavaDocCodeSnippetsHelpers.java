@@ -14,36 +14,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 final class JavaDocCodeSnippetsHelpers {
-    static EncryptedBlockBlobClient getEncryptedBlockBlobClient(String blobName, String containerName) {
+    static EncryptedBlobClient getEncryptedBlobClient(String blobName, String containerName) {
         return new EncryptedBlobClientBuilder()
             .key(null, null)
             .keyResolver(null)
             .blobName(blobName)
             .containerName(containerName)
-            .buildEncryptedBlockBlobClient();
+            .buildEncryptedBlobClient();
     }
 
-    static BlockBlobClient getBlockBlobClient(String connectionString) {
-        return new BlobClientBuilder()
-            .connectionString(connectionString)
-            .buildClient()
-            .getBlockBlobClient();
-    }
-
-    static BlockBlobAsyncClient getBlockBlobAsyncClient(String connectionString) {
-        return new BlobClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient()
-            .getBlockBlobAsyncClient();
-    }
-
-    static EncryptedBlockBlobAsyncClient getEncryptedBlockBlobAsyncClient(String blobName, String containerName) {
+    static EncryptedBlobAsyncClient getEncryptedBlobAsyncClient(String blobName, String containerName) {
         return new EncryptedBlobClientBuilder()
             .key(null, null)
             .keyResolver(null)
             .blobName(blobName)
             .containerName(containerName)
-            .buildEncryptedBlockBlobAsyncClient();
+            .buildEncryptedBlobAsyncClient();
     }
 
     static URL generateURL(String urlString) {

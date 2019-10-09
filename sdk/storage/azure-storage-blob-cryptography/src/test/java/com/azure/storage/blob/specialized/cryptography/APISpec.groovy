@@ -311,7 +311,7 @@ class APISpec extends Specification {
      * @return
      * The appropriate etag value to run the current test.
      */
-    def setupBlobMatchCondition(EncryptedBlockBlobClient ebbc, String match) {
+    def setupBlobMatchCondition(EncryptedBlobClient ebbc, String match) {
         if (match == receivedEtag) {
             return ebbc.getPropertiesWithResponse(null, null, null).getHeaders().getValue("ETag")
         } else {
@@ -319,7 +319,7 @@ class APISpec extends Specification {
         }
     }
 
-    def setupBlobMatchCondition(EncryptedBlockBlobAsyncClient ebbac, String match) {
+    def setupBlobMatchCondition(EncryptedBlobAsyncClient ebbac, String match) {
         if (match == receivedEtag) {
             return ebbac.getPropertiesWithResponse(null).block().getHeaders().getValue("ETag")
         } else {

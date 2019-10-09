@@ -49,16 +49,12 @@ import java.util.Objects;
  * <p>
  * Once all the configurations are set on this builder use the following mapping to construct the given client:
  * <ul>
- * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient()} - {@link EncryptedBlockBlobClient}</li>
- * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobClient(BlockBlobClient)} -
- * {@link EncryptedBlockBlobClient}</li>
- * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobAsyncClient()} -
- * {@link EncryptedBlockBlobAsyncClient}</li>
- * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlockBlobAsyncClient(BlockBlobAsyncClient)} -
- * {@link EncryptedBlockBlobAsyncClient}</li>
+ * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlobClient()} - {@link EncryptedBlobClient}</li>
+ * <li>{@link EncryptedBlobClientBuilder#buildEncryptedBlobAsyncClient()} -
+ * {@link EncryptedBlobAsyncClient}</li>
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {EncryptedBlockBlobAsyncClient.class, EncryptedBlockBlobClient.class})
+@ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<EncryptedBlobClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
@@ -102,79 +98,31 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
     }
 
     /**
-     * Creates an {@code EncryptedBlockBlobAsyncClient} from a {@code BlockBlobAsyncClient}.
+     * Creates a {@link EncryptedBlobClient} based on options set in the Builder.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient#blockblobasyncclient}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient}
      *
-     * @param client The client to convert.
-     * @return The encrypted client.
-     */
-    public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient(BlockBlobAsyncClient client) {
-
-        checkValidEncryptionParameters();
-
-        AzureBlobStorageImpl impl = new AzureBlobStorageBuilder()
-            .url(client.getBlobUrl())
-            .pipeline(addDecryptionPolicy(client.getHttpPipeline(),
-                client.getHttpPipeline().getHttpClient()))
-            .build();
-
-        return new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(), client.getAccountName(), this.keyWrapper,
-            this.keyWrapAlgorithm);
-    }
-
-    /**
-     * Creates an {@code EncryptedBlockBlobClient} from a {@code BlockBlobClient}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient#blockblobclient}
-     *
-     * @param client The client to convert.
-     * @return The encrypted client.
-     */
-    public EncryptedBlockBlobClient buildEncryptedBlockBlobClient(BlockBlobClient client) {
-
-        checkValidEncryptionParameters();
-
-        AzureBlobStorageImpl impl = new AzureBlobStorageBuilder()
-            .url(client.getBlobUrl())
-            .pipeline(addDecryptionPolicy(client.getHttpPipeline(),
-                client.getHttpPipeline().getHttpClient()))
-            .build();
-
-        return new EncryptedBlockBlobClient(new EncryptedBlockBlobAsyncClient(impl, client.getSnapshotId(),
-            client.getAccountName(), this.keyWrapper, this.keyWrapAlgorithm));
-    }
-
-    /**
-     * Creates a {@link EncryptedBlockBlobClient} based on options set in the Builder.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobAsyncClient}
-     *
-     * @return a {@link EncryptedBlockBlobClient} created from the configurations in this builder.
+     * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
-    public EncryptedBlockBlobClient buildEncryptedBlockBlobClient() {
-        return new EncryptedBlockBlobClient(buildEncryptedBlockBlobAsyncClient());
+    public EncryptedBlobClient buildEncryptedBlobClient() {
+        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
     }
 
     /**
-     * Creates a {@link EncryptedBlockBlobAsyncClient} based on options set in the Builder.
+     * Creates a {@link EncryptedBlobAsyncClient} based on options set in the Builder.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlockBlobClient}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient}
      *
-     * @return a {@link EncryptedBlockBlobAsyncClient} created from the configurations in this builder.
+     * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
-    public EncryptedBlockBlobAsyncClient buildEncryptedBlockBlobAsyncClient() {
-        return new EncryptedBlockBlobAsyncClient(constructImpl(), snapshot, accountName, keyWrapper, keyWrapAlgorithm);
+    public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
+        return new EncryptedBlobAsyncClient(constructImpl(), snapshot, accountName, keyWrapper, keyWrapAlgorithm);
     }
 
     /**
