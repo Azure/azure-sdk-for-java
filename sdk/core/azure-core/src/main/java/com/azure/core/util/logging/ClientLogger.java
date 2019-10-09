@@ -35,27 +35,27 @@ public class ClientLogger {
     private final Logger logger;
 
     /*
-     * Indicate that log level is at verbose level.
+     * Indicates that log level is at verbose level.
      */
     private static final int VERBOSE_LEVEL = 1;
 
     /*
-     * Indicate that log level is at information level.
+     * Indicates that log level is at information level.
      */
     private static final int INFORMATIONAL_LEVEL = 2;
 
     /*
-     * Indicate that log level is at warning level.
+     * Indicates that log level is at warning level.
      */
     private static final int WARNING_LEVEL = 3;
 
     /*
-     * Indicate that log level is at error level.
+     * Indicates that log level is at error level.
      */
     private static final int ERROR_LEVEL = 4;
 
     /*
-     * Indicate that logging is disabled.
+     * Indicates that logging is disabled.
      */
     private static final int DISABLED_LEVEL = 5;
 
