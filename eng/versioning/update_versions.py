@@ -19,6 +19,8 @@ import os
 import re
 import time
 
+version_update_start_marker = re.compile(r'\{x-version-update-start;([^;]+);([^}]+)\}')	
+version_update_end_marker = re.compile(r'\{x-version-update-end\}')
 version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 # regex for the version string is suggested one directly from semver.org
 # it's worth noting that both regular expressions on that page have start
@@ -82,6 +84,16 @@ def update_versions(version_map, target_file):
             if match:
                 module_name, version_type = match.group(1), match.group(2)
                 repl_thisline = True
+            else:	
+                match = version_update_start_marker.search(line)	
+                if match:	
+                    module_name, version_type = match.group(1), match.group(2)	
+                    repl_open, repl_thisline = True, True	
+                else:	
+                    match = version_update_end_marker.search(line)	
+                    if match:	
+                        repl_open, repl_thisline = False, False
+            
             if repl_thisline:
                 # If the module isn't found then just continue. This can
                 # happen if we're going through and replacing only library
@@ -153,8 +165,7 @@ def update_versions_all(update_type, build_type, target_file):
         for root, _, files in os.walk("."):
             for file_name in files:
                 file_path = root + os.sep + file_name
-                # if file_name == 'README.md' or (file_name.startswith('pom.') and file_name.endswith('.xml')):
-                if (file_name.startswith('pom.') and file_name.endswith('.xml')):
+                if file_name == 'README.md' or (file_name.startswith('pom.') and file_name.endswith('.xml')):
                     update_versions(version_map, file_path)
 
 def main():

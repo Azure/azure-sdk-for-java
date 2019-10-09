@@ -19,6 +19,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 
 ### Adding the package to your product
 
+[//]: # ({x-version-update-start;com.azure:azure-storage-file;dependency})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
@@ -26,6 +27,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
   <version>12.0.0-preview.4</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Default HTTP Client
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
@@ -35,6 +37,7 @@ Storage File to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
+[//]: # ({x-version-update-start;com.azure:azure-storage-file;dependency})
 ```xml
 <!-- Add Storage File dependency without Netty HTTP client -->
 <dependency>
@@ -48,7 +51,10 @@ Netty and include OkHTTP client in your pom.xml.
       </exclusion>
     </exclusions>
 </dependency>
-
+```
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
+```xml
 <!-- Add OkHTTP client to use with Storage File -->
 <dependency>
   <groupId>com.azure</groupId>
@@ -56,6 +62,7 @@ Netty and include OkHTTP client in your pom.xml.
   <version>1.0.0-preview.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Configuring HTTP Clients
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#file-services), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.

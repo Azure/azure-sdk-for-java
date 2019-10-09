@@ -10,6 +10,7 @@ Azure Core Netty HTTP client is a plugin for the azure-core HTTP client API.
 
 ### Adding the package to your product
 
+[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -17,6 +18,7 @@ Azure Core Netty HTTP client is a plugin for the azure-core HTTP client API.
     <version>1.0.0-preview.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 

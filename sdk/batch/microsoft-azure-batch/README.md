@@ -62,6 +62,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 If you are using released builds from 7.0.0, add the following to your POM file:
 
+[//]: # ({x-version-update-start;com.microsoft.azure:com.microsoft.azure;dependency})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -74,6 +75,7 @@ If you are using released builds from 7.0.0, add the following to your POM file:
     <version>1.6.4</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 # Pre-requisites
 
