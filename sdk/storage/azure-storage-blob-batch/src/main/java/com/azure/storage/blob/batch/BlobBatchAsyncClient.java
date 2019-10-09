@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.StorageException;
 import reactor.core.publisher.Mono;
 
@@ -63,7 +64,7 @@ public final class BlobBatchAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.submitBatch#BlobBatch}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch}
      *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
@@ -82,7 +83,7 @@ public final class BlobBatchAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.submitBatchWithResponse#BlobBatch-boolean}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch-boolean}
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
@@ -105,36 +106,43 @@ public final class BlobBatchAsyncClient {
     /**
      * Delete multiple blobs in a single request to the service.
      *
-     * <p>This will delete the blob and all of its snapshots.</p>
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType}
      *
      * @param blobUrls Urls of the blobs to delete.
+     * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
      * @throws StorageException If any of the delete operations fail or the request is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Response<Void>> deleteBlobs(String... blobUrls) {
-        return batchingHelper(BlobBatch::delete, blobUrls);
+    public PagedFlux<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
+        return batchingHelper(blobUrls, (batch, blobUrl) -> batch.delete(blobUrl, deleteOptions, null));
     }
 
     /**
      * Set access tier on multiple blobs in a single request to the service.
      *
-     * @param accessTier {@link AccessTier} to set on each blob.
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.setBlobsAccessTier#List-AccessTier}
+     *
      * @param blobUrls Urls of the blobs to set their access tier.
+     * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
      * @throws StorageException If any of the set tier operations fail or the request is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Response<Void>> setBlobsAccessTier(AccessTier accessTier, String... blobUrls) {
-        return batchingHelper((batch, blobUrl) -> batch.setTier(blobUrl, accessTier), blobUrls);
+    public PagedFlux<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
+        return batchingHelper(blobUrls, (batch, blobUrl) -> batch.setTier(blobUrl, accessTier));
     }
 
     /*
      * This helper method creates the batch request, applies the requested batching operation to each blob, sends the
      * request to the service, and returns the responses.
      */
-    private <T> PagedFlux<Response<T>> batchingHelper(BiFunction<BlobBatch, String, Response<T>> generator,
-        String... blobUrls) {
+    private <T> PagedFlux<Response<T>> batchingHelper(List<String> blobUrls,
+        BiFunction<BlobBatch, String, Response<T>> generator) {
         BlobBatch batch = new BlobBatch(client.getUrl(), client.getHttpPipeline());
 
         List<Response<T>> responses = new ArrayList<>();

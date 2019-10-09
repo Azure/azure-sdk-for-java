@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>Azure Storage Blob batches are homogeneous which means a {@link #delete(String) delete} and {@link
  * #setTier(String, AccessTier) set tier} are not allowed to be in the same batch.</p>
  *
- * {@codesnippet com.azure.storage.blob.BlobBatch.illegalBatchOperation}
+ * {@codesnippet com.azure.storage.blob.batch.BlobBatch.illegalBatchOperation}
  *
  * <p>Please refer to the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/blob-batch">Azure Docs</a>
  * for more information.</p>
@@ -128,7 +128,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String-String}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.delete#String-String}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -145,7 +145,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String-String-DeleteSnapshotsOptionType-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.delete#String-String-DeleteSnapshotsOptionType-BlobAccessConditions}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -165,7 +165,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.delete#String}
      *
      * @param blobUrl URI of the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -181,7 +181,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.delete#String-DeleteSnapshotsOptionType-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.delete#String-DeleteSnapshotsOptionType-BlobAccessConditions}
      *
      * @param blobUrl URI of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
@@ -207,7 +207,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-String-AccessTier}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setTier#String-String-AccessTier}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -225,7 +225,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-String-AccessTier-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setTier#String-String-AccessTier-LeaseAccessConditions}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -245,7 +245,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-AccessTier}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setTier#String-AccessTier}
      *
      * @param blobUrl URI of the blob.
      * @param accessTier The tier to set on the blob.
@@ -262,7 +262,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobBatch.setTier#String-AccessTier-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setTier#String-AccessTier-LeaseAccessConditions}
      *
      * @param blobUrl URI of the blob.
      * @param accessTier The tier to set on the blob.

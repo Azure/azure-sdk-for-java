@@ -10,10 +10,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -48,7 +50,7 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.submitBatch#BlobBatch}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch}
      *
      * @param batch Batch to submit.
      * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
@@ -66,7 +68,7 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet {@codesnippet com.azure.storage.blob.BlobServiceClient.submitBatchWithResponse#BlobBatch-boolean-Duration-Context}}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch-boolean-Duration-Context}
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
@@ -88,27 +90,26 @@ public final class BlobBatchClient {
     /**
      * Delete multiple blobs in a single request to the service.
      *
-     * <p>This will delete the blob and all of its snapshots.</p>
-     *
      * @param blobUrls Urls of the blobs to delete.
+     * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
      * @throws StorageException If any of the delete operations fail or the request is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Response<Void>> deleteBlobs(String... blobUrls) {
-        return new PagedIterable<>(client.deleteBlobs(blobUrls));
+    public PagedIterable<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
+        return new PagedIterable<>(client.deleteBlobs(blobUrls, deleteOptions));
     }
 
     /**
      * Set access tier on multiple blobs in a single request to the service.
      *
-     * @param accessTier {@link AccessTier} to set on each blob.
      * @param blobUrls Urls of the blobs to set their access tier.
+     * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
      * @throws StorageException If any of the set tier operations fail or the request is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Response<Void>> setBlobsAccessTier(AccessTier accessTier, String... blobUrls) {
-        return new PagedIterable<>(client.setBlobsAccessTier(accessTier, blobUrls));
+    public PagedIterable<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
+        return new PagedIterable<>(client.setBlobsAccessTier(blobUrls, accessTier));
     }
 }
