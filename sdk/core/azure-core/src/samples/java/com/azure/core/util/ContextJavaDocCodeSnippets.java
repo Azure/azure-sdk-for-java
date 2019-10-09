@@ -3,6 +3,10 @@
 
 package com.azure.core.util;
 
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -17,14 +21,14 @@ public class ContextJavaDocCodeSnippets {
      */
     public void constructContextObject() {
         // BEGIN: com.azure.core.util.context#object-object
-        final String key1 = "Key1";
-        final String value1 = "first-value";
-
         // Create an empty context having no data
         Context emptyContext = Context.NONE;
 
-        // Create a context using the provided key value pair
-        Context keyValueContext = new Context(key1, value1);
+        // Tracing spans created by users can be passed to calling methods in sdk clients using Context object
+        final String userParentSpan = "user-parent-span";
+
+        // Create a context using the provided key and user parent span
+        Context keyValueContext = new Context(OPENCENSUS_SPAN_KEY, userParentSpan);
         // END: com.azure.core.util.context#object-object
     }
 
@@ -40,7 +44,7 @@ public class ContextJavaDocCodeSnippets {
 
         // Create a context using the provided key value pair map
         Context keyValueContext = Context.of(keyValueMap);
-        System.out.printf("Key1 value %s%n", keyValueContext.getData(key1).get().toString());
+        System.out.printf("Key1 value %s%n", keyValueContext.getData(key1).get());
         // END: com.azure.core.util.context.of#map
     }
 
@@ -49,19 +53,21 @@ public class ContextJavaDocCodeSnippets {
      */
     public void addDataToContext() {
         // BEGIN: com.azure.core.util.context.addData#object-object
-        final String key1 = "Key1";
-        final String value1 = "first-value";
-        final String key2 = "Key2";
-        final String value2 = "second-value";
+        // Users can send parent span information and pass additional metadata to attach to spans of the calling methods
+        // using the Context object
+        final String hostNameValue = "host-name-value";
+        final String entityPathValue = "entity-path-value";
+        final String userParentSpan = "user-parent-span";
 
-        Context originalContext = new Context(key1, value1);
+        Context parentSpanContext = new Context(OPENCENSUS_SPAN_KEY, userParentSpan);
 
         // Add a new key value pair to the existing context object.
-        Context updatedContext = originalContext.addData(key2, value2);
+        Context updatedContext = parentSpanContext.addData(HOST_NAME, hostNameValue)
+            .addData(ENTITY_PATH, entityPathValue);
 
         // Both key values found on the same updated context object
-        System.out.printf("Key1 value: %s%n", updatedContext.getData(key1).get().toString());
-        System.out.printf("Key2 value: %s%n", updatedContext.getData(key2).get().toString());
+        System.out.printf("HOSTNAME value: %s%n", updatedContext.getData(HOST_NAME).get());
+        System.out.printf("ENTITY_PATH value: %s%n", updatedContext.getData(ENTITY_PATH).get());
         // END: com.azure.core.util.context.addData#object-object
     }
 
@@ -78,7 +84,11 @@ public class ContextJavaDocCodeSnippets {
 
         // Look for the specified key in the returned context object
         Optional<Object> optionalObject = context.getData(key1);
-        System.out.printf("Key1 value : %s%n", optionalObject.get().toString());
+        if (optionalObject.isPresent()) {
+            System.out.printf("Key1 value: %s%n", optionalObject.get());
+        } else {
+            System.out.println("Key1 does not exist or have data.");
+        }
         // END: com.azure.core.util.context.getData#object
     }
 }

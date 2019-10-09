@@ -15,7 +15,7 @@ import java.util.Optional;
  * Most applications do not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or
  * {@code null}.
  * <p>
- * Each context object is immutable. The {@code addData(Object, Object)} method creates a new
+ * Each context object is immutable. The {@link #addData(Object, Object)} method creates a new
  * {@code Context} object that refers to its parent, forming a linked list.
  */
 @Immutable
@@ -40,8 +40,8 @@ public class Context {
      *
      * {@codesnippet com.azure.core.util.context#object-object}
      *
-     * @param key the given key with which the specified value should be associated
-     * @param value the given value to be associated with the specified key
+     * @param key The key with which the specified value should be associated.
+     * @param value The value to be associated with the specified key.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
@@ -67,9 +67,9 @@ public class Context {
      *
      * {@codesnippet com.azure.core.util.context.addData#object-object}
      *
-     * @param key the given key with which the specified value should be associated
-     * @param value the given value to be associated with the specified key
-     * @return the new {@link Context} object containing the specified pair added to the set of pairs
+     * @param key The key with which the specified value should be associated.
+     * @param value The value to be associated with the specified key.
+     * @return the new {@link Context} object containing the specified pair added to the set of pairs.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
@@ -87,8 +87,8 @@ public class Context {
      *
      * {@codesnippet com.azure.core.util.context.of#map}
      *
-     * @param keyValues The input key value pairs that will be added to this context
-     * @return Context object containing all the key-value pairs in the input map
+     * @param keyValues The input key value pairs that will be added to this context.
+     * @return Context object containing all the key-value pairs in the input map.
      * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
      */
     public static Context of(Map<Object, Object> keyValues) {
@@ -115,8 +115,8 @@ public class Context {
      *
      * {@codesnippet com.azure.core.util.context.getData#object}
      *
-     * @param key the key to search for
-     * @return the value of the specified key if it exists
+     * @param key The key to search for.
+     * @return The value of the specified key if it exists.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
