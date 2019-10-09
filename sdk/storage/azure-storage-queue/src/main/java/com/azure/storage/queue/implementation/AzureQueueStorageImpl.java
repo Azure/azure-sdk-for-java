@@ -22,7 +22,7 @@ public final class AzureQueueStorageImpl {
      * @return the url value.
      */
     public String getUrl() {
-        return this.url.;
+        return this.url;
     }
 
     /**
