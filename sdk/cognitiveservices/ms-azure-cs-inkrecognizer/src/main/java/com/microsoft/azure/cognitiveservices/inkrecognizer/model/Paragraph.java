@@ -30,9 +30,13 @@ public class Paragraph extends InkRecognitionUnit {
             recognizedText = "";
             for (InkRecognitionUnit child : children()) {
                 if (child.kind().equals(InkRecognitionUnitKind.LINE)) {
-                    recognizedText += ((Line) child).recognizedText() + "\n";
+                    if (child instanceof Line) {
+                        recognizedText += ((Line) child).recognizedText() + "\n";
+                    }
                 } else {
-                    recognizedText += ((InkList) child).recognizedText() + "\n";
+                    if (child instanceof InkList) {
+                        recognizedText += ((InkList) child).recognizedText() + "\n";
+                    }
                 }
             }
         }
@@ -47,7 +51,9 @@ public class Paragraph extends InkRecognitionUnit {
         List<Line> lines = new ArrayList<>();
         for (InkRecognitionUnit child : children()) {
             if (child.kind().equals(InkRecognitionUnitKind.LINE)) {
-                lines.add((Line) child);
+                if (child instanceof Line) {
+                    lines.add((Line) child);
+                }
             }
         }
         return lines;

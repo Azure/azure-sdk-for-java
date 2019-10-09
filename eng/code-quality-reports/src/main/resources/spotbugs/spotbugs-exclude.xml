@@ -480,6 +480,7 @@
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.Secret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
       <Class name="com.azure.security.keyvault.keys.models.Key"/>

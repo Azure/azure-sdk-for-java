@@ -22,7 +22,7 @@ class Utils {
         ApplicationKind applicationKind,
         String language) throws Exception {
 
-        Iterator strokesIterator = strokes.iterator();
+        Iterator<InkStroke> strokesIterator = strokes.iterator();
 
         if (
             strokesIterator.hasNext()
@@ -37,7 +37,7 @@ class Utils {
 
             while (strokesIterator.hasNext()) {
 
-                InkStroke stroke = (InkStroke) strokesIterator.next();
+                InkStroke stroke = strokesIterator.next();
                 ObjectNode jsonStroke = factory.objectNode();
 
                 jsonStroke.put("id", stroke.getId());
@@ -50,11 +50,11 @@ class Utils {
                     jsonStroke.put("kind", stroke.getKind().toString());
                 }
 
-                Iterator pointsIterator = stroke.getInkPoints().iterator();
+                Iterator<InkPoint> pointsIterator = stroke.getInkPoints().iterator();
                 ArrayNode jsonPoints = factory.arrayNode();
 
                 while (pointsIterator.hasNext()) {
-                    InkPoint inkPoint = (InkPoint) pointsIterator.next();
+                    InkPoint inkPoint = pointsIterator.next();
                     jsonPoints.add(
                         factory.objectNode()
                             .put("x", inkPoint.getX())

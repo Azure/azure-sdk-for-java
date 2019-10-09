@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -16,18 +16,18 @@ import java.time.ZoneOffset;
 class SecretRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads secretBase.notBefore, secretBase.expires and
-     * secretBase.enabled fields from {@code secretBase}
-     * @param secretBase the {@link SecretBase} object with populated attributes
+     * Creates an instance of SecretRequestAttributes. Reads secretProperties.notBefore, secretProperties.expires and
+     * secretProperties.enabled fields from {@code secretProperties}
+     * @param secretProperties the {@link SecretProperties} object with populated attributes
      */
-    SecretRequestAttributes(SecretBase secretBase) {
-        if (secretBase.getNotBefore() != null) {
-            this.notBefore = secretBase.getNotBefore().toEpochSecond();
+    SecretRequestAttributes(SecretProperties secretProperties) {
+        if (secretProperties.getNotBefore() != null) {
+            this.notBefore = secretProperties.getNotBefore().toEpochSecond();
         }
-        if (secretBase.getExpires() != null) {
-            this.expires = secretBase.getExpires().toEpochSecond();
+        if (secretProperties.getExpires() != null) {
+            this.expires = secretProperties.getExpires().toEpochSecond();
         }
-        this.enabled = secretBase.isEnabled();
+        this.enabled = secretProperties.isEnabled();
     }
 
     /**
@@ -169,5 +169,4 @@ class SecretRequestAttributes {
         }
         return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
     }
-
 }

@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
-public class KeyImportOptions extends KeyBase {
+public class KeyImportOptions extends KeyProperties {
 
     /**
      * The Key Material.

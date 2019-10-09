@@ -37,6 +37,8 @@ public final class InkRecognizerClient {
         InkRecognizerCredentials credentials) {
         this.credentials = credentials;
         this.endpoint = endpoint;
+        // This will set the service version to default
+        setServiceVersion(null);
         httpClient = new OkHttpClient.Builder()
             .build();
     }
@@ -111,7 +113,7 @@ public final class InkRecognizerClient {
             .url(endpoint + serviceVersion.toString())
             .put(body)
             .build();
-        request = credentials.SetRequestCredentials(request);
+        request = credentials.setRequestCredentials(request);
 
         okhttp3.Response response = null;
         for (int retryAttempt = 0; retryAttempt < retryCount; ++retryAttempt) {
@@ -124,6 +126,8 @@ public final class InkRecognizerClient {
                     JsonNode jsonResponse = objectMapper.readValue(responseString, JsonNode.class);
                     return new Response<>(response.code(), responseString, new InkRecognitionRoot(jsonResponse.get("recognitionUnits")));
                 }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

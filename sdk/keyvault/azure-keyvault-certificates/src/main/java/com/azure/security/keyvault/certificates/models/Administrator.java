@@ -63,7 +63,7 @@ public final class Administrator {
      * Get the first name of the admin.
      * @return the first name of admin.
      */
-    public String firstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -71,7 +71,7 @@ public final class Administrator {
      * Get the last name of the admin.
      * @return the last name of admin.
      */
-    public String lastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -79,7 +79,7 @@ public final class Administrator {
      * Get the email of the admin.
      * @return the email of admin.
      */
-    public String email() {
+    public String getEmail() {
         return email;
     }
 
@@ -87,7 +87,7 @@ public final class Administrator {
      * Get the contact of the admin.
      * @return the contact of admin.
      */
-    public String contact() {
+    public String getContact() {
         return contact;
     }
 }

@@ -36,7 +36,7 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param partitionId Partition id for this lease.
      */
     public BaseLease(String partitionId) {
-        Objects.requireNonNull(partitionId, "'patitionId' cannot be null.");
+        Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
         if (partitionId.isEmpty()) {
             throw new IllegalArgumentException("partitionId is Empty");
         }

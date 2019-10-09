@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 import static com.microsoft.azure.storage.blob.Utility.postProcessResponse;
 
@@ -516,9 +517,7 @@ public final class PageBlobURL extends BlobURL {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         context = context == null ? Context.NONE : context;
 
-        if (prevSnapshot == null) {
-            throw new IllegalArgumentException("prevSnapshot cannot be null.");
-        }
+        Objects.requireNonNull(prevSnapshot, "'prevSnapshot' cannot be null.")
 
         return postProcessResponse(this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(
                 context, null, null, prevSnapshot, blobRange.toHeaderValue(), null,

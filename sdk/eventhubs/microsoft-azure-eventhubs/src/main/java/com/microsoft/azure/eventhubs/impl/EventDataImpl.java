@@ -40,7 +40,7 @@ public final class EventDataImpl implements EventData {
     @SuppressWarnings("unchecked")
     EventDataImpl(Message amqpMessage) {
         if (amqpMessage == null) {
-            throw new IllegalArgumentException("amqpMessage cannot be null.");
+            throw new IllegalArgumentException("amqpMessage cannot be null");
         }
 
         final Map<Symbol, Object> messageAnnotations = amqpMessage.getMessageAnnotations().getValue();
@@ -124,7 +124,7 @@ public final class EventDataImpl implements EventData {
         this();
 
         if (data == null) {
-            throw new IllegalArgumentException("data cannot be null.");
+            throw new IllegalArgumentException("data cannot be null");
         }
 
         this.bodyData = new Binary(data, offset, length);
@@ -134,7 +134,7 @@ public final class EventDataImpl implements EventData {
         this();
 
         if (buffer == null) {
-            throw new IllegalArgumentException("data cannot be null.");
+            throw new IllegalArgumentException("data cannot be null");
         }
 
         this.bodyData = Binary.create(buffer);

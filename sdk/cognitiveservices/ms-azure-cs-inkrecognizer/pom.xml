@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>azure-cognitiveservices-inkrecognizer</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.1.0-preview.1</version>
+    <version>1.0.0-preview.1</version>
 
     <name>Microsoft Azure SDK for Cognitive Service Ink Recognizer</name>
     <description>This package contains Microsoft Cognitive Service InkRecognizer SDK.</description>

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
@@ -32,7 +33,8 @@ public class HelloWorldAsync {
         // Let's create a secret holding bank account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
-            .setExpires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1)))).subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
@@ -49,8 +51,9 @@ public class HelloWorldAsync {
         secretAsyncClient.getSecret("BankAccountPassword").subscribe(secretResponse -> {
             Secret secret = secretResponse;
             //Update the expiry time of the secret.
-            secret.setExpires(secret.getExpires().plusYears(1));
-            secretAsyncClient.updateSecret(secret).subscribe(updatedSecretResponse ->
+            secret.getProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1));
+            secretAsyncClient.updateSecretProperties(secret.getProperties()).subscribe(updatedSecretResponse ->
                 System.out.printf("Secret's updated expiry time %s %n", updatedSecretResponse.getExpires().toString()));
         });
 

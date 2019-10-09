@@ -30,11 +30,11 @@ public enum InkStrokeKind {
     WRITING("inkWriting");
 
     private String inkStrokeKindString;
-    private static final Map<String, InkStrokeKind> map = new HashMap<>();
+    private static final Map<String, InkStrokeKind> MAP = new HashMap<>();
 
     static {
         for (InkStrokeKind inkStrokeKind : InkStrokeKind.values()) {
-            map.put(inkStrokeKind.toString().toLowerCase(Locale.getDefault()), inkStrokeKind);
+            MAP.put(inkStrokeKind.toString().toLowerCase(Locale.getDefault()), inkStrokeKind);
         }
     }
 
@@ -43,8 +43,8 @@ public enum InkStrokeKind {
     }
 
     static InkStrokeKind getInkStrokeKindOrDefault(String inkStrokeKindString) {
-        if (inkStrokeKindString != null && map.containsKey(inkStrokeKindString.toLowerCase(Locale.getDefault()))) {
-            return map.get(inkStrokeKindString.toLowerCase(Locale.getDefault()));
+        if (inkStrokeKindString != null && MAP.containsKey(inkStrokeKindString.toLowerCase(Locale.getDefault()))) {
+            return MAP.get(inkStrokeKindString.toLowerCase(Locale.getDefault()));
         } else {
             return InkStrokeKind.UNKNOWN;
         }

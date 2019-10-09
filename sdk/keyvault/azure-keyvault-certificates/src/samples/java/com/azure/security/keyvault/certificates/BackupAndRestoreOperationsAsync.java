@@ -5,9 +5,8 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.EcKeyOptions;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,19 +43,18 @@ public class BackupAndRestoreOperationsAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         // already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .subjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .keyOptions(new EcKeyOptions()
-                .reuseKey(true)
-                .curve(KeyCurveName.P_256));
+            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setReuseKey(true)
+            .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.createCertificate("certificateName", policy, tags)
+        certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
-                System.out.println(pollResponse.getValue().status());
-                System.out.println(pollResponse.getValue().statusDetails());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
             });
 
         Thread.sleep(22000);
@@ -75,7 +73,7 @@ public class BackupAndRestoreOperationsAsync {
         // The certificate is no longer in use, so you delete it.
         certificateAsyncClient.deleteCertificate("certificateName")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
 
         //To ensure certificate is deleted on server side.
         Thread.sleep(30000);
@@ -92,7 +90,7 @@ public class BackupAndRestoreOperationsAsync {
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         certificateAsyncClient.restoreCertificate(backupFromFile)
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
-                certificateResponse.name(), certificateResponse.keyId()));
+                certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
 
         //To ensure certificate is restored on server side.
         Thread.sleep(15000);

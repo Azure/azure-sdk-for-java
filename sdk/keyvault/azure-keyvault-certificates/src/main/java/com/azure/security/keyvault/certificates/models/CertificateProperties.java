@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Represents base properties of a certificate.
  */
-public class CertificateBase {
+public class CertificateProperties {
 
     /**
      * Determines whether the object is enabled.
@@ -72,20 +72,26 @@ public class CertificateBase {
      * Application specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")
-    private Map<String, String> tags;
+    Map<String, String> tags;
 
     /**
      * Thumbprint of the certificate. Read Only
      */
     @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
-    private Base64Url x509Thumbprint;
+    Base64Url x509Thumbprint;
+
+    CertificateProperties(String name) {
+        this.name = name;
+    }
+
+    CertificateProperties() { }
 
     /**
      * Get the id value.
      *
      * @return the id value
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -94,7 +100,7 @@ public class CertificateBase {
      *
      * @return the notBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
@@ -103,7 +109,7 @@ public class CertificateBase {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         return this.expires;
     }
 
@@ -112,7 +118,7 @@ public class CertificateBase {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime created() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
@@ -121,7 +127,7 @@ public class CertificateBase {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime updated() {
+    public OffsetDateTime getUpdated() {
         return updated;
     }
 
@@ -131,7 +137,7 @@ public class CertificateBase {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -139,9 +145,9 @@ public class CertificateBase {
      * Set the tags to be associated with the certificate.
      *
      * @param tags The tags to set
-     * @return the CertificateBase object itself.
+     * @return the CertificateProperties object itself.
      */
-    public CertificateBase tags(Map<String, String> tags) {
+    public CertificateProperties setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -151,7 +157,7 @@ public class CertificateBase {
      *
      * @return the version of the certificate.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -160,7 +166,7 @@ public class CertificateBase {
      *
      * @return the name of the certificate.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -169,7 +175,7 @@ public class CertificateBase {
 
      * @return the recoveryLevel of the certificate.
      */
-    public String recoveryLevel() {
+    public String getRecoveryLevel() {
         return recoveryLevel;
     }
 
@@ -178,16 +184,16 @@ public class CertificateBase {
      *
      * @return the enabled status
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
      * Set the enabled status.
      * @param enabled The enabled status to set.
-     * @return the CertificateBase object itself.
+     * @return the CertificateProperties object itself.
      */
-    public CertificateBase enabled(Boolean enabled) {
+    public CertificateProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -196,13 +202,13 @@ public class CertificateBase {
      *  Get the X509 Thumbprint of the certificate.
      * @return the x509Thumbprint.
      */
-    public byte[] x509Thumbprint() {
+    public byte[] getX509Thumbprint() {
         return this.x509Thumbprint.decodedBytes();
     }
 
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
-    private void unpackBaseAttributes(Map<String, Object> attributes) {
+    void unpackBaseAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
         this.expires =  epochToOffsetDateTime(attributes.get("exp"));
@@ -222,7 +228,7 @@ public class CertificateBase {
     }
 
     @JsonProperty(value = "id")
-    private void unpackId(String id) {
+    void unpackId(String id) {
         if (id != null && id.length() > 0) {
             this.id = id;
             try {

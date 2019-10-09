@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.certificates.models.webkey.KeyType;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -33,7 +33,7 @@ public final class CertificatePolicy {
     private SubjectAlternativeNames subjectAlternativeNames;
 
     /**
-     * The duration that the ceritifcate is valid in months.
+     * The duration that the certificate is valid in months.
      */
     @JsonProperty(value = "validity_months")
     private Integer validityInMonths;
@@ -55,7 +55,7 @@ public final class CertificatePolicy {
      * Type of certificate to be requested from the issuer provider.
      */
     @JsonProperty(value = "cty")
-    private String issuerCertificateTypeRequest;
+    private String certificateType;
 
     /**
      * Indicates if the certificates generated under this policy should be
@@ -67,7 +67,7 @@ public final class CertificatePolicy {
     /**
      * The content type of the secret.
      */
-    private SecretContentType secretContentType;
+    private CertificateContentType contentType;
 
     /**
      * Creation time in UTC.
@@ -85,9 +85,48 @@ public final class CertificatePolicy {
     private Boolean enabled;
 
     /**
-     *  The key configuration of the key backing the certificate.
+     * Indicates if the private key can be exported.
      */
-    private KeyOptions keyOptions;
+    @JsonProperty(value = "exportable")
+    private Boolean exportable;
+
+    /**
+     * The type of key pair to be used for the certificate. Possible values
+     * include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
+     */
+    @JsonProperty(value = "kty")
+    private CertificateKeyType keyType;
+
+    /**
+     * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     */
+    @JsonProperty(value = "key_size")
+    private Integer keySize;
+
+    /**
+     * Indicates if the same key pair will be used on certificate renewal.
+     */
+    @JsonProperty(value = "reuse_key")
+    private Boolean reuseKey;
+
+    /**
+     * Elliptic curve name. For valid values, see KeyCurveName. Possible
+     * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
+     */
+    @JsonProperty(value = "crv")
+    private CertificateKeyCurveName keyCurveName;
+
+    /**
+     * List of key usages.
+     */
+    @JsonProperty(value = "key_usage")
+    private List<CertificateKeyUsage> keyUsage;
+
+    /**
+     * The enhanced key usage.
+     */
+    @JsonProperty(value = "ekus")
+    private List<String> enhancedKeyUsage;
 
     /**
      * Creates certificate policy.
@@ -104,11 +143,129 @@ public final class CertificatePolicy {
     }
 
     /**
+     * Get the keyUsage value.
+     *
+     * @return the keyUsage value
+     */
+    public List<CertificateKeyUsage> getKeyUsage() {
+        return this.keyUsage;
+    }
+
+    /**
+     * Set the key usage.
+     *
+     * @param keyUsage the keyUsage value to set
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setKeyUsage(CertificateKeyUsage... keyUsage) {
+        this.keyUsage = Arrays.asList(keyUsage);
+        return this;
+    }
+
+    /**
+     * Get the enhanced key usage value.
+     *
+     * @return the enhanced key usage value
+     */
+    public List<String> getEnhancedKeyUsage() {
+        return this.enhancedKeyUsage;
+    }
+
+    /**
+     * Set the enhanced key usage value.
+     *
+     * @param ekus the ekus value to set
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setEnhancedKeyUsage(List<String> ekus) {
+        this.enhancedKeyUsage = ekus;
+        return this;
+    }
+
+    /**
+     * Get the exportable value.
+     *
+     * @return the exportable value
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set the exportable value.
+     *
+     * @param exportable the exportable value to set
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setExportable(Boolean exportable) {
+        this.exportable = exportable;
+        return this;
+    }
+
+    /**
+     * Get the keyType value.
+     *
+     * @return the keyType value
+     */
+    public CertificateKeyType getKeyType() {
+        return this.keyType;
+    }
+
+    /**
+     * Get the keyType value.
+     *
+     * @param keyType the key type
+     * @return the key type
+     */
+    public CertificatePolicy setKeyType(CertificateKeyType keyType) {
+        this.keyType = keyType;
+        return this;
+    }
+
+    /**
+     * Get the keySize value.
+     *
+     * @return the keySize value
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Get the reuseKey value.
+     *
+     * @return the reuseKey value
+     */
+    public Boolean isReuseKey() {
+        return this.reuseKey;
+    }
+
+    /**
+     * Set the reuseKey value.
+     *
+     * @param reuseKey the reuseKey value to set
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setReuseKey(Boolean reuseKey) {
+        this.reuseKey = reuseKey;
+        return this;
+    }
+
+    /**
+     * Get the curve value.
+     *
+     * @return the curve value
+     */
+    public CertificateKeyCurveName getKeyCurveName() {
+        return this.keyCurveName;
+    }
+
+    /**
      * Get the the UTC time at which certificate policy was created.
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime created() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
@@ -117,7 +274,7 @@ public final class CertificatePolicy {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime updated() {
+    public OffsetDateTime getUpdated() {
         return updated;
     }
 
@@ -127,16 +284,16 @@ public final class CertificatePolicy {
      *
      * @return the enabled status
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
     /**
      * Set the enabled status.
      * @param enabled The enabled status to set.
-     * @return The enabled status
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy enabled(Boolean enabled) {
+    public CertificatePolicy setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -146,19 +303,19 @@ public final class CertificatePolicy {
      *
      * @return the contentType value
      */
-    public SecretContentType secretContentType() {
-        return this.secretContentType;
+    public CertificateContentType getContentType() {
+        return this.contentType;
     }
 
 
     /**
      * Set the content type.
      *
-     * @param secretContentType the content type value to set
-     * @return the CertificatePolicy object itself.
+     * @param contentType the content type value to set
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy secretContentType(SecretContentType secretContentType) {
-        this.secretContentType = secretContentType;
+    public CertificatePolicy setContentType(CertificateContentType contentType) {
+        this.contentType = contentType;
         return this;
     }
 
@@ -166,9 +323,9 @@ public final class CertificatePolicy {
      * Set the subject value.
      *
      * @param subjectName the subject value to set
-     * @return the CertificatePolicy object itself.
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy subjectName(String subjectName) {
+    public CertificatePolicy getSubjectName(String subjectName) {
         this.subjectName = subjectName;
         return this;
     }
@@ -178,7 +335,7 @@ public final class CertificatePolicy {
      *
      * @return the subjectAlternativeNames.
      */
-    public SubjectAlternativeNames subjectAlternativeNames() {
+    public SubjectAlternativeNames getSubjectAlternativeNames() {
         return subjectAlternativeNames;
     }
 
@@ -186,9 +343,9 @@ public final class CertificatePolicy {
      * Set the subjectAlternativeNames.
      *
      * @param subjectAlternativeNames the subjectAlternativeNames to set
-     * @return the CertificatePolicy object itself.
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy subjectAlternativeNames(SubjectAlternativeNames subjectAlternativeNames) {
+    public CertificatePolicy setSubjectAlternativeNames(SubjectAlternativeNames subjectAlternativeNames) {
         this.subjectAlternativeNames = subjectAlternativeNames;
         return this;
     }
@@ -197,40 +354,32 @@ public final class CertificatePolicy {
      * Set the validityInMonths value.
      *
      * @param validityInMonths the validityInMonths value to set
-     * @return the CertificatePolicy object itself.
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy validityInMonths(Integer validityInMonths) {
+    public CertificatePolicy setValidityInMonths(Integer validityInMonths) {
         this.validityInMonths = validityInMonths;
         return this;
     }
 
     /**
-     * Get the Key Configuration.
-     * @return the Key Configuration
-     */
-    public KeyOptions keyOptions() {
-        return keyOptions;
-    }
-
-    /**
-     * Set the Ec Key Configuration.
+     * Set the keySize value.
      *
-     * @param ecKeyOptions the ec key options to set
-     * @return the CertificatePolicy object itself.
+     * @param keySize the keySize value to set
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy keyOptions(EcKeyOptions ecKeyOptions) {
-        this.keyOptions = ecKeyOptions;
+    public CertificatePolicy setKeySize(Integer keySize) {
+        this.keySize = keySize;
         return this;
     }
 
     /**
-     * Set the Rsa Key Configuration.
+     * Set the curve value.
      *
-     * @param rsaKeyOptions the rsa key options to set.
-     * @return the CertificatePolicy object itself.
+     * @param keyCurveName the curve value to set
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy keyOptions(RsaKeyOptions rsaKeyOptions) {
-        this.keyOptions = rsaKeyOptions;
+    public CertificatePolicy setKeyCurveName(CertificateKeyCurveName keyCurveName) {
+        this.keyCurveName = keyCurveName;
         return this;
     }
 
@@ -238,9 +387,9 @@ public final class CertificatePolicy {
      * Set the name value.
      *
      * @param issuerName the name value to set
-     * @return the CertificatePolicy object itself.
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy issuerName(String issuerName) {
+    public CertificatePolicy setIssuerName(String issuerName) {
         this.issuerName = issuerName;
         return this;
     }
@@ -248,11 +397,11 @@ public final class CertificatePolicy {
     /**
      * Set the certificateType to request from the issuer.
      *
-     * @param issuerCertificateTypeRequest the certificateType to request from issuer.
-     * @return the CertificatePolicy object itself.
+     * @param certificateType the certificateType to request from issuer.
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy issuerCertificateTypeRequest(String issuerCertificateTypeRequest) {
-        this.issuerCertificateTypeRequest = issuerCertificateTypeRequest;
+    public CertificatePolicy setCertificateType(String certificateType) {
+        this.certificateType = certificateType;
         return this;
     }
 
@@ -260,9 +409,9 @@ public final class CertificatePolicy {
      * Set the certificateTransparency value.
      *
      * @param certificateTransparency the certificateTransparency value to set
-     * @return the CertificatePolicy object itself.
+     * @return the updated CertificatePolicy object itself.
      */
-    public CertificatePolicy certificateTransparency(Boolean certificateTransparency) {
+    public CertificatePolicy setCertificateTransparency(Boolean certificateTransparency) {
         this.certificateTransparency = certificateTransparency;
         return this;
     }
@@ -270,9 +419,9 @@ public final class CertificatePolicy {
     /**
      * Get the subject value.
      *
-     * @return the subject value
+     * @return the subject name
      */
-    public String subjectName() {
+    public String getSubjectName() {
         return this.subjectName;
     }
 
@@ -281,7 +430,7 @@ public final class CertificatePolicy {
      *
      * @return the validityInMonths value
      */
-    public Integer validityInMonths() {
+    public Integer getValidityInMonths() {
         return this.validityInMonths;
     }
 
@@ -290,7 +439,7 @@ public final class CertificatePolicy {
      *
      * @return the Issuer name.
      */
-    public String issuerName() {
+    public String getIssuerName() {
         return issuerName;
     }
 
@@ -299,8 +448,8 @@ public final class CertificatePolicy {
      *
      * @return the certificateType value
      */
-    public String issuerCertificateTypeRequest() {
-        return this.issuerCertificateTypeRequest;
+    public String getCertificateType() {
+        return this.certificateType;
     }
 
     /**
@@ -308,16 +457,16 @@ public final class CertificatePolicy {
      *
      * @return the certificateTransparency value
      */
-    public Boolean certificateTransparency() {
+    public Boolean isCertificateTransparency() {
         return this.certificateTransparency;
     }
 
     /**
      * Set the lifetime actions
      * @param actions the lifetime actions to set.
-     * @return the certificate policy object itself.
+     * @return the updated certificate policy object itself.
      */
-    public CertificatePolicy lifetimeActions(LifetimeAction... actions) {
+    public CertificatePolicy setLifetimeActions(LifetimeAction... actions) {
         this.lifetimeActions = Arrays.asList(actions);
         return this;
     }
@@ -326,7 +475,7 @@ public final class CertificatePolicy {
      * Get the lifetime actions
      * @return the lifetime actions
      */
-    public List<LifetimeAction> lifetimeActions() {
+    public List<LifetimeAction> getLifetimeActions() {
         return this.lifetimeActions;
     }
 
@@ -334,49 +483,11 @@ public final class CertificatePolicy {
     @JsonProperty("key_props")
     private void unpackKeyProperties(Map<String, Object> keyProps) {
 
-        String keyType = (String) keyProps.get("kty");
-        Integer keySize = (Integer) keyProps.get("key_size");
-        Boolean exportable = (Boolean) keyProps.get("exportable");
-        Boolean reuseKey = (Boolean) keyProps.get("reuseKey");
-        KeyCurveName curve = keyProps.containsKey("crv") ? KeyCurveName.fromString((String) keyProps.get("crv")) : null;
-
-        if (keyOptions == null) {
-            keyOptions = new KeyOptions();
-        }
-
-        keyOptions
-            .exportable(exportable)
-            .reuseKey(reuseKey);
-
-        switch (keyType) {
-            case "RSA":
-                keyOptions
-                    .keySize(keySize)
-                    .keyType(KeyType.RSA);
-                break;
-
-            case "RSA-HSM" :
-                keyOptions
-                    .keySize(keySize)
-                    .keyType(KeyType.RSA_HSM);
-                break;
-
-            case "EC" :
-                keyOptions
-                    .curve(curve)
-                    .keyType(KeyType.EC)
-                    .curve(curve);
-                break;
-
-            case "EC-HSM" :
-                keyOptions
-                    .curve(curve)
-                    .keyType(KeyType.EC_HSM);
-                break;
-            default:
-                // should not reach here
-                break;
-        }
+        this.keyType = CertificateKeyType.fromString((String) keyProps.get("kty"));
+        this.keySize = (Integer) keyProps.get("key_size");
+        this.exportable = (Boolean) keyProps.get("exportable");
+        this.reuseKey = (Boolean) keyProps.get("reuseKey");
+        this.keyCurveName = keyProps.containsKey("crv") ? CertificateKeyCurveName.fromString((String) keyProps.get("crv")) : null;
     }
 
 
@@ -386,21 +497,16 @@ public final class CertificatePolicy {
         validityInMonths = (Integer) x509Props.get("validity_months");
         subjectName = (String) x509Props.get("subject");
 
-        if (keyOptions == null) {
-            keyOptions = new KeyOptions();
-        }
-
-        keyOptions
-            .enhancedKeyUsage(x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")) : null)
-            .keyUsage(x509Props.containsKey("key_usage") ? parseKeyUsage((List<Object>) x509Props.get("key_usage")) : null);
+        this.enhancedKeyUsage = (x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")) : null);
+        this.keyUsage = (x509Props.containsKey("key_usage") ? parseKeyUsage((List<Object>) x509Props.get("key_usage")) : null);
     }
 
     @SuppressWarnings("unchecked")
-    private List<KeyUsageType> parseKeyUsage(List<Object> keyUsages) {
-        List<KeyUsageType> output = new ArrayList<>();
+    private List<CertificateKeyUsage> parseKeyUsage(List<Object> keyUsages) {
+        List<CertificateKeyUsage> output = new ArrayList<>();
 
         for (Object keyUsage : keyUsages) {
-            KeyUsageType type = KeyUsageType.fromString((String) keyUsage);
+            CertificateKeyUsage type = CertificateKeyUsage.fromString((String) keyUsage);
             output.add(type);
         }
         return output;
@@ -418,13 +524,13 @@ public final class CertificatePolicy {
 
     @JsonProperty("secret_props")
     private void unpackSecretProperties(Map<String, Object> secretProps) {
-        this.secretContentType = secretProps.containsKey("contentType") ? SecretContentType.fromString((String) secretProps.get("contentType")) : null;
+        this.contentType = secretProps.containsKey("contentType") ? CertificateContentType.fromString((String) secretProps.get("contentType")) : null;
     }
 
     @JsonProperty("issuer")
     private void unpackIssuerProperties(Map<String, Object> issuerProps) {
         this.issuerName = (String) issuerProps.get("name");
-        this.issuerCertificateTypeRequest = (String) issuerProps.get("cty");
+        this.certificateType = (String) issuerProps.get("cty");
         this.certificateTransparency = (Boolean) issuerProps.get("cert_transparency");
     }
 
@@ -448,7 +554,7 @@ public final class CertificatePolicy {
                 Map<String, Object> lifetimeAction = (Map<String, Object>) map.get("action");
                 actionType = lifetimeAction.containsKey("action_type") ? LifetimeActionType.fromString((String) lifetimeAction.get("action_type")) : null;
             }
-            actions.add(new LifetimeAction(actionType).lifetimePercentage(lifetimePercentageTrigger).daysBeforeExpiry(daysBeforeExpiryTrigger));
+            actions.add(new LifetimeAction(actionType).setLifetimePercentage(lifetimePercentageTrigger).setDaysBeforeExpiry(daysBeforeExpiryTrigger));
         }
 
         this.lifetimeActions = actions;

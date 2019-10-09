@@ -4,55 +4,51 @@
 
 package com.azure.security.keyvault.keys.models.webkey;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Defines values for KeyCurveName.
  */
-public enum KeyCurveName {
-    P_256("P-256"),
-
-    P_384("P-384"),
-
-    P_521("P-521"),
-
-    P_256K("P-256K");
-
-    private String value;
+public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
 
     /**
-     * Creates a custom value for KeyCurveName.
-     * @param value The custom value
+     * Static value P-256 for KeyCurveName.
      */
-    KeyCurveName(String value) {
-        this.value = value;
-    }
+    public static final KeyCurveName P_256 = fromString("P-256");
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Static value P-384 for KeyCurveName.
+     */
+    public static final KeyCurveName P_384 = fromString("P-384");
+
+    /**
+     * Static value P-521 for KeyCurveName.
+     */
+    public static final KeyCurveName P_521 = fromString("P-521");
+
+    /**
+     * Static value P-256K for KeyCurve.
+     */
+    public static final KeyCurveName P_256K = fromString("P-256K");
+
+    /**
+     * Creates or finds a KeyCurveName from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding KeyCurve.
+     */
+    @JsonCreator
+    public static KeyCurveName fromString(String name) {
+        return fromString(name, KeyCurveName.class);
     }
 
     /**
-     * Calculates the hashcode of the custom value
-     * @return the hashcode of custom value for {@link KeyCurveName}
+     * @return known KeyCurveName values.
      */
-    public int hashValue() {
-        return value.hashCode();
-    }
-
-    /**
-     * Return the KeyCurveName which maps to {@code value}.
-     * @param value The value whose equivalent KeyCurveName is needed.
-     * @return the KeyCurveName
-     */
-    public static KeyCurveName fromString(String value) {
-        for (KeyCurveName keyCurve : values()) {
-            if (keyCurve.value.equalsIgnoreCase(value)) {
-                return keyCurve;
-            }
-        }
-        return null;
+    public static Collection<KeyCurveName> values() {
+        return values(KeyCurveName.class);
     }
 }

@@ -82,7 +82,7 @@ public class EntityNameHelper {
 
     private static void checkValidEntityName(String entityName, int maxEntityNameLength, boolean allowSeparator) {
         if (entityName == null || entityName.isEmpty()) {
-            throw new IllegalArgumentException("Entity name cannot be null.");
+            throw new IllegalArgumentException("Entity name cannot be null");
         }
 
         String tempName = entityName.replace('\\', '/');

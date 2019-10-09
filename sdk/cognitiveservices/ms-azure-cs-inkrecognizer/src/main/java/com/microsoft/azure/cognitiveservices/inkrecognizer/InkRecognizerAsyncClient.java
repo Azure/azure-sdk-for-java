@@ -38,6 +38,8 @@ public final class InkRecognizerAsyncClient {
         InkRecognizerCredentials credentials) {
         this.credentials = credentials;
         this.endpoint = endpoint;
+        // This will set the service version to default
+        setServiceVersion(null);
         httpClient = new OkHttpClient.Builder()
             .build();
     }
@@ -124,25 +126,27 @@ public final class InkRecognizerAsyncClient {
             .url(endpoint + serviceVersion.toString())
             .put(body)
             .build();
-        request = credentials.SetRequestCredentials(request);
+        request = credentials.setRequestCredentials(request);
 
         okhttp3.Response response = null;
         for (int retryAttempt = 0; retryAttempt < retryCount; ++retryAttempt) {
             try {
                 response = client.newCall(request).execute();
-                if (response.code() == 200) {
+                if (response.code() == 200 && response.body() != null) {
                     // Successful response
                     String responseString = response.body().string();
                     ObjectMapper objectMapper = new ObjectMapper();
                     JsonNode jsonResponse = objectMapper.readValue(responseString, JsonNode.class);
                     return new Response<>(response.code(), responseString, new InkRecognitionRoot(jsonResponse.get("recognitionUnits")));
                 }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        throw new Exception("Request unsuccessful" + response);
+        throw new Exception("Request unsuccessful. Response: " + response);
 
     }
 

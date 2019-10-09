@@ -32,6 +32,8 @@ public class Line extends InkRecognitionUnit {
                     alternates.add(jsonAlternate.get("recognizedString").asText());
                 }
             }
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new Exception("Error while parsing server response");
         }
@@ -62,7 +64,9 @@ public class Line extends InkRecognitionUnit {
     public InkBullet bullet() {
         for (InkRecognitionUnit child : children()) {
             if (child.kind().equals(InkRecognitionUnitKind.INK_BULLET)) {
-                return (InkBullet) child;
+                if (child instanceof InkBullet) {
+                    return (InkBullet) child;
+                }
             }
         }
         return null;
@@ -76,7 +80,9 @@ public class Line extends InkRecognitionUnit {
         List<InkWord> inkWords = new ArrayList<>();
         for (InkRecognitionUnit child : children()) {
             if (child.kind().equals(InkRecognitionUnitKind.INK_WORD)) {
-                inkWords.add((InkWord) child);
+                if (child instanceof InkWord) {
+                    inkWords.add((InkWord) child);
+                }
             }
         }
         return inkWords;

@@ -55,7 +55,7 @@ public class EventGridSubscriber {
             throw new IllegalArgumentException("eventType parameter is required and cannot be null or empty");
         }
         if (eventDataType == null) {
-            throw new IllegalArgumentException("eventDataType parameter is required and cannot be null.");
+            throw new IllegalArgumentException("eventDataType parameter is required and cannot be null");
         }
         this.eventTypeToEventDataMapping.put(canonicalizeEventType(eventType), eventDataType);
     }

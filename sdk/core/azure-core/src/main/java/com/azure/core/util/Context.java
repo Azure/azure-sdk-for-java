@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Objects;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
@@ -39,11 +40,8 @@ public class Context {
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
-        if (key == null) {
-            throw new IllegalArgumentException("key cannot be null.");
-        }
         this.parent = null;
-        this.key = key;
+        this.key = Objects.requireNonNull(key, "'key' cannot be null");
         this.value = value;
     }
 

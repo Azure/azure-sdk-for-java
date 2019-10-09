@@ -174,7 +174,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      */
     public final T sasToken(String sasToken) {
         this.sasTokenCredential = SasTokenCredential
-            .fromSasTokenString(Objects.requireNonNull(sasToken, "'sasToken' cannot be null"));
+            .fromSasTokenString(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
 

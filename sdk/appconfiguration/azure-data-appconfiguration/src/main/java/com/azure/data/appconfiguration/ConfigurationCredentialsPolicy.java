@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.appconfiguration.policy;
+package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;

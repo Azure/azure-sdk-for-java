@@ -131,11 +131,11 @@ public enum Shape {
     POLYLINE("polyline");
 
     private String shapeString;
-    private static final Map<String, Shape> map = new HashMap<>();
+    private static final Map<String, Shape> MAP = new HashMap<>();
 
     static {
         for (Shape shape : Shape.values()) {
-            map.put(shape.toString().toLowerCase(Locale.getDefault()), shape);
+            MAP.put(shape.toString().toLowerCase(Locale.getDefault()), shape);
         }
     }
 
@@ -144,8 +144,8 @@ public enum Shape {
     }
 
     static Shape getShapeOrDefault(String shapeString) {
-        if (shapeString != null && map.containsKey(shapeString.toLowerCase(Locale.getDefault()))) {
-            return map.get(shapeString.toLowerCase(Locale.getDefault()));
+        if (shapeString != null && MAP.containsKey(shapeString.toLowerCase(Locale.getDefault()))) {
+            return MAP.get(shapeString.toLowerCase(Locale.getDefault()));
         } else {
             return Shape.DRAWING;
         }

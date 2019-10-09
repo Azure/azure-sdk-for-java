@@ -7,9 +7,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -79,7 +77,7 @@ public final class ConfigurationClientBuilder {
     private final HttpHeaders headers;
 
     private ConfigurationClientCredentials credential;
-    private URL endpoint;
+    private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
@@ -138,7 +136,7 @@ public final class ConfigurationClientBuilder {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
-        URL buildEndpoint = getBuildEndpoint(configurationCredentials);
+        String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
 
@@ -185,11 +183,11 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder endpoint(String endpoint) {
         try {
-            this.endpoint = new URL(endpoint);
+            new URL(endpoint);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
-
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -307,7 +305,7 @@ public final class ConfigurationClientBuilder {
         }
     }
 
-    private URL getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
+    private String getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
         if (endpoint != null) {
             return endpoint;
         } else if (buildCredentials != null) {

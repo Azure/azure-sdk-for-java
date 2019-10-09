@@ -33,11 +33,11 @@ public enum ApplicationKind {
     WRITING("writing");
 
     private String applicationKindString;
-    private static final Map<String, ApplicationKind> map = new HashMap<>();
+    private static final Map<String, ApplicationKind> MAP = new HashMap<>();
 
     static {
         for (ApplicationKind applicationKind : ApplicationKind.values()) {
-            map.put(applicationKind.toString().toLowerCase(Locale.getDefault()), applicationKind);
+            MAP.put(applicationKind.toString().toLowerCase(Locale.getDefault()), applicationKind);
         }
     }
 
@@ -46,8 +46,8 @@ public enum ApplicationKind {
     }
 
     static ApplicationKind getApplicationKindOrDefault(String applicationKindString) {
-        if (applicationKindString != null && map.containsKey(applicationKindString.toLowerCase(Locale.getDefault()))) {
-            return map.get(applicationKindString.toLowerCase(Locale.getDefault()));
+        if (applicationKindString != null && MAP.containsKey(applicationKindString.toLowerCase(Locale.getDefault()))) {
+            return MAP.get(applicationKindString.toLowerCase(Locale.getDefault()));
         } else {
             return ApplicationKind.MIXED;
         }

@@ -39,14 +39,14 @@ public class ManagingDeletedKeysAsync {
         keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .setExpires(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
@@ -60,7 +60,7 @@ public class ManagingDeletedKeysAsync {
         // We accidentally deleted Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyAsyncClient.recoverDeletedKey("CloudEcKey").subscribe(recoveredKeyResponse ->
-            System.out.printf("Recovered Key with name %s %n", recoveredKeyResponse.name()));
+            System.out.printf("Recovered Key with name %s %n", recoveredKeyResponse.getName()));
 
         //To ensure key is recovered on server side.
         Thread.sleep(10000);

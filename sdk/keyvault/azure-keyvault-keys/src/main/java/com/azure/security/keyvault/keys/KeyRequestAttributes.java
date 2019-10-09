@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.security.keyvault.keys.models.KeyBase;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,34 +14,34 @@ import java.time.ZoneOffset;
 class KeyRequestAttributes {
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads keyBase.notBefore, keyBase.expires and keyBase.enabled fields
-     * from {@code keyBase}
-     * @param keyBase the {@link KeyBase} object with populated attributes
+     * Creates an instance of KeyRequestAttributes. Reads keyProperties.getNotBefore, keyProperties.getExpires and keyProperties.setEnabled fields
+     * from {@code keyProperties}
+     * @param keyProperties the {@link KeyProperties} object with populated attributes
      */
-    KeyRequestAttributes(KeyBase keyBase) {
-        if (keyBase.notBefore() != null) {
-            this.notBefore = keyBase.notBefore().toEpochSecond();
+    KeyRequestAttributes(KeyProperties keyProperties) {
+        if (keyProperties.getNotBefore() != null) {
+            this.notBefore = keyProperties.getNotBefore().toEpochSecond();
         }
-        if (keyBase.expires() != null) {
-            this.expires = keyBase.expires().toEpochSecond();
+        if (keyProperties.getExpires() != null) {
+            this.expires = keyProperties.getExpires().toEpochSecond();
         }
-        this.enabled = keyBase.enabled();
+        this.enabled = keyProperties.isEnabled();
     }
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.notBefore, KeyCreateOptions.expires and
-     * KeyCreateOptions.enabled fields
+     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
+     * KeyCreateOptions.isEnabled fields
      * from {@code keyOptions}
      * @param keyOptions the {@link KeyCreateOptions} object with populated attributes
      */
     KeyRequestAttributes(KeyCreateOptions keyOptions) {
-        if (keyOptions.notBefore() != null) {
-            this.notBefore = keyOptions.notBefore().toEpochSecond();
+        if (keyOptions.getNotBefore() != null) {
+            this.notBefore = keyOptions.getNotBefore().toEpochSecond();
         }
-        if (keyOptions.expires() != null) {
-            this.expires = keyOptions.expires().toEpochSecond();
+        if (keyOptions.getExpires() != null) {
+            this.expires = keyOptions.getExpires().toEpochSecond();
         }
-        this.enabled = keyOptions.enabled();
+        this.enabled = keyOptions.isEnabled();
     }
 
     /**

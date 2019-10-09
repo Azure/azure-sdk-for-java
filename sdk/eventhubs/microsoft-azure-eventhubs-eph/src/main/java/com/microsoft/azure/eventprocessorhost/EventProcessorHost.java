@@ -383,7 +383,7 @@ public final class EventProcessorHost {
          * easy way to generate a unique host name is to call EventProcessorHost.createHostName("mystring").
          *
          * @param hostName  a name for this host instance. See method notes.
-         * @param consumerGroupName  the consumer group on the Event Hub
+         * @param consumerGroupName  The consumer group for the Event Hub
          * @return  interface for setting the lease and checkpoint managers
          */
         public static ManagerStep newBuilder(final String hostName, final String consumerGroupName) {
@@ -397,7 +397,7 @@ public final class EventProcessorHost {
             /**
              * Use the built-in Azure Storage-based lease and checkpoint managers.
              *
-             * @param storageConnectionString  connection string for an Azure Storage account
+             * @param storageConnectionString  Connection string for the Azure Storage account
              * @param storageContainerName     name for the blob container within the Storage account
              * @param storageBlobPrefix        prefix for the names of the blobs within the blob container, can be empty or null
              * @return  interface for setting the Event Hub connection info and auth

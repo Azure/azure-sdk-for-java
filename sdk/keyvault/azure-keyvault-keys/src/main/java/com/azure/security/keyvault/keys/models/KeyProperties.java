@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class KeyBase {
+public class KeyProperties {
 
     /**
      * Determines whether the object is enabled.
@@ -90,7 +90,7 @@ public class KeyBase {
      *
      * @return the recoveryLevel value
      */
-    public String recoveryLevel() {
+    public String getRecoveryLevel() {
         return this.recoveryLevel;
     }
 
@@ -99,7 +99,7 @@ public class KeyBase {
      *
      * @return the name of the key.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -109,7 +109,7 @@ public class KeyBase {
      *
      * @return the enabled value
      */
-    public Boolean enabled() {
+    public Boolean isEnabled() {
         return this.enabled;
     }
 
@@ -117,9 +117,9 @@ public class KeyBase {
      * Set the enabled value.
      *
      * @param enabled The enabled value to set
-     * @return the KeyBase object itself.
+     * @return the updated KeyProperties object itself.
      */
-    public KeyBase enabled(Boolean enabled) {
+    public KeyProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -129,7 +129,7 @@ public class KeyBase {
      *
      * @return the notBefore UTC time.
      */
-    public OffsetDateTime notBefore() {
+    public OffsetDateTime getNotBefore() {
         return notBefore;
     }
 
@@ -137,9 +137,9 @@ public class KeyBase {
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
      * @param notBefore The notBefore UTC time to set
-     * @return the KeyBase object itself.
+     * @return the updated KeyProperties object itself.
      */
-    public KeyBase setNotBefore(OffsetDateTime notBefore) {
+    public KeyProperties setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -149,7 +149,7 @@ public class KeyBase {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime expires() {
+    public OffsetDateTime getExpires() {
         if (this.expires == null) {
             return null;
         }
@@ -160,9 +160,9 @@ public class KeyBase {
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expires The expiry time to set for the key.
-     * @return the KeyBase object itself.
+     * @return the updated KeyProperties object itself.
      */
-    public KeyBase setExpires(OffsetDateTime expires) {
+    public KeyProperties setExpires(OffsetDateTime expires) {
         this.expires = expires;
         return this;
     }
@@ -172,7 +172,7 @@ public class KeyBase {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime created() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
@@ -181,7 +181,7 @@ public class KeyBase {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime updated() {
+    public OffsetDateTime getUpdated() {
         return updated;
     }
 
@@ -190,7 +190,7 @@ public class KeyBase {
      *
      * @return the key identifier.
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -200,7 +200,7 @@ public class KeyBase {
      *
      * @return the value of the tags.
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -208,9 +208,9 @@ public class KeyBase {
      * Set the tags to be associated with the key.
      *
      * @param tags The tags to set
-     * @return the KeyBase object itself.
+     * @return the updated KeyProperties object itself.
      */
-    public KeyBase setTags(Map<String, String> tags) {
+    public KeyProperties setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -220,7 +220,7 @@ public class KeyBase {
      *
      * @return the managed value
      */
-    public Boolean managed() {
+    public Boolean isManaged() {
         return this.managed;
     }
 
@@ -229,7 +229,7 @@ public class KeyBase {
      *
      * @return the version of the key.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -241,7 +241,7 @@ public class KeyBase {
      */
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
-    private void unpackAttributes(Map<String, Object> attributes) {
+    void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
         this.expires =  epochToOffsetDateTime(attributes.get("exp"));

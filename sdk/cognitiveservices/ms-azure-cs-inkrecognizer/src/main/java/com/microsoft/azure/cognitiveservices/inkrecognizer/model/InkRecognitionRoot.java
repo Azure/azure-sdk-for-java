@@ -85,7 +85,10 @@ public class InkRecognitionRoot {
     public Iterable<InkWord> inkWords() {
         List<InkWord> inkWords = new ArrayList<>();
         for (Long wordId : wordList) {
-            inkWords.add((InkWord) recognizedUnits.get(wordId));
+            InkRecognitionUnit recognizedUnit = (recognizedUnits.get(wordId));
+            if (recognizedUnit instanceof InkWord) {
+                inkWords.add((InkWord) recognizedUnit);
+            }
         }
         return inkWords;
     }
@@ -97,7 +100,10 @@ public class InkRecognitionRoot {
     public Iterable<InkDrawing> inkDrawings() {
         List<InkDrawing> inkDrawings = new ArrayList<>();
         for (Long drawingId : recognizedDrawings) {
-            inkDrawings.add((InkDrawing) recognizedUnits.get(drawingId));
+            InkRecognitionUnit recognizedUnit = recognizedUnits.get(drawingId);
+            if (recognizedUnit instanceof InkDrawing) {
+                inkDrawings.add((InkDrawing) recognizedUnit);
+            }
         }
         return inkDrawings;
     }
@@ -135,9 +141,12 @@ public class InkRecognitionRoot {
     public Iterable<InkWord> findWord(String wordToSearch) {
         List<InkWord> inkWords = new ArrayList<>();
         for (Long wordId : wordList) {
-            InkWord inkWord = (InkWord) recognizedUnits.get(wordId);
-            if (inkWord.recognizedText().equalsIgnoreCase(wordToSearch)) {
-                inkWords.add(inkWord);
+            InkRecognitionUnit recognizedUnit = recognizedUnits.get(wordId);
+            if (recognizedUnit instanceof InkWord) {
+                InkWord inkWord = (InkWord) recognizedUnit;
+                if (inkWord.recognizedText().equalsIgnoreCase(wordToSearch)) {
+                    inkWords.add(inkWord);
+                }
             }
         }
         return inkWords;

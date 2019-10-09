@@ -41,7 +41,7 @@ public class BackupAndRestoreOperationsAsync {
                 .setExpires(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.name(), keyResponse.getKeyMaterial().getKty()));
+                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
 
         Thread.sleep(2000);
 
@@ -72,7 +72,7 @@ public class BackupAndRestoreOperationsAsync {
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         keyAsyncClient.restoreKey(backupFromFile).subscribe(keyResponse ->
-            System.out.printf("Restored Key with name %s %n", keyResponse.name()));
+            System.out.printf("Restored Key with name %s %n", keyResponse.getName()));
 
         //To ensure key is restored on server side.
         Thread.sleep(15000);
