@@ -12,6 +12,7 @@ resources:
       endpoint: azure
 
 
+
 trigger:
   branches:
     include:
