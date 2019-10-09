@@ -41,7 +41,7 @@ public class Context {
      */
     public Context(Object key, Object value) {
         this.parent = null;
-        this.key = Objects.requireNonNull(key, "'key' cannot be null");
+        this.key = Objects.requireNonNull(key, "'key' cannot be null.");
         this.value = value;
     }
 
