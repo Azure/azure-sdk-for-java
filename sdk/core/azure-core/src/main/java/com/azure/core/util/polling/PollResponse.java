@@ -71,9 +71,9 @@ public final class PollResponse<T> {
         /**
          * An operation will be considered complete if it is in one of the following state:
          * <ul>
-         *     <li>SUCCESSFULLY_COMPLETED</li>
-         *     <li>USER_CANCELLED</li>
-         *     <li>FAILED</li>
+         *     <li>{@code SUCCESSFULLY_COMPLETED}SUCCESSFULLY_COMPLETED</li>
+         *     <li>{@code USER_CANCELLED}</li>
+         *     <li>{@code FAILED}</li>
          * </ul>
          * @param operationStatus The status of current operation.RestProxyWithMockTests
          * @return true if operation is complete.

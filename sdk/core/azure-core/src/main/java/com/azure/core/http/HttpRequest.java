@@ -133,11 +133,11 @@ public class HttpRequest implements Serializable {
     }
 
     /**
-     * Set the request content.
+     * Sets the content of the HTTP request.
      *
-     * @param content the request content
-     * @param charset @{link {@link Charset}} of the given {@code content}
-     * @return this HttpRequest
+     * @param content the HTTP request content
+     * @param charset {@link Charset} of the given {@code content}
+     * @return The updated {@link HttpRequest}.
      */
     public HttpRequest setBody(String content, Charset charset) {
         Objects.requireNonNull(charset, "'charset' cannot be null.");
