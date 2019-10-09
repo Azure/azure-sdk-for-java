@@ -7,12 +7,7 @@ namespace Azure.Storage.Blobs.PerfStress.Core
     public abstract class ContainerTest<TOptions> : ServiceTest<TOptions> where TOptions : PerfStressOptions
     {
         private const string _containerPrefix = "perfstress";
-        protected static string ContainerName { get; private set; }
-
-        static ContainerTest()
-        {
-            ContainerName = _containerPrefix + "-" + Guid.NewGuid().ToString();
-        }
+        protected static string ContainerName { get; } = _containerPrefix + "-" + Guid.NewGuid().ToString();
 
         protected BlobContainerClient BlobContainerClient { get; private set; }
 
