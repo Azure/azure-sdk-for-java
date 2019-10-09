@@ -226,7 +226,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(headers.getValue("content-length"));
         } catch (NumberFormatException | NullPointerException ignored) {
-            logger.warning("Http logging cannot parse the content-length: " + headers.getValue("content-length"));
+            logger.warning("Http logging cannot parse the content-length {}."
+                + headers.getValue("content-length"));
         }
 
         return contentLength;
