@@ -33,8 +33,8 @@ public class BlobBatchClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch
         BlobBatch batch = batchClient.getBlobBatch();
 
-        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
-        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+        Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
+        Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
             new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
 
         try {
@@ -55,8 +55,8 @@ public class BlobBatchClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch-boolean-Duration-Context
         BlobBatch batch = batchClient.getBlobBatch();
 
-        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
-        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+        Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
+        Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
             new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
 
         try {

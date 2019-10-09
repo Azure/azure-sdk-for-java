@@ -130,7 +130,7 @@ public final class BlobBatchAsyncClient {
 
     Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
         DeleteSnapshotsOptionType deleteOptions, Context context) {
-        return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.delete(blobUrl, deleteOptions, null), context);
+        return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.deleteBlob(blobUrl, deleteOptions, null), context);
     }
 
     /**
@@ -159,7 +159,7 @@ public final class BlobBatchAsyncClient {
 
     Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,
         Context context) {
-        return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.setTier(blobUrl, accessTier), context);
+        return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.setBlobAccessTier(blobUrl, accessTier), context);
     }
 
     /*

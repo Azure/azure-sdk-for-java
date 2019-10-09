@@ -29,8 +29,8 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch
         BlobBatch batch = batchAsyncClient.getBlobBatch();
 
-        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
-        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+        Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
+        Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
             new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
 
         batchAsyncClient.submitBatch(batch).subscribe(response -> {
@@ -48,8 +48,8 @@ public class BlobBatchAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch-boolean
         BlobBatch batch = batchAsyncClient.getBlobBatch();
 
-        Response<Void> deleteResponse1 = batch.delete("container", "blob1");
-        Response<Void> deleteResponse2 = batch.delete("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
+        Response<Void> deleteResponse1 = batch.deleteBlob("container", "blob1");
+        Response<Void> deleteResponse2 = batch.deleteBlob("container", "blob2", DeleteSnapshotsOptionType.INCLUDE,
             new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("leaseId")));
 
         batchAsyncClient.submitBatchWithResponse(batch, true).subscribe(response -> {

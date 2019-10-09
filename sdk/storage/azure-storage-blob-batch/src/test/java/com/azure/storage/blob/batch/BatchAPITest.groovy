@@ -42,16 +42,16 @@ class BatchAPITest extends APISpec {
     def "Mixed batch"() {
         when:
         def batch = batchClient.getBlobBatch()
-        batch.delete("container", "blob")
-        batch.setTier("container", "blob2", AccessTier.HOT)
+        batch.deleteBlob("container", "blob")
+        batch.setBlobAccessTier("container", "blob2", AccessTier.HOT)
 
         then:
         thrown(UnsupportedOperationException)
 
         when:
         batch = batchClient.getBlobBatch()
-        batch.setTier("container", "blob", AccessTier.HOT)
-        batch.delete("container", "blob2")
+        batch.setBlobAccessTier("container", "blob", AccessTier.HOT)
+        batch.deleteBlob("container", "blob2")
 
         then:
         thrown(UnsupportedOperationException)
@@ -69,8 +69,8 @@ class BatchAPITest extends APISpec {
         containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
-        def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
+        def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        def response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
         batchClient.submitBatch(batch)
 
         then:
@@ -90,8 +90,8 @@ class BatchAPITest extends APISpec {
         containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
-        def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
+        def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        def response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
         batchClient.submitBatch(batch)
 
         then:
@@ -116,8 +116,8 @@ class BatchAPITest extends APISpec {
         containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
-        def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
+        def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        def response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
@@ -141,8 +141,8 @@ class BatchAPITest extends APISpec {
         containerClient.create()
 
         when:
-        def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
-        def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
+        def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        def response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
         batchClient.submitBatch(batch)
 
         then:
@@ -171,8 +171,8 @@ class BatchAPITest extends APISpec {
         containerClient.create()
 
         when:
-        def response1 = batch.setTier(containerName, blobName1, AccessTier.HOT)
-        def response2 = batch.setTier(containerName, blobName2, AccessTier.COOL)
+        def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        def response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
@@ -203,8 +203,8 @@ class BatchAPITest extends APISpec {
         containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
 
         when:
-        def response1 = batch.delete(containerName, blobName1)
-        def response2 = batch.delete(containerName, blobName2)
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
         batchClient.submitBatch(batch)
 
         then:
@@ -224,8 +224,8 @@ class BatchAPITest extends APISpec {
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
 
         when:
-        def response1 = batch.delete(containerName, blobName1)
-        def response2 = batch.delete(containerName, blobName2)
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
         batchClient.submitBatch(batch)
 
         then:
@@ -250,8 +250,8 @@ class BatchAPITest extends APISpec {
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
 
         when:
-        def response1 = batch.delete(containerName, blobName1)
-        def response2 = batch.delete(containerName, blobName2)
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
@@ -275,8 +275,8 @@ class BatchAPITest extends APISpec {
         containerClient.create()
 
         when:
-        def response1 = batch.delete(containerName, blobName1)
-        def response2 = batch.delete(containerName, blobName2)
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
         batchClient.submitBatch(batch)
 
         then:
@@ -305,8 +305,8 @@ class BatchAPITest extends APISpec {
         containerClient.create()
 
         when:
-        def response1 = batch.delete(containerName, blobName1)
-        def response2 = batch.delete(containerName, blobName2)
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
@@ -330,7 +330,7 @@ class BatchAPITest extends APISpec {
         def batch = batchClient.getBlobBatch()
 
         when:
-        def batchRequest = batch.delete("blob", "container")
+        def batchRequest = batch.deleteBlob("blob", "container")
         batchRequest.getStatusCode()
 
         then:
