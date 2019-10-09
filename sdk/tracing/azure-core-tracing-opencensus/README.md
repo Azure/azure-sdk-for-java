@@ -10,8 +10,9 @@ documentation][api_documentation] | [Samples][samples]
 ## Getting started
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
-- opencensus-api package with version 0.20.0 or above 
+- opencensus-api package with version 0.20.0
 - [Maven][maven]
+
 ```xml
 <dependency>
   <groupId>io.opencensus</groupId>
