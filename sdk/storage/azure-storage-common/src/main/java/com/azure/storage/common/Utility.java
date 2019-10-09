@@ -13,6 +13,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -531,43 +532,61 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
+        Pair pair = new Pair();
         final long[] currentTotalLength = new long[1];
-        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
-            .map(i -> i * blockSize)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + blockSize > length ? length - pos : blockSize;
-                byte[] cache = new byte[(int) count];
-                int numOfBytes = 0;
-                int offset = 0;
-                // Revise the casting if the max allowed network data transmission is over 2G.
-                int len = (int) count;
-                while (numOfBytes != -1 && offset < count) {
-                    numOfBytes = data.read(cache, offset, len);
-                    offset += numOfBytes;
-                    len -= numOfBytes;
-                    if (numOfBytes != -1) {
-                        currentTotalLength[0] += numOfBytes;
+        return Flux.just(true)
+            .repeat()
+            .map(ignore -> {
+                byte[] buffer = new byte[blockSize];
+                try {
+                    int numBytes = data.read(buffer);
+                    if (numBytes > 0) {
+                        currentTotalLength[0] += numBytes;
+                        return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
+                    } else {
+                        return pair.buffer(null).readBytes(numBytes);
                     }
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
                 }
-                if (numOfBytes == -1 && currentTotalLength[0] < length) {
+            })
+            .takeUntil(p -> p.readBytes() == -1)
+            .filter(p -> p.readBytes() > 0)
+            .flatMap(p -> {
+                if (currentTotalLength[0] < length) {
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                         String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
-                }
-                return ByteBuffer.wrap(cache);
-            }))
-            .doOnComplete(() -> {
-                try {
-                    if (data.available() > 0) {
-                        long totalLength = currentTotalLength[0] + data.available();
-                        throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                totalLength, length), totalLength, length));
-                    }
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                        + e.getMessage()));
+                } else if (currentTotalLength[0] > length) {
+                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                            currentTotalLength[0], length), currentTotalLength[0], length));
+                } else {
+                    return Flux.just(p.buffer());
                 }
             });
+    }
+
+    private static class Pair {
+        private ByteBuffer byteBuffer;
+        private int readBytes;
+
+        ByteBuffer buffer() {
+            return this.byteBuffer;
+        }
+
+        int readBytes() {
+            return this.readBytes;
+        }
+
+        Pair buffer(ByteBuffer byteBuffer) {
+            this.byteBuffer = byteBuffer;
+            return this;
+        }
+
+        Pair readBytes(int cnt) {
+            this.readBytes = cnt;
+            return this;
+        }
     }
 }
