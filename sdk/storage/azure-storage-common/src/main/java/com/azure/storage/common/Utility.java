@@ -550,7 +550,7 @@ public final class Utility {
                     throw Exceptions.propagate(ioe);
                 }
             })
-            .takeUntil(p -> p.readBytes() == -1)
+            .takeUntil(p -> p.readBytes() == -1 || currentTotalLength[0] > length)
             .filter(p -> p.readBytes() > 0)
             .flatMap(p -> {
                 if (currentTotalLength[0] < length) {
