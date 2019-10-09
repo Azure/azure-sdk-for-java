@@ -13,7 +13,9 @@ import java.util.Optional;
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
  * Most applications do not need to pass arbitrary data to the pipeline and can pass {@code Context.NONE} or
- * {@code null}. Each context object is immutable. The {@code addData(Object, Object)} method creates a new
+ * {@code null}.
+ * <p>
+ * Each context object is immutable. The {@link #addData(Object, Object)} method creates a new
  * {@code Context} object that refers to its parent, forming a linked list.
  */
 @Immutable
@@ -34,8 +36,12 @@ public class Context {
     /**
      * Constructs a new {@link Context} object.
      *
-     * @param key The key of the key-value pair.
-     * @param value The value of the key-value pair.
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.context#object-object}
+     *
+     * @param key The key with which the specified value should be associated.
+     * @param value The value to be associated with the specified key.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
@@ -57,9 +63,13 @@ public class Context {
      * Adds a new immutable {@link Context} object with the specified key-value pair to
      * the existing {@link Context} chain.
      *
-     * @param key The key of the key-value pair.
-     * @param value The value of the key-value pair.
-     * @return A new {@link Context} object containing the specified pair added to the existing {@link Context} object.
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.context.addData#object-object}
+     *
+     * @param key The key with which the specified value should be associated.
+     * @param value The value to be associated with the specified key.
+     * @return the new {@link Context} object containing the specified pair added to the set of pairs.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
@@ -73,9 +83,13 @@ public class Context {
      * Creates a new immutable {@link Context} object with all the keys and values provided by
      * the input {@link Map}.
      *
-     * @param keyValues The input key-value pairs that will be added to this context.
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.context.of#map}
+     *
+     * @param keyValues The input key value pairs that will be added to this context.
      * @return Context object containing all the key-value pairs in the input map.
-     * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
      */
     public static Context of(Map<Object, Object> keyValues) {
         if (ImplUtils.isNullOrEmpty(keyValues)) {
@@ -97,8 +111,12 @@ public class Context {
      * Scans the linked-list of {@link Context} objects looking for one with the specified key.
      * Note that the first key found, i.e. the most recently added, will be returned.
      *
+     * <p><strong>Code samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.util.context.getData#object}
+     *
      * @param key The key to search for.
-     * @return The value of the key if it exists.
+     * @return The value of the specified key if it exists.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {
