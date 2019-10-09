@@ -6,7 +6,7 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * Error raised during response deserialization. The HTTP response indicates success, but it could not be decoded.
+ * Error raised during response deserialization. The HTTP response could not be decoded.
  */
 public class DecodeException extends HttpResponseException {
     /**
