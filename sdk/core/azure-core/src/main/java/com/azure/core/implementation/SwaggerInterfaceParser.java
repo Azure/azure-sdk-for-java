@@ -9,7 +9,6 @@ import com.azure.core.implementation.exception.MissingRequiredAnnotationExceptio
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
 
-import com.azure.core.util.logging.ClientLogger;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
