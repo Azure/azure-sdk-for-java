@@ -213,14 +213,6 @@ public final class KeyClientJavaDocCodeSnippets {
         Key updatedKey = keyClient.updateKeyProperties(key.getProperties(), KeyOperation.ENCRYPT, KeyOperation.DECRYPT);
         System.out.printf("Key is updated with name %s and id %s %n", updatedKey.getName(), updatedKey.getId());
         // END: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties-keyOperations
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties
-        Key updateKey = keyClient.getKey("keyName");
-        key.getProperties().setExpires(OffsetDateTime.now().plusDays(60));
-        Key updatedKeyValue = keyClient.updateKeyProperties(updateKey.getProperties());
-        System.out.printf("Key is updated with name %s and id %s %n", updatedKeyValue.getName(),
-            updatedKeyValue.getId());
-        // END: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties
     }
 
     /**

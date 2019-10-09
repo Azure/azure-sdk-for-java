@@ -31,6 +31,7 @@ import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -569,44 +570,6 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified
-     * key in the key vault. The update operation changes specified attributes of an existing stored key and attributes
-     * that are not specified in the request are left unchanged. The cryptographic key material of a key itself cannot
-     * be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault.
-     * Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyProperties#KeyProperties}
-     *
-     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
-     * @return A {@link Mono} containing the {@link Key updated key}.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
-     *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
-     *     string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> updateKeyProperties(KeyProperties keyProperties) {
-        return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context).flatMap(FluxUtil::toMono));
-    }
-
-    Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context) {
-        Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
-        return service.updateKey(endpoint, keyProperties.getName(), keyProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Updating key - {}", keyProperties.getName()))
-            .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update key - {}", keyProperties.getName(), error));
-    }
-
-    /**
      * Updates the attributes and key operations associated with the specified key, but not the cryptographic key
      * material of the specified key in the key vault. The update operation changes specified attributes of an existing
      * stored key and attributes that are not specified in the request are left unchanged. The cryptographic key
@@ -665,8 +628,10 @@ public final class KeyAsyncClient {
         Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
-            .setKeyOps(Arrays.asList(keyOperations))
             .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+        if(keyOperations.length > 0) {
+            parameters.setKeyOps(Arrays.asList(keyOperations));
+        }
         return service.updateKey(endpoint, keyProperties.getName(), keyProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating key - {}", keyProperties.getName()))

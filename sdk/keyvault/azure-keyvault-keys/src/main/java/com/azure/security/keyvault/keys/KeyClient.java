@@ -427,28 +427,6 @@ public final class KeyClient {
     }
 
     /**
-     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified
-     * key in the key vault. The update operation changes specified attributes of an existing stored key and attributes
-     * that are not specified in the request are left unchanged. The cryptographic key material of a key itself cannot
-     * be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets the latest version of the key, changes its expiry time and the updates the key in the key vault.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties}
-     *
-     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
-     * @return The {@link Key updated key}.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
-     *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
-     *     string.
-     */
-    public Key updateKeyProperties(KeyProperties keyProperties) {
-        return updateKeyPropertiesWithResponse(keyProperties, Context.NONE).getValue();
-    }
-
-    /**
      * Updates the attributes and key operations associated with the specified key, but not the cryptographic key
      * material of the specified key in the key vault. The update operation changes specified attributes of an existing
      * stored key and attributes that are not specified in the request are left unchanged. The cryptographic key

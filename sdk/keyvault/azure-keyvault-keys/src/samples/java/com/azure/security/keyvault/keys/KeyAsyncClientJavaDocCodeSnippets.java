@@ -272,19 +272,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                             updatedKeyResponse.getValue().getProperties().getNotBefore().toString()));
             });
         // END: com.azure.security.keyvault.keys.async.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations
-
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.updateKeyPropertiesWithResponse#KeyProperties
-        keyAsyncClient.getKey("keyName")
-            .subscribe(keyResponse  -> {
-                //Update the not before time of the key.
-                keyResponse.getProperties().setNotBefore(OffsetDateTime.now().plusDays(50));
-                keyAsyncClient.updateKeyPropertiesWithResponse(keyResponse.getProperties())
-                    .subscriberContext(Context.of(key1, value1, key2, value2))
-                    .subscribe(updatedKeyResponse  ->
-                        System.out.printf("Key's updated not before time %s %n",
-                            updatedKeyResponse.getValue().getProperties().getNotBefore().toString()));
-            });
-        // END: com.azure.security.keyvault.keys.async.keyclient.updateKeyPropertiesWithResponse#KeyProperties
     }
 
     /**
