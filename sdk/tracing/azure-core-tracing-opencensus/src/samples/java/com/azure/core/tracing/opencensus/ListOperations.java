@@ -8,7 +8,7 @@ import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 import io.opencensus.common.Scope;
 import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
 import io.opencensus.trace.Tracer;
@@ -62,7 +62,7 @@ public class ListOperations {
 
             // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
             // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-            for (SecretBase secret : client.listSecrets(traceContext)) {
+            for (SecretProperties secret : client.listSecrets(traceContext)) {
                 Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).getValue();
                 System.out.printf("Received secret with name %s and value %s%n", secretWithValue.getName(), secretWithValue.getValue());
             }
@@ -72,7 +72,7 @@ public class ListOperations {
             client.setSecret("BankAccountPassword", "newPassword");
 
             // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
-            for (SecretBase secret : client.listSecretVersions("BankAccountPassword", traceContext)) {
+            for (SecretProperties secret : client.listSecretVersions("BankAccountPassword", traceContext)) {
                 Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).getValue();
                 System.out.printf("Received secret's version with name %s and value %s%n", secretWithValue.getName(), secretWithValue.getValue());
             }

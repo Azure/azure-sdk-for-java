@@ -12,13 +12,13 @@ import java.time.ZoneOffset;
 
 /**
  * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
- * inherited from {@link SecretBase}.
+ * inherited from {@link Secret}.
  * It is managed by Secret Service.
  *
  * @see SecretClient
  * @see SecretAsyncClient
  */
-public final class DeletedSecret extends SecretBase {
+public final class DeletedSecret extends Secret {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted secret.
@@ -43,17 +43,6 @@ public final class DeletedSecret extends SecretBase {
      */
     public String getRecoveryId() {
         return this.recoveryId;
-    }
-
-    /**
-     * Set the recoveryId identifier.
-     *
-     * @param recoveryId The recoveryId identifier to set
-     * @return the DeletedSecret object itself.
-     */
-    public DeletedSecret setRecoveryId(String recoveryId) {
-        this.recoveryId = recoveryId;
-        return this;
     }
 
     /**

@@ -59,7 +59,7 @@ public final class Contact {
      *
      * @return the emailAddress
      */
-    public String emailAddress() {
+    public String getEmailAddress() {
         return this.emailAddress;
     }
 
@@ -68,7 +68,7 @@ public final class Contact {
      *
      * @return the name value
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -77,7 +77,7 @@ public final class Contact {
      *
      * @return the phone info
      */
-    public String phone() {
+    public String getPhone() {
         return this.phone;
     }
 }

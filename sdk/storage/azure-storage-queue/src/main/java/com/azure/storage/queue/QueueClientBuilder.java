@@ -61,6 +61,7 @@ import java.util.Objects;
 public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
     private String queueName;
+    private String accountName;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueClient QueueClients} and {@link
@@ -123,7 +124,7 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
      * has been set.
      */
     public QueueAsyncClient buildAsyncClient() {
-        return new QueueAsyncClient(constructImpl(), queueName);
+        return new QueueAsyncClient(constructImpl(), queueName, accountName);
     }
 
     /**
@@ -146,6 +147,8 @@ public final class QueueClientBuilder extends BaseQueueClientBuilder<QueueClient
         try {
             URL fullURL = new URL(endpoint);
             this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
+
+            this.accountName = Utility.getAccountName(fullURL);
 
             // Attempt to get the queue name from the URL passed
             String[] pathSegments = fullURL.getPath().split("/", 2);

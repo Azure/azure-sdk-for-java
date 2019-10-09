@@ -94,6 +94,7 @@ public class FileAsyncClient {
     private final String shareName;
     private final String filePath;
     private final String snapshot;
+    private final String accountName;
 
     /**
      * Creates a FileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -104,13 +105,15 @@ public class FileAsyncClient {
      * @param filePath Path to the file
      * @param snapshot The snapshot of the share
      */
-    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String snapshot) {
+    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
+                    String snapshot, String accountName) {
         Objects.requireNonNull(shareName);
         Objects.requireNonNull(filePath);
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
+        this.accountName = accountName;
     }
 
     /**
@@ -1117,6 +1120,16 @@ public class FileAsyncClient {
      */
     public String getFilePath() {
         return filePath;
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {

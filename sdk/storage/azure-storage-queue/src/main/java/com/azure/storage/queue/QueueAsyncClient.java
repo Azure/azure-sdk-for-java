@@ -56,6 +56,7 @@ import reactor.core.publisher.Mono;
 public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
     private final String queueName;
+    private final String accountName;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -64,10 +65,11 @@ public final class QueueAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
      */
-    QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
+    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
         Objects.requireNonNull(queueName);
         this.queueName = queueName;
         this.client = client;
+        this.accountName = accountName;
     }
 
     /**
@@ -751,6 +753,16 @@ public final class QueueAsyncClient {
      */
     public String getQueueName() {
         return queueName;
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     /*

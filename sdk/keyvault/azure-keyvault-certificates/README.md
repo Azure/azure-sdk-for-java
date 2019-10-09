@@ -162,18 +162,12 @@ CertificateClient certificateClient = new CertificateClientBuilder()
         .buildClient();
 
 CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-Map<String, String> metadataTags = new HashMap<>();
-metadataTags.put("foo", "bar");
 
-//By default blocks until certificate is created, unless a timeout is specified as an optional parameter.
-try {
-    CertificateOperation certificateOperation = certificateClient.createCertificate("certificateName",
-        policy, Duration.ofSeconds(60));
-    System.out.printf("Certificate operation status %s \n", certificateOperation.status());
-} catch (IllegalStateException e) {
-    // Certificate wasn't created in the specified duration.
-    // Log / Handle here
-}
+Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName",
+    certPolicy);
+Certificate certificate = certificatePoller.block();
+System.out.printf("Certificate is returned with name %s and secret id %s \n", certificate.getProperties().getName(),
+    certificate.getSecretId());
 ```
 
 ### Retrieve a Certificate
@@ -181,8 +175,8 @@ try {
 Retrieve a previously stored Certificate by calling `getCertificate` or `getCertificateWithPolicy`.
 ```Java
 Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
-System.out.printf("Recevied certificate with name %s and version %s and secret id", certificate.name(),
-    certificate.version(), certificate.secretId());
+System.out.printf("Recevied certificate with name %s and version %s and secret id", certificate.getName(),
+    certificate.getProperties().getVersion(), certificate.getSecretId());
 ```
 
 ### Update an existing Certificate
@@ -194,10 +188,10 @@ Certificate certificate = certificateClient.getCertificateWithPolicy("certificat
 Map<String, String> tags = new HashMap<>();
 tags.put("foo", "bar");
 // Update certificate enabled status
-certificate.enabled(false);
-Certificate updatedCertificate = certificateClient.updateCertificate(certificate);
-System.out.printf("Updated Certificate with name %s and enabled status %s", updatedCertificate.name(),
-    updatedCertificate.enabled());
+certificate.getProperties().setEnabled(false);
+Certificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
+System.out.printf("Updated Certificate with name %s and enabled status %s", updatedCertificate.getName(),
+    updatedCertificate.getProperties().isEnabled());
 ```
 
 ### Delete a Certificate
@@ -205,8 +199,8 @@ System.out.printf("Updated Certificate with name %s and enabled status %s", upda
 Delete an existing Certificate by calling `deleteCertificate`.
 ```Java
 DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-System.out.printf("Deleted certitifcate with name %s and recovery id %s", deletedCertificate.name(),
-    deletedCertificate.recoveryId());
+System.out.printf("Deleted certificate with name %s and recovery id %s", deletedCertificate.getName(),
+    deletedCertificate.getRecoveryId());
 ```
 
 ### List Certificates
@@ -214,10 +208,10 @@ System.out.printf("Deleted certitifcate with name %s and recovery id %s", delete
 List the certificates in the key vault by calling `listCertificates`.
 ```java
 // List operations don't return the certificates with their full information. So, for each returned certificate we call getCertificate to get the certificate with all its properties excluding the policy.
-for (CertificateBase certificate : certificateClient.listCertificates()) {
-    Certificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
-    System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.name(),
-        certificateWithAllProperties.secretId());
+for (CertificateProperties certificateProperties : certificateClient.listCertificates()) {
+    Certificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
+    System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getName(),
+        certificateWithAllProperties.getSecretId());
 }
 ```
 
@@ -244,13 +238,13 @@ CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs1
 Map<String, String> tags = new HashMap<>();
 tags.put("foo", "bar");
 //Creates a certificate and polls on its progress.
-certificateAsyncClient.createCertificate("certificateName", policy, tags)
+certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
     .getObserver()
     .subscribe(pollResponse -> {
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println(pollResponse.getStatus());
-        System.out.println(pollResponse.getValue().status());
-        System.out.println(pollResponse.getValue().statusDetails());
+        System.out.println(pollResponse.getValue().getStatus());
+        System.out.println(pollResponse.getValue().getStatusDetails());
     });
 ```
 
@@ -260,8 +254,8 @@ Retrieve a previously stored Certificate by calling `getCertificateWithPolicy` o
 ```Java
 certificateAsyncClient.getCertificateWithPolicy("certificateName")
     .subscribe(certificateResponse ->
-        System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.name(),
-            certificateResponse.secretId()));
+        System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getName(),
+            certificateResponse.getSecretId()));
 ```
 
 ### Update an existing Certificate Asynchronously
@@ -269,15 +263,14 @@ certificateAsyncClient.getCertificateWithPolicy("certificateName")
 Update an existing Certificate by calling `updateCertificate`.
 ```Java
 certificateAsyncClient.getCertificateWithPolicy("certificateName")
-    .subscriberContext(Context.of(key1, value1, key2, value2))
     .subscribe(certificateResponseValue -> {
         Certificate certificate = certificateResponseValue;
         //Update enabled status of the certificate
-        certificate.enabled(false);
-        certificateAsyncClient.updateCertificate(certificate)
+        certificate.getProperties().setEnabled(false);
+        certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
             .subscribe(certificateResponse ->
                 System.out.printf("Certificate's enabled status %s \n",
-                    certificateResponse.enabled().toString()));
+                    certificateResponse.getProperties().isEnabled().toString()));
     });
 ```
 
@@ -287,7 +280,7 @@ Delete an existing Certificate by calling `deleteCertificate`.
 ```java
 certificateAsyncClient.deleteCertificate("certificateName")
     .subscribe(deletedSecretResponse ->
-        System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
+        System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
 ```
 
 ### List Certificates Asynchronously
@@ -296,9 +289,9 @@ List the certificates in the key vault by calling `listCertificates`.
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
 certificateAsyncClient.listCertificates()
-    .subscribe(certificateBase -> certificateAsyncClient.getCertificate(certificateBase)
+    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties)
         .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
-            certificateResponse.name(), certificateResponse.keyId())));
+            certificateResponse.getName(), certificateResponse.getKeyId())));
 ```
 
 ## Troubleshooting

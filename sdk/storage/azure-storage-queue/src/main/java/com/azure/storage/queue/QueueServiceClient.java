@@ -383,4 +383,14 @@ public final class QueueServiceClient {
         Mono<Response<StorageServiceStats>> response = client.getStatisticsWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.client.getAccountName();
+    }
 }

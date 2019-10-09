@@ -113,7 +113,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      * has been set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
-        return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot);
+        return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
     }
 
     /**
@@ -152,7 +152,7 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
      */
     public FileAsyncClient buildFileAsyncClient() {
 
-        return new FileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot);
+        return new FileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
     }
 
     /**
@@ -194,6 +194,8 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
         try {
             URL fullUrl = new URL(endpoint);
             super.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
+
+            this.accountName = Utility.getAccountName(fullUrl);
 
             // Attempt to get the share name and file path from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");

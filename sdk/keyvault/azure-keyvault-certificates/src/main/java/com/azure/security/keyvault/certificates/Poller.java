@@ -44,7 +44,7 @@ import java.util.function.Supplier;
  * @param <T> Type of poll response value
  * @see PollResponse
  */
-public class Poller<T> {
+public class Poller<T, R> {
 
     private final ClientLogger logger = new ClientLogger(Poller.class);
     /*
@@ -66,7 +66,7 @@ public class Poller<T> {
     /*
      * This will be called when cancel operation is triggered.
      */
-    private final Consumer<Poller<T>> cancelOperation;
+    private final Consumer<Poller<T, R>> cancelOperation;
 
     /*
      * Indicate to poll automatically or not when poller is created.
@@ -88,6 +88,8 @@ public class Poller<T> {
      */
     private Disposable fluxDisposable;
 
+    private final Supplier<Mono<R>> fetchResultOperation;
+
     /**
      * Create a {@link Poller} instance with poll interval and poll operation. The polling starts immediately by invoking {@code pollOperation}.
      * The next poll cycle will be defined by {@code retryAfter} value in {@link PollResponse}.
@@ -102,7 +104,7 @@ public class Poller<T> {
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
-        this(pollInterval, pollOperation, null, null);
+        this(pollInterval, pollOperation, null, null, null);
     }
 
     /**
@@ -118,11 +120,12 @@ public class Poller<T> {
      * the {@link Poller} will disregard that and continue to poll.
      * @param activationOperation the operation to be called before polling begins. It can be {@code null} which will indicate to the {@link Poller}
      * that polling can begin straight away.
+     * @param fetchResultOperation the operation to be called to fetch final result after polling has been completed.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
      * that cancel operation is not supported by Azure service.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation, Supplier<Mono<R>> fetchResultOperation, Consumer<Poller<T, R>> cancelOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
             logger.logExceptionAsError(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
         }
@@ -133,6 +136,7 @@ public class Poller<T> {
         this.pollInterval = pollInterval;
         this.pollOperation = pollOperation;
         this.pollResponse = new PollResponse<>(PollResponse.OperationStatus.NOT_STARTED, null);
+        this.fetchResultOperation = fetchResultOperation;
 
         this.fluxHandle = asyncPollRequestWithDelay()
             .flux()
@@ -158,12 +162,13 @@ public class Poller<T> {
      *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
+     * @param fetchResultOperation the operation to be called to fetch final result after polling has been completed.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
      * that cancel operation is not supported by Azure service.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
-        this(pollInterval, pollOperation, null, cancelOperation);
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<R>> fetchResultOperation, Consumer<Poller<T, R>> cancelOperation) {
+        this(pollInterval, pollOperation, null, fetchResultOperation, cancelOperation);
     }
 
     /**
@@ -177,12 +182,13 @@ public class Poller<T> {
      * {@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should handle it and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
+     * @param fetchResultOperation the operation to be called to fetch final result after polling has been completed.
      * @param activationOperation the operation to be called before polling begins. It can be {@code null} which will indicate to the {@link Poller}
      * that polling can begin straight away.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<T>> activationOperation) {
-        this(pollInterval, pollOperation, activationOperation, null);
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Supplier<Mono<R>> fetchResultOperation, Supplier<Mono<T>> activationOperation) {
+        this(pollInterval, pollOperation, activationOperation, fetchResultOperation, null);
     }
 
     /**
@@ -240,11 +246,19 @@ public class Poller<T> {
      *
      * @return returns final {@link PollResponse} when polling is complete.
      */
-    public PollResponse<T> block() {
+    public R block() {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
-        return this.fluxHandle.blockLast();
+        this.fluxHandle.blockLast();
+        return result().block();
+    }
+
+    public Mono<R> result() {
+        if (!getStatus().equals(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED)) {
+            return Mono.error(new IllegalAccessException("The poll operation has not successfully completed."));
+        }
+        return fetchResultOperation.get();
     }
 
     /**
@@ -254,11 +268,12 @@ public class Poller<T> {
      * @param timeout the duration for which the excecution is blocked and waits for polling to complete.
      * @return returns final {@link PollResponse} when polling is complete.
      */
-    public PollResponse<T> block(Duration timeout) {
+    public R block(Duration timeout) {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
-        return this.fluxHandle.blockLast(timeout);
+        this.fluxHandle.blockLast(timeout);
+        return result().block();
     }
 
     /**

@@ -25,7 +25,7 @@ public class Context {
     // All fields must be immutable.
     //
     /**
-     * Signifies that no data need be passed to the pipeline.
+     * Signifies that no data needs to be passed to the pipeline.
      */
     public static final Context NONE = new Context(null, null, null);
 
@@ -81,7 +81,7 @@ public class Context {
 
     /**
      * Creates a new immutable {@link Context} object with all the keys and values provided by
-     * the input {@link Map}
+     * the input {@link Map}.
      *
      * <p><strong>Code samples</strong></p>
      *

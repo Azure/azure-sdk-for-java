@@ -69,6 +69,7 @@ public class DirectoryAsyncClient {
     private final String shareName;
     private final String directoryPath;
     private final String snapshot;
+    private final String accountName;
 
     /**
      * Creates a DirectoryAsyncClient that sends requests to the storage directory at {@link
@@ -81,13 +82,14 @@ public class DirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
-        String snapshot) {
+        String snapshot, String accountName) {
         Objects.requireNonNull(shareName);
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
+        this.accountName = accountName;
     }
 
     /**
@@ -115,7 +117,7 @@ public class DirectoryAsyncClient {
      */
     public FileAsyncClient getFileClient(String fileName) {
         String filePath = directoryPath + "/" + fileName;
-        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, null);
+        return new FileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName);
     }
 
     /**
@@ -129,7 +131,7 @@ public class DirectoryAsyncClient {
      */
     public DirectoryAsyncClient getSubDirectoryClient(String subDirectoryName) {
         String directoryPath = this.directoryPath + "/" + subDirectoryName;
-        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot);
+        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName);
     }
 
     /**
@@ -794,6 +796,16 @@ public class DirectoryAsyncClient {
      */
     public String getDirectoryPath() {
         return directoryPath;
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     private Response<DirectoryInfo> createWithRestResponse(final DirectorysCreateResponse response) {

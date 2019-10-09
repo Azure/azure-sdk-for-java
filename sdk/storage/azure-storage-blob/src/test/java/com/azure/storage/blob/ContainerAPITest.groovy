@@ -3,9 +3,10 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.BlobContainerAccessConditions
@@ -20,6 +21,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import spock.lang.Unroll
 
@@ -557,14 +559,64 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "List blobs flat"() {
+    def "List block blobs flat"() {
         setup:
         def name = generateBlobName()
-        def bu = cc.getBlobClient(name).getPageBlobClient()
+        def bu = cc.getBlobClient(name).getBlockBlobClient()
+        bu.upload(defaultInputStream.get(), 7)
+
+        when:
+        def blobs = cc.listBlobsFlat(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+
+        //ContainerListBlobFlatSegmentHeaders headers = response.headers()
+        //List<BlobItem> blobs = responseiterator()()
+
+        then:
+//        response.getStatusCode() == 200
+//        headers.contentType() != null
+//        headers.requestId() != null
+//        headers.getVersion() != null
+//        headers.date() != null
+        def blob = blobs.next()
+        !blobs.hasNext()
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().isIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMD5() != null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == null
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred()
+        blob.getProperties().getAccessTier() == AccessTier.HOT
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
+    }
+
+    def "List page blobs flat"() {
+        setup:
+        ccPremium = premiumBlobServiceClient.getBlobContainerClient(containerName)
+        ccPremium.create()
+        def name = generateBlobName()
+        def bu = ccPremium.getBlobClient(name).getPageBlobClient()
         bu.create(512)
 
         when:
-        def blobs = cc.listBlobsFlat().iterator()
+        def blobs = ccPremium.listBlobsFlat(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
 
         //ContainerListBlobFlatSegmentHeaders headers = response.headers()
         //List<BlobItem> blobs = responseiterator()()
@@ -600,9 +652,12 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getBlobSequenceNumber() == 0
         blob.getProperties().isServerEncrypted()
         blob.getProperties().isAccessTierInferred()
-        blob.getProperties().getAccessTier() == AccessTier.HOT
+        blob.getProperties().getAccessTier() == AccessTier.P10
         blob.getProperties().getArchiveStatus() == null
         blob.getProperties().getCreationTime() != null
+
+        cleanup:
+        ccPremium.delete()
     }
 
     def "List blobs flat min"() {
@@ -1175,32 +1230,68 @@ class ContainerAPITest extends APISpec {
         propsResponse.getValue().getBlobType() == BlobType.APPEND_BLOB
     }
 
-    /*
-    def "Root implicit"() {
+    def "BlobClientBuilder Root implicit"() {
         setup:
-        cc = primaryBlobServiceClient.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
-        if (!cc.exists().getValue()) {
-            cc.setCreate()
+        if (!cc.exists()) {
+            cc.create()
         }
 
         AppendBlobClient bc = new BlobClientBuilder()
-            .credential(primaryCreds)
-            .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/rootblob")
+            .credential(primaryCredential)
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .blobName("rootblob")
             .httpClient(getHttpClient())
-            .buildAppendBlobClient()
+            .pipeline(cc.getHttpPipeline())
+            .buildClient().getAppendBlobClient()
 
         when:
-        Response<AppendBlobItem> createResponse = bc.setCreate()
+        Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null)
 
-        Response<BlobProperties> propsResponse = bc.getProperties()
+        Response<BlobProperties> propsResponse = bc.getPropertiesWithResponse(null, null, null)
 
         then:
         createResponse.getStatusCode() == 201
         propsResponse.getStatusCode() == 200
         propsResponse.getValue().getBlobType() == BlobType.APPEND_BLOB
     }
-    */
+
+    def "ContainerClientBuilder root implicit"(){
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME)
+        // Create root container if not exist.
+        if (!cc.exists()) {
+            cc.create()
+        }
+
+        when:
+        cc = new BlobContainerClientBuilder()
+            .credential(primaryCredential)
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .containerName(null)
+            .pipeline(cc.getHttpPipeline())
+            .buildClient()
+
+        then:
+        cc.getProperties() != null
+        cc.getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+
+        when:
+        def bc = cc.getBlobClient("rootblob").getAppendBlobClient()
+        bc.create()
+
+        then:
+        bc.exists()
+    }
+
+    def "ServiceClient implicit root"() {
+        expect:
+        primaryBlobServiceClient.getBlobContainerClient(null).getBlobContainerName() ==
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        primaryBlobServiceClient.getBlobContainerClient("").getBlobContainerName() ==
+            BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+    }
 
     def "Web container"() {
         setup:

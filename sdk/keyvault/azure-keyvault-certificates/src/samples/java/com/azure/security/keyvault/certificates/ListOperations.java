@@ -3,16 +3,16 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.util.polling.PollResponse;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
-import com.azure.security.keyvault.certificates.models.Issuer;
-import com.azure.security.keyvault.certificates.models.Contact;
 import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.CertificateBase;
-import com.azure.security.keyvault.certificates.models.IssuerBase;
+import com.azure.security.keyvault.certificates.models.Issuer;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.Contact;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,69 +43,60 @@ public class ListOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        try {
-            CertificateOperation certificateOperation = certificateClient.createCertificate("certName",
-                policy, tags, Duration.ofMillis(60000));
-            System.out.printf("Certificate operation status %s \n", certificateOperation.status());
-        } catch (IllegalStateException e) {
-            // Certificate wasn't created in the specified duration.
-            // Log / Handle here
-        }
+        Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
+        certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
+        Certificate cert = certificatePoller.result().block();
 
         //Let's create a certificate issuer.
         Issuer issuer = new Issuer("myIssuer", "Test");
-        Issuer myIssuer = certificateClient.createCertificateIssuer(issuer);
-        System.out.printf("Issuer created with name %s and provider %s", myIssuer.name(), myIssuer.provider());
+        Issuer myIssuer = certificateClient.createIssuer(issuer);
+        System.out.printf("Issuer created with name %s and provider %s", myIssuer.getName(), myIssuer.getProperties().getProvider());
 
         //Let's create a certificate signed by our issuer.
-        try {
-            CertificateOperation certificateOperation = certificateClient.createCertificate("myCertificate",
-                new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), Duration.ofMillis(60000));
-            System.out.printf("Certificate operation status %s \n", certificateOperation.status());
-        } catch (IllegalStateException e) {
-            // Certificate wasn't created in the specified duration.
-            // Log / Handle here
-        }
+        certificateClient.beginCreateCertificate("myCertificate",
+            new CertificatePolicy("myIssuer", "CN=SignedJavaPkcs12"), tags)
+            .blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
+
 
         // Let's list all the certificates in the key vault.
-        for (CertificateBase certificate : certificateClient.listCertificates()) {
+        for (CertificateProperties certificate : certificateClient.listCertificates()) {
             Certificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
-            System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.name(),
-                certificateWithAllProperties.secretId());
+            System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getProperties().getName(),
+                certificateWithAllProperties.getSecretId());
         }
 
         // Let's list all certificate versions of the certificate.
-        for (CertificateBase certificate : certificateClient.listCertificateVersions("myCertificate")) {
+        for (CertificateProperties certificate : certificateClient.listCertificateVersions("myCertificate")) {
             Certificate certificateWithAllProperties = certificateClient.getCertificate(certificate);
-            System.out.printf("Received certificate with name %s and version %s", certificateWithAllProperties.name(),
-                certificateWithAllProperties.version());
+            System.out.printf("Received certificate with name %s and version %s", certificateWithAllProperties.getProperties().getName(),
+                certificateWithAllProperties.getProperties().getVersion());
         }
 
         //Let's list all certificate issuers in the key vault.
-        for (IssuerBase certIssuer : certificateClient.listCertificateIssuers()) {
-            Issuer retrievedIssuer = certificateClient.getCertificateIssuer(certIssuer);
-            System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.name(),
-                retrievedIssuer.provider());
+        for (IssuerProperties certIssuer : certificateClient.listIssuers()) {
+            Issuer retrievedIssuer = certificateClient.getIssuer(certIssuer);
+            System.out.printf("Received issuer with name %s and provider %s", retrievedIssuer.getName(),
+                retrievedIssuer.getProperties().getProvider());
         }
 
         // Let's set certificate contacts on the Key vault.
         Contact contactToAdd = new Contact("user", "useremail@exmaple.com");
-        for (Contact contact : certificateClient.setCertificateContacts(Arrays.asList(contactToAdd))) {
-            System.out.printf("Added contact with name %s and email %s to key vault", contact.name(),
-                contact.emailAddress());
+        for (Contact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
+            System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
+                contact.getEmailAddress());
         }
 
         // Let's list all certificate contacts in the key vault.
-        for (Contact contact : certificateClient.listCertificateContacts()) {
-            System.out.printf("Retrieved contact with name %s and email %s from the key vault", contact.name(),
-                contact.emailAddress());
+        for (Contact contact : certificateClient.listContacts()) {
+            System.out.printf("Retrieved contact with name %s and email %s from the key vault", contact.getName(),
+                contact.getEmailAddress());
         }
 
         // Let's delete all certificate contacts in the key vault.
-        for (Contact contact : certificateClient.deleteCertificateContacts()) {
-            System.out.printf("Deleted contact with name %s and email %s from key vault", contact.name(),
-                contact.emailAddress());
+        for (Contact contact : certificateClient.deleteContacts()) {
+            System.out.printf("Deleted contact with name %s and email %s from key vault", contact.getName(),
+                contact.getEmailAddress());
         }
     }
 }

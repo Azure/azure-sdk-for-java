@@ -32,9 +32,9 @@ public final class SubjectAlternativeNames {
     /**
      * Get the emails.
      *
-     * @return the emails
+     * @return the list of emails
      */
-    public List<String> emails() {
+    public List<String> getEmails() {
         return this.emails;
     }
 
@@ -73,9 +73,9 @@ public final class SubjectAlternativeNames {
     /**
      * Get the dnsNames.
      *
-     * @return the dnsNames
+     * @return the list of dnsNames
      */
-    public List<String> dnsNames() {
+    public List<String> getDnsNames() {
         return this.dnsNames;
     }
 
@@ -90,11 +90,11 @@ public final class SubjectAlternativeNames {
     }
 
     /**
-     * Get the upns value.
+     * Get the User Principal Names.
      *
-     * @return the upns value
+     * @return the list of  User Principal Names
      */
-    public List<String> upns() {
+    public List<String> getUserPrincipalNames() {
         return this.upns;
     }
 
@@ -104,7 +104,7 @@ public final class SubjectAlternativeNames {
      * @param upns the user principal names value to set
      * @return the SubjectAlternativeNames.
      */
-    public static SubjectAlternativeNames fromUpns(List<String> upns) {
+    public static SubjectAlternativeNames fromUserPrincipalNames(List<String> upns) {
         return new SubjectAlternativeNames(upns, SubjectAlternativeNamesType.UPNS);
     }
 

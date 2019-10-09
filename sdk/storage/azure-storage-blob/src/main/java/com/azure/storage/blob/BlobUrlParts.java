@@ -29,6 +29,7 @@ public final class BlobUrlParts {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String accountName;
     private BlobServiceSasQueryParameters blobServiceSasQueryParameters;
     private Map<String, String[]> unparsedParameters;
 
@@ -37,6 +38,26 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts() {
         unparsedParameters = new HashMap<>();
+    }
+
+    /**
+     * Gets the accountname, ex. "myaccountname".
+     *
+     * @return the account name.
+     */
+    public String getAccountName() {
+        return accountName;
+    }
+
+    /**
+     * Sets the account name.
+     *
+     * @param accountName The account name.
+     * @return the updated BlobURLParts object.
+     */
+    public BlobUrlParts setAccountName(String accountName) {
+        this.accountName = accountName;
+        return this;
     }
 
     /**
@@ -192,6 +213,11 @@ public final class BlobUrlParts {
         UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
+
+        if ((this.containerName == null || this.containerName.isEmpty()) && this.blobName != null) {
+            this.containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
+        }
+
         if (this.containerName != null) {
             path.append(this.containerName);
             if (this.blobName != null) {
@@ -246,6 +272,10 @@ public final class BlobUrlParts {
      * all SAS token related values and {@link #getUnparsedParameters() unparsedParameters} which is all other query
      * parameters.</p>
      *
+     * <p>If a URL points to a blob in the root container, and the root container is referenced implicitly, i.e. there
+     * is no path element for the container, the name of this blob in the root container will be set as the
+     * containerName field in the resulting {@code BlobURLParts}.</p>
+     *
      * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
      */
@@ -256,6 +286,20 @@ public final class BlobUrlParts {
 
         String containerName = null;
         String blobName = null;
+        String accountName = null;
+
+        //Parse host to get account name
+        // host will look like this : <accountname>.blob.core.windows.net
+        if (!ImplUtils.isNullOrEmpty(host)) {
+            int accountNameIndex = host.indexOf('.');
+            if (accountNameIndex == -1) {
+                // host only contains account name
+                accountName = host;
+            } else {
+                // if host is separated by .
+                accountName = host.substring(0, accountNameIndex);
+            }
+        }
 
         // find the container & blob names (if any)
         String path = url.getPath();
@@ -293,6 +337,7 @@ public final class BlobUrlParts {
             .setContainerName(containerName)
             .setBlobName(blobName)
             .setSnapshot(snapshot)
+            .setAccountName(accountName)
             .setSasQueryParameters(blobServiceSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
     }
