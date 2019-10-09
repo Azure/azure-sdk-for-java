@@ -70,7 +70,7 @@ public class EventHubSharedAccessKeyCredentialTest {
                 Assert.assertNotNull(accessToken);
 
                 Assert.assertFalse(accessToken.isExpired());
-                Assert.assertTrue(accessToken.getExpiresOn().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
+                Assert.assertTrue(accessToken.getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
 
                 final String[] split = accessToken.getToken().split(" ");
                 Assert.assertEquals(2, split.length);
