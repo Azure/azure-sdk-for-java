@@ -1,6 +1,6 @@
 # Code generation via AutoRest
  
-The Azure Search SDK uses [AutoRest](https://github.com/Azure/autorest) to generate low-level REST implementation code. To generate code, you will need to perform some one-time setup tasks, then invoke AutoRest with a given configuration. The repository contains a helper script to perform regeneration tasks. 
+[AutoRest](https://github.com/Azure/autorest) is an open source tool that generates client side code from the Swagger specification document describing RESTful web services. The Azure Search SDK uses AutoRest to generate low-level REST implementation code. To generate code, you will need to perform some one-time setup tasks, then invoke AutoRest with a given configuration. The repository contains a helper script to perform regeneration (needed when there are updates to the Azure API implementation) tasks. 
 
 ## One-Time Setup
 
@@ -13,8 +13,8 @@ The Azure Search SDK uses [AutoRest](https://github.com/Azure/autorest) to gener
 ### Sample commands
 
 ```shell
-npm install -g autorest
-git clone https://github.com/Azure/autorest.java --recursive 
+npm install -g autorest gulp
+git clone https://github.com/azure/autorest.java --recursive
 cd autorest.java
 git checkout v3
 npm install
@@ -22,7 +22,7 @@ npm install
 
 ## Generation
 
-run the following bash script:
+Run the following bash script:
 
 ```bash
 ./getSpecsAndGenerate.sh <autorest.java directory path>

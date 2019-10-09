@@ -3,6 +3,7 @@
 This is the JAVA SDK for [Azure Search](https://docs.microsoft.com/en-us/rest/api/searchservice/). Azure Search is a fully managed cloud search service that provides a rich search experience to custom applications. One way to add search capability is through a REST API, with operations that create and manage indexes, load data, implement search features, execute queries, and handle results.
 
 ##Key concepts
+
 Azure Search has the concepts of search services and indexes and documents, where a search service contains one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. Data is typically pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data source to extract and load data into an index.
 
 There are three types of operations that can be executed against the service:
@@ -32,16 +33,20 @@ The APIs documented in this section provide access to operations on search data,
 
 * You will need to provide `index name`and the `search service name` which is the URL of the Azure Search service you provisioned: https://<yourService>.search.windows.net.
 
-## This library is build using:
+## This library is built using:
 * JDK / JRE 1.8
 * Microsoft Azure - adal4j 1.3.0
 * Junit 4.12
 
 ## Building the SDK
-1.	Clone this repo 
-2.	In Intellij, open the client pom  - [pom.client.xml](../../../pom.client.xml) it will open all the SDKs, including the search one and will make sure all dependencies are met.
-3.	Build module azure-search-data, and run the samples
-
+1. Clone this repo 
+2. In [IntelliJ](https://www.jetbrains.com/idea/), import the project by opening the client pom - [pom.client.xml](../../../pom.client.xml) it will open all the SDKs, including the search one and will make sure all dependencies are met. For contributing to Search specifically, select `...\azure-sdk-for-java-pr\sdk\search\pom.service.xml`.
+   * Check "Search for projects recursively" and "Import Maven projects automatically" checkboxes if they are not checked by default.
+   * In JDK for importer, select 1.8. Make sure to have JDK 1.8 installed and included in project settings.
+   * For profiles, check "javadoc-doclet-compatibility". 
+   * For Maven projects to import, check com.azure:azure-search-service-parent:1.0.0.
+   * For project SDK, select Java SDK 1.8. 
+3. Build module azure-search-data, and run the samples
 
 ## Samples
 * [A simple search index example](/sdk/search/azure-search-data/src/samples/java/com/azure/search/data/SearchIndexClientExample.java).
@@ -54,7 +59,6 @@ The APIs documented in this section provide access to operations on search data,
 See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
 
 ## How to get support
-
 See our [Support Guidelines](./.github/SUPPORT.md)
 
 ## Known issues
@@ -65,7 +69,6 @@ TBD
 Please see the [Test Framework documentation](/sdk/search/azure-search-data/src/test)
 
 ## Contributing
-
 If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 
 1. Fork it
@@ -73,3 +76,9 @@ If you would like to become an active contributor to this project please follow 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Run style check locally
+Style check runs as part of Continuous Integration (CI) pipeline. Running it locally allows you to verify the style rules in an isolated way and quickly iterate on them, rather than having to wait for a build agent to free up to run all the steps. 
+Navigate to `..\azure-sdk-for-java-pr`, run:
+
+`mvn -f pom.client.xml -DskipTests -Dgpg.skip spotbugs:check checkstyle:checkstyle-aggregate --projects com.azure.search:azure-search-data,com.azure:azure-client-sdk-parent --also-make`
