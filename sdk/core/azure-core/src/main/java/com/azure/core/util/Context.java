@@ -23,7 +23,7 @@ public class Context {
     // All fields must be immutable.
     //
     /**
-     * Signifies that no data need be passed to the pipeline.
+     * Signifies that no data needs to be passed to the pipeline.
      */
     public static final Context NONE = new Context(null, null, null);
 
@@ -34,8 +34,8 @@ public class Context {
     /**
      * Constructs a new {@link Context} object.
      *
-     * @param key the key
-     * @param value the value
+     * @param key The key of the key-value pair.
+     * @param value The value of the key-value pair.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
@@ -57,9 +57,9 @@ public class Context {
      * Adds a new immutable {@link Context} object with the specified key-value pair to
      * the existing {@link Context} chain.
      *
-     * @param key the key
-     * @param value the value
-     * @return the new {@link Context} object containing the specified pair added to the set of pairs
+     * @param key The key of the key-value pair.
+     * @param value The value of the key-value pair.
+     * @return A new {@link Context} object containing the specified pair added to the existing {@link Context} object.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context addData(Object key, Object value) {
@@ -71,11 +71,11 @@ public class Context {
 
     /**
      * Creates a new immutable {@link Context} object with all the keys and values provided by
-     * the input {@link Map}
+     * the input {@link Map}.
      *
-     * @param keyValues The input key value pairs that will be added to this context
-     * @return Context object containing all the key-value pairs in the input map
-     * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
+     * @param keyValues The input key-value pairs that will be added to this context.
+     * @return Context object containing all the key-value pairs in the input map.
+     * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty.
      */
     public static Context of(Map<Object, Object> keyValues) {
         if (ImplUtils.isNullOrEmpty(keyValues)) {
@@ -97,8 +97,8 @@ public class Context {
      * Scans the linked-list of {@link Context} objects looking for one with the specified key.
      * Note that the first key found, i.e. the most recently added, will be returned.
      *
-     * @param key the key to search for
-     * @return the value of the key if it exists
+     * @param key The key to search for.
+     * @return The value of the key if it exists.
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Optional<Object> getData(Object key) {

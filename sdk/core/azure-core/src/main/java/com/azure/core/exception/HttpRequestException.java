@@ -6,8 +6,8 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpRequest;
 
 /**
- * The exception occurred while attempting to connect a socket to a azure service address and port.
- * Typically, the connection was refused remotely (e.g., no process is listening on the azure service address/port).
+ * The exception occurred while attempting to connect a socket to a Azure service address and port.
+ * Typically, the connection was refused remotely (e.g., no process is listening on the Azure service address/port).
  *
  * These errors are safe to retry.
  */
