@@ -74,8 +74,6 @@ public class PerfStressProgram {
         Disposable setupStatus = PrintStatus("=== Setup ===", () -> ".", false);
         Disposable cleanupStatus = null;
 
-        _lastCompletionNanoTimes = new long[options.Parallel];
-
         PerfStressTest<?>[] tests = new PerfStressTest<?>[options.Parallel];
 
         for (int i = 0; i < options.Parallel; i++) {
@@ -102,27 +100,11 @@ public class PerfStressProgram {
 
                 setupStatus.dispose();
 
-                long endNanoTime = System.nanoTime() + ((long) options.Duration * 1000000000);
-
-                int[] lastCompleted = new int[] { 0 };
-                Disposable progressStatus = PrintStatus(
-                        "=== Progress ===" + System.lineSeparator() + "Current\t\tTotal", () -> {
-                            int totalCompleted = _completedOperations.get();
-                            int currentCompleted = totalCompleted - lastCompleted[0];
-                            lastCompleted[0] = totalCompleted;
-                            return currentCompleted + "\t\t" + totalCompleted;
-                        }, true);
-
-                try {
-                    forkJoinPool.submit(() -> {
-                        Arrays.stream(tests).parallel().forEach(t -> RunLoop(t, endNanoTime));
-                    }).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
+                if (options.Warmup > 0) {
+                    RunTests(forkJoinPool, tests, options.Parallel, options.Warmup, "Warmup");
                 }
 
-                progressStatus.dispose();
-
+                RunTests(forkJoinPool, tests, options.Parallel, options.Duration, "Test");
             } finally {
                 if (!options.NoCleanup) {
                     if (cleanupStatus == null) {
@@ -160,6 +142,32 @@ public class PerfStressProgram {
         System.out.printf("Completed %d operations in an average of %.2fs (%.2f ops/s, %.3f s/op)%n",
                 _completedOperations.get(), averageElapsedSeconds, operationsPerSecond, secondsPerOperation);
         System.out.println();
+    }
+
+    public static void RunTests(ForkJoinPool forkJoinPool, PerfStressTest<?>[] tests, int parallel, int durationSeconds, String title) {
+        _lastCompletionNanoTimes = new long[parallel];
+        _completedOperations.set(0);
+
+        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
+
+        int[] lastCompleted = new int[] { 0 };
+        Disposable progressStatus = PrintStatus(
+                "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal", () -> {
+                    int totalCompleted = _completedOperations.get();
+                    int currentCompleted = totalCompleted - lastCompleted[0];
+                    lastCompleted[0] = totalCompleted;
+                    return currentCompleted + "\t\t" + totalCompleted;
+                }, true);
+
+        try {
+            forkJoinPool.submit(() -> {
+                Arrays.stream(tests).parallel().forEach(t -> RunLoop(t, endNanoTime));
+            }).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        progressStatus.dispose();
     }
 
     private static void RunLoop(PerfStressTest<?> test, long endNanoTime) {
