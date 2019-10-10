@@ -11,7 +11,10 @@ module com.azure.storage.blob {
     exports com.azure.storage.blob.specialized;
 
     // Blob batch needs to interact with the generated layer but shouldn't replicate it.
-    exports com.azure.storage.blob.implementation to com.azure.storage.blob.batch;
+    exports com.azure.storage.blob.implementation to
+        com.azure.storage.blob.cryptography,
+        com.azure.storage.blob.batch;        // FIXME this should not be a long-term solution
+
     exports com.azure.storage.blob.implementation.models to com.azure.storage.blob.batch;
 
     opens com.azure.storage.blob.models to
