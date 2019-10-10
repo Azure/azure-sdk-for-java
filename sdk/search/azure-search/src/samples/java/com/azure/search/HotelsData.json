@@ -1,0 +1,12 @@
+[
+    {
+        "HotelId": "1"
+    },
+    {
+        "HotelId": "2",
+        "Tags": [
+            "wifi",
+            "budget"
+        ]
+    }
+]

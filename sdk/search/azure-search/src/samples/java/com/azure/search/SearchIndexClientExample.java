@@ -27,14 +27,11 @@ public class SearchIndexClientExample {
         String searchServiceName = "<searchServiceName>";
         String dnsSuffix = "search.windows.net";
         String indexName = "<indexName>";
-        String apiVersion = "2019-05-06";
-
 
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
             .serviceName(searchServiceName)
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
-            .apiVersion(apiVersion)
             .credential(apiKeyCredentials)
             .buildAsyncClient();
 

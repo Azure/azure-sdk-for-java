@@ -70,13 +70,11 @@ public class SearchSuggestionExample {
         String searchServiceName = "<searchServiceName>";
         String dnsSuffix = "search.windows.net";
         String indexName = "hotels";
-        String apiVersion = "2019-05-06";
 
         return new SearchIndexClientBuilder()
             .serviceName(searchServiceName)
             .searchDnsSuffix(dnsSuffix)
             .indexName(indexName)
-            .apiVersion(apiVersion)
             .credential(apiKeyCredentials)
             .buildClient();
     }

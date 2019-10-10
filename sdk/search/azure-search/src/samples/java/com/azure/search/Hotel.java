@@ -2,16 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.test.environment.models.HotelRoom;
+import com.azure.search.test.environment.models.ModelComparer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Hotel {
     @JsonProperty(value = "HotelId")
     private String hotelId;
 
-    @JsonProperty(value = "HotelName")
-    private String hotelName;
+    @JsonProperty(value = "Tags")
+    private List<String> tags;
+
+    public Hotel() {
+        this.tags = new ArrayList<>();
+    }
 
     public String hotelId() {
         return this.hotelId;
@@ -22,12 +30,12 @@ public class Hotel {
         return this;
     }
 
-    public String hotelName() {
-        return this.hotelName;
+    public List<String> tags() {
+        return this.tags;
     }
 
-    public Hotel hotelName(String hotelName) {
-        this.hotelName = hotelName;
+    public Hotel tags(List<String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -37,11 +45,11 @@ public class Hotel {
         if (!(o instanceof Hotel)) return false;
         Hotel hotel = (Hotel) o;
         return Objects.equals(hotelId, hotel.hotelId) &&
-            Objects.equals(hotelName, hotel.hotelName);
+            ModelComparer.collectionEquals(tags, hotel.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hotelId, hotelName);
+        return Objects.hash(hotelId, tags);
     }
 }

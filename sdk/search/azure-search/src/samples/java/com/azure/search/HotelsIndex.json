@@ -1,0 +1,20 @@
+{
+    "name": "hotels",
+    "fields": [
+        {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+        },
+        {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "facetable": true
+        }
+    ]
+}
