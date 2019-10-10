@@ -23,8 +23,7 @@ mv ../azure-search/src/main/java/com/azure/search/Documents.java ../azure-search
 mv ../azure-search/src/main/java/com/azure/search/SearchIndexRestClient.java ../azure-search/src/main/java/com/azure/search/implementation/SearchIndexRestClient.java
 
 # Generate the service api
-# Todo: Uncomment when working on the Service API
-# autorest --input-file=2019-05-06/service/searchservice.json --output-folder=../azure-search-service --namespace=com.azure.search.service --azure-arm=true --add-credentials=true --java
+autorest --use=$AUTOREST_JAVA_DIR ./service-readme.md
 
 # Cleanup
 rm -rf 2019-05-06
