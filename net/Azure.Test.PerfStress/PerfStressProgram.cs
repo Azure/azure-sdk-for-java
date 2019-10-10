@@ -66,13 +66,7 @@ namespace Azure.Test.PerfStress
 
                 try
                 {
-                    var setupTasks = new Task[options.Parallel];
-                    for (var i = 0; i < options.Parallel; i++)
-                    {
-                        setupTasks[i] = tests[i].SetupAsync();
-                    }
-                    await Task.WhenAll(setupTasks);
-
+                    await Task.WhenAll(tests.Select(t => t.SetupAsync()));
                     setupStatusCts.Cancel();
                     await setupStatusTask;
 
@@ -92,12 +86,7 @@ namespace Azure.Test.PerfStress
                             cleanupStatusTask = PrintStatusAsync("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
                         }
 
-                        var cleanupTasks = new Task[options.Parallel];
-                        for (var i = 0; i < options.Parallel; i++)
-                        {
-                            cleanupTasks[i] = tests[i].CleanupAsync();
-                        }
-                        await Task.WhenAll(cleanupTasks);
+                        await Task.WhenAll(tests.Select(t => t.CleanupAsync()));
                     }
                 }
             }
