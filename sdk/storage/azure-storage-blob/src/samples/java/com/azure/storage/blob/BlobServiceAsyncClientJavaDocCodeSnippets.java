@@ -123,7 +123,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobServiceAsyncClient#setProperties(BlobServiceProperties)}
      */
     public void setProperties() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties
         RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
         RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
@@ -142,14 +142,14 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
         client.setProperties(properties).subscribe(
             response -> System.out.printf("Setting properties completed%n"),
             error -> System.out.printf("Setting properties failed: %s%n", error));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties
     }
 
     /**
      * Code snippet for {@link BlobServiceAsyncClient#setPropertiesWithResponse(BlobServiceProperties)}
      */
     public void setPropertiesWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties
         RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
         RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
@@ -167,7 +167,7 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
         client.setPropertiesWithResponse(properties).subscribe(response ->
             System.out.printf("Setting properties completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties
     }
 
     /**

@@ -223,7 +223,7 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setProperties#StorageServiceProperties}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties}
      *
      * @param properties Configures the service.
      */
@@ -239,7 +239,7 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#StorageServiceProperties-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context}
      *
      * @param properties Configures the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

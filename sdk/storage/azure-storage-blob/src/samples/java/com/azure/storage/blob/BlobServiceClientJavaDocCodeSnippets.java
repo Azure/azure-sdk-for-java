@@ -134,7 +134,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobServiceClient#setProperties(BlobServiceProperties)}
      */
     public void setProperties() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.setProperties#StorageServiceProperties
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties
         RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
         RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
@@ -156,14 +156,14 @@ public class BlobServiceClientJavaDocCodeSnippets {
         } catch (UnsupportedOperationException error) {
             System.out.printf("Setting properties failed: %s%n", error);
         }
-        // END: com.azure.storage.blob.BlobServiceClient.setProperties#StorageServiceProperties
+        // END: com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties
     }
 
     /**
      * Code snippet for {@link BlobServiceClient#setPropertiesWithResponse(BlobServiceProperties, Duration, Context)}
      */
     public void setPropertiesWithResponse() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#StorageServiceProperties-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context
         RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
         RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
@@ -183,7 +183,7 @@ public class BlobServiceClientJavaDocCodeSnippets {
 
         System.out.printf("Setting properties completed with status %d%n",
             client.setPropertiesWithResponse(properties, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#StorageServiceProperties-Duration-Context
+        // END: com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context
     }
 
     /**

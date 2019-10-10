@@ -295,7 +295,7 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setProperties#BlobServiceProperties}
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
@@ -311,7 +311,7 @@ public final class BlobServiceAsyncClient {
      * sets the version header on each request, overriding the default.
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#BlobServiceProperties}
      *
      * @param properties Configures the service.
      * @return A {@link Mono} containing the storage account properties.
