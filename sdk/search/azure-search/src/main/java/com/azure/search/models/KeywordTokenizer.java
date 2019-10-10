@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class KeywordTokenizer extends Tokenizer {
      *
      * @return the bufferSize value.
      */
-    public Integer bufferSize() {
+    public Integer getBufferSize() {
         return this.bufferSize;
     }
 
@@ -42,7 +42,7 @@ public final class KeywordTokenizer extends Tokenizer {
      * @param bufferSize the bufferSize value to set.
      * @return the KeywordTokenizer object itself.
      */
-    public KeywordTokenizer bufferSize(Integer bufferSize) {
+    public KeywordTokenizer setBufferSize(Integer bufferSize) {
         this.bufferSize = bufferSize;
         return this;
     }

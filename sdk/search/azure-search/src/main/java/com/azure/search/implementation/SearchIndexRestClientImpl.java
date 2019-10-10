@@ -34,8 +34,9 @@ public final class SearchIndexRestClientImpl {
      *
      * @param apiVersion the apiVersion value.
      */
-    public void setApiVersion(String apiVersion) {
+    SearchIndexRestClientImpl setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+        return this;
     }
 
     /**
@@ -57,8 +58,9 @@ public final class SearchIndexRestClientImpl {
      *
      * @param searchServiceName the searchServiceName value.
      */
-    public void setSearchServiceName(String searchServiceName) {
+    SearchIndexRestClientImpl setSearchServiceName(String searchServiceName) {
         this.searchServiceName = searchServiceName;
+        return this;
     }
 
     /**
@@ -80,8 +82,9 @@ public final class SearchIndexRestClientImpl {
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
      */
-    public void setSearchDnsSuffix(String searchDnsSuffix) {
+    SearchIndexRestClientImpl setSearchDnsSuffix(String searchDnsSuffix) {
         this.searchDnsSuffix = searchDnsSuffix;
+        return this;
     }
 
     /**
@@ -103,8 +106,9 @@ public final class SearchIndexRestClientImpl {
      *
      * @param indexName the indexName value.
      */
-    public void setIndexName(String indexName) {
+    SearchIndexRestClientImpl setIndexName(String indexName) {
         this.indexName = indexName;
+        return this;
     }
 
     /**

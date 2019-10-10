@@ -12,19 +12,19 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * RESERVED FOR INTERNAL USE.
- * Base class for Storage client builders. Holds common code for managing resources and pipeline settings.
+ * RESERVED FOR INTERNAL USE. Base class for Storage client builders. Holds common code for managing resources and
+ * pipeline settings.
  */
 public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
@@ -53,12 +53,13 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     // for when a user wants to add policies to our pre-constructed pipeline
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
 
+    protected String accountName;
     protected String endpoint;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private SasTokenCredential sasTokenCredential;
     private HttpClient httpClient;
-    private HttpLogDetailLevel logLevel = HttpLogDetailLevel.NONE;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private Configuration configuration;
 
@@ -68,7 +69,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return The pipeline.
      */
     protected HttpPipeline buildPipeline() {
-        Objects.requireNonNull(this.endpoint);
+        Objects.requireNonNull(this.endpoint, "'endpoint' cannot be null.");
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -82,7 +83,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -94,7 +95,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
         policies.add(makeValidationPolicy());
 
-        policies.add(new HttpLoggingPolicy(logLevel));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -141,13 +142,12 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     public final T credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -157,29 +157,28 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
     public T credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential);
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
-     * Sets the credential used to authorize requests sent to the service
+     * Sets the SAS token used to authorize requests sent to the service
      *
-     * @param credential authorization credential
+     * @param sasToken authorization credential
      * @return the updated builder
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
-    @SuppressWarnings("unchecked")
-    public final T credential(SASTokenCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential);
+    public final T sasToken(String sasToken) {
+        this.sasTokenCredential = SasTokenCredential
+            .fromSasTokenString(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -187,13 +186,12 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      *
      * @return the updated buildr
      */
-    @SuppressWarnings("unchecked")
     public T setAnonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -214,9 +212,8 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return the updated builder
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
-    @SuppressWarnings("unchecked")
     public final T connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
@@ -224,24 +221,26 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
             connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
-        String accountName = connectionKVPs.get(ACCOUNT_NAME);
+        accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
         String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
         String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'."));
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.%s.%s", endpointProtocol, accountName, getServiceUrlMidfix(), endpointSuffix.replaceFirst("^\\.", ""));
+            String endpoint = String.format("%s://%s.%s.%s", endpointProtocol, accountName, getServiceUrlMidfix(),
+                endpointSuffix.replaceFirst("^\\.", ""));
             endpoint(endpoint);
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
         credential(new SharedKeyCredential(accountName, accountKey));
 
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -253,49 +252,50 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     /**
      * Sets the http client used to send service requests. A default will be used if none is provided.
+     *
      * @param httpClient http client to send requests
      * @return the updated buildr
      */
-    @SuppressWarnings("unchecked")
     public final T httpClient(HttpClient httpClient) {
         this.httpClient = httpClient; // builder implicitly handles default creation if null, so no null check
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
      * Adds a pipeline policy to apply on each request sent
+     *
      * @param pipelinePolicy a pipeline policy
      * @return the updated builder
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
-    @SuppressWarnings("unchecked")
     public final T addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
-        return (T) this;
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        return getClazz().cast(this);
     }
 
     /**
-     * Sets the logging level for service requests
-     * @param logLevel logging level
+     * Sets the logging configuration for service requests
+     *
+     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     *
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated builder
-     * @throws NullPointerException If {@code logLevel} is {@code null}
      */
-    @SuppressWarnings("unchecked")
-    public final T httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        this.logLevel = Objects.requireNonNull(logLevel);
-        return (T) this;
+    public final T httpLogOptions(HttpLogOptions logOptions) {
+        httpLogOptions = logOptions;
+        return getClazz().cast(this);
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client with
-     * when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
+     * Sets the configuration object used to retrieve environment configuration values used to buildClient the client
+     * with when they are not set in the appendBlobClientBuilder, defaults to Configuration.NONE
+     *
      * @param configuration configuration store
      * @return the updated buildr
      */
-    @SuppressWarnings("unchecked")
     public final T configuration(Configuration configuration) {
         this.configuration = configuration;
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -305,7 +305,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      */
     protected final Configuration getConfiguration() {
         if (this.configuration == null) {
-            this.configuration = ConfigurationManager.getConfiguration();
+            this.configuration = Configuration.getGlobalConfiguration().clone();
         }
 
         return this.configuration;
@@ -313,29 +313,28 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
     /**
      * Sets the request retry options for all the requests made through the client.
+     *
      * @param retryOptions the options to configure retry behaviors
      * @return the updated builder
      * @throws NullPointerException If {@code retryOptions} is {@code null}
      */
-    @SuppressWarnings("unchecked")
     public final T retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions);
-        return (T) this;
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return getClazz().cast(this);
     }
 
     /**
      * Sets the HTTP pipeline to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link BaseClientBuilder#endpoint(String) endpoint} when building clients.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link BaseClientBuilder#endpoint(String)
+     * endpoint} when building clients.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated builder.
      */
-    @SuppressWarnings("unchecked")
     public final T pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return (T) this;
+        return getClazz().cast(this);
     }
 
     /**
@@ -353,4 +352,11 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return The policy.
      */
     protected abstract UserAgentPolicy getUserAgentPolicy();
+
+    /**
+     * Gets the implementing client builder class.
+     *
+     * @return the implementing client builder class.
+     */
+    protected abstract Class<T> getClazz();
 }

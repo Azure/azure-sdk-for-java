@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -39,7 +39,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      *
      * @return the patterns value.
      */
-    public List<String> patterns() {
+    public List<String> getPatterns() {
         return this.patterns;
     }
 
@@ -50,7 +50,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * @param patterns the patterns value to set.
      * @return the PatternCaptureTokenFilter object itself.
      */
-    public PatternCaptureTokenFilter patterns(List<String> patterns) {
+    public PatternCaptureTokenFilter setPatterns(List<String> patterns) {
         this.patterns = patterns;
         return this;
     }
@@ -61,7 +61,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      *
      * @return the preserveOriginal value.
      */
-    public Boolean preserveOriginal() {
+    public Boolean isPreserveOriginal() {
         return this.preserveOriginal;
     }
 
@@ -72,7 +72,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the PatternCaptureTokenFilter object itself.
      */
-    public PatternCaptureTokenFilter preserveOriginal(Boolean preserveOriginal) {
+    public PatternCaptureTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
     }

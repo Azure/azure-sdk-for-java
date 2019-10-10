@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -40,7 +40,7 @@ public final class FieldMapping {
      *
      * @return the sourceFieldName value.
      */
-    public String sourceFieldName() {
+    public String getSourceFieldName() {
         return this.sourceFieldName;
     }
 
@@ -51,7 +51,7 @@ public final class FieldMapping {
      * @param sourceFieldName the sourceFieldName value to set.
      * @return the FieldMapping object itself.
      */
-    public FieldMapping sourceFieldName(String sourceFieldName) {
+    public FieldMapping setSourceFieldName(String sourceFieldName) {
         this.sourceFieldName = sourceFieldName;
         return this;
     }
@@ -62,7 +62,7 @@ public final class FieldMapping {
      *
      * @return the targetFieldName value.
      */
-    public String targetFieldName() {
+    public String getTargetFieldName() {
         return this.targetFieldName;
     }
 
@@ -73,7 +73,7 @@ public final class FieldMapping {
      * @param targetFieldName the targetFieldName value to set.
      * @return the FieldMapping object itself.
      */
-    public FieldMapping targetFieldName(String targetFieldName) {
+    public FieldMapping setTargetFieldName(String targetFieldName) {
         this.targetFieldName = targetFieldName;
         return this;
     }
@@ -84,7 +84,7 @@ public final class FieldMapping {
      *
      * @return the mappingFunction value.
      */
-    public FieldMappingFunction mappingFunction() {
+    public FieldMappingFunction getMappingFunction() {
         return this.mappingFunction;
     }
 
@@ -95,7 +95,7 @@ public final class FieldMapping {
      * @param mappingFunction the mappingFunction value to set.
      * @return the FieldMapping object itself.
      */
-    public FieldMapping mappingFunction(FieldMappingFunction mappingFunction) {
+    public FieldMapping setMappingFunction(FieldMappingFunction mappingFunction) {
         this.mappingFunction = mappingFunction;
         return this;
     }

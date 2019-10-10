@@ -16,7 +16,7 @@ public class ResourceWithProvisioningState {
     /**
      * @return The inner properties object.
      */
-    public Properties properties() {
+    public Properties getProperties() {
         return properties;
     }
 
@@ -38,7 +38,7 @@ public class ResourceWithProvisioningState {
         /**
          * @return The provisioning state of the resource.
          */
-        String provisioningState() {
+        String getProvisioningState() {
             return provisioningState;
         }
 

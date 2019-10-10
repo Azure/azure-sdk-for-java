@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public final class TextWeights {
      *
      * @return the weights value.
      */
-    public Map<String, Double> weights() {
+    public Map<String, Double> getWeights() {
         return this.weights;
     }
 
@@ -42,7 +42,7 @@ public final class TextWeights {
      * @param weights the weights value to set.
      * @return the TextWeights object itself.
      */
-    public TextWeights weights(Map<String, Double> weights) {
+    public TextWeights setWeights(Map<String, Double> weights) {
         this.weights = weights;
         return this;
     }

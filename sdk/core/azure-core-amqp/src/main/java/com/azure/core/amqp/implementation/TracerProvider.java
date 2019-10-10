@@ -3,17 +3,16 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.implementation.tracing.ProcessKind;
-import com.azure.core.implementation.tracing.Tracer;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Signal;
-
+import com.azure.core.util.tracing.Tracer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Signal;
 
-import static com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
 
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);
@@ -40,8 +39,8 @@ public class TracerProvider {
      * @return An updated context object.
      */
     public Context startSpan(Context context, ProcessKind processKind) {
-        Context local = Objects.requireNonNull(context, "'context' cannot be null");
-        Objects.requireNonNull(processKind, "'processKind' cannot be null");
+        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(processKind, "'processKind' cannot be null.");
         String spanName = getSpanName(processKind);
 
         for (Tracer tracer : tracers) {
@@ -59,11 +58,11 @@ public class TracerProvider {
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
      */
     public void endSpan(Context context, Signal<Void> signal) {
-        Objects.requireNonNull(context, "'context' cannot be null");
-        Objects.requireNonNull(signal, "'signal' cannot be null");
+        Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(signal, "'signal' cannot be null.");
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        if (!context.getData(OPENTELEMETRY_SPAN_KEY).isPresent()) {
+        if (!context.getData(OPENCENSUS_SPAN_KEY).isPresent()) {
             return;
         }
 
@@ -98,7 +97,7 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      */
     public void addSpanLinks(Context context) {
-        Objects.requireNonNull(context, "'context' cannot be null");
+        Objects.requireNonNull(context, "'context' cannot be null.");
         tracers.forEach(tracer -> tracer.addLink(context));
     }
 
@@ -108,8 +107,8 @@ public class TracerProvider {
      * @param diagnosticId Unique identifier of an external call from producer to the queue.
      */
     public Context extractContext(String diagnosticId, Context context) {
-        Context local = Objects.requireNonNull(context, "'context' cannot be null");
-        Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null");
+        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null.");
         for (Tracer tracer : tracers) {
             local = tracer.extractContext(diagnosticId, local);
         }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -62,7 +62,7 @@ public final class WebApiSkill extends Skill {
      *
      * @return the uri value.
      */
-    public String uri() {
+    public String getUri() {
         return this.uri;
     }
 
@@ -72,7 +72,7 @@ public final class WebApiSkill extends Skill {
      * @param uri the uri value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill uri(String uri) {
+    public WebApiSkill setUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -83,7 +83,7 @@ public final class WebApiSkill extends Skill {
      *
      * @return the httpHeaders value.
      */
-    public Map<String, String> httpHeaders() {
+    public Map<String, String> getHttpHeaders() {
         return this.httpHeaders;
     }
 
@@ -94,7 +94,7 @@ public final class WebApiSkill extends Skill {
      * @param httpHeaders the httpHeaders value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill httpHeaders(Map<String, String> httpHeaders) {
+    public WebApiSkill setHttpHeaders(Map<String, String> httpHeaders) {
         this.httpHeaders = httpHeaders;
         return this;
     }
@@ -104,7 +104,7 @@ public final class WebApiSkill extends Skill {
      *
      * @return the httpMethod value.
      */
-    public String httpMethod() {
+    public String getHttpMethod() {
         return this.httpMethod;
     }
 
@@ -114,7 +114,7 @@ public final class WebApiSkill extends Skill {
      * @param httpMethod the httpMethod value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill httpMethod(String httpMethod) {
+    public WebApiSkill setHttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -125,7 +125,7 @@ public final class WebApiSkill extends Skill {
      *
      * @return the timeout value.
      */
-    public Duration timeout() {
+    public Duration getTimeout() {
         return this.timeout;
     }
 
@@ -136,7 +136,7 @@ public final class WebApiSkill extends Skill {
      * @param timeout the timeout value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill timeout(Duration timeout) {
+    public WebApiSkill setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -147,7 +147,7 @@ public final class WebApiSkill extends Skill {
      *
      * @return the batchSize value.
      */
-    public Integer batchSize() {
+    public Integer getBatchSize() {
         return this.batchSize;
     }
 
@@ -158,7 +158,7 @@ public final class WebApiSkill extends Skill {
      * @param batchSize the batchSize value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill batchSize(Integer batchSize) {
+    public WebApiSkill setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
@@ -169,7 +169,7 @@ public final class WebApiSkill extends Skill {
      *
      * @return the degreeOfParallelism value.
      */
-    public Integer degreeOfParallelism() {
+    public Integer getDegreeOfParallelism() {
         return this.degreeOfParallelism;
     }
 
@@ -180,7 +180,7 @@ public final class WebApiSkill extends Skill {
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill degreeOfParallelism(Integer degreeOfParallelism) {
+    public WebApiSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
     }

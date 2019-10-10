@@ -2,36 +2,40 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.models;
 
+import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
+
 public class StorageAccountInfo {
     private final SkuName skuName;
     private final AccountKind accountKind;
 
     public StorageAccountInfo(BlobGetAccountInfoHeaders generatedResponseHeaders) {
-        this.skuName = generatedResponseHeaders.skuName();
-        this.accountKind = generatedResponseHeaders.accountKind();
+        this.skuName = generatedResponseHeaders.getSkuName();
+        this.accountKind = generatedResponseHeaders.getAccountKind();
     }
 
     public StorageAccountInfo(ContainerGetAccountInfoHeaders generatedResponseHeaders) {
-        this.skuName = generatedResponseHeaders.skuName();
-        this.accountKind = generatedResponseHeaders.accountKind();
+        this.skuName = generatedResponseHeaders.getSkuName();
+        this.accountKind = generatedResponseHeaders.getAccountKind();
     }
 
     public StorageAccountInfo(ServiceGetAccountInfoHeaders generatedResponseHeaders) {
-        this.skuName = generatedResponseHeaders.skuName();
-        this.accountKind = generatedResponseHeaders.accountKind();
+        this.skuName = generatedResponseHeaders.getSkuName();
+        this.accountKind = generatedResponseHeaders.getAccountKind();
     }
 
     /**
      * @return the SKU of the account
      */
-    public SkuName skuName() {
+    public SkuName getSkuName() {
         return skuName;
     }
 
     /**
      * @return the type of the account
      */
-    public AccountKind accountKind() {
+    public AccountKind getAccountKind() {
         return accountKind;
     }
 }

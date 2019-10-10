@@ -5,11 +5,11 @@ package com.azure.search;
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.jsonwrapper.JsonWrapper;
 import com.azure.search.common.jsonwrapper.api.JsonApi;
@@ -80,7 +80,7 @@ public class SearchIndexClientTestBase extends TestBase {
     }
 
     @Override
-    public String testName() {
+    public String getTestName() {
         return testName.getMethodName();
     }
 
@@ -144,7 +144,8 @@ public class SearchIndexClientTestBase extends TestBase {
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
+                .addPolicy(new HttpLoggingPolicy(
+                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
         } else {
             return new SearchIndexClientBuilder()
                 .serviceName("searchServiceName")
@@ -182,10 +183,10 @@ public class SearchIndexClientTestBase extends TestBase {
     }
 
     private static void initializeAzureResources() {
-        String appId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_CLIENT_ID);
-        String azureDomainId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_TENANT_ID);
-        String secret = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_CLIENT_SECRET);
-        String subscriptionId = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_SUBSCRIPTION_ID);
+        String appId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        String azureDomainId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        String secret = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
         ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
             appId,

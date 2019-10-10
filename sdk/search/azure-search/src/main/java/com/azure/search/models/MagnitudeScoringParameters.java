@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -39,7 +39,7 @@ public final class MagnitudeScoringParameters {
      *
      * @return the boostingRangeStart value.
      */
-    public double boostingRangeStart() {
+    public double getBoostingRangeStart() {
         return this.boostingRangeStart;
     }
 
@@ -50,7 +50,7 @@ public final class MagnitudeScoringParameters {
      * @param boostingRangeStart the boostingRangeStart value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
-    public MagnitudeScoringParameters boostingRangeStart(double boostingRangeStart) {
+    public MagnitudeScoringParameters setBoostingRangeStart(double boostingRangeStart) {
         this.boostingRangeStart = boostingRangeStart;
         return this;
     }
@@ -61,7 +61,7 @@ public final class MagnitudeScoringParameters {
      *
      * @return the boostingRangeEnd value.
      */
-    public double boostingRangeEnd() {
+    public double getBoostingRangeEnd() {
         return this.boostingRangeEnd;
     }
 
@@ -72,7 +72,7 @@ public final class MagnitudeScoringParameters {
      * @param boostingRangeEnd the boostingRangeEnd value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
-    public MagnitudeScoringParameters boostingRangeEnd(double boostingRangeEnd) {
+    public MagnitudeScoringParameters setBoostingRangeEnd(double boostingRangeEnd) {
         this.boostingRangeEnd = boostingRangeEnd;
         return this;
     }
@@ -84,7 +84,7 @@ public final class MagnitudeScoringParameters {
      *
      * @return the shouldBoostBeyondRangeByConstant value.
      */
-    public Boolean shouldBoostBeyondRangeByConstant() {
+    public Boolean isShouldBoostBeyondRangeByConstant() {
         return this.shouldBoostBeyondRangeByConstant;
     }
 
@@ -97,7 +97,7 @@ public final class MagnitudeScoringParameters {
      * shouldBoostBeyondRangeByConstant value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
-    public MagnitudeScoringParameters shouldBoostBeyondRangeByConstant(Boolean shouldBoostBeyondRangeByConstant) {
+    public MagnitudeScoringParameters setShouldBoostBeyondRangeByConstant(Boolean shouldBoostBeyondRangeByConstant) {
         this.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
         return this;
     }

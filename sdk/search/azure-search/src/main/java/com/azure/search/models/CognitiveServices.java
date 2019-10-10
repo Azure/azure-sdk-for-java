@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -35,7 +35,7 @@ public class CognitiveServices {
      *
      * @return the description value.
      */
-    public String description() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -45,7 +45,7 @@ public class CognitiveServices {
      * @param description the description value to set.
      * @return the CognitiveServices object itself.
      */
-    public CognitiveServices description(String description) {
+    public CognitiveServices setDescription(String description) {
         this.description = description;
         return this;
     }

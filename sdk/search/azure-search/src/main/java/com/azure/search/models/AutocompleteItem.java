@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,7 +31,7 @@ public final class AutocompleteItem {
      *
      * @return the text value.
      */
-    public String text() {
+    public String getText() {
         return this.text;
     }
 
@@ -40,7 +40,7 @@ public final class AutocompleteItem {
      *
      * @return the queryPlusText value.
      */
-    public String queryPlusText() {
+    public String getQueryPlusText() {
         return this.queryPlusText;
     }
 }

@@ -35,13 +35,13 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Creates a new {@link NettyAsyncHttpClient} instance on every call, using the configuration set in the builder at
-     * the time of the build method call.
+     * Creates a new Netty-backed {@link com.azure.core.http.HttpClient} instance on every call, using the
+     * configuration set in the builder at the time of the build method call.
      *
-     * @return A new NettyAsyncHttpClient instance.
+     * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
-    public NettyAsyncHttpClient build() {
+    public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient = HttpClient.create()
             .port(port)
             .wiretap(enableWiretap)
@@ -52,7 +52,7 @@ public class NettyAsyncHttpClientBuilder {
 
                 if (proxyOptions != null) {
                     ProxyProvider.Proxy nettyProxy;
-                    switch (proxyOptions.type()) {
+                    switch (proxyOptions.getType()) {
                         case HTTP:
                             nettyProxy = ProxyProvider.Proxy.HTTP;
                             break;
@@ -63,13 +63,12 @@ public class NettyAsyncHttpClientBuilder {
                             nettyProxy = ProxyProvider.Proxy.SOCKS5;
                             break;
                         default:
-                            throw logger.logExceptionAsWarning(
-                                new IllegalStateException(
-                                    "Unknown Proxy type '" + proxyOptions.type()
-                                        + "' in use. Not configuring Netty proxy."));
+                            throw logger.logExceptionAsError(new IllegalStateException(
+                                String.format("Unknown Proxy type '%s' in use. Not configuring Netty proxy.",
+                                    proxyOptions.getType())));
                     }
 
-                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.address()));
+                    return tcpConfig.proxy(ts -> ts.type(nettyProxy).address(proxyOptions.getAddress()));
                 }
 
                 return tcpConfig;
@@ -80,10 +79,14 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the {@link ProxyOptions proxy options} that the client will use.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#proxy}
+     *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setProxy(ProxyOptions proxyOptions) {
+    public NettyAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -94,7 +97,7 @@ public class NettyAsyncHttpClientBuilder {
      * @param enableWiretap Flag indicating wiretap status
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setWiretap(boolean enableWiretap) {
+    public NettyAsyncHttpClientBuilder wiretap(boolean enableWiretap) {
         this.enableWiretap = enableWiretap;
         return this;
     }
@@ -105,21 +108,22 @@ public class NettyAsyncHttpClientBuilder {
      * @param port The port to connect to.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setPort(int port) {
+    public NettyAsyncHttpClientBuilder port(int port) {
         this.port = port;
         return this;
     }
 
     /**
-     * Sets the NIO event loop group that will be used to run IO loops. For example, a fixed thread pool can be
-     * specified as shown below:
+     * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#NioEventLoopGroup}
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup}
      *
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object
      */
-    public NettyAsyncHttpClientBuilder setNioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
+    public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
         return this;
     }

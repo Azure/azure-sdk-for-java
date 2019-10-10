@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      *
      * @return the parameters value.
      */
-    public FreshnessScoringParameters parameters() {
+    public FreshnessScoringParameters getParameters() {
         return this.parameters;
     }
 
@@ -42,7 +42,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * @param parameters the parameters value to set.
      * @return the FreshnessScoringFunction object itself.
      */
-    public FreshnessScoringFunction parameters(FreshnessScoringParameters parameters) {
+    public FreshnessScoringFunction setParameters(FreshnessScoringParameters parameters) {
         this.parameters = parameters;
         return this;
     }

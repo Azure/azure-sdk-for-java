@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -80,7 +80,7 @@ public class Skill {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -93,7 +93,7 @@ public class Skill {
      * @param name the name value to set.
      * @return the Skill object itself.
      */
-    public Skill name(String name) {
+    public Skill setName(String name) {
         this.name = name;
         return this;
     }
@@ -104,7 +104,7 @@ public class Skill {
      *
      * @return the description value.
      */
-    public String description() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -115,7 +115,7 @@ public class Skill {
      * @param description the description value to set.
      * @return the Skill object itself.
      */
-    public Skill description(String description) {
+    public Skill setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -127,7 +127,7 @@ public class Skill {
      *
      * @return the context value.
      */
-    public String context() {
+    public String getContext() {
         return this.context;
     }
 
@@ -139,7 +139,7 @@ public class Skill {
      * @param context the context value to set.
      * @return the Skill object itself.
      */
-    public Skill context(String context) {
+    public Skill setContext(String context) {
         this.context = context;
         return this;
     }
@@ -150,7 +150,7 @@ public class Skill {
      *
      * @return the inputs value.
      */
-    public List<InputFieldMappingEntry> inputs() {
+    public List<InputFieldMappingEntry> getInputs() {
         return this.inputs;
     }
 
@@ -161,7 +161,7 @@ public class Skill {
      * @param inputs the inputs value to set.
      * @return the Skill object itself.
      */
-    public Skill inputs(List<InputFieldMappingEntry> inputs) {
+    public Skill setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
     }
@@ -173,7 +173,7 @@ public class Skill {
      *
      * @return the outputs value.
      */
-    public List<OutputFieldMappingEntry> outputs() {
+    public List<OutputFieldMappingEntry> getOutputs() {
         return this.outputs;
     }
 
@@ -185,7 +185,7 @@ public class Skill {
      * @param outputs the outputs value to set.
      * @return the Skill object itself.
      */
-    public Skill outputs(List<OutputFieldMappingEntry> outputs) {
+    public Skill setOutputs(List<OutputFieldMappingEntry> outputs) {
         this.outputs = outputs;
         return this;
     }

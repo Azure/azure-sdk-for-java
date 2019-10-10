@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -54,7 +54,7 @@ public final class ItemWarning {
      *
      * @return the key value.
      */
-    public String key() {
+    public String getKey() {
         return this.key;
     }
 
@@ -64,7 +64,7 @@ public final class ItemWarning {
      *
      * @return the message value.
      */
-    public String message() {
+    public String getMessage() {
         return this.message;
     }
 
@@ -75,7 +75,7 @@ public final class ItemWarning {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -85,7 +85,7 @@ public final class ItemWarning {
      *
      * @return the details value.
      */
-    public String details() {
+    public String getDetails() {
         return this.details;
     }
 
@@ -95,7 +95,7 @@ public final class ItemWarning {
      *
      * @return the documentationLink value.
      */
-    public String documentationLink() {
+    public String getDocumentationLink() {
         return this.documentationLink;
     }
 }

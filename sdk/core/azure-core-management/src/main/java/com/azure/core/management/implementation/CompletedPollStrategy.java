@@ -96,7 +96,7 @@ public class CompletedPollStrategy extends PollStrategy {
     }
 
     @Override
-    public Serializable strategyData() {
+    public Serializable getStrategyData() {
         return this.data;
     }
 }

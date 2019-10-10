@@ -248,11 +248,6 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
     public static final StorageErrorCode FILE_LOCK_CONFLICT = fromString("FileLockConflict");
 
     /**
-     * Static value FilePermissionInvalid for StorageErrorCode.
-     */
-    public static final StorageErrorCode FILE_INVALID_PERMISSION = fromString("FileInvalidPermission");
-
-    /**
      * Static value InvalidFileOrDirectoryPathName for StorageErrorCode.
      */
     public static final StorageErrorCode INVALID_FILE_OR_DIRECTORY_PATH_NAME = fromString("InvalidFileOrDirectoryPathName");
@@ -316,6 +311,36 @@ public final class StorageErrorCode extends ExpandableStringEnum<StorageErrorCod
      * Static value ContainerQuotaDowngradeNotAllowed for StorageErrorCode.
      */
     public static final StorageErrorCode CONTAINER_QUOTA_DOWNGRADE_NOT_ALLOWED = fromString("ContainerQuotaDowngradeNotAllowed");
+
+    /**
+     * Static value AuthorizationSourceIPMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_SOURCE_IPMISMATCH = fromString("AuthorizationSourceIPMismatch");
+
+    /**
+     * Static value AuthorizationProtocolMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_PROTOCOL_MISMATCH = fromString("AuthorizationProtocolMismatch");
+
+    /**
+     * Static value AuthorizationPermissionMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_PERMISSION_MISMATCH = fromString("AuthorizationPermissionMismatch");
+
+    /**
+     * Static value AuthorizationServiceMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_SERVICE_MISMATCH = fromString("AuthorizationServiceMismatch");
+
+    /**
+     * Static value AuthorizationResourceTypeMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH = fromString("AuthorizationResourceTypeMismatch");
+
+    /**
+     * Static value FeatureVersionMismatch for StorageErrorCode.
+     */
+    public static final StorageErrorCode FEATURE_VERSION_MISMATCH = fromString("FeatureVersionMismatch");
 
     /**
      * Creates or finds a StorageErrorCode from its string representation.

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -88,7 +88,7 @@ public final class Indexer {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -98,7 +98,7 @@ public final class Indexer {
      * @param name the name value to set.
      * @return the Indexer object itself.
      */
-    public Indexer name(String name) {
+    public Indexer setName(String name) {
         this.name = name;
         return this;
     }
@@ -108,7 +108,7 @@ public final class Indexer {
      *
      * @return the description value.
      */
-    public String description() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -118,7 +118,7 @@ public final class Indexer {
      * @param description the description value to set.
      * @return the Indexer object itself.
      */
-    public Indexer description(String description) {
+    public Indexer setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -129,7 +129,7 @@ public final class Indexer {
      *
      * @return the dataSourceName value.
      */
-    public String dataSourceName() {
+    public String getDataSourceName() {
         return this.dataSourceName;
     }
 
@@ -140,7 +140,7 @@ public final class Indexer {
      * @param dataSourceName the dataSourceName value to set.
      * @return the Indexer object itself.
      */
-    public Indexer dataSourceName(String dataSourceName) {
+    public Indexer setDataSourceName(String dataSourceName) {
         this.dataSourceName = dataSourceName;
         return this;
     }
@@ -151,7 +151,7 @@ public final class Indexer {
      *
      * @return the skillsetName value.
      */
-    public String skillsetName() {
+    public String getSkillsetName() {
         return this.skillsetName;
     }
 
@@ -162,7 +162,7 @@ public final class Indexer {
      * @param skillsetName the skillsetName value to set.
      * @return the Indexer object itself.
      */
-    public Indexer skillsetName(String skillsetName) {
+    public Indexer setSkillsetName(String skillsetName) {
         this.skillsetName = skillsetName;
         return this;
     }
@@ -173,7 +173,7 @@ public final class Indexer {
      *
      * @return the targetIndexName value.
      */
-    public String targetIndexName() {
+    public String getTargetIndexName() {
         return this.targetIndexName;
     }
 
@@ -184,7 +184,7 @@ public final class Indexer {
      * @param targetIndexName the targetIndexName value to set.
      * @return the Indexer object itself.
      */
-    public Indexer targetIndexName(String targetIndexName) {
+    public Indexer setTargetIndexName(String targetIndexName) {
         this.targetIndexName = targetIndexName;
         return this;
     }
@@ -194,7 +194,7 @@ public final class Indexer {
      *
      * @return the schedule value.
      */
-    public IndexingSchedule schedule() {
+    public IndexingSchedule getSchedule() {
         return this.schedule;
     }
 
@@ -204,7 +204,7 @@ public final class Indexer {
      * @param schedule the schedule value to set.
      * @return the Indexer object itself.
      */
-    public Indexer schedule(IndexingSchedule schedule) {
+    public Indexer setSchedule(IndexingSchedule schedule) {
         this.schedule = schedule;
         return this;
     }
@@ -214,7 +214,7 @@ public final class Indexer {
      *
      * @return the parameters value.
      */
-    public IndexingParameters parameters() {
+    public IndexingParameters getParameters() {
         return this.parameters;
     }
 
@@ -224,7 +224,7 @@ public final class Indexer {
      * @param parameters the parameters value to set.
      * @return the Indexer object itself.
      */
-    public Indexer parameters(IndexingParameters parameters) {
+    public Indexer setParameters(IndexingParameters parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -235,7 +235,7 @@ public final class Indexer {
      *
      * @return the fieldMappings value.
      */
-    public List<FieldMapping> fieldMappings() {
+    public List<FieldMapping> getFieldMappings() {
         return this.fieldMappings;
     }
 
@@ -246,7 +246,7 @@ public final class Indexer {
      * @param fieldMappings the fieldMappings value to set.
      * @return the Indexer object itself.
      */
-    public Indexer fieldMappings(List<FieldMapping> fieldMappings) {
+    public Indexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
         return this;
     }
@@ -257,7 +257,7 @@ public final class Indexer {
      *
      * @return the outputFieldMappings value.
      */
-    public List<FieldMapping> outputFieldMappings() {
+    public List<FieldMapping> getOutputFieldMappings() {
         return this.outputFieldMappings;
     }
 
@@ -268,7 +268,7 @@ public final class Indexer {
      * @param outputFieldMappings the outputFieldMappings value to set.
      * @return the Indexer object itself.
      */
-    public Indexer outputFieldMappings(List<FieldMapping> outputFieldMappings) {
+    public Indexer setOutputFieldMappings(List<FieldMapping> outputFieldMappings) {
         this.outputFieldMappings = outputFieldMappings;
         return this;
     }
@@ -290,7 +290,7 @@ public final class Indexer {
      * @param isDisabled the isDisabled value to set.
      * @return the Indexer object itself.
      */
-    public Indexer isDisabled(Boolean isDisabled) {
+    public Indexer setIsDisabled(Boolean isDisabled) {
         this.isDisabled = isDisabled;
         return this;
     }
@@ -300,7 +300,7 @@ public final class Indexer {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -310,7 +310,7 @@ public final class Indexer {
      * @param eTag the eTag value to set.
      * @return the Indexer object itself.
      */
-    public Indexer eTag(String eTag) {
+    public Indexer setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

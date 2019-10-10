@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 
@@ -38,11 +40,11 @@ public class AsyncBufferedUploadExample {
         BlobServiceAsyncClient storageClient = new BlobServiceClientBuilder().endpoint(endpoint).credential(credential)
             .buildAsyncClient();
 
-        ContainerAsyncClient containerClient = storageClient.getContainerAsyncClient(containerName);
+        BlobContainerAsyncClient containerClient = storageClient.getBlobContainerAsyncClient(containerName);
         containerClient.create().block();
 
         uploadSourceBlob(endpoint, credential, containerName);
-        BlockBlobAsyncClient blobClient = containerClient.getBlockBlobAsyncClient("HelloWorld.txt");
+        BlobAsyncClient blobClient = containerClient.getBlobAsyncClient("HelloWorld.txt");
 
 
         /*
@@ -54,7 +56,6 @@ public class AsyncBufferedUploadExample {
         argument list.
          */
         Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
-            .flatMapMany(flux -> flux)
             // Perform some unpredicatable transformation.
             .map(AsyncBufferedUploadExample::randomTransformation);
 
@@ -66,7 +67,10 @@ public class AsyncBufferedUploadExample {
          */
         int blockSize = 10 * 1024;
         int numBuffers = 5;
-        blobClient.upload(sourceData, blockSize, numBuffers).block();
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setNumBuffers(numBuffers)
+            .setBlockSize(blockSize);
+        blobClient.upload(sourceData, parallelTransferOptions).block();
     }
 
     @SuppressWarnings("cast")
@@ -86,6 +90,6 @@ public class AsyncBufferedUploadExample {
     private static BlockBlobAsyncClient getSourceBlobClient(String endpoint, SharedKeyCredential credential,
         String containerName) {
         return new BlobServiceClientBuilder().endpoint(endpoint).credential(credential).buildAsyncClient()
-            .getContainerAsyncClient(containerName).getBlockBlobAsyncClient("sourceBlob");
+            .getBlobContainerAsyncClient(containerName).getBlobAsyncClient("sourceBlob").getBlockBlobAsyncClient();
     }
 }

@@ -8,9 +8,9 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
@@ -35,6 +35,11 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.EC;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.EC_HSM;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.RSA;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.RSA_HSM;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.OCT;
 
 /**
  * The CryptographyAsyncClient provides asynchronous methods to perform cryptographic operations using asymmetric and
@@ -47,9 +52,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
-public final class CryptographyAsyncClient {
+public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    private JsonWebKey key;
+    JsonWebKey key;
     private final CryptographyService service;
     private final CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
@@ -66,18 +71,18 @@ public final class CryptographyAsyncClient {
         if (!key.isValid()) {
             throw new IllegalArgumentException("Json Web Key is not valid");
         }
-        if (key.keyOps() == null) {
+        if (key.getKeyOps() == null) {
             throw new IllegalArgumentException("Json Web Key's key operations property is not configured");
         }
 
-        if (key.kty() == null) {
+        if (key.getKty() == null) {
             throw new IllegalArgumentException("Json Web Key's key type property is not configured");
         }
         this.key = key;
         service = RestProxy.create(CryptographyService.class, pipeline);
-        if (!Strings.isNullOrEmpty(key.kid())) {
-            unpackAndValidateId(key.kid());
-            cryptographyServiceClient = new CryptographyServiceClient(key.kid(), service);
+        if (!Strings.isNullOrEmpty(key.getKid())) {
+            unpackAndValidateId(key.getKid());
+            cryptographyServiceClient = new CryptographyServiceClient(key.getKid(), service);
         } else {
             cryptographyServiceClient = null;
         }
@@ -101,21 +106,15 @@ public final class CryptographyAsyncClient {
         if (localKeyCryptographyClient != null) {
             return;
         }
-        switch (key.kty()) {
-            case RSA:
-            case RSA_HSM:
-                localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
-                break;
-            case EC:
-            case EC_HSM:
-                localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
-                break;
-            case OCT:
-                localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "The Json Web Key Type: %s is not supported.", key.kty().toString())));
+        if (key.getKty().equals(RSA) || key.getKty().equals(RSA_HSM)) {
+            localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
+        } else if (key.getKty().equals(EC) || key.getKty().equals(EC_HSM)) {
+            localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
+        } else if (key.getKty().equals(OCT)) {
+            localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The Json Web Key Type: %s is not supported.", key.getKty().toString())));
         }
     }
 
@@ -128,7 +127,7 @@ public final class CryptographyAsyncClient {
      * details when a response has been received.</p>
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
@@ -181,7 +180,7 @@ public final class CryptographyAsyncClient {
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
-     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text}
+     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      *     contains the encrypted content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
@@ -215,7 +214,7 @@ public final class CryptographyAsyncClient {
      * @param plaintext The content to be encrypted.
      * @param iv The initialization vector
      * @param authenticationData The authentication data
-     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text}
+     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      *     contains the encrypted content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
@@ -236,9 +235,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.encrypt(algorithm, plaintext, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.ENCRYPT)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
             return Mono.error(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
-                + "permission/not supported for key with id %s", key.kid())));
+                + "permission/not supported for key with id %s", key.getKid())));
         }
         return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, iv, authenticationData, context, key);
     }
@@ -319,9 +318,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.decrypt(algorithm, cipherText, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.DECRYPT)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
             return Mono.error(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
-                + "key with id %s", key.kid())));
+                + "key with id %s", key.getKid())));
         }
         return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, iv, authenticationData,
             authenticationTag, context, key);
@@ -346,7 +345,7 @@ public final class CryptographyAsyncClient {
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
-     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#signature() signature} contains
+     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
      *     the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
@@ -364,9 +363,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.sign(algorithm, digest, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", key.kid())));
+                + "with id %s", key.getKid())));
         }
 
         return localKeyCryptographyClient.signAsync(algorithm, digest, context, key);
@@ -410,9 +409,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.verify(algorithm, digest, signature, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
-                + "key with id %s", key.kid())));
+                + "key with id %s", key.getKid())));
         }
         return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
     }
@@ -433,7 +432,7 @@ public final class CryptographyAsyncClient {
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
-     * @return A {@link Mono} containing a {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted
+     * @return A {@link Mono} containing a {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted
      *     key} contains the wrapped key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
@@ -451,9 +450,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.wrapKey(algorithm, key, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
-                + "key with id %s", this.key.kid())));
+                + "key with id %s", this.key.getKid())));
         }
 
         return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
@@ -497,9 +496,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.WRAP_KEY)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
             return Mono.error(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
-                + "for key with id %s", this.key.kid())));
+                + "for key with id %s", this.key.getKid())));
         }
         return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
     }
@@ -523,7 +522,7 @@ public final class CryptographyAsyncClient {
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
-     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#signature() signature} contains
+     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
      *     the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
@@ -542,9 +541,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.signData(algorithm, data, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.SIGN)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
             return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", this.key.kid())));
+                + "with id %s", this.key.getKid())));
         }
         return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
     }
@@ -588,9 +587,9 @@ public final class CryptographyAsyncClient {
             return cryptographyServiceClient.verifyData(algorithm, data, signature, context);
         }
 
-        if (!checkKeyPermissions(this.key.keyOps(), KeyOperation.VERIFY)) {
+        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
             return Mono.error(new UnsupportedOperationException(String.format(
-                "Verify Operation is not allowed for key with id %s", this.key.kid())));
+                "Verify Operation is not allowed for key with id %s", this.key.getKid())));
         }
         return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
     }
@@ -625,7 +624,7 @@ public final class CryptographyAsyncClient {
         boolean keyAvailableLocally = true;
         if (this.key == null) {
             try {
-                this.key = getKey().block().keyMaterial();
+                this.key = getKey().block().getKeyMaterial();
                 keyAvailableLocally = this.key.isValid();
                 initializeCryptoClients();
             } catch (HttpResponseException | NullPointerException e) {

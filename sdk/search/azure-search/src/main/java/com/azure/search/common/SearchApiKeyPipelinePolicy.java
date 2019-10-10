@@ -28,7 +28,8 @@ public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        context.httpRequest().header("api-key", this.apiKey.getApiKey());
+        context.getHttpRequest()
+            .setHeader("api-key", this.apiKey.getApiKey());
         return next.process();
     }
 }

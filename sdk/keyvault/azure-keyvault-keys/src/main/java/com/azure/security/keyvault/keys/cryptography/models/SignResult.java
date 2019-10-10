@@ -34,7 +34,7 @@ public final class SignResult {
      * Get the signature created from the digest.
      * @return The signature.
      */
-    public byte[] signature() {
+    public byte[] getSignature() {
         return ImplUtils.clone(signature);
     }
 
@@ -42,7 +42,7 @@ public final class SignResult {
      * Get the signature algorithm used to create the signature.
      * @return The signature algorithm.
      */
-    public SignatureAlgorithm algorithm() {
+    public SignatureAlgorithm getAlgorithm() {
         return algorithm;
     }
 }

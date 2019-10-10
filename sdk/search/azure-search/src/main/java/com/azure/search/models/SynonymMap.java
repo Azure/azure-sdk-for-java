@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -52,7 +52,7 @@ public final class SynonymMap {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -62,7 +62,7 @@ public final class SynonymMap {
      * @param name the name value to set.
      * @return the SynonymMap object itself.
      */
-    public SynonymMap name(String name) {
+    public SynonymMap setName(String name) {
         this.name = name;
         return this;
     }
@@ -73,7 +73,7 @@ public final class SynonymMap {
      *
      * @return the format value.
      */
-    public String format() {
+    public String getFormat() {
         return this.format;
     }
 
@@ -84,7 +84,7 @@ public final class SynonymMap {
      * @param format the format value to set.
      * @return the SynonymMap object itself.
      */
-    public SynonymMap format(String format) {
+    public SynonymMap setFormat(String format) {
         this.format = format;
         return this;
     }
@@ -95,7 +95,7 @@ public final class SynonymMap {
      *
      * @return the synonyms value.
      */
-    public String synonyms() {
+    public String getSynonyms() {
         return this.synonyms;
     }
 
@@ -106,7 +106,7 @@ public final class SynonymMap {
      * @param synonyms the synonyms value to set.
      * @return the SynonymMap object itself.
      */
-    public SynonymMap synonyms(String synonyms) {
+    public SynonymMap setSynonyms(String synonyms) {
         this.synonyms = synonyms;
         return this;
     }
@@ -116,7 +116,7 @@ public final class SynonymMap {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -126,7 +126,7 @@ public final class SynonymMap {
      * @param eTag the eTag value to set.
      * @return the SynonymMap object itself.
      */
-    public SynonymMap eTag(String eTag) {
+    public SynonymMap setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

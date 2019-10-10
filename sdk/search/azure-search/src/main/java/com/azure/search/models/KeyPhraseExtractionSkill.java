@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -41,7 +41,7 @@ public final class KeyPhraseExtractionSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public KeyPhraseExtractionSkillLanguage defaultLanguageCode() {
+    public KeyPhraseExtractionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -54,7 +54,7 @@ public final class KeyPhraseExtractionSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the KeyPhraseExtractionSkill object itself.
      */
-    public KeyPhraseExtractionSkill defaultLanguageCode(KeyPhraseExtractionSkillLanguage defaultLanguageCode) {
+    public KeyPhraseExtractionSkill setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }
@@ -66,7 +66,7 @@ public final class KeyPhraseExtractionSkill extends Skill {
      *
      * @return the maxKeyPhraseCount value.
      */
-    public Integer maxKeyPhraseCount() {
+    public Integer getMaxKeyPhraseCount() {
         return this.maxKeyPhraseCount;
     }
 
@@ -78,7 +78,7 @@ public final class KeyPhraseExtractionSkill extends Skill {
      * @param maxKeyPhraseCount the maxKeyPhraseCount value to set.
      * @return the KeyPhraseExtractionSkill object itself.
      */
-    public KeyPhraseExtractionSkill maxKeyPhraseCount(Integer maxKeyPhraseCount) {
+    public KeyPhraseExtractionSkill setMaxKeyPhraseCount(Integer maxKeyPhraseCount) {
         this.maxKeyPhraseCount = maxKeyPhraseCount;
         return this;
     }

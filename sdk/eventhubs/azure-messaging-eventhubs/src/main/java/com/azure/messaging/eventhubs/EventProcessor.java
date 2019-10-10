@@ -60,10 +60,10 @@ public class EventProcessor {
         Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager, TracerProvider tracerProvider) {
 
-        Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
-        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null");
-        Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
-        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
+        Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null.");
+        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
+        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null.");
 
         this.partitionManager = partitionManager == null ? findPartitionManager() : partitionManager;
         this.identifier = UUID.randomUUID().toString();
@@ -72,7 +72,7 @@ public class EventProcessor {
             initialEventPosition, eventHubAsyncClient, tracerProvider);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.partitionManager, eventHubAsyncClient,
-                eventHubAsyncClient.eventHubName(),
+                eventHubAsyncClient.getEventHubName(),
                 consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
     }
 
@@ -117,7 +117,7 @@ public class EventProcessor {
      *
      * @return Identifier for this event processor.
      */
-    public String identifier() {
+    public String getIdentifier() {
         return this.identifier;
     }
 

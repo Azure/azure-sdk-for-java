@@ -8,34 +8,36 @@ import com.azure.core.http.HttpRequest;
 /**
  * REST response with a strongly-typed content specified.
  *
- * @param <T> The deserialized type of the response content, available from {@link #value()}.
+ * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  * @see ResponseBase
  */
 public interface Response<T> {
 
     /**
-     * Get the HTTP response status code.
+     * Gets the HTTP response status code.
      *
-     * @return the status code of the HTTP response.
+     * @return The status code of the HTTP response.
      */
-    int statusCode();
+    int getStatusCode();
 
     /**
-     * Get the headers from the HTTP response.
+     * Gets the headers from the HTTP response.
      *
-     * @return an HttpHeaders instance containing the HTTP response headers.
+     * @return The HTTP response headers.
      */
-    HttpHeaders headers();
+    HttpHeaders getHeaders();
 
     /**
-     * Get the HTTP request which resulted in this response.
+     * Gets the HTTP request which resulted in this response.
      *
-     * @return the HTTP request.
+     * @return The HTTP request.
      */
-    HttpRequest request();
+    HttpRequest getRequest();
 
     /**
-     * @return the deserialized value of the HTTP response.
+     * Gets the deserialized value of the HTTP response.
+     *
+     * @return The deserialized value of the HTTP response.
      */
-    T value();
+    T getValue();
 }

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncProducer;
 import com.azure.messaging.eventhubs.EventHubProducer;
@@ -39,7 +39,7 @@ public class SendOptions implements Cloneable {
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
      * @return The updated {@link SendOptions} object.
      */
-    public SendOptions partitionKey(String partitionKey) {
+    public SendOptions setPartitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
         return this;
     }
@@ -50,7 +50,7 @@ public class SendOptions implements Cloneable {
      *
      * @return The partition hashing key to associate with the event or batch of events.
      */
-    public String partitionKey() {
+    public String getPartitionKey() {
         return partitionKey;
     }
 
@@ -68,6 +68,6 @@ public class SendOptions implements Cloneable {
             clone = new SendOptions();
         }
 
-        return clone.partitionKey(partitionKey);
+        return clone.setPartitionKey(partitionKey);
     }
 }

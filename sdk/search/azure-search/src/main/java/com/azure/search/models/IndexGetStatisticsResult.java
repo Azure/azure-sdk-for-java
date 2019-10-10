@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,7 +32,7 @@ public final class IndexGetStatisticsResult {
      *
      * @return the documentCount value.
      */
-    public long documentCount() {
+    public long getDocumentCount() {
         return this.documentCount;
     }
 
@@ -42,7 +42,7 @@ public final class IndexGetStatisticsResult {
      *
      * @return the storageSize value.
      */
-    public long storageSize() {
+    public long getStorageSize() {
         return this.storageSize;
     }
 }

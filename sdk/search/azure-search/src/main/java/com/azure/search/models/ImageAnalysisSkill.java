@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,7 +45,7 @@ public final class ImageAnalysisSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public ImageAnalysisSkillLanguage defaultLanguageCode() {
+    public ImageAnalysisSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -56,7 +56,7 @@ public final class ImageAnalysisSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the ImageAnalysisSkill object itself.
      */
-    public ImageAnalysisSkill defaultLanguageCode(ImageAnalysisSkillLanguage defaultLanguageCode) {
+    public ImageAnalysisSkill setDefaultLanguageCode(ImageAnalysisSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }
@@ -66,7 +66,7 @@ public final class ImageAnalysisSkill extends Skill {
      *
      * @return the visualFeatures value.
      */
-    public List<VisualFeature> visualFeatures() {
+    public List<VisualFeature> getVisualFeatures() {
         return this.visualFeatures;
     }
 
@@ -76,7 +76,7 @@ public final class ImageAnalysisSkill extends Skill {
      * @param visualFeatures the visualFeatures value to set.
      * @return the ImageAnalysisSkill object itself.
      */
-    public ImageAnalysisSkill visualFeatures(List<VisualFeature> visualFeatures) {
+    public ImageAnalysisSkill setVisualFeatures(List<VisualFeature> visualFeatures) {
         this.visualFeatures = visualFeatures;
         return this;
     }
@@ -87,7 +87,7 @@ public final class ImageAnalysisSkill extends Skill {
      *
      * @return the details value.
      */
-    public List<ImageDetail> details() {
+    public List<ImageDetail> getDetails() {
         return this.details;
     }
 
@@ -98,7 +98,7 @@ public final class ImageAnalysisSkill extends Skill {
      * @param details the details value to set.
      * @return the ImageAnalysisSkill object itself.
      */
-    public ImageAnalysisSkill details(List<ImageDetail> details) {
+    public ImageAnalysisSkill setDetails(List<ImageDetail> details) {
         this.details = details;
         return this;
     }

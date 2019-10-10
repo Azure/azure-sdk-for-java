@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -46,7 +46,7 @@ public final class TokenInfo {
      *
      * @return the token value.
      */
-    public String token() {
+    public String getToken() {
         return this.token;
     }
 
@@ -56,7 +56,7 @@ public final class TokenInfo {
      *
      * @return the startOffset value.
      */
-    public Integer startOffset() {
+    public Integer getStartOffset() {
         return this.startOffset;
     }
 
@@ -66,7 +66,7 @@ public final class TokenInfo {
      *
      * @return the endOffset value.
      */
-    public Integer endOffset() {
+    public Integer getEndOffset() {
         return this.endOffset;
     }
 
@@ -79,7 +79,7 @@ public final class TokenInfo {
      *
      * @return the position value.
      */
-    public Integer position() {
+    public Integer getPosition() {
         return this.position;
     }
 }

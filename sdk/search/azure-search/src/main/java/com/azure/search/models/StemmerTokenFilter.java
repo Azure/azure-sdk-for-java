@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -52,7 +52,7 @@ public final class StemmerTokenFilter extends TokenFilter {
      *
      * @return the language value.
      */
-    public StemmerTokenFilterLanguage language() {
+    public StemmerTokenFilterLanguage getLanguage() {
         return this.language;
     }
 
@@ -73,7 +73,7 @@ public final class StemmerTokenFilter extends TokenFilter {
      * @param language the language value to set.
      * @return the StemmerTokenFilter object itself.
      */
-    public StemmerTokenFilter language(StemmerTokenFilterLanguage language) {
+    public StemmerTokenFilter setLanguage(StemmerTokenFilterLanguage language) {
         this.language = language;
         return this;
     }

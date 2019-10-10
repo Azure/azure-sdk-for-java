@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      *
      * @return the softDeleteColumnName value.
      */
-    public String softDeleteColumnName() {
+    public String getSoftDeleteColumnName() {
         return this.softDeleteColumnName;
     }
 
@@ -49,7 +49,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * @param softDeleteColumnName the softDeleteColumnName value to set.
      * @return the SoftDeleteColumnDeletionDetectionPolicy object itself.
      */
-    public SoftDeleteColumnDeletionDetectionPolicy softDeleteColumnName(String softDeleteColumnName) {
+    public SoftDeleteColumnDeletionDetectionPolicy setSoftDeleteColumnName(String softDeleteColumnName) {
         this.softDeleteColumnName = softDeleteColumnName;
         return this;
     }
@@ -60,7 +60,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      *
      * @return the softDeleteMarkerValue value.
      */
-    public String softDeleteMarkerValue() {
+    public String getSoftDeleteMarkerValue() {
         return this.softDeleteMarkerValue;
     }
 
@@ -71,7 +71,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
      * @param softDeleteMarkerValue the softDeleteMarkerValue value to set.
      * @return the SoftDeleteColumnDeletionDetectionPolicy object itself.
      */
-    public SoftDeleteColumnDeletionDetectionPolicy softDeleteMarkerValue(String softDeleteMarkerValue) {
+    public SoftDeleteColumnDeletionDetectionPolicy setSoftDeleteMarkerValue(String softDeleteMarkerValue) {
         this.softDeleteMarkerValue = softDeleteMarkerValue;
         return this;
     }

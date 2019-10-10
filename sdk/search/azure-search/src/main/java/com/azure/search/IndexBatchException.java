@@ -25,7 +25,7 @@ public class IndexBatchException extends AzureException {
      */
     IndexBatchException(DocumentIndexResult result) {
         super(createMessage(result));
-        this.results = result.results();
+        this.results = result.getResults();
     }
 
     /**
@@ -36,9 +36,9 @@ public class IndexBatchException extends AzureException {
     }
 
     private static String createMessage(DocumentIndexResult result) {
-        long failedResultCount = result.results().stream()
-            .filter(r -> !r.succeeded())
+        long failedResultCount = result.getResults().stream()
+            .filter(r -> !r.isSucceeded())
             .count();
-        return String.format(MESSAGE_FORMAT, failedResultCount, result.results().size());
+        return String.format(MESSAGE_FORMAT, failedResultCount, result.getResults().size());
     }
 }

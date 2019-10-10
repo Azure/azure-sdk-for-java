@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class StopAnalyzer extends Analyzer {
      *
      * @return the stopwords value.
      */
-    public List<String> stopwords() {
+    public List<String> getStopwords() {
         return this.stopwords;
     }
 
@@ -41,7 +41,7 @@ public final class StopAnalyzer extends Analyzer {
      * @param stopwords the stopwords value to set.
      * @return the StopAnalyzer object itself.
      */
-    public StopAnalyzer stopwords(List<String> stopwords) {
+    public StopAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
     }

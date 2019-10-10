@@ -12,13 +12,13 @@ import java.time.ZoneOffset;
 
 /**
  * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
- * inherited from {@link SecretBase}.
+ * inherited from {@link Secret}.
  * It is managed by Secret Service.
  *
  * @see SecretClient
  * @see SecretAsyncClient
  */
-public final class DeletedSecret extends SecretBase {
+public final class DeletedSecret extends Secret {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted secret.
@@ -41,19 +41,8 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the recoveryId identifier.
      */
-    public String recoveryId() {
+    public String getRecoveryId() {
         return this.recoveryId;
-    }
-
-    /**
-     * Set the recoveryId identifier.
-     *
-     * @param recoveryId The recoveryId identifier to set
-     * @return the DeletedSecret object itself.
-     */
-    public DeletedSecret recoveryId(String recoveryId) {
-        this.recoveryId = recoveryId;
-        return this;
     }
 
     /**
@@ -61,7 +50,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the scheduledPurgeDate UTC time.
      */
-    public OffsetDateTime scheduledPurgeDate() {
+    public OffsetDateTime getScheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
@@ -70,7 +59,7 @@ public final class DeletedSecret extends SecretBase {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime deletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return this.deletedDate;
     }
 
@@ -89,7 +78,7 @@ public final class DeletedSecret extends SecretBase {
      * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
-    private void deletedDate(Long deletedDate) {
+    private void setDeletedDate(Long deletedDate) {
         this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 

@@ -7,7 +7,7 @@
 package com.azure.search.models;
 import com.azure.search.Document;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +44,7 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    public Document additionalProperties() {
+    public Document getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -55,7 +55,7 @@ public final class SearchResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchResult object itself.
      */
-    public SearchResult additionalProperties(Document additionalProperties) {
+    public SearchResult setAdditionalProperties(Document additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -66,7 +66,7 @@ public final class SearchResult {
      *
      * @return the score value.
      */
-    public double score() {
+    public double getScore() {
         return this.score;
     }
 
@@ -77,7 +77,7 @@ public final class SearchResult {
      *
      * @return the highlights value.
      */
-    public Map<String, List<String>> highlights() {
+    public Map<String, List<String>> getHighlights() {
         return this.highlights;
     }
 }

@@ -56,7 +56,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         client = getClientBuilder(INDEX_NAME_HOTELS).buildClient();
 
         uploadDocuments();
-        SearchParameters searchParameters = new SearchParameters().filter("HotelId eq '1'");
+        SearchParameters searchParameters = new SearchParameters().setFilter("HotelId eq '1'");
         PagedIterable<SearchResult> results = client.search("Location", searchParameters, new SearchRequestOptions());
         Assert.assertNotNull(results);
 
@@ -82,7 +82,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         DocumentIndexResult indexResult = client.uploadDocuments(docs);
 
         Assert.assertNotNull(indexResult);
-        Assert.assertTrue(indexResult.results().get(0).succeeded());
+        Assert.assertTrue(indexResult.getResults().get(0).isSucceeded());
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
@@ -90,8 +90,8 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = (SearchPagedResponse) iterator.next();
-            Assert.assertNotNull(result.items());
-            result.items().forEach(item -> searchResults.add(item.additionalProperties()));
+            Assert.assertNotNull(result.getItems());
+            result.getItems().forEach(item -> searchResults.add(item.getAdditionalProperties()));
         }
 
         return searchResults;

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -101,7 +101,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the generateWordParts value.
      */
-    public Boolean generateWordParts() {
+    public Boolean isGenerateWordParts() {
         return this.generateWordParts;
     }
 
@@ -113,7 +113,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param generateWordParts the generateWordParts value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter generateWordParts(Boolean generateWordParts) {
+    public WordDelimiterTokenFilter setGenerateWordParts(Boolean generateWordParts) {
         this.generateWordParts = generateWordParts;
         return this;
     }
@@ -124,7 +124,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the generateNumberParts value.
      */
-    public Boolean generateNumberParts() {
+    public Boolean isGenerateNumberParts() {
         return this.generateNumberParts;
     }
 
@@ -135,7 +135,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param generateNumberParts the generateNumberParts value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter generateNumberParts(Boolean generateNumberParts) {
+    public WordDelimiterTokenFilter setGenerateNumberParts(Boolean generateNumberParts) {
         this.generateNumberParts = generateNumberParts;
         return this;
     }
@@ -147,7 +147,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateWords value.
      */
-    public Boolean catenateWords() {
+    public Boolean isCatenateWords() {
         return this.catenateWords;
     }
 
@@ -159,7 +159,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param catenateWords the catenateWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter catenateWords(Boolean catenateWords) {
+    public WordDelimiterTokenFilter setCatenateWords(Boolean catenateWords) {
         this.catenateWords = catenateWords;
         return this;
     }
@@ -171,7 +171,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateNumbers value.
      */
-    public Boolean catenateNumbers() {
+    public Boolean isCatenateNumbers() {
         return this.catenateNumbers;
     }
 
@@ -183,7 +183,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param catenateNumbers the catenateNumbers value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter catenateNumbers(Boolean catenateNumbers) {
+    public WordDelimiterTokenFilter setCatenateNumbers(Boolean catenateNumbers) {
         this.catenateNumbers = catenateNumbers;
         return this;
     }
@@ -195,7 +195,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateAll value.
      */
-    public Boolean catenateAll() {
+    public Boolean isCatenateAll() {
         return this.catenateAll;
     }
 
@@ -207,7 +207,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param catenateAll the catenateAll value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter catenateAll(Boolean catenateAll) {
+    public WordDelimiterTokenFilter setCatenateAll(Boolean catenateAll) {
         this.catenateAll = catenateAll;
         return this;
     }
@@ -219,7 +219,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnCaseChange value.
      */
-    public Boolean splitOnCaseChange() {
+    public Boolean isSplitOnCaseChange() {
         return this.splitOnCaseChange;
     }
 
@@ -231,7 +231,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param splitOnCaseChange the splitOnCaseChange value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter splitOnCaseChange(Boolean splitOnCaseChange) {
+    public WordDelimiterTokenFilter setSplitOnCaseChange(Boolean splitOnCaseChange) {
         this.splitOnCaseChange = splitOnCaseChange;
         return this;
     }
@@ -242,7 +242,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the preserveOriginal value.
      */
-    public Boolean preserveOriginal() {
+    public Boolean isPreserveOriginal() {
         return this.preserveOriginal;
     }
 
@@ -253,7 +253,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter preserveOriginal(Boolean preserveOriginal) {
+    public WordDelimiterTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
     }
@@ -265,7 +265,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnNumerics value.
      */
-    public Boolean splitOnNumerics() {
+    public Boolean isSplitOnNumerics() {
         return this.splitOnNumerics;
     }
 
@@ -277,7 +277,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param splitOnNumerics the splitOnNumerics value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter splitOnNumerics(Boolean splitOnNumerics) {
+    public WordDelimiterTokenFilter setSplitOnNumerics(Boolean splitOnNumerics) {
         this.splitOnNumerics = splitOnNumerics;
         return this;
     }
@@ -288,7 +288,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the stemEnglishPossessive value.
      */
-    public Boolean stemEnglishPossessive() {
+    public Boolean isStemEnglishPossessive() {
         return this.stemEnglishPossessive;
     }
 
@@ -299,7 +299,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param stemEnglishPossessive the stemEnglishPossessive value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter stemEnglishPossessive(Boolean stemEnglishPossessive) {
+    public WordDelimiterTokenFilter setStemEnglishPossessive(Boolean stemEnglishPossessive) {
         this.stemEnglishPossessive = stemEnglishPossessive;
         return this;
     }
@@ -310,7 +310,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the protectedWords value.
      */
-    public List<String> protectedWords() {
+    public List<String> getProtectedWords() {
         return this.protectedWords;
     }
 
@@ -321,7 +321,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter protectedWords(List<String> protectedWords) {
+    public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -35,7 +35,7 @@ public final class SentimentSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public SentimentSkillLanguage defaultLanguageCode() {
+    public SentimentSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -48,7 +48,7 @@ public final class SentimentSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SentimentSkill object itself.
      */
-    public SentimentSkill defaultLanguageCode(SentimentSkillLanguage defaultLanguageCode) {
+    public SentimentSkill setDefaultLanguageCode(SentimentSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }

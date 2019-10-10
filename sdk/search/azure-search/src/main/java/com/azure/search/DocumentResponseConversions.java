@@ -22,7 +22,8 @@ class DocumentResponseConversions {
     static Throwable exceptionMapper(Throwable throwable) {
         if (throwable instanceof HttpResponseException
             && throwable.getMessage().equals("Status code 404, (empty body)")) {
-            return new ResourceNotFoundException("Document not found", ((HttpResponseException) throwable).response());
+            return new ResourceNotFoundException("Document not found",
+                ((HttpResponseException) throwable).getResponse());
         }
         return throwable;
     }

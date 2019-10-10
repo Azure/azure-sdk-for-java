@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing core exception classes
+ * Package containing core exception classes.
  */
 package com.azure.core.exception;

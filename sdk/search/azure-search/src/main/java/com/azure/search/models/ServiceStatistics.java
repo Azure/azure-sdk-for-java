@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,7 +32,7 @@ public final class ServiceStatistics {
      *
      * @return the counters value.
      */
-    public ServiceCounters counters() {
+    public ServiceCounters getCounters() {
         return this.counters;
     }
 
@@ -42,7 +42,7 @@ public final class ServiceStatistics {
      * @param counters the counters value to set.
      * @return the ServiceStatistics object itself.
      */
-    public ServiceStatistics counters(ServiceCounters counters) {
+    public ServiceStatistics setCounters(ServiceCounters counters) {
         this.counters = counters;
         return this;
     }
@@ -52,7 +52,7 @@ public final class ServiceStatistics {
      *
      * @return the limits value.
      */
-    public ServiceLimits limits() {
+    public ServiceLimits getLimits() {
         return this.limits;
     }
 
@@ -62,7 +62,7 @@ public final class ServiceStatistics {
      * @param limits the limits value to set.
      * @return the ServiceStatistics object itself.
      */
-    public ServiceStatistics limits(ServiceLimits limits) {
+    public ServiceStatistics setLimits(ServiceLimits limits) {
         this.limits = limits;
         return this;
     }

@@ -6,6 +6,10 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
  
 trigger:
   branches:
@@ -45,9 +49,6 @@ stages:
           stagingProfileId: 88192f04117501
         - name: azure-core-http-okhttp
           safeName: azurecorehttpokhttp
-          stagingProfileId: 88192f04117501
-        - name: azure-core-management
-          safeName: azurecoremanagement
           stagingProfileId: 88192f04117501
         - name: azure-core-test
           safeName: azurecoretest

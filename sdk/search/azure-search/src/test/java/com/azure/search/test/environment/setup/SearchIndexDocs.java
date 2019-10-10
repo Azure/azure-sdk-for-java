@@ -73,10 +73,8 @@ public class SearchIndexDocs {
         System.out.println("Indexing Results:");
         searchIndexAsyncClient.uploadDocuments(hotels)
             .doOnSuccess(documentIndexResult ->
-                documentIndexResult
-                    .results().forEach(
-                        result ->
-                        System.out.println("key:" + result.key() + (result.succeeded() ? " Succeeded" : " Error: " + result.errorMessage()))))
+                documentIndexResult.getResults().forEach(
+                    result -> System.out.println("key:" + result.getKey() + (result.isSucceeded() ? " Succeeded" : " Error: " + result.getErrorMessage()))))
             .doOnError(e -> System.out.println(e.getMessage()))
             .block();
     }

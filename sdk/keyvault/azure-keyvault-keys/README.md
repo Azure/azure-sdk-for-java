@@ -14,8 +14,50 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-keys</artifactId>
-    <version>4.0.0-preview.2</version>
+    <version>4.0.0-preview.4</version>
 </dependency>
+```
+
+### Default HTTP Client
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+KeyVault Keys to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
+
+```xml
+<!-- Add KeyVault Keys dependency without Netty HTTP client -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-keyvault-keys</artifactId>
+    <version>4.0.0-preview.4</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
+</dependency>
+
+<!-- Add OkHTTP client to use with KeyVault Keys -->
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-okhttp</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+
+### Configuring HTTP Clients
+When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-key-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
+
+For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+```java
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .port(8080)
+    .wiretap(true)
+    .build();
 ```
 
 ### Prerequisites
@@ -149,14 +191,14 @@ KeyClient keyClient = new KeyClientBuilder()
         .buildClient();
 
 Key rsaKey = keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048));
-System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
+                .setExpires(OffsetDateTime.now().plusYears(1))
+                .setKeySize(2048));
+System.out.printf("Key is created with name %s and id %s \n", rsaKey.getName(), rsaKey.getId());
 
 Key ecKey = keyClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .curve(KeyCurveName.P_256)
-                .expires(OffsetDateTime.now().plusYears(1)));
-System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
+                .setCurve(KeyCurveName.P_256)
+                .setExpires(OffsetDateTime.now().plusYears(1)));
+System.out.printf("Key is created with name %s and id %s \n", ecKey.getName(), ecKey.getId());
 ```
 
 ### Retrieve a Key
@@ -164,7 +206,7 @@ System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKe
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
 Key key = keyClient.getKey("key_name");
-System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id());
+System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId());
 ```
 
 ### Update an existing Key
@@ -174,9 +216,9 @@ Update an existing Key by calling `updateKey`.
 // Get the key to update.
 Key key = keyClient.getKey("key_name");
 // Update the expiry time of the key.
-key.expires(OffsetDateTime.now().plusDays(30));
-Key updatedKey = keyClient.updateKey(key);
-System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString());
+key.getProperties().setExpires(OffsetDateTime.now().plusDays(30));
+Key updatedKey = keyClient.updateKeyProperties(key.getProperties());
+System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires().toString());
 ```
 
 ### Delete a Key
@@ -184,7 +226,7 @@ System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toStri
 Delete an existing Key by calling `deleteKey`.
 ```Java
 DeletedKey deletedKey = client.deleteKey("key_name");
-System.out.printf("Deleted Key's deletion date %s", deletedKey.deletedDate().toString());
+System.out.printf("Deleted Key's deletion date %s", deletedKey.getDeletedDate().toString());
 ```
 
 ### List Keys
@@ -192,10 +234,11 @@ System.out.printf("Deleted Key's deletion date %s", deletedKey.deletedDate().toS
 List the keys in the key vault by calling `listKeys`.
 ```java
 // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
-for (KeyBase key : keyClient.listKeys()) {
-    Key keyWithMaterial = keyClient.getKey(key);
-    System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
+for (KeyProperties keyProperties : keyClient.listKeys()) {
+    Key keyWithMaterial = keyClient.getKey(keyProperties);
+    System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),   keyWithMaterial.getKeyMaterial().getKty());
 }
+
 ```
 
 ### Encrypt
@@ -212,7 +255,7 @@ new Random(0x1234567L).nextBytes(plainText);
 
 // Let's encrypt a simple plain text of size 100 bytes.
 EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+System.out.printf("Returned cipherText size is %d bytes with algorithm %s \n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
 ```
 
 ### Decrypt
@@ -225,8 +268,8 @@ new Random(0x1234567L).nextBytes(plainText);
 EncryptResult encryptResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
 
 //Let's decrypt the encrypted result.
-DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText());
-System.out.printf("Returned plainText size is %d bytes \n", decryptResult.plainText().length);
+DecryptResult decryptResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText());
+System.out.printf("Returned plainText size is %d bytes \n", decryptResult.getPlainText().length);
 ```
 
 ### Async API
@@ -255,15 +298,15 @@ KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
         .buildAsyncClient();
 
 keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-    .expires(OffsetDateTime.now().plusYears(1))
-    .keySize(2048))
+    .setExpires(OffsetDateTime.now().plusYears(1))
+    .setKeySize(2048))
     .subscribe(key ->
-       System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
+       System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
 
 keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-    .expires(OffsetDateTime.now().plusYears(1)))
+    .setExpires(OffsetDateTime.now().plusYears(1)))
     .subscribe(key ->
-      System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id()));
+      System.out.printf("Key is created with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Retrieve a Key Asynchronously
@@ -271,7 +314,7 @@ keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
 Retrieve a previously stored Key by calling `getKey`.
 ```Java
 keyAsyncClient.getKey("keyName").subscribe(key ->
-  System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id()));
+  System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Update an existing Key Asynchronously
@@ -282,9 +325,9 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
      // Get the Key
      Key key = keyResponse;
      // Update the expiry time of the key.
-     key.expires(OffsetDateTime.now().plusDays(50));
-     keyAsyncClient.updateKey(key).subscribe(updatedKey ->
-         System.out.printf("Key's updated expiry time %s \n", updatedKey.expires().toString()));
+     key.getProperties().setExpires(OffsetDateTime.now().plusDays(50));
+     keyAsyncClient.updateKeyProperties(key.getProperties()).subscribe(updatedKey ->
+         System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires().toString()));
    });
 ```
 
@@ -293,7 +336,7 @@ keyAsyncClient.getKey("keyName").subscribe(keyResponse -> {
 Delete an existing Key by calling `deleteKey`.
 ```java
 keyAsyncClient.deleteKey("keyName").subscribe(deletedKey ->
-   System.out.printf("Deleted Key's deletion time %s \n", deletedKey.deletedDate().toString()));
+   System.out.printf("Deleted Key's deletion time %s \n", deletedKey.getDeletedDate().toString()));
 ```
 
 ### List Keys Asynchronously
@@ -303,7 +346,7 @@ List the keys in the key vault by calling `listKeys`.
 // The List Keys operation returns keys without their value, so for each key returned we call `getKey` to get its // value as well.
 keyAsyncClient.listKeys()
   .flatMap(keyAsyncClient::getKey).subscribe(key ->
-    System.out.printf("Key returned with name %s and id %s \n", key.name(), key.id()));
+    System.out.printf("Key returned with name %s and id %s \n", key.getName(), key.getId()));
 ```
 
 ### Encrypt Asynchronously
@@ -321,7 +364,7 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
     });
 ```
 
@@ -335,12 +378,11 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
         //Let's decrypt the encrypted response.
-        cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText())
-            .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.plainText().length));
+        cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText())
+            .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.getPlainText().length));
     });
-
 ```
 
 ## Troubleshooting

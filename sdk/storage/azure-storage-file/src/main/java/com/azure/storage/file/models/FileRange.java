@@ -3,14 +3,27 @@
 
 package com.azure.storage.file.models;
 
-import java.util.Objects;
+import com.azure.core.util.logging.ClientLogger;
+import java.util.Locale;
 
 /**
  * The range of a file in the storage file service.
  */
 public final class FileRange {
+    final ClientLogger logger = new ClientLogger(FileRange.class);
+    private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
+    private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
     private final long start;
     private final Long end;
+
+    /**
+     * Create an instance of the range of a file. Specify the start the range
+     * and the end defaults to the length of the file.
+     * @param start Specifies the start of bytes to be written.
+     */
+    public FileRange(final long start) {
+        this(start, null);
+    }
 
     /**
      * Create an instance of the range of a file.  Both the start and end of the range must be specified.
@@ -18,7 +31,16 @@ public final class FileRange {
      * @param end Specifies the end of bytes to be written
      */
     public FileRange(final long start, final Long end) {
+        if (start < 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "FileRange offset must be greater than or equal to 0."));
+        }
         this.start = start;
+
+        if (end != null && end < 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(new IllegalArgumentException(
+                "FileRange end must be greater than or equal to 0 if specified.")));
+        }
         this.end = end;
     }
 
@@ -28,21 +50,21 @@ public final class FileRange {
      * @param range Range object containing start and end of the file.
      */
     public FileRange(final Range range) {
-        this.start = range.start();
-        this.end = range.end();
+        this.start = range.getStart();
+        this.end = range.getEnd();
     }
 
     /**
      * @return The start of bytes to be written.
      */
-    public long start() {
+    public long getStart() {
         return start;
     }
 
     /**
      * @return The end of bytes to be written.
      */
-    public Long end() {
+    public Long getEnd() {
         return end;
     }
 
@@ -51,7 +73,22 @@ public final class FileRange {
      */
     @Override
     public String toString() {
-        String endString = Objects.toString(end);
-        return "bytes=" + String.valueOf(start) + "-" + endString;
+        if (this.end != null) {
+            return String.format(Locale.ROOT, RANGE_HEADER_FORMAT, this.start, this.end);
+        }
+
+        return String.format(Locale.ROOT, BEGIN_RANGE_HEADER_FORMAT, this.start);
+    }
+
+    /**
+     * @return {@link FileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise
+     * null.
+     */
+    public String toHeaderValue() {
+        // The default values of a BlobRange
+        if (this.start == 0 && this.end == null) {
+            return null;
+        }
+        return this.toString();
     }
 }

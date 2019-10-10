@@ -6,23 +6,22 @@
 
 package com.azure.search.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.Skillset;
@@ -69,7 +68,7 @@ public final class SkillsetsImpl {
 
         @Delete("skillsets('{skillsetName}')")
         @ExpectedResponses({204, 404})
-        Mono<VoidResponse> delete(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<Void>> delete(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Get("skillsets('{skillsetName}')")
         @ExpectedResponses({200})
@@ -115,7 +114,7 @@ public final class SkillsetsImpl {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -129,7 +128,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> deleteWithRestResponseAsync(String skillsetName, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, Context context) {
         final UUID clientRequestId = null;
         return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -144,10 +143,10 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> deleteWithRestResponseAsync(String skillsetName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -179,7 +178,7 @@ public final class SkillsetsImpl {
     public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.get(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -211,7 +210,7 @@ public final class SkillsetsImpl {
     public Mono<SimpleResponse<SkillsetListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -243,7 +242,7 @@ public final class SkillsetsImpl {
     public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, this.client.getApiVersion(), clientRequestId, context);
     }

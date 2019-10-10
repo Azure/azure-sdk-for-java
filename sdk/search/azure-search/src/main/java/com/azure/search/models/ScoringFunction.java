@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -53,7 +53,7 @@ public class ScoringFunction {
      *
      * @return the fieldName value.
      */
-    public String fieldName() {
+    public String getFieldName() {
         return this.fieldName;
     }
 
@@ -64,7 +64,7 @@ public class ScoringFunction {
      * @param fieldName the fieldName value to set.
      * @return the ScoringFunction object itself.
      */
-    public ScoringFunction fieldName(String fieldName) {
+    public ScoringFunction setFieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;
     }
@@ -75,7 +75,7 @@ public class ScoringFunction {
      *
      * @return the boost value.
      */
-    public double boost() {
+    public double getBoost() {
         return this.boost;
     }
 
@@ -86,7 +86,7 @@ public class ScoringFunction {
      * @param boost the boost value to set.
      * @return the ScoringFunction object itself.
      */
-    public ScoringFunction boost(double boost) {
+    public ScoringFunction setBoost(double boost) {
         this.boost = boost;
         return this;
     }
@@ -98,7 +98,7 @@ public class ScoringFunction {
      *
      * @return the interpolation value.
      */
-    public ScoringFunctionInterpolation interpolation() {
+    public ScoringFunctionInterpolation getInterpolation() {
         return this.interpolation;
     }
 
@@ -110,7 +110,7 @@ public class ScoringFunction {
      * @param interpolation the interpolation value to set.
      * @return the ScoringFunction object itself.
      */
-    public ScoringFunction interpolation(ScoringFunctionInterpolation interpolation) {
+    public ScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         this.interpolation = interpolation;
         return this;
     }

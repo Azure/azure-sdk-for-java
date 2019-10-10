@@ -69,7 +69,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             .hotelId(expectedHotelId)
         );
 
-        List<IndexingResult> result = client.uploadDocuments(hotels).results();
+        List<IndexingResult> result = client.uploadDocuments(hotels).getResults();
         this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
 
         waitForIndexing();
@@ -91,7 +91,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         );
 
         List<IndexingResult> result = client.uploadDocuments(books)
-            .results();
+            .getResults();
         this.assertIndexActionSucceeded("123", result.get(0), 201);
 
         waitForIndexing();
@@ -116,9 +116,9 @@ public class IndexingSyncTests extends IndexingTestBase {
         DocumentIndexResult documentIndexResult = client.index(deleteBatch);
         waitForIndexing();
 
-        Assert.assertEquals(2, documentIndexResult.results().size());
-        assertIndexActionSucceeded("1", documentIndexResult.results().get(0), 200);
-        assertIndexActionSucceeded("2", documentIndexResult.results().get(1), 200);
+        Assert.assertEquals(2, documentIndexResult.getResults().size());
+        assertIndexActionSucceeded("1", documentIndexResult.getResults().get(0), 200);
+        assertIndexActionSucceeded("2", documentIndexResult.getResults().get(1), 200);
 
         Assert.assertEquals(0, client.getDocumentCount().intValue());
     }
@@ -142,8 +142,8 @@ public class IndexingSyncTests extends IndexingTestBase {
         DocumentIndexResult documentIndexResult = client.deleteDocuments(hotels);
         waitForIndexing();
 
-        Assert.assertEquals(1, documentIndexResult.results().size());
-        assertIndexActionSucceeded("1", documentIndexResult.results().get(0), 200);
+        Assert.assertEquals(1, documentIndexResult.getResults().size());
+        assertIndexActionSucceeded("1", documentIndexResult.getResults().get(0), 200);
         Assert.assertEquals(0, client.getDocumentCount().intValue());
     }
 
@@ -169,8 +169,8 @@ public class IndexingSyncTests extends IndexingTestBase {
         DocumentIndexResult documentIndexResult = client.deleteDocuments(docs);
         waitForIndexing();
 
-        Assert.assertEquals(1, documentIndexResult.results().size());
-        assertIndexActionSucceeded("1", documentIndexResult.results().get(0), 200);
+        Assert.assertEquals(1, documentIndexResult.getResults().size());
+        assertIndexActionSucceeded("1", documentIndexResult.getResults().get(0), 200);
         Assert.assertEquals(0, client.getDocumentCount().intValue());
     }
 
@@ -196,7 +196,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             Assert.fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
-            Assert.assertEquals(results.size(), batch.actions().size());
+            Assert.assertEquals(results.size(), batch.getActions().size());
 
             assertSuccessfulIndexResult(results.get(0), "1", 201);
             assertSuccessfulIndexResult(results.get(1), "randomId", 200);
@@ -240,7 +240,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             Assert.fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
-            Assert.assertEquals(results.size(), batch.actions().size());
+            Assert.assertEquals(results.size(), batch.getActions().size());
 
             assertSuccessfulIndexResult(results.get(0), "1", 201);
             assertSuccessfulIndexResult(results.get(1), "randomId", 200);
@@ -278,11 +278,11 @@ public class IndexingSyncTests extends IndexingTestBase {
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
         Index indexWithReservedName = new Index()
-            .name(indexName)
-            .fields(Collections.singletonList(new Field()
-                .name("ID")
-                .type(DataType.EDM_STRING)
-                .key(Boolean.TRUE)
+            .setName(indexName)
+            .setFields(Collections.singletonList(new Field()
+                .setName("ID")
+                .setType(DataType.EDM_STRING)
+                .setKey(Boolean.TRUE)
             ));
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -802,47 +802,47 @@ public class IndexingSyncTests extends IndexingTestBase {
         Response<DocumentIndexResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
         waitForIndexing();
 
-        Assert.assertEquals(200, indexResponse.statusCode());
-        DocumentIndexResult result = indexResponse.value();
-        Assert.assertEquals(2, result.results().size());
+        Assert.assertEquals(200, indexResponse.getStatusCode());
+        DocumentIndexResult result = indexResponse.getValue();
+        Assert.assertEquals(2, result.getResults().size());
 
         Response<DocumentIndexResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
         waitForIndexing();
 
-        Assert.assertEquals(200, updateResponse.statusCode());
-        result = updateResponse.value();
-        Assert.assertEquals(1, result.results().size());
+        Assert.assertEquals(200, updateResponse.getStatusCode());
+        result = updateResponse.getValue();
+        Assert.assertEquals(1, result.getResults().size());
 
         Response<DocumentIndexResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
         waitForIndexing();
 
-        Assert.assertEquals(200, mergeOrUploadResponse.statusCode());
-        result = mergeOrUploadResponse.value();
-        Assert.assertEquals(2, result.results().size());
+        Assert.assertEquals(200, mergeOrUploadResponse.getStatusCode());
+        result = mergeOrUploadResponse.getValue();
+        Assert.assertEquals(2, result.getResults().size());
 
         Response<DocumentIndexResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
         waitForIndexing();
 
-        Assert.assertEquals(200, deleteResponse.statusCode());
-        result = deleteResponse.value();
-        Assert.assertEquals(1, result.results().size());
+        Assert.assertEquals(200, deleteResponse.getStatusCode());
+        result = deleteResponse.getValue();
+        Assert.assertEquals(1, result.getResults().size());
 
         Response<DocumentIndexResult> batchResponse = client.indexWithResponse(batch);
         waitForIndexing();
 
-        Assert.assertEquals(200, batchResponse.statusCode());
-        result = batchResponse.value();
-        Assert.assertEquals(4, result.results().size());
+        Assert.assertEquals(200, batchResponse.getStatusCode());
+        result = batchResponse.getValue();
+        Assert.assertEquals(4, result.getResults().size());
 
         Response<Document> documentResponse = client.getDocumentWithResponse("3", null,
             new SearchRequestOptions());
-        Assert.assertEquals(200, documentResponse.statusCode());
-        Document doc = documentResponse.value();
+        Assert.assertEquals(200, documentResponse.getStatusCode());
+        Document doc = documentResponse.getValue();
         Assert.assertEquals(4, doc.get("Rating"));
 
         Response<Long> countResponse = client.getDocumentCountWithResponse();
-        Assert.assertEquals(200, countResponse.statusCode());
-        Long count = countResponse.value();
+        Assert.assertEquals(200, countResponse.getStatusCode());
+        Long count = countResponse.getValue();
         Assert.assertEquals(4L, count.longValue());
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.implementation.annotation.HeaderCollection;
+import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -37,13 +37,13 @@ final class HttpResponseHeaderDecoder {
      */
     static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer,
                                HttpResponseDecodeData decodeData) {
-        Type headerType = decodeData.headersType();
+        Type headerType = decodeData.getHeadersType();
         if (headerType == null) {
             return Mono.empty();
         } else {
             return Mono.defer(() -> {
                 try {
-                    return Mono.justOrEmpty(deserializeHeaders(httpResponse.headers(), serializer, decodeData));
+                    return Mono.justOrEmpty(deserializeHeaders(httpResponse.getHeaders(), serializer, decodeData));
                 } catch (IOException e) {
                     return Mono.error(new HttpResponseException(
                         "HTTP response has malformed headers",
@@ -83,7 +83,7 @@ final class HttpResponseHeaderDecoder {
      */
     private static Object deserializeHeaders(HttpHeaders headers, SerializerAdapter serializer,
                                              HttpResponseDecodeData decodeData) throws IOException {
-        final Type deserializedHeadersType = decodeData.headersType();
+        final Type deserializedHeadersType = decodeData.getHeadersType();
         if (deserializedHeadersType == null) {
             return null;
         } else {
@@ -109,10 +109,10 @@ final class HttpResponseHeaderDecoder {
                             if (headerCollectionPrefixLength > 0) {
                                 final Map<String, String> headerCollection = new HashMap<>();
                                 for (final HttpHeader header : headers) {
-                                    final String headerName = header.name();
+                                    final String headerName = header.getName();
                                     if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
                                         headerCollection.put(headerName.substring(headerCollectionPrefixLength),
-                                            header.value());
+                                            header.getValue());
                                     }
                                 }
 

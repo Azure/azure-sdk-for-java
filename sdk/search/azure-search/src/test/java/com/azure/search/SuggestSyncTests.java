@@ -35,7 +35,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Collections.singletonList("HotelId"));
+            .setOrderBy(Collections.singletonList("HotelId"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -51,7 +51,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .searchFields(Collections.singletonList("HotelName"));
+            .setSearchFields(Collections.singletonList("HotelName"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -67,10 +67,10 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .highlightPreTag("<b>")
-            .highlightPostTag("</b>")
-            .filter("Category eq 'Luxury'")
-            .top(1);
+            .setHighlightPreTag("<b>")
+            .setHighlightPostTag("</b>")
+            .setFilter("Category eq 'Luxury'")
+            .setTop(1);
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -86,7 +86,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .useFuzzyMatching(true);
+            .setUseFuzzyMatching(true);
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
@@ -103,7 +103,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Collections.singletonList("HotelId"));
+            .setOrderBy(Collections.singletonList("HotelId"));
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
@@ -133,7 +133,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate"));
+        suggestParams.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
         PagedIterable<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
 
@@ -177,7 +177,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
+            .setOrderBy(new LinkedList<>(Collections.singletonList("This is not a valid orderby.")));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
         suggestResult.iterableByPage().iterator().next();
@@ -192,8 +192,8 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")))
-            .minimumCoverage(50.0);
+            .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")))
+            .setMinimumCoverage(50.0);
 
         //act
         PagedResponse<SuggestResult> suggestResult = client
@@ -214,8 +214,8 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Collections.singletonList("HotelId"))
-            .top(3);
+            .setOrderBy(Collections.singletonList("HotelId"))
+            .setTop(3);
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel",
@@ -236,14 +236,14 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestParameters suggestParams = new SuggestParameters()
-            .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .orderBy(Arrays.asList("HotelId"));
+            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+            .setOrderBy(Arrays.asList("HotelId"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
 
         Assert.assertNotNull(result);
-        List<String> actualIds = result.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualIds = result.getValue().stream().map(s -> (String) s.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
         Assert.assertEquals(expectedIds, actualIds);
     }
@@ -256,7 +256,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Arrays.asList("Rating desc",
+            .setOrderBy(Arrays.asList("Rating desc",
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
 
@@ -264,7 +264,7 @@ public class SuggestSyncTests extends SuggestTestBase {
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
 
         Assert.assertNotNull(result);
-        List<String> actualIds = result.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualIds = result.getValue().stream().map(s -> (String) s.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
         Assert.assertEquals(expectedIds, actualIds);
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -43,7 +43,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @return the encoder value.
      */
-    public PhoneticEncoder encoder() {
+    public PhoneticEncoder getEncoder() {
         return this.encoder;
     }
 
@@ -56,7 +56,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * @param encoder the encoder value to set.
      * @return the PhoneticTokenFilter object itself.
      */
-    public PhoneticTokenFilter encoder(PhoneticEncoder encoder) {
+    public PhoneticTokenFilter setEncoder(PhoneticEncoder encoder) {
         this.encoder = encoder;
         return this;
     }
@@ -68,7 +68,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @return the replaceOriginalTokens value.
      */
-    public Boolean replaceOriginalTokens() {
+    public Boolean isReplaceOriginalTokens() {
         return this.replaceOriginalTokens;
     }
 
@@ -80,7 +80,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * @param replaceOriginalTokens the replaceOriginalTokens value to set.
      * @return the PhoneticTokenFilter object itself.
      */
-    public PhoneticTokenFilter replaceOriginalTokens(Boolean replaceOriginalTokens) {
+    public PhoneticTokenFilter setReplaceOriginalTokens(Boolean replaceOriginalTokens) {
         this.replaceOriginalTokens = replaceOriginalTokens;
         return this;
     }

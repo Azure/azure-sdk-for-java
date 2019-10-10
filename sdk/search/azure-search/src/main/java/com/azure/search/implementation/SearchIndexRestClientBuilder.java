@@ -6,9 +6,9 @@
 
 package com.azure.search.implementation;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public final class AutocompleteResult {
      *
      * @return the results value.
      */
-    public List<AutocompleteItem> results() {
+    public List<AutocompleteItem> getResults() {
         return this.results;
     }
 }

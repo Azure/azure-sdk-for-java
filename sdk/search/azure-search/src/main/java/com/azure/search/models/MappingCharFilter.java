@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -36,7 +36,7 @@ public final class MappingCharFilter extends CharFilter {
      *
      * @return the mappings value.
      */
-    public List<String> mappings() {
+    public List<String> getMappings() {
         return this.mappings;
     }
 
@@ -48,7 +48,7 @@ public final class MappingCharFilter extends CharFilter {
      * @param mappings the mappings value to set.
      * @return the MappingCharFilter object itself.
      */
-    public MappingCharFilter mappings(List<String> mappings) {
+    public MappingCharFilter setMappings(List<String> mappings) {
         this.mappings = mappings;
         return this;
     }

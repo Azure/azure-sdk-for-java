@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -88,7 +88,7 @@ public final class AutocompleteParameters {
      *
      * @return the autocompleteMode value.
      */
-    public AutocompleteMode autocompleteMode() {
+    public AutocompleteMode getAutocompleteMode() {
         return this.autocompleteMode;
     }
 
@@ -102,7 +102,7 @@ public final class AutocompleteParameters {
      * @param autocompleteMode the autocompleteMode value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters autocompleteMode(AutocompleteMode autocompleteMode) {
+    public AutocompleteParameters setAutocompleteMode(AutocompleteMode autocompleteMode) {
         this.autocompleteMode = autocompleteMode;
         return this;
     }
@@ -113,7 +113,7 @@ public final class AutocompleteParameters {
      *
      * @return the filter value.
      */
-    public String filter() {
+    public String getFilter() {
         return this.filter;
     }
 
@@ -124,7 +124,7 @@ public final class AutocompleteParameters {
      * @param filter the filter value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters filter(String filter) {
+    public AutocompleteParameters setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -139,7 +139,7 @@ public final class AutocompleteParameters {
      *
      * @return the useFuzzyMatching value.
      */
-    public Boolean useFuzzyMatching() {
+    public Boolean isUseFuzzyMatching() {
         return this.useFuzzyMatching;
     }
 
@@ -154,7 +154,7 @@ public final class AutocompleteParameters {
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters useFuzzyMatching(Boolean useFuzzyMatching) {
+    public AutocompleteParameters setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
     }
@@ -166,7 +166,7 @@ public final class AutocompleteParameters {
      *
      * @return the highlightPostTag value.
      */
-    public String highlightPostTag() {
+    public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
 
@@ -178,7 +178,7 @@ public final class AutocompleteParameters {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters highlightPostTag(String highlightPostTag) {
+    public AutocompleteParameters setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -190,7 +190,7 @@ public final class AutocompleteParameters {
      *
      * @return the highlightPreTag value.
      */
-    public String highlightPreTag() {
+    public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
 
@@ -202,7 +202,7 @@ public final class AutocompleteParameters {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters highlightPreTag(String highlightPreTag) {
+    public AutocompleteParameters setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -216,7 +216,7 @@ public final class AutocompleteParameters {
      *
      * @return the minimumCoverage value.
      */
-    public Double minimumCoverage() {
+    public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
 
@@ -230,7 +230,7 @@ public final class AutocompleteParameters {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters minimumCoverage(Double minimumCoverage) {
+    public AutocompleteParameters setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -242,7 +242,7 @@ public final class AutocompleteParameters {
      *
      * @return the searchFields value.
      */
-    public List<String> searchFields() {
+    public List<String> getSearchFields() {
         return this.searchFields;
     }
 
@@ -254,7 +254,7 @@ public final class AutocompleteParameters {
      * @param searchFields the searchFields value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters searchFields(List<String> searchFields) {
+    public AutocompleteParameters setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -265,7 +265,7 @@ public final class AutocompleteParameters {
      *
      * @return the top value.
      */
-    public Integer top() {
+    public Integer getTop() {
         return this.top;
     }
 
@@ -276,7 +276,7 @@ public final class AutocompleteParameters {
      * @param top the top value to set.
      * @return the AutocompleteParameters object itself.
      */
-    public AutocompleteParameters top(Integer top) {
+    public AutocompleteParameters setTop(Integer top) {
         this.top = top;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public final class InputFieldMappingEntry {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -54,7 +54,7 @@ public final class InputFieldMappingEntry {
      * @param name the name value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    public InputFieldMappingEntry name(String name) {
+    public InputFieldMappingEntry setName(String name) {
         this.name = name;
         return this;
     }
@@ -64,7 +64,7 @@ public final class InputFieldMappingEntry {
      *
      * @return the source value.
      */
-    public String source() {
+    public String getSource() {
         return this.source;
     }
 
@@ -74,7 +74,7 @@ public final class InputFieldMappingEntry {
      * @param source the source value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    public InputFieldMappingEntry source(String source) {
+    public InputFieldMappingEntry setSource(String source) {
         this.source = source;
         return this;
     }
@@ -85,7 +85,7 @@ public final class InputFieldMappingEntry {
      *
      * @return the sourceContext value.
      */
-    public String sourceContext() {
+    public String getSourceContext() {
         return this.sourceContext;
     }
 
@@ -96,7 +96,7 @@ public final class InputFieldMappingEntry {
      * @param sourceContext the sourceContext value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    public InputFieldMappingEntry sourceContext(String sourceContext) {
+    public InputFieldMappingEntry setSourceContext(String sourceContext) {
         this.sourceContext = sourceContext;
         return this;
     }
@@ -107,7 +107,7 @@ public final class InputFieldMappingEntry {
      *
      * @return the inputs value.
      */
-    public List<InputFieldMappingEntry> inputs() {
+    public List<InputFieldMappingEntry> getInputs() {
         return this.inputs;
     }
 
@@ -118,7 +118,7 @@ public final class InputFieldMappingEntry {
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    public InputFieldMappingEntry inputs(List<InputFieldMappingEntry> inputs) {
+    public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
     }

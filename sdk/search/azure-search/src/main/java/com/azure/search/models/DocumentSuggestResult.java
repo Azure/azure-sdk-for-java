@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public final class DocumentSuggestResult {
      *
      * @return the results value.
      */
-    public List<SuggestResult> results() {
+    public List<SuggestResult> getResults() {
         return this.results;
     }
 
@@ -44,7 +44,7 @@ public final class DocumentSuggestResult {
      *
      * @return the coverage value.
      */
-    public Double coverage() {
+    public Double getCoverage() {
         return this.coverage;
     }
 }

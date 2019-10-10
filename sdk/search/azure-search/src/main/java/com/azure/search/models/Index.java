@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -89,7 +89,7 @@ public final class Index {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -99,7 +99,7 @@ public final class Index {
      * @param name the name value to set.
      * @return the Index object itself.
      */
-    public Index name(String name) {
+    public Index setName(String name) {
         this.name = name;
         return this;
     }
@@ -109,7 +109,7 @@ public final class Index {
      *
      * @return the fields value.
      */
-    public List<Field> fields() {
+    public List<Field> getFields() {
         return this.fields;
     }
 
@@ -119,7 +119,7 @@ public final class Index {
      * @param fields the fields value to set.
      * @return the Index object itself.
      */
-    public Index fields(List<Field> fields) {
+    public Index setFields(List<Field> fields) {
         this.fields = fields;
         return this;
     }
@@ -129,7 +129,7 @@ public final class Index {
      *
      * @return the scoringProfiles value.
      */
-    public List<ScoringProfile> scoringProfiles() {
+    public List<ScoringProfile> getScoringProfiles() {
         return this.scoringProfiles;
     }
 
@@ -139,7 +139,7 @@ public final class Index {
      * @param scoringProfiles the scoringProfiles value to set.
      * @return the Index object itself.
      */
-    public Index scoringProfiles(List<ScoringProfile> scoringProfiles) {
+    public Index setScoringProfiles(List<ScoringProfile> scoringProfiles) {
         this.scoringProfiles = scoringProfiles;
         return this;
     }
@@ -152,7 +152,7 @@ public final class Index {
      *
      * @return the defaultScoringProfile value.
      */
-    public String defaultScoringProfile() {
+    public String getDefaultScoringProfile() {
         return this.defaultScoringProfile;
     }
 
@@ -165,7 +165,7 @@ public final class Index {
      * @param defaultScoringProfile the defaultScoringProfile value to set.
      * @return the Index object itself.
      */
-    public Index defaultScoringProfile(String defaultScoringProfile) {
+    public Index setDefaultScoringProfile(String defaultScoringProfile) {
         this.defaultScoringProfile = defaultScoringProfile;
         return this;
     }
@@ -176,7 +176,7 @@ public final class Index {
      *
      * @return the corsOptions value.
      */
-    public CorsOptions corsOptions() {
+    public CorsOptions getCorsOptions() {
         return this.corsOptions;
     }
 
@@ -187,7 +187,7 @@ public final class Index {
      * @param corsOptions the corsOptions value to set.
      * @return the Index object itself.
      */
-    public Index corsOptions(CorsOptions corsOptions) {
+    public Index setCorsOptions(CorsOptions corsOptions) {
         this.corsOptions = corsOptions;
         return this;
     }
@@ -197,7 +197,7 @@ public final class Index {
      *
      * @return the suggesters value.
      */
-    public List<Suggester> suggesters() {
+    public List<Suggester> getSuggesters() {
         return this.suggesters;
     }
 
@@ -207,7 +207,7 @@ public final class Index {
      * @param suggesters the suggesters value to set.
      * @return the Index object itself.
      */
-    public Index suggesters(List<Suggester> suggesters) {
+    public Index setSuggesters(List<Suggester> suggesters) {
         this.suggesters = suggesters;
         return this;
     }
@@ -217,7 +217,7 @@ public final class Index {
      *
      * @return the analyzers value.
      */
-    public List<Analyzer> analyzers() {
+    public List<Analyzer> getAnalyzers() {
         return this.analyzers;
     }
 
@@ -227,7 +227,7 @@ public final class Index {
      * @param analyzers the analyzers value to set.
      * @return the Index object itself.
      */
-    public Index analyzers(List<Analyzer> analyzers) {
+    public Index setAnalyzers(List<Analyzer> analyzers) {
         this.analyzers = analyzers;
         return this;
     }
@@ -237,7 +237,7 @@ public final class Index {
      *
      * @return the tokenizers value.
      */
-    public List<Tokenizer> tokenizers() {
+    public List<Tokenizer> getTokenizers() {
         return this.tokenizers;
     }
 
@@ -247,7 +247,7 @@ public final class Index {
      * @param tokenizers the tokenizers value to set.
      * @return the Index object itself.
      */
-    public Index tokenizers(List<Tokenizer> tokenizers) {
+    public Index setTokenizers(List<Tokenizer> tokenizers) {
         this.tokenizers = tokenizers;
         return this;
     }
@@ -257,7 +257,7 @@ public final class Index {
      *
      * @return the tokenFilters value.
      */
-    public List<TokenFilter> tokenFilters() {
+    public List<TokenFilter> getTokenFilters() {
         return this.tokenFilters;
     }
 
@@ -267,7 +267,7 @@ public final class Index {
      * @param tokenFilters the tokenFilters value to set.
      * @return the Index object itself.
      */
-    public Index tokenFilters(List<TokenFilter> tokenFilters) {
+    public Index setTokenFilters(List<TokenFilter> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -277,7 +277,7 @@ public final class Index {
      *
      * @return the charFilters value.
      */
-    public List<CharFilter> charFilters() {
+    public List<CharFilter> getCharFilters() {
         return this.charFilters;
     }
 
@@ -287,7 +287,7 @@ public final class Index {
      * @param charFilters the charFilters value to set.
      * @return the Index object itself.
      */
-    public Index charFilters(List<CharFilter> charFilters) {
+    public Index setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
         return this;
     }
@@ -297,7 +297,7 @@ public final class Index {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -307,7 +307,7 @@ public final class Index {
      * @param eTag the eTag value to set.
      * @return the Index object itself.
      */
-    public Index eTag(String eTag) {
+    public Index setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

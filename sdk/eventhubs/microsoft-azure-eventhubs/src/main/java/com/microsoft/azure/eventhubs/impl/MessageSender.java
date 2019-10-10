@@ -449,17 +449,17 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     }
 
     @Override
-    public void onClose(final ErrorCondition condition) {
+    public void onClose(final ErrorCondition condition, final String errorContext) {
         if (this.sendLink != null) {
             this.underlyingFactory.deregisterForConnectionError(this.sendLink);
         }
 
         final Exception completionException = (condition != null && condition.getCondition() != null) ? ExceptionUtil.toException(condition) : null;
-        this.onError(completionException);
+        this.onError(completionException, null);
     }
 
     @Override
-    public void onError(final Exception completionException) {
+    public void onError(final Exception completionException, final String failingLinkName) {
         if (this.getIsClosingOrClosed()) {
             if (this.closeTimer != null && !this.closeTimer.isDone()) {
                 this.closeTimer.cancel(false);
@@ -691,9 +691,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
             @Override
             public void accept(ErrorCondition t, Exception u) {
                 if (t != null) {
-                    MessageSender.this.onError(t.getCondition() != null ? ExceptionUtil.toException(t) : null);
+                    MessageSender.this.onError(t.getCondition() != null ? ExceptionUtil.toException(t) : null, null);
                 } else if (u != null) {
-                    MessageSender.this.onError(u);
+                    MessageSender.this.onError(u, null);
                 }
             }
         };
@@ -726,11 +726,11 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             completionException = error;
                         }
 
-                        MessageSender.this.onError(completionException);
+                        MessageSender.this.onError(completionException, null);
                     }
                 },
             (exception) -> {
-                MessageSender.this.onError(exception);
+                MessageSender.this.onError(exception, null);
             });
     }
 
@@ -955,7 +955,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             }
 
                             ExceptionUtil.completeExceptionally(linkClose, operationTimedout, MessageSender.this);
-                            MessageSender.this.onError((Exception) null);
+                            MessageSender.this.onError((Exception) null, null);
                         }
                     }
                 }, timeout.remaining());

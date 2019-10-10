@@ -156,8 +156,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     void assertContainHotelIds(List<Map<String, Object>> expected, List<SearchResult> actual) {
         Assert.assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
-            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = actual.stream().filter(item -> item.getAdditionalProperties().containsKey("HotelId"))
+            .map(item -> (String) item.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
         List<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
             .map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expectedKeys, actualKeys);
@@ -172,17 +172,17 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     String getSearchResultId(SearchResult searchResult, String idFieldName) {
-        return searchResult.additionalProperties().get(idFieldName).toString();
+        return searchResult.getAdditionalProperties().get(idFieldName).toString();
     }
 
     SearchParameters getSearchParametersForRangeFacets() {
-        return new SearchParameters().facets(Arrays.asList(
+        return new SearchParameters().setFacets(Arrays.asList(
             "Rooms/BaseRate,values:5|8|10",
             "LastRenovationDate,values:2000-01-01T00:00:00Z"));
     }
 
     SearchParameters getSearchParametersForValueFacets() {
-        return new SearchParameters().facets(Arrays.asList(
+        return new SearchParameters().setFacets(Arrays.asList(
             "Rating,count:2,sort:-value",
             "SmokingAllowed,sort:count",
             "Category",
@@ -199,19 +199,19 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             // Create a new SynonymMap
             searchServiceClient.synonymMaps().createOrUpdateWithRestResponseAsync(name,
                 new SynonymMap()
-                    .name(name)
-                    .synonyms(synonyms),
+                    .setName(name)
+                    .setSynonyms(synonyms),
                 Context.NONE)
             .block();
 
             // Attach index field to SynonymMap
             Index hotelsIndex = searchServiceClient.indexes()
                 .getWithRestResponseAsync(HOTELS_INDEX_NAME, Context.NONE)
-                .map(Response::value)
+                .map(Response::getValue)
                 .block();
-            hotelsIndex.fields().stream()
-                .filter(f -> fieldName.equals(f.name()))
-                .findFirst().get().synonymMaps(Collections.singletonList(name));
+            hotelsIndex.getFields().stream()
+                .filter(f -> fieldName.equals(f.getName()))
+                .findFirst().get().setSynonymMaps(Collections.singletonList(name));
 
             // Update the index with the SynonymMap
             searchServiceClient.indexes()
@@ -229,8 +229,8 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     void assertListEqualHotelIds(List<String> expected, List<SearchResult> actual) {
         Assert.assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
-            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = actual.stream().filter(item -> item.getAdditionalProperties().containsKey("HotelId"))
+            .map(item -> (String) item.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expected, actualKeys);
     }
 
@@ -240,7 +240,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
 
         SearchParameters invalidSearchParameters = new SearchParameters()
-            .filter("This is not a valid filter.");
+            .setFilter("This is not a valid filter.");
 
         search("*", invalidSearchParameters, new SearchRequestOptions());
     }
@@ -251,7 +251,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         thrown.expectMessage("Failed to parse query string at line 1, column 8.");
 
         SearchParameters invalidSearchParameters = new SearchParameters()
-            .queryType(QueryType.FULL);
+            .setQueryType(QueryType.FULL);
 
         search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
     }

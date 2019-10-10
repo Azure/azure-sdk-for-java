@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -32,7 +32,7 @@ public final class UniqueTokenFilter extends TokenFilter {
      *
      * @return the onlyOnSamePosition value.
      */
-    public Boolean onlyOnSamePosition() {
+    public Boolean isOnlyOnSamePosition() {
         return this.onlyOnSamePosition;
     }
 
@@ -43,7 +43,7 @@ public final class UniqueTokenFilter extends TokenFilter {
      * @param onlyOnSamePosition the onlyOnSamePosition value to set.
      * @return the UniqueTokenFilter object itself.
      */
-    public UniqueTokenFilter onlyOnSamePosition(Boolean onlyOnSamePosition) {
+    public UniqueTokenFilter setOnlyOnSamePosition(Boolean onlyOnSamePosition) {
         this.onlyOnSamePosition = onlyOnSamePosition;
         return this;
     }

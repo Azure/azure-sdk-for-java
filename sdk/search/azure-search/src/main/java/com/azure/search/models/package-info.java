@@ -5,8 +5,8 @@
 // regenerated.
 
 /**
- * Package containing the data models for SearchServiceRestClient.
- * Client that can be used to manage and query indexes and documents, as well
- * as manage other resources, on an Azure Search service.
+ * Package containing the data models for SearchIndexRestClient.
+ * Client that can be used to query an Azure Search index and upload, merge, or
+ * delete documents.
  */
 package com.azure.search.models;

@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-preview.2 (2019-10-08)
+- Added modules support for JDK 9+.
+
 ## 1.0.0-preview.1 (2019-09-09)
 
 Version 1.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic

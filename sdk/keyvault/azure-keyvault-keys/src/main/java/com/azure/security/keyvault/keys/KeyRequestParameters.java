@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -57,7 +57,7 @@ class KeyRequestParameters {
      *
      * @return the keyType value
      */
-    public KeyType kty() {
+    public KeyType getKty() {
         return this.kty;
     }
 
@@ -67,7 +67,7 @@ class KeyRequestParameters {
      * @param kty the keyType value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters kty(KeyType kty) {
+    public KeyRequestParameters setKty(KeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -77,7 +77,7 @@ class KeyRequestParameters {
      *
      * @return the keySize value
      */
-    public Integer keySize() {
+    public Integer getKeySize() {
         return this.keySize;
     }
 
@@ -87,7 +87,7 @@ class KeyRequestParameters {
      * @param keySize the keySize value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters keySize(Integer keySize) {
+    public KeyRequestParameters setKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -97,7 +97,7 @@ class KeyRequestParameters {
      *
      * @return the keyOps value
      */
-    public List<KeyOperation> keyOps() {
+    public List<KeyOperation> getKeyOps() {
         return this.keyOps;
     }
 
@@ -107,7 +107,7 @@ class KeyRequestParameters {
      * @param keyOps the keyOps value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters keyOps(List<KeyOperation> keyOps) {
+    public KeyRequestParameters setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -117,7 +117,7 @@ class KeyRequestParameters {
      *
      * @return the keyAttributes value
      */
-    public KeyRequestAttributes keyAttributes() {
+    public KeyRequestAttributes getKeyAttributes() {
         return this.keyAttributes;
     }
 
@@ -127,7 +127,7 @@ class KeyRequestParameters {
      * @param keyAttributes the keyAttributes value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters keyAttributes(KeyRequestAttributes keyAttributes) {
+    public KeyRequestParameters setKeyAttributes(KeyRequestAttributes keyAttributes) {
         this.keyAttributes = keyAttributes;
         return this;
     }
@@ -137,7 +137,7 @@ class KeyRequestParameters {
      *
      * @return the tags value
      */
-    public Map<String, String> tags() {
+    public Map<String, String> getTags() {
         return this.tags;
     }
 
@@ -147,7 +147,7 @@ class KeyRequestParameters {
      * @param tags the tags value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters tags(Map<String, String> tags) {
+    public KeyRequestParameters setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -157,7 +157,7 @@ class KeyRequestParameters {
      *
      * @return the curve value
      */
-    public KeyCurveName curve() {
+    public KeyCurveName getCurve() {
         return this.curve;
     }
 
@@ -167,7 +167,7 @@ class KeyRequestParameters {
      * @param curve the curve value to set
      * @return the KeyRequestParameters object itself.
      */
-    public KeyRequestParameters curve(KeyCurveName curve) {
+    public KeyRequestParameters setCurve(KeyCurveName curve) {
         this.curve = curve;
         return this;
     }

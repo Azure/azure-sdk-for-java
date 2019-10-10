@@ -40,7 +40,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         thrown.expectMessage("The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
 
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.ONE_TERM);
+        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("very po", "Invalid suggester", null, params);
         results.iterableByPage().iterator().next();
@@ -63,7 +63,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
 
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
+        params.setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("looking for very po", "sg", null, params);
 
@@ -74,28 +74,28 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
     @Test
     public void canAutocompleteExcludesFieldsNotInSuggester() {
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.ONE_TERM);
-        params.searchFields(Arrays.asList("HotelName"));
+        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
+        params.setSearchFields(Arrays.asList("HotelName"));
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("luxu", "sg", null, params);
         Assert.assertNotNull(results);
         List allItems = results.streamByPage().collect(Collectors.toList());
         // One page, with 0 items
         Assert.assertEquals(1, allItems.size());
-        Assert.assertEquals(0, ((AutoCompletePagedResponse) allItems.get(0)).items().size());
+        Assert.assertEquals(0, ((AutoCompletePagedResponse) allItems.get(0)).getItems().size());
     }
 
     @Test
     public void canAutocompleteFuzzyIsOffByDefault() {
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.ONE_TERM);
+        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("pi", "sg", null, params);
         Assert.assertNotNull(results);
         List allItems = results.streamByPage().collect(Collectors.toList());
         // One page, with 0 items
         Assert.assertEquals(1, allItems.size());
-        Assert.assertEquals(0, ((AutoCompletePagedResponse) allItems.get(0)).items().size());
+        Assert.assertEquals(0, ((AutoCompletePagedResponse) allItems.get(0)).getItems().size());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("point", "police", "polite", "pool", "popular");
 
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.ONE_TERM);
+        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
@@ -118,8 +118,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("very point", "very police", "very polite", "very pool", "very popular");
 
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.ONE_TERM);
-        params.useFuzzyMatching(false);
+        params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
+        params.setUseFuzzyMatching(false);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("very po", "sg", null, params);
 
@@ -142,7 +142,7 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("point motel", "police station", "polite staff", "pool a", "popular hotel");
 
         AutocompleteParameters params = new AutocompleteParameters();
-        params.autocompleteMode(AutocompleteMode.TWO_TERMS);
+        params.setAutocompleteMode(AutocompleteMode.TWO_TERMS);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
@@ -156,10 +156,10 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("<b>pool</b>", "<b>popular</b>");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .filter("HotelName eq 'EconoStay' or HotelName eq 'Fancy Stay'")
-            .highlightPreTag("<b>")
-            .highlightPostTag("</b>");
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setFilter("HotelName eq 'EconoStay' or HotelName eq 'Fancy Stay'")
+            .setHighlightPreTag("<b>")
+            .setHighlightPostTag("</b>");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
@@ -173,8 +173,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .searchFields(Arrays.asList("HotelName", "Description"));
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setSearchFields(Arrays.asList("HotelName", "Description"));
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
@@ -188,9 +188,9 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("modern");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .searchFields(Arrays.asList("HotelName"))
-            .filter("HotelId eq '7'");
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setSearchFields(Arrays.asList("HotelName"))
+            .setFilter("HotelId eq '7'");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
@@ -204,8 +204,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("point", "police");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .top(2);
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setTop(2);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
@@ -219,8 +219,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("polite");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .filter("search.in(HotelId, '6,7')");
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setFilter("search.in(HotelId, '6,7')");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("po", "sg", null, params);
 
@@ -234,8 +234,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("very polite", "very police");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
-            .useFuzzyMatching(true);
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT)
+            .setUseFuzzyMatching(true);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("very polit", "sg", null, params);
 
@@ -249,8 +249,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("model", "modern", "morel", "motel");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .useFuzzyMatching(true);
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setUseFuzzyMatching(true);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
@@ -264,8 +264,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("model suites", "modern architecture", "modern stay", "morel coverings", "motel");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.TWO_TERMS)
-            .useFuzzyMatching(true);
+            .setAutocompleteMode(AutocompleteMode.TWO_TERMS)
+            .setUseFuzzyMatching(true);
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
@@ -279,9 +279,9 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         List<String> expectedQueryPlusText = Arrays.asList("modern", "motel");
 
         AutocompleteParameters params = new AutocompleteParameters()
-            .autocompleteMode(AutocompleteMode.ONE_TERM)
-            .useFuzzyMatching(true)
-            .filter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM)
+            .setUseFuzzyMatching(true)
+            .setFilter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
 
         PagedIterable<AutocompleteItem> results = client.autocomplete("mod", "sg", null, params);
 
@@ -301,8 +301,8 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         Iterator<AutocompleteItem> it = results.stream().iterator();
         while (it.hasNext()) {
             AutocompleteItem item = it.next();
-            Assert.assertEquals(expectedText.get(index), item.text());
-            Assert.assertEquals(expectedQueryPlusText.get(index), item.queryPlusText());
+            Assert.assertEquals(expectedText.get(index), item.getText());
+            Assert.assertEquals(expectedQueryPlusText.get(index), item.getQueryPlusText());
             index++;
         }
     }

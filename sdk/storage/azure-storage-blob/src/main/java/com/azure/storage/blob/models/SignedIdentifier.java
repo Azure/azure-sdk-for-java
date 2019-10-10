@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -31,7 +31,7 @@ public final class SignedIdentifier {
      *
      * @return the id value.
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -41,7 +41,7 @@ public final class SignedIdentifier {
      * @param id the id value to set.
      * @return the SignedIdentifier object itself.
      */
-    public SignedIdentifier id(String id) {
+    public SignedIdentifier setId(String id) {
         this.id = id;
         return this;
     }
@@ -51,7 +51,7 @@ public final class SignedIdentifier {
      *
      * @return the accessPolicy value.
      */
-    public AccessPolicy accessPolicy() {
+    public AccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
 
@@ -61,7 +61,7 @@ public final class SignedIdentifier {
      * @param accessPolicy the accessPolicy value to set.
      * @return the SignedIdentifier object itself.
      */
-    public SignedIdentifier accessPolicy(AccessPolicy accessPolicy) {
+    public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }

@@ -18,8 +18,8 @@ public class GenericDocumentSearchExample {
     public static void SearchWithMultipleResults(){
         SearchIndexAsyncClient searchClient = getSearchClient();
         SearchParameters searchParameters = new SearchParameters();
-        searchParameters.filter("geo.distance(Location,geography'POINT(-122.121513 47.673988)') le 15"); // items having a geo-location distance which is less than 5 km from Redmond
-        searchParameters.facets(Arrays.asList("Tags,sort:value"));
+        searchParameters.setFilter("geo.distance(Location,geography'POINT(-122.121513 47.673988)') le 15"); // items having a geo-location distance which is less than 5 km from Redmond
+        searchParameters.setFacets(Arrays.asList("Tags,sort:value"));
 
         List<SearchResult> results = searchClient
             .search("luxury hotel", searchParameters, new SearchRequestOptions())
@@ -27,8 +27,8 @@ public class GenericDocumentSearchExample {
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(item ->
                 System.out.println(
-                    "Found Hotel: " + item.additionalProperties().get("HotelName")
-                        + " (Rating:"+ item.additionalProperties().get("Rating") + ")"))
+                    "Found Hotel: " + item.getAdditionalProperties().get("HotelName")
+                        + " (Rating:"+ item.getAdditionalProperties().get("Rating") + ")"))
             .doOnComplete(() -> System.out.println("Completed processing"))
             .doOnError(err -> System.out.println("error:"+ err))
             .collectList().block();

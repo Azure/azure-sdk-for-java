@@ -27,7 +27,7 @@ public enum SerializerEncoding {
      * @return the serializer encoding to use for the body
      */
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
-        String mimeContentType = headers.value("Content-Type");
+        String mimeContentType = headers.getValue("Content-Type");
         if (mimeContentType != null) {
             String[] parts = mimeContentType.split(";");
             if (parts[0].equalsIgnoreCase("application/xml") || parts[0].equalsIgnoreCase("text/xml")) {

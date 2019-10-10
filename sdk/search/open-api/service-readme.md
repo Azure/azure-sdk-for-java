@@ -58,4 +58,18 @@ directive:
     return $
     .replace(/(this.getSearchServiceName)/g, "this.client.getSearchServiceName")
     .replace(/(this.getSearchDnsSuffix)/g, "this.client.getSearchDnsSuffix")
+
+# Replace VoidResponse with SimpleResponse<Void>
+- from:
+  - SkillsetsImpl.java
+  - DatasetsImpl.java
+  - DataSourcesImpl.java
+  - IndexersImpl.java
+  - IndexesImpl.java
+  - SynonymMapsImpl.java
+  where: $
+  transform: >-
+    return $
+    .replace(/(import com.azure.core.http.rest.VoidResponse;\n)/g, "")
+    .replace(/(VoidResponse)/g, "SimpleResponse<Void>")
 ```

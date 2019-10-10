@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
      *
      * @return the minGram value.
      */
-    public Integer minGram() {
+    public Integer getMinGram() {
         return this.minGram;
     }
 
@@ -49,7 +49,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
      * @param minGram the minGram value to set.
      * @return the NGramTokenFilterV2 object itself.
      */
-    public NGramTokenFilterV2 minGram(Integer minGram) {
+    public NGramTokenFilterV2 setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
     }
@@ -60,7 +60,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
      *
      * @return the maxGram value.
      */
-    public Integer maxGram() {
+    public Integer getMaxGram() {
         return this.maxGram;
     }
 
@@ -71,7 +71,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
      * @param maxGram the maxGram value to set.
      * @return the NGramTokenFilterV2 object itself.
      */
-    public NGramTokenFilterV2 maxGram(Integer maxGram) {
+    public NGramTokenFilterV2 setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
     }

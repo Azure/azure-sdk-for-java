@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -38,7 +38,7 @@ public class CharFilter {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -50,7 +50,7 @@ public class CharFilter {
      * @param name the name value to set.
      * @return the CharFilter object itself.
      */
-    public CharFilter name(String name) {
+    public CharFilter setName(String name) {
         this.name = name;
         return this;
     }

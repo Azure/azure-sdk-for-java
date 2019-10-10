@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,7 +31,7 @@ public final class OutputFieldMappingEntry {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -41,7 +41,7 @@ public final class OutputFieldMappingEntry {
      * @param name the name value to set.
      * @return the OutputFieldMappingEntry object itself.
      */
-    public OutputFieldMappingEntry name(String name) {
+    public OutputFieldMappingEntry setName(String name) {
         this.name = name;
         return this;
     }
@@ -52,7 +52,7 @@ public final class OutputFieldMappingEntry {
      *
      * @return the targetName value.
      */
-    public String targetName() {
+    public String getTargetName() {
         return this.targetName;
     }
 
@@ -63,7 +63,7 @@ public final class OutputFieldMappingEntry {
      * @param targetName the targetName value to set.
      * @return the OutputFieldMappingEntry object itself.
      */
-    public OutputFieldMappingEntry targetName(String targetName) {
+    public OutputFieldMappingEntry setTargetName(String targetName) {
         this.targetName = targetName;
         return this;
     }

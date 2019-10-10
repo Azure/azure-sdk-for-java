@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -98,7 +98,7 @@ public final class SuggestParameters {
      *
      * @return the filter value.
      */
-    public String filter() {
+    public String getFilter() {
         return this.filter;
     }
 
@@ -109,7 +109,7 @@ public final class SuggestParameters {
      * @param filter the filter value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters filter(String filter) {
+    public SuggestParameters setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -124,7 +124,7 @@ public final class SuggestParameters {
      *
      * @return the useFuzzyMatching value.
      */
-    public Boolean useFuzzyMatching() {
+    public Boolean isUseFuzzyMatching() {
         return this.useFuzzyMatching;
     }
 
@@ -139,7 +139,7 @@ public final class SuggestParameters {
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters useFuzzyMatching(Boolean useFuzzyMatching) {
+    public SuggestParameters setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
     }
@@ -151,7 +151,7 @@ public final class SuggestParameters {
      *
      * @return the highlightPostTag value.
      */
-    public String highlightPostTag() {
+    public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
 
@@ -163,7 +163,7 @@ public final class SuggestParameters {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters highlightPostTag(String highlightPostTag) {
+    public SuggestParameters setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -175,7 +175,7 @@ public final class SuggestParameters {
      *
      * @return the highlightPreTag value.
      */
-    public String highlightPreTag() {
+    public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
 
@@ -187,7 +187,7 @@ public final class SuggestParameters {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters highlightPreTag(String highlightPreTag) {
+    public SuggestParameters setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -201,7 +201,7 @@ public final class SuggestParameters {
      *
      * @return the minimumCoverage value.
      */
-    public Double minimumCoverage() {
+    public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
 
@@ -215,7 +215,7 @@ public final class SuggestParameters {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters minimumCoverage(Double minimumCoverage) {
+    public SuggestParameters setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -232,7 +232,7 @@ public final class SuggestParameters {
      *
      * @return the orderBy value.
      */
-    public List<String> orderBy() {
+    public List<String> getOrderBy() {
         return this.orderBy;
     }
 
@@ -249,7 +249,7 @@ public final class SuggestParameters {
      * @param orderBy the orderBy value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters orderBy(List<String> orderBy) {
+    public SuggestParameters setOrderBy(List<String> orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -261,7 +261,7 @@ public final class SuggestParameters {
      *
      * @return the searchFields value.
      */
-    public List<String> searchFields() {
+    public List<String> getSearchFields() {
         return this.searchFields;
     }
 
@@ -273,7 +273,7 @@ public final class SuggestParameters {
      * @param searchFields the searchFields value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters searchFields(List<String> searchFields) {
+    public SuggestParameters setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -284,7 +284,7 @@ public final class SuggestParameters {
      *
      * @return the select value.
      */
-    public List<String> select() {
+    public List<String> getSelect() {
         return this.select;
     }
 
@@ -295,7 +295,7 @@ public final class SuggestParameters {
      * @param select the select value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters select(List<String> select) {
+    public SuggestParameters setSelect(List<String> select) {
         this.select = select;
         return this;
     }
@@ -306,7 +306,7 @@ public final class SuggestParameters {
      *
      * @return the top value.
      */
-    public Integer top() {
+    public Integer getTop() {
         return this.top;
     }
 
@@ -317,7 +317,7 @@ public final class SuggestParameters {
      * @param top the top value to set.
      * @return the SuggestParameters object itself.
      */
-    public SuggestParameters top(Integer top) {
+    public SuggestParameters setTop(Integer top) {
         this.top = top;
         return this;
     }

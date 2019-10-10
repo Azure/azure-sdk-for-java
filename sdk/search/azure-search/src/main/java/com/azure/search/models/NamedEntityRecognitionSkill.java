@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,7 +45,7 @@ public final class NamedEntityRecognitionSkill extends Skill {
      *
      * @return the categories value.
      */
-    public List<String> categories() {
+    public List<String> getCategories() {
         return this.categories;
     }
 
@@ -55,7 +55,7 @@ public final class NamedEntityRecognitionSkill extends Skill {
      * @param categories the categories value to set.
      * @return the NamedEntityRecognitionSkill object itself.
      */
-    public NamedEntityRecognitionSkill categories(List<String> categories) {
+    public NamedEntityRecognitionSkill setCategories(List<String> categories) {
         this.categories = categories;
         return this;
     }
@@ -67,7 +67,7 @@ public final class NamedEntityRecognitionSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public NamedEntityRecognitionSkillLanguage defaultLanguageCode() {
+    public NamedEntityRecognitionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -79,7 +79,7 @@ public final class NamedEntityRecognitionSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the NamedEntityRecognitionSkill object itself.
      */
-    public NamedEntityRecognitionSkill defaultLanguageCode(NamedEntityRecognitionSkillLanguage defaultLanguageCode) {
+    public NamedEntityRecognitionSkill setDefaultLanguageCode(NamedEntityRecognitionSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }
@@ -90,7 +90,7 @@ public final class NamedEntityRecognitionSkill extends Skill {
      *
      * @return the minimumPrecision value.
      */
-    public Double minimumPrecision() {
+    public Double getMinimumPrecision() {
         return this.minimumPrecision;
     }
 
@@ -101,7 +101,7 @@ public final class NamedEntityRecognitionSkill extends Skill {
      * @param minimumPrecision the minimumPrecision value to set.
      * @return the NamedEntityRecognitionSkill object itself.
      */
-    public NamedEntityRecognitionSkill minimumPrecision(Double minimumPrecision) {
+    public NamedEntityRecognitionSkill setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
     }

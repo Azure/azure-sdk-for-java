@@ -50,7 +50,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         for (EventData event : events) {
             // For each event, perform some sort of processing.
-            System.out.print("Event received: " + event.sequenceNumber());
+            System.out.print("Event received: " + event.getSequenceNumber());
         }
 
         // Gets the next set of events to consume and process.
@@ -59,7 +59,7 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         for (EventData event : nextEvents) {
             // For each event, perform some sort of processing.
-            System.out.print("Event received: " + event.sequenceNumber());
+            System.out.print("Event received: " + event.getSequenceNumber());
         }
     }
 }

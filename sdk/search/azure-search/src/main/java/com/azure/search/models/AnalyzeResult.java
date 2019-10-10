@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public final class AnalyzeResult {
      *
      * @return the tokens value.
      */
-    public List<TokenInfo> tokens() {
+    public List<TokenInfo> getTokens() {
         return this.tokens;
     }
 
@@ -38,7 +38,7 @@ public final class AnalyzeResult {
      * @param tokens the tokens value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult tokens(List<TokenInfo> tokens) {
+    public AnalyzeResult setTokens(List<TokenInfo> tokens) {
         this.tokens = tokens;
         return this;
     }

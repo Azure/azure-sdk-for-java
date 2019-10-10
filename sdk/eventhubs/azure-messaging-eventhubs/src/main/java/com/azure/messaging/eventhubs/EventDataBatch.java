@@ -7,8 +7,8 @@ import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpConstants;
-import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
+import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -140,13 +140,13 @@ public final class EventDataBatch {
     private Message createAmqpMessage(EventData event, String partitionKey) {
         final Message message = Proton.message();
 
-        if (event.properties() != null && !event.properties().isEmpty()) {
-            final ApplicationProperties applicationProperties = new ApplicationProperties(event.properties());
+        if (event.getProperties() != null && !event.getProperties().isEmpty()) {
+            final ApplicationProperties applicationProperties = new ApplicationProperties(event.getProperties());
             message.setApplicationProperties(applicationProperties);
         }
 
-        if (event.systemProperties() != null) {
-            event.systemProperties().forEach((key, value) -> {
+        if (event.getSystemProperties() != null) {
+            event.getSystemProperties().forEach((key, value) -> {
                 if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                     return;
                 }
@@ -216,8 +216,8 @@ public final class EventDataBatch {
             message.setMessageAnnotations(messageAnnotations);
         }
 
-        if (event.body() != null) {
-            message.setBody(new Data(Binary.create(event.body())));
+        if (event.getBody() != null) {
+            message.setBody(new Data(Binary.create(event.getBody())));
         }
 
         return message;

@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
@@ -107,7 +106,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response signalling completion
      */
-    public Response<VoidResponse> deleteDataSourceWithResponse() {
+    public Response<Response<Void>> deleteDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -186,7 +185,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response signalling completion
      */
-    public Response<VoidResponse> deleteIndexerWithResponse() {
+    public Response<Response<Void>> deleteIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -201,7 +200,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response signalling completion
      */
-    public Response<VoidResponse> resetIndexerWithResponse() {
+    public Response<Response<Void>> resetIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -216,7 +215,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response signalling completion
      */
-    public Response<VoidResponse> runIndexerWithResponse() {
+    public Response<Response<Void>> runIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -421,7 +420,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response signalling completion
      */
-    public Response<VoidResponse> deleteSkillsetWithResponse() {
+    public Response<Response<Void>> deleteSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -500,7 +499,7 @@ public class SearchServiceClient {
      * @throws NotImplementedException not implemented
      * @return a response signalling completion
      */
-    public Response<VoidResponse> deleteSynonymMapWithResponse() {
+    public Response<Response<Void>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -54,7 +54,7 @@ public final class FileServiceProperties {
      *
      * @return the hourMetrics value.
      */
-    public Metrics hourMetrics() {
+    public Metrics getHourMetrics() {
         return this.hourMetrics;
     }
 
@@ -65,7 +65,7 @@ public final class FileServiceProperties {
      * @param hourMetrics the hourMetrics value to set.
      * @return the FileServiceProperties object itself.
      */
-    public FileServiceProperties hourMetrics(Metrics hourMetrics) {
+    public FileServiceProperties setHourMetrics(Metrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -76,7 +76,7 @@ public final class FileServiceProperties {
      *
      * @return the minuteMetrics value.
      */
-    public Metrics minuteMetrics() {
+    public Metrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
 
@@ -87,7 +87,7 @@ public final class FileServiceProperties {
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the FileServiceProperties object itself.
      */
-    public FileServiceProperties minuteMetrics(Metrics minuteMetrics) {
+    public FileServiceProperties setMinuteMetrics(Metrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -97,7 +97,7 @@ public final class FileServiceProperties {
      *
      * @return the cors value.
      */
-    public List<CorsRule> cors() {
+    public List<CorsRule> getCors() {
         if (this.cors == null) {
             this.cors = new CorsWrapper(new ArrayList<CorsRule>());
         }
@@ -110,7 +110,7 @@ public final class FileServiceProperties {
      * @param cors the cors value to set.
      * @return the FileServiceProperties object itself.
      */
-    public FileServiceProperties cors(List<CorsRule> cors) {
+    public FileServiceProperties setCors(List<CorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }

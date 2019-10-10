@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -50,7 +50,7 @@ public final class IndexingResult {
      *
      * @return the key value.
      */
-    public String key() {
+    public String getKey() {
         return this.key;
     }
 
@@ -61,7 +61,7 @@ public final class IndexingResult {
      *
      * @return the errorMessage value.
      */
-    public String errorMessage() {
+    public String getErrorMessage() {
         return this.errorMessage;
     }
 
@@ -71,7 +71,7 @@ public final class IndexingResult {
      *
      * @return the succeeded value.
      */
-    public boolean succeeded() {
+    public boolean isSucceeded() {
         return this.succeeded;
     }
 
@@ -84,7 +84,7 @@ public final class IndexingResult {
      *
      * @return the statusCode value.
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return this.statusCode;
     }
 }

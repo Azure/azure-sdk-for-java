@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.implementation.Base64Url;
+import com.azure.core.util.Base64Url;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,7 +32,7 @@ class KeySignRequest {
      *
      * @return the algorithm value
      */
-    public SignatureAlgorithm algorithm() {
+    public SignatureAlgorithm getAlgorithm() {
         return this.algorithm;
     }
 
@@ -42,7 +42,7 @@ class KeySignRequest {
      * @param algorithm the algorithm value to set
      * @return the KeyVerifyParameters object itself.
      */
-    public KeySignRequest algorithm(SignatureAlgorithm algorithm) {
+    public KeySignRequest setAlgorithm(SignatureAlgorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }
@@ -52,7 +52,7 @@ class KeySignRequest {
      *
      * @return the value value
      */
-    public byte[] value() {
+    public byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }
@@ -65,7 +65,7 @@ class KeySignRequest {
      * @param value the value value to set
      * @return the KeySignParameters object itself.
      */
-    public KeySignRequest value(byte[] value) {
+    public KeySignRequest setValue(byte[] value) {
         if (value == null) {
             this.value = null;
         } else {

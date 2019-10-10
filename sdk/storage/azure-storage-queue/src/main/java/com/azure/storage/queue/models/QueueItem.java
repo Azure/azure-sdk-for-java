@@ -4,7 +4,7 @@
 
 package com.azure.storage.queue.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
@@ -32,7 +32,7 @@ public final class QueueItem {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -42,7 +42,7 @@ public final class QueueItem {
      * @param name the name value to set.
      * @return the QueueItem object itself.
      */
-    public QueueItem name(String name) {
+    public QueueItem setName(String name) {
         this.name = name;
         return this;
     }
@@ -52,7 +52,7 @@ public final class QueueItem {
      *
      * @return the metadata value.
      */
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata;
     }
 
@@ -62,7 +62,7 @@ public final class QueueItem {
      * @param metadata the metadata value to set.
      * @return the QueueItem object itself.
      */
-    public QueueItem metadata(Map<String, String> metadata) {
+    public QueueItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

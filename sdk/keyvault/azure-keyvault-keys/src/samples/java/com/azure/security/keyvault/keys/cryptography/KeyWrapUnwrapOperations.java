@@ -43,11 +43,11 @@ public class KeyWrapUnwrapOperations {
 
         // Let's wrap a simple dummy key content.
         KeyWrapResult keyWrapResult = cryptoClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plainText);
-        System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.encryptedKey().length, keyWrapResult.algorithm().toString());
+        System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm().toString());
 
         //Let's unwrap the encrypted key response.
-        KeyUnwrapResult keyUnwrapResult = cryptoClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyWrapResult.encryptedKey());
-        System.out.printf("Returned unwrapped key size is %d bytes\n", keyUnwrapResult.key().length);
+        KeyUnwrapResult keyUnwrapResult = cryptoClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyWrapResult.getEncryptedKey());
+        System.out.printf("Returned unwrapped key size is %d bytes\n", keyUnwrapResult.getKey().length);
 
         // Let's do Key Wrap and Unwrap operations with a symmetric key.
         byte[] symmetrickeyContent = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
@@ -55,8 +55,8 @@ public class KeyWrapUnwrapOperations {
 
         // Convert the symmetric key encoded content to Json Web key.
         JsonWebKey symmetricKey = JsonWebKey.fromAes(new SecretKeySpec(symmetrickeyContent, "AES"))
-            .kty(KeyType.OCT)
-            .keyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
+            .setKty(KeyType.OCT)
+            .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
 
         // Configure the symmetric key in a new crypto client.
         CryptographyClient symmetricKeyCryptoClient = new CryptographyClientBuilder()
@@ -65,10 +65,10 @@ public class KeyWrapUnwrapOperations {
             .buildClient();
 
         KeyWrapResult symKeyWrapResult = symmetricKeyCryptoClient.wrapKey(KeyWrapAlgorithm.A128KW, keyContentToWrap);
-        System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.encryptedKey().length, keyWrapResult.algorithm().toString());
+        System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm().toString());
 
-        KeyUnwrapResult symKeyUnwrapResult = symmetricKeyCryptoClient.unwrapKey(KeyWrapAlgorithm.A128KW, symKeyWrapResult.encryptedKey());
-        System.out.printf("Returned unwrapped key size is %d bytes\n", symKeyUnwrapResult.key().length);
+        KeyUnwrapResult symKeyUnwrapResult = symmetricKeyCryptoClient.unwrapKey(KeyWrapAlgorithm.A128KW, symKeyWrapResult.getEncryptedKey());
+        System.out.printf("Returned unwrapped key size is %d bytes\n", symKeyUnwrapResult.getKey().length);
     }
 }
 

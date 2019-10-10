@@ -5,9 +5,9 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -20,6 +20,7 @@ import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.models.Key;
 
+
 /**
  * The CryptographyClient provides synchronous methods to perform cryptographic operations using asymmetric and
  * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the
@@ -31,7 +32,7 @@ import com.azure.security.keyvault.keys.models.Key;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)
-public final class CryptographyClient {
+public class CryptographyClient {
     private final CryptographyAsyncClient client;
 
     /**
@@ -56,7 +57,7 @@ public final class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Key getKey() {
-        return getKeyWithResponse(Context.NONE).value();
+        return getKeyWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -68,7 +69,7 @@ public final class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -100,7 +101,7 @@ public final class CryptographyClient {
      * @param plaintext The content to be encrypted.
      * @param iv The initialization vector
      * @param authenticationData The authentication data
-     * @return A {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted
+     * @return A {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
@@ -137,7 +138,7 @@ public final class CryptographyClient {
      * @param iv The initialization vector
      * @param authenticationData The authentication data
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted
+     * @return A {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
@@ -169,7 +170,7 @@ public final class CryptographyClient {
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
-     * @return The {@link EncryptResult} whose {@link EncryptResult#cipherText() cipher text} contains the encrypted
+     * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
@@ -297,7 +298,7 @@ public final class CryptographyClient {
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      */
@@ -324,7 +325,7 @@ public final class CryptographyClient {
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
-     * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      */
@@ -409,7 +410,7 @@ public final class CryptographyClient {
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
-     * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted key} contains the wrapped
+     * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted key} contains the wrapped
      *     key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
@@ -435,7 +436,7 @@ public final class CryptographyClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#encryptedKey() encrypted key} contains the wrapped
+     * @return The {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted key} contains the wrapped
      *     key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
@@ -519,7 +520,7 @@ public final class CryptographyClient {
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
-     * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      */
@@ -548,7 +549,7 @@ public final class CryptographyClient {
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link SignResult} whose {@link SignResult#signature() signature} contains the created signature.
+     * @return A {@link SignResult} whose {@link SignResult#getSignature() signature} contains the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      */

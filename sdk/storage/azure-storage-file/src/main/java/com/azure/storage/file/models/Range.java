@@ -4,7 +4,7 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -31,7 +31,7 @@ public final class Range {
      *
      * @return the start value.
      */
-    public long start() {
+    public long getStart() {
         return this.start;
     }
 
@@ -41,7 +41,7 @@ public final class Range {
      * @param start the start value to set.
      * @return the Range object itself.
      */
-    public Range start(long start) {
+    public Range setStart(long start) {
         this.start = start;
         return this;
     }
@@ -51,7 +51,7 @@ public final class Range {
      *
      * @return the end value.
      */
-    public long end() {
+    public long getEnd() {
         return this.end;
     }
 
@@ -61,7 +61,7 @@ public final class Range {
      * @param end the end value to set.
      * @return the Range object itself.
      */
-    public Range end(long end) {
+    public Range setEnd(long end) {
         this.end = end;
         return this;
     }

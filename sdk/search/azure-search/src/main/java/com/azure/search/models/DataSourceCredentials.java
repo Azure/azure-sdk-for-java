@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,7 +26,7 @@ public final class DataSourceCredentials {
      *
      * @return the connectionString value.
      */
-    public String connectionString() {
+    public String getConnectionString() {
         return this.connectionString;
     }
 
@@ -37,7 +37,7 @@ public final class DataSourceCredentials {
      * @param connectionString the connectionString value to set.
      * @return the DataSourceCredentials object itself.
      */
-    public DataSourceCredentials connectionString(String connectionString) {
+    public DataSourceCredentials setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
     }

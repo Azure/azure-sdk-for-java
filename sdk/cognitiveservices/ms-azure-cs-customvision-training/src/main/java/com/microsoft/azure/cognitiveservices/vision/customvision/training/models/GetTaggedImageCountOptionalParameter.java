@@ -24,7 +24,7 @@ public class GetTaggedImageCountOptionalParameter {
      * A list of tags ids to filter the images to count. Defaults to all tags
      * when null.
      */
-    private List<String> tagIds;
+    private List<UUID> tagIds;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -56,7 +56,7 @@ public class GetTaggedImageCountOptionalParameter {
      *
      * @return the tagIds value
      */
-    public List<String> tagIds() {
+    public List<UUID> tagIds() {
         return this.tagIds;
     }
 
@@ -66,7 +66,7 @@ public class GetTaggedImageCountOptionalParameter {
      * @param tagIds the tagIds value to set
      * @return the GetTaggedImageCountOptionalParameter object itself.
      */
-    public GetTaggedImageCountOptionalParameter withTagIds(List<String> tagIds) {
+    public GetTaggedImageCountOptionalParameter withTagIds(List<UUID> tagIds) {
         this.tagIds = tagIds;
         return this;
     }

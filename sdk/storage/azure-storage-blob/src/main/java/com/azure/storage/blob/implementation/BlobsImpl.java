@@ -4,52 +4,51 @@
 
 package com.azure.storage.blob.implementation;
 
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Head;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.Patch;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AccessTierOptional;
-import com.azure.storage.blob.models.AccessTierRequired;
+import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
+import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseResponse;
+import com.azure.storage.blob.implementation.models.BlobsBreakLeaseResponse;
+import com.azure.storage.blob.implementation.models.BlobsChangeLeaseResponse;
+import com.azure.storage.blob.implementation.models.BlobsCopyFromURLResponse;
+import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotResponse;
+import com.azure.storage.blob.implementation.models.BlobsDeleteResponse;
+import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
+import com.azure.storage.blob.implementation.models.BlobsGetAccessControlResponse;
+import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoResponse;
+import com.azure.storage.blob.implementation.models.BlobsGetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.BlobsReleaseLeaseResponse;
+import com.azure.storage.blob.implementation.models.BlobsRenameResponse;
+import com.azure.storage.blob.implementation.models.BlobsRenewLeaseResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetAccessControlResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetHTTPHeadersResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetMetadataResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetTierResponse;
+import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
+import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
+import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobsAbortCopyFromURLResponse;
-import com.azure.storage.blob.models.BlobsAcquireLeaseResponse;
-import com.azure.storage.blob.models.BlobsBreakLeaseResponse;
-import com.azure.storage.blob.models.BlobsChangeLeaseResponse;
-import com.azure.storage.blob.models.BlobsCopyFromURLResponse;
-import com.azure.storage.blob.models.BlobsCreateSnapshotResponse;
-import com.azure.storage.blob.models.BlobsDeleteResponse;
-import com.azure.storage.blob.models.BlobsDownloadResponse;
-import com.azure.storage.blob.models.BlobsGetAccessControlResponse;
-import com.azure.storage.blob.models.BlobsGetAccountInfoResponse;
-import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
-import com.azure.storage.blob.models.BlobsReleaseLeaseResponse;
-import com.azure.storage.blob.models.BlobsRenameResponse;
-import com.azure.storage.blob.models.BlobsRenewLeaseResponse;
-import com.azure.storage.blob.models.BlobsSetAccessControlResponse;
-import com.azure.storage.blob.models.BlobsSetHTTPHeadersResponse;
-import com.azure.storage.blob.models.BlobsSetMetadataResponse;
-import com.azure.storage.blob.models.BlobsSetTierResponse;
-import com.azure.storage.blob.models.BlobsStartCopyFromURLResponse;
-import com.azure.storage.blob.models.BlobsUndeleteResponse;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.DataLakeStorageErrorException;
+import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -172,12 +171,12 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
+        Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsCopyFromURLResponse> copyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-requires-sync") String xMsRequiresSync, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
+        Mono<BlobsCopyFromURLResponse> copyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-requires-sync") String xMsRequiresSync, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({204})
@@ -187,7 +186,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTierRequired tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
+        Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -245,35 +244,35 @@ public final class BlobsImpl {
     public Mono<BlobsDownloadResponse> downloadWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, String range, Boolean rangeGetContentMD5, Boolean rangeGetContentCRC64, String requestId, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -324,35 +323,35 @@ public final class BlobsImpl {
     public Mono<BlobsGetPropertiesResponse> getPropertiesWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, String requestId, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -401,23 +400,23 @@ public final class BlobsImpl {
     public Mono<BlobsDeleteResponse> deleteWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -468,23 +467,23 @@ public final class BlobsImpl {
         final String action = "setAccessControl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -529,23 +528,23 @@ public final class BlobsImpl {
         final String action = "getAccessControl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -611,59 +610,59 @@ public final class BlobsImpl {
     public Mono<BlobsRenameResponse> renameWithRestResponseAsync(String filesystem, String path, String renameSource, Integer timeout, String directoryProperties, String posixPermissions, String posixUmask, String sourceLeaseId, String requestId, DirectoryHttpHeaders directoryHttpHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         String cacheControl = null;
         if (directoryHttpHeaders != null) {
-            cacheControl = directoryHttpHeaders.cacheControl();
+            cacheControl = directoryHttpHeaders.getCacheControl();
         }
         String contentType = null;
         if (directoryHttpHeaders != null) {
-            contentType = directoryHttpHeaders.contentType();
+            contentType = directoryHttpHeaders.getContentType();
         }
         String contentEncoding = null;
         if (directoryHttpHeaders != null) {
-            contentEncoding = directoryHttpHeaders.contentEncoding();
+            contentEncoding = directoryHttpHeaders.getContentEncoding();
         }
         String contentLanguage = null;
         if (directoryHttpHeaders != null) {
-            contentLanguage = directoryHttpHeaders.contentLanguage();
+            contentLanguage = directoryHttpHeaders.getContentLanguage();
         }
         String contentDisposition = null;
         if (directoryHttpHeaders != null) {
-            contentDisposition = directoryHttpHeaders.contentDisposition();
+            contentDisposition = directoryHttpHeaders.getContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -753,47 +752,47 @@ public final class BlobsImpl {
         final String comp = "properties";
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
-            blobCacheControl = blobHTTPHeaders.blobCacheControl();
+            blobCacheControl = blobHTTPHeaders.getBlobCacheControl();
         }
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
-            blobContentType = blobHTTPHeaders.blobContentType();
+            blobContentType = blobHTTPHeaders.getBlobContentType();
         }
         byte[] blobContentMD5 = null;
         if (blobHTTPHeaders != null) {
-            blobContentMD5 = blobHTTPHeaders.blobContentMD5();
+            blobContentMD5 = blobHTTPHeaders.getBlobContentMD5();
         }
         String blobContentEncoding = null;
         if (blobHTTPHeaders != null) {
-            blobContentEncoding = blobHTTPHeaders.blobContentEncoding();
+            blobContentEncoding = blobHTTPHeaders.getBlobContentEncoding();
         }
         String blobContentLanguage = null;
         if (blobHTTPHeaders != null) {
-            blobContentLanguage = blobHTTPHeaders.blobContentLanguage();
+            blobContentLanguage = blobHTTPHeaders.getBlobContentLanguage();
         }
         String blobContentDisposition = null;
         if (blobHTTPHeaders != null) {
-            blobContentDisposition = blobHTTPHeaders.blobContentDisposition();
+            blobContentDisposition = blobHTTPHeaders.getBlobContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -847,35 +846,35 @@ public final class BlobsImpl {
         final String comp = "metadata";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -926,19 +925,19 @@ public final class BlobsImpl {
         final String action = "acquire";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -987,19 +986,19 @@ public final class BlobsImpl {
         final String action = "release";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1048,19 +1047,19 @@ public final class BlobsImpl {
         final String action = "renew";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1111,19 +1110,19 @@ public final class BlobsImpl {
         final String action = "change";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1172,19 +1171,19 @@ public final class BlobsImpl {
         final String action = "break";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1237,35 +1236,35 @@ public final class BlobsImpl {
         final String comp = "snapshot";
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -1286,7 +1285,7 @@ public final class BlobsImpl {
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final AccessTierOptional tier = null;
+        final AccessTier tier = null;
         final RehydratePriority rehydratePriority = null;
         final String requestId = null;
         final String sourceIfMatch = null;
@@ -1320,42 +1319,42 @@ public final class BlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTierOptional tier, RehydratePriority rehydratePriority, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, RehydratePriority rehydratePriority, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, Context context) {
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
@@ -1378,7 +1377,7 @@ public final class BlobsImpl {
     public Mono<BlobsCopyFromURLResponse> copyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final AccessTierOptional tier = null;
+        final AccessTier tier = null;
         final String requestId = null;
         final String xMsRequiresSync = "true";
         final String sourceIfMatch = null;
@@ -1411,43 +1410,43 @@ public final class BlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsCopyFromURLResponse> copyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTierOptional tier, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<BlobsCopyFromURLResponse> copyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, String requestId, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String xMsRequiresSync = "true";
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
@@ -1495,7 +1494,7 @@ public final class BlobsImpl {
         final String copyActionAbortConstant = "abort";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.abortCopyFromURL(containerName, blob, this.client.getUrl(), copyId, timeout, this.client.getVersion(), requestId, comp, copyActionAbortConstant, leaseId, context);
     }
@@ -1511,7 +1510,7 @@ public final class BlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTierRequired tier, Context context) {
+    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, Context context) {
         final Integer timeout = null;
         final RehydratePriority rehydratePriority = null;
         final String requestId = null;
@@ -1535,11 +1534,11 @@ public final class BlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTierRequired tier, Integer timeout, RehydratePriority rehydratePriority, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
+    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, Integer timeout, RehydratePriority rehydratePriority, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
         final String comp = "tier";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.setTier(containerName, blob, this.client.getUrl(), timeout, tier, rehydratePriority, this.client.getVersion(), requestId, comp, leaseId, context);
     }

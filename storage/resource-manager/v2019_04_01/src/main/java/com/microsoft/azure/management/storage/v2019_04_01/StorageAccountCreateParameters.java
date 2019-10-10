@@ -68,9 +68,8 @@ public class StorageAccountCreateParameters {
     private CustomDomain customDomain;
 
     /**
-     * Provides the encryption settings on the account. If left unspecified the
-     * account encryption settings will remain the same. The default setting is
-     * unencrypted.
+     * Not applicable. Azure Storage encryption is enabled for all storage
+     * accounts and cannot be disabled.
      */
     @JsonProperty(value = "properties.encryption")
     private Encryption encryption;
@@ -89,13 +88,14 @@ public class StorageAccountCreateParameters {
     private AccessTier accessTier;
 
     /**
-     * Enables Azure Files AAD Integration for SMB if sets to true.
+     * Provides the identity based authentication settings for Azure Files.
      */
-    @JsonProperty(value = "properties.azureFilesAadIntegration")
-    private Boolean enableAzureFilesAadIntegration;
+    @JsonProperty(value = "properties.azureFilesIdentityBasedAuthentication")
+    private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /**
-     * Allows https traffic only to storage service if sets to true.
+     * Allows https traffic only to storage service if sets to true. The
+     * default value is true since API version 2019-04-01.
      */
     @JsonProperty(value = "properties.supportsHttpsTrafficOnly")
     private Boolean enableHttpsTrafficOnly;
@@ -105,6 +105,13 @@ public class StorageAccountCreateParameters {
      */
     @JsonProperty(value = "properties.isHnsEnabled")
     private Boolean isHnsEnabled;
+
+    /**
+     * Allow large file shares if sets to Enabled. It cannot be disabled once
+     * it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     */
+    @JsonProperty(value = "properties.largeFileSharesState")
+    private LargeFileSharesState largeFileSharesState;
 
     /**
      * Get required. Gets or sets the SKU name.
@@ -227,7 +234,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted.
+     * Get not applicable. Azure Storage encryption is enabled for all storage accounts and cannot be disabled.
      *
      * @return the encryption value
      */
@@ -236,7 +243,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted.
+     * Set not applicable. Azure Storage encryption is enabled for all storage accounts and cannot be disabled.
      *
      * @param encryption the encryption value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -287,27 +294,27 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get enables Azure Files AAD Integration for SMB if sets to true.
+     * Get provides the identity based authentication settings for Azure Files.
      *
-     * @return the enableAzureFilesAadIntegration value
+     * @return the azureFilesIdentityBasedAuthentication value
      */
-    public Boolean enableAzureFilesAadIntegration() {
-        return this.enableAzureFilesAadIntegration;
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
+        return this.azureFilesIdentityBasedAuthentication;
     }
 
     /**
-     * Set enables Azure Files AAD Integration for SMB if sets to true.
+     * Set provides the identity based authentication settings for Azure Files.
      *
-     * @param enableAzureFilesAadIntegration the enableAzureFilesAadIntegration value to set
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration) {
-        this.enableAzureFilesAadIntegration = enableAzureFilesAadIntegration;
+    public StorageAccountCreateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+        this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 
     /**
-     * Get allows https traffic only to storage service if sets to true.
+     * Get allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
      *
      * @return the enableHttpsTrafficOnly value
      */
@@ -316,7 +323,7 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set allows https traffic only to storage service if sets to true.
+     * Set allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
      *
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set
      * @return the StorageAccountCreateParameters object itself.
@@ -343,6 +350,26 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withIsHnsEnabled(Boolean isHnsEnabled) {
         this.isHnsEnabled = isHnsEnabled;
+        return this;
+    }
+
+    /**
+     * Get allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     *
+     * @return the largeFileSharesState value
+     */
+    public LargeFileSharesState largeFileSharesState() {
+        return this.largeFileSharesState;
+    }
+
+    /**
+     * Set allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'.
+     *
+     * @param largeFileSharesState the largeFileSharesState value to set
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+        this.largeFileSharesState = largeFileSharesState;
         return this;
     }
 

@@ -6,23 +6,22 @@
 
 package com.azure.search.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.Indexer;
@@ -67,11 +66,11 @@ public final class IndexersImpl {
     private interface IndexersService {
         @Post("indexers('{indexerName}')/search.reset")
         @ExpectedResponses({204})
-        Mono<VoidResponse> reset(@PathParam("indexerName") String indexerName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<Void>> reset(@PathParam("indexerName") String indexerName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Post("indexers('{indexerName}')/search.run")
         @ExpectedResponses({202})
-        Mono<VoidResponse> run(@PathParam("indexerName") String indexerName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<Void>> run(@PathParam("indexerName") String indexerName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Put("indexers('{indexerName}')")
         @ExpectedResponses({200, 201})
@@ -79,7 +78,7 @@ public final class IndexersImpl {
 
         @Delete("indexers('{indexerName}')")
         @ExpectedResponses({204, 404})
-        Mono<VoidResponse> delete(@PathParam("indexerName") String indexerName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<SimpleResponse<Void>> delete(@PathParam("indexerName") String indexerName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("indexers('{indexerName}')")
         @ExpectedResponses({200})
@@ -107,7 +106,7 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> resetWithRestResponseAsync(String indexerName, Context context) {
+    public Mono<SimpleResponse<Void>> resetWithRestResponseAsync(String indexerName, Context context) {
         final UUID clientRequestId = null;
         return service.reset(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -122,10 +121,10 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> resetWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> resetWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.reset(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -139,7 +138,7 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> runWithRestResponseAsync(String indexerName, Context context) {
+    public Mono<SimpleResponse<Void>> runWithRestResponseAsync(String indexerName, Context context) {
         final UUID clientRequestId = null;
         return service.run(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -154,10 +153,10 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> runWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Void>> runWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.run(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -196,15 +195,15 @@ public final class IndexersImpl {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
-            ifMatch = accessCondition.ifMatch();
+            ifMatch = accessCondition.getIfMatch();
         }
         String ifNoneMatch = null;
         if (accessCondition != null) {
-            ifNoneMatch = accessCondition.ifNoneMatch();
+            ifNoneMatch = accessCondition.getIfNoneMatch();
         }
         return service.createOrUpdate(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), indexer, prefer, this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
@@ -218,7 +217,7 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> deleteWithRestResponseAsync(String indexerName, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String indexerName, Context context) {
         final UUID clientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
@@ -236,18 +235,18 @@ public final class IndexersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> deleteWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
-            ifMatch = accessCondition.ifMatch();
+            ifMatch = accessCondition.getIfMatch();
         }
         String ifNoneMatch = null;
         if (accessCondition != null) {
-            ifNoneMatch = accessCondition.ifNoneMatch();
+            ifNoneMatch = accessCondition.getIfNoneMatch();
         }
         return service.delete(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
@@ -279,7 +278,7 @@ public final class IndexersImpl {
     public Mono<SimpleResponse<Indexer>> getWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.get(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -311,7 +310,7 @@ public final class IndexersImpl {
     public Mono<SimpleResponse<IndexerListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -343,7 +342,7 @@ public final class IndexersImpl {
     public Mono<SimpleResponse<Indexer>> createWithRestResponseAsync(Indexer indexer, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), indexer, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -375,7 +374,7 @@ public final class IndexersImpl {
     public Mono<SimpleResponse<IndexerExecutionInfo>> getStatusWithRestResponseAsync(String indexerName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.getStatus(indexerName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }

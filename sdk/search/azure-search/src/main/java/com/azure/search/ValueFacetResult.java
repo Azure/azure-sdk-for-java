@@ -14,8 +14,8 @@ public class ValueFacetResult {
      * @param facetResult facet result object
      */
     public ValueFacetResult(FacetResult facetResult) {
-        this.count = facetResult.count();
-        this.value = facetResult.additionalProperties().get("value");
+        this.count = facetResult.getCount();
+        this.value = facetResult.getAdditionalProperties().get("value");
     }
 
     /**

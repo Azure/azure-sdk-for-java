@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -49,7 +49,7 @@ public class Tokenizer {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -61,7 +61,7 @@ public class Tokenizer {
      * @param name the name value to set.
      * @return the Tokenizer object itself.
      */
-    public Tokenizer name(String name) {
+    public Tokenizer setName(String name) {
         this.name = name;
         return this;
     }

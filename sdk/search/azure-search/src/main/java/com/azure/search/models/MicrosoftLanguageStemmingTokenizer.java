@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -60,7 +60,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
      *
      * @return the maxTokenLength value.
      */
-    public Integer maxTokenLength() {
+    public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
 
@@ -74,7 +74,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the MicrosoftLanguageStemmingTokenizer object itself.
      */
-    public MicrosoftLanguageStemmingTokenizer maxTokenLength(Integer maxTokenLength) {
+    public MicrosoftLanguageStemmingTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
     }
@@ -98,7 +98,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
      * @param isSearchTokenizer the isSearchTokenizer value to set.
      * @return the MicrosoftLanguageStemmingTokenizer object itself.
      */
-    public MicrosoftLanguageStemmingTokenizer isSearchTokenizer(Boolean isSearchTokenizer) {
+    public MicrosoftLanguageStemmingTokenizer setIsSearchTokenizer(Boolean isSearchTokenizer) {
         this.isSearchTokenizer = isSearchTokenizer;
         return this;
     }
@@ -116,7 +116,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
      *
      * @return the language value.
      */
-    public MicrosoftStemmingTokenizerLanguage language() {
+    public MicrosoftStemmingTokenizerLanguage getLanguage() {
         return this.language;
     }
 
@@ -134,7 +134,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends Tokenizer {
      * @param language the language value to set.
      * @return the MicrosoftLanguageStemmingTokenizer object itself.
      */
-    public MicrosoftLanguageStemmingTokenizer language(MicrosoftStemmingTokenizerLanguage language) {
+    public MicrosoftLanguageStemmingTokenizer setLanguage(MicrosoftStemmingTokenizerLanguage language) {
         this.language = language;
         return this;
     }

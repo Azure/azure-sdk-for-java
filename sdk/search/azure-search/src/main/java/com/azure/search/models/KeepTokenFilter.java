@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @return the keepWords value.
      */
-    public List<String> keepWords() {
+    public List<String> getKeepWords() {
         return this.keepWords;
     }
 
@@ -48,7 +48,7 @@ public final class KeepTokenFilter extends TokenFilter {
      * @param keepWords the keepWords value to set.
      * @return the KeepTokenFilter object itself.
      */
-    public KeepTokenFilter keepWords(List<String> keepWords) {
+    public KeepTokenFilter setKeepWords(List<String> keepWords) {
         this.keepWords = keepWords;
         return this;
     }
@@ -59,7 +59,7 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @return the lowerCaseKeepWords value.
      */
-    public Boolean lowerCaseKeepWords() {
+    public Boolean isLowerCaseKeepWords() {
         return this.lowerCaseKeepWords;
     }
 
@@ -70,7 +70,7 @@ public final class KeepTokenFilter extends TokenFilter {
      * @param lowerCaseKeepWords the lowerCaseKeepWords value to set.
      * @return the KeepTokenFilter object itself.
      */
-    public KeepTokenFilter lowerCaseKeepWords(Boolean lowerCaseKeepWords) {
+    public KeepTokenFilter setLowerCaseKeepWords(Boolean lowerCaseKeepWords) {
         this.lowerCaseKeepWords = lowerCaseKeepWords;
         return this;
     }

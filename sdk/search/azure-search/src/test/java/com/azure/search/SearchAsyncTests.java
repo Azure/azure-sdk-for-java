@@ -51,8 +51,8 @@ public class SearchAsyncTests extends SearchTestBase {
         hotels = createHotelsList(100);
         uploadDocuments(client, hotels);
 
-        SearchParameters searchParameters = new SearchParameters().select(Collections.singletonList("HotelId"))
-            .orderBy(Collections.singletonList("HotelId asc"));
+        SearchParameters searchParameters = new SearchParameters().setSelect(Collections.singletonList("HotelId"))
+            .setOrderBy(Collections.singletonList("HotelId asc"));
         PagedFlux<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
 
         List<String> expectedId = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
@@ -62,14 +62,14 @@ public class SearchAsyncTests extends SearchTestBase {
         // https://docs.microsoft.com/en-us/rest/api/searchservice/search-documents#top-optional
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
-                Assert.assertEquals(50, firstPage.value().size());
-                assertListEqualHotelIds(expectedId.subList(0, 50), firstPage.value());
-                Assert.assertNotNull(firstPage.nextLink());
+                Assert.assertEquals(50, firstPage.getValue().size());
+                assertListEqualHotelIds(expectedId.subList(0, 50), firstPage.getValue());
+                Assert.assertNotNull(firstPage.getNextLink());
             })
             .assertNext(nextPage -> {
-                Assert.assertEquals(50, nextPage.value().size());
-                assertListEqualHotelIds(expectedId.subList(50, 100), nextPage.value());
-                Assert.assertNull(nextPage.nextLink());
+                Assert.assertEquals(50, nextPage.getValue().size());
+                assertListEqualHotelIds(expectedId.subList(50, 100), nextPage.getValue());
+                Assert.assertNull(nextPage.getNextLink());
             }).verifyComplete();
     }
 
@@ -82,9 +82,9 @@ public class SearchAsyncTests extends SearchTestBase {
         hotels = createHotelsList(2000);
         uploadDocuments(client, hotels);
 
-        SearchParameters searchParameters = new SearchParameters().top(2000).select(
+        SearchParameters searchParameters = new SearchParameters().setTop(2000).setSelect(
             Collections.singletonList("HotelId"))
-            .orderBy(Collections.singletonList("HotelId asc"));
+            .setOrderBy(Collections.singletonList("HotelId asc"));
         PagedFlux<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
 
         List<String> expectedId = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
@@ -94,14 +94,14 @@ public class SearchAsyncTests extends SearchTestBase {
         // https://docs.microsoft.com/en-us/rest/api/searchservice/search-documents#top-optional
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
-                Assert.assertEquals(1000, firstPage.value().size());
-                assertListEqualHotelIds(expectedId.subList(0, 1000), firstPage.value());
-                Assert.assertNotNull(firstPage.nextLink());
+                Assert.assertEquals(1000, firstPage.getValue().size());
+                assertListEqualHotelIds(expectedId.subList(0, 1000), firstPage.getValue());
+                Assert.assertNotNull(firstPage.getNextLink());
             })
             .assertNext(nextPage -> {
-                Assert.assertEquals(1000, nextPage.value().size());
-                assertListEqualHotelIds(expectedId.subList(1000, 2000), nextPage.value());
-                Assert.assertNull(nextPage.nextLink());
+                Assert.assertEquals(1000, nextPage.getValue().size());
+                assertListEqualHotelIds(expectedId.subList(1000, 2000), nextPage.getValue());
+                Assert.assertNull(nextPage.getNextLink());
             }).verifyComplete();
     }
 
@@ -133,17 +133,17 @@ public class SearchAsyncTests extends SearchTestBase {
 
         // Ask JUST for the following two fields
         SearchParameters sp = new SearchParameters();
-        sp.searchFields(new LinkedList<>(Arrays.asList("HotelName", "Category")));
-        sp.select(new LinkedList<>(Arrays.asList("HotelName", "Rating", "Address/City", "Rooms/Type")));
+        sp.setSearchFields(new LinkedList<>(Arrays.asList("HotelName", "Category")));
+        sp.setSelect(new LinkedList<>(Arrays.asList("HotelName", "Rating", "Address/City", "Rooms/Type")));
 
         PagedFlux<SearchResult> results = client.search("fancy luxury secret", sp, new SearchRequestOptions());
         Assert.assertNotNull(results);
 
         StepVerifier.create(results.byPage()).assertNext(res -> {
             // expecting to get 2 documents back
-            Assert.assertEquals(2, res.items().size());
-            Assert.assertEquals(expectedHotel1, dropUnnecessaryFields(res.items().get(0).additionalProperties()));
-            Assert.assertEquals(expectedHotel2, dropUnnecessaryFields(res.items().get(1).additionalProperties()));
+            Assert.assertEquals(2, res.getItems().size());
+            Assert.assertEquals(expectedHotel1, dropUnnecessaryFields(res.getItems().get(0).getAdditionalProperties()));
+            Assert.assertEquals(expectedHotel2, dropUnnecessaryFields(res.getItems().get(1).getAdditionalProperties()));
         }).verifyComplete();
     }
 
@@ -154,13 +154,13 @@ public class SearchAsyncTests extends SearchTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchParameters parameters = new SearchParameters().top(3).skip(0).orderBy(
+        SearchParameters parameters = new SearchParameters().setTop(3).setSkip(0).setOrderBy(
             Collections.singletonList("HotelId"));
 
         Flux<SearchResult> results = client.search("*", parameters, new SearchRequestOptions()).log();
         assertHotelIdSequenceEqual(Arrays.asList("1", "10", "2"), results);
 
-        parameters.skip(3);
+        parameters.setSkip(3);
         results = client.search("*", parameters, new SearchRequestOptions());
         assertHotelIdSequenceEqual(Arrays.asList("3", "4", "5"), results);
     }
@@ -172,19 +172,20 @@ public class SearchAsyncTests extends SearchTestBase {
 
         List<Map<String, Object>> expectedDocsList =
             uploadDocumentsJson(client, MODEL_WITH_VALUE_TYPES_DOCS_JSON)
-                .stream().filter(d -> !d.get("Key").equals("789")).collect(
-                Collectors.toList());
+                .stream()
+                .filter(d -> !d.get("Key").equals("789"))
+                .collect(Collectors.toList());
 
         SearchParameters searchParameters = new SearchParameters()
-            .filter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
+            .setFilter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
 
         Flux<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions()).log();
         Assert.assertNotNull(results);
         StepVerifier.create(results)
             .assertNext(
-                res -> Assert.assertEquals(dropUnnecessaryFields(res.additionalProperties()), expectedDocsList.get(0)))
+                res -> Assert.assertEquals(dropUnnecessaryFields(res.getAdditionalProperties()), expectedDocsList.get(0)))
             .assertNext(
-                res -> Assert.assertEquals(dropUnnecessaryFields(res.additionalProperties()), expectedDocsList.get(1)))
+                res -> Assert.assertEquals(dropUnnecessaryFields(res.getAdditionalProperties()), expectedDocsList.get(1)))
             .verifyComplete();
     }
 
@@ -195,14 +196,14 @@ public class SearchAsyncTests extends SearchTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        PagedFlux<SearchResult> results = client.search("*", new SearchParameters().filter("Rating lt 4"),
+        PagedFlux<SearchResult> results = client.search("*", new SearchParameters().setFilter("Rating lt 4"),
             new SearchRequestOptions());
         Assert.assertNotNull(results);
         StepVerifier.create(results.byPage()).assertNext(res -> {
-            Assert.assertTrue(res.items().size() >= 2);
-            SearchResult firstResult = res.items().get(0);
-            SearchResult secondResult = res.items().get(1);
-            Assert.assertTrue(firstResult.score() <= secondResult.score());
+            Assert.assertTrue(res.getItems().size() >= 2);
+            SearchResult firstResult = res.getItems().get(0);
+            SearchResult secondResult = res.getItems().get(1);
+            Assert.assertTrue(firstResult.getScore() <= secondResult.getScore());
         }).verifyComplete();
     }
 
@@ -216,7 +217,7 @@ public class SearchAsyncTests extends SearchTestBase {
         List<String> orderByValues = Arrays.asList("Rating desc", "LastRenovationDate asc");
         List<String> expected = Arrays.asList("1", "9", "3", "4", "5", "10", "2", "6", "7", "8");
 
-        Flux<SearchResult> results = client.search("*", new SearchParameters().orderBy(orderByValues),
+        Flux<SearchResult> results = client.search("*", new SearchParameters().setOrderBy(orderByValues),
             new SearchRequestOptions()).log();
         assertHotelIdSequenceEqual(expected, results);
     }
@@ -229,15 +230,18 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters()
-            .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
+            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
         PagedFlux<SearchResult> results = client.search("*", searchParameters, new SearchRequestOptions());
 
         Assert.assertNotNull(results);
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
-                Assert.assertEquals(2, res.items().size());
-                List<String> actualKeys = res.items().stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
-                    .map(item -> getSearchResultId(item, "HotelId")).collect(Collectors.toList());
+                Assert.assertEquals(2, res.getItems().size());
+                List<String> actualKeys = res.getItems()
+                    .stream()
+                    .filter(item -> item.getAdditionalProperties().containsKey("HotelId"))
+                    .map(item -> getSearchResultId(item, "HotelId"))
+                    .collect(Collectors.toList());
                 Assert.assertEquals(Arrays.asList("1", "5"), actualKeys);
             }).verifyComplete();
     }
@@ -255,7 +259,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
-                assertContainHotelIds(hotels, res.items());
+                assertContainHotelIds(hotels, res.getItems());
                 Map<String, List<FacetResult>> facets = ((SearchPagedResponse) res).facets();
                 Assert.assertNotNull(facets);
                 List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
@@ -278,7 +282,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
-                assertContainHotelIds(hotels, res.items());
+                assertContainHotelIds(hotels, res.getItems());
                 Map<String, List<FacetResult>> facets = ((SearchPagedResponse) res).facets();
                 Assert.assertNotNull(facets);
 
@@ -346,16 +350,16 @@ public class SearchAsyncTests extends SearchTestBase {
         expectedResult.put("HotelName", "Roach Motel");
         expectedResult.put("Rating", 1);
 
-        SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL)
-            .select(Arrays.asList("HotelName", "Rating"));
+        SearchParameters searchParameters = new SearchParameters().setQueryType(QueryType.FULL)
+            .setSelect(Arrays.asList("HotelName", "Rating"));
         PagedFlux<SearchResult> results = client
             .search("HotelName:roch~", searchParameters, new SearchRequestOptions());
 
         Assert.assertNotNull(results);
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
-                Assert.assertEquals(1, res.items().size());
-                Assert.assertEquals(expectedResult, dropUnnecessaryFields(res.items().get(0).additionalProperties()));
+                Assert.assertEquals(1, res.getItems().size());
+                Assert.assertEquals(expectedResult, dropUnnecessaryFields(res.getItems().get(0).getAdditionalProperties()));
             }).verifyComplete();
     }
 
@@ -376,12 +380,12 @@ public class SearchAsyncTests extends SearchTestBase {
                 Assert.assertNull(response.count());
                 Assert.assertNull(response.coverage());
                 Assert.assertNull(response.facets());
-                Assert.assertNotNull(response.items());
+                Assert.assertNotNull(response.getItems());
 
-                response.items().forEach(item -> {
-                    Assert.assertEquals(1, item.score(), 0);
-                    Assert.assertNull(item.highlights());
-                    actualResults.add(dropUnnecessaryFields(item.additionalProperties()));
+                response.getItems().forEach(item -> {
+                    Assert.assertEquals(1, item.getScore(), 0);
+                    Assert.assertNull(item.getHighlights());
+                    actualResults.add(dropUnnecessaryFields(item.getAdditionalProperties()));
                 });
             }).verifyComplete();
 
@@ -406,12 +410,12 @@ public class SearchAsyncTests extends SearchTestBase {
                 Assert.assertNull(response.count());
                 Assert.assertNull(response.coverage());
                 Assert.assertNull(response.facets());
-                Assert.assertNotNull(response.items());
+                Assert.assertNotNull(response.getItems());
 
-                response.items().forEach(item -> {
-                    Assert.assertEquals(1, item.score(), 0);
-                    Assert.assertNull(item.highlights());
-                    actualResults.add(item.additionalProperties().as(Hotel.class));
+                response.getItems().forEach(item -> {
+                    Assert.assertEquals(1, item.getScore(), 0);
+                    Assert.assertNull(item.getHighlights());
+                    actualResults.add(item.getAdditionalProperties().as(Hotel.class));
                 });
             }).verifyComplete();
 
@@ -453,9 +457,9 @@ public class SearchAsyncTests extends SearchTestBase {
         PagedFlux<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
         StepVerifier.create(results.byPage()).assertNext(res -> {
-            Assert.assertEquals(2, res.items().size());
-            Assert.assertEquals(doc1, res.items().get(0).additionalProperties().as(NonNullableModel.class));
-            Assert.assertEquals(doc2, res.items().get(1).additionalProperties().as(NonNullableModel.class));
+            Assert.assertEquals(2, res.getItems().size());
+            Assert.assertEquals(doc1, res.getItems().get(0).getAdditionalProperties().as(NonNullableModel.class));
+            Assert.assertEquals(doc2, res.getItems().get(1).getAdditionalProperties().as(NonNullableModel.class));
         }).verifyComplete();
     }
 
@@ -471,7 +475,7 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchResult> results = client.search("Fancy", new SearchParameters(), new SearchRequestOptions()).log();
         Assert.assertNotNull(results);
         StepVerifier.create(results).assertNext(res -> {
-            Date actual = res.additionalProperties().as(Hotel.class).lastRenovationDate();
+            Date actual = res.getAdditionalProperties().as(Hotel.class).lastRenovationDate();
             Assert.assertEquals(expected, actual);
         }).verifyComplete();
     }
@@ -487,16 +491,16 @@ public class SearchAsyncTests extends SearchTestBase {
         prepareHotelsSynonymMap("names", "luxury,fancy", fieldName);
 
         SearchParameters searchParameters = new SearchParameters()
-            .queryType(QueryType.FULL)
-            .searchFields(Collections.singletonList(fieldName))
-            .select(Arrays.asList("HotelName", "Rating"));
+            .setQueryType(QueryType.FULL)
+            .setSearchFields(Collections.singletonList(fieldName))
+            .setSelect(Arrays.asList("HotelName", "Rating"));
 
         Flux<SearchResult> results = client.search("luxury", searchParameters, new SearchRequestOptions()).log();
         Assert.assertNotNull(results);
 
         StepVerifier.create(results)
             .assertNext(res -> {
-                Hotel hotel = res.additionalProperties().as(Hotel.class);
+                Hotel hotel = res.getAdditionalProperties().as(Hotel.class);
                 Assert.assertEquals(5, hotel.rating(), 0);
                 Assert.assertEquals("Fancy Stay", hotel.hotelName());
             }).verifyComplete();
@@ -510,7 +514,7 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Flux<SearchResult> response = client
-            .search("Cheapest hotel", new SearchParameters().queryType(SIMPLE).searchMode(ALL),
+            .search("Cheapest hotel", new SearchParameters().setQueryType(SIMPLE).setSearchMode(ALL),
                 new SearchRequestOptions()).log();
         StepVerifier.create(response)
             .assertNext(res -> Assert.assertEquals("2", getSearchResultId(res, "HotelId"))).verifyComplete();
@@ -535,7 +539,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         Flux<PagedResponse<SearchResult>> results = client
-            .search("*", new SearchParameters().includeTotalResultCount(true), new SearchRequestOptions()).byPage();
+            .search("*", new SearchParameters().setIncludeTotalResultCount(true), new SearchRequestOptions()).byPage();
         StepVerifier.create(results)
             .assertNext(res -> Assert.assertEquals(hotels.size(), ((SearchPagedResponse) res).count().intValue()))
             .verifyComplete();
@@ -553,15 +557,15 @@ public class SearchAsyncTests extends SearchTestBase {
         expectedHotel.put("Rating", 1);
 
         SearchParameters searchParameters = new SearchParameters()
-            .queryType(QueryType.FULL)
-            .select(Arrays.asList("HotelName", "Rating"));
+            .setQueryType(QueryType.FULL)
+            .setSelect(Arrays.asList("HotelName", "Rating"));
 
         Flux<SearchResult> results = client
             .search("HotelName:/.*oach.*\\/?/", searchParameters, new SearchRequestOptions()).log();
 
         Assert.assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> Assert.assertEquals(dropUnnecessaryFields(res.additionalProperties()), expectedHotel))
+            .assertNext(res -> Assert.assertEquals(dropUnnecessaryFields(res.getAdditionalProperties()), expectedHotel))
             .verifyComplete();
     }
 
@@ -572,7 +576,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchParameters searchParameters = new SearchParameters().queryType(QueryType.FULL);
+        SearchParameters searchParameters = new SearchParameters().setQueryType(QueryType.FULL);
 
         PagedFlux<SearchResult> results = client
             .search(
@@ -580,7 +584,7 @@ public class SearchAsyncTests extends SearchTestBase {
                 new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        StepVerifier.create(results.byPage()).assertNext(res -> Assert.assertEquals(0, res.items().size()))
+        StepVerifier.create(results.byPage()).assertNext(res -> Assert.assertEquals(0, res.getItems().size()))
             .verifyComplete();
     }
 
@@ -592,9 +596,9 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchParameters searchParameters = new SearchParameters()
-            .scoringProfile("nearest")
-            .scoringParameters(Collections.singletonList("myloc-'-122','49'"))
-            .filter("Rating eq 5 or Rating eq 1");
+            .setScoringProfile("nearest")
+            .setScoringParameters(Collections.singletonList("myloc-'-122','49'"))
+            .setFilter("Rating eq 5 or Rating eq 1");
 
         Flux<SearchResult> response = client.search("hotel", searchParameters, new SearchRequestOptions()).log();
         assertHotelIdSequenceEqual(Arrays.asList("2", "1"), response);
@@ -608,7 +612,7 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Flux<PagedResponse<SearchResult>> results = client
-            .search("*", new SearchParameters().minimumCoverage(50.0), new SearchRequestOptions()).byPage();
+            .search("*", new SearchParameters().setMinimumCoverage(50.0), new SearchRequestOptions()).byPage();
         Assert.assertNotNull(results);
 
         StepVerifier.create(results)
@@ -628,10 +632,10 @@ public class SearchAsyncTests extends SearchTestBase {
         String category = "Category";
 
         SearchParameters sp = new SearchParameters();
-        sp.filter("Rating eq 5");
-        sp.highlightPreTag("<b>");
-        sp.highlightPostTag("</b>");
-        sp.highlightFields(Arrays.asList(category, description));
+        sp.setFilter("Rating eq 5");
+        sp.setHighlightPreTag("<b>");
+        sp.setHighlightPostTag("</b>");
+        sp.setHighlightFields(Arrays.asList(category, description));
 
         //act
         PagedFlux<SearchResult> results = client.search("luxury hotel", sp, new SearchRequestOptions());
@@ -640,8 +644,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Assert.assertNotNull(results);
         StepVerifier.create(results.byPage()).assertNext(res -> {
             // sanity
-            Assert.assertEquals(1, res.items().size());
-            Map<String, List<String>> highlights = res.items().get(0).highlights();
+            Assert.assertEquals(1, res.getItems().size());
+            Map<String, List<String>> highlights = res.getItems().get(0).getHighlights();
             Assert.assertNotNull(highlights);
             Assert.assertEquals(2, highlights.keySet().size());
             Assert.assertTrue(highlights.containsKey(description));
@@ -673,8 +677,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
     private void assertHotelIdsEqual(List<String> expected, List<SearchResult> results) {
         Assert.assertNotNull(results);
-        List<String> actualKeys = results.stream().filter(item -> item.additionalProperties().containsKey("HotelId"))
-            .map(item -> (String) item.additionalProperties().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = results.stream().filter(item -> item.getAdditionalProperties().containsKey("HotelId"))
+            .map(item -> (String) item.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
         Assert.assertEquals(expected, actualKeys);
     }
 

@@ -411,22 +411,22 @@ public class NettyFluxTests {
     private <T> Mono<Response<T>> getMonoRestResponse(T value) {
         Response<T> response = new Response<T>() {
             @Override
-            public int statusCode() {
+            public int getStatusCode() {
                 return 200;
             }
 
             @Override
-            public HttpHeaders headers() {
+            public HttpHeaders getHeaders() {
                 return null;
             }
 
             @Override
-            public HttpRequest request() {
+            public HttpRequest getRequest() {
                 return null;
             }
 
             @Override
-            public T value() {
+            public T getValue() {
                 return value;
             }
         };

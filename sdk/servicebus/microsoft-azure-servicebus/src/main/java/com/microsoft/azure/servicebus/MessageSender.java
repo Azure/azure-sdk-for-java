@@ -96,7 +96,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
                         postSenderCreationFuture.complete(null);
                     } else {
                         Throwable cause = ExceptionUtil.extractAsyncCompletionCause(coreSenderCreationEx);
-                        TRACE_LOGGER.error("Creating MessageSender to entity '{}' failed", this.entityPath, cause);
+                        TRACE_LOGGER.info("Creating MessageSender to entity '{}' failed", this.entityPath, cause);
                         if (this.ownsMessagingFactory) {
                             // Close factory
                             this.messagingFactory.closeAsync();

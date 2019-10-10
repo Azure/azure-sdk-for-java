@@ -150,16 +150,16 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     }
 
     protected void assertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
-        Assert.assertEquals(result.key(), key);
-        Assert.assertEquals(result.statusCode(), statusCode);
-        Assert.assertTrue(result.succeeded());
+        Assert.assertEquals(result.getKey(), key);
+        Assert.assertEquals(result.getStatusCode(), statusCode);
+        Assert.assertTrue(result.isSucceeded());
     }
 
     protected void assertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
-        Assert.assertEquals(result.key(), key);
-        Assert.assertEquals(result.statusCode(), statusCode);
-        Assert.assertEquals(result.errorMessage(), errorMessage);
-        Assert.assertFalse(result.succeeded());
+        Assert.assertEquals(result.getKey(), key);
+        Assert.assertEquals(result.getStatusCode(), statusCode);
+        Assert.assertEquals(result.getErrorMessage(), errorMessage);
+        Assert.assertFalse(result.isSucceeded());
     }
 
     @Test
@@ -193,10 +193,10 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     public abstract void canIndexAndAccessResponse();
 
     protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
-        Assert.assertEquals(key, result.key());
-        Assert.assertTrue(result.succeeded());
-        Assert.assertNull(result.errorMessage());
-        Assert.assertEquals(expectedStatusCode, result.statusCode());
+        Assert.assertEquals(key, result.getKey());
+        Assert.assertTrue(result.isSucceeded());
+        Assert.assertNull(result.getErrorMessage());
+        Assert.assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
     protected List<Hotel> getBoundaryValues() throws ParseException {

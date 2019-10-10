@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -48,7 +48,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      *
      * @return the commonWords value.
      */
-    public List<String> commonWords() {
+    public List<String> getCommonWords() {
         return this.commonWords;
     }
 
@@ -58,7 +58,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param commonWords the commonWords value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    public CommonGramTokenFilter commonWords(List<String> commonWords) {
+    public CommonGramTokenFilter setCommonWords(List<String> commonWords) {
         this.commonWords = commonWords;
         return this;
     }
@@ -69,7 +69,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean ignoreCase() {
+    public Boolean isIgnoreCase() {
         return this.ignoreCase;
     }
 
@@ -80,7 +80,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param ignoreCase the ignoreCase value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    public CommonGramTokenFilter ignoreCase(Boolean ignoreCase) {
+    public CommonGramTokenFilter setIgnoreCase(Boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
         return this;
     }
@@ -93,7 +93,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      *
      * @return the useQueryMode value.
      */
-    public Boolean useQueryMode() {
+    public Boolean isUseQueryMode() {
         return this.useQueryMode;
     }
 
@@ -106,7 +106,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * @param useQueryMode the useQueryMode value to set.
      * @return the CommonGramTokenFilter object itself.
      */
-    public CommonGramTokenFilter useQueryMode(Boolean useQueryMode) {
+    public CommonGramTokenFilter setUseQueryMode(Boolean useQueryMode) {
         this.useQueryMode = useQueryMode;
         return this;
     }

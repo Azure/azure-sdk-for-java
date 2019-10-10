@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.search.Document;
 /**
@@ -33,7 +33,7 @@ public final class SuggestResult {
      *
      * @return the additionalProperties value.
      */
-    public Document additionalProperties() {
+    public Document getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -44,7 +44,7 @@ public final class SuggestResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
-    public SuggestResult additionalProperties(Document additionalProperties) {
+    public SuggestResult setAdditionalProperties(Document additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -54,7 +54,7 @@ public final class SuggestResult {
      *
      * @return the text value.
      */
-    public String text() {
+    public String getText() {
         return this.text;
     }
 }

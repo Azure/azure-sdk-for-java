@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +39,8 @@ public class BackupAndRestoreOperations {
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-            .expires(OffsetDateTime.now().plusYears(1)));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1))));
 
         // Backups are good to have, if in case secrets get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.

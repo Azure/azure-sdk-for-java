@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +75,7 @@ public final class DocumentSearchResult {
      *
      * @return the count value.
      */
-    public Long count() {
+    public Long getCount() {
         return this.count;
     }
 
@@ -86,7 +86,7 @@ public final class DocumentSearchResult {
      *
      * @return the coverage value.
      */
-    public Double coverage() {
+    public Double getCoverage() {
         return this.coverage;
     }
 
@@ -97,7 +97,7 @@ public final class DocumentSearchResult {
      *
      * @return the facets value.
      */
-    public Map<String, List<FacetResult>> facets() {
+    public Map<String, List<FacetResult>> getFacets() {
         return this.facets;
     }
 
@@ -110,7 +110,7 @@ public final class DocumentSearchResult {
      *
      * @return the nextPageParameters value.
      */
-    public SearchRequest nextPageParameters() {
+    public SearchRequest getNextPageParameters() {
         return this.nextPageParameters;
     }
 
@@ -119,7 +119,7 @@ public final class DocumentSearchResult {
      *
      * @return the results value.
      */
-    public List<SearchResult> results() {
+    public List<SearchResult> getResults() {
         return this.results;
     }
 
@@ -132,7 +132,7 @@ public final class DocumentSearchResult {
      *
      * @return the nextLink value.
      */
-    public String nextLink() {
+    public String getNextLink() {
         return this.nextLink;
     }
 }

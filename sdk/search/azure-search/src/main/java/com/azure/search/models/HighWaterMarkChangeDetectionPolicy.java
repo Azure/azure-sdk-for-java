@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      *
      * @return the highWaterMarkColumnName value.
      */
-    public String highWaterMarkColumnName() {
+    public String getHighWaterMarkColumnName() {
         return this.highWaterMarkColumnName;
     }
 
@@ -42,7 +42,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
      * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
      * @return the HighWaterMarkChangeDetectionPolicy object itself.
      */
-    public HighWaterMarkChangeDetectionPolicy highWaterMarkColumnName(String highWaterMarkColumnName) {
+    public HighWaterMarkChangeDetectionPolicy setHighWaterMarkColumnName(String highWaterMarkColumnName) {
         this.highWaterMarkColumnName = highWaterMarkColumnName;
         return this;
     }

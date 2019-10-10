@@ -66,18 +66,18 @@ public class FileTransferExample {
          * ContainerClient uses the same endpoint, credential and pipeline from storageClient.
          * Note that container names require lowercase.
          */
-        ContainerClient containerClient = storageClient.getContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
+        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
 
         /*
          * Create a container in Storage blob account.
          */
-        containerClient.create();
+        blobContainerClient.create();
 
         /*
          * Create a BlockBlobClient object that wraps a blob's endpoint and a default pipeline, the blockBlobClient give us access to upload the file.
          */
         String filename = "BigFile.bin";
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient(filename);
+        BlobClient blobClient = blobContainerClient.getBlobClient(filename);
 
         /*
          * Create the empty uploadFile and downloadFile.
@@ -115,7 +115,7 @@ public class FileTransferExample {
         /*
          * Clean up the local files and storage container.
          */
-        containerClient.delete();
+        blobContainerClient.delete();
         Files.deleteIfExists(largeFile.toPath());
         Files.deleteIfExists(downloadFile.toPath());
     }
