@@ -95,7 +95,7 @@
                 <source>..\..\sdk\storage\azure-storage-queue\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-queue-cryptography\src\main\java\com</source>
-                <!--                <source>..\..\sdk\tracing\azure-tracing-opentelemetry\src\main\java\com</source>-->
+                <source>..\..\sdk\tracing\azure-core-tracing-opencensus\src\main\java\com</source>
               </sources>
             </configuration>
           </execution>
