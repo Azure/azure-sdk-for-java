@@ -31,10 +31,8 @@ class DocumentResponseConversions {
      * Drop fields that shouldn't be in the returned object
      *
      * @param document document object
-     * @return document without the redundant fields
      */
-    protected static final Document cleanupDocument(Document document) {
+    protected static void cleanupDocument(Document document) {
         document.remove(ODATA_CONTEXT);
-        return document;
     }
 }

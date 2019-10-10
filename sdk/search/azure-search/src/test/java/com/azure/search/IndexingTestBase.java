@@ -180,6 +180,9 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canMergeDynamicDocuments();
 
+    @Test
+    public abstract void canIndexAndAccessResponse();
+
     protected void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
         Assert.assertEquals(key, result.key());
         Assert.assertTrue(result.succeeded());

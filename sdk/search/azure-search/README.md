@@ -34,9 +34,8 @@ The APIs documented in this section provide access to operations on search data,
 
 * You will need to provide `index name`and the `search service name` which is the URL of the Azure Search service you provisioned: `https://<yourService>.search.windows.net`.
 
-## This library is build using
-
 ## This library is built using:
+
 * JDK / JRE 1.8
 * Microsoft Azure - adal4j 1.3.0
 * Junit 4.12

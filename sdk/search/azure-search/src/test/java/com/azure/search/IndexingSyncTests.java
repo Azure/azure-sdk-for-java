@@ -3,10 +3,12 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexingResult;
+import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import com.azure.search.test.environment.models.Hotel;
@@ -762,5 +764,84 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         actualDoc = client.getDocument("1");
         Assert.assertEquals(originalDoc, actualDoc);
+    }
+
+    @Override
+    public void canIndexAndAccessResponse() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildClient();
+
+        List<Hotel> hotelsToUpload = new ArrayList<>();
+        hotelsToUpload.add(new Hotel()
+            .hotelId("1"));
+        hotelsToUpload.add(new Hotel()
+            .hotelId("2"));
+
+        List<Hotel> hotelsToMerge = new ArrayList<>();
+        hotelsToMerge.add(new Hotel()
+            .hotelId("1")
+            .rating(5));
+
+        List<Hotel> hotelsToMergeOrUpload = new ArrayList<>();
+        hotelsToMergeOrUpload.add(new Hotel()
+            .hotelId("3")
+            .rating(4));
+        hotelsToMergeOrUpload.add(new Hotel()
+            .hotelId("4")
+            .rating(1));
+
+        List<Hotel> hotelsToDelete = new ArrayList<>();
+        hotelsToDelete.add(new Hotel()
+            .hotelId("4"));
+
+        IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
+            .addUploadAction(hotelsToUpload)
+            .addMergeOrUploadAction(hotelsToMergeOrUpload);
+
+        Response<DocumentIndexResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
+        waitForIndexing();
+
+        Assert.assertEquals(200, indexResponse.statusCode());
+        DocumentIndexResult result = indexResponse.value();
+        Assert.assertEquals(2, result.results().size());
+
+        Response<DocumentIndexResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
+        waitForIndexing();
+
+        Assert.assertEquals(200, updateResponse.statusCode());
+        result = updateResponse.value();
+        Assert.assertEquals(1, result.results().size());
+
+        Response<DocumentIndexResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
+        waitForIndexing();
+
+        Assert.assertEquals(200, mergeOrUploadResponse.statusCode());
+        result = mergeOrUploadResponse.value();
+        Assert.assertEquals(2, result.results().size());
+
+        Response<DocumentIndexResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
+        waitForIndexing();
+
+        Assert.assertEquals(200, deleteResponse.statusCode());
+        result = deleteResponse.value();
+        Assert.assertEquals(1, result.results().size());
+
+        Response<DocumentIndexResult> batchResponse = client.indexWithResponse(batch);
+        waitForIndexing();
+
+        Assert.assertEquals(200, batchResponse.statusCode());
+        result = batchResponse.value();
+        Assert.assertEquals(4, result.results().size());
+
+        Response<Document> documentResponse = client.getDocumentWithResponse("3", null,
+            new SearchRequestOptions());
+        Assert.assertEquals(200, documentResponse.statusCode());
+        Document doc = documentResponse.value();
+        Assert.assertEquals(4, doc.get("Rating"));
+
+        Response<Long> countResponse = client.getDocumentCountWithResponse();
+        Assert.assertEquals(200, countResponse.statusCode());
+        Long count = countResponse.value();
+        Assert.assertEquals(4L, count.longValue());
     }
 }

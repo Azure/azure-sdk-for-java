@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
@@ -29,12 +30,14 @@ import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestParameters;
 import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
+import java.util.function.Function;
 
 
 public class SearchIndexAsyncClient {
@@ -150,9 +153,20 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
      */
-    @SuppressWarnings("unchecked")
     public Mono<DocumentIndexResult> uploadDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addUploadAction(documents));
+        return this.uploadDocumentsWithResponse(documents)
+            .map(Response::value);
+    }
+
+    /**
+     * Uploads a collection of documents to the target index
+     *
+     * @param documents collection of documents to upload to the target Index.
+     * @return response containing the document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public Mono<Response<DocumentIndexResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addUploadAction(documents));
     }
 
     /**
@@ -161,9 +175,20 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged
      * @return document index result
      */
-    @SuppressWarnings("unchecked")
     public Mono<DocumentIndexResult> mergeDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addMergeAction(documents));
+        return this.mergeDocumentsWithResponse(documents)
+            .map(Response::value);
+    }
+
+    /**
+     * Merges a collection of documents with existing documents in the target index.
+     *
+     * @param documents collection of documents to be merged
+     * @return response containing the document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addMergeAction(documents));
     }
 
     /**
@@ -173,9 +198,21 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
-    @SuppressWarnings("unchecked")
     public  Mono<DocumentIndexResult> mergeOrUploadDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addMergeOrUploadAction(documents));
+        return this.mergeOrUploadDocumentsWithResponse(documents)
+            .map(Response::value);
+    }
+
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @return response containing the document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public  Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addMergeOrUploadAction(documents));
     }
 
     /**
@@ -184,9 +221,20 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to delete from the target Index.
      * @return document index result.
      */
-    @SuppressWarnings("unchecked")
     public Mono<DocumentIndexResult> deleteDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addDeleteAction(documents));
+        return this.deleteDocumentsWithResponse(documents)
+            .map(Response::value);
+    }
+
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @return response containing the document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public Mono<Response<DocumentIndexResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addDeleteAction(documents));
     }
 
     /**
@@ -222,7 +270,20 @@ public class SearchIndexAsyncClient {
      * @return the number of documents.
      */
     public Mono<Long> getDocumentCount() {
-        return restClient.documents().countAsync();
+        return this.getDocumentCountWithResponse()
+            .map(Response::value);
+    }
+
+    /**
+     * Gets the number of documents
+     *
+     * @return response containing the number of documents.
+     */
+    public Mono<Response<Long>> getDocumentCountWithResponse() {
+        return restClient
+            .documents()
+            .countWithRestResponseAsync()
+            .map(Function.identity());
     }
 
     /**
@@ -272,14 +333,18 @@ public class SearchIndexAsyncClient {
      * Retrieves a document from the Azure Search index.
      *
      * @param key the name of the document
-     * @return document object
+     * @return the document object
      */
     public Mono<Document> getDocument(String key) {
         return restClient
             .documents()
             .getAsync(key)
-            .map(DocumentResponseConversions::cleanupDocument)
+            .map(res -> {
+                DocumentResponseConversions.cleanupDocument(res);
+                return res;
+            })
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
+            //TODO: remove logging statements
             .doOnSuccess(s -> logger.info("Document with key: " + key + " was retrieved successfully"))
             .doOnError(e -> logger.error("An error occurred in getDocument(key): " + e.getMessage()));
     }
@@ -290,22 +355,42 @@ public class SearchIndexAsyncClient {
      * @param key document key
      * @param selectedFields selected fields to return
      * @param searchRequestOptions search request options
-     * @return document object
+     * @return the document object
      */
-    public Mono<Document> getDocument(
-            String key, List<String> selectedFields,
-            SearchRequestOptions searchRequestOptions) {
+    public Mono<Document> getDocument(String key, List<String> selectedFields,
+                                      SearchRequestOptions searchRequestOptions) {
+        return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions)
+            .map(Response::value);
+    }
+
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key document key
+     * @param selectedFields selected fields to return
+     * @param searchRequestOptions search request options
+     * @return a response containing the document object
+     */
+    public Mono<Response<Document>> getDocumentWithResponse(
+        String key, List<String> selectedFields,
+        SearchRequestOptions searchRequestOptions) {
         return restClient
             .documents()
-            .getAsync(key, selectedFields, searchRequestOptions)
-            .map(DocumentResponseConversions::cleanupDocument)
+            .getWithRestResponseAsync(key, selectedFields, searchRequestOptions)
+            .map(res -> {
+                Document doc = res.value();
+                DocumentResponseConversions.cleanupDocument(doc);
+                return new SimpleResponse<>(res, doc);
+            })
             .onErrorMap(DocumentResponseConversions::exceptionMapper)
+            //TODO: remove logging statements
             .doOnSuccess(s -> logger.info(
                 "Document with key: " + key
-                    + "and selectedFields: " + selectedFields.toString()
+                    + " and selectedFields: " + selectedFields
                     + " was retrieved successfully"))
             .doOnError(e -> logger.error("An error occurred in "
-                + "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()));
+                + "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()))
+            .map(Function.identity());
     }
 
     /**
@@ -348,18 +433,27 @@ public class SearchIndexAsyncClient {
      * @return document index result
      */
     public Mono<DocumentIndexResult> index(IndexBatch<?> batch) {
-        Mono<SimpleResponse<DocumentIndexResult>> responseMono = restClient
-            .documents()
-            .indexWithRestResponseAsync(batch);
+        return this.indexWithResponse(batch)
+            .map(Response::value);
+    }
 
-        return responseMono.handle((res, sink) -> {
-            if (res.statusCode() == 207) {
-                IndexBatchException ex = new IndexBatchException(res.value());
-                sink.error(ex);
-            } else {
-                sink.next(res.value());
-            }
-        });
+    /**
+     * Sends a batch of document actions to the Azure Search index.
+     *
+     * @param batch batch of documents to send to the index with the requested action
+     * @return a response containing the document index result
+     */
+    public Mono<Response<DocumentIndexResult>> indexWithResponse(IndexBatch<?> batch) {
+        return restClient.documents()
+            .indexWithRestResponseAsync(batch)
+            .handle((res, sink) -> {
+                if (res.statusCode() == 207) {
+                    IndexBatchException ex = new IndexBatchException(res.value());
+                    sink.error(ex);
+                } else {
+                    sink.next(res);
+                }
+            });
     }
 
     /**

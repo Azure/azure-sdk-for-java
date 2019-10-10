@@ -5,6 +5,7 @@ package com.azure.search;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteParameters;
 import com.azure.search.models.DocumentIndexResult;
@@ -14,6 +15,7 @@ import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestParameters;
 import com.azure.search.models.SuggestResult;
+
 
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
@@ -48,9 +50,19 @@ public class SearchIndexClient {
      * @param documents collection of documents to upload to the target Index.
      * @return document index result.
      */
-    @SuppressWarnings("unchecked")
     public DocumentIndexResult uploadDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addUploadAction(documents));
+        return this.uploadDocumentsWithResponse(documents).value();
+    }
+
+    /**
+     * Uploads a collection of documents to the target index
+     *
+     * @param documents collection of documents to upload to the target Index.
+     * @return response containing the document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public Response<DocumentIndexResult> uploadDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addUploadAction(documents));
     }
 
     /**
@@ -59,9 +71,19 @@ public class SearchIndexClient {
      * @param documents collection of documents to be merged
      * @return document index result
      */
-    @SuppressWarnings("unchecked")
     public DocumentIndexResult mergeDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addMergeAction(documents));
+        return this.mergeDocumentsWithResponse(documents).value();
+    }
+
+    /**
+     * Merges a collection of documents with existing documents in the target index.
+     *
+     * @param documents collection of documents to be merged
+     * @return response containing the document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public Response<DocumentIndexResult> mergeDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addMergeAction(documents));
     }
 
     /**
@@ -71,9 +93,20 @@ public class SearchIndexClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
-    @SuppressWarnings("unchecked")
     public DocumentIndexResult mergeOrUploadDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addMergeOrUploadAction(documents));
+        return this.mergeOrUploadDocumentsWithResponse(documents).value();
+    }
+
+    /**
+     * This action behaves like merge if a document with the given key already exists in the index.
+     * If the document does not exist, it behaves like upload with a new document.
+     *
+     * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @return response containing a document index result
+     */
+    @SuppressWarnings("unchecked")
+    public Response<DocumentIndexResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addMergeOrUploadAction(documents));
     }
 
     /**
@@ -82,9 +115,19 @@ public class SearchIndexClient {
      * @param documents collection of documents to delete from the target Index.
      * @return document index result.
      */
-    @SuppressWarnings("unchecked")
     public DocumentIndexResult deleteDocuments(Iterable<?> documents) {
-        return this.index(new IndexBatch().addDeleteAction(documents));
+        return this.deleteDocumentsWithResponse(documents).value();
+    }
+
+    /**
+     * Deletes a collection of documents from the target index
+     *
+     * @param documents collection of documents to delete from the target Index.
+     * @return response containing a document index result.
+     */
+    @SuppressWarnings("unchecked")
+    public Response<DocumentIndexResult> deleteDocumentsWithResponse(Iterable<?> documents) {
+        return this.indexWithResponse(new IndexBatch().addDeleteAction(documents));
     }
 
     /**
@@ -120,7 +163,16 @@ public class SearchIndexClient {
      * @return the number of documents.
      */
     public Long getDocumentCount() {
-        Mono<Long> result = asyncClient.getDocumentCount();
+        return this.getDocumentCountWithResponse().value();
+    }
+
+    /**
+     * Gets the number of documents
+     *
+     * @return response containing the number of documents.
+     */
+    public Response<Long> getDocumentCountWithResponse() {
+        Mono<Response<Long>> result = asyncClient.getDocumentCountWithResponse();
         return blockWithOptionalTimeout(result, null);
     }
 
@@ -169,7 +221,22 @@ public class SearchIndexClient {
      * @return document object
      */
     public Document getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
-        Mono<Document> results = asyncClient.getDocument(key, selectedFields, searchRequestOptions);
+        return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions).value();
+    }
+
+    /**
+     * Retrieves a document from the Azure Search index.
+     *
+     * @param key document key
+     * @param selectedFields selected fields to return
+     * @param searchRequestOptions search request options
+     * @return response containing a document object
+     */
+    public Response<Document> getDocumentWithResponse(String key, List<String> selectedFields,
+                                            SearchRequestOptions searchRequestOptions) {
+        Mono<Response<Document>> results = asyncClient.getDocumentWithResponse(key,
+            selectedFields,
+            searchRequestOptions);
         return blockWithOptionalTimeout(results, null);
     }
 
@@ -212,7 +279,17 @@ public class SearchIndexClient {
      * @return document index result
      */
     public DocumentIndexResult index(IndexBatch<?> batch) {
-        Mono<DocumentIndexResult> results = asyncClient.index(batch);
+        return this.indexWithResponse(batch).value();
+    }
+
+    /**
+     * Sends a batch of document write to the Azure Search index.
+     *
+     * @param batch batch of documents to send to the index with the requested action
+     * @return a response containing a document index result
+     */
+    public Response<DocumentIndexResult> indexWithResponse(IndexBatch<?> batch) {
+        Mono<Response<DocumentIndexResult>> results = asyncClient.indexWithResponse(batch);
         return blockWithOptionalTimeout(results, null);
     }
 

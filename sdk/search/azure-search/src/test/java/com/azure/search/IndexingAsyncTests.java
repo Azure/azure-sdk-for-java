@@ -3,10 +3,12 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.IndexingResult;
+import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -857,5 +859,114 @@ public class IndexingAsyncTests extends IndexingTestBase {
         StepVerifier.create(actualMono)
             .expectNext(originalDoc)
             .verifyComplete();
+    }
+
+    @Override
+    public void canIndexAndAccessResponse() {
+        createHotelIndex();
+        client = getClientBuilder(INDEX_NAME).buildAsyncClient();
+
+        List<Hotel> hotelsToUpload = new ArrayList<>();
+        hotelsToUpload.add(new Hotel()
+            .hotelId("1"));
+        hotelsToUpload.add(new Hotel()
+            .hotelId("2"));
+
+        List<Hotel> hotelsToMerge = new ArrayList<>();
+        hotelsToMerge.add(new Hotel()
+            .hotelId("1")
+            .rating(5));
+
+        List<Hotel> hotelsToMergeOrUpload = new ArrayList<>();
+        hotelsToMergeOrUpload.add(new Hotel()
+            .hotelId("3")
+            .rating(4));
+        hotelsToMergeOrUpload.add(new Hotel()
+            .hotelId("4")
+            .rating(1));
+
+        List<Hotel> hotelsToDelete = new ArrayList<>();
+        hotelsToDelete.add(new Hotel()
+            .hotelId("4"));
+
+        IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
+            .addUploadAction(hotelsToUpload)
+            .addMergeOrUploadAction(hotelsToMergeOrUpload);
+
+        Mono<Response<DocumentIndexResult>> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
+        StepVerifier.create(indexResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                DocumentIndexResult result = res.value();
+                Assert.assertEquals(2, result.results().size());
+            })
+            .expectComplete();
+        waitForIndexing();
+
+        Mono<Response<DocumentIndexResult>> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
+        StepVerifier.create(updateResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                DocumentIndexResult result = res.value();
+                Assert.assertEquals(1, result.results().size());
+            })
+            .expectComplete();
+        waitForIndexing();
+
+        Mono<Response<DocumentIndexResult>> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
+        StepVerifier.create(mergeOrUploadResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                DocumentIndexResult result = res.value();
+                Assert.assertEquals(2, result.results().size());
+            })
+            .expectComplete();
+        waitForIndexing();
+
+        Mono<Response<DocumentIndexResult>> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
+        StepVerifier.create(deleteResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                DocumentIndexResult result = res.value();
+                Assert.assertEquals(1, result.results().size());
+            })
+            .expectComplete();
+        waitForIndexing();
+
+        Mono<Response<DocumentIndexResult>> batchResponse = client.indexWithResponse(batch);
+        StepVerifier.create(batchResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                DocumentIndexResult result = res.value();
+                Assert.assertEquals(4, result.results().size());
+            })
+            .expectComplete();
+        waitForIndexing();
+
+        Mono<Response<Document>> documentResponse = client.getDocumentWithResponse("3", null,
+            new SearchRequestOptions());
+        StepVerifier.create(documentResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                Document doc = res.value();
+                Assert.assertEquals(4, doc.get("Rating"));
+            })
+            .expectComplete();
+
+        Mono<Response<Long>> countResponse = client.getDocumentCountWithResponse();
+        StepVerifier.create(countResponse)
+            .assertNext(res -> {
+                Assert.assertEquals(200, res.statusCode());
+
+                Long count = res.value();
+                Assert.assertEquals(4L, count.longValue());
+            })
+            .expectComplete();
     }
 }
