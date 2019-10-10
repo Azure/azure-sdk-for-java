@@ -72,10 +72,10 @@ namespace Azure.Test.PerfStress
 
                     if (options.Warmup > 0)
                     {
-                        await RunTests(tests, options.Sync, options.Parallel, options.Warmup, "Warmup");
+                        await RunTestsAsync(tests, options.Sync, options.Parallel, options.Warmup, "Warmup");
                     }
 
-                    await RunTests(tests, options.Sync, options.Parallel, options.Duration, "Test");
+                    await RunTestsAsync(tests, options.Sync, options.Parallel, options.Duration, "Test");
                 }
                 finally
                 {
@@ -120,7 +120,7 @@ namespace Azure.Test.PerfStress
             Console.WriteLine();
         }
 
-        private static async Task RunTests(IPerfStressTest[] tests, bool sync, int parallel, int durationSeconds, string title)
+        private static async Task RunTestsAsync(IPerfStressTest[] tests, bool sync, int parallel, int durationSeconds, string title)
         {
             _completedOperations = 0;
             _lastCompletionTimes = new TimeSpan[parallel];
