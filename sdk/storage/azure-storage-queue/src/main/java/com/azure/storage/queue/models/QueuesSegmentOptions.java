@@ -32,7 +32,7 @@ public final class QueuesSegmentOptions {
 
     private String prefix;
 
-    private Integer maxResults;
+    private int maxResults;
 
     /**
      * @return the status of including metadata when listing queues
@@ -83,7 +83,7 @@ public final class QueuesSegmentOptions {
      * @param maxResults Maximum number of results to include in a single response
      * @return An updated QueuesSegmentOptions object
      */
-    public QueuesSegmentOptions setMaxResults(Integer maxResults) {
+    public QueuesSegmentOptions setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
