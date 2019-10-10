@@ -13,6 +13,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -28,6 +29,7 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.StorageFileItem;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
+import java.nio.charset.StandardCharsets;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -43,7 +45,6 @@ import java.util.TreeSet;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
@@ -183,7 +184,7 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
+        validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
@@ -334,7 +335,7 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
+        validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.setFilePermission(filePermission, FileConstants.PRESERVE);
@@ -855,5 +856,24 @@ public class DirectoryAsyncClient {
         }
 
         return new ArrayList<>(storageFileItems);
+    }
+
+    /**
+     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
+     * the file permission is of valid length.
+     * @param filePermission The file permission.
+     * @param filePermissionKey The file permission key.
+     * @throws IllegalArgumentException for invalid file permission or file permission keys.
+     */
+    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+        if (filePermission != null && filePermissionKey != null) {
+            throw new IllegalArgumentException(
+                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID);
+        }
+
+        if (filePermission != null) {
+            Utility.assertInBounds("filePermission",
+                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
+        }
     }
 }
