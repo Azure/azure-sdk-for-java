@@ -66,7 +66,7 @@ public final class QueueAsyncClient {
      * @param queueName Name of the queue
      */
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
-        Objects.requireNonNull(queueName);
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;

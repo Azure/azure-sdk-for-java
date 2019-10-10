@@ -53,7 +53,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         CryptographyClient cryptographyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context
         Key keyWithVersion = cryptographyClient.getKeyWithResponse(new Context(key1, value1)).getValue();
-        System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
+        System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.getName(), keyWithVersion.getId());
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKeyWithResponse#Context
     }
 
@@ -64,7 +64,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         CryptographyClient cryptographyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKey
         Key key = cryptographyClient.getKey();
-        System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id());
+        System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId());
         // END: com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKey
     }
 

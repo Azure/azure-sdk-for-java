@@ -21,10 +21,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.KeyImportOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
@@ -134,7 +134,7 @@ public final class KeyAsyncClient {
         return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", name))
-            .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to create key - {}", name, error));
     }
 
@@ -143,11 +143,11 @@ public final class KeyAsyncClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#expires() expires} and {@link
-     * KeyCreateOptions#notBefore() notBefore} values are optional. The {@link KeyCreateOptions#enabled() enabled}
+     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
+     * KeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link KeyCreateOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link KeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
      * and {@link KeyType#OCT OCT}.</p>
      *
@@ -161,7 +161,6 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing the {@link Key created key}.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
@@ -171,14 +170,14 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
         Objects.requireNonNull(keyCreateOptions, "The key create options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(keyCreateOptions.keyType())
+            .setKty(keyCreateOptions.getKeyType())
             .setKeyOps(keyCreateOptions.keyOperations())
             .setKeyAttributes(new KeyRequestAttributes(keyCreateOptions));
-        return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.createKey(endpoint, keyCreateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Creating key - {}", keyCreateOptions.name()))
-            .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().name()))
-            .doOnError(error -> logger.warning("Failed to create key - {}", keyCreateOptions.name(), error));
+            .doOnRequest(ignored -> logger.info("Creating key - {}", keyCreateOptions.getName()))
+            .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to create key - {}", keyCreateOptions.getName(), error));
     }
 
     /**
@@ -187,11 +186,11 @@ public final class KeyAsyncClient {
      * requires the {@code keys/create} permission.
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
-     * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and
-     * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The
-     * {@link RsaKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and
+     * {@link RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The
+     * {@link RsaKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -205,7 +204,6 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing the {@link Key created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
@@ -218,11 +216,11 @@ public final class KeyAsyncClient {
      * requires the {@code keys/create} permission.
      *
      * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
-     * optionally specified. The {@link RsaKeyCreateOptions#expires() expires} and
-     * {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link
-     * RsaKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and
+     * {@link RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link
+     * RsaKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions}
@@ -233,7 +231,6 @@ public final class KeyAsyncClient {
      *     created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions) {
@@ -243,15 +240,15 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
         Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(rsaKeyCreateOptions.keyType())
+            .setKty(rsaKeyCreateOptions.getKeyType())
             .setKeySize(rsaKeyCreateOptions.getKeySize())
             .setKeyOps(rsaKeyCreateOptions.keyOperations())
             .setKeyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
-        return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.createKey(endpoint, rsaKeyCreateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", rsaKeyCreateOptions.name()))
-            .doOnSuccess(response -> logger.info("Created Rsa key - {}", response.getValue().name()))
-            .doOnError(error -> logger.warning("Failed to create Rsa key - {}", rsaKeyCreateOptions.name(), error));
+            .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", rsaKeyCreateOptions.getName()))
+            .doOnSuccess(response -> logger.info("Created Rsa key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to create Rsa key - {}", rsaKeyCreateOptions.getName(), error));
     }
 
     /**
@@ -261,11 +258,11 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault,
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault,
      * if not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -279,7 +276,6 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing the {@link Key created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
@@ -293,11 +289,11 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
+     * values are optional. The {@link EcKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -312,7 +308,6 @@ public final class KeyAsyncClient {
      *     created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions) {
@@ -322,15 +317,15 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
         Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setKty(ecKeyCreateOptions.keyType())
+            .setKty(ecKeyCreateOptions.getKeyType())
             .setCurve(ecKeyCreateOptions.getCurve())
             .setKeyOps(ecKeyCreateOptions.keyOperations())
             .setKeyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
-        return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.createKey(endpoint, ecKeyCreateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Creating Ec key - {}", ecKeyCreateOptions.name()))
-            .doOnSuccess(response -> logger.info("Created Ec key - {}", response.getValue().name()))
-            .doOnError(error -> logger.warning("Failed to create Ec key - {}", ecKeyCreateOptions.name(), error));
+            .doOnRequest(ignored -> logger.info("Creating Ec key - {}", ecKeyCreateOptions.getName()))
+            .doOnSuccess(response -> logger.info("Created Ec key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to create Ec key - {}", ecKeyCreateOptions.getName(), error));
     }
 
     /**
@@ -344,8 +339,8 @@ public final class KeyAsyncClient {
      *
      * <pre>
      * keyAsyncClient.importKey("keyName", jsonWebKeyToImport).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value
-     *   ().id()));
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(), keyResponse.value
+     *   ().getId()));
      * </pre>
      *
      * @param name The name for the imported key.
@@ -364,7 +359,7 @@ public final class KeyAsyncClient {
         return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", name))
-            .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to import key - {}", name, error));
     }
 
@@ -373,10 +368,10 @@ public final class KeyAsyncClient {
      * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
-     * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and the
+     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
+     * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
+     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled} field is set to true and the
      * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -385,18 +380,17 @@ public final class KeyAsyncClient {
      * <pre>
      * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
      *   .hsm(true)
-     *   .expires(OffsetDateTime.now().plusDays(60));
+     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
      * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(),
-     *   keyResponse.value().id()));
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(),
+     *   keyResponse.value().getId()));
      * </pre>
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key
      *     being imported.
      * @return A {@link Mono} containing the {@link Key imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
@@ -408,10 +402,10 @@ public final class KeyAsyncClient {
      * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link
-     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#expires() expires} and
-     * {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#enabled() enabled}
+     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
+     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
+     * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
+     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled}
      * field is set to true and the {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they
      * are not specified.</p>
      *
@@ -422,11 +416,11 @@ public final class KeyAsyncClient {
      * <pre>
      * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
      *   .hsm(true)
-     *   .expires(OffsetDateTime.now().plusDays(60));
+     *   .setExpires(OffsetDateTime.now().plusDays(60));
      *
      * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(),
-     *   keyResponse.value().id()));
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().getName(),
+     *   keyResponse.value().getId()));
      * </pre>
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key
@@ -434,7 +428,6 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link Key
      *     imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions) {
@@ -447,11 +440,11 @@ public final class KeyAsyncClient {
             .setKey(keyImportOptions.getKeyMaterial())
             .setHsm(keyImportOptions.isHsm())
             .setKeyAttributes(new KeyRequestAttributes(keyImportOptions));
-        return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.importKey(endpoint, keyImportOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Importing key - {}", keyImportOptions.name()))
-            .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().name()))
-            .doOnError(error -> logger.warning("Failed to import key - {}", keyImportOptions.name(), error));
+            .doOnRequest(ignored -> logger.info("Importing key - {}", keyImportOptions.getName()))
+            .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to import key - {}", keyImportOptions.getName(), error));
     }
 
     /**
@@ -504,7 +497,7 @@ public final class KeyAsyncClient {
     Mono<Response<Key>> getKeyWithResponse(String name, String version, Context context) {
         return service.getKey(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving key - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
@@ -529,88 +522,50 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is
+     * Get public part of the key which represents {@link KeyProperties keyProperties} from the key vault. The get key operation is
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)}
-     * return the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
-     * This operation can then be used to get the full key with its key material from {@code keyBase}.</p>
+     * return the {@link Flux} containing {@link KeyProperties key properties} as output excluding the key material of the key.
+     * This operation can then be used to get the full key with its key material from {@code keyProperties}.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#KeyBase}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties}
      *
-     * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
+     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @return A {@link Mono} containing the requested {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty
+     * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> getKey(KeyBase keyBase) {
-        return getKeyWithResponse(keyBase).flatMap(FluxUtil::toMono);
+    public Mono<Key> getKey(KeyProperties keyProperties) {
+        return getKeyWithResponse(keyProperties).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is
+     * Get public part of the key which represents {@link KeyProperties keyProperties} from the key vault. The get key operation is
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)}
-     * return the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
-     * This operation can then be used to get the full key with its key material from {@code keyBase}.</p>
+     * return the {@link Flux} containing {@link KeyProperties key properties} as output excluding the key material of the key.
+     * This operation can then be used to get the full key with its key material from {@code keyProperties}.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyBase}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties}
      *
-     * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
+     * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link Key key}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty
+     * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> getKeyWithResponse(KeyBase keyBase) {
-        Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
-        return withContext(context -> getKeyWithResponse(keyBase.name(), keyBase.version() == null ? ""
-            : keyBase.version(), context));
-    }
-
-    /**
-     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified
-     * key in the key vault. The update operation changes specified attributes of an existing stored key and attributes
-     * that are not specified in the request are left unchanged. The cryptographic key material of a key itself cannot
-     * be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault.
-     * Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKey#KeyBase}
-     *
-     * @param key The {@link KeyBase base key} object with updated properties.
-     * @return A {@link Mono} containing the {@link KeyBase updated key}.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
-     *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty
-     *     string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> updateKey(KeyBase key) {
-        return withContext(context -> updateKeyWithResponse(key, context).flatMap(FluxUtil::toMono));
-    }
-
-    Mono<Response<Key>> updateKeyWithResponse(KeyBase key, Context context) {
-        Objects.requireNonNull(key, "The key input parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .setTags(key.tags())
-            .setKeyAttributes(new KeyRequestAttributes(key));
-        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Updating key - {}", key.name()))
-            .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().name()))
-            .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
+    public Mono<Response<Key>> getKeyWithResponse(KeyProperties keyProperties) {
+        Objects.requireNonNull(keyProperties, "The Key Properties parameter cannot be null.");
+        return withContext(context -> getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? ""
+            : keyProperties.getVersion(), context));
     }
 
     /**
@@ -624,21 +579,21 @@ public final class KeyAsyncClient {
      * Subscribes to the call asynchronously and prints out the returned key details when a response has been received.
      * </p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase-keyOperations}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyBase base key} object with updated properties.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     KeyBase updated key}.
+     *     Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty
+     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> updateKeyWithResponse(KeyBase key, KeyOperation... keyOperations) {
-        return withContext(context -> updateKeyWithResponse(key, context, keyOperations));
+    public Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, KeyOperation... keyOperations) {
+        return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context, keyOperations));
     }
 
     /**
@@ -652,33 +607,35 @@ public final class KeyAsyncClient {
      * Subscribes to the call asynchronously and prints out the returned key details when a response has been received.
      * </p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKey#KeyBase-keyOperations}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyProperties#KeyProperties-keyOperations}
      *
-     * @param key The {@link KeyBase base key} object with updated properties.
+     * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Mono} containing the {@link KeyBase updated key}.
+     * @return A {@link Mono} containing the {@link Key updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version()
+     * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty
+     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
-        return updateKeyWithResponse(key, keyOperations).flatMap(FluxUtil::toMono);
+    public Mono<Key> updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
+        return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Key>> updateKeyWithResponse(KeyBase key, Context context, KeyOperation... keyOperations) {
-        Objects.requireNonNull(key, "The key input parameter cannot be null.");
+    Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
+        Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-            .setTags(key.tags())
-            .setKeyOps(Arrays.asList(keyOperations))
-            .setKeyAttributes(new KeyRequestAttributes(key));
-        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+            .setTags(keyProperties.getTags())
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+        if (keyOperations.length > 0) {
+            parameters.setKeyOps(Arrays.asList(keyOperations));
+        }
+        return service.updateKey(endpoint, keyProperties.getName(), keyProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Updating key - {}", key.name()))
-            .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().name()))
-            .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
+            .doOnRequest(ignored -> logger.info("Updating key - {}", keyProperties.getName()))
+            .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to update key - {}", keyProperties.getName(), error));
     }
 
     /**
@@ -733,7 +690,7 @@ public final class KeyAsyncClient {
     Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
         return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Deleting key - {}", name))
-            .doOnSuccess(response -> logger.info("Deleted key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Deleted key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to delete key - {}", name, error));
     }
 
@@ -783,7 +740,7 @@ public final class KeyAsyncClient {
     Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
         return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
@@ -883,7 +840,7 @@ public final class KeyAsyncClient {
         return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Recovering deleted key - {}", name))
-            .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to recover deleted key - {}", name, error));
     }
 
@@ -1013,33 +970,33 @@ public final class KeyAsyncClient {
         return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Attempting to restore key"))
-            .doOnSuccess(response -> logger.info("Restored Key - {}", response.getValue().name()))
+            .doOnSuccess(response -> logger.info("Restored Key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to restore key - {}", error));
     }
 
     /**
      * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain
      * the public part of a stored key. The List operation is applicable to all key types and the individual key
-     * response in the flux is represented by {@link KeyBase} as only the base key identifier, attributes and tags are
+     * response in the flux is represented by {@link KeyProperties} as only the key identifier, attributes and tags are
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Convert the {@link Flux} containing
-     * {@link KeyBase base key} to {@link Flux} containing {@link Key key} using
-     * {@link KeyAsyncClient#getKey(KeyBase baseKey)} within {@link Flux#flatMap(Function)}.</p>
+     * {@link KeyProperties key properties} to {@link Flux} containing {@link Key key} using
+     * {@link KeyAsyncClient#getKey(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeys}
      *
-     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the keys in the vault.
+     * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the keys in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyBase> listKeys() {
+    public PagedFlux<KeyProperties> listKeys() {
         return new PagedFlux<>(
             () -> withContext(context -> listKeysFirstPage(context)),
             continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
     }
 
-    PagedFlux<KeyBase> listKeys(Context context) {
+    PagedFlux<KeyProperties> listKeys(Context context) {
         return new PagedFlux<>(
             () -> listKeysFirstPage(context),
             continuationToken -> listKeysNextPage(continuationToken, context));
@@ -1051,9 +1008,9 @@ public final class KeyAsyncClient {
      *
      * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
      * listKeys operations.
-     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse<KeyProperties>} from the next page of results.
      */
-    private Mono<PagedResponse<KeyBase>> listKeysNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeysNextPage(String continuationToken, Context context) {
         return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
             .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationToken))
@@ -1064,7 +1021,7 @@ public final class KeyAsyncClient {
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code
      * DEFAULT_MAX_PAGE_RESULTS} values.
      */
-    private Mono<PagedResponse<KeyBase>> listKeysFirstPage(Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
         return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing keys"))
@@ -1127,36 +1084,36 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyBase}
-     * as only the base key identifier, attributes and tags are provided in the response. The key material values are
+     * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyProperties}
+     * as only the key identifier, attributes and tags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link
-     * Flux} containing {@link KeyBase base key} to {@link Flux} containing {@link Key key} using
-     * {@link KeyAsyncClient#getKey(KeyBase baseKey)} within {@link Flux#flatMap(Function)}.</p>
+     * Flux} containing {@link KeyProperties key properties} to {@link Flux} containing {@link Key key} using
+     * {@link KeyAsyncClient#getKey(KeyProperties key properties)} within {@link Flux#flatMap(Function)}.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeyVersions}
      *
      * @param name The name of the key.
-     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the versions of the specified key in the vault.
+     * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the versions of the specified key in the vault.
      *     Flux is empty if key with {@code name} does not exist in key vault.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyBase> listKeyVersions(String name) {
+    public PagedFlux<KeyProperties> listKeyVersions(String name) {
         return new PagedFlux<>(
             () -> withContext(context -> listKeyVersionsFirstPage(name, context)),
             continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
     }
 
-    PagedFlux<KeyBase> listKeyVersions(String name, Context context) {
+    PagedFlux<KeyProperties> listKeyVersions(String name, Context context) {
         return new PagedFlux<>(
             () -> listKeyVersionsFirstPage(name, context),
             continuationToken -> listKeyVersionsNextPage(continuationToken, context));
     }
 
-    private Mono<PagedResponse<KeyBase>> listKeyVersionsFirstPage(String name, Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPage(String name, Context context) {
         return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
@@ -1170,9 +1127,9 @@ public final class KeyAsyncClient {
      *
      * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the
      * listKeys operations.
-     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     * @return A {@link Mono} of {@link PagedResponse<KeyProperties>} from the next page of results.
      */
-    private Mono<PagedResponse<KeyBase>> listKeyVersionsNextPage(String continuationToken, Context context) {
+    private Mono<PagedResponse<KeyProperties>> listKeyVersionsNextPage(String continuationToken, Context context) {
         return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing next key versions page - Page {} ", continuationToken))
             .doOnSuccess(response -> logger.info("Listed next key versions page - Page {} ", continuationToken))

@@ -60,10 +60,10 @@ public class EventProcessor {
         Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
         PartitionManager partitionManager, TracerProvider tracerProvider) {
 
-        Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
-        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null");
-        Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
-        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
+        Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null.");
+        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
+        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null.");
 
         this.partitionManager = partitionManager == null ? findPartitionManager() : partitionManager;
         this.identifier = UUID.randomUUID().toString();

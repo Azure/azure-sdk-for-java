@@ -4,9 +4,8 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.KeyOptions;
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
-import com.azure.security.keyvault.certificates.models.webkey.KeyType;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,15 +14,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 class KeyProperties {
 
     KeyProperties(CertificatePolicy certificatePolicy) {
-        KeyOptions keyOptions = certificatePolicy.keyOptions();
-        if (keyOptions == null) {
-            return;
-        }
-        this.curve = keyOptions.curve();
-        this.exportable = keyOptions.exportable();
-        this.keySize = keyOptions.keySize();
-        this.keyType = keyOptions.keyType();
-        this.reuseKey = keyOptions.reuseKey();
+        this.curve = certificatePolicy.getKeyCurveName();
+        this.exportable = certificatePolicy.isExportable();
+        this.keySize = certificatePolicy.getKeySize();
+        this.keyType = certificatePolicy.getKeyType();
+        this.reuseKey = certificatePolicy.isReuseKey();
     }
 
 
@@ -38,7 +33,7 @@ class KeyProperties {
      * include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
      */
     @JsonProperty(value = "kty")
-    private KeyType keyType;
+    private CertificateKeyType keyType;
 
     /**
      * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -57,7 +52,7 @@ class KeyProperties {
      * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
      */
     @JsonProperty(value = "crv")
-    private KeyCurveName curve;
+    private CertificateKeyCurveName curve;
 
     /**
      * Get the exportable value.
@@ -84,7 +79,7 @@ class KeyProperties {
      *
      * @return the keyType value
      */
-    KeyType keyType() {
+    CertificateKeyType keyType() {
         return this.keyType;
     }
 
@@ -94,7 +89,7 @@ class KeyProperties {
      * @param keyType the keyType value to set
      * @return the KeyProperties object itself.
      */
-    KeyProperties keyType(KeyType keyType) {
+    KeyProperties keyType(CertificateKeyType keyType) {
         this.keyType = keyType;
         return this;
     }
@@ -144,7 +139,7 @@ class KeyProperties {
      *
      * @return the curve value
      */
-    KeyCurveName curve() {
+    CertificateKeyCurveName curve() {
         return this.curve;
     }
 
@@ -154,7 +149,7 @@ class KeyProperties {
      * @param curve the curve value to set
      * @return the KeyProperties object itself.
      */
-    KeyProperties curve(KeyCurveName curve) {
+    KeyProperties curve(CertificateKeyCurveName curve) {
         this.curve = curve;
         return this;
     }

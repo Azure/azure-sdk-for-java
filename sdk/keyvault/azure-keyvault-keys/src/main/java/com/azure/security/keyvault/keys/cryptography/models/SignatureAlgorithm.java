@@ -3,48 +3,82 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 
 /**
  * Defines values for SignatureAlgorithm.
  */
-public enum SignatureAlgorithm {
-
-    PS256("PS256"),
-    PS384("PS384"),
-    PS512("PS512"),
-    RS256("RS256"),
-    RS384("RS384"),
-    RS512("RS512"),
-    ES256("ES256"),
-    ES384("ES384"),
-    ES512("ES512"),
-    ES256K("ES256K");
-
-    private String value;
+public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgorithm> {
 
     /**
-     * Creates a custom value for SignatureAlgorithm.
+     * Static value RSA_OAEP for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm PS256 = fromString("PS256");
+
+    /**
+     * Static value RSA_OAEP_256 for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm PS384 = fromString("PS384");
+
+    /**
+     * Static value RSA1_5 for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm PS512 = fromString("PS512");
+
+    /**
+     * Static value A256CBC_HS512 for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm RS256 = fromString("RS256");
+
+    /**
+     * Static value A128CBC_HS256 for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm RS384 = fromString("RS384");
+
+    /**
+     * Static value A192CBC_HS384 for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm RS512 = fromString("RS512");
+
+    /**
+     * Static value A256CBC for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm ES256 = fromString("ES256");
+
+    /**
+     * Static value A192CBC for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm ES384 = fromString("ES384");
+
+    /**
+     * Static value A128CBC for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm ES512 = fromString("ES512");
+
+    /**
+     * Static value A128CBC for SignatureAlgorithm.
+     */
+    public static final SignatureAlgorithm ES256K = fromString("ES256K");
+
+    /**
+     * Creates or finds a SignatureAlgorithm from its string representation.
      *
-     * @param value the custom value
+     * @param name a name to look for.
+     * @return the corresponding SignatureAlgorithm.
      */
-    SignatureAlgorithm(String value) {
-        this.value = value;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    @JsonCreator
+    public static SignatureAlgorithm fromString(String name) {
+        return fromString(name, SignatureAlgorithm.class);
     }
 
     /**
-     * All the JWK signature implementation.
+     * @return known SignatureAlgorithm values.
      */
-    public static final List<SignatureAlgorithm> ALL_ALGORITHMS = Collections.unmodifiableList(
-            Arrays.asList(RS256, RS384, RS512, PS256, PS384, PS512, ES256, ES384, ES512, ES256K));
+    public static Collection<SignatureAlgorithm> values() {
+        return values(SignatureAlgorithm.class);
+    }
 }

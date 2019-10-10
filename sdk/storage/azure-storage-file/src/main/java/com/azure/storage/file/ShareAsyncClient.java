@@ -74,7 +74,7 @@ public class ShareAsyncClient {
      * @param shareName Name of the share
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName) {
-        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         this.shareName = shareName;
         this.snapshot = snapshot;
         this.accountName = accountName;

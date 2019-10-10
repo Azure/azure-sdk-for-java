@@ -39,8 +39,8 @@ public final class HttpPipelineCallContext {
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
     HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
-        Objects.requireNonNull(httpRequest);
-        Objects.requireNonNull(data);
+        Objects.requireNonNull(httpRequest, "'httpRequest' cannot be null.");
+        Objects.requireNonNull(data, "'data' cannot be null.");
         //
         this.httpRequest = httpRequest;
         this.data = data;

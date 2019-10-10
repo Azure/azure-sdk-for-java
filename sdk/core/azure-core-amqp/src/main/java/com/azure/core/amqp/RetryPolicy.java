@@ -34,7 +34,7 @@ public abstract class RetryPolicy implements Cloneable {
      * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
     protected RetryPolicy(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions);
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         this.retryOptions = retryOptions;
 
