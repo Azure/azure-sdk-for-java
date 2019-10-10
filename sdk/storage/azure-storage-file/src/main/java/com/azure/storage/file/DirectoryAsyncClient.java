@@ -83,7 +83,7 @@ public class DirectoryAsyncClient {
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
         String snapshot, String accountName) {
-        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;

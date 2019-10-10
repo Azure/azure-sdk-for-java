@@ -39,7 +39,7 @@ public class ClientCertificateCredential implements TokenCredential {
      */
     ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword,
                                 IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(certificatePath);
+        Objects.requireNonNull(certificatePath, "'certificatePath' cannot be null.");
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = certificatePassword;
         identityClient =

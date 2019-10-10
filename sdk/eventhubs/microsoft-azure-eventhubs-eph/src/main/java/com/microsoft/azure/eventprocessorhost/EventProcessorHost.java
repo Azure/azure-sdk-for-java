@@ -363,9 +363,9 @@ public final class EventProcessorHost {
             }
         }
     }
-    
+
     /**
-     * Builder class to create EventProcessorHost instances. 
+     * Builder class to create EventProcessorHost instances.
      * <p>
      * To use, start with: EventProcessorHost.EventProcessorHostBuilder.newBuilder(...)
      * Then either use the built-in Azure Storage-based lease and checkpoint managers, or user implementations.
@@ -381,154 +381,154 @@ public final class EventProcessorHost {
          * all instances consuming from the same Event Hub and consumer group. The name must be unique because
          * it is used to distinguish which instance owns the lease for a given partition of the event hub. An
          * easy way to generate a unique host name is to call EventProcessorHost.createHostName("mystring").
-         * 
+         *
          * @param hostName  a name for this host instance. See method notes.
-         * @param consumerGroupName  the consumer group on the Event Hub 
+         * @param consumerGroupName  The consumer group for the Event Hub
          * @return  interface for setting the lease and checkpoint managers
          */
         public static ManagerStep newBuilder(final String hostName, final String consumerGroupName) {
             return new Steps(hostName, consumerGroupName);
         }
-        
+
         private EventProcessorHostBuilder() {
         }
-        
+
         public interface ManagerStep {
             /**
              * Use the built-in Azure Storage-based lease and checkpoint managers.
-             * 
-             * @param storageConnectionString  connection string for an Azure Storage account  
+             *
+             * @param storageConnectionString  Connection string for the Azure Storage account
              * @param storageContainerName     name for the blob container within the Storage account
              * @param storageBlobPrefix        prefix for the names of the blobs within the blob container, can be empty or null
              * @return  interface for setting the Event Hub connection info and auth
              */
             AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix);
-            
+
             /**
              * Use the built-in Azure Storage-based lease and checkpoint managers.
-             * 
-             * @param storageCredentials         credentials for an Azure Storage account, such as an AAD token  
+             *
+             * @param storageCredentials         credentials for an Azure Storage account, such as an AAD token
              * @param storageContainerName     name for the blob container within the Storage account
              * @param storageBlobPrefix        prefix for the names of the blobs within the blob container, can be empty or null
              * @return  interface for setting the Event Hub connection info and auth
              */
             AuthStep useAzureStorageCheckpointLeaseManager(StorageCredentials storageCredentials, String storageContainerName, String storageBlobPrefix);
-            
+
             /**
              * Use user-implemented lease and checkpoint managers.
-             * 
+             *
              * @param checkpointManager  user-supplied implementation of {@link ICheckpointManager}
              * @param leaseManager       user-supplied implementation of {@link ILeaseManager}
              * @return  interface for setting the Event Hub connection info and auth
              */
             AuthStep useUserCheckpointAndLeaseManagers(ICheckpointManager checkpointManager, ILeaseManager leaseManager);
         }
-        
+
         public interface AuthStep {
             /**
              * Azure Portal can provide a connection string with auth information that applies only to one
              * individual Event Hub. In that case, the connection string contains the name of the Event Hub.
-             * 
+             *
              * @param eventHubConnectionString  Event Hub connection string (which contains the name of the Event Hub)
              * @return  interface for setting optional values
              */
             OptionalStep useEventHubConnectionString(String eventHubConnectionString);
-            
+
             /**
              * Azure Portal can provide a connection string with auth information that applies to the entire
              * namespace instead of an individual Event Hub. Use this overload with such a connection string,
              * which requires you to specify the name of the Event Hub separately.
-             * 
+             *
              * @param eventHubConnectionString  Event Hub connection string (which does not contain the name of the Event Hub)
              * @param eventHubPath              name of the Event Hub
              * @return  interface for setting optional values
              */
             OptionalStep useEventHubConnectionString(String eventHubConnectionString, String eventHubPath);
-            
+
             /**
              * When using AAD auth, call this method to specify the Event Hub, then add AAD-based auth information in the next step.
-             * 
+             *
              * @param endpoint      URI of the Event Hub namespace
              * @param eventHubPath  name of the Event Hub
              * @return  interface for setting AAD auth info
              */
             AADAuthStep useAADAuthentication(URI endpoint, String eventHubPath);
         }
-        
+
         public interface AADAuthStep {
             /**
              * Provide a callback which will be called when a token is needed. See {@link AzureActiveDirectoryTokenProvider}
-             * 
+             *
              * @param authCallback  the callback
              * @param authority     AAD authority string which will be passed to the callback. Used for national cloud support.
              * @return  interface for setting optional values
              */
             OptionalStep useAuthenticationCallback(AuthenticationCallback authCallback, String authority);
-            
+
             /**
              * Provide a user-implemented token provider which will be called when a token is needed.
-             * 
+             *
              * @param tokenProvider  user implementation of ITokenProvider
              * @return  interface for setting optional values
              */
             OptionalStep useTokenProvider(ITokenProvider tokenProvider);
         }
-        
+
         public interface OptionalStep {
             /**
-             * Event Processor Host runs tasks on the supplied threadpool, or creates an internal one. 
+             * Event Processor Host runs tasks on the supplied threadpool, or creates an internal one.
              * @param executor  threadpool, or null to use an internal one
              * @return  interface for setting optional values
              */
             OptionalStep setExecutor(ScheduledExecutorService executor);
-            
+
             /**
              * {@link RetryPolicy} for Event Hubs operations. Event Processor Host uses RetryPolicy.getDefault()
              * if none is supplied.
-             * 
+             *
              * @param retryPolicy  desired retry policy
              * @return  interface for setting optional values
              */
             OptionalStep setRetryPolicy(RetryPolicy retryPolicy);
-            
+
             /**
              * {@link TransportType} for connections to the Event Hubs service. Defaults to TransportType.AMQP.
              * The transport type can also be set in the Event Hub connection string. The value set here will
              * override the value in the connection string, if any.
-             * 
+             *
              * @param transportType  desired transport type
              * @return  interface for setting optional values
              */
             OptionalStep setTransportType(TransportType transportType);
-            
+
             /**
              * The timeout for Event Hubs operations. Defaults to MessagingFactory.DefaultOperationTimeout.
              * The timeout can also be set in the Event Hub connection string. The value set here will override
              * the value in the connection string, if any.
-             * 
+             *
              * @param operationTimeout  desired timeout
              * @return  interface for setting optional values
              */
             OptionalStep setOperationTimeout(Duration operationTimeout);
-            
+
             /**
              * After setting all desired optional values, call this method to build an EventProcessorHost instance.
-             * 
+             *
              * @return  new EventProcessorHost instance
              */
             EventProcessorHost build();
         }
-        
+
         private static class Steps implements ManagerStep, AuthStep, AADAuthStep, OptionalStep {
             private final String hostName;
             private final String consumerGroupName;
-            
+
             // OptionalStep
             private ScheduledExecutorService executor = null;
             private RetryPolicy retryPolicy = null;
             private TransportType transportType = null;
             private Duration operationTimeout = null;
-            
+
             // Auth steps
             private String eventHubConnectionString = null; // group 1
             private String eventHubPath = null; // optional for group 1, required for groups 2-3
@@ -536,18 +536,18 @@ public final class EventProcessorHost {
             private AuthenticationCallback authCallback = null; // group 2
             private String authority = null; // group 2
             private ITokenProvider tokenProvider = null; // group 3
-            
+
             // ManagerStep
             private ICheckpointManager checkpointManager;
             private ILeaseManager leaseManager;
             private boolean initializeManagers = false;
-            
-            
+
+
             Steps(final String hostName, final String consumerGroupName) {
                 if (StringUtil.isNullOrWhiteSpace(hostName) || StringUtil.isNullOrWhiteSpace(consumerGroupName)) {
                     throw new IllegalArgumentException("hostName and consumerGroupName cannot be null or empty");
                 }
-                
+
                 this.hostName = hostName;
                 this.consumerGroupName = consumerGroupName;
             }
@@ -567,27 +567,27 @@ public final class EventProcessorHost {
 
             @Override
             public OptionalStep setTransportType(final TransportType transportType) {
-                Objects.requireNonNull(transportType);
-                
+                Objects.requireNonNull(transportType, "'transportType' cannot be null.");
+
                 this.transportType = transportType;
                 return this;
             }
 
             @Override
             public OptionalStep setOperationTimeout(final Duration operationTimeout) {
-                Objects.requireNonNull(operationTimeout);
-                
+                Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
+
                 this.operationTimeout = operationTimeout;
                 return this;
             }
 
             @Override
             public OptionalStep useAuthenticationCallback(final AuthenticationCallback authCallback, final String authority) {
-                Objects.requireNonNull(authCallback);
+                Objects.requireNonNull(authCallback, "'authCallback' cannot be null.");
                 if (StringUtil.isNullOrWhiteSpace(authority)) {
                     throw new IllegalArgumentException("authority cannot be null or empty");
                 }
-                
+
                 this.authCallback = authCallback;
                 this.authority = authority;
                 return this;
@@ -595,8 +595,8 @@ public final class EventProcessorHost {
 
             @Override
             public OptionalStep useTokenProvider(final ITokenProvider tokenProvider) {
-                Objects.requireNonNull(tokenProvider);
-                
+                Objects.requireNonNull(tokenProvider, "'tokenProvider' cannot be null.");
+
                 this.tokenProvider = tokenProvider;
                 return this;
             }
@@ -614,7 +614,7 @@ public final class EventProcessorHost {
                 if ((eventHubPath != null) && StringUtil.isNullOrWhiteSpace(eventHubPath)) {
                     throw new IllegalArgumentException("eventHubPath cannot be empty. Use null if the connection string already contains the path.");
                 }
-                
+
                 this.eventHubConnectionString = eventHubConnectionString;
                 this.eventHubPath = eventHubPath;
                 return this;
@@ -622,11 +622,11 @@ public final class EventProcessorHost {
 
             @Override
             public AADAuthStep useAADAuthentication(final URI endpoint, final String eventHubPath) {
-                Objects.requireNonNull(endpoint);
+                Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
                 if (StringUtil.isNullOrWhiteSpace(eventHubPath)) {
                     throw new IllegalArgumentException("eventHubPath cannot be null or empty");
                 }
-                
+
                 this.endpoint = endpoint;
                 this.eventHubPath = eventHubPath;
                 return this;
@@ -639,7 +639,7 @@ public final class EventProcessorHost {
                 this.initializeManagers = true;
                 return useUserCheckpointAndLeaseManagers(mgr, mgr);
             }
-            
+
             @Override
             public AuthStep useAzureStorageCheckpointLeaseManager(final StorageCredentials storageCredentials,
                     final String storageContainerName, final String storageBlobPrefix) {
@@ -651,9 +651,9 @@ public final class EventProcessorHost {
             @Override
             public AuthStep useUserCheckpointAndLeaseManagers(final ICheckpointManager checkpointManager,
                     final ILeaseManager leaseManager) {
-                Objects.requireNonNull(checkpointManager);
-                Objects.requireNonNull(leaseManager);
-                
+                Objects.requireNonNull(checkpointManager, "'checkpointManager' cannot be null.");
+                Objects.requireNonNull(leaseManager, "'leaseManager' cannot be null.");
+
                 this.checkpointManager = checkpointManager;
                 this.leaseManager = leaseManager;
                 return this;
@@ -682,11 +682,11 @@ public final class EventProcessorHost {
                         this.initializeManagers,
                         this.executor);
             }
-            
+
             private EventHubClientOptions packOptions() {
                 return (new EventHubClientOptions()).setOperationTimeout(this.operationTimeout).setRetryPolicy(this.retryPolicy).setTransportType(this.transportType);
             }
-            
+
             private void normalizeConnectionStringAndEventHubPath() {
                 // The event hub path must appear in at least one of the eventHubPath argument or the connection string.
                 // If it appears in both, then it must be the same in both. If it appears in only one, populate the other.
@@ -709,7 +709,7 @@ public final class EventProcessorHost {
                         throw new IllegalArgumentException("Provide EventHub entity path in either eventHubPath argument or in eventHubConnectionString");
                     }
                 }
-                
+
                 if (this.transportType != null) {
                     csb.setTransportType(this.transportType);
                 }

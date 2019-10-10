@@ -177,7 +177,7 @@ public class ClientLogger {
     }
 
     private RuntimeException logException(RuntimeException runtimeException, int logLevel) {
-        Objects.requireNonNull(runtimeException);
+        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
         // Only log if the level is enabled.
         if (canLogAtLevel(logLevel)) {

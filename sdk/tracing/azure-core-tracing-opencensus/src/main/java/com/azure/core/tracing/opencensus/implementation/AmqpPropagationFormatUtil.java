@@ -41,7 +41,7 @@ public class AmqpPropagationFormatUtil {
      * @throws NullPointerException if {@code spanContext} is {@code null}.
      */
     public static String getDiagnosticId(SpanContext spanContext) {
-        Objects.requireNonNull(spanContext, "'spanContext' cannot be null");
+        Objects.requireNonNull(spanContext, "'spanContext' cannot be null.");
         char[] chars = new char[55];
         chars[0] = '0';
         chars[1] = '0';

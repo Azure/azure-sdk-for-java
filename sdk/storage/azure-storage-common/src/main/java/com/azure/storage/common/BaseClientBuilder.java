@@ -69,7 +69,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @return The pipeline.
      */
     protected HttpPipeline buildPipeline() {
-        Objects.requireNonNull(this.endpoint);
+        Objects.requireNonNull(this.endpoint, "'endpoint' cannot be null.");
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -143,7 +143,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public final T credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
 
@@ -158,7 +158,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public T credential(TokenCredential credential) {
-        this.tokenCredential = Objects.requireNonNull(credential);
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
 
@@ -173,7 +173,8 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public final T sasToken(String sasToken) {
-        this.sasTokenCredential = SasTokenCredential.fromSasTokenString(Objects.requireNonNull(sasToken));
+        this.sasTokenCredential = SasTokenCredential
+            .fromSasTokenString(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
 
@@ -212,7 +213,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public final T connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
@@ -268,7 +269,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
     public final T addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy));
+        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
         return getClazz().cast(this);
     }
 
@@ -318,7 +319,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
      * @throws NullPointerException If {@code retryOptions} is {@code null}
      */
     public final T retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions);
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         return getClazz().cast(this);
     }
 

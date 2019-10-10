@@ -187,7 +187,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
         PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Objects.requireNonNull(body);
+        Objects.requireNonNull(body, "'body' cannot be null.");
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES);
 

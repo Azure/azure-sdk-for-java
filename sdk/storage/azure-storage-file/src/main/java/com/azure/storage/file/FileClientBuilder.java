@@ -78,8 +78,8 @@ public class FileClientBuilder extends BaseFileClientBuilder<FileClientBuilder> 
     }
 
     private AzureFileStorageImpl constructImpl() {
-        Objects.requireNonNull(shareName);
-        Objects.requireNonNull(resourcePath);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
 
         if (!super.hasCredential()) {
             throw logger.logExceptionAsError(
