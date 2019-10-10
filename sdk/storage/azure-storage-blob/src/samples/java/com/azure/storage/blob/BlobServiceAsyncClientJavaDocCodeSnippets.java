@@ -5,12 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.Logging;
 import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RetentionPolicy;
-import com.azure.storage.blob.models.StorageServiceProperties;
+
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -119,14 +120,14 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#setProperties(StorageServiceProperties)}
+     * Code snippet for {@link BlobServiceAsyncClient#setProperties(BlobServiceProperties)}
      */
     public void setProperties() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setProperties#StorageServiceProperties
         RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
         RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
-        StorageServiceProperties properties = new StorageServiceProperties()
+        BlobServiceProperties properties = new BlobServiceProperties()
             .setLogging(new Logging()
                 .setWrite(true)
                 .setDelete(true)
@@ -145,14 +146,14 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobServiceAsyncClient#setPropertiesWithResponse(StorageServiceProperties)}
+     * Code snippet for {@link BlobServiceAsyncClient#setPropertiesWithResponse(BlobServiceProperties)}
      */
     public void setPropertiesWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.setPropertiesWithResponse#StorageServiceProperties
         RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
         RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
 
-        StorageServiceProperties properties = new StorageServiceProperties()
+        BlobServiceProperties properties = new BlobServiceProperties()
             .setLogging(new Logging()
                 .setWrite(true)
                 .setDelete(true)

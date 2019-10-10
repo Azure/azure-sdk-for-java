@@ -17,7 +17,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
-public final class StorageServiceProperties {
+public final class BlobServiceProperties {
     /*
      * The logging property.
      */
@@ -85,9 +85,9 @@ public final class StorageServiceProperties {
      * Set the logging property: The logging property.
      *
      * @param logging the logging value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setLogging(Logging logging) {
+    public BlobServiceProperties setLogging(Logging logging) {
         this.logging = logging;
         return this;
     }
@@ -105,9 +105,9 @@ public final class StorageServiceProperties {
      * Set the hourMetrics property: The hourMetrics property.
      *
      * @param hourMetrics the hourMetrics value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setHourMetrics(Metrics hourMetrics) {
+    public BlobServiceProperties setHourMetrics(Metrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -125,9 +125,9 @@ public final class StorageServiceProperties {
      * Set the minuteMetrics property: The minuteMetrics property.
      *
      * @param minuteMetrics the minuteMetrics value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setMinuteMetrics(Metrics minuteMetrics) {
+    public BlobServiceProperties setMinuteMetrics(Metrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -148,9 +148,9 @@ public final class StorageServiceProperties {
      * Set the cors property: The set of CORS rules.
      *
      * @param cors the cors value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setCors(List<CorsRule> cors) {
+    public BlobServiceProperties setCors(List<CorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }
@@ -174,9 +174,9 @@ public final class StorageServiceProperties {
      * recent versions.
      *
      * @param defaultServiceVersion the defaultServiceVersion value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setDefaultServiceVersion(String defaultServiceVersion) {
+    public BlobServiceProperties setDefaultServiceVersion(String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
         return this;
     }
@@ -196,9 +196,9 @@ public final class StorageServiceProperties {
      * property.
      *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setDeleteRetentionPolicy(RetentionPolicy deleteRetentionPolicy) {
+    public BlobServiceProperties setDeleteRetentionPolicy(RetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
         return this;
     }
@@ -216,9 +216,9 @@ public final class StorageServiceProperties {
      * Set the staticWebsite property: The staticWebsite property.
      *
      * @param staticWebsite the staticWebsite value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the BlobServiceProperties object itself.
      */
-    public StorageServiceProperties setStaticWebsite(StaticWebsite staticWebsite) {
+    public BlobServiceProperties setStaticWebsite(StaticWebsite staticWebsite) {
         this.staticWebsite = staticWebsite;
         return this;
     }
