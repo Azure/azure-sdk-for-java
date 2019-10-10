@@ -1,14 +1,18 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-# Use case: Update all the versions in README.md and pom.xml files based on
-# the versions in versions.txt
+# Use case: Append the build qualifier onto the existing version in such a way that the
+# resulting version string is still in semver format. This will be utilized by the build
+# system to modify the version string to produce nightly DevOps builds.
 #
-#    python utilities/update_versions.py version-file
+# It's worth noting that this only manipulates the version in the appropriate version_*.txt file.
+# which has the format <groupId>:<artifactId>;<dependencyVersion>;<currentVersion>.
+# Selecting dependency for the update type will only update the dependency version. Similarly,
+# selecting current will only update the current. Selecting both will update both the dependency
+# and the current versions.
 #
-# Use case: Update the versions in a particular file
 #
-#    python utilities/update_versions.py version-file file-to-update
+#    python utilities/set_versions.py --ut [current|dependency|all] --bt [client|data|management] --bq <BuildQualifierString>
 #
 # The script must be run at the root of azure-sdk-for-java.
 

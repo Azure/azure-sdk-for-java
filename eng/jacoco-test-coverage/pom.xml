@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-keys</artifactId>
-      <version>4.0.0-preview.5/version> <!-- {x-version-update;com.azure:azure-keyvault-keys;current} -->
+      <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

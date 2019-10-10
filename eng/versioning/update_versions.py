@@ -5,10 +5,14 @@
 # the versions in versions_[client|data|management].txt/dependencies_[client|data|management].txt
 #
 #    python eng/versioning/update_versions.py --update-type [library|dependency|all] -build-type [client|data|management]
+# For example: To update the library versions for the client track
+#    python eng/versioning/update_versions.py --ut libary --bt client
 #
 # Use case: Update the versions in a particular file
 #
 #    python utilities/update_versions.py --update-type [library|dependency|all] -build-type [client|data|management] --target-file pom-file-to-update
+# For example: To update all versions for the client track for a given pom file
+#    python eng/versioning/update_versions.py --ut all --bt client --tf <pathToPomFile>\pom.xml
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -98,7 +102,6 @@ def update_versions(version_map, target_file):
                 # If the module isn't found then just continue. This can
                 # happen if we're going through and replacing only library
                 # or only dependency versions
-                # JRS maybe have a diagnostics mode and print something out?
                 if module_name not in version_map:
                     newlines.append(line)
                     continue
