@@ -62,14 +62,14 @@ namespace Azure.Test.PerfStress
 
             try
             {
-                await tests[0].GlobalSetup();
+                await tests[0].GlobalSetupAsync();
 
                 try
                 {
                     var setupTasks = new Task[options.Parallel];
                     for (var i = 0; i < options.Parallel; i++)
                     {
-                        setupTasks[i] = tests[i].Setup();
+                        setupTasks[i] = tests[i].SetupAsync();
                     }
                     await Task.WhenAll(setupTasks);
 
@@ -95,7 +95,7 @@ namespace Azure.Test.PerfStress
                         var cleanupTasks = new Task[options.Parallel];
                         for (var i = 0; i < options.Parallel; i++)
                         {
-                            cleanupTasks[i] = tests[i].Cleanup();
+                            cleanupTasks[i] = tests[i].CleanupAsync();
                         }
                         await Task.WhenAll(cleanupTasks);
                     }
@@ -110,7 +110,7 @@ namespace Azure.Test.PerfStress
                         cleanupStatusTask = PrintStatusAsync("=== Cleanup ===", () => ".", newLine: false, cleanupStatusCts.Token);
                     }
 
-                    await tests[0].GlobalCleanup();
+                    await tests[0].GlobalCleanupAsync();
                 }
             }
 

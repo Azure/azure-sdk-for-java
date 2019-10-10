@@ -12,12 +12,12 @@ namespace Azure.Test.PerfStress
             Options = options;
         }
 
-        public virtual Task GlobalSetup()
+        public virtual Task GlobalSetupAsync()
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task Setup()
+        public virtual Task SetupAsync()
         {
             return Task.CompletedTask;
         }
@@ -26,12 +26,12 @@ namespace Azure.Test.PerfStress
 
         public abstract Task RunAsync(CancellationToken cancellationToken);
 
-        public virtual Task Cleanup()
+        public virtual Task CleanupAsync()
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task GlobalCleanup()
+        public virtual Task GlobalCleanupAsync()
         {
             return Task.CompletedTask;
         }

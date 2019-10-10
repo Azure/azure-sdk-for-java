@@ -5,11 +5,11 @@ namespace Azure.Test.PerfStress
 {
     internal interface IPerfStressTest
     {
-        Task GlobalSetup();
-        Task Setup();
+        Task GlobalSetupAsync();
+        Task SetupAsync();
         void Run(CancellationToken cancellationToken);
         Task RunAsync(CancellationToken cancellationToken);
-        Task Cleanup();
-        Task GlobalCleanup();
+        Task CleanupAsync();
+        Task GlobalCleanupAsync();
     }
 }

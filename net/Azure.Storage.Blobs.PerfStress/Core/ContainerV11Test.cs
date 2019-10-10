@@ -24,14 +24,14 @@ namespace Azure.Storage.Blobs.PerfStress.Core
 
         public override async Task GlobalSetup()
         {
-            await base.GlobalSetup();
+            await base.GlobalSetupAsync();
             await CloudBlobContainer.CreateAsync();
         }
 
         public override async Task GlobalCleanup()
         {
             await CloudBlobContainer.DeleteAsync();
-            await base.GlobalCleanup();
+            await base.GlobalCleanupAsync();
         }
     }
 }
