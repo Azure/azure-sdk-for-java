@@ -7,4 +7,6 @@ module com.azure.storage.common {
     exports com.azure.storage.common;
     exports com.azure.storage.common.credentials;
     exports com.azure.storage.common.policy;
+    exports com.azure.storage.common.implementation.credentials;
+    exports com.azure.storage.common.implementation.policy;
 }
