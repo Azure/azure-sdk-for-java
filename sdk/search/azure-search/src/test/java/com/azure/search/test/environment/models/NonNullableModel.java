@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.search.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,31 +11,31 @@ import java.util.Objects;
 public class NonNullableModel {
 
     @JsonProperty(value = "Key")
-    public String key;
+    private String key;
 
     @JsonProperty(value = "Rating")
-    public int rating;
+    private int rating;
 
     @JsonProperty(value = "Count")
-    public long count;
+    private long count;
 
     @JsonProperty(value = "IsEnabled")
-    public boolean isEnabled;
+    private boolean isEnabled;
 
     @JsonProperty(value = "Ratio")
-    public double ratio;
+    private double ratio;
 
     @JsonProperty(value = "StartDate")
-    public Date startDate;
+    private Date startDate;
 
     @JsonProperty(value = "EndDate")
-    public Date endDate;
+    private Date endDate;
 
     @JsonProperty(value = "TopLevelBucket")
-    public Bucket topLevelBucket;
+    private Bucket topLevelBucket;
 
     @JsonProperty(value = "Buckets")
-    public Bucket[] buckets;
+    private Bucket[] buckets;
 
     public NonNullableModel key(String key) {
         this.key = key;
@@ -82,18 +84,22 @@ public class NonNullableModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NonNullableModel)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof NonNullableModel)) {
+            return false;
+        }
         NonNullableModel that = (NonNullableModel) o;
-        return rating == that.rating &&
-            count == that.count &&
-            isEnabled == that.isEnabled &&
-            Double.compare(that.ratio, ratio) == 0 &&
-            key.equals(that.key) &&
-            ((startDate == null && that.startDate == null) || (startDate.equals(that.startDate))) &&
-            ((endDate == null && that.endDate == null) || (endDate.equals(that.endDate))) &&
-            ((topLevelBucket == null && that.topLevelBucket == null) || (topLevelBucket.equals(that.topLevelBucket))) &&
-            Arrays.equals(buckets, that.buckets);
+        return rating == that.rating
+            && count == that.count
+            && isEnabled == that.isEnabled
+            && Double.compare(that.ratio, ratio) == 0
+            && key.equals(that.key)
+            && ((startDate == null && that.startDate == null) || (startDate.equals(that.startDate)))
+            && ((endDate == null && that.endDate == null) || (endDate.equals(that.endDate)))
+            && ((topLevelBucket == null && that.topLevelBucket == null) || (topLevelBucket.equals(that.topLevelBucket)))
+            && Arrays.equals(buckets, that.buckets);
     }
 
     @Override

@@ -175,26 +175,31 @@ public class Hotel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Hotel)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Hotel)) {
+            return false;
+        }
         Hotel hotel = (Hotel) o;
-        return Objects.equals(hotelId, hotel.hotelId) &&
-            Objects.equals(hotelName, hotel.hotelName) &&
-            Objects.equals(description, hotel.description) &&
-            Objects.equals(descriptionFr, hotel.descriptionFr) &&
-            Objects.equals(category, hotel.category) &&
-            ModelComparer.collectionEquals(tags, hotel.tags) &&
-            Objects.equals(parkingIncluded, hotel.parkingIncluded) &&
-            Objects.equals(smokingAllowed, hotel.smokingAllowed) &&
-            Objects.equals(lastRenovationDate, hotel.lastRenovationDate) &&
-            Objects.equals(rating, hotel.rating) &&
-            Objects.equals(location, hotel.location) &&
-            Objects.equals(address, hotel.address) &&
-            ModelComparer.collectionEquals(rooms, hotel.rooms);
+        return Objects.equals(hotelId, hotel.hotelId)
+            && Objects.equals(hotelName, hotel.hotelName)
+            && Objects.equals(description, hotel.description)
+            && Objects.equals(descriptionFr, hotel.descriptionFr)
+            && Objects.equals(category, hotel.category)
+            && ModelComparer.collectionEquals(tags, hotel.tags)
+            && Objects.equals(parkingIncluded, hotel.parkingIncluded)
+            && Objects.equals(smokingAllowed, hotel.smokingAllowed)
+            && Objects.equals(lastRenovationDate, hotel.lastRenovationDate)
+            && Objects.equals(rating, hotel.rating)
+            && Objects.equals(location, hotel.location)
+            && Objects.equals(address, hotel.address)
+            && ModelComparer.collectionEquals(rooms, hotel.rooms);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(hotelId, hotelName, description, descriptionFr, category, tags, parkingIncluded, smokingAllowed, lastRenovationDate, rating, location, address, rooms);
+        return Objects.hash(hotelId, hotelName, description, descriptionFr, category, tags, parkingIncluded,
+            smokingAllowed, lastRenovationDate, rating, location, address, rooms);
     }
 }

@@ -70,7 +70,7 @@ public class LookupSyncTests extends LookupTestBase {
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
 
-        Document result = client.getDocument(expected.key);
+        Document result = client.getDocument(expected.key());
         ModelWithPrimitiveCollections actual = result.as(ModelWithPrimitiveCollections.class);
         Assert.assertEquals(expected, actual);
     }

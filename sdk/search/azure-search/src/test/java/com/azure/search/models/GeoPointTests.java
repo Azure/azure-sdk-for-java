@@ -10,7 +10,6 @@ import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.SearchIndexClient;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.SearchIndexClientTestBase;
-import com.azure.search.implementation.SerializationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;

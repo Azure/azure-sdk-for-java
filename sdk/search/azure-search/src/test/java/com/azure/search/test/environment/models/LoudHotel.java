@@ -178,26 +178,31 @@ public class LoudHotel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LoudHotel)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LoudHotel)) {
+            return false;
+        }
         LoudHotel hotel = (LoudHotel) o;
-        return Objects.equals(HOTELID, hotel.HOTELID) &&
-            Objects.equals(HOTELNAME, hotel.HOTELNAME) &&
-            Objects.equals(DESCRIPTION, hotel.DESCRIPTION) &&
-            Objects.equals(DESCRIPTIONFRENCH, hotel.DESCRIPTIONFRENCH) &&
-            Objects.equals(CATEGORY, hotel.CATEGORY) &&
-            ModelComparer.collectionEquals(TAGS, hotel.TAGS) &&
-            Objects.equals(PARKINGINCLUDED, hotel.PARKINGINCLUDED) &&
-            Objects.equals(SMOKINGALLOWED, hotel.SMOKINGALLOWED) &&
-            Objects.equals(LASTRENOVATIONDATE, hotel.LASTRENOVATIONDATE) &&
-            Objects.equals(RATING, hotel.RATING) &&
-            Objects.equals(LOCATION, hotel.LOCATION) &&
-            Objects.equals(ADDRESS, hotel.ADDRESS) &&
-            ModelComparer.collectionEquals(ROOMS, hotel.ROOMS);
+        return Objects.equals(HOTELID, hotel.HOTELID)
+            && Objects.equals(HOTELNAME, hotel.HOTELNAME)
+            && Objects.equals(DESCRIPTION, hotel.DESCRIPTION)
+            && Objects.equals(DESCRIPTIONFRENCH, hotel.DESCRIPTIONFRENCH)
+            && Objects.equals(CATEGORY, hotel.CATEGORY)
+            && ModelComparer.collectionEquals(TAGS, hotel.TAGS)
+            && Objects.equals(PARKINGINCLUDED, hotel.PARKINGINCLUDED)
+            && Objects.equals(SMOKINGALLOWED, hotel.SMOKINGALLOWED)
+            && Objects.equals(LASTRENOVATIONDATE, hotel.LASTRENOVATIONDATE)
+            && Objects.equals(RATING, hotel.RATING)
+            && Objects.equals(LOCATION, hotel.LOCATION)
+            && Objects.equals(ADDRESS, hotel.ADDRESS)
+            && ModelComparer.collectionEquals(ROOMS, hotel.ROOMS);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(HOTELID, HOTELNAME, DESCRIPTION, DESCRIPTIONFRENCH, CATEGORY, TAGS, PARKINGINCLUDED, SMOKINGALLOWED, LASTRENOVATIONDATE, RATING, LOCATION, ADDRESS, ROOMS);
+        return Objects.hash(HOTELID, HOTELNAME, DESCRIPTION, DESCRIPTIONFRENCH, CATEGORY, TAGS, PARKINGINCLUDED,
+            SMOKINGALLOWED, LASTRENOVATIONDATE, RATING, LOCATION, ADDRESS, ROOMS);
     }
 }

@@ -7,34 +7,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Objects;
 
 public class ModelWithPrimitiveCollections {
 
     @JsonProperty(value = "Key")
-    public String key;
+    private String key;
 
     @JsonProperty(value = "Bools")
-    public Boolean[] bools;
+    private Boolean[] bools;
 
     @JsonProperty(value = "Dates")
-    public OffsetDateTime[] dates;
+    private OffsetDateTime[] dates;
 
     @JsonProperty(value = "Doubles")
-    public Double[] doubles;
+    private Double[] doubles;
 
     @JsonProperty(value = "Ints")
-    public int[] ints;
+    private int[] ints;
 
     @JsonProperty(value = "Longs")
-    public Long[] longs;
+    private Long[] longs;
 
     @JsonProperty(value = "Points")
-    public GeoPoint[] points;
+    private GeoPoint[] points;
 
     @JsonProperty(value = "Strings")
-    public String[] strings;
+    private String[] strings;
+
+    public String key() {
+        return this.key;
+    }
 
     public ModelWithPrimitiveCollections key(String key) {
         this.key = key;
@@ -78,17 +81,21 @@ public class ModelWithPrimitiveCollections {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ModelWithPrimitiveCollections)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ModelWithPrimitiveCollections)) {
+            return false;
+        }
         ModelWithPrimitiveCollections that = (ModelWithPrimitiveCollections) o;
-        return Objects.equals(key, that.key) &&
-            Arrays.equals(bools, that.bools) &&
-            Arrays.equals(dates, that.dates) &&
-            Arrays.equals(doubles, that.doubles) &&
-            Arrays.equals(ints, that.ints) &&
-            Arrays.equals(longs, that.longs) &&
-            Arrays.equals(points, that.points) &&
-            Arrays.equals(strings, that.strings);
+        return Objects.equals(key, that.key)
+            && Arrays.equals(bools, that.bools)
+            && Arrays.equals(dates, that.dates)
+            && Arrays.equals(doubles, that.doubles)
+            && Arrays.equals(ints, that.ints)
+            && Arrays.equals(longs, that.longs)
+            && Arrays.equals(points, that.points)
+            && Arrays.equals(strings, that.strings);
     }
 
     @Override

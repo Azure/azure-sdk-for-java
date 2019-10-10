@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.DocumentIndexResult;
@@ -15,9 +16,9 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
-import com.azure.search.service.models.DataType;
-import com.azure.search.service.models.Field;
-import com.azure.search.service.models.Index;
+import com.azure.search.models.DataType;
+import com.azure.search.models.Field;
+import com.azure.search.models.Index;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -277,15 +278,15 @@ public class IndexingSyncTests extends IndexingTestBase {
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
         Index indexWithReservedName = new Index()
-            .withName(indexName)
-            .withFields(Collections.singletonList(new Field()
-                .withName("ID")
-                .withType(DataType.EDM_STRING)
-                .withKey(Boolean.TRUE)
+            .name(indexName)
+            .fields(Collections.singletonList(new Field()
+                .name("ID")
+                .type(DataType.EDM_STRING)
+                .key(Boolean.TRUE)
             ));
 
         if (!interceptorManager.isPlaybackMode()) {
-            getSearchServiceClient().indexes().create(indexWithReservedName);
+            getSearchServiceClient().indexes().createWithRestResponseAsync(indexWithReservedName, Context.NONE);
         }
 
         client = getClientBuilder(indexName).buildClient();

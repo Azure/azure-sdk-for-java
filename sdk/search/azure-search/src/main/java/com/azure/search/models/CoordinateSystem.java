@@ -4,9 +4,7 @@
 package com.azure.search.models;
 
 import com.azure.core.implementation.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -65,23 +63,20 @@ public class CoordinateSystem {
             && properties.get("name").startsWith("EPSG");
     }
 
-    public Map createObjectMap() {
-        return new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .convertValue(this, Map.class);
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         CoordinateSystem other = (CoordinateSystem) o;
-        if (!this.validate() || !other.validate())
+        if (!this.validate() || !other.validate()) {
             return false;
-        return Objects.equals(type, other.type) &&
-            Objects.equals(properties, other.properties);
+        }
+        return Objects.equals(type, other.type)
+            && Objects.equals(properties, other.properties);
     }
 
     @Override

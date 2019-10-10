@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.Context;
 import com.azure.search.common.AutoCompletePagedResponse;
 import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
-import com.azure.search.implementation.SearchIndexRestClient;
 import com.azure.search.implementation.SearchIndexRestClientBuilder;
+import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteParameters;
@@ -39,13 +41,15 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
+@ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public class SearchIndexAsyncClient {
 
     /**
      * The lazily-created serializer for search index client.
      */
-    private static SerializerAdapter serializer;
+    private static final SerializerAdapter SERIALIZER = initializeSerializerAdapter();
 
     /**
      * Search Service dns suffix
@@ -67,16 +71,7 @@ public class SearchIndexAsyncClient {
      */
     private final String indexName;
 
-    /**
-     * The Http Client to be used.
-     */
-    private final HttpClient httpClient;
-
-    /**
-     * The Http Client to be used.
-     */
-    private final List<HttpPipelinePolicy> policies;
-
+    //TODO: remove this from the client instance level
     private Integer skip;
 
     private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
@@ -85,7 +80,7 @@ public class SearchIndexAsyncClient {
     /**
      * The underlying REST client to be used to actually interact with the Search service
      */
-    private SearchIndexRestClient restClient;
+    private final SearchIndexRestClientImpl restClient;
 
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
@@ -117,15 +112,8 @@ public class SearchIndexAsyncClient {
         this.searchDnsSuffix = searchDnsSuffix;
         this.indexName = indexName;
         this.apiVersion = apiVersion;
-        this.httpClient = httpClient;
-        this.policies = policies;
         this.skip = 0;
 
-        initialize();
-    }
-
-    private void initialize() {
-        initializeSerializerAdapter();
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(searchServiceName)
             .indexName(indexName)
@@ -134,7 +122,7 @@ public class SearchIndexAsyncClient {
             .pipeline(new HttpPipelineBuilder()
                 .httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0])).build())
-                .serializer(serializer)
+            .serializer(SERIALIZER)
             .build();
     }
 
@@ -164,9 +152,13 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to upload to the target Index.
      * @return response containing the document index result.
      */
-    @SuppressWarnings("unchecked")
     public Mono<Response<DocumentIndexResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
-        return this.indexWithResponse(new IndexBatch().addUploadAction(documents));
+        return withContext(context -> uploadDocumentsWithResponse(documents, context));
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<DocumentIndexResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+        return this.indexWithResponse(new IndexBatch().addUploadAction(documents), context);
     }
 
     /**
@@ -186,9 +178,13 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
      */
-    @SuppressWarnings("unchecked")
     public Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
         return this.indexWithResponse(new IndexBatch().addMergeAction(documents));
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
+        return this.indexWithResponse(new IndexBatch().addMergeAction(documents), context);
     }
 
     /**
@@ -198,7 +194,7 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
      */
-    public  Mono<DocumentIndexResult> mergeOrUploadDocuments(Iterable<?> documents) {
+    public Mono<DocumentIndexResult> mergeOrUploadDocuments(Iterable<?> documents) {
         return this.mergeOrUploadDocumentsWithResponse(documents)
             .map(Response::value);
     }
@@ -210,9 +206,13 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return response containing the document index result.
      */
+    public Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
+        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
+    }
+
     @SuppressWarnings("unchecked")
-    public  Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
-        return this.indexWithResponse(new IndexBatch().addMergeOrUploadAction(documents));
+    Mono<Response<DocumentIndexResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+        return this.indexWithResponse(new IndexBatch().addMergeOrUploadAction(documents), context);
     }
 
     /**
@@ -232,9 +232,13 @@ public class SearchIndexAsyncClient {
      * @param documents collection of documents to delete from the target Index.
      * @return response containing the document index result.
      */
-    @SuppressWarnings("unchecked")
     public Mono<Response<DocumentIndexResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
-        return this.indexWithResponse(new IndexBatch().addDeleteAction(documents));
+        return withContext(context -> deleteDocumentsWithResponse(documents, context));
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<DocumentIndexResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
+        return this.indexWithResponse(new IndexBatch().addDeleteAction(documents), context);
     }
 
     /**
@@ -280,9 +284,13 @@ public class SearchIndexAsyncClient {
      * @return response containing the number of documents.
      */
     public Mono<Response<Long>> getDocumentCountWithResponse() {
+        return withContext(this::getDocumentCountWithResponse);
+    }
+
+    Mono<Response<Long>> getDocumentCountWithResponse(Context context) {
         return restClient
             .documents()
-            .countWithRestResponseAsync()
+            .countWithRestResponseAsync(context)
             .map(Function.identity());
     }
 
@@ -292,17 +300,7 @@ public class SearchIndexAsyncClient {
      * @return A {@link PagedFlux} of SearchResults
      */
     public PagedFlux<SearchResult> search() {
-        SearchRequest searchRequest = new SearchRequest();
-        Mono<PagedResponse<SearchResult>> first = restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest)
-            .map(res -> {
-                if (res.value().nextPageParameters() != null) {
-                    skip = res.value().nextPageParameters().skip();
-                }
-                return new SearchPagedResponse(res);
-            });
-        return new PagedFlux<>(() -> first,
-            nextLink -> searchPostNextWithRestResponseAsync(searchRequest, nextLink));
+        return this.search(null, null, null);
     }
 
     /**
@@ -313,20 +311,25 @@ public class SearchIndexAsyncClient {
      * @param searchRequestOptions Search Request Options
      * @return A {@link PagedFlux} of SearchResults
      */
-    public PagedFlux<SearchResult> search(String searchText,
-                                          SearchParameters searchParameters,
-                                          SearchRequestOptions searchRequestOptions) {
+    public PagedFlux<SearchResult> search(
+            String searchText,
+            SearchParameters searchParameters,
+            SearchRequestOptions searchRequestOptions) {
         SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
-        Mono<PagedResponse<SearchResult>> first = restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest, searchRequestOptions)
-            .map(res -> {
-                if (res.value().nextPageParameters() != null) {
-                    skip = res.value().nextPageParameters().skip();
-                }
-                return new SearchPagedResponse(res);
-            });
-        return new PagedFlux<>(() -> first,
-            nextLink -> searchPostNextWithRestResponseAsync(searchRequest, nextLink));
+        return new PagedFlux<>(
+            () -> withContext(context -> searchFirstPage(searchRequest, searchRequestOptions, context)),
+            nextLink -> withContext(context -> searchNextPage(searchRequest, searchRequestOptions, nextLink, context)));
+    }
+
+    PagedFlux<SearchResult> search(
+            String searchText,
+            SearchParameters searchParameters,
+            SearchRequestOptions searchRequestOptions,
+            Context context) {
+        SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
+        return new PagedFlux<>(
+            () -> searchFirstPage(searchRequest, searchRequestOptions, context),
+            nextLink -> searchNextPage(searchRequest, searchRequestOptions, nextLink, context));
     }
 
     /**
@@ -336,17 +339,9 @@ public class SearchIndexAsyncClient {
      * @return the document object
      */
     public Mono<Document> getDocument(String key) {
-        return restClient
-            .documents()
-            .getAsync(key)
-            .map(res -> {
-                DocumentResponseConversions.cleanupDocument(res);
-                return res;
-            })
-            .onErrorMap(DocumentResponseConversions::exceptionMapper)
-            //TODO: remove logging statements
-            .doOnSuccess(s -> logger.info("Document with key: " + key + " was retrieved successfully"))
-            .doOnError(e -> logger.error("An error occurred in getDocument(key): " + e.getMessage()));
+        return this.getDocumentWithResponse(key, null, null)
+            .map(Response::value);
+
     }
 
     /**
@@ -357,8 +352,10 @@ public class SearchIndexAsyncClient {
      * @param searchRequestOptions search request options
      * @return the document object
      */
-    public Mono<Document> getDocument(String key, List<String> selectedFields,
-                                      SearchRequestOptions searchRequestOptions) {
+    public Mono<Document> getDocument(
+            String key,
+            List<String> selectedFields,
+            SearchRequestOptions searchRequestOptions) {
         return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions)
             .map(Response::value);
     }
@@ -372,11 +369,20 @@ public class SearchIndexAsyncClient {
      * @return a response containing the document object
      */
     public Mono<Response<Document>> getDocumentWithResponse(
-        String key, List<String> selectedFields,
-        SearchRequestOptions searchRequestOptions) {
+            String key,
+            List<String> selectedFields,
+            SearchRequestOptions searchRequestOptions) {
+        return withContext(context -> getDocumentWithResponse(key, selectedFields, searchRequestOptions, context));
+    }
+
+    Mono<Response<Document>> getDocumentWithResponse(
+            String key,
+            List<String> selectedFields,
+            SearchRequestOptions searchRequestOptions,
+            Context context) {
         return restClient
             .documents()
-            .getWithRestResponseAsync(key, selectedFields, searchRequestOptions)
+            .getWithRestResponseAsync(key, selectedFields, searchRequestOptions, context)
             .map(res -> {
                 Document doc = res.value();
                 DocumentResponseConversions.cleanupDocument(doc);
@@ -419,11 +425,21 @@ public class SearchIndexAsyncClient {
             SuggestParameters suggestParameters,
             SearchRequestOptions searchRequestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestParameters);
-        Mono<PagedResponse<SuggestResult>> first = restClient.documents()
-                .suggestPostWithRestResponseAsync(suggestRequest)
-                    .map(SuggestPagedResponse::new);
-        return new PagedFlux<>(() -> first, nextLink -> Mono.empty());
+        return new PagedFlux<>(
+            () -> withContext(context -> suggestFirst(searchRequestOptions, suggestRequest, context)),
+            nextLink -> Mono.empty());
+    }
 
+    PagedFlux<SuggestResult> suggest(
+            String searchText,
+            String suggesterName,
+            SuggestParameters suggestParameters,
+            SearchRequestOptions searchRequestOptions,
+            Context context) {
+        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestParameters);
+        return new PagedFlux<>(
+            () -> suggestFirst(searchRequestOptions, suggestRequest, context),
+            nextLink -> Mono.empty());
     }
 
     /**
@@ -444,8 +460,12 @@ public class SearchIndexAsyncClient {
      * @return a response containing the document index result
      */
     public Mono<Response<DocumentIndexResult>> indexWithResponse(IndexBatch<?> batch) {
+        return withContext(context -> indexWithResponse(batch, context));
+    }
+
+    Mono<Response<DocumentIndexResult>> indexWithResponse(IndexBatch<?> batch, Context context) {
         return restClient.documents()
-            .indexWithRestResponseAsync(batch)
+            .indexWithRestResponseAsync(batch, context)
             .handle((res, sink) -> {
                 if (res.statusCode() == 207) {
                     IndexBatchException ex = new IndexBatchException(res.value());
@@ -481,25 +501,65 @@ public class SearchIndexAsyncClient {
             String suggesterName,
             SearchRequestOptions searchRequestOptions,
             AutocompleteParameters autocompleteParameters) {
-
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,
             autocompleteParameters);
-        Mono<PagedResponse<AutocompleteItem>> first = restClient.documents()
-                .autocompletePostWithRestResponseAsync(autocompleteRequest)
-                .map(res -> new AutoCompletePagedResponse(res));
-        return new PagedFlux<>(() -> first, nextLink -> Mono.empty());
+        return new PagedFlux<>(
+            () -> withContext(context -> autocompleteFirst(autocompleteRequest, searchRequestOptions, context)),
+            nextLink -> Mono.empty());
+    }
+
+    PagedFlux<AutocompleteItem> autocomplete(
+        String searchText,
+        String suggesterName,
+        SearchRequestOptions searchRequestOptions,
+        AutocompleteParameters autocompleteParameters,
+        Context context) {
+        AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
+            suggesterName,
+            autocompleteParameters);
+        return new PagedFlux<>(
+            () -> autocompleteFirst(autocompleteRequest, searchRequestOptions, context),
+            nextLink -> Mono.empty());
     }
 
     /**
-     * Search for next page
+     * Retrieve the first page of a document search
      *
-     * @param nextLink next page link
+     * @param searchRequest the search request
+     * @param searchRequestOptions the search request options
+     * @param context The context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
-    private Mono<PagedResponse<SearchResult>> searchPostNextWithRestResponseAsync(SearchRequest searchRequest,
-                                                                                  String nextLink) {
+    private Mono<PagedResponse<SearchResult>> searchFirstPage(
+        SearchRequest searchRequest,
+        SearchRequestOptions searchRequestOptions,
+        Context context) {
+        return restClient.documents()
+            .searchPostWithRestResponseAsync(searchRequest, searchRequestOptions, context)
+            .map(res -> {
+                if (res.value().nextPageParameters() != null) {
+                    skip = res.value().nextPageParameters().skip();
+                }
+                return new SearchPagedResponse(res);
+            });
+    }
+
+    /**
+     * Retrieve the next page of a document search
+     *
+     * @param searchRequest the search request
+     * @param nextLink next page link
+     * @param context The context to associate with this operation.
+     * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
+     * response with results
+     */
+    private Mono<PagedResponse<SearchResult>> searchNextPage(
+            SearchRequest searchRequest,
+            SearchRequestOptions searchRequestOptions,
+            String nextLink,
+            Context context) {
         if (nextLink == null || nextLink.isEmpty()) {
             return Mono.empty();
         }
@@ -507,17 +567,34 @@ public class SearchIndexAsyncClient {
             return Mono.empty();
         }
         return restClient.documents()
-                .searchPostWithRestResponseAsync(searchRequest.skip(skip))
-                .map(res -> {
-                    if (res.value().nextPageParameters() == null || res.value().nextPageParameters().skip() == null) {
-                        skip = null;
-                    } else {
-                        skip = res.value().nextPageParameters().skip();
-                    }
-                    return new SearchPagedResponse(res);
-                });
+            .searchPostWithRestResponseAsync(searchRequest.skip(skip), searchRequestOptions, context)
+            .map(res -> {
+                if (res.value().nextPageParameters() == null || res.value().nextPageParameters().skip() == null) {
+                    skip = null;
+                } else {
+                    skip = res.value().nextPageParameters().skip();
+                }
+                return new SearchPagedResponse(res);
+            });
     }
 
+    private Mono<PagedResponse<AutocompleteItem>> autocompleteFirst(
+            AutocompleteRequest autocompleteRequest,
+            SearchRequestOptions searchRequestOptions,
+            Context context) {
+        return restClient.documents()
+            .autocompletePostWithRestResponseAsync(autocompleteRequest, searchRequestOptions, context)
+            .map(AutoCompletePagedResponse::new);
+    }
+
+    private Mono<PagedResponse<SuggestResult>> suggestFirst(
+            SearchRequestOptions searchRequestOptions,
+            SuggestRequest suggestRequest,
+            Context context) {
+        return restClient.documents()
+            .suggestPostWithRestResponseAsync(suggestRequest, searchRequestOptions, context)
+            .map(SuggestPagedResponse::new);
+    }
 
     /**
      * Create search request from search text and parameters
@@ -529,19 +606,19 @@ public class SearchIndexAsyncClient {
     private SearchRequest createSearchRequest(String searchText, SearchParameters searchParameters) {
         SearchRequest searchRequest = new SearchRequest().searchText(searchText);
         if (searchParameters != null) {
-            searchRequest.
-                    searchMode(searchParameters.searchMode()).
-                    facets(searchParameters.facets()).
-                    filter(searchParameters.filter()).
-                    highlightPostTag(searchParameters.highlightPostTag()).
-                    highlightPreTag(searchParameters.highlightPreTag()).
-                    includeTotalResultCount(searchParameters.includeTotalResultCount()).
-                    minimumCoverage(searchParameters.minimumCoverage()).
-                    queryType(searchParameters.queryType()).
-                    scoringParameters(searchParameters.scoringParameters()).
-                    scoringProfile(searchParameters.scoringProfile()).
-                    skip(searchParameters.skip()).
-                    top(searchParameters.top());
+            searchRequest
+                .searchMode(searchParameters.searchMode())
+                .facets(searchParameters.facets())
+                .filter(searchParameters.filter())
+                .highlightPostTag(searchParameters.highlightPostTag())
+                .highlightPreTag(searchParameters.highlightPreTag())
+                .includeTotalResultCount(searchParameters.includeTotalResultCount())
+                .minimumCoverage(searchParameters.minimumCoverage())
+                .queryType(searchParameters.queryType())
+                .scoringParameters(searchParameters.scoringParameters())
+                .scoringProfile(searchParameters.scoringProfile())
+                .skip(searchParameters.skip())
+                .top(searchParameters.top());
             if (searchParameters.highlightFields() != null) {
                 searchRequest.highlightFields(String.join(",", searchParameters.highlightFields()));
             }
@@ -572,13 +649,13 @@ public class SearchIndexAsyncClient {
                                                 SuggestParameters suggestParameters) {
         SuggestRequest suggestRequest = new SuggestRequest().searchText(searchText).suggesterName(suggesterName);
         if (suggestParameters != null) {
-            suggestRequest.
-                    filter(suggestParameters.filter()).
-                    useFuzzyMatching(suggestParameters.useFuzzyMatching()).
-                    highlightPostTag(suggestParameters.highlightPostTag()).
-                    highlightPreTag(suggestParameters.highlightPreTag()).
-                    minimumCoverage(suggestParameters.minimumCoverage()).
-                    top(suggestParameters.top());
+            suggestRequest
+                .filter(suggestParameters.filter())
+                .useFuzzyMatching(suggestParameters.useFuzzyMatching())
+                .highlightPostTag(suggestParameters.highlightPostTag())
+                .highlightPreTag(suggestParameters.highlightPreTag())
+                .minimumCoverage(suggestParameters.minimumCoverage())
+                .top(suggestParameters.top());
 
             List<String> searchFields = suggestParameters.searchFields();
             if (searchFields != null) {
@@ -614,14 +691,14 @@ public class SearchIndexAsyncClient {
                                                         .searchText(searchText)
                                                         .suggesterName(suggesterName);
         if (autocompleteParameters != null) {
-            autoCompleteRequest.
-                    filter(autocompleteParameters.filter()).
-                    useFuzzyMatching(autocompleteParameters.useFuzzyMatching()).
-                    highlightPostTag(autocompleteParameters.highlightPostTag()).
-                    highlightPreTag(autocompleteParameters.highlightPreTag()).
-                    minimumCoverage(autocompleteParameters.minimumCoverage()).
-                    top(autocompleteParameters.top()).
-                    autocompleteMode(autocompleteParameters.autocompleteMode());
+            autoCompleteRequest
+                .filter(autocompleteParameters.filter())
+                .useFuzzyMatching(autocompleteParameters.useFuzzyMatching())
+                .highlightPostTag(autocompleteParameters.highlightPostTag())
+                .highlightPreTag(autocompleteParameters.highlightPreTag())
+                .minimumCoverage(autocompleteParameters.minimumCoverage())
+                .top(autocompleteParameters.top())
+                .autocompleteMode(autocompleteParameters.autocompleteMode());
             List<String> searchFields = autocompleteParameters.searchFields();
             if (searchFields != null) {
                 autoCompleteRequest.searchFields(String.join(",", searchFields));
@@ -634,14 +711,12 @@ public class SearchIndexAsyncClient {
     /**
      * initialize singleton instance of the default serializer adapter.
      */
-    private static synchronized void initializeSerializerAdapter() {
-        if (serializer == null) {
-            JacksonAdapter adapter = new JacksonAdapter();
+    private static synchronized SerializerAdapter initializeSerializerAdapter() {
+        JacksonAdapter adapter = new JacksonAdapter();
 
-            ObjectMapper mapper = adapter.serializer();
-            SerializationUtil.configureMapper(mapper);
+        ObjectMapper mapper = adapter.serializer();
+        SerializationUtil.configureMapper(mapper);
 
-            serializer = adapter;
-        }
+        return adapter;
     }
 }

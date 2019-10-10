@@ -19,7 +19,7 @@ class DocumentResponseConversions {
      * @param throwable to convert
      * @return Throwable
      */
-    protected static final Throwable exceptionMapper(Throwable throwable) {
+    static Throwable exceptionMapper(Throwable throwable) {
         if (throwable instanceof HttpResponseException
             && throwable.getMessage().equals("Status code 404, (empty body)")) {
             return new ResourceNotFoundException("Document not found", ((HttpResponseException) throwable).response());
@@ -32,7 +32,7 @@ class DocumentResponseConversions {
      *
      * @param document document object
      */
-    protected static void cleanupDocument(Document document) {
+    static void cleanupDocument(Document document) {
         document.remove(ODATA_CONTEXT);
     }
 }

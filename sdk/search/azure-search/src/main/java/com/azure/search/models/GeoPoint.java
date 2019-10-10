@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Fluent
-public class GeoPoint {
+public final class GeoPoint {
     public static final String TYPE = "Point";
 
     @JsonProperty
@@ -25,7 +25,7 @@ public class GeoPoint {
     }
 
     @JsonProperty
-    public String getType(){
+    public String getType() {
         return TYPE;
     }
 
@@ -71,16 +71,19 @@ public class GeoPoint {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         GeoPoint other = (GeoPoint) o;
-        if (!this.validate() || !other.validate())
+        if (!this.validate() || !other.validate()) {
             return false;
-        return Objects.equals(coordinates.get(0), other.coordinates.get(0)) &&
-            Objects.equals(coordinates.get(1), other.coordinates.get(1)) &&
-            Objects.equals(coordinateSystem, other.coordinateSystem);
+        }
+        return Objects.equals(coordinates.get(0), other.coordinates.get(0))
+            && Objects.equals(coordinates.get(1), other.coordinates.get(1))
+            && Objects.equals(coordinateSystem, other.coordinateSystem);
     }
 
     @Override

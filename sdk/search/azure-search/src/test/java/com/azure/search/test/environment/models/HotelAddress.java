@@ -23,65 +23,69 @@ public class HotelAddress {
     private String postalCode;
 
 
-    public String streetAddress(){
+    public String streetAddress() {
         return this.streetAddress;
     }
 
-    public HotelAddress streetAddress(String streetAddress){
+    public HotelAddress streetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
         return this;
     }
 
-    public String city(){
+    public String city() {
         return this.city;
     }
 
-    public HotelAddress city(String city){
+    public HotelAddress city(String city) {
         this.city = city;
         return this;
     }
 
-    public String stateProvince(){
+    public String stateProvince() {
         return this.stateProvince;
     }
 
-    public HotelAddress stateProvince(String stateProvince){
+    public HotelAddress stateProvince(String stateProvince) {
         this.stateProvince = stateProvince;
         return this;
     }
 
-    public String country(){
+    public String country() {
         return this.country;
     }
 
-    public HotelAddress country(String country){
+    public HotelAddress country(String country) {
         this.country = country;
         return this;
     }
 
-    public String postalCode(){
+    public String postalCode() {
         return this.postalCode;
+    }
+
+    public HotelAddress postalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof HotelAddress)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof HotelAddress)) {
+            return false;
+        }
         HotelAddress that = (HotelAddress) o;
-        return Objects.equals(streetAddress, that.streetAddress) &&
-            Objects.equals(city, that.city) &&
-            Objects.equals(stateProvince, that.stateProvince) &&
-            Objects.equals(country, that.country) &&
-            Objects.equals(postalCode, that.postalCode);
+        return Objects.equals(streetAddress, that.streetAddress)
+            && Objects.equals(city, that.city)
+            && Objects.equals(stateProvince, that.stateProvince)
+            && Objects.equals(country, that.country)
+            && Objects.equals(postalCode, that.postalCode);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(streetAddress, city, stateProvince, country, postalCode);
-    }
-
-    public HotelAddress postalCode(String postalCode){
-        this.postalCode = postalCode;
-        return this;
     }
 }

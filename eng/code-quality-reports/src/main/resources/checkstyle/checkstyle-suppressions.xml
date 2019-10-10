@@ -85,8 +85,6 @@
   <!-- All auto generated files need to exclude from checkstyle -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
-  <suppress checks="." files=".*[/\\]search[/\\].*(models|implementation).*.java"/>
-  <suppress checks="." files=".*[/\\]search[/\\]azure-search-service[/\\].*.java"/>
 
   <!-- The constant name is public static. -->
   <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
@@ -191,6 +189,17 @@
 
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
+
+  <!-- Azure Search test models -->
+  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.search.test.environment.models.*.java"/>
+
+  <!-- Suppress checks for AutoRest generated Search code -->
+  <suppress checks="LineLength" files="com.azure.search.implementation.*.java"/>
+  <suppress checks="LineLength" files="com.azure.search.models.(Analyzer|CharFilter|CognitiveServices|DataChangeDetectionPolicy|DataDeletionDetectionPolicy|ScoringFunction|Skill|TokenFilter|Tokenizer).java"/>
+  <suppress checks="UnusedImports" files="com.azure.search.implementation.SearchServiceRestClientBuilder.java"/>
+
+  <!-- Temporary suppression until SearchIndexAsyncClient paging issue is resolved -->
+  <suppress checks="ServiceClient" files="com.azure.search.SearchIndexAsyncClient.java"/>
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>

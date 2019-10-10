@@ -4,14 +4,16 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.SearchParameters;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SearchResult;
-import com.azure.search.service.SearchServiceClient;
-import com.azure.search.service.models.Index;
-import com.azure.search.service.models.SynonymMap;
+import com.azure.search.implementation.SearchServiceRestClientImpl;
+import com.azure.search.models.Index;
+import com.azure.search.models.SynonymMap;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -116,18 +118,18 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(10.0, baseRateFacets.get(3).from());
         Assert.assertNull(baseRateFacets.get(3).to());
 
-        Assert.assertEquals(1, baseRateFacets.get(0).count());
-        Assert.assertEquals(1, baseRateFacets.get(1).count());
-        Assert.assertEquals(1, baseRateFacets.get(2).count());
-        Assert.assertEquals(0, baseRateFacets.get(3).count());
+        Assert.assertEquals(1, baseRateFacets.get(0).count().intValue());
+        Assert.assertEquals(1, baseRateFacets.get(1).count().intValue());
+        Assert.assertEquals(1, baseRateFacets.get(2).count().intValue());
+        Assert.assertEquals(0, baseRateFacets.get(3).count().intValue());
 
         Assert.assertNull(lastRenovationDateFacets.get(0).from());
         Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).to());
         Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).from());
         Assert.assertNull(lastRenovationDateFacets.get(1).to());
 
-        Assert.assertEquals(5, lastRenovationDateFacets.get(0).count());
-        Assert.assertEquals(2, lastRenovationDateFacets.get(1).count());
+        Assert.assertEquals(5, lastRenovationDateFacets.get(0).count().intValue());
+        Assert.assertEquals(2, lastRenovationDateFacets.get(1).count().intValue());
     }
 
     List<RangeFacetResult> getRangeFacetsForField(
@@ -192,19 +194,29 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     void prepareHotelsSynonymMap(String name, String synonyms, String fieldName) {
         if (!interceptorManager.isPlaybackMode()) {
             // In RECORDING mode (only), create a new index:
-            SearchServiceClient searchServiceClient = searchServiceHotelsIndex.searchServiceClient();
+            SearchServiceRestClientImpl searchServiceClient = searchServiceHotelsIndex.searchServiceClient();
 
             // Create a new SynonymMap
-            searchServiceClient.synonymMaps().create(new SynonymMap().withName(name).withSynonyms(synonyms));
+            searchServiceClient.synonymMaps().createOrUpdateWithRestResponseAsync(name,
+                new SynonymMap()
+                    .name(name)
+                    .synonyms(synonyms),
+                Context.NONE)
+            .block();
 
             // Attach index field to SynonymMap
-            Index hotelsIndex = searchServiceClient.indexes().get(HOTELS_INDEX_NAME);
+            Index hotelsIndex = searchServiceClient.indexes()
+                .getWithRestResponseAsync(HOTELS_INDEX_NAME, Context.NONE)
+                .map(Response::value)
+                .block();
             hotelsIndex.fields().stream()
                 .filter(f -> fieldName.equals(f.name()))
-                .findFirst().get().withSynonymMaps(Collections.singletonList(name));
+                .findFirst().get().synonymMaps(Collections.singletonList(name));
 
             // Update the index with the SynonymMap
-            searchServiceClient.indexes().createOrUpdate(HOTELS_INDEX_NAME, hotelsIndex);
+            searchServiceClient.indexes()
+                .createOrUpdateWithRestResponseAsync(HOTELS_INDEX_NAME, hotelsIndex, Context.NONE)
+                .block();
 
             // Wait for the index to update with the SynonymMap
             try {

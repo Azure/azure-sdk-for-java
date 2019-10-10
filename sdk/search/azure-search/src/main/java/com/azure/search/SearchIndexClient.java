@@ -6,6 +6,7 @@ package com.azure.search;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteParameters;
 import com.azure.search.models.DocumentIndexResult;
@@ -23,6 +24,7 @@ import java.time.Duration;
 
 import java.util.List;
 
+@ServiceClient(builder = SearchIndexClientBuilder.class)
 public class SearchIndexClient {
 
     private final SearchIndexAsyncClient asyncClient;
@@ -31,7 +33,7 @@ public class SearchIndexClient {
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      * @param searchIndexAsyncClient Async SearchIndex Client
      */
-    public SearchIndexClient(SearchIndexAsyncClient searchIndexAsyncClient) {
+    SearchIndexClient(SearchIndexAsyncClient searchIndexAsyncClient) {
         this.asyncClient = searchIndexAsyncClient;
     }
 

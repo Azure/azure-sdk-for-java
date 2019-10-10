@@ -3,10 +3,14 @@
 
 package com.azure.search.test.environment.setup;
 
-import com.azure.search.service.SearchServiceClient;
-import com.azure.search.service.customization.SearchCredentials;
-import com.azure.search.service.implementation.SearchServiceClientImpl;
-import com.azure.search.service.models.Index;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Context;
+import com.azure.search.ApiKeyCredentials;
+import com.azure.search.common.SearchApiKeyPipelinePolicy;
+import com.azure.search.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.implementation.SearchServiceRestClientImpl;
+import com.azure.search.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,7 +25,7 @@ public class SearchIndexService {
     private String indexName;
     private String indexDataFileName;
 
-    private SearchServiceClient searchServiceClient;
+    private SearchServiceRestClientImpl searchServiceClient;
 
     /**
      * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Search,
@@ -45,9 +49,15 @@ public class SearchIndexService {
         validate();
 
         if (searchServiceClient == null) {
-            SearchCredentials searchCredentials = new SearchCredentials(apiAdminKey);
-            searchServiceClient = new SearchServiceClientImpl(searchCredentials)
-                .withSearchServiceName(searchServiceName);
+            searchServiceClient = new SearchServiceRestClientBuilder()
+                .apiVersion("2019-05-06")
+                .searchServiceName(searchServiceName)
+                .pipeline(
+                    new HttpPipelineBuilder()
+                        .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
+                        .policies(new SearchApiKeyPipelinePolicy(new ApiKeyCredentials(apiAdminKey)))
+                        .build())
+                .build();
         }
         addIndexes();
     }
@@ -65,7 +75,9 @@ public class SearchIndexService {
         Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
         this.indexName = index.name();
-        searchServiceClient.indexes().create(index);
+        searchServiceClient.indexes()
+            .createOrUpdateWithRestResponseAsync(index.name(), index, Context.NONE)
+            .block();
     }
 
     /**
@@ -76,7 +88,7 @@ public class SearchIndexService {
         return this.indexName;
     }
 
-    public SearchServiceClient searchServiceClient() {
+    public SearchServiceRestClientImpl searchServiceClient() {
         return searchServiceClient;
     }
 }

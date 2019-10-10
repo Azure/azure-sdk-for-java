@@ -75,7 +75,7 @@ public class LookupAsyncTests extends LookupTestBase {
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
 
-        Mono<Document> result = client.getDocument(expected.key);
+        Mono<Document> result = client.getDocument(expected.key());
 
         StepVerifier.create(result)
             .assertNext(res -> Assert.assertEquals(expected, res.as(ModelWithPrimitiveCollections.class)))

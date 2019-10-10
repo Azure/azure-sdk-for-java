@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.search.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,11 +26,15 @@ public class Bucket {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Bucket)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Bucket)) {
+            return false;
+        }
         Bucket bucket = (Bucket) o;
-        return count == bucket.count &&
-            Objects.equals(bucketName, bucket.bucketName);
+        return count == bucket.count
+            && Objects.equals(bucketName, bucket.bucketName);
     }
 
     @Override

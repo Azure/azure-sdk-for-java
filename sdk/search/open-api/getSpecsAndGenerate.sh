@@ -19,8 +19,6 @@ rm -rf azure-rest-api-spec
 
 # Generate the data api
 autorest --use=$AUTOREST_JAVA_DIR ./data-readme.md
-mv ../azure-search/src/main/java/com/azure/search/Documents.java ../azure-search/src/main/java/com/azure/search/implementation/Documents.java
-mv ../azure-search/src/main/java/com/azure/search/SearchIndexRestClient.java ../azure-search/src/main/java/com/azure/search/implementation/SearchIndexRestClient.java
 
 # Generate the service api
 autorest --use=$AUTOREST_JAVA_DIR ./service-readme.md

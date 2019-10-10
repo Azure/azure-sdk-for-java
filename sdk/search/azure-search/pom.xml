@@ -57,12 +57,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure.search</groupId>
-      <artifactId>azure-search-service</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
       <version>4.1.38.Final</version>

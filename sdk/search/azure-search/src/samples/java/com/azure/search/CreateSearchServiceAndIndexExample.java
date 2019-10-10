@@ -3,12 +3,15 @@
 
 package com.azure.search;
 
-import com.azure.search.service.SearchServiceClient;
-import com.azure.search.service.customization.SearchCredentials;
-import com.azure.search.service.implementation.SearchServiceClientImpl;
-import com.azure.search.service.models.DataType;
-import com.azure.search.service.models.Field;
-import com.azure.search.service.models.Index;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Context;
+import com.azure.search.common.SearchApiKeyPipelinePolicy;
+import com.azure.search.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.implementation.SearchServiceRestClientImpl;
+import com.azure.search.models.DataType;
+import com.azure.search.models.Field;
+import com.azure.search.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
@@ -71,35 +74,45 @@ public class CreateSearchServiceAndIndexExample {
         // Create index
         String indexName = "hotels";
         System.out.println("Creating Index: " + indexName);
-        SearchCredentials searchCredentials = new SearchCredentials(adminKey);
-        SearchServiceClient searchServiceClient = new SearchServiceClientImpl(searchCredentials)
-            .withSearchServiceName(searchServiceName);
+        SearchServiceRestClientImpl searchServiceClient = searchServiceClient = new SearchServiceRestClientBuilder()
+            .apiVersion("2019-05-06")
+            .searchServiceName(searchServiceName)
+            .pipeline(
+                new HttpPipelineBuilder()
+                    .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
+                    .policies(new SearchApiKeyPipelinePolicy(new ApiKeyCredentials(adminKey)))
+                    .build())
+            .build();
         Index index = new Index()
-            .withName(indexName)
-            .withFields(Arrays.asList(
+            .name(indexName)
+            .fields(Arrays.asList(
                 new Field()
-                    .withName("HotelId")
-                    .withType(DataType.EDM_STRING)
-                    .withKey(Boolean.TRUE)
-                    .withFilterable(Boolean.TRUE)
-                    .withSortable(Boolean.TRUE)
-                    .withFacetable(Boolean.TRUE),
+                    .name("HotelId")
+                    .type(DataType.EDM_STRING)
+                    .key(Boolean.TRUE)
+                    .filterable(Boolean.TRUE)
+                    .sortable(Boolean.TRUE)
+                    .facetable(Boolean.TRUE),
                 new Field()
-                    .withName("Tags")
-                    .withType(DataType.EDM_STRING_COLLECTION)
-                    .withSearchable(Boolean.TRUE)
-                    .withFilterable(Boolean.TRUE)
-                    .withFacetable(Boolean.TRUE)
+                    .name("Tags")
+                    .type(DataType.COLLECTION_EDM_STRING)
+                    .searchable(Boolean.TRUE)
+                    .filterable(Boolean.TRUE)
+                    .facetable(Boolean.TRUE)
                 )
             );
-        searchServiceClient.indexes().create(index);
+        searchServiceClient.indexes()
+            .createWithRestResponseAsync(index, Context.NONE)
+            .block();
 
         /*
         // Alternatively, create index from json file
         try {
             Reader indexData = new InputStreamReader(CreateSearchServiceAndIndexExample.class.getResourceAsStream("HotelsIndex.json"));
-            Index index = new ObjectMapper().readValue(indexData, Index.class);
-            searchServiceClient.indexes().create(index);
+            Index indexFromFile = new ObjectMapper().readValue(indexData, Index.class);
+            searchServiceClient.indexes()
+                .createWithRestResponseAsync(indexFromFile, Context.NONE)
+                .block();
         } catch (Exception e) {
             e.printStackTrace();
         }

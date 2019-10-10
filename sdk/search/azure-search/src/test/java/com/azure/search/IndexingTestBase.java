@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.search.common.SearchApiKeyPipelinePolicy;
+import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.IndexingResult;
-import com.azure.search.service.SearchServiceClient;
-import com.azure.search.service.customization.SearchCredentials;
-import com.azure.search.service.implementation.SearchServiceClientImpl;
+import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -30,9 +32,16 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         super.beforeTest();
     }
 
-    protected SearchServiceClient getSearchServiceClient() {
-        SearchCredentials searchCredentials = new SearchCredentials(apiKeyCredentials.getApiKey());
-        return new SearchServiceClientImpl(searchCredentials).withSearchServiceName(searchServiceName);
+    protected SearchServiceRestClientImpl getSearchServiceClient() {
+        return new SearchServiceRestClientBuilder()
+            .apiVersion("2019-05-06")
+            .searchServiceName(searchServiceName)
+            .pipeline(
+                new HttpPipelineBuilder()
+                    .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
+                    .policies(new SearchApiKeyPipelinePolicy(apiKeyCredentials))
+                    .build()
+            ).build();
     }
 
     @Test
