@@ -24,7 +24,8 @@ public class GetBlobsTest extends ContainerTest<CountOptions> {
             blobNames.add("getblobstest-" + UUID.randomUUID().toString());
         }
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(Options.Count);
+        // TODO: Consider uploading with more parallelism or using full async
+        ForkJoinPool forkJoinPool = new ForkJoinPool(Options.Parallel);
         try {
             forkJoinPool.submit(() -> blobNames.parallelStream().forEach(s -> {
                 BlockBlobClient blockBlobClient = ContainerClient.getBlockBlobClient(s);
