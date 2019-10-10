@@ -102,7 +102,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
     ```Bash
-    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --certificate-permissions backup delete get list set
+    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --certificate-permissions backup delete get list create
     ```
     > --certificate-permissions:
     > Accepted values: backup, create, delete, deleteissuers, get, getissuers, import, list, listissuers, managecontacts, manageissuers, purge, recover, restore, setissuers, update
@@ -175,7 +175,7 @@ System.out.printf("Certificate is returned with name %s and secret id %s \n", ce
 Retrieve a previously stored Certificate by calling `getCertificate` or `getCertificateWithPolicy`.
 ```Java
 Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");
-System.out.printf("Recevied certificate with name %s and version %s and secret id", certificate.getName(),
+System.out.printf("Recevied certificate with name %s and version %s and secret id %s", certificate.getName(),
     certificate.getProperties().getVersion(), certificate.getSecretId());
 ```
 
@@ -222,6 +222,8 @@ The following sections provide several code snippets covering some of the most c
 - [Update an existing Certificate Asynchronously](#update-an-existing-certificate-asynchronously)
 - [Delete a Certficate Asynchronously](#delete-a-certificate-asynchronously)
 - [List Certificates Asynchronously](#list-certificates-asynchronously)
+
+> Note : You should add "System.in.read()" or "Thread.Sleep()" after the function calls in the main class/thread to allow Async functions/operations to execute and finish before the main application/thread exits.
 
 ### Create a Certificate Asynchronously
 
