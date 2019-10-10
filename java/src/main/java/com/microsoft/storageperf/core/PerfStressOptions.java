@@ -17,7 +17,6 @@ public class PerfStressOptions {
     @Parameter(names = { "-w", "--warmup" }, description = "Duration of warmup in seconds")
     public int Warmup = 10;
 
-    // TODO: Add sync vs. async
-    // @Parameter(names = { "--sync" }, description = "Runs sync version of test")
-    // public boolean Sync = false;
+    @Parameter(names = { "--sync" }, description = "Runs sync version of test")
+    public boolean Sync = false;
 }

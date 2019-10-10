@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class PerfStressProgram {
     private static AtomicInteger _completedOperations = new AtomicInteger();
@@ -85,39 +86,24 @@ public class PerfStressProgram {
             }
         }
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(options.Parallel);
-
         try {
-            tests[0].GlobalSetup();
+            tests[0].GlobalSetupAsync().block();
             try {
-                try {
-                    forkJoinPool.submit(() -> {
-                        Arrays.stream(tests).parallel().forEach(t -> t.Setup());
-                    }).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
-
+                Flux.just(tests).flatMap(t -> t.SetupAsync()).blockLast();
                 setupStatus.dispose();
 
                 if (options.Warmup > 0) {
-                    RunTests(forkJoinPool, tests, options.Parallel, options.Warmup, "Warmup");
+                    RunTests(tests, options.Sync, options.Parallel, options.Warmup, "Warmup");
                 }
 
-                RunTests(forkJoinPool, tests, options.Parallel, options.Duration, "Test");
+                RunTests(tests, options.Sync, options.Parallel, options.Duration, "Test");
             } finally {
                 if (!options.NoCleanup) {
                     if (cleanupStatus == null) {
                         cleanupStatus = PrintStatus("=== Cleanup ===", () -> ".", false);
                     }
 
-                    try {
-                        forkJoinPool.submit(() -> {
-                            Arrays.stream(tests).parallel().forEach(t -> t.Setup());
-                        }).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
+                    Flux.just(tests).flatMap(t -> t.CleanupAsync()).blockLast();
                 }
             }
         } finally {
@@ -126,7 +112,7 @@ public class PerfStressProgram {
                     cleanupStatus = PrintStatus("=== Cleanup ===", () -> ".", false);
                 }
 
-                tests[0].GlobalCleanup();
+                tests[0].GlobalCleanupAsync().block();
             }
         }
 
@@ -144,9 +130,9 @@ public class PerfStressProgram {
         System.out.println();
     }
 
-    public static void RunTests(ForkJoinPool forkJoinPool, PerfStressTest<?>[] tests, int parallel, int durationSeconds, String title) {
-        _lastCompletionNanoTimes = new long[parallel];
+    public static void RunTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
         _completedOperations.set(0);
+        _lastCompletionNanoTimes = new long[parallel];
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
@@ -159,12 +145,18 @@ public class PerfStressProgram {
                     return currentCompleted + "\t\t" + totalCompleted;
                 }, true);
 
-        try {
-            forkJoinPool.submit(() -> {
-                Arrays.stream(tests).parallel().forEach(t -> RunLoop(t, endNanoTime));
-            }).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+        if (sync) {
+            ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+            try {
+                forkJoinPool.submit(() -> {
+                    Arrays.stream(tests).parallel().forEach(t -> RunLoop(t, endNanoTime));
+                }).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            Flux.just(tests).flatMap(t -> RunLoopAsync(t, endNanoTime)).blockLast();
         }
 
         progressStatus.dispose();
@@ -177,6 +169,20 @@ public class PerfStressProgram {
             int count = _completedOperations.incrementAndGet();
             _lastCompletionNanoTimes[count % _lastCompletionNanoTimes.length] = System.nanoTime() - startNanoTime;
         }
+    }
+
+    private static Mono<Void> RunLoopAsync(PerfStressTest<?> test, long endNanoTime) {
+        long startNanoTime = System.nanoTime();
+
+        return Flux.just(1)
+            .repeat()
+            .flatMap(i -> test.RunAsync().then(Mono.just(1)), 1)
+            .doOnNext(v -> {
+                int count = _completedOperations.incrementAndGet();
+                _lastCompletionNanoTimes[count % _lastCompletionNanoTimes.length] = System.nanoTime() - startNanoTime;
+            })
+            .take(Duration.ofNanos(endNanoTime - startNanoTime))
+            .then();
     }
 
     private static Disposable PrintStatus(String header, Supplier<Object> status, boolean newLine) {

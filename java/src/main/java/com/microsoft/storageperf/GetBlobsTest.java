@@ -1,47 +1,30 @@
 package com.microsoft.storageperf;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
 
-import com.azure.storage.blob.BlockBlobClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class GetBlobsTest extends ContainerTest<CountOptions> {
     public GetBlobsTest(CountOptions options) {
         super(options);
     }
 
-    public void GlobalSetup() {
-        super.GlobalSetup();
-
-        List<String> blobNames = new ArrayList<>(Options.Count);
-
-        for (int i = 0; i < Options.Count; i++) {
-            blobNames.add("getblobstest-" + UUID.randomUUID().toString());
-        }
-
-        // TODO: Consider uploading with more parallelism or using full async
-        ForkJoinPool forkJoinPool = new ForkJoinPool(Options.Parallel);
-        try {
-            forkJoinPool.submit(() -> blobNames.parallelStream().forEach(s -> {
-                BlockBlobClient blockBlobClient = ContainerClient.getBlockBlobClient(s);
-                try {
-                    blockBlobClient.upload(InputStream.nullInputStream(), 0);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            })).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+    public Mono<Void> GlobalSetupAsync() {
+        return super.GlobalSetupAsync().then(
+            Flux.range(0, Options.Count)
+                .map(i -> "getblobstest-" + UUID.randomUUID())
+                .flatMap(b -> ContainerAsyncClient.getBlockBlobAsyncClient(b).upload(Flux.empty(), 0))
+                .then());
     }
 
     @Override
     public void Run() {
         ContainerClient.listBlobsFlat().forEach(b -> {});
+    }
+
+    @Override
+    public Mono<Void> RunAsync() {
+        return ContainerAsyncClient.listBlobsFlat().then();
     }
 }

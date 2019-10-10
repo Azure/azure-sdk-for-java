@@ -1,5 +1,7 @@
 package com.microsoft.storageperf.core;
 
+import reactor.core.publisher.Mono;
+
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final TOptions Options;
 
@@ -7,17 +9,23 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         Options = options;
     }
 
-    public void GlobalSetup() {
+    public Mono<Void> GlobalSetupAsync() {
+        return Mono.empty();
     }
 
-    public void Setup() {
+    public Mono<Void> SetupAsync() {
+        return Mono.empty();
     }
 
     public abstract void Run();
 
-    public void Cleanup() {
+    public abstract Mono<Void> RunAsync();
+
+    public Mono<Void> CleanupAsync() {
+        return Mono.empty();
     }
 
-    public void GlobalCleanup() {
+    public Mono<Void> GlobalCleanupAsync() {
+        return Mono.empty();
     }
 }

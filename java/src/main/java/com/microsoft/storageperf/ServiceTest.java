@@ -1,5 +1,6 @@
 package com.microsoft.storageperf;
 
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 
@@ -9,6 +10,7 @@ import com.microsoft.storageperf.core.PerfStressTest;
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
     protected final BlobServiceClient BlobServiceClient;
+    protected final BlobServiceAsyncClient BlobServiceAsyncClient;
 
     public ServiceTest(TOptions options) {
         super(options);
@@ -20,6 +22,9 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             System.exit(1);
         }
 
-        BlobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().connectionString(connectionString);
+
+        BlobServiceClient = builder.buildClient();
+        BlobServiceAsyncClient = builder.buildAsyncClient();
     }
 }
