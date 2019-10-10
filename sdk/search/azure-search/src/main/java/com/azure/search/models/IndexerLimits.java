@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -42,7 +42,7 @@ public final class IndexerLimits {
      *
      * @return the maxRunTime value.
      */
-    public Duration maxRunTime() {
+    public Duration getMaxRunTime() {
         return this.maxRunTime;
     }
 
@@ -52,7 +52,7 @@ public final class IndexerLimits {
      *
      * @return the maxDocumentExtractionSize value.
      */
-    public Double maxDocumentExtractionSize() {
+    public Double getMaxDocumentExtractionSize() {
         return this.maxDocumentExtractionSize;
     }
 
@@ -63,7 +63,7 @@ public final class IndexerLimits {
      *
      * @return the maxDocumentContentCharactersToExtract value.
      */
-    public Double maxDocumentContentCharactersToExtract() {
+    public Double getMaxDocumentContentCharactersToExtract() {
         return this.maxDocumentContentCharactersToExtract;
     }
 }

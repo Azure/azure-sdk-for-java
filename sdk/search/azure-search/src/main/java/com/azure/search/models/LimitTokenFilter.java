@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the maxTokenCount value.
      */
-    public Integer maxTokenCount() {
+    public Integer getMaxTokenCount() {
         return this.maxTokenCount;
     }
 
@@ -49,7 +49,7 @@ public final class LimitTokenFilter extends TokenFilter {
      * @param maxTokenCount the maxTokenCount value to set.
      * @return the LimitTokenFilter object itself.
      */
-    public LimitTokenFilter maxTokenCount(Integer maxTokenCount) {
+    public LimitTokenFilter setMaxTokenCount(Integer maxTokenCount) {
         this.maxTokenCount = maxTokenCount;
         return this;
     }
@@ -61,7 +61,7 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the consumeAllTokens value.
      */
-    public Boolean consumeAllTokens() {
+    public Boolean isConsumeAllTokens() {
         return this.consumeAllTokens;
     }
 
@@ -73,7 +73,7 @@ public final class LimitTokenFilter extends TokenFilter {
      * @param consumeAllTokens the consumeAllTokens value to set.
      * @return the LimitTokenFilter object itself.
      */
-    public LimitTokenFilter consumeAllTokens(Boolean consumeAllTokens) {
+    public LimitTokenFilter setConsumeAllTokens(Boolean consumeAllTokens) {
         this.consumeAllTokens = consumeAllTokens;
         return this;
     }

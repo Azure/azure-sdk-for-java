@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -60,7 +60,7 @@ public final class IndexingParameters {
      *
      * @return the batchSize value.
      */
-    public Integer batchSize() {
+    public Integer getBatchSize() {
         return this.batchSize;
     }
 
@@ -72,7 +72,7 @@ public final class IndexingParameters {
      * @param batchSize the batchSize value to set.
      * @return the IndexingParameters object itself.
      */
-    public IndexingParameters batchSize(Integer batchSize) {
+    public IndexingParameters setBatchSize(Integer batchSize) {
         this.batchSize = batchSize;
         return this;
     }
@@ -84,7 +84,7 @@ public final class IndexingParameters {
      *
      * @return the maxFailedItems value.
      */
-    public Integer maxFailedItems() {
+    public Integer getMaxFailedItems() {
         return this.maxFailedItems;
     }
 
@@ -96,7 +96,7 @@ public final class IndexingParameters {
      * @param maxFailedItems the maxFailedItems value to set.
      * @return the IndexingParameters object itself.
      */
-    public IndexingParameters maxFailedItems(Integer maxFailedItems) {
+    public IndexingParameters setMaxFailedItems(Integer maxFailedItems) {
         this.maxFailedItems = maxFailedItems;
         return this;
     }
@@ -108,7 +108,7 @@ public final class IndexingParameters {
      *
      * @return the maxFailedItemsPerBatch value.
      */
-    public Integer maxFailedItemsPerBatch() {
+    public Integer getMaxFailedItemsPerBatch() {
         return this.maxFailedItemsPerBatch;
     }
 
@@ -120,7 +120,7 @@ public final class IndexingParameters {
      * @param maxFailedItemsPerBatch the maxFailedItemsPerBatch value to set.
      * @return the IndexingParameters object itself.
      */
-    public IndexingParameters maxFailedItemsPerBatch(Integer maxFailedItemsPerBatch) {
+    public IndexingParameters setMaxFailedItemsPerBatch(Integer maxFailedItemsPerBatch) {
         this.maxFailedItemsPerBatch = maxFailedItemsPerBatch;
         return this;
     }
@@ -133,7 +133,7 @@ public final class IndexingParameters {
      *
      * @return the base64EncodeKeys value.
      */
-    public Boolean base64EncodeKeys() {
+    public Boolean isBase64EncodeKeys() {
         return this.base64EncodeKeys;
     }
 
@@ -146,7 +146,7 @@ public final class IndexingParameters {
      * @param base64EncodeKeys the base64EncodeKeys value to set.
      * @return the IndexingParameters object itself.
      */
-    public IndexingParameters base64EncodeKeys(Boolean base64EncodeKeys) {
+    public IndexingParameters setBase64EncodeKeys(Boolean base64EncodeKeys) {
         this.base64EncodeKeys = base64EncodeKeys;
         return this;
     }
@@ -158,7 +158,7 @@ public final class IndexingParameters {
      *
      * @return the configuration value.
      */
-    public Map<String, Object> configuration() {
+    public Map<String, Object> getConfiguration() {
         return this.configuration;
     }
 
@@ -170,7 +170,7 @@ public final class IndexingParameters {
      * @param configuration the configuration value to set.
      * @return the IndexingParameters object itself.
      */
-    public IndexingParameters configuration(Map<String, Object> configuration) {
+    public IndexingParameters setConfiguration(Map<String, Object> configuration) {
         this.configuration = configuration;
         return this;
     }

@@ -6,23 +6,22 @@
 
 package com.azure.search.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.SearchRequestOptions;
@@ -70,7 +69,7 @@ public final class SynonymMapsImpl {
 
         @Delete("synonymmaps('{synonymMapName}')")
         @ExpectedResponses({204, 404})
-        Mono<VoidResponse> delete(@PathParam("synonymMapName") String synonymMapName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<SimpleResponse<Void>> delete(@PathParam("synonymMapName") String synonymMapName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("synonymmaps('{synonymMapName}')")
         @ExpectedResponses({200})
@@ -119,15 +118,15 @@ public final class SynonymMapsImpl {
         final String prefer = "return=representation";
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
-            ifMatch = accessCondition.ifMatch();
+            ifMatch = accessCondition.getIfMatch();
         }
         String ifNoneMatch = null;
         if (accessCondition != null) {
-            ifNoneMatch = accessCondition.ifNoneMatch();
+            ifNoneMatch = accessCondition.getIfNoneMatch();
         }
         return service.createOrUpdate(synonymMapName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), synonymMap, prefer, this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
@@ -141,7 +140,7 @@ public final class SynonymMapsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> deleteWithRestResponseAsync(String synonymMapName, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String synonymMapName, Context context) {
         final UUID clientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
@@ -159,18 +158,18 @@ public final class SynonymMapsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoidResponse> deleteWithRestResponseAsync(String synonymMapName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String synonymMapName, SearchRequestOptions searchRequestOptions, AccessCondition accessCondition, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
-            ifMatch = accessCondition.ifMatch();
+            ifMatch = accessCondition.getIfMatch();
         }
         String ifNoneMatch = null;
         if (accessCondition != null) {
-            ifNoneMatch = accessCondition.ifNoneMatch();
+            ifNoneMatch = accessCondition.getIfNoneMatch();
         }
         return service.delete(synonymMapName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
     }
@@ -202,7 +201,7 @@ public final class SynonymMapsImpl {
     public Mono<SimpleResponse<SynonymMap>> getWithRestResponseAsync(String synonymMapName, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.get(synonymMapName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -234,7 +233,7 @@ public final class SynonymMapsImpl {
     public Mono<SimpleResponse<SynonymMapListResult>> listWithRestResponseAsync(String select, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -266,7 +265,7 @@ public final class SynonymMapsImpl {
     public Mono<SimpleResponse<SynonymMap>> createWithRestResponseAsync(SynonymMap synonymMap, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), synonymMap, this.client.getApiVersion(), clientRequestId, context);
     }

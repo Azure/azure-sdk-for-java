@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public final class IndexerExecutionInfo {
      *
      * @return the status value.
      */
-    public IndexerStatus status() {
+    public IndexerStatus getStatus() {
         return this.status;
     }
 
@@ -57,7 +57,7 @@ public final class IndexerExecutionInfo {
      *
      * @return the lastResult value.
      */
-    public IndexerExecutionResult lastResult() {
+    public IndexerExecutionResult getLastResult() {
         return this.lastResult;
     }
 
@@ -67,7 +67,7 @@ public final class IndexerExecutionInfo {
      *
      * @return the executionHistory value.
      */
-    public List<IndexerExecutionResult> executionHistory() {
+    public List<IndexerExecutionResult> getExecutionHistory() {
         return this.executionHistory;
     }
 
@@ -76,7 +76,7 @@ public final class IndexerExecutionInfo {
      *
      * @return the limits value.
      */
-    public IndexerLimits limits() {
+    public IndexerLimits getLimits() {
         return this.limits;
     }
 }

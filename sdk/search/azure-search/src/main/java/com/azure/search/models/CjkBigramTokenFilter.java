@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      *
      * @return the ignoreScripts value.
      */
-    public List<CjkBigramTokenFilterScripts> ignoreScripts() {
+    public List<CjkBigramTokenFilterScripts> getIgnoreScripts() {
         return this.ignoreScripts;
     }
 
@@ -48,7 +48,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @param ignoreScripts the ignoreScripts value to set.
      * @return the CjkBigramTokenFilter object itself.
      */
-    public CjkBigramTokenFilter ignoreScripts(List<CjkBigramTokenFilterScripts> ignoreScripts) {
+    public CjkBigramTokenFilter setIgnoreScripts(List<CjkBigramTokenFilterScripts> ignoreScripts) {
         this.ignoreScripts = ignoreScripts;
         return this;
     }
@@ -60,7 +60,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      *
      * @return the outputUnigrams value.
      */
-    public Boolean outputUnigrams() {
+    public Boolean isOutputUnigrams() {
         return this.outputUnigrams;
     }
 
@@ -72,7 +72,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @param outputUnigrams the outputUnigrams value to set.
      * @return the CjkBigramTokenFilter object itself.
      */
-    public CjkBigramTokenFilter outputUnigrams(Boolean outputUnigrams) {
+    public CjkBigramTokenFilter setOutputUnigrams(Boolean outputUnigrams) {
         this.outputUnigrams = outputUnigrams;
         return this;
     }

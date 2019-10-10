@@ -7,21 +7,21 @@
 package com.azure.search.implementation;
 import com.azure.search.Document;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Post;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.util.Context;
@@ -140,7 +140,7 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<Long>> countWithRestResponseAsync(SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.count(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -189,71 +189,71 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions, Context context) {
         Boolean includeTotalResultCount = null;
         if (searchParameters != null) {
-            includeTotalResultCount = searchParameters.includeTotalResultCount();
+            includeTotalResultCount = searchParameters.isIncludeTotalResultCount();
         }
         List<String> facets = null;
         if (searchParameters != null) {
-            facets = searchParameters.facets();
+            facets = searchParameters.getFacets();
         }
         String filter = null;
         if (searchParameters != null) {
-            filter = searchParameters.filter();
+            filter = searchParameters.getFilter();
         }
         List<String> highlightFields = null;
         if (searchParameters != null) {
-            highlightFields = searchParameters.highlightFields();
+            highlightFields = searchParameters.getHighlightFields();
         }
         String highlightPostTag = null;
         if (searchParameters != null) {
-            highlightPostTag = searchParameters.highlightPostTag();
+            highlightPostTag = searchParameters.getHighlightPostTag();
         }
         String highlightPreTag = null;
         if (searchParameters != null) {
-            highlightPreTag = searchParameters.highlightPreTag();
+            highlightPreTag = searchParameters.getHighlightPreTag();
         }
         Double minimumCoverage = null;
         if (searchParameters != null) {
-            minimumCoverage = searchParameters.minimumCoverage();
+            minimumCoverage = searchParameters.getMinimumCoverage();
         }
         List<String> orderBy = null;
         if (searchParameters != null) {
-            orderBy = searchParameters.orderBy();
+            orderBy = searchParameters.getOrderBy();
         }
         QueryType queryType = null;
         if (searchParameters != null) {
-            queryType = searchParameters.queryType();
+            queryType = searchParameters.getQueryType();
         }
         List<String> scoringParameters = null;
         if (searchParameters != null) {
-            scoringParameters = searchParameters.scoringParameters();
+            scoringParameters = searchParameters.getScoringParameters();
         }
         String scoringProfile = null;
         if (searchParameters != null) {
-            scoringProfile = searchParameters.scoringProfile();
+            scoringProfile = searchParameters.getScoringProfile();
         }
         List<String> searchFields = null;
         if (searchParameters != null) {
-            searchFields = searchParameters.searchFields();
+            searchFields = searchParameters.getSearchFields();
         }
         SearchMode searchMode = null;
         if (searchParameters != null) {
-            searchMode = searchParameters.searchMode();
+            searchMode = searchParameters.getSearchMode();
         }
         List<String> select = null;
         if (searchParameters != null) {
-            select = searchParameters.select();
+            select = searchParameters.getSelect();
         }
         Integer skip = null;
         if (searchParameters != null) {
-            skip = searchParameters.skip();
+            skip = searchParameters.getSkip();
         }
         Integer top = null;
         if (searchParameters != null) {
-            top = searchParameters.top();
+            top = searchParameters.getTop();
         }
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String facetsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(facets, CollectionFormat.MULTI);
         String highlightFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
@@ -291,7 +291,7 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<DocumentSearchResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.searchPost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), searchRequest, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -325,7 +325,7 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String selectedFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(selectedFields, CollectionFormat.CSV);
         return service.get(key, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), clientRequestId, context);
@@ -370,43 +370,43 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions, Context context) {
         String filter = null;
         if (suggestParameters != null) {
-            filter = suggestParameters.filter();
+            filter = suggestParameters.getFilter();
         }
         Boolean useFuzzyMatching = null;
         if (suggestParameters != null) {
-            useFuzzyMatching = suggestParameters.useFuzzyMatching();
+            useFuzzyMatching = suggestParameters.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
         if (suggestParameters != null) {
-            highlightPostTag = suggestParameters.highlightPostTag();
+            highlightPostTag = suggestParameters.getHighlightPostTag();
         }
         String highlightPreTag = null;
         if (suggestParameters != null) {
-            highlightPreTag = suggestParameters.highlightPreTag();
+            highlightPreTag = suggestParameters.getHighlightPreTag();
         }
         Double minimumCoverage = null;
         if (suggestParameters != null) {
-            minimumCoverage = suggestParameters.minimumCoverage();
+            minimumCoverage = suggestParameters.getMinimumCoverage();
         }
         List<String> orderBy = null;
         if (suggestParameters != null) {
-            orderBy = suggestParameters.orderBy();
+            orderBy = suggestParameters.getOrderBy();
         }
         List<String> searchFields = null;
         if (suggestParameters != null) {
-            searchFields = suggestParameters.searchFields();
+            searchFields = suggestParameters.getSearchFields();
         }
         List<String> select = null;
         if (suggestParameters != null) {
-            select = suggestParameters.select();
+            select = suggestParameters.getSelect();
         }
         Integer top = null;
         if (suggestParameters != null) {
-            top = suggestParameters.top();
+            top = suggestParameters.getTop();
         }
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         String orderByConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
@@ -441,7 +441,7 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<DocumentSuggestResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.suggestPost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), suggestRequest, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -473,7 +473,7 @@ public final class DocumentsImpl {
     public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.index(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), batch, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -516,39 +516,39 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         AutocompleteMode autocompleteMode = null;
         if (autocompleteParameters != null) {
-            autocompleteMode = autocompleteParameters.autocompleteMode();
+            autocompleteMode = autocompleteParameters.getAutocompleteMode();
         }
         String filter = null;
         if (autocompleteParameters != null) {
-            filter = autocompleteParameters.filter();
+            filter = autocompleteParameters.getFilter();
         }
         Boolean useFuzzyMatching = null;
         if (autocompleteParameters != null) {
-            useFuzzyMatching = autocompleteParameters.useFuzzyMatching();
+            useFuzzyMatching = autocompleteParameters.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
         if (autocompleteParameters != null) {
-            highlightPostTag = autocompleteParameters.highlightPostTag();
+            highlightPostTag = autocompleteParameters.getHighlightPostTag();
         }
         String highlightPreTag = null;
         if (autocompleteParameters != null) {
-            highlightPreTag = autocompleteParameters.highlightPreTag();
+            highlightPreTag = autocompleteParameters.getHighlightPreTag();
         }
         Double minimumCoverage = null;
         if (autocompleteParameters != null) {
-            minimumCoverage = autocompleteParameters.minimumCoverage();
+            minimumCoverage = autocompleteParameters.getMinimumCoverage();
         }
         List<String> searchFields = null;
         if (autocompleteParameters != null) {
-            searchFields = autocompleteParameters.searchFields();
+            searchFields = autocompleteParameters.getSearchFields();
         }
         Integer top = null;
         if (autocompleteParameters != null) {
-            top = autocompleteParameters.top();
+            top = autocompleteParameters.getTop();
         }
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         return service.autocompleteGet(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), this.client.getApiVersion(), searchText, suggesterName, clientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
@@ -581,7 +581,7 @@ public final class DocumentsImpl {
     public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.autocompletePost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), this.client.getApiVersion(), autocompleteRequest, clientRequestId, context);
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -40,7 +40,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
      *
      * @return the pattern value.
      */
-    public String pattern() {
+    public String getPattern() {
         return this.pattern;
     }
 
@@ -50,7 +50,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
      * @param pattern the pattern value to set.
      * @return the PatternReplaceTokenFilter object itself.
      */
-    public PatternReplaceTokenFilter pattern(String pattern) {
+    public PatternReplaceTokenFilter setPattern(String pattern) {
         this.pattern = pattern;
         return this;
     }
@@ -60,7 +60,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
      *
      * @return the replacement value.
      */
-    public String replacement() {
+    public String getReplacement() {
         return this.replacement;
     }
 
@@ -70,7 +70,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
      * @param replacement the replacement value to set.
      * @return the PatternReplaceTokenFilter object itself.
      */
-    public PatternReplaceTokenFilter replacement(String replacement) {
+    public PatternReplaceTokenFilter setReplacement(String replacement) {
         this.replacement = replacement;
         return this;
     }

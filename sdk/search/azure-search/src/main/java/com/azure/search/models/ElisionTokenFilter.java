@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class ElisionTokenFilter extends TokenFilter {
      *
      * @return the articles value.
      */
-    public List<String> articles() {
+    public List<String> getArticles() {
         return this.articles;
     }
 
@@ -41,7 +41,7 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @param articles the articles value to set.
      * @return the ElisionTokenFilter object itself.
      */
-    public ElisionTokenFilter articles(List<String> articles) {
+    public ElisionTokenFilter setArticles(List<String> articles) {
         this.articles = articles;
         return this;
     }

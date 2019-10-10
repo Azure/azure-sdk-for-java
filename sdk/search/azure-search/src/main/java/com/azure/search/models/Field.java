@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -239,7 +239,7 @@ public final class Field {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -250,7 +250,7 @@ public final class Field {
      * @param name the name value to set.
      * @return the Field object itself.
      */
-    public Field name(String name) {
+    public Field setName(String name) {
         this.name = name;
         return this;
     }
@@ -266,7 +266,7 @@ public final class Field {
      *
      * @return the type value.
      */
-    public DataType type() {
+    public DataType getType() {
         return this.type;
     }
 
@@ -282,7 +282,7 @@ public final class Field {
      * @param type the type value to set.
      * @return the Field object itself.
      */
-    public Field type(DataType type) {
+    public Field setType(DataType type) {
         this.type = type;
         return this;
     }
@@ -297,7 +297,7 @@ public final class Field {
      *
      * @return the key value.
      */
-    public Boolean key() {
+    public Boolean isKey() {
         return this.key;
     }
 
@@ -312,7 +312,7 @@ public final class Field {
      * @param key the key value to set.
      * @return the Field object itself.
      */
-    public Field key(Boolean key) {
+    public Field setKey(Boolean key) {
         this.key = key;
         return this;
     }
@@ -329,7 +329,7 @@ public final class Field {
      *
      * @return the retrievable value.
      */
-    public Boolean retrievable() {
+    public Boolean isRetrievable() {
         return this.retrievable;
     }
 
@@ -346,7 +346,7 @@ public final class Field {
      * @param retrievable the retrievable value to set.
      * @return the Field object itself.
      */
-    public Field retrievable(Boolean retrievable) {
+    public Field setRetrievable(Boolean retrievable) {
         this.retrievable = retrievable;
         return this;
     }
@@ -367,7 +367,7 @@ public final class Field {
      *
      * @return the searchable value.
      */
-    public Boolean searchable() {
+    public Boolean isSearchable() {
         return this.searchable;
     }
 
@@ -388,7 +388,7 @@ public final class Field {
      * @param searchable the searchable value to set.
      * @return the Field object itself.
      */
-    public Field searchable(Boolean searchable) {
+    public Field setSearchable(Boolean searchable) {
         this.searchable = searchable;
         return this;
     }
@@ -405,7 +405,7 @@ public final class Field {
      *
      * @return the filterable value.
      */
-    public Boolean filterable() {
+    public Boolean isFilterable() {
         return this.filterable;
     }
 
@@ -422,7 +422,7 @@ public final class Field {
      * @param filterable the filterable value to set.
      * @return the Field object itself.
      */
-    public Field filterable(Boolean filterable) {
+    public Field setFilterable(Boolean filterable) {
         this.filterable = filterable;
         return this;
     }
@@ -444,7 +444,7 @@ public final class Field {
      *
      * @return the sortable value.
      */
-    public Boolean sortable() {
+    public Boolean isSortable() {
         return this.sortable;
     }
 
@@ -466,7 +466,7 @@ public final class Field {
      * @param sortable the sortable value to set.
      * @return the Field object itself.
      */
-    public Field sortable(Boolean sortable) {
+    public Field setSortable(Boolean sortable) {
         this.sortable = sortable;
         return this;
     }
@@ -483,7 +483,7 @@ public final class Field {
      *
      * @return the facetable value.
      */
-    public Boolean facetable() {
+    public Boolean isFacetable() {
         return this.facetable;
     }
 
@@ -500,7 +500,7 @@ public final class Field {
      * @param facetable the facetable value to set.
      * @return the Field object itself.
      */
-    public Field facetable(Boolean facetable) {
+    public Field setFacetable(Boolean facetable) {
         this.facetable = facetable;
         return this;
     }
@@ -537,7 +537,7 @@ public final class Field {
      *
      * @return the analyzer value.
      */
-    public AnalyzerName analyzer() {
+    public AnalyzerName getAnalyzer() {
         return this.analyzer;
     }
 
@@ -574,7 +574,7 @@ public final class Field {
      * @param analyzer the analyzer value to set.
      * @return the Field object itself.
      */
-    public Field analyzer(AnalyzerName analyzer) {
+    public Field setAnalyzer(AnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -611,7 +611,7 @@ public final class Field {
      *
      * @return the searchAnalyzer value.
      */
-    public AnalyzerName searchAnalyzer() {
+    public AnalyzerName getSearchAnalyzer() {
         return this.searchAnalyzer;
     }
 
@@ -648,7 +648,7 @@ public final class Field {
      * @param searchAnalyzer the searchAnalyzer value to set.
      * @return the Field object itself.
      */
-    public Field searchAnalyzer(AnalyzerName searchAnalyzer) {
+    public Field setSearchAnalyzer(AnalyzerName searchAnalyzer) {
         this.searchAnalyzer = searchAnalyzer;
         return this;
     }
@@ -685,7 +685,7 @@ public final class Field {
      *
      * @return the indexAnalyzer value.
      */
-    public AnalyzerName indexAnalyzer() {
+    public AnalyzerName getIndexAnalyzer() {
         return this.indexAnalyzer;
     }
 
@@ -722,7 +722,7 @@ public final class Field {
      * @param indexAnalyzer the indexAnalyzer value to set.
      * @return the Field object itself.
      */
-    public Field indexAnalyzer(AnalyzerName indexAnalyzer) {
+    public Field setIndexAnalyzer(AnalyzerName indexAnalyzer) {
         this.indexAnalyzer = indexAnalyzer;
         return this;
     }
@@ -738,7 +738,7 @@ public final class Field {
      *
      * @return the synonymMaps value.
      */
-    public List<String> synonymMaps() {
+    public List<String> getSynonymMaps() {
         return this.synonymMaps;
     }
 
@@ -754,7 +754,7 @@ public final class Field {
      * @param synonymMaps the synonymMaps value to set.
      * @return the Field object itself.
      */
-    public Field synonymMaps(List<String> synonymMaps) {
+    public Field setSynonymMaps(List<String> synonymMaps) {
         this.synonymMaps = synonymMaps;
         return this;
     }
@@ -766,7 +766,7 @@ public final class Field {
      *
      * @return the fields value.
      */
-    public List<Field> fields() {
+    public List<Field> getFields() {
         return this.fields;
     }
 
@@ -778,7 +778,7 @@ public final class Field {
      * @param fields the fields value to set.
      * @return the Field object itself.
      */
-    public Field fields(List<Field> fields) {
+    public Field setFields(List<Field> fields) {
         this.fields = fields;
         return this;
     }

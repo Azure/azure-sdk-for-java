@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -46,7 +46,7 @@ public final class Suggester {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -56,7 +56,7 @@ public final class Suggester {
      * @param name the name value to set.
      * @return the Suggester object itself.
      */
-    public Suggester name(String name) {
+    public Suggester setName(String name) {
         this.name = name;
         return this;
     }
@@ -67,7 +67,7 @@ public final class Suggester {
      *
      * @return the searchMode value.
      */
-    public String searchMode() {
+    public String getSearchMode() {
         return this.searchMode;
     }
 
@@ -78,7 +78,7 @@ public final class Suggester {
      * @param searchMode the searchMode value to set.
      * @return the Suggester object itself.
      */
-    public Suggester searchMode(String searchMode) {
+    public Suggester setSearchMode(String searchMode) {
         this.searchMode = searchMode;
         return this;
     }
@@ -89,7 +89,7 @@ public final class Suggester {
      *
      * @return the sourceFields value.
      */
-    public List<String> sourceFields() {
+    public List<String> getSourceFields() {
         return this.sourceFields;
     }
 
@@ -100,7 +100,7 @@ public final class Suggester {
      * @param sourceFields the sourceFields value to set.
      * @return the Suggester object itself.
      */
-    public Suggester sourceFields(List<String> sourceFields) {
+    public Suggester setSourceFields(List<String> sourceFields) {
         this.sourceFields = sourceFields;
         return this;
     }

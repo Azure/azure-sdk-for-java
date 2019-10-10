@@ -93,18 +93,18 @@ directive:
     .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    @JsonAnyGetter\n    private Map<String, Object> getParamMap() {\n        return properties;\n    }")
     .replace(/(Get the additionalProperties property: Unmatched properties from the\n\s+\* message are deserialized this collection.)/g, "Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.")
     .replace(/(@return the additionalProperties value.)/g, "@return the document value.")
-    .replace(/(public Map<String, Object> additionalProperties\(\) {\s+return this.additionalProperties;\s+})/g, "public T getDocument() {\n        return this.document;\n    }")
+    .replace(/(public Map<String, Object> getAdditionalProperties\(\) {\s+return this.additionalProperties;\s+})/g, "public T getDocument() {\n        return this.document;\n    }")
     .replace(/(Set the additionalProperties property: Unmatched properties from the\s+\* message are deserialized this collection.)/g, "Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.")
     .replace(/(@param additionalProperties the additionalProperties value to set.)/g, "@param document the document value to set.")
-    .replace(/(public IndexAction additionalProperties\(Map<String, Object> additionalProperties\) {\s+this.additionalProperties = additionalProperties;\s+return this;\s+})/g, "@SuppressWarnings(\"unchecked\")\n    public IndexAction<T> document(T document) {\n        if (document instanceof Map) {\n            this.properties = (Map<String, Object>) document;\n            this.document = null;\n        } else {\n            this.document = document;\n            this.properties = null;\n        }\n        return this;\n    }")
-    .replace(/(public IndexAction actionType\(IndexActionType actionType\) {)/g, "public IndexAction<T> actionType(IndexActionType actionType) {")
+    .replace(/(public IndexAction setAdditionalProperties\(Map<String, Object> additionalProperties\) {\s+this.additionalProperties = additionalProperties;\s+return this;\s+})/g, "@SuppressWarnings(\"unchecked\")\n    public IndexAction<T> setDocument(T document) {\n        if (document instanceof Map) {\n            this.properties = (Map<String, Object>) document;\n            this.document = null;\n        } else {\n            this.document = document;\n            this.properties = null;\n        }\n        return this;\n    }")
+    .replace(/(public IndexAction setActionType\(IndexActionType actionType\) {)/g, "public IndexAction<T> setActionType(IndexActionType actionType) {")
 
 # Enable configuration of RestProxy serializer
 - from: SearchIndexRestClientBuilder.java
   where: $
   transform: >-
     return $
-    .replace(/(import com.azure.core.implementation.annotation.ServiceClientBuilder;)/g, "$1\nimport com.azure.core.implementation.serializer.SerializerAdapter;\nimport com.azure.core.implementation.serializer.jackson.JacksonAdapter;")
+    .replace(/(import com.azure.core.implementation.RestProxy;)/g, "$1\nimport com.azure.core.implementation.serializer.SerializerAdapter;\nimport com.azure.core.implementation.serializer.jackson.JacksonAdapter;")
     .replace(/(\* The HTTP pipeline to send requests through)/g, "\* The serializer to use for requests\n     \*\/\n    private SerializerAdapter serializer;\n\n    \/\*\*\n     \* Sets The serializer to use for requests.\n     \*\n     \* @param serializer the serializer value.\n     \* @return the SearchIndexRestClientBuilder.\n     \*\/\n    public SearchIndexRestClientBuilder serializer\(SerializerAdapter serializer\) {\n        this.serializer = serializer;\n        return this;\n    }\n\n    \/\*\n     $1")
     .replace(/(new SearchIndexRestClientImpl\(pipeline)/g, "$1, serializer")
     .replace(/(this.pipeline = RestProxy.createDefaultPipeline\(\);\s+})/g, "$1\n        if \(serializer == null\) {\n            this.serializer = JacksonAdapter.createDefaultSerializerAdapter\(\);\n        }")
@@ -116,12 +116,11 @@ directive:
     return $
     .replace(/(public final class IndexBatchImpl)/g, "class IndexBatchImpl<T>")
     .replace(/(private List<IndexAction> actions;)/g, "private List<IndexAction<T>> actions;")
-    .replace(/(public List<IndexAction> actions\(\) {)/g, "public List<IndexAction<T>> actions() {")
-    .replace(/(public IndexBatchImpl actions\(List<IndexAction> actions\) {)/g, "protected IndexBatchImpl<T> actions(List<IndexAction<T>> actions) {")
+    .replace(/(public List<IndexAction> getActions\(\) {)/g, "public List<IndexAction<T>> getActions() {")
+    .replace(/(public IndexBatchImpl setActions\(List<IndexAction> actions\) {)/g, "protected IndexBatchImpl<T> setActions(List<IndexAction<T>> actions) {")
 
 # Replace use of generated IndexBatchImpl with custom IndexBatch class
-- from:
-  - DocumentsImpl.java
+- from: DocumentsImpl.java
   where: $
   transform: >-
     return $
@@ -130,4 +129,10 @@ directive:
     .replace(/(Mono<DocumentIndexResult> indexAsync)/g, "<T> $1")
     .replace(/(Mono<SimpleResponse<DocumentIndexResult>> index)/g, "<T> $1")
 
+# Change get to is
+- from: DocumentsImpl.java
+  where: $
+  transform: >-
+    return $
+    .replace(/(get(IncludeTotalResultCount|UseFuzzyMatching))/g, "is$2")
 ```

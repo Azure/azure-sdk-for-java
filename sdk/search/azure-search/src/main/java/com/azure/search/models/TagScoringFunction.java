@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class TagScoringFunction extends ScoringFunction {
      *
      * @return the parameters value.
      */
-    public TagScoringParameters parameters() {
+    public TagScoringParameters getParameters() {
         return this.parameters;
     }
 
@@ -42,7 +42,7 @@ public final class TagScoringFunction extends ScoringFunction {
      * @param parameters the parameters value to set.
      * @return the TagScoringFunction object itself.
      */
-    public TagScoringFunction parameters(TagScoringParameters parameters) {
+    public TagScoringFunction setParameters(TagScoringParameters parameters) {
         this.parameters = parameters;
         return this;
     }

@@ -74,9 +74,9 @@ public class SearchIndexService {
     private void addIndexes() throws IOException {
         Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
         Index index = new ObjectMapper().readValue(indexData, Index.class);
-        this.indexName = index.name();
+        this.indexName = index.getName();
         searchServiceClient.indexes()
-            .createOrUpdateWithRestResponseAsync(index.name(), index, Context.NONE)
+            .createOrUpdateWithRestResponseAsync(index.getName(), index, Context.NONE)
             .block();
     }
 

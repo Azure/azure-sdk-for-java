@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -39,7 +39,7 @@ public final class MergeSkill extends Skill {
      *
      * @return the insertPreTag value.
      */
-    public String insertPreTag() {
+    public String getInsertPreTag() {
         return this.insertPreTag;
     }
 
@@ -50,7 +50,7 @@ public final class MergeSkill extends Skill {
      * @param insertPreTag the insertPreTag value to set.
      * @return the MergeSkill object itself.
      */
-    public MergeSkill insertPreTag(String insertPreTag) {
+    public MergeSkill setInsertPreTag(String insertPreTag) {
         this.insertPreTag = insertPreTag;
         return this;
     }
@@ -61,7 +61,7 @@ public final class MergeSkill extends Skill {
      *
      * @return the insertPostTag value.
      */
-    public String insertPostTag() {
+    public String getInsertPostTag() {
         return this.insertPostTag;
     }
 
@@ -72,7 +72,7 @@ public final class MergeSkill extends Skill {
      * @param insertPostTag the insertPostTag value to set.
      * @return the MergeSkill object itself.
      */
-    public MergeSkill insertPostTag(String insertPostTag) {
+    public MergeSkill setInsertPostTag(String insertPostTag) {
         this.insertPostTag = insertPostTag;
         return this;
     }

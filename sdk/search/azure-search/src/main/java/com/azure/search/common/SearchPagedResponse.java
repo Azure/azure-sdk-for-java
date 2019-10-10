@@ -26,16 +26,16 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      * @param documentSearchResponse an http response with the results
      */
     public SearchPagedResponse(SimpleResponse<DocumentSearchResult> documentSearchResponse) {
-        super(documentSearchResponse.request(),
-            documentSearchResponse.statusCode(),
-            documentSearchResponse.headers(),
-            documentSearchResponse.value().results(),
-            documentSearchResponse.value().nextLink(),
-            deserializeHeaders(documentSearchResponse.headers()));
+        super(documentSearchResponse.getRequest(),
+            documentSearchResponse.getStatusCode(),
+            documentSearchResponse.getHeaders(),
+            documentSearchResponse.getValue().getResults(),
+            documentSearchResponse.getValue().getNextLink(),
+            deserializeHeaders(documentSearchResponse.getHeaders()));
 
-        this.facets = documentSearchResponse.value().facets();
-        this.count = documentSearchResponse.value().count();
-        this.coverage = documentSearchResponse.value().coverage();
+        this.facets = documentSearchResponse.getValue().getFacets();
+        this.count = documentSearchResponse.getValue().getCount();
+        this.coverage = documentSearchResponse.getValue().getCoverage();
     }
 
     /**

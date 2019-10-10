@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,7 +45,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      *
      * @return the minGram value.
      */
-    public Integer minGram() {
+    public Integer getMinGram() {
         return this.minGram;
     }
 
@@ -56,7 +56,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * @param minGram the minGram value to set.
      * @return the EdgeNGramTokenFilter object itself.
      */
-    public EdgeNGramTokenFilter minGram(Integer minGram) {
+    public EdgeNGramTokenFilter setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
     }
@@ -66,7 +66,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      *
      * @return the maxGram value.
      */
-    public Integer maxGram() {
+    public Integer getMaxGram() {
         return this.maxGram;
     }
 
@@ -76,7 +76,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * @param maxGram the maxGram value to set.
      * @return the EdgeNGramTokenFilter object itself.
      */
-    public EdgeNGramTokenFilter maxGram(Integer maxGram) {
+    public EdgeNGramTokenFilter setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
     }
@@ -88,7 +88,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      *
      * @return the side value.
      */
-    public EdgeNGramTokenFilterSide side() {
+    public EdgeNGramTokenFilterSide getSide() {
         return this.side;
     }
 
@@ -100,7 +100,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * @param side the side value to set.
      * @return the EdgeNGramTokenFilter object itself.
      */
-    public EdgeNGramTokenFilter side(EdgeNGramTokenFilterSide side) {
+    public EdgeNGramTokenFilter setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
     }

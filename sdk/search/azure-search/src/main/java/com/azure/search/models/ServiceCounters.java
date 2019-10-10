@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -56,7 +56,7 @@ public final class ServiceCounters {
      *
      * @return the documentCounter value.
      */
-    public ResourceCounter documentCounter() {
+    public ResourceCounter getDocumentCounter() {
         return this.documentCounter;
     }
 
@@ -67,7 +67,7 @@ public final class ServiceCounters {
      * @param documentCounter the documentCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters documentCounter(ResourceCounter documentCounter) {
+    public ServiceCounters setDocumentCounter(ResourceCounter documentCounter) {
         this.documentCounter = documentCounter;
         return this;
     }
@@ -77,7 +77,7 @@ public final class ServiceCounters {
      *
      * @return the indexCounter value.
      */
-    public ResourceCounter indexCounter() {
+    public ResourceCounter getIndexCounter() {
         return this.indexCounter;
     }
 
@@ -87,7 +87,7 @@ public final class ServiceCounters {
      * @param indexCounter the indexCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters indexCounter(ResourceCounter indexCounter) {
+    public ServiceCounters setIndexCounter(ResourceCounter indexCounter) {
         this.indexCounter = indexCounter;
         return this;
     }
@@ -97,7 +97,7 @@ public final class ServiceCounters {
      *
      * @return the indexerCounter value.
      */
-    public ResourceCounter indexerCounter() {
+    public ResourceCounter getIndexerCounter() {
         return this.indexerCounter;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceCounters {
      * @param indexerCounter the indexerCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters indexerCounter(ResourceCounter indexerCounter) {
+    public ServiceCounters setIndexerCounter(ResourceCounter indexerCounter) {
         this.indexerCounter = indexerCounter;
         return this;
     }
@@ -117,7 +117,7 @@ public final class ServiceCounters {
      *
      * @return the dataSourceCounter value.
      */
-    public ResourceCounter dataSourceCounter() {
+    public ResourceCounter getDataSourceCounter() {
         return this.dataSourceCounter;
     }
 
@@ -127,7 +127,7 @@ public final class ServiceCounters {
      * @param dataSourceCounter the dataSourceCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters dataSourceCounter(ResourceCounter dataSourceCounter) {
+    public ServiceCounters setDataSourceCounter(ResourceCounter dataSourceCounter) {
         this.dataSourceCounter = dataSourceCounter;
         return this;
     }
@@ -138,7 +138,7 @@ public final class ServiceCounters {
      *
      * @return the storageSizeCounter value.
      */
-    public ResourceCounter storageSizeCounter() {
+    public ResourceCounter getStorageSizeCounter() {
         return this.storageSizeCounter;
     }
 
@@ -149,7 +149,7 @@ public final class ServiceCounters {
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters storageSizeCounter(ResourceCounter storageSizeCounter) {
+    public ServiceCounters setStorageSizeCounter(ResourceCounter storageSizeCounter) {
         this.storageSizeCounter = storageSizeCounter;
         return this;
     }
@@ -159,7 +159,7 @@ public final class ServiceCounters {
      *
      * @return the synonymMapCounter value.
      */
-    public ResourceCounter synonymMapCounter() {
+    public ResourceCounter getSynonymMapCounter() {
         return this.synonymMapCounter;
     }
 
@@ -169,7 +169,7 @@ public final class ServiceCounters {
      * @param synonymMapCounter the synonymMapCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters synonymMapCounter(ResourceCounter synonymMapCounter) {
+    public ServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
         this.synonymMapCounter = synonymMapCounter;
         return this;
     }

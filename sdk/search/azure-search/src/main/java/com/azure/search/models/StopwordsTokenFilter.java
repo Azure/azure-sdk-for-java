@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -59,7 +59,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the stopwords value.
      */
-    public List<String> stopwords() {
+    public List<String> getStopwords() {
         return this.stopwords;
     }
 
@@ -70,7 +70,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwords the stopwords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    public StopwordsTokenFilter stopwords(List<String> stopwords) {
+    public StopwordsTokenFilter setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
     }
@@ -87,7 +87,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the stopwordsList value.
      */
-    public StopwordsList stopwordsList() {
+    public StopwordsList getStopwordsList() {
         return this.stopwordsList;
     }
 
@@ -104,7 +104,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwordsList the stopwordsList value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    public StopwordsTokenFilter stopwordsList(StopwordsList stopwordsList) {
+    public StopwordsTokenFilter setStopwordsList(StopwordsList stopwordsList) {
         this.stopwordsList = stopwordsList;
         return this;
     }
@@ -115,7 +115,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean ignoreCase() {
+    public Boolean isIgnoreCase() {
         return this.ignoreCase;
     }
 
@@ -126,7 +126,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param ignoreCase the ignoreCase value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    public StopwordsTokenFilter ignoreCase(Boolean ignoreCase) {
+    public StopwordsTokenFilter setIgnoreCase(Boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
         return this;
     }
@@ -137,7 +137,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @return the removeTrailingStopWords value.
      */
-    public Boolean removeTrailingStopWords() {
+    public Boolean isRemoveTrailingStopWords() {
         return this.removeTrailingStopWords;
     }
 
@@ -148,7 +148,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param removeTrailingStopWords the removeTrailingStopWords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    public StopwordsTokenFilter removeTrailingStopWords(Boolean removeTrailingStopWords) {
+    public StopwordsTokenFilter setRemoveTrailingStopWords(Boolean removeTrailingStopWords) {
         this.removeTrailingStopWords = removeTrailingStopWords;
         return this;
     }

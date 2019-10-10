@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -36,7 +36,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
      *
      * @return the rules value.
      */
-    public List<String> rules() {
+    public List<String> getRules() {
         return this.rules;
     }
 
@@ -47,7 +47,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
      * @param rules the rules value to set.
      * @return the StemmerOverrideTokenFilter object itself.
      */
-    public StemmerOverrideTokenFilter rules(List<String> rules) {
+    public StemmerOverrideTokenFilter setRules(List<String> rules) {
         this.rules = rules;
         return this;
     }

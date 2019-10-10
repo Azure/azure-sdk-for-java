@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -69,7 +69,7 @@ public final class DataSource {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -79,7 +79,7 @@ public final class DataSource {
      * @param name the name value to set.
      * @return the DataSource object itself.
      */
-    public DataSource name(String name) {
+    public DataSource setName(String name) {
         this.name = name;
         return this;
     }
@@ -89,7 +89,7 @@ public final class DataSource {
      *
      * @return the description value.
      */
-    public String description() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -99,7 +99,7 @@ public final class DataSource {
      * @param description the description value to set.
      * @return the DataSource object itself.
      */
-    public DataSource description(String description) {
+    public DataSource setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -110,7 +110,7 @@ public final class DataSource {
      *
      * @return the type value.
      */
-    public DataSourceType type() {
+    public DataSourceType getType() {
         return this.type;
     }
 
@@ -121,7 +121,7 @@ public final class DataSource {
      * @param type the type value to set.
      * @return the DataSource object itself.
      */
-    public DataSource type(DataSourceType type) {
+    public DataSource setType(DataSourceType type) {
         this.type = type;
         return this;
     }
@@ -131,7 +131,7 @@ public final class DataSource {
      *
      * @return the credentials value.
      */
-    public DataSourceCredentials credentials() {
+    public DataSourceCredentials getCredentials() {
         return this.credentials;
     }
 
@@ -141,7 +141,7 @@ public final class DataSource {
      * @param credentials the credentials value to set.
      * @return the DataSource object itself.
      */
-    public DataSource credentials(DataSourceCredentials credentials) {
+    public DataSource setCredentials(DataSourceCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -151,7 +151,7 @@ public final class DataSource {
      *
      * @return the container value.
      */
-    public DataContainer container() {
+    public DataContainer getContainer() {
         return this.container;
     }
 
@@ -161,7 +161,7 @@ public final class DataSource {
      * @param container the container value to set.
      * @return the DataSource object itself.
      */
-    public DataSource container(DataContainer container) {
+    public DataSource setContainer(DataContainer container) {
         this.container = container;
         return this;
     }
@@ -172,7 +172,7 @@ public final class DataSource {
      *
      * @return the dataChangeDetectionPolicy value.
      */
-    public DataChangeDetectionPolicy dataChangeDetectionPolicy() {
+    public DataChangeDetectionPolicy getDataChangeDetectionPolicy() {
         return this.dataChangeDetectionPolicy;
     }
 
@@ -184,7 +184,7 @@ public final class DataSource {
      * set.
      * @return the DataSource object itself.
      */
-    public DataSource dataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+    public DataSource setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
         return this;
     }
@@ -195,7 +195,7 @@ public final class DataSource {
      *
      * @return the dataDeletionDetectionPolicy value.
      */
-    public DataDeletionDetectionPolicy dataDeletionDetectionPolicy() {
+    public DataDeletionDetectionPolicy getDataDeletionDetectionPolicy() {
         return this.dataDeletionDetectionPolicy;
     }
 
@@ -207,7 +207,7 @@ public final class DataSource {
      * to set.
      * @return the DataSource object itself.
      */
-    public DataSource dataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
+    public DataSource setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
         return this;
     }
@@ -217,7 +217,7 @@ public final class DataSource {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -227,7 +227,7 @@ public final class DataSource {
      * @param eTag the eTag value to set.
      * @return the DataSource object itself.
      */
-    public DataSource eTag(String eTag) {
+    public DataSource setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

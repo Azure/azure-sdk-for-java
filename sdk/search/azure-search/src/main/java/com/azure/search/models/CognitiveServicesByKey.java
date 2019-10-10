@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,7 +30,7 @@ public final class CognitiveServicesByKey extends CognitiveServices {
      *
      * @return the key value.
      */
-    public String key() {
+    public String getKey() {
         return this.key;
     }
 
@@ -40,7 +40,7 @@ public final class CognitiveServicesByKey extends CognitiveServices {
      * @param key the key value to set.
      * @return the CognitiveServicesByKey object itself.
      */
-    public CognitiveServicesByKey key(String key) {
+    public CognitiveServicesByKey setKey(String key) {
         this.key = key;
         return this;
     }

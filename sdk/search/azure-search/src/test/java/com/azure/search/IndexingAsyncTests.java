@@ -69,7 +69,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(hotels);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
-            List<IndexingResult> result = res.results();
+            List<IndexingResult> result = res.getResults();
             this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
         }).verifyComplete();
 
@@ -97,7 +97,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<DocumentIndexResult> asyncResult = client.uploadDocuments(books);
 
         StepVerifier.create(asyncResult).assertNext(res -> {
-            List<IndexingResult> result = res.results();
+            List<IndexingResult> result = res.getResults();
             this.assertIndexActionSucceeded("123", result.get(0), 201);
         }).verifyComplete();
 
@@ -134,7 +134,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
                 List<IndexingResult> indexingResults = ((IndexBatchException) err).getIndexingResults();
 
-                Assert.assertEquals(batch.actions().size(), indexingResults.size());
+                Assert.assertEquals(batch.getActions().size(), indexingResults.size());
 
                 assertSuccessfulIndexResult(indexingResults.get(0), "1", 201);
                 assertSuccessfulIndexResult(indexingResults.get(1), "randomId", 200);
@@ -196,7 +196,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
                 assertSuccessfulIndexResult(results.get(3), "3", 201);
                 assertSuccessfulIndexResult(results.get(4), "2", 201);
-                Assert.assertEquals(batch.actions().size(), results.size());
+                Assert.assertEquals(batch.getActions().size(), results.size());
             });
 
         StepVerifier.create(client.getDocument(hotel1.get("HotelId").toString()))
@@ -225,7 +225,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .create(indexResult)
             .verifyErrorSatisfies(error -> {
                 Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
+                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).getResponse().getStatusCode());
                 Assert.assertTrue(error.getMessage().contains("The request is invalid. Details: actions : 0: Document key cannot be missing or empty."));
             });
     }
@@ -233,11 +233,11 @@ public class IndexingAsyncTests extends IndexingTestBase {
     @Override
     public void canUseIndexWithReservedName() {
         Index indexWithReservedName = new Index()
-            .name("prototype")
-            .fields(Collections.singletonList(new Field()
-                .name("ID")
-                .type(DataType.EDM_STRING)
-                .key(Boolean.TRUE)
+            .setName("prototype")
+            .setFields(Collections.singletonList(new Field()
+                .setName("ID")
+                .setType(DataType.EDM_STRING)
+                .setKey(Boolean.TRUE)
             ));
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -246,7 +246,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 .block();
         }
 
-        client = getClientBuilder(indexWithReservedName.name()).buildAsyncClient();
+        client = getClientBuilder(indexWithReservedName.getName()).buildAsyncClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 
@@ -525,9 +525,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
-                Assert.assertEquals(2, res.results().size());
-                assertIndexActionSucceeded("1", res.results().get(0), 200);
-                assertIndexActionSucceeded("2", res.results().get(1), 200);
+                Assert.assertEquals(2, res.getResults().size());
+                assertIndexActionSucceeded("1", res.getResults().get(0), 200);
+                assertIndexActionSucceeded("2", res.getResults().get(1), 200);
             })
             .verifyComplete();
         waitForIndexing();
@@ -560,8 +560,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
-                Assert.assertEquals(1, res.results().size());
-                assertIndexActionSucceeded("1", res.results().get(0), 200);
+                Assert.assertEquals(1, res.getResults().size());
+                assertIndexActionSucceeded("1", res.getResults().get(0), 200);
             })
             .verifyComplete();
         waitForIndexing();
@@ -595,8 +595,8 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
-                Assert.assertEquals(1, res.results().size());
-                assertIndexActionSucceeded("1", res.results().get(0), 200);
+                Assert.assertEquals(1, res.getResults().size());
+                assertIndexActionSucceeded("1", res.getResults().get(0), 200);
             })
             .verifyComplete();
         waitForIndexing();
@@ -899,10 +899,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Response<DocumentIndexResult>> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
         StepVerifier.create(indexResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.value();
-                Assert.assertEquals(2, result.results().size());
+                DocumentIndexResult result = res.getValue();
+                Assert.assertEquals(2, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
@@ -910,10 +910,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Response<DocumentIndexResult>> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
         StepVerifier.create(updateResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.value();
-                Assert.assertEquals(1, result.results().size());
+                DocumentIndexResult result = res.getValue();
+                Assert.assertEquals(1, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
@@ -921,10 +921,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Response<DocumentIndexResult>> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
         StepVerifier.create(mergeOrUploadResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.value();
-                Assert.assertEquals(2, result.results().size());
+                DocumentIndexResult result = res.getValue();
+                Assert.assertEquals(2, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
@@ -932,10 +932,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Response<DocumentIndexResult>> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
         StepVerifier.create(deleteResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.value();
-                Assert.assertEquals(1, result.results().size());
+                DocumentIndexResult result = res.getValue();
+                Assert.assertEquals(1, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
@@ -943,10 +943,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Response<DocumentIndexResult>> batchResponse = client.indexWithResponse(batch);
         StepVerifier.create(batchResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                DocumentIndexResult result = res.value();
-                Assert.assertEquals(4, result.results().size());
+                DocumentIndexResult result = res.getValue();
+                Assert.assertEquals(4, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
@@ -955,9 +955,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
             new SearchRequestOptions());
         StepVerifier.create(documentResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                Document doc = res.value();
+                Document doc = res.getValue();
                 Assert.assertEquals(4, doc.get("Rating"));
             })
             .expectComplete();
@@ -965,9 +965,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
         Mono<Response<Long>> countResponse = client.getDocumentCountWithResponse();
         StepVerifier.create(countResponse)
             .assertNext(res -> {
-                Assert.assertEquals(200, res.statusCode());
+                Assert.assertEquals(200, res.getStatusCode());
 
-                Long count = res.value();
+                Long count = res.getValue();
                 Assert.assertEquals(4L, count.longValue());
             })
             .expectComplete();

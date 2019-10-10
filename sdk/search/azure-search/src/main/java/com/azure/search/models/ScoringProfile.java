@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public final class ScoringProfile {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -59,7 +59,7 @@ public final class ScoringProfile {
      * @param name the name value to set.
      * @return the ScoringProfile object itself.
      */
-    public ScoringProfile name(String name) {
+    public ScoringProfile setName(String name) {
         this.name = name;
         return this;
     }
@@ -70,7 +70,7 @@ public final class ScoringProfile {
      *
      * @return the textWeights value.
      */
-    public TextWeights textWeights() {
+    public TextWeights getTextWeights() {
         return this.textWeights;
     }
 
@@ -81,7 +81,7 @@ public final class ScoringProfile {
      * @param textWeights the textWeights value to set.
      * @return the ScoringProfile object itself.
      */
-    public ScoringProfile textWeights(TextWeights textWeights) {
+    public ScoringProfile setTextWeights(TextWeights textWeights) {
         this.textWeights = textWeights;
         return this;
     }
@@ -92,7 +92,7 @@ public final class ScoringProfile {
      *
      * @return the functions value.
      */
-    public List<ScoringFunction> functions() {
+    public List<ScoringFunction> getFunctions() {
         return this.functions;
     }
 
@@ -103,7 +103,7 @@ public final class ScoringProfile {
      * @param functions the functions value to set.
      * @return the ScoringProfile object itself.
      */
-    public ScoringProfile functions(List<ScoringFunction> functions) {
+    public ScoringProfile setFunctions(List<ScoringFunction> functions) {
         this.functions = functions;
         return this;
     }
@@ -116,7 +116,7 @@ public final class ScoringProfile {
      *
      * @return the functionAggregation value.
      */
-    public ScoringFunctionAggregation functionAggregation() {
+    public ScoringFunctionAggregation getFunctionAggregation() {
         return this.functionAggregation;
     }
 
@@ -129,7 +129,7 @@ public final class ScoringProfile {
      * @param functionAggregation the functionAggregation value to set.
      * @return the ScoringProfile object itself.
      */
-    public ScoringProfile functionAggregation(ScoringFunctionAggregation functionAggregation) {
+    public ScoringProfile setFunctionAggregation(ScoringFunctionAggregation functionAggregation) {
         this.functionAggregation = functionAggregation;
         return this;
     }

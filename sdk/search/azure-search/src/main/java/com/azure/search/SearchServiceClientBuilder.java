@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.SearchApiKeyPipelinePolicy;
 import org.apache.commons.lang3.StringUtils;

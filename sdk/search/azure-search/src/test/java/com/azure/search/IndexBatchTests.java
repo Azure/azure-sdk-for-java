@@ -22,8 +22,8 @@ public class IndexBatchTests {
         document.put("Id", "1");
 
         IndexAction<Document> indexAction = new IndexAction<Document>()
-            .actionType(IndexActionType.UPLOAD)
-            .document(document);
+            .setActionType(IndexActionType.UPLOAD)
+            .setDocument(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
             .actions(Collections.singletonList(indexAction));
@@ -51,8 +51,8 @@ public class IndexBatchTests {
         for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
-                    .actionType(IndexActionType.UPLOAD)
-                    .document(doc)
+                    .setActionType(IndexActionType.UPLOAD)
+                    .setDocument(doc)
             );
         }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
@@ -70,8 +70,8 @@ public class IndexBatchTests {
         document.put("Id", "1");
 
         IndexAction<Document> indexAction = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE)
-            .document(document);
+            .setActionType(IndexActionType.MERGE)
+            .setDocument(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
             .actions(Collections.singletonList(indexAction));
@@ -99,8 +99,8 @@ public class IndexBatchTests {
         for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
-                    .actionType(IndexActionType.MERGE)
-                    .document(doc)
+                    .setActionType(IndexActionType.MERGE)
+                    .setDocument(doc)
             );
         }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
@@ -118,8 +118,8 @@ public class IndexBatchTests {
         document.put("Id", "1");
 
         IndexAction<Document> indexAction = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .document(document);
+            .setActionType(IndexActionType.MERGE_OR_UPLOAD)
+            .setDocument(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
             .actions(Collections.singletonList(indexAction));
@@ -147,8 +147,8 @@ public class IndexBatchTests {
         for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
-                    .actionType(IndexActionType.MERGE_OR_UPLOAD)
-                    .document(doc)
+                    .setActionType(IndexActionType.MERGE_OR_UPLOAD)
+                    .setDocument(doc)
             );
         }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
@@ -166,8 +166,8 @@ public class IndexBatchTests {
         document.put("Id", "1");
 
         IndexAction<Document> indexAction = new IndexAction<Document>()
-            .actionType(IndexActionType.DELETE)
-            .document(document);
+            .setActionType(IndexActionType.DELETE)
+            .setDocument(document);
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
             .actions(Collections.singletonList(indexAction));
@@ -195,8 +195,8 @@ public class IndexBatchTests {
         for (Document doc : docs) {
             indexActions.add(
                 new IndexAction<Document>()
-                    .actionType(IndexActionType.DELETE)
-                    .document(doc)
+                    .setActionType(IndexActionType.DELETE)
+                    .setDocument(doc)
             );
         }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
@@ -223,20 +223,20 @@ public class IndexBatchTests {
         documentToDelete.put("Id", "delete");
 
         IndexAction<Document> mergeAction = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE)
-            .document(documentToMerge);
+            .setActionType(IndexActionType.MERGE)
+            .setDocument(documentToMerge);
 
         IndexAction<Document> mergeOrUploadAction = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .document(documentToMergeOrUpload);
+            .setActionType(IndexActionType.MERGE_OR_UPLOAD)
+            .setDocument(documentToMergeOrUpload);
 
         IndexAction<Document> deleteAction = new IndexAction<Document>()
-            .actionType(IndexActionType.DELETE)
-            .document(documentToDelete);
+            .setActionType(IndexActionType.DELETE)
+            .setDocument(documentToDelete);
 
         IndexAction<Document> uploadAction = new IndexAction<Document>()
-            .actionType(IndexActionType.UPLOAD)
-            .document(documentToUpload);
+            .setActionType(IndexActionType.UPLOAD)
+            .setDocument(documentToUpload);
 
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
@@ -294,36 +294,36 @@ public class IndexBatchTests {
         documentsToUpload.add(upload2);
 
         IndexAction<Document> mergeAction1 = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE)
-            .document(documentsToMerge.get(0));
+            .setActionType(IndexActionType.MERGE)
+            .setDocument(documentsToMerge.get(0));
 
         IndexAction<Document> mergeAction2 = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE)
-            .document(documentsToMerge.get(1));
+            .setActionType(IndexActionType.MERGE)
+            .setDocument(documentsToMerge.get(1));
 
         IndexAction<Document> mergeOrUploadAction1 = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .document(documentsToMergeOrUpload.get(0));
+            .setActionType(IndexActionType.MERGE_OR_UPLOAD)
+            .setDocument(documentsToMergeOrUpload.get(0));
 
         IndexAction<Document> mergeOrUploadAction2 = new IndexAction<Document>()
-            .actionType(IndexActionType.MERGE_OR_UPLOAD)
-            .document(documentsToMergeOrUpload.get(1));
+            .setActionType(IndexActionType.MERGE_OR_UPLOAD)
+            .setDocument(documentsToMergeOrUpload.get(1));
 
         IndexAction<Document> deleteAction1 = new IndexAction<Document>()
-            .actionType(IndexActionType.DELETE)
-            .document(documentsToDelete.get(0));
+            .setActionType(IndexActionType.DELETE)
+            .setDocument(documentsToDelete.get(0));
 
         IndexAction<Document> deleteAction2 = new IndexAction<Document>()
-            .actionType(IndexActionType.DELETE)
-            .document(documentsToDelete.get(1));
+            .setActionType(IndexActionType.DELETE)
+            .setDocument(documentsToDelete.get(1));
 
         IndexAction<Document> uploadAction1 = new IndexAction<Document>()
-            .actionType(IndexActionType.UPLOAD)
-            .document(documentsToUpload.get(0));
+            .setActionType(IndexActionType.UPLOAD)
+            .setDocument(documentsToUpload.get(0));
 
         IndexAction<Document> uploadAction2 = new IndexAction<Document>()
-            .actionType(IndexActionType.UPLOAD)
-            .document(documentsToUpload.get(1));
+            .setActionType(IndexActionType.UPLOAD)
+            .setDocument(documentsToUpload.get(1));
 
         IndexBatch<Document> expected = new IndexBatch<Document>()
             .actions(
@@ -349,13 +349,13 @@ public class IndexBatchTests {
     }
 
     private void validate(IndexBatch<Document> expected, IndexBatch<Document> actual) {
-        Assert.assertEquals(expected.actions().size(), actual.actions().size());
+        Assert.assertEquals(expected.getActions().size(), actual.getActions().size());
 
-        for (int i = 0; i < actual.actions().size(); i++) {
-            IndexAction<Document> expectedIndexAction = expected.actions().get(i);
-            IndexAction<Document> actualIndexAction = actual.actions().get(i);
+        for (int i = 0; i < actual.getActions().size(); i++) {
+            IndexAction<Document> expectedIndexAction = expected.getActions().get(i);
+            IndexAction<Document> actualIndexAction = actual.getActions().get(i);
 
-            Assert.assertEquals(expectedIndexAction.actionType(), actualIndexAction.actionType());
+            Assert.assertEquals(expectedIndexAction.getActionType(), actualIndexAction.getActionType());
             Assert.assertEquals(expectedIndexAction.getDocument(), actualIndexAction.getDocument());
         }
     }

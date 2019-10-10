@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -56,7 +56,7 @@ public final class IndexAction<T> {
      * @return the IndexAction object itself.
      */
     @SuppressWarnings("unchecked")
-    public IndexAction<T> document(T document) {
+    public IndexAction<T> setDocument(T document) {
         if (document instanceof Map) {
             this.properties = (Map<String, Object>) document;
             this.document = null;
@@ -74,7 +74,7 @@ public final class IndexAction<T> {
      *
      * @return the actionType value.
      */
-    public IndexActionType actionType() {
+    public IndexActionType getActionType() {
         return this.actionType;
     }
 
@@ -86,7 +86,7 @@ public final class IndexAction<T> {
      * @param actionType the actionType value to set.
      * @return the IndexAction object itself.
      */
-    public IndexAction<T> actionType(IndexActionType actionType) {
+    public IndexAction<T> setActionType(IndexActionType actionType) {
         this.actionType = actionType;
         return this;
     }

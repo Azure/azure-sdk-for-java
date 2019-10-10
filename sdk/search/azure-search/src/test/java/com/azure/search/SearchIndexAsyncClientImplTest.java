@@ -143,7 +143,8 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
             .create(futureDoc)
             .verifyErrorSatisfies(error -> {
                 assertEquals(HttpResponseException.class, error.getClass());
-                assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).response().statusCode());
+                assertEquals(HttpResponseStatus.BAD_REQUEST.code(),
+                    ((HttpResponseException) error).getResponse().getStatusCode());
                 assertTrue(error.getMessage().contains(ERROR_MESSAGE_INVALID_FIELDS_REQUEST));
             });
     }

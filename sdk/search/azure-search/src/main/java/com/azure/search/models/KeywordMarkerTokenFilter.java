@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      *
      * @return the keywords value.
      */
-    public List<String> keywords() {
+    public List<String> getKeywords() {
         return this.keywords;
     }
 
@@ -48,7 +48,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * @param keywords the keywords value to set.
      * @return the KeywordMarkerTokenFilter object itself.
      */
-    public KeywordMarkerTokenFilter keywords(List<String> keywords) {
+    public KeywordMarkerTokenFilter setKeywords(List<String> keywords) {
         this.keywords = keywords;
         return this;
     }
@@ -59,7 +59,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean ignoreCase() {
+    public Boolean isIgnoreCase() {
         return this.ignoreCase;
     }
 
@@ -70,7 +70,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
      * @param ignoreCase the ignoreCase value to set.
      * @return the KeywordMarkerTokenFilter object itself.
      */
-    public KeywordMarkerTokenFilter ignoreCase(Boolean ignoreCase) {
+    public KeywordMarkerTokenFilter setIgnoreCase(Boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
         return this;
     }

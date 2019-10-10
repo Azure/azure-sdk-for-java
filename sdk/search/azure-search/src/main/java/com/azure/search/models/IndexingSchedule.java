@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -34,7 +34,7 @@ public final class IndexingSchedule {
      *
      * @return the interval value.
      */
-    public Duration interval() {
+    public Duration getInterval() {
         return this.interval;
     }
 
@@ -45,7 +45,7 @@ public final class IndexingSchedule {
      * @param interval the interval value to set.
      * @return the IndexingSchedule object itself.
      */
-    public IndexingSchedule interval(Duration interval) {
+    public IndexingSchedule setInterval(Duration interval) {
         this.interval = interval;
         return this;
     }
@@ -56,7 +56,7 @@ public final class IndexingSchedule {
      *
      * @return the startTime value.
      */
-    public OffsetDateTime startTime() {
+    public OffsetDateTime getStartTime() {
         return this.startTime;
     }
 
@@ -67,7 +67,7 @@ public final class IndexingSchedule {
      * @param startTime the startTime value to set.
      * @return the IndexingSchedule object itself.
      */
-    public IndexingSchedule startTime(OffsetDateTime startTime) {
+    public IndexingSchedule setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }

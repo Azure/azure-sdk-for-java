@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -87,7 +87,7 @@ public final class IndexerExecutionResult {
      *
      * @return the status value.
      */
-    public IndexerExecutionStatus status() {
+    public IndexerExecutionStatus getStatus() {
         return this.status;
     }
 
@@ -97,7 +97,7 @@ public final class IndexerExecutionResult {
      *
      * @return the errorMessage value.
      */
-    public String errorMessage() {
+    public String getErrorMessage() {
         return this.errorMessage;
     }
 
@@ -106,7 +106,7 @@ public final class IndexerExecutionResult {
      *
      * @return the startTime value.
      */
-    public OffsetDateTime startTime() {
+    public OffsetDateTime getStartTime() {
         return this.startTime;
     }
 
@@ -116,7 +116,7 @@ public final class IndexerExecutionResult {
      *
      * @return the endTime value.
      */
-    public OffsetDateTime endTime() {
+    public OffsetDateTime getEndTime() {
         return this.endTime;
     }
 
@@ -125,7 +125,7 @@ public final class IndexerExecutionResult {
      *
      * @return the errors value.
      */
-    public List<ItemError> errors() {
+    public List<ItemError> getErrors() {
         return this.errors;
     }
 
@@ -134,7 +134,7 @@ public final class IndexerExecutionResult {
      *
      * @return the warnings value.
      */
-    public List<ItemWarning> warnings() {
+    public List<ItemWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -145,7 +145,7 @@ public final class IndexerExecutionResult {
      *
      * @return the itemCount value.
      */
-    public int itemCount() {
+    public int getItemCount() {
         return this.itemCount;
     }
 
@@ -155,7 +155,7 @@ public final class IndexerExecutionResult {
      *
      * @return the failedItemCount value.
      */
-    public int failedItemCount() {
+    public int getFailedItemCount() {
         return this.failedItemCount;
     }
 
@@ -165,7 +165,7 @@ public final class IndexerExecutionResult {
      *
      * @return the initialTrackingState value.
      */
-    public String initialTrackingState() {
+    public String getInitialTrackingState() {
         return this.initialTrackingState;
     }
 
@@ -175,7 +175,7 @@ public final class IndexerExecutionResult {
      *
      * @return the finalTrackingState value.
      */
-    public String finalTrackingState() {
+    public String getFinalTrackingState() {
         return this.finalTrackingState;
     }
 }

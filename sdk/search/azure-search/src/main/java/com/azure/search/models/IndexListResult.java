@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public final class IndexListResult {
      *
      * @return the indexes value.
      */
-    public List<Index> indexes() {
+    public List<Index> getIndexes() {
         return this.indexes;
     }
 }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -53,7 +53,7 @@ public final class PatternAnalyzer extends Analyzer {
      *
      * @return the lowerCaseTerms value.
      */
-    public Boolean lowerCaseTerms() {
+    public Boolean isLowerCaseTerms() {
         return this.lowerCaseTerms;
     }
 
@@ -64,7 +64,7 @@ public final class PatternAnalyzer extends Analyzer {
      * @param lowerCaseTerms the lowerCaseTerms value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer lowerCaseTerms(Boolean lowerCaseTerms) {
+    public PatternAnalyzer setLowerCaseTerms(Boolean lowerCaseTerms) {
         this.lowerCaseTerms = lowerCaseTerms;
         return this;
     }
@@ -76,7 +76,7 @@ public final class PatternAnalyzer extends Analyzer {
      *
      * @return the pattern value.
      */
-    public String pattern() {
+    public String getPattern() {
         return this.pattern;
     }
 
@@ -88,7 +88,7 @@ public final class PatternAnalyzer extends Analyzer {
      * @param pattern the pattern value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer pattern(String pattern) {
+    public PatternAnalyzer setPattern(String pattern) {
         this.pattern = pattern;
         return this;
     }
@@ -100,7 +100,7 @@ public final class PatternAnalyzer extends Analyzer {
      *
      * @return the flags value.
      */
-    public RegexFlags flags() {
+    public RegexFlags getFlags() {
         return this.flags;
     }
 
@@ -112,7 +112,7 @@ public final class PatternAnalyzer extends Analyzer {
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer flags(RegexFlags flags) {
+    public PatternAnalyzer setFlags(RegexFlags flags) {
         this.flags = flags;
         return this;
     }
@@ -122,7 +122,7 @@ public final class PatternAnalyzer extends Analyzer {
      *
      * @return the stopwords value.
      */
-    public List<String> stopwords() {
+    public List<String> getStopwords() {
         return this.stopwords;
     }
 
@@ -132,7 +132,7 @@ public final class PatternAnalyzer extends Analyzer {
      * @param stopwords the stopwords value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer stopwords(List<String> stopwords) {
+    public PatternAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
     }

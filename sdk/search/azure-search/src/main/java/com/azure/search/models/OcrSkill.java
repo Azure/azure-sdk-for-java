@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -48,7 +48,7 @@ public final class OcrSkill extends Skill {
      *
      * @return the textExtractionAlgorithm value.
      */
-    public TextExtractionAlgorithm textExtractionAlgorithm() {
+    public TextExtractionAlgorithm getTextExtractionAlgorithm() {
         return this.textExtractionAlgorithm;
     }
 
@@ -60,7 +60,7 @@ public final class OcrSkill extends Skill {
      * @param textExtractionAlgorithm the textExtractionAlgorithm value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill textExtractionAlgorithm(TextExtractionAlgorithm textExtractionAlgorithm) {
+    public OcrSkill setTextExtractionAlgorithm(TextExtractionAlgorithm textExtractionAlgorithm) {
         this.textExtractionAlgorithm = textExtractionAlgorithm;
         return this;
     }
@@ -74,7 +74,7 @@ public final class OcrSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public OcrSkillLanguage defaultLanguageCode() {
+    public OcrSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -88,7 +88,7 @@ public final class OcrSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill defaultLanguageCode(OcrSkillLanguage defaultLanguageCode) {
+    public OcrSkill setDefaultLanguageCode(OcrSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }
@@ -99,7 +99,7 @@ public final class OcrSkill extends Skill {
      *
      * @return the shouldDetectOrientation value.
      */
-    public Boolean shouldDetectOrientation() {
+    public Boolean isShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
 
@@ -110,7 +110,7 @@ public final class OcrSkill extends Skill {
      * @param shouldDetectOrientation the shouldDetectOrientation value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill shouldDetectOrientation(Boolean shouldDetectOrientation) {
+    public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -34,7 +34,7 @@ public final class AccessCondition {
      *
      * @return the ifMatch value.
      */
-    public String ifMatch() {
+    public String getIfMatch() {
         return this.ifMatch;
     }
 
@@ -45,7 +45,7 @@ public final class AccessCondition {
      * @param ifMatch the ifMatch value to set.
      * @return the AccessCondition object itself.
      */
-    public AccessCondition ifMatch(String ifMatch) {
+    public AccessCondition setIfMatch(String ifMatch) {
         this.ifMatch = ifMatch;
         return this;
     }
@@ -57,7 +57,7 @@ public final class AccessCondition {
      *
      * @return the ifNoneMatch value.
      */
-    public String ifNoneMatch() {
+    public String getIfNoneMatch() {
         return this.ifNoneMatch;
     }
 
@@ -69,7 +69,7 @@ public final class AccessCondition {
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the AccessCondition object itself.
      */
-    public AccessCondition ifNoneMatch(String ifNoneMatch) {
+    public AccessCondition setIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }

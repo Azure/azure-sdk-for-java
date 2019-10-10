@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -48,7 +48,7 @@ public final class ServiceLimits {
      *
      * @return the maxFieldsPerIndex value.
      */
-    public Integer maxFieldsPerIndex() {
+    public Integer getMaxFieldsPerIndex() {
         return this.maxFieldsPerIndex;
     }
 
@@ -59,7 +59,7 @@ public final class ServiceLimits {
      * @param maxFieldsPerIndex the maxFieldsPerIndex value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits maxFieldsPerIndex(Integer maxFieldsPerIndex) {
+    public ServiceLimits setMaxFieldsPerIndex(Integer maxFieldsPerIndex) {
         this.maxFieldsPerIndex = maxFieldsPerIndex;
         return this;
     }
@@ -71,7 +71,7 @@ public final class ServiceLimits {
      *
      * @return the maxFieldNestingDepthPerIndex value.
      */
-    public Integer maxFieldNestingDepthPerIndex() {
+    public Integer getMaxFieldNestingDepthPerIndex() {
         return this.maxFieldNestingDepthPerIndex;
     }
 
@@ -84,7 +84,7 @@ public final class ServiceLimits {
      * value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits maxFieldNestingDepthPerIndex(Integer maxFieldNestingDepthPerIndex) {
+    public ServiceLimits setMaxFieldNestingDepthPerIndex(Integer maxFieldNestingDepthPerIndex) {
         this.maxFieldNestingDepthPerIndex = maxFieldNestingDepthPerIndex;
         return this;
     }
@@ -95,7 +95,7 @@ public final class ServiceLimits {
      *
      * @return the maxComplexCollectionFieldsPerIndex value.
      */
-    public Integer maxComplexCollectionFieldsPerIndex() {
+    public Integer getMaxComplexCollectionFieldsPerIndex() {
         return this.maxComplexCollectionFieldsPerIndex;
     }
 
@@ -107,7 +107,7 @@ public final class ServiceLimits {
      * maxComplexCollectionFieldsPerIndex value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits maxComplexCollectionFieldsPerIndex(Integer maxComplexCollectionFieldsPerIndex) {
+    public ServiceLimits setMaxComplexCollectionFieldsPerIndex(Integer maxComplexCollectionFieldsPerIndex) {
         this.maxComplexCollectionFieldsPerIndex = maxComplexCollectionFieldsPerIndex;
         return this;
     }
@@ -118,7 +118,7 @@ public final class ServiceLimits {
      *
      * @return the maxComplexObjectsInCollectionsPerDocument value.
      */
-    public Integer maxComplexObjectsInCollectionsPerDocument() {
+    public Integer getMaxComplexObjectsInCollectionsPerDocument() {
         return this.maxComplexObjectsInCollectionsPerDocument;
     }
 
@@ -130,7 +130,7 @@ public final class ServiceLimits {
      * maxComplexObjectsInCollectionsPerDocument value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits maxComplexObjectsInCollectionsPerDocument(Integer maxComplexObjectsInCollectionsPerDocument) {
+    public ServiceLimits setMaxComplexObjectsInCollectionsPerDocument(Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
         return this;
     }

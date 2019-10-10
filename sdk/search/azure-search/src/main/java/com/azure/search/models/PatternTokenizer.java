@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -50,7 +50,7 @@ public final class PatternTokenizer extends Tokenizer {
      *
      * @return the pattern value.
      */
-    public String pattern() {
+    public String getPattern() {
         return this.pattern;
     }
 
@@ -62,7 +62,7 @@ public final class PatternTokenizer extends Tokenizer {
      * @param pattern the pattern value to set.
      * @return the PatternTokenizer object itself.
      */
-    public PatternTokenizer pattern(String pattern) {
+    public PatternTokenizer setPattern(String pattern) {
         this.pattern = pattern;
         return this;
     }
@@ -74,7 +74,7 @@ public final class PatternTokenizer extends Tokenizer {
      *
      * @return the flags value.
      */
-    public RegexFlags flags() {
+    public RegexFlags getFlags() {
         return this.flags;
     }
 
@@ -86,7 +86,7 @@ public final class PatternTokenizer extends Tokenizer {
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
-    public PatternTokenizer flags(RegexFlags flags) {
+    public PatternTokenizer setFlags(RegexFlags flags) {
         this.flags = flags;
         return this;
     }
@@ -99,7 +99,7 @@ public final class PatternTokenizer extends Tokenizer {
      *
      * @return the group value.
      */
-    public Integer group() {
+    public Integer getGroup() {
         return this.group;
     }
 
@@ -112,7 +112,7 @@ public final class PatternTokenizer extends Tokenizer {
      * @param group the group value to set.
      * @return the PatternTokenizer object itself.
      */
-    public PatternTokenizer group(Integer group) {
+    public PatternTokenizer setGroup(Integer group) {
         this.group = group;
         return this;
     }

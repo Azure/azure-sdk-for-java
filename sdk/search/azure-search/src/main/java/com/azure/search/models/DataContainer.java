@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -36,7 +36,7 @@ public final class DataContainer {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -47,7 +47,7 @@ public final class DataContainer {
      * @param name the name value to set.
      * @return the DataContainer object itself.
      */
-    public DataContainer name(String name) {
+    public DataContainer setName(String name) {
         this.name = name;
         return this;
     }
@@ -59,7 +59,7 @@ public final class DataContainer {
      *
      * @return the query value.
      */
-    public String query() {
+    public String getQuery() {
         return this.query;
     }
 
@@ -71,7 +71,7 @@ public final class DataContainer {
      * @param query the query value to set.
      * @return the DataContainer object itself.
      */
-    public DataContainer query(String query) {
+    public DataContainer setQuery(String query) {
         this.query = query;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,7 +45,7 @@ public final class NGramTokenizer extends Tokenizer {
      *
      * @return the minGram value.
      */
-    public Integer minGram() {
+    public Integer getMinGram() {
         return this.minGram;
     }
 
@@ -56,7 +56,7 @@ public final class NGramTokenizer extends Tokenizer {
      * @param minGram the minGram value to set.
      * @return the NGramTokenizer object itself.
      */
-    public NGramTokenizer minGram(Integer minGram) {
+    public NGramTokenizer setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
     }
@@ -67,7 +67,7 @@ public final class NGramTokenizer extends Tokenizer {
      *
      * @return the maxGram value.
      */
-    public Integer maxGram() {
+    public Integer getMaxGram() {
         return this.maxGram;
     }
 
@@ -78,7 +78,7 @@ public final class NGramTokenizer extends Tokenizer {
      * @param maxGram the maxGram value to set.
      * @return the NGramTokenizer object itself.
      */
-    public NGramTokenizer maxGram(Integer maxGram) {
+    public NGramTokenizer setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
     }
@@ -88,7 +88,7 @@ public final class NGramTokenizer extends Tokenizer {
      *
      * @return the tokenChars value.
      */
-    public List<TokenCharacterKind> tokenChars() {
+    public List<TokenCharacterKind> getTokenChars() {
         return this.tokenChars;
     }
 
@@ -98,7 +98,7 @@ public final class NGramTokenizer extends Tokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the NGramTokenizer object itself.
      */
-    public NGramTokenizer tokenChars(List<TokenCharacterKind> tokenChars) {
+    public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;
     }

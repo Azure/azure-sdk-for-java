@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -61,7 +61,7 @@ public class TokenFilter {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -73,7 +73,7 @@ public class TokenFilter {
      * @param name the name value to set.
      * @return the TokenFilter object itself.
      */
-    public TokenFilter name(String name) {
+    public TokenFilter setName(String name) {
         this.name = name;
         return this;
     }

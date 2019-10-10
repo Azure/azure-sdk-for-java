@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -165,7 +165,7 @@ public final class SearchRequest {
      *
      * @return the includeTotalResultCount value.
      */
-    public Boolean includeTotalResultCount() {
+    public Boolean isIncludeTotalResultCount() {
         return this.includeTotalResultCount;
     }
 
@@ -178,7 +178,7 @@ public final class SearchRequest {
      * @param includeTotalResultCount the includeTotalResultCount value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest includeTotalResultCount(Boolean includeTotalResultCount) {
+    public SearchRequest setIncludeTotalResultCount(Boolean includeTotalResultCount) {
         this.includeTotalResultCount = includeTotalResultCount;
         return this;
     }
@@ -190,7 +190,7 @@ public final class SearchRequest {
      *
      * @return the facets value.
      */
-    public List<String> facets() {
+    public List<String> getFacets() {
         return this.facets;
     }
 
@@ -202,7 +202,7 @@ public final class SearchRequest {
      * @param facets the facets value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest facets(List<String> facets) {
+    public SearchRequest setFacets(List<String> facets) {
         this.facets = facets;
         return this;
     }
@@ -213,7 +213,7 @@ public final class SearchRequest {
      *
      * @return the filter value.
      */
-    public String filter() {
+    public String getFilter() {
         return this.filter;
     }
 
@@ -224,7 +224,7 @@ public final class SearchRequest {
      * @param filter the filter value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest filter(String filter) {
+    public SearchRequest setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -236,7 +236,7 @@ public final class SearchRequest {
      *
      * @return the highlightFields value.
      */
-    public String highlightFields() {
+    public String getHighlightFields() {
         return this.highlightFields;
     }
 
@@ -248,7 +248,7 @@ public final class SearchRequest {
      * @param highlightFields the highlightFields value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest highlightFields(String highlightFields) {
+    public SearchRequest setHighlightFields(String highlightFields) {
         this.highlightFields = highlightFields;
         return this;
     }
@@ -260,7 +260,7 @@ public final class SearchRequest {
      *
      * @return the highlightPostTag value.
      */
-    public String highlightPostTag() {
+    public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
 
@@ -272,7 +272,7 @@ public final class SearchRequest {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest highlightPostTag(String highlightPostTag) {
+    public SearchRequest setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -284,7 +284,7 @@ public final class SearchRequest {
      *
      * @return the highlightPreTag value.
      */
-    public String highlightPreTag() {
+    public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
 
@@ -296,7 +296,7 @@ public final class SearchRequest {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest highlightPreTag(String highlightPreTag) {
+    public SearchRequest setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -310,7 +310,7 @@ public final class SearchRequest {
      *
      * @return the minimumCoverage value.
      */
-    public Double minimumCoverage() {
+    public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
 
@@ -324,7 +324,7 @@ public final class SearchRequest {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest minimumCoverage(Double minimumCoverage) {
+    public SearchRequest setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -341,7 +341,7 @@ public final class SearchRequest {
      *
      * @return the orderBy value.
      */
-    public String orderBy() {
+    public String getOrderBy() {
         return this.orderBy;
     }
 
@@ -358,7 +358,7 @@ public final class SearchRequest {
      * @param orderBy the orderBy value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest orderBy(String orderBy) {
+    public SearchRequest setOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -370,7 +370,7 @@ public final class SearchRequest {
      *
      * @return the queryType value.
      */
-    public QueryType queryType() {
+    public QueryType getQueryType() {
         return this.queryType;
     }
 
@@ -382,7 +382,7 @@ public final class SearchRequest {
      * @param queryType the queryType value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest queryType(QueryType queryType) {
+    public SearchRequest setQueryType(QueryType queryType) {
         this.queryType = queryType;
         return this;
     }
@@ -396,7 +396,7 @@ public final class SearchRequest {
      *
      * @return the scoringParameters value.
      */
-    public List<String> scoringParameters() {
+    public List<String> getScoringParameters() {
         return this.scoringParameters;
     }
 
@@ -410,7 +410,7 @@ public final class SearchRequest {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest scoringParameters(List<String> scoringParameters) {
+    public SearchRequest setScoringParameters(List<String> scoringParameters) {
         this.scoringParameters = scoringParameters;
         return this;
     }
@@ -422,7 +422,7 @@ public final class SearchRequest {
      *
      * @return the scoringProfile value.
      */
-    public String scoringProfile() {
+    public String getScoringProfile() {
         return this.scoringProfile;
     }
 
@@ -434,7 +434,7 @@ public final class SearchRequest {
      * @param scoringProfile the scoringProfile value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest scoringProfile(String scoringProfile) {
+    public SearchRequest setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
         return this;
     }
@@ -445,7 +445,7 @@ public final class SearchRequest {
      *
      * @return the searchText value.
      */
-    public String searchText() {
+    public String getSearchText() {
         return this.searchText;
     }
 
@@ -456,7 +456,7 @@ public final class SearchRequest {
      * @param searchText the searchText value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest searchText(String searchText) {
+    public SearchRequest setSearchText(String searchText) {
         this.searchText = searchText;
         return this;
     }
@@ -470,7 +470,7 @@ public final class SearchRequest {
      *
      * @return the searchFields value.
      */
-    public String searchFields() {
+    public String getSearchFields() {
         return this.searchFields;
     }
 
@@ -484,7 +484,7 @@ public final class SearchRequest {
      * @param searchFields the searchFields value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest searchFields(String searchFields) {
+    public SearchRequest setSearchFields(String searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -496,7 +496,7 @@ public final class SearchRequest {
      *
      * @return the searchMode value.
      */
-    public SearchMode searchMode() {
+    public SearchMode getSearchMode() {
         return this.searchMode;
     }
 
@@ -508,7 +508,7 @@ public final class SearchRequest {
      * @param searchMode the searchMode value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest searchMode(SearchMode searchMode) {
+    public SearchRequest setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
         return this;
     }
@@ -520,7 +520,7 @@ public final class SearchRequest {
      *
      * @return the select value.
      */
-    public String select() {
+    public String getSelect() {
         return this.select;
     }
 
@@ -532,7 +532,7 @@ public final class SearchRequest {
      * @param select the select value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest select(String select) {
+    public SearchRequest setSelect(String select) {
         this.select = select;
         return this;
     }
@@ -545,7 +545,7 @@ public final class SearchRequest {
      *
      * @return the skip value.
      */
-    public Integer skip() {
+    public Integer getSkip() {
         return this.skip;
     }
 
@@ -558,7 +558,7 @@ public final class SearchRequest {
      * @param skip the skip value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest skip(Integer skip) {
+    public SearchRequest setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
@@ -572,7 +572,7 @@ public final class SearchRequest {
      *
      * @return the top value.
      */
-    public Integer top() {
+    public Integer getTop() {
         return this.top;
     }
 
@@ -586,7 +586,7 @@ public final class SearchRequest {
      * @param top the top value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest top(Integer top) {
+    public SearchRequest setTop(Integer top) {
         this.top = top;
         return this;
     }

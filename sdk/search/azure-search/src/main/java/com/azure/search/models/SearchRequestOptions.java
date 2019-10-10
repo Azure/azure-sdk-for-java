@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
@@ -27,7 +27,7 @@ public final class SearchRequestOptions {
      *
      * @return the clientRequestId value.
      */
-    public UUID clientRequestId() {
+    public UUID getClientRequestId() {
         return this.clientRequestId;
     }
 
@@ -38,7 +38,7 @@ public final class SearchRequestOptions {
      * @param clientRequestId the clientRequestId value to set.
      * @return the SearchRequestOptions object itself.
      */
-    public SearchRequestOptions clientRequestId(UUID clientRequestId) {
+    public SearchRequestOptions setClientRequestId(UUID clientRequestId) {
         this.clientRequestId = clientRequestId;
         return this;
     }

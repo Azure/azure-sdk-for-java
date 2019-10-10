@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -72,7 +72,7 @@ public final class TextTranslationSkill extends Skill {
      *
      * @return the defaultToLanguageCode value.
      */
-    public TextTranslationSkillLanguage defaultToLanguageCode() {
+    public TextTranslationSkillLanguage getDefaultToLanguageCode() {
         return this.defaultToLanguageCode;
     }
 
@@ -90,7 +90,7 @@ public final class TextTranslationSkill extends Skill {
      * @param defaultToLanguageCode the defaultToLanguageCode value to set.
      * @return the TextTranslationSkill object itself.
      */
-    public TextTranslationSkill defaultToLanguageCode(TextTranslationSkillLanguage defaultToLanguageCode) {
+    public TextTranslationSkill setDefaultToLanguageCode(TextTranslationSkillLanguage defaultToLanguageCode) {
         this.defaultToLanguageCode = defaultToLanguageCode;
         return this;
     }
@@ -108,7 +108,7 @@ public final class TextTranslationSkill extends Skill {
      *
      * @return the defaultFromLanguageCode value.
      */
-    public TextTranslationSkillLanguage defaultFromLanguageCode() {
+    public TextTranslationSkillLanguage getDefaultFromLanguageCode() {
         return this.defaultFromLanguageCode;
     }
 
@@ -126,7 +126,7 @@ public final class TextTranslationSkill extends Skill {
      * @param defaultFromLanguageCode the defaultFromLanguageCode value to set.
      * @return the TextTranslationSkill object itself.
      */
-    public TextTranslationSkill defaultFromLanguageCode(TextTranslationSkillLanguage defaultFromLanguageCode) {
+    public TextTranslationSkill setDefaultFromLanguageCode(TextTranslationSkillLanguage defaultFromLanguageCode) {
         this.defaultFromLanguageCode = defaultFromLanguageCode;
         return this;
     }
@@ -145,7 +145,7 @@ public final class TextTranslationSkill extends Skill {
      *
      * @return the suggestedFrom value.
      */
-    public TextTranslationSkillLanguage suggestedFrom() {
+    public TextTranslationSkillLanguage getSuggestedFrom() {
         return this.suggestedFrom;
     }
 
@@ -164,7 +164,7 @@ public final class TextTranslationSkill extends Skill {
      * @param suggestedFrom the suggestedFrom value to set.
      * @return the TextTranslationSkill object itself.
      */
-    public TextTranslationSkill suggestedFrom(TextTranslationSkillLanguage suggestedFrom) {
+    public TextTranslationSkill setSuggestedFrom(TextTranslationSkillLanguage suggestedFrom) {
         this.suggestedFrom = suggestedFrom;
         return this;
     }

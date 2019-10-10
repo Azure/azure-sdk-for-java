@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,7 +31,7 @@ public final class ResourceCounter {
      *
      * @return the usage value.
      */
-    public long usage() {
+    public long getUsage() {
         return this.usage;
     }
 
@@ -41,7 +41,7 @@ public final class ResourceCounter {
      * @param usage the usage value to set.
      * @return the ResourceCounter object itself.
      */
-    public ResourceCounter usage(long usage) {
+    public ResourceCounter setUsage(long usage) {
         this.usage = usage;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ResourceCounter {
      *
      * @return the quota value.
      */
-    public Long quota() {
+    public Long getQuota() {
         return this.quota;
     }
 
@@ -61,7 +61,7 @@ public final class ResourceCounter {
      * @param quota the quota value to set.
      * @return the ResourceCounter object itself.
      */
-    public ResourceCounter quota(Long quota) {
+    public ResourceCounter setQuota(Long quota) {
         this.quota = quota;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public final class FieldMappingFunction {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -44,7 +44,7 @@ public final class FieldMappingFunction {
      * @param name the name value to set.
      * @return the FieldMappingFunction object itself.
      */
-    public FieldMappingFunction name(String name) {
+    public FieldMappingFunction setName(String name) {
         this.name = name;
         return this;
     }
@@ -55,7 +55,7 @@ public final class FieldMappingFunction {
      *
      * @return the parameters value.
      */
-    public Map<String, Object> parameters() {
+    public Map<String, Object> getParameters() {
         return this.parameters;
     }
 
@@ -66,7 +66,7 @@ public final class FieldMappingFunction {
      * @param parameters the parameters value to set.
      * @return the FieldMappingFunction object itself.
      */
-    public FieldMappingFunction parameters(Map<String, Object> parameters) {
+    public FieldMappingFunction setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
     }

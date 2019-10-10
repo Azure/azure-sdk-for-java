@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,7 +45,7 @@ public final class EdgeNGramTokenizer extends Tokenizer {
      *
      * @return the minGram value.
      */
-    public Integer minGram() {
+    public Integer getMinGram() {
         return this.minGram;
     }
 
@@ -56,7 +56,7 @@ public final class EdgeNGramTokenizer extends Tokenizer {
      * @param minGram the minGram value to set.
      * @return the EdgeNGramTokenizer object itself.
      */
-    public EdgeNGramTokenizer minGram(Integer minGram) {
+    public EdgeNGramTokenizer setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
     }
@@ -67,7 +67,7 @@ public final class EdgeNGramTokenizer extends Tokenizer {
      *
      * @return the maxGram value.
      */
-    public Integer maxGram() {
+    public Integer getMaxGram() {
         return this.maxGram;
     }
 
@@ -78,7 +78,7 @@ public final class EdgeNGramTokenizer extends Tokenizer {
      * @param maxGram the maxGram value to set.
      * @return the EdgeNGramTokenizer object itself.
      */
-    public EdgeNGramTokenizer maxGram(Integer maxGram) {
+    public EdgeNGramTokenizer setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
     }
@@ -88,7 +88,7 @@ public final class EdgeNGramTokenizer extends Tokenizer {
      *
      * @return the tokenChars value.
      */
-    public List<TokenCharacterKind> tokenChars() {
+    public List<TokenCharacterKind> getTokenChars() {
         return this.tokenChars;
     }
 
@@ -98,7 +98,7 @@ public final class EdgeNGramTokenizer extends Tokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the EdgeNGramTokenizer object itself.
      */
-    public EdgeNGramTokenizer tokenChars(List<TokenCharacterKind> tokenChars) {
+    public EdgeNGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;
     }

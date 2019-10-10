@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -27,7 +27,7 @@ class IndexBatchImpl<T> {
      *
      * @return the actions value.
      */
-    public List<IndexAction<T>> actions() {
+    public List<IndexAction<T>> getActions() {
         return this.actions;
     }
 
@@ -37,7 +37,7 @@ class IndexBatchImpl<T> {
      * @param actions the actions value to set.
      * @return the IndexBatchImpl object itself.
      */
-    protected IndexBatchImpl<T> actions(List<IndexAction<T>> actions) {
+    protected IndexBatchImpl<T> setActions(List<IndexAction<T>> actions) {
         this.actions = actions;
         return this;
     }

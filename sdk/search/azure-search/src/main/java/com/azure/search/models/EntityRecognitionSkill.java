@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -55,7 +55,7 @@ public final class EntityRecognitionSkill extends Skill {
      *
      * @return the categories value.
      */
-    public List<EntityCategory> categories() {
+    public List<EntityCategory> getCategories() {
         return this.categories;
     }
 
@@ -66,7 +66,7 @@ public final class EntityRecognitionSkill extends Skill {
      * @param categories the categories value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill categories(List<EntityCategory> categories) {
+    public EntityRecognitionSkill setCategories(List<EntityCategory> categories) {
         this.categories = categories;
         return this;
     }
@@ -78,7 +78,7 @@ public final class EntityRecognitionSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public EntityRecognitionSkillLanguage defaultLanguageCode() {
+    public EntityRecognitionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -90,7 +90,7 @@ public final class EntityRecognitionSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill defaultLanguageCode(EntityRecognitionSkillLanguage defaultLanguageCode) {
+    public EntityRecognitionSkill setDefaultLanguageCode(EntityRecognitionSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }
@@ -104,7 +104,7 @@ public final class EntityRecognitionSkill extends Skill {
      *
      * @return the includeTypelessEntities value.
      */
-    public Boolean includeTypelessEntities() {
+    public Boolean isIncludeTypelessEntities() {
         return this.includeTypelessEntities;
     }
 
@@ -118,7 +118,7 @@ public final class EntityRecognitionSkill extends Skill {
      * @param includeTypelessEntities the includeTypelessEntities value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill includeTypelessEntities(Boolean includeTypelessEntities) {
+    public EntityRecognitionSkill setIncludeTypelessEntities(Boolean includeTypelessEntities) {
         this.includeTypelessEntities = includeTypelessEntities;
         return this;
     }
@@ -131,7 +131,7 @@ public final class EntityRecognitionSkill extends Skill {
      *
      * @return the minimumPrecision value.
      */
-    public Double minimumPrecision() {
+    public Double getMinimumPrecision() {
         return this.minimumPrecision;
     }
 
@@ -144,7 +144,7 @@ public final class EntityRecognitionSkill extends Skill {
      * @param minimumPrecision the minimumPrecision value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill minimumPrecision(Double minimumPrecision) {
+    public EntityRecognitionSkill setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -59,7 +59,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the wordList value.
      */
-    public List<String> wordList() {
+    public List<String> getWordList() {
         return this.wordList;
     }
 
@@ -69,7 +69,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param wordList the wordList value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter wordList(List<String> wordList) {
+    public DictionaryDecompounderTokenFilter setWordList(List<String> wordList) {
         this.wordList = wordList;
         return this;
     }
@@ -80,7 +80,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the minWordSize value.
      */
-    public Integer minWordSize() {
+    public Integer getMinWordSize() {
         return this.minWordSize;
     }
 
@@ -91,7 +91,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param minWordSize the minWordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter minWordSize(Integer minWordSize) {
+    public DictionaryDecompounderTokenFilter setMinWordSize(Integer minWordSize) {
         this.minWordSize = minWordSize;
         return this;
     }
@@ -102,7 +102,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the minSubwordSize value.
      */
-    public Integer minSubwordSize() {
+    public Integer getMinSubwordSize() {
         return this.minSubwordSize;
     }
 
@@ -113,7 +113,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param minSubwordSize the minSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter minSubwordSize(Integer minSubwordSize) {
+    public DictionaryDecompounderTokenFilter setMinSubwordSize(Integer minSubwordSize) {
         this.minSubwordSize = minSubwordSize;
         return this;
     }
@@ -124,7 +124,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the maxSubwordSize value.
      */
-    public Integer maxSubwordSize() {
+    public Integer getMaxSubwordSize() {
         return this.maxSubwordSize;
     }
 
@@ -135,7 +135,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param maxSubwordSize the maxSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter maxSubwordSize(Integer maxSubwordSize) {
+    public DictionaryDecompounderTokenFilter setMaxSubwordSize(Integer maxSubwordSize) {
         this.maxSubwordSize = maxSubwordSize;
         return this;
     }
@@ -146,7 +146,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      *
      * @return the onlyLongestMatch value.
      */
-    public Boolean onlyLongestMatch() {
+    public Boolean isOnlyLongestMatch() {
         return this.onlyLongestMatch;
     }
 
@@ -157,7 +157,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
      * @param onlyLongestMatch the onlyLongestMatch value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
-    public DictionaryDecompounderTokenFilter onlyLongestMatch(Boolean onlyLongestMatch) {
+    public DictionaryDecompounderTokenFilter setOnlyLongestMatch(Boolean onlyLongestMatch) {
         this.onlyLongestMatch = onlyLongestMatch;
         return this;
     }

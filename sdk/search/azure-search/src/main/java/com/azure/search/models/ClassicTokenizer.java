@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -35,7 +35,7 @@ public final class ClassicTokenizer extends Tokenizer {
      *
      * @return the maxTokenLength value.
      */
-    public Integer maxTokenLength() {
+    public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
 
@@ -47,7 +47,7 @@ public final class ClassicTokenizer extends Tokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the ClassicTokenizer object itself.
      */
-    public ClassicTokenizer maxTokenLength(Integer maxTokenLength) {
+    public ClassicTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
     }

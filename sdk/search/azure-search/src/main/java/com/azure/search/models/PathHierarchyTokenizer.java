@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -56,7 +56,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      *
      * @return the delimiter value.
      */
-    public String delimiter() {
+    public String getDelimiter() {
         return this.delimiter;
     }
 
@@ -67,7 +67,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      * @param delimiter the delimiter value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    public PathHierarchyTokenizer delimiter(String delimiter) {
+    public PathHierarchyTokenizer setDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -78,7 +78,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      *
      * @return the replacement value.
      */
-    public String replacement() {
+    public String getReplacement() {
         return this.replacement;
     }
 
@@ -89,7 +89,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      * @param replacement the replacement value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    public PathHierarchyTokenizer replacement(String replacement) {
+    public PathHierarchyTokenizer setReplacement(String replacement) {
         this.replacement = replacement;
         return this;
     }
@@ -99,7 +99,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      *
      * @return the bufferSize value.
      */
-    public Integer bufferSize() {
+    public Integer getBufferSize() {
         return this.bufferSize;
     }
 
@@ -109,7 +109,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      * @param bufferSize the bufferSize value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    public PathHierarchyTokenizer bufferSize(Integer bufferSize) {
+    public PathHierarchyTokenizer setBufferSize(Integer bufferSize) {
         this.bufferSize = bufferSize;
         return this;
     }
@@ -120,7 +120,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      *
      * @return the reverseTokenOrder value.
      */
-    public Boolean reverseTokenOrder() {
+    public Boolean isReverseTokenOrder() {
         return this.reverseTokenOrder;
     }
 
@@ -131,7 +131,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      * @param reverseTokenOrder the reverseTokenOrder value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    public PathHierarchyTokenizer reverseTokenOrder(Boolean reverseTokenOrder) {
+    public PathHierarchyTokenizer setReverseTokenOrder(Boolean reverseTokenOrder) {
         this.reverseTokenOrder = reverseTokenOrder;
         return this;
     }
@@ -142,7 +142,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      *
      * @return the numberOfTokensToSkip value.
      */
-    public Integer numberOfTokensToSkip() {
+    public Integer getNumberOfTokensToSkip() {
         return this.numberOfTokensToSkip;
     }
 
@@ -153,7 +153,7 @@ public final class PathHierarchyTokenizer extends Tokenizer {
      * @param numberOfTokensToSkip the numberOfTokensToSkip value to set.
      * @return the PathHierarchyTokenizer object itself.
      */
-    public PathHierarchyTokenizer numberOfTokensToSkip(Integer numberOfTokensToSkip) {
+    public PathHierarchyTokenizer setNumberOfTokensToSkip(Integer numberOfTokensToSkip) {
         this.numberOfTokensToSkip = numberOfTokensToSkip;
         return this;
     }

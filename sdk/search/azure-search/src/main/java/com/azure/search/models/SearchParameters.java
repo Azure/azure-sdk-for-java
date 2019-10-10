@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -157,7 +157,7 @@ public final class SearchParameters {
      *
      * @return the includeTotalResultCount value.
      */
-    public Boolean includeTotalResultCount() {
+    public Boolean isIncludeTotalResultCount() {
         return this.includeTotalResultCount;
     }
 
@@ -170,7 +170,7 @@ public final class SearchParameters {
      * @param includeTotalResultCount the includeTotalResultCount value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters includeTotalResultCount(Boolean includeTotalResultCount) {
+    public SearchParameters setIncludeTotalResultCount(Boolean includeTotalResultCount) {
         this.includeTotalResultCount = includeTotalResultCount;
         return this;
     }
@@ -182,7 +182,7 @@ public final class SearchParameters {
      *
      * @return the facets value.
      */
-    public List<String> facets() {
+    public List<String> getFacets() {
         return this.facets;
     }
 
@@ -194,7 +194,7 @@ public final class SearchParameters {
      * @param facets the facets value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters facets(List<String> facets) {
+    public SearchParameters setFacets(List<String> facets) {
         this.facets = facets;
         return this;
     }
@@ -205,7 +205,7 @@ public final class SearchParameters {
      *
      * @return the filter value.
      */
-    public String filter() {
+    public String getFilter() {
         return this.filter;
     }
 
@@ -216,7 +216,7 @@ public final class SearchParameters {
      * @param filter the filter value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters filter(String filter) {
+    public SearchParameters setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -227,7 +227,7 @@ public final class SearchParameters {
      *
      * @return the highlightFields value.
      */
-    public List<String> highlightFields() {
+    public List<String> getHighlightFields() {
         return this.highlightFields;
     }
 
@@ -238,7 +238,7 @@ public final class SearchParameters {
      * @param highlightFields the highlightFields value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters highlightFields(List<String> highlightFields) {
+    public SearchParameters setHighlightFields(List<String> highlightFields) {
         this.highlightFields = highlightFields;
         return this;
     }
@@ -250,7 +250,7 @@ public final class SearchParameters {
      *
      * @return the highlightPostTag value.
      */
-    public String highlightPostTag() {
+    public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
 
@@ -262,7 +262,7 @@ public final class SearchParameters {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters highlightPostTag(String highlightPostTag) {
+    public SearchParameters setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -274,7 +274,7 @@ public final class SearchParameters {
      *
      * @return the highlightPreTag value.
      */
-    public String highlightPreTag() {
+    public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
 
@@ -286,7 +286,7 @@ public final class SearchParameters {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters highlightPreTag(String highlightPreTag) {
+    public SearchParameters setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -300,7 +300,7 @@ public final class SearchParameters {
      *
      * @return the minimumCoverage value.
      */
-    public Double minimumCoverage() {
+    public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
 
@@ -314,7 +314,7 @@ public final class SearchParameters {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters minimumCoverage(Double minimumCoverage) {
+    public SearchParameters setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -331,7 +331,7 @@ public final class SearchParameters {
      *
      * @return the orderBy value.
      */
-    public List<String> orderBy() {
+    public List<String> getOrderBy() {
         return this.orderBy;
     }
 
@@ -348,7 +348,7 @@ public final class SearchParameters {
      * @param orderBy the orderBy value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters orderBy(List<String> orderBy) {
+    public SearchParameters setOrderBy(List<String> orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -360,7 +360,7 @@ public final class SearchParameters {
      *
      * @return the queryType value.
      */
-    public QueryType queryType() {
+    public QueryType getQueryType() {
         return this.queryType;
     }
 
@@ -372,7 +372,7 @@ public final class SearchParameters {
      * @param queryType the queryType value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters queryType(QueryType queryType) {
+    public SearchParameters setQueryType(QueryType queryType) {
         this.queryType = queryType;
         return this;
     }
@@ -386,7 +386,7 @@ public final class SearchParameters {
      *
      * @return the scoringParameters value.
      */
-    public List<String> scoringParameters() {
+    public List<String> getScoringParameters() {
         return this.scoringParameters;
     }
 
@@ -400,7 +400,7 @@ public final class SearchParameters {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters scoringParameters(List<String> scoringParameters) {
+    public SearchParameters setScoringParameters(List<String> scoringParameters) {
         this.scoringParameters = scoringParameters;
         return this;
     }
@@ -412,7 +412,7 @@ public final class SearchParameters {
      *
      * @return the scoringProfile value.
      */
-    public String scoringProfile() {
+    public String getScoringProfile() {
         return this.scoringProfile;
     }
 
@@ -424,7 +424,7 @@ public final class SearchParameters {
      * @param scoringProfile the scoringProfile value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters scoringProfile(String scoringProfile) {
+    public SearchParameters setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
         return this;
     }
@@ -438,7 +438,7 @@ public final class SearchParameters {
      *
      * @return the searchFields value.
      */
-    public List<String> searchFields() {
+    public List<String> getSearchFields() {
         return this.searchFields;
     }
 
@@ -452,7 +452,7 @@ public final class SearchParameters {
      * @param searchFields the searchFields value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters searchFields(List<String> searchFields) {
+    public SearchParameters setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -464,7 +464,7 @@ public final class SearchParameters {
      *
      * @return the searchMode value.
      */
-    public SearchMode searchMode() {
+    public SearchMode getSearchMode() {
         return this.searchMode;
     }
 
@@ -476,7 +476,7 @@ public final class SearchParameters {
      * @param searchMode the searchMode value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters searchMode(SearchMode searchMode) {
+    public SearchParameters setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
         return this;
     }
@@ -487,7 +487,7 @@ public final class SearchParameters {
      *
      * @return the select value.
      */
-    public List<String> select() {
+    public List<String> getSelect() {
         return this.select;
     }
 
@@ -498,7 +498,7 @@ public final class SearchParameters {
      * @param select the select value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters select(List<String> select) {
+    public SearchParameters setSelect(List<String> select) {
         this.select = select;
         return this;
     }
@@ -512,7 +512,7 @@ public final class SearchParameters {
      *
      * @return the skip value.
      */
-    public Integer skip() {
+    public Integer getSkip() {
         return this.skip;
     }
 
@@ -526,7 +526,7 @@ public final class SearchParameters {
      * @param skip the skip value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters skip(Integer skip) {
+    public SearchParameters setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
@@ -540,7 +540,7 @@ public final class SearchParameters {
      *
      * @return the top value.
      */
-    public Integer top() {
+    public Integer getTop() {
         return this.top;
     }
 
@@ -554,7 +554,7 @@ public final class SearchParameters {
      * @param top the top value to set.
      * @return the SearchParameters object itself.
      */
-    public SearchParameters top(Integer top) {
+    public SearchParameters setTop(Integer top) {
         this.top = top;
         return this;
     }

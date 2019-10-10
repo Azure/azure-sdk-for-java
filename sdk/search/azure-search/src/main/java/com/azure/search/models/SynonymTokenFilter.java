@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -61,7 +61,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the synonyms value.
      */
-    public List<String> synonyms() {
+    public List<String> getSynonyms() {
         return this.synonyms;
     }
 
@@ -76,7 +76,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param synonyms the synonyms value to set.
      * @return the SynonymTokenFilter object itself.
      */
-    public SynonymTokenFilter synonyms(List<String> synonyms) {
+    public SynonymTokenFilter setSynonyms(List<String> synonyms) {
         this.synonyms = synonyms;
         return this;
     }
@@ -87,7 +87,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the ignoreCase value.
      */
-    public Boolean ignoreCase() {
+    public Boolean isIgnoreCase() {
         return this.ignoreCase;
     }
 
@@ -98,7 +98,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param ignoreCase the ignoreCase value to set.
      * @return the SynonymTokenFilter object itself.
      */
-    public SynonymTokenFilter ignoreCase(Boolean ignoreCase) {
+    public SynonymTokenFilter setIgnoreCase(Boolean ignoreCase) {
         this.ignoreCase = ignoreCase;
         return this;
     }
@@ -116,7 +116,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the expand value.
      */
-    public Boolean expand() {
+    public Boolean isExpand() {
         return this.expand;
     }
 
@@ -134,7 +134,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param expand the expand value to set.
      * @return the SynonymTokenFilter object itself.
      */
-    public SynonymTokenFilter expand(Boolean expand) {
+    public SynonymTokenFilter setExpand(Boolean expand) {
         this.expand = expand;
         return this;
     }

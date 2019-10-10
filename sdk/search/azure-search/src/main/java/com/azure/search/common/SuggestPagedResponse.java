@@ -30,14 +30,14 @@ public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResul
      * @param documentSearchResponse an http response with the results
      */
     public SuggestPagedResponse(SimpleResponse<DocumentSuggestResult> documentSearchResponse) {
-        super(documentSearchResponse.request(),
-            documentSearchResponse.statusCode(),
-            documentSearchResponse.headers(),
-            documentSearchResponse.value().results(),
+        super(documentSearchResponse.getRequest(),
+            documentSearchResponse.getStatusCode(),
+            documentSearchResponse.getHeaders(),
+            documentSearchResponse.getValue().getResults(),
             null,
-            deserializeHeaders(documentSearchResponse.headers()));
+            deserializeHeaders(documentSearchResponse.getHeaders()));
 
-        this.coverage = documentSearchResponse.value().coverage();
+        this.coverage = documentSearchResponse.getValue().getCoverage();
     }
 
     private static String deserializeHeaders(HttpHeaders headers) {

@@ -3,10 +3,10 @@
 
 package com.azure.search;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteParameters;
 import com.azure.search.models.DocumentIndexResult;
@@ -53,7 +53,7 @@ public class SearchIndexClient {
      * @return document index result.
      */
     public DocumentIndexResult uploadDocuments(Iterable<?> documents) {
-        return this.uploadDocumentsWithResponse(documents).value();
+        return this.uploadDocumentsWithResponse(documents).getValue();
     }
 
     /**
@@ -74,7 +74,7 @@ public class SearchIndexClient {
      * @return document index result
      */
     public DocumentIndexResult mergeDocuments(Iterable<?> documents) {
-        return this.mergeDocumentsWithResponse(documents).value();
+        return this.mergeDocumentsWithResponse(documents).getValue();
     }
 
     /**
@@ -96,7 +96,7 @@ public class SearchIndexClient {
      * @return document index result
      */
     public DocumentIndexResult mergeOrUploadDocuments(Iterable<?> documents) {
-        return this.mergeOrUploadDocumentsWithResponse(documents).value();
+        return this.mergeOrUploadDocumentsWithResponse(documents).getValue();
     }
 
     /**
@@ -118,7 +118,7 @@ public class SearchIndexClient {
      * @return document index result.
      */
     public DocumentIndexResult deleteDocuments(Iterable<?> documents) {
-        return this.deleteDocumentsWithResponse(documents).value();
+        return this.deleteDocumentsWithResponse(documents).getValue();
     }
 
     /**
@@ -165,7 +165,7 @@ public class SearchIndexClient {
      * @return the number of documents.
      */
     public Long getDocumentCount() {
-        return this.getDocumentCountWithResponse().value();
+        return this.getDocumentCountWithResponse().getValue();
     }
 
     /**
@@ -223,7 +223,7 @@ public class SearchIndexClient {
      * @return document object
      */
     public Document getDocument(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions) {
-        return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions).value();
+        return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions).getValue();
     }
 
     /**
@@ -281,7 +281,7 @@ public class SearchIndexClient {
      * @return document index result
      */
     public DocumentIndexResult index(IndexBatch<?> batch) {
-        return this.indexWithResponse(batch).value();
+        return this.indexWithResponse(batch).getValue();
     }
 
     /**

@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
@@ -193,7 +192,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
      */
-    public Mono<Response<VoidResponse>> deleteDataSourceWithResponse() {
+    public Mono<Response<Response<Void>>> deleteDataSourceWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -273,7 +272,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
      */
-    public Mono<Response<VoidResponse>> deleteIndexerWithResponse() {
+    public Mono<Response<Response<Void>>> deleteIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -289,7 +288,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
      */
-    public Mono<Response<VoidResponse>> resetIndexerWithResponse() {
+    public Mono<Response<Response<Void>>> resetIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -305,7 +304,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
      */
-    public Mono<Response<VoidResponse>> runIndexerWithResponse() {
+    public Mono<Response<Response<Void>>> runIndexerWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -513,7 +512,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
      */
-    public Mono<Response<VoidResponse>> deleteSkillsetWithResponse() {
+    public Mono<Response<Response<Void>>> deleteSkillsetWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
@@ -593,7 +592,7 @@ public class SearchServiceAsyncClient {
      * @throws NotImplementedException not implemented
      * @return a reactive response signalling completion.
      */
-    public Mono<Response<VoidResponse>> deleteSynonymMapWithResponse() {
+    public Mono<Response<Response<Void>>> deleteSynonymMapWithResponse() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 }

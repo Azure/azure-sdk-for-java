@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
      * @return the IndexBatch object itself.
      */
     public IndexBatch<T> actions(List<IndexAction<T>> actions) {
-        return (IndexBatch<T>) super.actions(actions);
+        return (IndexBatch<T>) super.setActions(actions);
     }
 
 
@@ -86,9 +86,9 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
         for (String val : keyValues) {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put(keyName, val);
-            this.actions().add(new IndexAction()
-                .actionType(IndexActionType.DELETE)
-                .document(map));
+            this.getActions().add(new IndexAction()
+                .setActionType(IndexActionType.DELETE)
+                .setDocument(map));
         }
         return this;
     }
@@ -150,9 +150,9 @@ public class IndexBatch<T> extends IndexBatchImpl<T> {
 
     private void addDocumentAction(Iterable<T> documents, IndexActionType actionType) {
         documents.forEach(d -> {
-            this.actions().add(new IndexAction<T>()
-                .actionType(actionType)
-                .document(d));
+            this.getActions().add(new IndexAction<T>()
+                .setActionType(actionType)
+                .setDocument(d));
         });
     }
 }

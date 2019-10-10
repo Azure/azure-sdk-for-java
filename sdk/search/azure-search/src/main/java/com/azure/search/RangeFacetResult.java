@@ -15,9 +15,9 @@ public class RangeFacetResult {
      * @param facetResult facet result object
      */
     public RangeFacetResult(FacetResult facetResult) {
-        count = facetResult.count();
-        from = facetResult.additionalProperties().get("from");
-        to = facetResult.additionalProperties().get("to");
+        count = facetResult.getCount();
+        from = facetResult.getAdditionalProperties().get("from");
+        to = facetResult.getAdditionalProperties().get("to");
     }
 
     /**

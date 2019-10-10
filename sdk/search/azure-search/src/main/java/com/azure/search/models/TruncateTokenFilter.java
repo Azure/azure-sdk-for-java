@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,7 +31,7 @@ public final class TruncateTokenFilter extends TokenFilter {
      *
      * @return the length value.
      */
-    public Integer length() {
+    public Integer getLength() {
         return this.length;
     }
 
@@ -42,7 +42,7 @@ public final class TruncateTokenFilter extends TokenFilter {
      * @param length the length value to set.
      * @return the TruncateTokenFilter object itself.
      */
-    public TruncateTokenFilter length(Integer length) {
+    public TruncateTokenFilter setLength(Integer length) {
         this.length = length;
         return this;
     }

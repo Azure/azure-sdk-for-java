@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -62,7 +62,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the tokenizer value.
      */
-    public TokenizerName tokenizer() {
+    public TokenizerName getTokenizer() {
         return this.tokenizer;
     }
 
@@ -77,7 +77,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param tokenizer the tokenizer value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer tokenizer(TokenizerName tokenizer) {
+    public CustomAnalyzer setTokenizer(TokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }
@@ -90,7 +90,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the tokenFilters value.
      */
-    public List<TokenFilterName> tokenFilters() {
+    public List<TokenFilterName> getTokenFilters() {
         return this.tokenFilters;
     }
 
@@ -103,7 +103,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer tokenFilters(List<TokenFilterName> tokenFilters) {
+    public CustomAnalyzer setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -116,7 +116,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the charFilters value.
      */
-    public List<CharFilterName> charFilters() {
+    public List<CharFilterName> getCharFilters() {
         return this.charFilters;
     }
 
@@ -129,7 +129,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param charFilters the charFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer charFilters(List<CharFilterName> charFilters) {
+    public CustomAnalyzer setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -34,7 +34,7 @@ public final class DistanceScoringParameters {
      *
      * @return the referencePointParameter value.
      */
-    public String referencePointParameter() {
+    public String getReferencePointParameter() {
         return this.referencePointParameter;
     }
 
@@ -45,7 +45,7 @@ public final class DistanceScoringParameters {
      * @param referencePointParameter the referencePointParameter value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    public DistanceScoringParameters referencePointParameter(String referencePointParameter) {
+    public DistanceScoringParameters setReferencePointParameter(String referencePointParameter) {
         this.referencePointParameter = referencePointParameter;
         return this;
     }
@@ -56,7 +56,7 @@ public final class DistanceScoringParameters {
      *
      * @return the boostingDistance value.
      */
-    public double boostingDistance() {
+    public double getBoostingDistance() {
         return this.boostingDistance;
     }
 
@@ -67,7 +67,7 @@ public final class DistanceScoringParameters {
      * @param boostingDistance the boostingDistance value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    public DistanceScoringParameters boostingDistance(double boostingDistance) {
+    public DistanceScoringParameters setBoostingDistance(double boostingDistance) {
         this.boostingDistance = boostingDistance;
         return this;
     }

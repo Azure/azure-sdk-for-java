@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,7 +45,7 @@ public final class SplitSkill extends Skill {
      *
      * @return the defaultLanguageCode value.
      */
-    public SplitSkillLanguage defaultLanguageCode() {
+    public SplitSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -57,7 +57,7 @@ public final class SplitSkill extends Skill {
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SplitSkill object itself.
      */
-    public SplitSkill defaultLanguageCode(SplitSkillLanguage defaultLanguageCode) {
+    public SplitSkill setDefaultLanguageCode(SplitSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
         return this;
     }
@@ -68,7 +68,7 @@ public final class SplitSkill extends Skill {
      *
      * @return the textSplitMode value.
      */
-    public TextSplitMode textSplitMode() {
+    public TextSplitMode getTextSplitMode() {
         return this.textSplitMode;
     }
 
@@ -79,7 +79,7 @@ public final class SplitSkill extends Skill {
      * @param textSplitMode the textSplitMode value to set.
      * @return the SplitSkill object itself.
      */
-    public SplitSkill textSplitMode(TextSplitMode textSplitMode) {
+    public SplitSkill setTextSplitMode(TextSplitMode textSplitMode) {
         this.textSplitMode = textSplitMode;
         return this;
     }
@@ -90,7 +90,7 @@ public final class SplitSkill extends Skill {
      *
      * @return the maximumPageLength value.
      */
-    public Integer maximumPageLength() {
+    public Integer getMaximumPageLength() {
         return this.maximumPageLength;
     }
 
@@ -101,7 +101,7 @@ public final class SplitSkill extends Skill {
      * @param maximumPageLength the maximumPageLength value to set.
      * @return the SplitSkill object itself.
      */
-    public SplitSkill maximumPageLength(Integer maximumPageLength) {
+    public SplitSkill setMaximumPageLength(Integer maximumPageLength) {
         this.maximumPageLength = maximumPageLength;
         return this;
     }

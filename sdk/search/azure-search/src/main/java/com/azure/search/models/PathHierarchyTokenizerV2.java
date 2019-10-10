@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -56,7 +56,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      *
      * @return the delimiter value.
      */
-    public String delimiter() {
+    public String getDelimiter() {
         return this.delimiter;
     }
 
@@ -67,7 +67,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      * @param delimiter the delimiter value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 delimiter(String delimiter) {
+    public PathHierarchyTokenizerV2 setDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -78,7 +78,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      *
      * @return the replacement value.
      */
-    public String replacement() {
+    public String getReplacement() {
         return this.replacement;
     }
 
@@ -89,7 +89,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      * @param replacement the replacement value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 replacement(String replacement) {
+    public PathHierarchyTokenizerV2 setReplacement(String replacement) {
         this.replacement = replacement;
         return this;
     }
@@ -100,7 +100,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      *
      * @return the maxTokenLength value.
      */
-    public Integer maxTokenLength() {
+    public Integer getMaxTokenLength() {
         return this.maxTokenLength;
     }
 
@@ -111,7 +111,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 maxTokenLength(Integer maxTokenLength) {
+    public PathHierarchyTokenizerV2 setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
     }
@@ -122,7 +122,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      *
      * @return the reverseTokenOrder value.
      */
-    public Boolean reverseTokenOrder() {
+    public Boolean isReverseTokenOrder() {
         return this.reverseTokenOrder;
     }
 
@@ -133,7 +133,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      * @param reverseTokenOrder the reverseTokenOrder value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 reverseTokenOrder(Boolean reverseTokenOrder) {
+    public PathHierarchyTokenizerV2 setReverseTokenOrder(Boolean reverseTokenOrder) {
         this.reverseTokenOrder = reverseTokenOrder;
         return this;
     }
@@ -144,7 +144,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      *
      * @return the numberOfTokensToSkip value.
      */
-    public Integer numberOfTokensToSkip() {
+    public Integer getNumberOfTokensToSkip() {
         return this.numberOfTokensToSkip;
     }
 
@@ -155,7 +155,7 @@ public final class PathHierarchyTokenizerV2 extends Tokenizer {
      * @param numberOfTokensToSkip the numberOfTokensToSkip value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizerV2 numberOfTokensToSkip(Integer numberOfTokensToSkip) {
+    public PathHierarchyTokenizerV2 setNumberOfTokensToSkip(Integer numberOfTokensToSkip) {
         this.numberOfTokensToSkip = numberOfTokensToSkip;
         return this;
     }

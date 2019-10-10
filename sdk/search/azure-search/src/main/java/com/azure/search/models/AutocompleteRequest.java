@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -98,7 +98,7 @@ public final class AutocompleteRequest {
      *
      * @return the searchText value.
      */
-    public String searchText() {
+    public String getSearchText() {
         return this.searchText;
     }
 
@@ -109,7 +109,7 @@ public final class AutocompleteRequest {
      * @param searchText the searchText value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest searchText(String searchText) {
+    public AutocompleteRequest setSearchText(String searchText) {
         this.searchText = searchText;
         return this;
     }
@@ -123,7 +123,7 @@ public final class AutocompleteRequest {
      *
      * @return the autocompleteMode value.
      */
-    public AutocompleteMode autocompleteMode() {
+    public AutocompleteMode getAutocompleteMode() {
         return this.autocompleteMode;
     }
 
@@ -137,7 +137,7 @@ public final class AutocompleteRequest {
      * @param autocompleteMode the autocompleteMode value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest autocompleteMode(AutocompleteMode autocompleteMode) {
+    public AutocompleteRequest setAutocompleteMode(AutocompleteMode autocompleteMode) {
         this.autocompleteMode = autocompleteMode;
         return this;
     }
@@ -148,7 +148,7 @@ public final class AutocompleteRequest {
      *
      * @return the filter value.
      */
-    public String filter() {
+    public String getFilter() {
         return this.filter;
     }
 
@@ -159,7 +159,7 @@ public final class AutocompleteRequest {
      * @param filter the filter value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest filter(String filter) {
+    public AutocompleteRequest setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -174,7 +174,7 @@ public final class AutocompleteRequest {
      *
      * @return the useFuzzyMatching value.
      */
-    public Boolean useFuzzyMatching() {
+    public Boolean isUseFuzzyMatching() {
         return this.useFuzzyMatching;
     }
 
@@ -189,7 +189,7 @@ public final class AutocompleteRequest {
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest useFuzzyMatching(Boolean useFuzzyMatching) {
+    public AutocompleteRequest setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
     }
@@ -201,7 +201,7 @@ public final class AutocompleteRequest {
      *
      * @return the highlightPostTag value.
      */
-    public String highlightPostTag() {
+    public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
 
@@ -213,7 +213,7 @@ public final class AutocompleteRequest {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest highlightPostTag(String highlightPostTag) {
+    public AutocompleteRequest setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -225,7 +225,7 @@ public final class AutocompleteRequest {
      *
      * @return the highlightPreTag value.
      */
-    public String highlightPreTag() {
+    public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
 
@@ -237,7 +237,7 @@ public final class AutocompleteRequest {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest highlightPreTag(String highlightPreTag) {
+    public AutocompleteRequest setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -251,7 +251,7 @@ public final class AutocompleteRequest {
      *
      * @return the minimumCoverage value.
      */
-    public Double minimumCoverage() {
+    public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
 
@@ -265,7 +265,7 @@ public final class AutocompleteRequest {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest minimumCoverage(Double minimumCoverage) {
+    public AutocompleteRequest setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -277,7 +277,7 @@ public final class AutocompleteRequest {
      *
      * @return the searchFields value.
      */
-    public String searchFields() {
+    public String getSearchFields() {
         return this.searchFields;
     }
 
@@ -289,7 +289,7 @@ public final class AutocompleteRequest {
      * @param searchFields the searchFields value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest searchFields(String searchFields) {
+    public AutocompleteRequest setSearchFields(String searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -300,7 +300,7 @@ public final class AutocompleteRequest {
      *
      * @return the suggesterName value.
      */
-    public String suggesterName() {
+    public String getSuggesterName() {
         return this.suggesterName;
     }
 
@@ -311,7 +311,7 @@ public final class AutocompleteRequest {
      * @param suggesterName the suggesterName value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest suggesterName(String suggesterName) {
+    public AutocompleteRequest setSuggesterName(String suggesterName) {
         this.suggesterName = suggesterName;
         return this;
     }
@@ -322,7 +322,7 @@ public final class AutocompleteRequest {
      *
      * @return the top value.
      */
-    public Integer top() {
+    public Integer getTop() {
         return this.top;
     }
 
@@ -333,7 +333,7 @@ public final class AutocompleteRequest {
      * @param top the top value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest top(Integer top) {
+    public AutocompleteRequest setTop(Integer top) {
         this.top = top;
         return this;
     }

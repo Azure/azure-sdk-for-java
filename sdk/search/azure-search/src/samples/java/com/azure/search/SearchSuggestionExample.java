@@ -22,18 +22,18 @@ public class SearchSuggestionExample {
 
     private static void SearchSuggestionHighlight(SearchIndexClient searchClient) {
         SuggestParameters suggestParams = new SuggestParameters()
-            .highlightPreTag("<b>")
-            .highlightPostTag("</b>")
-            .filter("Category eq 'Luxury'")
-            .top(1);
+            .setHighlightPreTag("<b>")
+            .setHighlightPostTag("</b>")
+            .setFilter("Category eq 'Luxury'")
+            .setTop(1);
 
         PagedIterable<SuggestResult> suggestResult =
             searchClient.suggest("hotel", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
 
-        List<SuggestResult> response = iterator.next().value();
+        List<SuggestResult> response = iterator.next().getValue();
         System.out.println("Received results with highlight:");
-        response.forEach(r -> System.out.println(r.text()));
+        response.forEach(r -> System.out.println(r.getText()));
 
         /** Output:
          * Received results with highlight:
@@ -45,15 +45,15 @@ public class SearchSuggestionExample {
 
     private static void SearchSuggestionFuzzy(SearchIndexClient searchClient) {
         SuggestParameters suggestParams = new SuggestParameters()
-            .useFuzzyMatching(true);
+            .setUseFuzzyMatching(true);
 
         PagedIterable<SuggestResult> suggestResult =
             searchClient.suggest("hitel", "sg", suggestParams, null);
         Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
 
-        List<SuggestResult> response = iterator.next().value();
+        List<SuggestResult> response = iterator.next().getValue();
         System.out.println("Received results with fuzzy option:");
-        response.forEach(r -> System.out.println(r.text()));
+        response.forEach(r -> System.out.println(r.getText()));
 
         /** Output:
          * Received results with fuzzy option:

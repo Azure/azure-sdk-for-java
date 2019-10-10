@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class LengthTokenFilter extends TokenFilter {
      *
      * @return the min value.
      */
-    public Integer min() {
+    public Integer getMin() {
         return this.min;
     }
 
@@ -49,7 +49,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * @param min the min value to set.
      * @return the LengthTokenFilter object itself.
      */
-    public LengthTokenFilter min(Integer min) {
+    public LengthTokenFilter setMin(Integer min) {
         this.min = min;
         return this;
     }
@@ -60,7 +60,7 @@ public final class LengthTokenFilter extends TokenFilter {
      *
      * @return the max value.
      */
-    public Integer max() {
+    public Integer getMax() {
         return this.max;
     }
 
@@ -71,7 +71,7 @@ public final class LengthTokenFilter extends TokenFilter {
      * @param max the max value to set.
      * @return the LengthTokenFilter object itself.
      */
-    public LengthTokenFilter max(Integer max) {
+    public LengthTokenFilter setMax(Integer max) {
         this.max = max;
         return this;
     }

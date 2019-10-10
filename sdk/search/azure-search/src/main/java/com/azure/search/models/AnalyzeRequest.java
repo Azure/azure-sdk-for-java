@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -84,7 +84,7 @@ public final class AnalyzeRequest {
      *
      * @return the text value.
      */
-    public String text() {
+    public String getText() {
         return this.text;
     }
 
@@ -94,7 +94,7 @@ public final class AnalyzeRequest {
      * @param text the text value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest text(String text) {
+    public AnalyzeRequest setText(String text) {
         this.text = text;
         return this;
     }
@@ -129,7 +129,7 @@ public final class AnalyzeRequest {
      *
      * @return the analyzer value.
      */
-    public AnalyzerName analyzer() {
+    public AnalyzerName getAnalyzer() {
         return this.analyzer;
     }
 
@@ -164,7 +164,7 @@ public final class AnalyzeRequest {
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest analyzer(AnalyzerName analyzer) {
+    public AnalyzeRequest setAnalyzer(AnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -180,7 +180,7 @@ public final class AnalyzeRequest {
      *
      * @return the tokenizer value.
      */
-    public TokenizerName tokenizer() {
+    public TokenizerName getTokenizer() {
         return this.tokenizer;
     }
 
@@ -196,7 +196,7 @@ public final class AnalyzeRequest {
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest tokenizer(TokenizerName tokenizer) {
+    public AnalyzeRequest setTokenizer(TokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }
@@ -208,7 +208,7 @@ public final class AnalyzeRequest {
      *
      * @return the tokenFilters value.
      */
-    public List<TokenFilterName> tokenFilters() {
+    public List<TokenFilterName> getTokenFilters() {
         return this.tokenFilters;
     }
 
@@ -220,7 +220,7 @@ public final class AnalyzeRequest {
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest tokenFilters(List<TokenFilterName> tokenFilters) {
+    public AnalyzeRequest setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -232,7 +232,7 @@ public final class AnalyzeRequest {
      *
      * @return the charFilters value.
      */
-    public List<CharFilterName> charFilters() {
+    public List<CharFilterName> getCharFilters() {
         return this.charFilters;
     }
 
@@ -244,7 +244,7 @@ public final class AnalyzeRequest {
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeRequest charFilters(List<CharFilterName> charFilters) {
+    public AnalyzeRequest setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
     }

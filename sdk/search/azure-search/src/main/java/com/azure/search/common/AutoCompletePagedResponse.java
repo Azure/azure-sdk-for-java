@@ -19,12 +19,12 @@ public class AutoCompletePagedResponse extends PagedResponseBase<String, Autocom
      * @param autoCompleteResponse an http response with the results
      */
     public AutoCompletePagedResponse(SimpleResponse<AutocompleteResult> autoCompleteResponse) {
-        super(autoCompleteResponse.request(),
-                autoCompleteResponse.statusCode(),
-                autoCompleteResponse.headers(),
-                autoCompleteResponse.value().results(),
+        super(autoCompleteResponse.getRequest(),
+                autoCompleteResponse.getStatusCode(),
+                autoCompleteResponse.getHeaders(),
+                autoCompleteResponse.getValue().getResults(),
             null,
-            deserializeHeaders(autoCompleteResponse.headers()));
+            deserializeHeaders(autoCompleteResponse.getHeaders()));
     }
 
     private static String deserializeHeaders(HttpHeaders headers) {

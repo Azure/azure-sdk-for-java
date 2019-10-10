@@ -6,18 +6,18 @@
 
 package com.azure.search.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.ServiceStatistics;
@@ -52,8 +52,9 @@ public final class SearchServiceRestClientImpl {
      *
      * @param apiVersion the apiVersion value.
      */
-    void setApiVersion(String apiVersion) {
+    SearchServiceRestClientImpl setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+        return this;
     }
 
     /**
@@ -75,8 +76,9 @@ public final class SearchServiceRestClientImpl {
      *
      * @param searchServiceName the searchServiceName value.
      */
-    void setSearchServiceName(String searchServiceName) {
+    SearchServiceRestClientImpl setSearchServiceName(String searchServiceName) {
         this.searchServiceName = searchServiceName;
+        return this;
     }
 
     /**
@@ -98,8 +100,9 @@ public final class SearchServiceRestClientImpl {
      *
      * @param searchDnsSuffix the searchDnsSuffix value.
      */
-    void setSearchDnsSuffix(String searchDnsSuffix) {
+    SearchServiceRestClientImpl setSearchDnsSuffix(String searchDnsSuffix) {
         this.searchDnsSuffix = searchDnsSuffix;
+        return this;
     }
 
     /**
@@ -245,7 +248,7 @@ public final class SearchServiceRestClientImpl {
     public Mono<SimpleResponse<ServiceStatistics>> getServiceStatisticsWithRestResponseAsync(SearchRequestOptions searchRequestOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.clientRequestId();
+            clientRequestId = searchRequestOptions.getClientRequestId();
         }
         return service.getServiceStatistics(this.getSearchServiceName(), this.getSearchDnsSuffix(), this.getApiVersion(), clientRequestId, context);
     }

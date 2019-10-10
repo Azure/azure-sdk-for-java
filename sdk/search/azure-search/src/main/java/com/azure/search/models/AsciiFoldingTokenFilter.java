@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -34,7 +34,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      *
      * @return the preserveOriginal value.
      */
-    public Boolean preserveOriginal() {
+    public Boolean isPreserveOriginal() {
         return this.preserveOriginal;
     }
 
@@ -45,7 +45,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the AsciiFoldingTokenFilter object itself.
      */
-    public AsciiFoldingTokenFilter preserveOriginal(Boolean preserveOriginal) {
+    public AsciiFoldingTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
     }

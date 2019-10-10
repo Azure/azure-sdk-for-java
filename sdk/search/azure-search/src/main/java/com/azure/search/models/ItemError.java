@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -63,7 +63,7 @@ public final class ItemError {
      *
      * @return the key value.
      */
-    public String key() {
+    public String getKey() {
         return this.key;
     }
 
@@ -73,7 +73,7 @@ public final class ItemError {
      *
      * @return the errorMessage value.
      */
-    public String errorMessage() {
+    public String getErrorMessage() {
         return this.errorMessage;
     }
 
@@ -86,7 +86,7 @@ public final class ItemError {
      *
      * @return the statusCode value.
      */
-    public int statusCode() {
+    public int getStatusCode() {
         return this.statusCode;
     }
 
@@ -97,7 +97,7 @@ public final class ItemError {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -107,7 +107,7 @@ public final class ItemError {
      *
      * @return the details value.
      */
-    public String details() {
+    public String getDetails() {
         return this.details;
     }
 
@@ -117,7 +117,7 @@ public final class ItemError {
      *
      * @return the documentationLink value.
      */
-    public String documentationLink() {
+    public String getDocumentationLink() {
         return this.documentationLink;
     }
 }

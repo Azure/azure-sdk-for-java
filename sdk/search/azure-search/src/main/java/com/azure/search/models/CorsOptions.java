@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -41,7 +41,7 @@ public final class CorsOptions {
      *
      * @return the allowedOrigins value.
      */
-    public List<String> allowedOrigins() {
+    public List<String> getAllowedOrigins() {
         return this.allowedOrigins;
     }
 
@@ -55,7 +55,7 @@ public final class CorsOptions {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsOptions object itself.
      */
-    public CorsOptions allowedOrigins(List<String> allowedOrigins) {
+    public CorsOptions setAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
     }
@@ -66,7 +66,7 @@ public final class CorsOptions {
      *
      * @return the maxAgeInSeconds value.
      */
-    public Long maxAgeInSeconds() {
+    public Long getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
 
@@ -77,7 +77,7 @@ public final class CorsOptions {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsOptions object itself.
      */
-    public CorsOptions maxAgeInSeconds(Long maxAgeInSeconds) {
+    public CorsOptions setMaxAgeInSeconds(Long maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -38,7 +38,7 @@ public final class SnowballTokenFilter extends TokenFilter {
      *
      * @return the language value.
      */
-    public SnowballTokenFilterLanguage language() {
+    public SnowballTokenFilterLanguage getLanguage() {
         return this.language;
     }
 
@@ -52,7 +52,7 @@ public final class SnowballTokenFilter extends TokenFilter {
      * @param language the language value to set.
      * @return the SnowballTokenFilter object itself.
      */
-    public SnowballTokenFilter language(SnowballTokenFilterLanguage language) {
+    public SnowballTokenFilter setLanguage(SnowballTokenFilterLanguage language) {
         this.language = language;
         return this;
     }

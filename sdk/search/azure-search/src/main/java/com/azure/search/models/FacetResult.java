@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public final class FacetResult {
      *
      * @return the additionalProperties value.
      */
-    public Map<String, Object> additionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -47,7 +47,7 @@ public final class FacetResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the FacetResult object itself.
      */
-    public FacetResult additionalProperties(Map<String, Object> additionalProperties) {
+    public FacetResult setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -58,7 +58,7 @@ public final class FacetResult {
      *
      * @return the count value.
      */
-    public Long count() {
+    public Long getCount() {
         return this.count;
     }
 }

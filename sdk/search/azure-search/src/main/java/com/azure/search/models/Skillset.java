@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -50,7 +50,7 @@ public final class Skillset {
      *
      * @return the name value.
      */
-    public String name() {
+    public String getName() {
         return this.name;
     }
 
@@ -60,7 +60,7 @@ public final class Skillset {
      * @param name the name value to set.
      * @return the Skillset object itself.
      */
-    public Skillset name(String name) {
+    public Skillset setName(String name) {
         this.name = name;
         return this;
     }
@@ -70,7 +70,7 @@ public final class Skillset {
      *
      * @return the description value.
      */
-    public String description() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -80,7 +80,7 @@ public final class Skillset {
      * @param description the description value to set.
      * @return the Skillset object itself.
      */
-    public Skillset description(String description) {
+    public Skillset setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -90,7 +90,7 @@ public final class Skillset {
      *
      * @return the skills value.
      */
-    public List<Skill> skills() {
+    public List<Skill> getSkills() {
         return this.skills;
     }
 
@@ -100,7 +100,7 @@ public final class Skillset {
      * @param skills the skills value to set.
      * @return the Skillset object itself.
      */
-    public Skillset skills(List<Skill> skills) {
+    public Skillset setSkills(List<Skill> skills) {
         this.skills = skills;
         return this;
     }
@@ -111,7 +111,7 @@ public final class Skillset {
      *
      * @return the cognitiveServices value.
      */
-    public CognitiveServices cognitiveServices() {
+    public CognitiveServices getCognitiveServices() {
         return this.cognitiveServices;
     }
 
@@ -122,7 +122,7 @@ public final class Skillset {
      * @param cognitiveServices the cognitiveServices value to set.
      * @return the Skillset object itself.
      */
-    public Skillset cognitiveServices(CognitiveServices cognitiveServices) {
+    public Skillset setCognitiveServices(CognitiveServices cognitiveServices) {
         this.cognitiveServices = cognitiveServices;
         return this;
     }
@@ -132,7 +132,7 @@ public final class Skillset {
      *
      * @return the eTag value.
      */
-    public String eTag() {
+    public String getETag() {
         return this.eTag;
     }
 
@@ -142,7 +142,7 @@ public final class Skillset {
      * @param eTag the eTag value to set.
      * @return the Skillset object itself.
      */
-    public Skillset eTag(String eTag) {
+    public Skillset setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

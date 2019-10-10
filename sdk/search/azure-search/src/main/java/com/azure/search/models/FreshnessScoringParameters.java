@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -28,7 +28,7 @@ public final class FreshnessScoringParameters {
      *
      * @return the boostingDuration value.
      */
-    public Duration boostingDuration() {
+    public Duration getBoostingDuration() {
         return this.boostingDuration;
     }
 
@@ -39,7 +39,7 @@ public final class FreshnessScoringParameters {
      * @param boostingDuration the boostingDuration value to set.
      * @return the FreshnessScoringParameters object itself.
      */
-    public FreshnessScoringParameters boostingDuration(Duration boostingDuration) {
+    public FreshnessScoringParameters setBoostingDuration(Duration boostingDuration) {
         this.boostingDuration = boostingDuration;
         return this;
     }

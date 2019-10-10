@@ -3,6 +3,7 @@
 
 package com.azure.search;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -10,7 +11,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
@@ -75,7 +75,6 @@ public class SearchIndexAsyncClient {
     private Integer skip;
 
     private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
-
 
     /**
      * The underlying REST client to be used to actually interact with the Search service
@@ -143,7 +142,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<DocumentIndexResult> uploadDocuments(Iterable<?> documents) {
         return this.uploadDocumentsWithResponse(documents)
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -169,7 +168,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<DocumentIndexResult> mergeDocuments(Iterable<?> documents) {
         return this.mergeDocumentsWithResponse(documents)
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -196,7 +195,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<DocumentIndexResult> mergeOrUploadDocuments(Iterable<?> documents) {
         return this.mergeOrUploadDocumentsWithResponse(documents)
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -223,7 +222,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<DocumentIndexResult> deleteDocuments(Iterable<?> documents) {
         return this.deleteDocumentsWithResponse(documents)
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -275,7 +274,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<Long> getDocumentCount() {
         return this.getDocumentCountWithResponse()
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -340,7 +339,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<Document> getDocument(String key) {
         return this.getDocumentWithResponse(key, null, null)
-            .map(Response::value);
+            .map(Response::getValue);
 
     }
 
@@ -357,7 +356,7 @@ public class SearchIndexAsyncClient {
             List<String> selectedFields,
             SearchRequestOptions searchRequestOptions) {
         return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions)
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -384,7 +383,7 @@ public class SearchIndexAsyncClient {
             .documents()
             .getWithRestResponseAsync(key, selectedFields, searchRequestOptions, context)
             .map(res -> {
-                Document doc = res.value();
+                Document doc = res.getValue();
                 DocumentResponseConversions.cleanupDocument(doc);
                 return new SimpleResponse<>(res, doc);
             })
@@ -450,7 +449,7 @@ public class SearchIndexAsyncClient {
      */
     public Mono<DocumentIndexResult> index(IndexBatch<?> batch) {
         return this.indexWithResponse(batch)
-            .map(Response::value);
+            .map(Response::getValue);
     }
 
     /**
@@ -467,8 +466,8 @@ public class SearchIndexAsyncClient {
         return restClient.documents()
             .indexWithRestResponseAsync(batch, context)
             .handle((res, sink) -> {
-                if (res.statusCode() == 207) {
-                    IndexBatchException ex = new IndexBatchException(res.value());
+                if (res.getStatusCode() == 207) {
+                    IndexBatchException ex = new IndexBatchException(res.getValue());
                     sink.error(ex);
                 } else {
                     sink.next(res);
@@ -539,8 +538,8 @@ public class SearchIndexAsyncClient {
         return restClient.documents()
             .searchPostWithRestResponseAsync(searchRequest, searchRequestOptions, context)
             .map(res -> {
-                if (res.value().nextPageParameters() != null) {
-                    skip = res.value().nextPageParameters().skip();
+                if (res.getValue().getNextPageParameters() != null) {
+                    skip = res.getValue().getNextPageParameters().getSkip();
                 }
                 return new SearchPagedResponse(res);
             });
@@ -567,12 +566,13 @@ public class SearchIndexAsyncClient {
             return Mono.empty();
         }
         return restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest.skip(skip), searchRequestOptions, context)
+            .searchPostWithRestResponseAsync(searchRequest.setSkip(skip), searchRequestOptions, context)
             .map(res -> {
-                if (res.value().nextPageParameters() == null || res.value().nextPageParameters().skip() == null) {
+                if (res.getValue().getNextPageParameters() == null
+                    || res.getValue().getNextPageParameters().getSkip() == null) {
                     skip = null;
                 } else {
-                    skip = res.value().nextPageParameters().skip();
+                    skip = res.getValue().getNextPageParameters().getSkip();
                 }
                 return new SearchPagedResponse(res);
             });
@@ -604,32 +604,32 @@ public class SearchIndexAsyncClient {
      * @return SearchRequest
      */
     private SearchRequest createSearchRequest(String searchText, SearchParameters searchParameters) {
-        SearchRequest searchRequest = new SearchRequest().searchText(searchText);
+        SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
         if (searchParameters != null) {
             searchRequest
-                .searchMode(searchParameters.searchMode())
-                .facets(searchParameters.facets())
-                .filter(searchParameters.filter())
-                .highlightPostTag(searchParameters.highlightPostTag())
-                .highlightPreTag(searchParameters.highlightPreTag())
-                .includeTotalResultCount(searchParameters.includeTotalResultCount())
-                .minimumCoverage(searchParameters.minimumCoverage())
-                .queryType(searchParameters.queryType())
-                .scoringParameters(searchParameters.scoringParameters())
-                .scoringProfile(searchParameters.scoringProfile())
-                .skip(searchParameters.skip())
-                .top(searchParameters.top());
-            if (searchParameters.highlightFields() != null) {
-                searchRequest.highlightFields(String.join(",", searchParameters.highlightFields()));
+                .setSearchMode(searchParameters.getSearchMode())
+                .setFacets(searchParameters.getFacets())
+                .setFilter(searchParameters.getFilter())
+                .setHighlightPostTag(searchParameters.getHighlightPostTag())
+                .setHighlightPreTag(searchParameters.getHighlightPreTag())
+                .setIncludeTotalResultCount(searchParameters.isIncludeTotalResultCount())
+                .setMinimumCoverage(searchParameters.getMinimumCoverage())
+                .setQueryType(searchParameters.getQueryType())
+                .setScoringParameters(searchParameters.getScoringParameters())
+                .setScoringProfile(searchParameters.getScoringProfile())
+                .setSkip(searchParameters.getSkip())
+                .setTop(searchParameters.getTop());
+            if (searchParameters.getHighlightFields() != null) {
+                searchRequest.setHighlightFields(String.join(",", searchParameters.getHighlightFields()));
             }
-            if (searchParameters.searchFields() != null) {
-                searchRequest.searchFields(String.join(",", searchParameters.searchFields()));
+            if (searchParameters.getSearchFields() != null) {
+                searchRequest.setSearchFields(String.join(",", searchParameters.getSearchFields()));
             }
-            if (searchParameters.orderBy() != null) {
-                searchRequest.orderBy(String.join(",", searchParameters.orderBy()));
+            if (searchParameters.getOrderBy() != null) {
+                searchRequest.setOrderBy(String.join(",", searchParameters.getOrderBy()));
             }
-            if (searchParameters.select() != null) {
-                searchRequest.select(String.join(",", searchParameters.select()));
+            if (searchParameters.getSelect() != null) {
+                searchRequest.setSelect(String.join(",", searchParameters.getSelect()));
             }
         }
 
@@ -647,29 +647,31 @@ public class SearchIndexAsyncClient {
     private SuggestRequest createSuggestRequest(String searchText,
                                                 String suggesterName,
                                                 SuggestParameters suggestParameters) {
-        SuggestRequest suggestRequest = new SuggestRequest().searchText(searchText).suggesterName(suggesterName);
+        SuggestRequest suggestRequest = new SuggestRequest()
+            .setSearchText(searchText)
+            .setSuggesterName(suggesterName);
         if (suggestParameters != null) {
             suggestRequest
-                .filter(suggestParameters.filter())
-                .useFuzzyMatching(suggestParameters.useFuzzyMatching())
-                .highlightPostTag(suggestParameters.highlightPostTag())
-                .highlightPreTag(suggestParameters.highlightPreTag())
-                .minimumCoverage(suggestParameters.minimumCoverage())
-                .top(suggestParameters.top());
+                .setFilter(suggestParameters.getFilter())
+                .setUseFuzzyMatching(suggestParameters.isUseFuzzyMatching())
+                .setHighlightPostTag(suggestParameters.getHighlightPostTag())
+                .setHighlightPreTag(suggestParameters.getHighlightPreTag())
+                .setMinimumCoverage(suggestParameters.getMinimumCoverage())
+                .setTop(suggestParameters.getTop());
 
-            List<String> searchFields = suggestParameters.searchFields();
+            List<String> searchFields = suggestParameters.getSearchFields();
             if (searchFields != null) {
-                suggestRequest.searchFields(String.join(",", searchFields));
+                suggestRequest.setSearchFields(String.join(",", searchFields));
             }
 
-            List<String> orderBy = suggestParameters.orderBy();
+            List<String> orderBy = suggestParameters.getOrderBy();
             if (orderBy != null) {
-                suggestRequest.orderBy(String.join(",", orderBy));
+                suggestRequest.setOrderBy(String.join(",", orderBy));
             }
 
-            List<String> select = suggestParameters.select();
+            List<String> select = suggestParameters.getSelect();
             if (select != null) {
-                suggestRequest.select(String.join(",", select));
+                suggestRequest.setSelect(String.join(",", select));
             }
         }
 
@@ -688,20 +690,20 @@ public class SearchIndexAsyncClient {
                                                           String suggesterName,
                                                           AutocompleteParameters autocompleteParameters) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest()
-                                                        .searchText(searchText)
-                                                        .suggesterName(suggesterName);
+                                                        .setSearchText(searchText)
+                                                        .setSuggesterName(suggesterName);
         if (autocompleteParameters != null) {
             autoCompleteRequest
-                .filter(autocompleteParameters.filter())
-                .useFuzzyMatching(autocompleteParameters.useFuzzyMatching())
-                .highlightPostTag(autocompleteParameters.highlightPostTag())
-                .highlightPreTag(autocompleteParameters.highlightPreTag())
-                .minimumCoverage(autocompleteParameters.minimumCoverage())
-                .top(autocompleteParameters.top())
-                .autocompleteMode(autocompleteParameters.autocompleteMode());
-            List<String> searchFields = autocompleteParameters.searchFields();
+                .setFilter(autocompleteParameters.getFilter())
+                .setUseFuzzyMatching(autocompleteParameters.isUseFuzzyMatching())
+                .setHighlightPostTag(autocompleteParameters.getHighlightPostTag())
+                .setHighlightPreTag(autocompleteParameters.getHighlightPreTag())
+                .setMinimumCoverage(autocompleteParameters.getMinimumCoverage())
+                .setTop(autocompleteParameters.getTop())
+                .setAutocompleteMode(autocompleteParameters.getAutocompleteMode());
+            List<String> searchFields = autocompleteParameters.getSearchFields();
             if (searchFields != null) {
-                autoCompleteRequest.searchFields(String.join(",", searchFields));
+                autoCompleteRequest.setSearchFields(String.join(",", searchFields));
             }
         }
 

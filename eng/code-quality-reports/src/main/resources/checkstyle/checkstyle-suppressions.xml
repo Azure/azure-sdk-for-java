@@ -219,7 +219,7 @@
 
   <!-- Suppress checks for AutoRest generated Search code -->
   <suppress checks="LineLength" files="com.azure.search.implementation.*.java"/>
-  <suppress checks="LineLength" files="com.azure.search.models.(Analyzer|CharFilter|CognitiveServices|DataChangeDetectionPolicy|DataDeletionDetectionPolicy|ScoringFunction|Skill|TokenFilter|Tokenizer).java"/>
+  <suppress checks="LineLength" files="com.azure.search.models.(Analyzer|CharFilter|CognitiveServices|DataChangeDetectionPolicy|DataDeletionDetectionPolicy|ServiceLimits|ScoringFunction|Skill|TokenFilter|Tokenizer).java"/>
   <suppress checks="UnusedImports" files="com.azure.search.implementation.SearchServiceRestClientBuilder.java"/>
 
   <!-- Temporary suppression until SearchIndexAsyncClient paging issue is resolved -->

@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -67,7 +67,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the maxShingleSize value.
      */
-    public Integer maxShingleSize() {
+    public Integer getMaxShingleSize() {
         return this.maxShingleSize;
     }
 
@@ -78,7 +78,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param maxShingleSize the maxShingleSize value to set.
      * @return the ShingleTokenFilter object itself.
      */
-    public ShingleTokenFilter maxShingleSize(Integer maxShingleSize) {
+    public ShingleTokenFilter setMaxShingleSize(Integer maxShingleSize) {
         this.maxShingleSize = maxShingleSize;
         return this;
     }
@@ -89,7 +89,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the minShingleSize value.
      */
-    public Integer minShingleSize() {
+    public Integer getMinShingleSize() {
         return this.minShingleSize;
     }
 
@@ -100,7 +100,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param minShingleSize the minShingleSize value to set.
      * @return the ShingleTokenFilter object itself.
      */
-    public ShingleTokenFilter minShingleSize(Integer minShingleSize) {
+    public ShingleTokenFilter setMinShingleSize(Integer minShingleSize) {
         this.minShingleSize = minShingleSize;
         return this;
     }
@@ -112,7 +112,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the outputUnigrams value.
      */
-    public Boolean outputUnigrams() {
+    public Boolean isOutputUnigrams() {
         return this.outputUnigrams;
     }
 
@@ -124,7 +124,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param outputUnigrams the outputUnigrams value to set.
      * @return the ShingleTokenFilter object itself.
      */
-    public ShingleTokenFilter outputUnigrams(Boolean outputUnigrams) {
+    public ShingleTokenFilter setOutputUnigrams(Boolean outputUnigrams) {
         this.outputUnigrams = outputUnigrams;
         return this;
     }
@@ -137,7 +137,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the outputUnigramsIfNoShingles value.
      */
-    public Boolean outputUnigramsIfNoShingles() {
+    public Boolean isOutputUnigramsIfNoShingles() {
         return this.outputUnigramsIfNoShingles;
     }
 
@@ -151,7 +151,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * to set.
      * @return the ShingleTokenFilter object itself.
      */
-    public ShingleTokenFilter outputUnigramsIfNoShingles(Boolean outputUnigramsIfNoShingles) {
+    public ShingleTokenFilter setOutputUnigramsIfNoShingles(Boolean outputUnigramsIfNoShingles) {
         this.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
         return this;
     }
@@ -162,7 +162,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the tokenSeparator value.
      */
-    public String tokenSeparator() {
+    public String getTokenSeparator() {
         return this.tokenSeparator;
     }
 
@@ -173,7 +173,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param tokenSeparator the tokenSeparator value to set.
      * @return the ShingleTokenFilter object itself.
      */
-    public ShingleTokenFilter tokenSeparator(String tokenSeparator) {
+    public ShingleTokenFilter setTokenSeparator(String tokenSeparator) {
         this.tokenSeparator = tokenSeparator;
         return this;
     }
@@ -184,7 +184,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @return the filterToken value.
      */
-    public String filterToken() {
+    public String getFilterToken() {
         return this.filterToken;
     }
 
@@ -195,7 +195,7 @@ public final class ShingleTokenFilter extends TokenFilter {
      * @param filterToken the filterToken value to set.
      * @return the ShingleTokenFilter object itself.
      */
-    public ShingleTokenFilter filterToken(String filterToken) {
+    public ShingleTokenFilter setFilterToken(String filterToken) {
         this.filterToken = filterToken;
         return this;
     }

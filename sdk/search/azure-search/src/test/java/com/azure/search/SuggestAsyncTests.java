@@ -28,7 +28,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Collections.singletonList("HotelId"));
+            .setOrderBy(Collections.singletonList("HotelId"));
         PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
 
         StepVerifier
@@ -44,7 +44,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .searchFields(new LinkedList<>(Collections.singletonList("HotelName")));
+            .setSearchFields(new LinkedList<>(Collections.singletonList("HotelName")));
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
 
@@ -61,10 +61,10 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .highlightPreTag("<b>")
-            .highlightPostTag("</b>")
-            .filter("Category eq 'Luxury'")
-            .top(1);
+            .setHighlightPreTag("<b>")
+            .setHighlightPostTag("</b>")
+            .setFilter("Category eq 'Luxury'")
+            .setTop(1);
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
@@ -81,7 +81,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .useFuzzyMatching(true);
+            .setUseFuzzyMatching(true);
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
 
@@ -99,7 +99,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")));
+            .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")));
 
         //act
         PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
@@ -129,7 +129,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
         SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.select(Arrays.asList("ISBN", "Title", "PublishDate"));
+        suggestParams.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
         PagedFlux<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
 
         StepVerifier
@@ -172,7 +172,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Collections.singletonList("This is not a valid orderby."));
+            .setOrderBy(Collections.singletonList("This is not a valid orderby."));
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
@@ -190,8 +190,8 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         //arrange
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(new LinkedList<>(Collections.singletonList("HotelId")))
-            .minimumCoverage(50.0);
+            .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")))
+            .setMinimumCoverage(50.0);
 
         //act
         PagedFlux<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
@@ -211,8 +211,8 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         //arrange
         SuggestParameters suggestParams = new SuggestParameters();
-        suggestParams.orderBy(Collections.singletonList("HotelId"));
-        suggestParams.top(3);
+        suggestParams.setOrderBy(Collections.singletonList("HotelId"));
+        suggestParams.setTop(3);
 
         //act
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
@@ -231,14 +231,14 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestParameters suggestParams = new SuggestParameters()
-            .filter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .orderBy(Arrays.asList("HotelId"));
+            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+            .setOrderBy(Arrays.asList("HotelId"));
 
         PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier.create(suggestResult.byPage())
             .assertNext(nextPage -> {
-                List<String> actualIds = nextPage.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+                List<String> actualIds = nextPage.getValue().stream().map(s -> (String) s.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
                 List<String> expectedIds = Arrays.asList("1", "5");
                 Assert.assertEquals(expectedIds, actualIds);
             })
@@ -253,7 +253,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestParameters suggestParams = new SuggestParameters()
-            .orderBy(Arrays.asList("Rating desc",
+            .setOrderBy(Arrays.asList("Rating desc",
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
 
@@ -262,7 +262,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         StepVerifier
             .create(suggestResult.byPage())
             .assertNext(nextPage -> {
-                List<String> actualIds = nextPage.value().stream().map(s -> (String) s.additionalProperties().get("HotelId")).collect(Collectors.toList());
+                List<String> actualIds = nextPage.getValue().stream().map(s -> (String) s.getAdditionalProperties().get("HotelId")).collect(Collectors.toList());
                 List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
                 Assert.assertEquals(expectedIds, actualIds);
             })

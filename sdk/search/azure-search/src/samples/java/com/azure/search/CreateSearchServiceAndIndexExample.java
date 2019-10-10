@@ -84,21 +84,21 @@ public class CreateSearchServiceAndIndexExample {
                     .build())
             .build();
         Index index = new Index()
-            .name(indexName)
-            .fields(Arrays.asList(
+            .setName(indexName)
+            .setFields(Arrays.asList(
                 new Field()
-                    .name("HotelId")
-                    .type(DataType.EDM_STRING)
-                    .key(Boolean.TRUE)
-                    .filterable(Boolean.TRUE)
-                    .sortable(Boolean.TRUE)
-                    .facetable(Boolean.TRUE),
+                    .setName("HotelId")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE)
+                    .setSortable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE),
                 new Field()
-                    .name("Tags")
-                    .type(DataType.COLLECTION_EDM_STRING)
-                    .searchable(Boolean.TRUE)
-                    .filterable(Boolean.TRUE)
-                    .facetable(Boolean.TRUE)
+                    .setName("Tags")
+                    .setType(DataType.COLLECTION_EDM_STRING)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE)
+                    .setFacetable(Boolean.TRUE)
                 )
             );
         searchServiceClient.indexes()
