@@ -54,10 +54,6 @@ namespace Azure.Test.PerfStress
             using var cleanupStatusCts = new CancellationTokenSource();
             Task cleanupStatusTask = null;
 
-            _lastCompletionTimes = new TimeSpan[options.Parallel];
-
-            var duration = TimeSpan.FromSeconds(options.Duration);
-
             var tests = new IPerfStressTest[options.Parallel];
             for (var i = 0; i < options.Parallel; i++)
             {
@@ -80,49 +76,12 @@ namespace Azure.Test.PerfStress
                     setupStatusCts.Cancel();
                     await setupStatusTask;
 
-                    using var cts = new CancellationTokenSource(duration);
-                    var cancellationToken = cts.Token;
-
-                    var lastCompleted = 0;
-                    var progressStatusTask = PrintStatusAsync(
-                        "=== Progress ===" + Environment.NewLine +
-                        "Current\t\tTotal",
-                        () =>
-                        {
-                            var totalCompleted = _completedOperations;
-                            var currentCompleted = totalCompleted - lastCompleted;
-                            lastCompleted = totalCompleted;
-                            return currentCompleted + "\t\t" + totalCompleted;
-                        },
-                        newLine: true,
-                        cancellationToken);
-
-                    if (options.Sync)
+                    if (options.Warmup > 0)
                     {
-                        var threads = new Thread[options.Parallel];
-
-                        for (var i = 0; i < options.Parallel; i++)
-                        {
-                            var j = i;
-                            threads[i] = new Thread(() => RunLoop(tests[j], cancellationToken));
-                            threads[i].Start();
-                        }
-                        for (var i = 0; i < options.Parallel; i++)
-                        {
-                            threads[i].Join();
-                        }
-                    }
-                    else
-                    {
-                        var tasks = new Task[options.Parallel];
-                        for (var i = 0; i < options.Parallel; i++)
-                        {
-                            tasks[i] = RunLoopAsync(tests[i], cancellationToken);
-                        }
-                        await Task.WhenAll(tasks);
+                        await RunTests(tests, options.Sync, options.Parallel, options.Warmup, "Warmup");
                     }
 
-                    await progressStatusTask;
+                    await RunTests(tests, options.Sync, options.Parallel, options.Duration, "Test");
                 }
                 finally
                 {
@@ -170,6 +129,57 @@ namespace Azure.Test.PerfStress
             Console.WriteLine($"Completed {_completedOperations} operations in an average of {averageElapsedSeconds:N2}s " +
                 $"({operationsPerSecond:N2} ops/s, {secondsPerOperation:N3} s/op)");
             Console.WriteLine();
+        }
+
+        private static async Task RunTests(IPerfStressTest[] tests, bool sync, int parallel, int durationSeconds, string title)
+        {
+            _completedOperations = 0;
+            _lastCompletionTimes = new TimeSpan[parallel];
+
+            var duration = TimeSpan.FromSeconds(durationSeconds);
+            using var cts = new CancellationTokenSource(duration);
+            var cancellationToken = cts.Token;
+
+            var lastCompleted = 0;
+            var progressStatusTask = PrintStatusAsync(
+                $"=== {title} ===" + Environment.NewLine +
+                "Current\t\tTotal",
+                () =>
+                {
+                    var totalCompleted = _completedOperations;
+                    var currentCompleted = totalCompleted - lastCompleted;
+                    lastCompleted = totalCompleted;
+                    return currentCompleted + "\t\t" + totalCompleted;
+                },
+                newLine: true,
+                cancellationToken);
+
+            if (sync)
+            {
+                var threads = new Thread[parallel];
+
+                for (var i = 0; i < parallel; i++)
+                {
+                    var j = i;
+                    threads[i] = new Thread(() => RunLoop(tests[j], cancellationToken));
+                    threads[i].Start();
+                }
+                for (var i = 0; i < parallel; i++)
+                {
+                    threads[i].Join();
+                }
+            }
+            else
+            {
+                var tasks = new Task[parallel];
+                for (var i = 0; i < parallel; i++)
+                {
+                    tasks[i] = RunLoopAsync(tests[i], cancellationToken);
+                }
+                await Task.WhenAll(tasks);
+            }
+
+            await progressStatusTask;
         }
 
         private static void RunLoop(IPerfStressTest test, CancellationToken cancellationToken)

@@ -15,5 +15,8 @@ namespace Azure.Test.PerfStress
 
         [Option("sync", HelpText = "Runs sync version of test")]
         public bool Sync { get; set; }
+
+        [Option('w', "warmup", HelpText = "Duration of warmup in seconds")]
+        public int Warmup { get; set; }
     }
 }
