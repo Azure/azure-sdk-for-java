@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -402,6 +402,10 @@
                 <packages>com.azure.storage.blob*</packages>
               </group>
               <group>
+                <title>Azure Storage Blob - Batch</title>
+                <packages>com.azure.storage.blob.batch*</packages>
+              </group>
+              <group>
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
@@ -582,6 +586,7 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
@@ -864,6 +869,7 @@
     <module>sdk/keyvault/azure-keyvault-keys</module>
     <module>sdk/keyvault/azure-keyvault-secrets</module>
     <module>sdk/storage/azure-storage-blob</module>
+    <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file</module>

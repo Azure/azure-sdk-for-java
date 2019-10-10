@@ -922,3 +922,16 @@ directive:
       };
     }
 ```
+
+### Batch returns a 202
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=batch"].post.responses
+  transform: >
+    const response = $["200"];
+    if (response) {
+        delete $["200"];
+        $["202"] = response;
+    }
+```
