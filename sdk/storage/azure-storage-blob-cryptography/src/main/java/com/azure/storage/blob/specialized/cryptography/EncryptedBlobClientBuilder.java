@@ -8,7 +8,6 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
@@ -39,7 +38,7 @@ import java.util.Objects;
  * <li>Credential set through {@link #credential(SharedKeyCredential)} , {@link #sasToken(String)}, or
  * {@link #connectionString(String)} if the container is not publicly accessible.
  * <li>Key and key wrapping algorithm (for encryption) and/or key resolver (for decryption) must be specified
- * through {@link #key(AsyncKeyEncryptionKey, KeyWrapAlgorithm)} and {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}
+ * through {@link #key(AsyncKeyEncryptionKey, String)} and {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}
  * </ul>
  *
  * <p>
@@ -61,7 +60,7 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
 
     private AsyncKeyEncryptionKey keyWrapper;
     private AsyncKeyEncryptionKeyResolver keyResolver;
-    private KeyWrapAlgorithm keyWrapAlgorithm;
+    private String keyWrapAlgorithm;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -208,10 +207,10 @@ public final class EncryptedBlobClientBuilder extends BaseBlobClientBuilder<Encr
      * Sets the encryption key parameters for the client
      *
      * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
-     * @param keyWrapAlgorithm The {@link KeyWrapAlgorithm} used to wrap the key.
+     * @param keyWrapAlgorithm The {@link String} used to wrap the key.
      * @return the updated EncryptedBlobClientBuilder object
      */
-    public EncryptedBlobClientBuilder key(AsyncKeyEncryptionKey key, KeyWrapAlgorithm keyWrapAlgorithm) {
+    public EncryptedBlobClientBuilder key(AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         return this;

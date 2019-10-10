@@ -8,7 +8,6 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
@@ -77,15 +76,15 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     private final AsyncKeyEncryptionKey keyWrapper;
 
     /**
-     * A {@link KeyWrapAlgorithm} that is used to wrap/unwrap the content key during encryption.
+     * A {@link String} that is used to wrap/unwrap the content key during encryption.
      */
-    private final KeyWrapAlgorithm keyWrapAlgorithm;
+    private final String keyWrapAlgorithm;
 
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      */
     EncryptedBlobAsyncClient(AzureBlobStorageImpl constructImpl, String snapshot, String accountName,
-        AsyncKeyEncryptionKey key, KeyWrapAlgorithm keyWrapAlgorithm) {
+        AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
         super(constructImpl, snapshot, null, accountName);
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;

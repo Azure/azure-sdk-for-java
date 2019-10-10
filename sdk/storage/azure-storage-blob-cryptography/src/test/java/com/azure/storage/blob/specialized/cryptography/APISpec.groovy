@@ -16,9 +16,6 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobProperties
@@ -218,7 +215,7 @@ class APISpec extends Specification {
                                                          SharedKeyCredential credential, String endpoint,
                                                          HttpPipelinePolicy... policies) {
         EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder()
-            .key(key, KeyWrapAlgorithm.RSA_OAEP_256)
+            .key(key, "keyWrapAlgorithm")
             .keyResolver(keyResolver)
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -262,14 +259,6 @@ class APISpec extends Specification {
         }
 
         return builder
-    }
-
-    KeyEncryptionKeyClientBuilder getKeyClientBuilder(String keyId, SecretKey secretKey) {
-        return new KeyEncryptionKeyClientBuilder()
-        .jsonWebKey(JsonWebKey.fromAes(secretKey))
-        .keyIdentifier(keyId)
-        .credential(new BasicAuthenticationCredential("fakeuname", "fakepwd"))
-
     }
 
     def generateContainerName() {
