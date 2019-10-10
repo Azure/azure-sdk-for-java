@@ -6,8 +6,6 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 
 /**
  *

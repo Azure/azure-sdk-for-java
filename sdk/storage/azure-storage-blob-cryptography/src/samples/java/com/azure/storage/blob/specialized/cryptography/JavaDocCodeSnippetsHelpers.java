@@ -5,9 +5,6 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
-import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
