@@ -85,29 +85,6 @@ public final class AzureBlobStorageImpl {
     }
 
     /**
-     * Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
-     */
-    private PathRenameMode pathRenameMode;
-
-    /**
-     * Gets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
-     *
-     * @return the pathRenameMode value.
-     */
-    public PathRenameMode getPathRenameMode() {
-        return this.pathRenameMode;
-    }
-
-    /**
-     * Sets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
-     *
-     * @param pathRenameMode the pathRenameMode value.
-     */
-    void setPathRenameMode(PathRenameMode pathRenameMode) {
-        this.pathRenameMode = pathRenameMode;
-    }
-
-    /**
      * The HTTP pipeline to send requests through.
      */
     private HttpPipeline httpPipeline;

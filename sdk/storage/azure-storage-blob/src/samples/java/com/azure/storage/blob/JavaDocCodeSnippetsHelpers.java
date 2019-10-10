@@ -15,10 +15,6 @@ final class JavaDocCodeSnippetsHelpers {
         return new BlobContainerClientBuilder().buildClient();
     }
 
-    static ContainerClient getContainerClient() {
-        return new ContainerClientBuilder().buildClient();
-    }
-
     static BlobAsyncClient getBlobAsyncClient(String blobName) {
         return getContainerAsyncClient().getBlobAsyncClient(blobName);
     }

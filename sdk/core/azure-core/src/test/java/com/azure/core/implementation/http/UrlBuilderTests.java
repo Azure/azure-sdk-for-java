@@ -504,46 +504,6 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void pathWhenHostContainsPath() {
-        final UrlBuilder builder = new UrlBuilder()
-            .host("www.example.com/site")
-            .path("index.html");
-        assertEquals("www.example.com", builder.host());
-        assertEquals("index.html", builder.path());
-        assertEquals("www.example.com/index.html", builder.toString());
-    }
-
-    @Test
-    public void pathFirstWhenHostContainsPath() {
-        final UrlBuilder builder = new UrlBuilder()
-            .path("index.html")
-            .host("www.example.com/site");
-        assertEquals("www.example.com", builder.host());
-        assertEquals("/site", builder.path());
-        assertEquals("www.example.com/site", builder.toString());
-    }
-
-    @Test
-    public void emptyPathWhenHostContainsPath() {
-        final UrlBuilder builder = new UrlBuilder()
-            .path("")
-            .host("www.example.com/site");
-        assertEquals("www.example.com", builder.host());
-        assertEquals("/site", builder.path());
-        assertEquals("www.example.com/site", builder.toString());
-    }
-
-    @Test
-    public void slashPathWhenHostContainsPath() {
-        final UrlBuilder builder = new UrlBuilder()
-            .path("//")
-            .host("www.example.com/site");
-        assertEquals("www.example.com", builder.host());
-        assertEquals("/site", builder.path());
-        assertEquals("www.example.com/site", builder.toString());
-    }
-
-    @Test
     public void withAbsolutePath() {
         final UrlBuilder builder = new UrlBuilder()
                 .setScheme("http")
