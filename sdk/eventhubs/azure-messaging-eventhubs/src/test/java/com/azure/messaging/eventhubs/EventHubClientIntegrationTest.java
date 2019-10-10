@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -27,7 +27,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     }
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
@@ -72,11 +72,11 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         Assert.assertNotNull(properties);
-        Assert.assertEquals(connectionProperties.eventHubName(), properties.name());
-        Assert.assertTrue(properties.createdAt().isBefore(Instant.now()));
+        Assert.assertEquals(connectionProperties.getEntityPath(), properties.getName());
+        Assert.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
 
-        Assert.assertNotNull(properties.partitionIds());
-        Assert.assertTrue(properties.partitionIds().length > 1);
+        Assert.assertNotNull(properties.getPartitionIds());
+        Assert.assertTrue(properties.getPartitionIds().length > 1);
     }
 
     /**
@@ -87,7 +87,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
         final EventHubProperties properties = client.getProperties();
-        final String partitionId = properties.partitionIds()[0];
+        final String partitionId = properties.getPartitionIds()[0];
 
         // Act
         final PartitionProperties partitionProperties = client.getPartitionProperties(partitionId);
@@ -95,7 +95,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         // Assert
         Assert.assertNotNull(partitionProperties);
 
-        Assert.assertEquals(connectionProperties.eventHubName(), partitionProperties.eventHubName());
-        Assert.assertEquals(partitionId, partitionProperties.id());
+        Assert.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
+        Assert.assertEquals(partitionId, partitionProperties.getId());
     }
 }

@@ -58,7 +58,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0-preview.3</version>
+    <version>5.0.0-preview.4</version>
 </dependency>
 ```
 
@@ -95,7 +95,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.3</version>
+    <version>1.0.0-preview.4</version>
 </dependency>
 ```
 
@@ -110,9 +110,11 @@ service principal and a client secret. The corresponding `clientId` and `tenantI
 obtained from the [App registration page][app_registration_page].
 
 ```java
-ClientSecretCredential credential = new ClientSecretCredential()
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<< APPLICATION (CLIENT) ID >>")
-    .tenantId("<< DIRECTORY (TENANT) ID >>");
+    .clientSecret("<< APPLICATION SECRET >>")
+    .tenantId("<< DIRECTORY (TENANT) ID >>")
+    .build();
 
 // The fully qualified domain name (FQDN) for the Event Hubs namespace. This is likely to be similar to:
 // {your-namespace}.servicebus.windows.net
@@ -233,7 +235,7 @@ EventHubAsyncClient client = new EventHubClientBuilder()
 
 String partitionId = "<< EVENT HUB PARTITION ID >>"
 EventHubAsyncConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
-    EventPosition.latest());
+    EventPosition.earliest());
 
 consumer.receive().subscribe(event -> {
     // Process each event as it arrives.
@@ -276,49 +278,41 @@ logic needed to provide value while the processor holds responsibility for manag
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessor], use the built-in
 [`InMemoryPartitionManager`][source_inmemorypartitionmanager], and a `PartitionProcessor` implementation that logs
-events received and errors to console.
+events received to console.
 
 ```java
 class Program {
     public static void main(String[] args) {
-        EventProcessor eventProcessor = new EventHubClientBuilder()
+        EventHubAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR THE EVENT HUB INSTANCE >>")
-            .consumerGroupName("<< CONSUMER GROUP NAME>>")
-            .partitionProcessorFactory(SimplePartitionProcessor::new)
+            .buildAsyncClient();
+
+        EventProcessor eventProcessor = new EventProcessorBuilder()
+            .consumerGroup("<< CONSUMER GROUP NAME>>")
+            .eventHubClient(eventHubAsyncClient)
+            .partitionProcessorFactory((SimplePartitionProcessor::new))
             .partitionManager(new InMemoryPartitionManager())
             .buildEventProcessor();
 
         // This will start the processor. It will start processing events from all partitions.
         eventProcessor.start();
+        
+        // (for demo purposes only - adding sleep to wait for receiving events)
+        TimeUnit.SECONDS.sleep(2); 
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessor.stop();
     }
 }
 
-class SimplePartitionProcessor implements PartitionProcessor {
-    SimplePartitionProcessor(PartitionContext partitionContext, CheckpointManager checkpointManager) {
-    }
-
+class SimplePartitionProcessor extends PartitionProcessor {
+    /**
+     * Processes the event data.
+     */
     @Override
-    Mono<Void> initialize() {
-        return Mono.empty();
-    }
-
-    @Override
-    Mono<Void> processEvent(EventData eventData) {
-        System.out.printf("Event received. Sequence number: %s%n.", eventData.sequenceNumber());
-        return Mono.empty();
-    }
-
-    @Override
-    void processError(Throwable throwable) {
-        System.err.println("Error received." + throwable.toString());
-    }
-
-    @Override
-    Mono<Void> close(CloseReason closeReason) {
-        return Mono.empty();
+    public Mono<Void> processEvent(PartitionContext partitionContext, EventData eventData) {
+        System.out.println("Processing event with sequence number " + eventData.sequenceNumber());
+        return partitionContext.updateCheckpoint(eventData);
     }
 }
 ```

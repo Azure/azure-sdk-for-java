@@ -4,11 +4,11 @@
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import com.azure.storage.blob.ContainerAsyncClient;
-import com.azure.storage.blob.ContainerClientBuilder;
-import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.StringJoiner;
 
 /**
@@ -24,27 +24,27 @@ public class BlobPartitionManagerSample {
      * @throws Exception If there are any errors while running the sample.
      */
     public static void main(String[] args) throws Exception {
-        SASTokenCredential sasTokenCredential = SASTokenCredential.fromSASTokenString("");
-        ContainerAsyncClient containerAsyncClient = new ContainerClientBuilder()
+        String sasToken = "";
+        BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString("")
             .containerName("")
-            .credential(sasTokenCredential)
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .sasToken(sasToken)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient();
 
-        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(containerAsyncClient);
+        BlobPartitionManager blobPartitionManager = new BlobPartitionManager(blobContainerAsyncClient);
         blobPartitionManager.listOwnership("abc", "xyz")
             .subscribe(BlobPartitionManagerSample::printPartitionOwnership);
 
         System.out.println("Updating checkpoint");
         Checkpoint checkpoint = new Checkpoint()
-            .consumerGroupName("xyz")
-            .eventHubName("abc")
-            .ownerId("owner1")
-            .partitionId("0")
-            .eTag("")
-            .sequenceNumber(2L)
-            .offset(250L);
+            .setConsumerGroupName("xyz")
+            .setEventHubName("abc")
+            .setOwnerId("owner1")
+            .setPartitionId("0")
+            .setETag("")
+            .setSequenceNumber(2L)
+            .setOffset(250L);
         blobPartitionManager.updateCheckpoint(checkpoint)
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));
@@ -52,11 +52,11 @@ public class BlobPartitionManagerSample {
         PartitionOwnership[] pos = new PartitionOwnership[5];
         for (int i = 0; i < 5; i++) {
             PartitionOwnership po = new PartitionOwnership()
-                .eventHubName("abc")
-                .consumerGroupName("xyz")
-                .ownerId("owner1")
-                .partitionId(String.valueOf(i))
-                .ownerLevel(0);
+                .setEventHubName("abc")
+                .setConsumerGroupName("xyz")
+                .setOwnerId("owner1")
+                .setPartitionId(String.valueOf(i))
+                .setOwnerLevel(0);
             pos[i] = po;
         }
         blobPartitionManager.claimOwnership(pos).subscribe(BlobPartitionManagerSample::printPartitionOwnership,
@@ -66,13 +66,13 @@ public class BlobPartitionManagerSample {
     static void printPartitionOwnership(PartitionOwnership partitionOwnership) {
         String po =
             new StringJoiner(",")
-                .add("pid=" + partitionOwnership.partitionId())
-                .add("ownerId=" + partitionOwnership.ownerId())
-                .add("cg=" + partitionOwnership.consumerGroupName())
-                .add("eh=" + partitionOwnership.eventHubName())
-                .add("offset=" + partitionOwnership.offset())
-                .add("etag=" + partitionOwnership.eTag())
-                .add("lastModified=" + partitionOwnership.lastModifiedTime())
+                .add("pid=" + partitionOwnership.getPartitionId())
+                .add("ownerId=" + partitionOwnership.getOwnerId())
+                .add("cg=" + partitionOwnership.getConsumerGroupName())
+                .add("eh=" + partitionOwnership.getEventHubName())
+                .add("offset=" + partitionOwnership.getOffset())
+                .add("etag=" + partitionOwnership.getETag())
+                .add("lastModified=" + partitionOwnership.getLastModifiedTime())
                 .toString();
         System.out.println(po);
     }

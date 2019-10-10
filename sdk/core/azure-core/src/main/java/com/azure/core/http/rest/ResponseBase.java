@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
  * The response of a REST request.
  *
  * @param <H> The deserialized type of the response headers.
- * @param <T> The deserialized type of the response value, available from {@link #value()}.
+ * @param <T> The deserialized type of the response value, available from {@link Response#getValue()}.
  */
 public class ResponseBase<H, T> implements Response<T> {
     private final HttpRequest request;
@@ -19,13 +19,13 @@ public class ResponseBase<H, T> implements Response<T> {
     private final T value;
 
     /**
-     * Create ResponseBase.
+     * Creates a {@link ResponseBase}.
      *
-     * @param request the request which resulted in this response
-     * @param statusCode the status code of the HTTP response
-     * @param headers the headers of the HTTP response
-     * @param deserializedHeaders the deserialized headers of the HTTP response
-     * @param value the deserialized value
+     * @param request The HTTP request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param deserializedHeaders The deserialized headers of the HTTP response.
+     * @param value The deserialized value of the HTTP response.
      */
     public ResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T value, H deserializedHeaders) {
         this.request = request;
@@ -36,10 +36,12 @@ public class ResponseBase<H, T> implements Response<T> {
     }
 
     /**
-     * @return the request which resulted in this RestResponseBase.
+     * Gets The request which resulted in this {@link ResponseBase}.
+     *
+     * @return The request which resulted in this {@link ResponseBase}.
      */
     @Override
-    public HttpRequest request() {
+    public HttpRequest getRequest() {
         return request;
     }
 
@@ -47,7 +49,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -55,16 +57,16 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
     /**
-     * Get the headers from the HTTP response, transformed into the header type H.
+     * Get the headers from the HTTP response, transformed into the header type, {@code H}.
      *
-     * @return an instance of header type H, containing the HTTP response headers.
+     * @return An instance of header type {@code H}, deserialized from the HTTP response headers.
      */
-    public H deserializedHeaders() {
+    public H getDeserializedHeaders() {
         return deserializedHeaders;
     }
 
@@ -72,7 +74,7 @@ public class ResponseBase<H, T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public T value() {
+    public T getValue() {
         return value;
     }
 }

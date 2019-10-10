@@ -26,7 +26,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T maxRetry(int maxRetry) {
-        this.identityClientOptions.maxRetry(maxRetry);
+        this.identityClientOptions.setMaxRetry(maxRetry);
         return (T) this;
     }
 
@@ -37,7 +37,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T retryTimeout(Function<Integer, Integer> retryTimeout) {
-        this.identityClientOptions.retryTimeout(retryTimeout);
+        this.identityClientOptions.setRetryTimeout(retryTimeout);
         return (T) this;
     }
 
@@ -48,7 +48,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
-        this.identityClientOptions.proxyOptions(proxyOptions);
+        this.identityClientOptions.setProxyOptions(proxyOptions);
         return (T) this;
     }
 }

@@ -4,39 +4,39 @@
 
 package com.azure.storage.blob.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
-import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
-import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
-import com.azure.storage.blob.models.ContainersCreateResponse;
-import com.azure.storage.blob.models.ContainersDeleteResponse;
-import com.azure.storage.blob.models.ContainersGetAccessPolicyResponse;
-import com.azure.storage.blob.models.ContainersGetAccountInfoResponse;
-import com.azure.storage.blob.models.ContainersGetPropertiesResponse;
-import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
-import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
-import com.azure.storage.blob.models.ContainersReleaseLeaseResponse;
-import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
-import com.azure.storage.blob.models.ContainersSetAccessPolicyResponse;
-import com.azure.storage.blob.models.ContainersSetMetadataResponse;
+import com.azure.storage.blob.implementation.models.ContainersAcquireLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersBreakLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersChangeLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersCreateResponse;
+import com.azure.storage.blob.implementation.models.ContainersDeleteResponse;
+import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyResponse;
+import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoResponse;
+import com.azure.storage.blob.implementation.models.ContainersGetPropertiesResponse;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
+import com.azure.storage.blob.implementation.models.ContainersSetMetadataResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -220,7 +220,7 @@ public final class ContainersImpl {
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, context);
     }
@@ -261,15 +261,15 @@ public final class ContainersImpl {
         final String restype = "container";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -315,11 +315,11 @@ public final class ContainersImpl {
         final String comp = "metadata";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
@@ -360,7 +360,7 @@ public final class ContainersImpl {
         final String comp = "acl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, leaseId, context);
     }
@@ -407,15 +407,15 @@ public final class ContainersImpl {
         final String comp = "acl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(containerAcl);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -465,11 +465,11 @@ public final class ContainersImpl {
         final String action = "acquire";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -516,11 +516,11 @@ public final class ContainersImpl {
         final String action = "release";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -567,11 +567,11 @@ public final class ContainersImpl {
         final String action = "renew";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -618,11 +618,11 @@ public final class ContainersImpl {
         final String action = "break";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
@@ -671,11 +671,11 @@ public final class ContainersImpl {
         final String action = "change";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);

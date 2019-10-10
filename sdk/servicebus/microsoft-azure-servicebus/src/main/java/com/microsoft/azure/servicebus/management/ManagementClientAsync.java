@@ -1149,7 +1149,7 @@ public class ManagementClientAsync {
             }
         } catch (ParserConfigurationException | IOException | SAXException e) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("Exception while parsing response.", e);
+                TRACE_LOGGER.info("Exception while parsing response.", e);
             }
 
             if (TRACE_LOGGER.isDebugEnabled()) {
@@ -1164,7 +1164,7 @@ public class ManagementClientAsync {
         SecurityToken token = tokenProvider.getSecurityTokenAsync(url).get();
         return token.getTokenValue();
     }
-    
+
     private static int getPortNumberFromHost(String host) {
         if (host.endsWith("onebox.windows-int.net")) {
             return ONE_BOX_HTTPS_PORT;

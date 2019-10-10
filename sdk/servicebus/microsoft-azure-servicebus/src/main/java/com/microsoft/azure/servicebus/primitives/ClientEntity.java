@@ -46,7 +46,16 @@ public abstract class ClientEntity {
     // used to force close when entity is faulted
     protected final void setClosed() {
         synchronized (this.syncClose) {
+        	this.isClosing = false;
             this.isClosed = true;
+        }
+    }
+    
+    protected final void setClosing() {
+        synchronized (this.syncClose) {
+        	if (!this.isClosed) {
+        		this.isClosing = true;
+        	}            
         }
     }
 

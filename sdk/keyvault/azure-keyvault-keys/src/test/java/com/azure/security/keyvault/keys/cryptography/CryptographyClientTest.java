@@ -58,8 +58,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromRSA(keyPair);
             String keyName = "testRsaKey";
             Key importedKey = client.importKey(keyName, key);
-            key.kid(importedKey.id());
-            key.keyOps(importedKey.keyMaterial().keyOps());
+            key.setKid(importedKey.getId());
+            key.setKeyOps(importedKey.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
                 .jsonWebKey(key)
@@ -72,13 +72,13 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 // Test variables
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
-                byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).cipherText();
-                byte[] decryptedText = serviceClient.decrypt(algorithm, cipherText, Context.NONE).block().plainText();
+                byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
+                byte[] decryptedText = serviceClient.decrypt(algorithm, cipherText, Context.NONE).block().getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
 
-                cipherText = serviceClient.encrypt(algorithm, plainText, Context.NONE).block().cipherText();
-                decryptedText = cryptoClient.decrypt(algorithm, cipherText).plainText();
+                cipherText = serviceClient.encrypt(algorithm, plainText, Context.NONE).block().getCipherText();
+                decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
             }
@@ -96,8 +96,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromRSA(keyPair);
             String keyName = "testRsaKeyWrapUnwrap";
             Key importedKey = client.importKey(keyName, key);
-            key.kid(importedKey.id());
-            key.keyOps(importedKey.keyMaterial().keyOps());
+            key.setKid(importedKey.getId());
+            key.setKeyOps(importedKey.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
                 .jsonWebKey(key)
@@ -110,13 +110,13 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 // Test variables
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
-                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).encryptedKey();
-                byte[] decryptedKey = serviceClient.unwrapKey(algorithm, encryptedKey, Context.NONE).block().key();
+                byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
+                byte[] decryptedKey = serviceClient.unwrapKey(algorithm, encryptedKey, Context.NONE).block().getKey();
 
                 assertArrayEquals(decryptedKey, plainText);
 
-                encryptedKey = serviceClient.wrapKey(algorithm, plainText, Context.NONE).block().encryptedKey();
-                decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).key();
+                encryptedKey = serviceClient.wrapKey(algorithm, plainText, Context.NONE).block().getEncryptedKey();
+                decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
                 assertArrayEquals(decryptedKey, plainText);
             }
@@ -135,8 +135,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromRSA(keyPair);
             String keyName = "testRsaKeySignVerify";
             Key importedKey = client.importKey(keyName, key);
-            key.kid(importedKey.id());
-            key.keyOps(importedKey.keyMaterial().keyOps());
+            key.setKid(importedKey.getId());
+            key.setKeyOps(importedKey.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
                 .jsonWebKey(key)
@@ -149,12 +149,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 // Test variables
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
-                byte[] signature = cryptoClient.signData(algorithm, plainText).signature();
+                byte[] signature = cryptoClient.signData(algorithm, plainText).getSignature();
                 Boolean verifyStatus = serviceClient.verifyData(algorithm, plainText, signature, Context.NONE).block().isValid();
 
                 assertTrue(verifyStatus);
 
-                signature = serviceClient.signData(algorithm, plainText, Context.NONE).block().signature();
+                signature = serviceClient.signData(algorithm, plainText, Context.NONE).block().getSignature();
                 verifyStatus = cryptoClient.verifyData(algorithm, plainText, signature).isValid();
 
                 assertTrue(verifyStatus);
@@ -193,8 +193,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromEC(keyPair, provider);
             String keyName = "testEcKey" + crv.toString();
             Key imported = client.importKey(keyName, key);
-            key.kid(imported.id());
-            key.keyOps(imported.keyMaterial().keyOps());
+            key.setKid(imported.getId());
+            key.setKeyOps(imported.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
                 .jsonWebKey(key)
@@ -204,12 +204,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             byte[] plainText = new byte[100];
             new Random(0x1234567L).nextBytes(plainText);
 
-            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plainText).signature();
+            byte[] signature = cryptoClient.signData(curveToSignature.get(crv), plainText).getSignature();
 
             Boolean verifyStatus = serviceClient.verifyData(curveToSignature.get(crv), plainText, signature, Context.NONE).block().isValid();
             assertTrue(verifyStatus);
 
-            signature = serviceClient.signData(curveToSignature.get(crv), plainText, Context.NONE).block().signature();
+            signature = serviceClient.signData(curveToSignature.get(crv), plainText, Context.NONE).block().getSignature();
             verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
             if (!interceptorManager.isPlaybackMode()) {
                 assertTrue(verifyStatus);
@@ -233,15 +233,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(kek, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.wrapKey(KeyWrapAlgorithm.A128KW, cek).encryptedKey();
+        byte[] encrypted = cryptoClient.wrapKey(KeyWrapAlgorithm.A128KW, cek).getEncryptedKey();
 
         assertArrayEquals(ek, encrypted);
 
-        byte[] decrypted = cryptoClient.unwrapKey(KeyWrapAlgorithm.A128KW, encrypted).key();
+        byte[] decrypted = cryptoClient.unwrapKey(KeyWrapAlgorithm.A128KW, encrypted).getKey();
 
         assertArrayEquals(cek, decrypted);
     }
@@ -256,15 +256,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(kek, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.wrapKey(KeyWrapAlgorithm.A192KW, cek).encryptedKey();
+        byte[] encrypted = cryptoClient.wrapKey(KeyWrapAlgorithm.A192KW, cek).getEncryptedKey();
 
         assertArrayEquals(ek, encrypted);
 
-        byte[] decrypted = cryptoClient.unwrapKey(KeyWrapAlgorithm.A192KW, encrypted).key();
+        byte[] decrypted = cryptoClient.unwrapKey(KeyWrapAlgorithm.A192KW, encrypted).getKey();
 
         assertArrayEquals(cek, decrypted);
     }
@@ -279,15 +279,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(kek, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.wrapKey(KeyWrapAlgorithm.A256KW, cek).encryptedKey();
+        byte[] encrypted = cryptoClient.wrapKey(KeyWrapAlgorithm.A256KW, cek).getEncryptedKey();
 
         assertArrayEquals(ek, encrypted);
 
-        byte[] decrypted = cryptoClient.unwrapKey(KeyWrapAlgorithm.A256KW, encrypted).key();
+        byte[] decrypted = cryptoClient.unwrapKey(KeyWrapAlgorithm.A256KW, encrypted).getKey();
 
         assertArrayEquals(cek, decrypted);
     }
@@ -329,15 +329,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(key, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A128CBC_HS256, plaintext, iv, authData).cipherText();
+        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A128CBC_HS256, plaintext, iv, authData).getCipherText();
 
         assertArrayEquals(expected, encrypted);
 
-        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A128CBC_HS256, encrypted, iv, authData, authTag).plainText();
+        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A128CBC_HS256, encrypted, iv, authData, authTag).getPlainText();
 
         assertArrayEquals(plaintext, decrypted);
     }
@@ -376,15 +376,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(key, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A192CBC_HS384, plaintext, iv, authData).cipherText();
+        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A192CBC_HS384, plaintext, iv, authData).getCipherText();
 
         assertArrayEquals(expected, encrypted);
 
-        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A192CBC_HS384, encrypted, iv, authData, authTags).plainText();
+        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A192CBC_HS384, encrypted, iv, authData, authTags).getPlainText();
 
         assertArrayEquals(plaintext, decrypted);
     }
@@ -424,15 +424,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(key, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A256CBC_HS512, plaintext, iv, authData).cipherText();
+        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A256CBC_HS512, plaintext, iv, authData).getCipherText();
 
         assertArrayEquals(expected, encrypted);
 
-        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A256CBC_HS512, encrypted, iv, authData, authTags).plainText();
+        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A256CBC_HS512, encrypted, iv, authData, authTags).getPlainText();
 
         assertArrayEquals(plaintext, decrypted);
     }
@@ -449,15 +449,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(keyContent, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null).cipherText();
+        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null).getCipherText();
 
         assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 16), expected);
 
-        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A128CBC, encrypted, initializationVector, null, null).plainText();
+        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A128CBC, encrypted, initializationVector, null, null).getPlainText();
 
         assertArrayEquals(Arrays.copyOfRange(decrypted, 0, 16), plaintext);
     }
@@ -474,15 +474,15 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
             .pipeline(pipeline)
             .jsonWebKey(JsonWebKey.fromAes(new SecretKeySpec(keyContent, "AES"))
-                .kty(KeyType.OCT)
-                .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
+                .setKty(KeyType.OCT)
+                .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT)))
             .buildClient();
 
-        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null).cipherText();
+        byte[] encrypted = cryptoClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null).getCipherText();
 
         assertArrayEquals(Arrays.copyOfRange(encrypted, 0, 32), expected);
 
-        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A128CBC, encrypted, initializationVector, null, null).plainText();
+        byte[] decrypted = cryptoClient.decrypt(EncryptionAlgorithm.A128CBC, encrypted, initializationVector, null, null).getPlainText();
 
         assertArrayEquals(Arrays.copyOfRange(decrypted, 0, 32), plaintext);
     }

@@ -4,33 +4,47 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.util.ImplUtils;
+
 import java.time.OffsetDateTime;
 
 public final class FileUploadInfo {
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private byte[] contentMD5;
-    private Boolean isServerEncrypted;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final byte[] contentMD5;
+    private final Boolean isServerEncrypted;
 
-    public FileUploadInfo(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5, final Boolean isServerEncrypted) {
+    public FileUploadInfo(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMD5 = ImplUtils.clone(contentMD5);
         this.isServerEncrypted = isServerEncrypted;
     }
 
-    public String eTag() {
+    /**
+     * @return the ETag of the file.
+     */
+    public String getETag() {
         return eTag;
     }
 
-    public OffsetDateTime lastModified() {
+    /**
+     * @return the time when the file was last modified.
+     */
+    public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
-    public byte[] contentMD5() {
+    /**
+     * @return the MD5 of the file's content.
+     */
+    public byte[] getContentMD5() {
         return ImplUtils.clone(contentMD5);
     }
 
+    /**
+     * @return whether the file's content is encrypted on the server.
+     */
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
     }

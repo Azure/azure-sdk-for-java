@@ -24,7 +24,7 @@ public class GetTaggedImagesOptionalParameter {
      * A list of tags ids to filter the images. Defaults to all tagged images
      * when null. Limited to 20.
      */
-    private List<String> tagIds;
+    private List<UUID> tagIds;
 
     /**
      * The ordering. Defaults to newest. Possible values include: 'Newest',
@@ -73,7 +73,7 @@ public class GetTaggedImagesOptionalParameter {
      *
      * @return the tagIds value
      */
-    public List<String> tagIds() {
+    public List<UUID> tagIds() {
         return this.tagIds;
     }
 
@@ -83,7 +83,7 @@ public class GetTaggedImagesOptionalParameter {
      * @param tagIds the tagIds value to set
      * @return the GetTaggedImagesOptionalParameter object itself.
      */
-    public GetTaggedImagesOptionalParameter withTagIds(List<String> tagIds) {
+    public GetTaggedImagesOptionalParameter withTagIds(List<UUID> tagIds) {
         this.tagIds = tagIds;
         return this;
     }

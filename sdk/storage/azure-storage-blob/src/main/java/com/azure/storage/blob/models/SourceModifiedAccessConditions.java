@@ -4,8 +4,8 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -49,11 +49,11 @@ public final class SourceModifiedAccessConditions {
      *
      * @return the sourceIfModifiedSince value.
      */
-    public OffsetDateTime sourceIfModifiedSince() {
+    public OffsetDateTime getSourceIfModifiedSince() {
         if (this.sourceIfModifiedSince == null) {
             return null;
         }
-        return this.sourceIfModifiedSince.dateTime();
+        return this.sourceIfModifiedSince.getDateTime();
     }
 
     /**
@@ -64,7 +64,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfModifiedSince the sourceIfModifiedSince value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions sourceIfModifiedSince(OffsetDateTime sourceIfModifiedSince) {
+    public SourceModifiedAccessConditions setSourceIfModifiedSince(OffsetDateTime sourceIfModifiedSince) {
         if (sourceIfModifiedSince == null) {
             this.sourceIfModifiedSince = null;
         } else {
@@ -80,11 +80,11 @@ public final class SourceModifiedAccessConditions {
      *
      * @return the sourceIfUnmodifiedSince value.
      */
-    public OffsetDateTime sourceIfUnmodifiedSince() {
+    public OffsetDateTime getSourceIfUnmodifiedSince() {
         if (this.sourceIfUnmodifiedSince == null) {
             return null;
         }
-        return this.sourceIfUnmodifiedSince.dateTime();
+        return this.sourceIfUnmodifiedSince.getDateTime();
     }
 
     /**
@@ -95,7 +95,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfUnmodifiedSince the sourceIfUnmodifiedSince value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions sourceIfUnmodifiedSince(OffsetDateTime sourceIfUnmodifiedSince) {
+    public SourceModifiedAccessConditions setSourceIfUnmodifiedSince(OffsetDateTime sourceIfUnmodifiedSince) {
         if (sourceIfUnmodifiedSince == null) {
             this.sourceIfUnmodifiedSince = null;
         } else {
@@ -110,7 +110,7 @@ public final class SourceModifiedAccessConditions {
      *
      * @return the sourceIfMatch value.
      */
-    public String sourceIfMatch() {
+    public String getSourceIfMatch() {
         return this.sourceIfMatch;
     }
 
@@ -121,7 +121,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfMatch the sourceIfMatch value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions sourceIfMatch(String sourceIfMatch) {
+    public SourceModifiedAccessConditions setSourceIfMatch(String sourceIfMatch) {
         this.sourceIfMatch = sourceIfMatch;
         return this;
     }
@@ -132,7 +132,7 @@ public final class SourceModifiedAccessConditions {
      *
      * @return the sourceIfNoneMatch value.
      */
-    public String sourceIfNoneMatch() {
+    public String getSourceIfNoneMatch() {
         return this.sourceIfNoneMatch;
     }
 
@@ -143,7 +143,7 @@ public final class SourceModifiedAccessConditions {
      * @param sourceIfNoneMatch the sourceIfNoneMatch value to set.
      * @return the SourceModifiedAccessConditions object itself.
      */
-    public SourceModifiedAccessConditions sourceIfNoneMatch(String sourceIfNoneMatch) {
+    public SourceModifiedAccessConditions setSourceIfNoneMatch(String sourceIfNoneMatch) {
         this.sourceIfNoneMatch = sourceIfNoneMatch;
         return this;
     }

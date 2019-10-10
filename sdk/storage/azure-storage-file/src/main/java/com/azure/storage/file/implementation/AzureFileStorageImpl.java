@@ -30,8 +30,9 @@ public final class AzureFileStorageImpl {
      *
      * @param version the version value.
      */
-    void setVersion(String version) {
+    AzureFileStorageImpl setVersion(String version) {
         this.version = version;
+        return this;
     }
 
     /**
@@ -53,8 +54,9 @@ public final class AzureFileStorageImpl {
      *
      * @param url the url value.
      */
-    void setUrl(String url) {
+    AzureFileStorageImpl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**

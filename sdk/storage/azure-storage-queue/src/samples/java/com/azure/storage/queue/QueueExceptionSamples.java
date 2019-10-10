@@ -13,11 +13,13 @@ import java.time.Duration;
 import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
 public class QueueExceptionSamples {
+
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
 
     /**
      * The main method shows how to handle the storage exception.
+     *
      * @param args No args needed for the main method.
      * @throws RuntimeException If queueServiceClient failed to create a queue.
      */
@@ -31,20 +33,20 @@ public class QueueExceptionSamples {
         try {
             queueClientResponse = queueServiceClient.createQueueWithResponse(generateRandomName("delete-not-exist",
                 16), null, Duration.ofSeconds(1), new Context("key1", "value1"));
-            System.out.println("Successfully create the queue! Status code: " + queueClientResponse.statusCode());
+            System.out.println("Successfully create the queue! Status code: " + queueClientResponse.getStatusCode());
         } catch (StorageException e) {
-            System.out.println(String.format("Error creating a queue. Error message: %s", e.serviceMessage()));
+            System.out.println(String.format("Error creating a queue. Error message: %s", e.getServiceMessage()));
             throw new RuntimeException(e);
         }
-        QueueClient queueClient = queueClientResponse.value();
+        QueueClient queueClient = queueClientResponse.getValue();
         queueClient.enqueueMessage("Hello, message 1!");
         queueClient.enqueueMessage("Hello, message 2!");
 
         // Delete message with wrong message id.
         try {
-            queueClientResponse.value().dequeueMessages().forEach(
+            queueClientResponse.getValue().dequeueMessages().forEach(
                 msg -> {
-                    queueClient.deleteMessage("wrong id", msg.popReceipt());
+                    queueClient.deleteMessage("wrong id", msg.getPopReceipt());
                 }
             );
         } catch (StorageException e) {
@@ -59,7 +61,7 @@ public class QueueExceptionSamples {
         try {
             queueClient.dequeueMessages().forEach(
                 msg -> {
-                    queueClient.deleteMessage(msg.messageId(), "Wrong Pop Receipt");
+                    queueClient.deleteMessage(msg.getMessageId(), "Wrong Pop Receipt");
                 }
             );
         } catch (StorageException e) {

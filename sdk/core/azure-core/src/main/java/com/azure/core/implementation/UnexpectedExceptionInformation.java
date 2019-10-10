@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  * an error status code.
  */
 public class UnexpectedExceptionInformation {
-    private static final String EXCEPTION_BODY_METHOD = "value";
+    private static final String EXCEPTION_BODY_METHOD = "getValue";
     private Class<? extends HttpResponseException> exceptionType;
     private Class<?> exceptionBodyType;
 
@@ -35,14 +35,14 @@ public class UnexpectedExceptionInformation {
     /**
      * @return the exception type.
      */
-    public Class<? extends HttpResponseException> exceptionType() {
+    public Class<? extends HttpResponseException> getExceptionType() {
         return exceptionType;
     }
 
     /**
      * @return the exception's response body.
      */
-    public Class<?> exceptionBodyType() {
+    public Class<?> getExceptionBodyType() {
         return exceptionBodyType;
     }
 }

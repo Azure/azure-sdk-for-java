@@ -41,10 +41,10 @@ public class EncryptDecryptOperationsAsync {
         // Let's encrypt a simple plain text of size 100 bytes.
         cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
             .subscribe(encryptResult -> {
-                System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+                System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.
-                cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.cipherText())
-                    .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.plainText().length));
+                cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText())
+                    .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.getPlainText().length));
             });
 
         Thread.sleep(5000);
@@ -56,8 +56,8 @@ public class EncryptDecryptOperationsAsync {
 
         // Convert the symmetric key encoded content to Json Web key.
         JsonWebKey symmetricKey = JsonWebKey.fromAes(new SecretKeySpec(keyContent, "AES"))
-            .kty(KeyType.OCT)
-            .keyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
+            .setKty(KeyType.OCT)
+            .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
 
         // Configure the symmetric key in a new crypto client.
         CryptographyAsyncClient symmetricKeyCryptoAsyncClient = new CryptographyClientBuilder()
@@ -68,10 +68,10 @@ public class EncryptDecryptOperationsAsync {
         // Note the implementation of A128CBC in this library uses PKCS7 padding.
         symmetricKeyCryptoAsyncClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null)
             .subscribe(encryptResult -> {
-                System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.cipherText().length, encryptResult.algorithm().toString());
+                System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.
-                symmetricKeyCryptoAsyncClient.decrypt(EncryptionAlgorithm.A128CBC, encryptResult.cipherText(), initializationVector, null, null)
-                    .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.plainText().length));
+                symmetricKeyCryptoAsyncClient.decrypt(EncryptionAlgorithm.A128CBC, encryptResult.getCipherText(), initializationVector, null, null)
+                    .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.getPlainText().length));
             });
 
         //Block main thread to let async operations finish

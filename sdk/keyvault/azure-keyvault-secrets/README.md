@@ -15,8 +15,50 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-secrets</artifactId>
-    <version>4.0.0-preview.2</version>
+    <version>4.0.0-preview.4</version>
 </dependency>
+```
+
+### Default HTTP Client
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+KeyVault Secrets to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
+
+```xml
+<!-- Add KeyVault Secrets dependency without Netty HTTP client -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-keyvault-secrets</artifactId>
+    <version>4.0.0-preview.4</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
+</dependency>
+
+<!-- Add OkHTTP client to use with KeyVault Secrets -->
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-okhttp</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+
+### Configuring HTTP Clients
+When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-secret-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
+
+For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
+
+```java
+HttpClient client = new NettyAsyncHttpClientBuilder()
+    .port(8080)
+    .wiretap(true)
+    .build();
 ```
 
 ### Prerequisites
@@ -123,7 +165,7 @@ SecretClient secretClient = new SecretClientBuilder()
         .buildClient();
 
 Secret secret = secretClient.setSecret("secret_name", "secret_value");
-System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
+System.out.printf("Secret is created with name %s and value %s \n", secret.getName(), secret.getValue());
 ```
 
 ### Retrieve a Secret
@@ -131,7 +173,7 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.name(
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
 Secret secret = secretClient.getSecret("secret_name");
-System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
+System.out.printf("Secret is returned with name %s and value %s \n", secret.getName(), secret.getValue());
 ```
 
 ### Update an existing Secret
@@ -141,9 +183,9 @@ Update an existing Secret by calling `updateSecret`.
 // Get the secret to update.
 Secret secret = secretClient.getSecret("secret_name");
 // Update the expiry time of the secret.
-secret.expires(OffsetDateTime.now().plusDays(30));
-SecretBase updatedSecret = secretClient.updateSecret(secret);
-System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString());
+secret.getProperties().setExpires(OffsetDateTime.now().plusDays(30));
+SecretProperties updatedSecretProperties = secretClient.updateSecretProperties(secret.getProperties());
+System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.getExpires().toString());
 ```
 
 ### Delete a Secret
@@ -151,7 +193,7 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
 DeletedSecret deletedSecret = client.deleteSecret("secret_name");
-System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate().toString());
+System.out.printf("Deleted Secret's deletion date %s", deletedSecret.getDeletedDate().toString());
 ```
 
 ### List Secrets
@@ -159,9 +201,9 @@ System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate
 List the secrets in the key vault by calling `listSecrets`.
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-for (SecretBase secret : client.listSecrets()) {
-    Secret secretWithValue  = client.getSecret(secret);
-    System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());
+for (SecretProperties secretProperties : client.listSecrets()) {
+    Secret secretWithValue  = client.getSecret(secretProperties);
+    System.out.printf("Received secret with name %s and value %s \n", secretWithValue.getName(), secretWithValue.getValue());
 }
 ```
 
@@ -172,6 +214,8 @@ The following sections provide several code snippets covering some of the most c
 - [Update an existing Secret Asynchronously](#update-an-existing-secret-asynchronously)
 - [Delete a Secret Asynchronously](#delete-a-secret-asynchronously)
 - [List Secrets Asynchronously](#list-secrets-asynchronously)
+
+> Note : You should add "System.in.read()" or "Thread.Sleep()" after the function calls in the main class/thread to allow Async functions/operations to execute and finish before the main application/thread exits.
 
 ### Create a Secret Asynchronously
 
@@ -188,7 +232,7 @@ SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .buildAsyncClient();
 
 secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
-  System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value()));
+  System.out.printf("Secret is created with name %s and value %s \n", secret.getName(), secret.getValue()));
 ```
 
 ### Retrieve a Secret Asynchronously
@@ -196,8 +240,8 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret ->
-  System.out.printf("Secret with name %s , value %s \n", secret.name(),
-  secret.value()));
+  System.out.printf("Secret with name %s , value %s \n", secret.getName(),
+  secret.getValue()));
 ```
 
 ### Update an existing Secret Asynchronously
@@ -206,9 +250,9 @@ Update an existing Secret by calling `updateSecret`.
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret -> {
      // Update the expiry time of the secret.
-     secret.expires(OffsetDateTime.now().plusDays(50));
-     secretAsyncClient.updateSecret(secret).subscribe(updatedSecret ->
-         System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().toString()));
+     secret.getProperties().setExpires(OffsetDateTime.now().plusDays(50));
+     secretAsyncClient.updateSecretProperties(secret.getProperties()).subscribe(updatedSecretProperties ->
+         System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.getExpires().toString()));
    });
 ```
 
@@ -217,7 +261,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
 secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecret ->
-   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecret.deletedDate().toString()));
+   System.out.printf("Deleted Secret's deletion time %s \n", deletedSecret.getDeletedDate().toString()));
 ```
 
 ### List Secrets Asynchronously
@@ -227,7 +271,7 @@ List the secrets in the key vault by calling `listSecrets`.
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listSecrets()
   .flatMap(secretAsyncClient::getSecret).subscribe(secret ->
-    System.out.printf("Secret with name %s , value %s \n", secret.name(), secret.value()));
+    System.out.printf("Secret with name %s , value %s \n", secret.getName(), secret.getValue()));
 ```
 
 ## Troubleshooting

@@ -8,14 +8,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.3.0</version>
+    <version>1.5.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.6</version>
 
   <name>Microsoft Azure Netty HTTP Client Library</name>
   <description>This package contains the Netty HTTP client plugin for azure-core.</description>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.4</version>
+      <version>1.0.0-preview.6</version>
     </dependency>
 
     <dependency>
@@ -84,11 +84,17 @@
       <artifactId>reactor-netty</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.6</version>
+    </dependency>
+
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.4</version>
+      <version>1.0.0-preview.6</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

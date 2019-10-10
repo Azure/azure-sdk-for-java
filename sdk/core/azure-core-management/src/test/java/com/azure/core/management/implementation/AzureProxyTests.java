@@ -4,14 +4,14 @@
 package com.azure.core.management.implementation;
 
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.implementation.annotation.Delete;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.ResumeOperation;
-import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.ResumeOperation;
+import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -46,7 +46,7 @@ public class AzureProxyTests {
 
     @Before
     public void beforeTest() {
-        delayInMillisecondsBackup = AzureProxy.defaultDelayInMilliseconds();
+        delayInMillisecondsBackup = AzureProxy.getDefaultDelayInMilliseconds();
         AzureProxy.setDefaultPollingDelayInMilliseconds(0);
     }
 
@@ -518,7 +518,7 @@ public class AzureProxyTests {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         } else {
-                            resource.set(operationStatus.result());
+                            resource.set(operationStatus.getResult());
                         }
                     }
                 });
@@ -561,7 +561,7 @@ public class AzureProxyTests {
                             }
                             inProgressCount.incrementAndGet();
                         } else {
-                            resource.set(operationStatus.result());
+                            resource.set(operationStatus.getResult());
                         }
                     }
                 });
@@ -570,7 +570,7 @@ public class AzureProxyTests {
         PollStrategy.PollStrategyData pollData = null;
         try {
             operationDescription = mapper.readValue(data.toString(), OperationDescription.class);
-            pollData = (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
+            pollData = (PollStrategy.PollStrategyData) operationDescription.getPollStrategyData();
         } catch (IOException e) {
             fail("Error deserializing OperationDescription object");
             e.printStackTrace();
@@ -594,7 +594,7 @@ public class AzureProxyTests {
                             }
                             inProgressCount.incrementAndGet();
                         } else {
-                            resource.set(operationStatus.result());
+                            resource.set(operationStatus.getResult());
                         }
                     }
                 });
@@ -616,7 +616,7 @@ public class AzureProxyTests {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         } else {
-                            resource.set(operationStatus.result());
+                            resource.set(operationStatus.getResult());
                         }
                     }
                 });
@@ -646,7 +646,7 @@ public class AzureProxyTests {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         } else {
-                            resource.set(operationStatus.result());
+                            resource.set(operationStatus.getResult());
                         }
                     }
                 });
@@ -676,7 +676,7 @@ public class AzureProxyTests {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         } else {
-                            resource.set(operationStatus.result());
+                            resource.set(operationStatus.getResult());
                         }
                     }
                 });
@@ -846,7 +846,7 @@ public class AzureProxyTests {
             service.deleteAsyncWithForbiddenResponse().block();
             fail("Expected RestException to be thrown.");
         } catch (HttpResponseException e) {
-            assertEquals(403, e.response().statusCode());
+            assertEquals(403, e.getResponse().getStatusCode());
             assertEquals("Status code 403, (empty body)", e.getMessage());
         }
     }

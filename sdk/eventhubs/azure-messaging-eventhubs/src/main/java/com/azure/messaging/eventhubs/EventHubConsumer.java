@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -24,11 +25,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * consumer group.
  *
  * <ul>
- * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
+ * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#getOwnerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * {@link EventHubConsumerOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
  * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
@@ -108,6 +109,18 @@ public class EventHubConsumer implements Closeable {
             return Flux.fromIterable(x);
         }).block();
         return new IterableStream<>(map);
+    }
+
+    /**
+     * A set of information about the last enqueued event of a partition, as observed by the consumer as events are
+     * received from the Event Hubs service.
+     *
+     * @return {@code null} if {@link EventHubConsumerOptions#getTrackLastEnqueuedEventProperties()} was not set when
+     *     creating the consumer. Otherwise, the properties describing the most recently enqueued event in the
+     *     partition.
+     */
+    public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
+        return consumer.getLastEnqueuedEventProperties();
     }
 
     /**

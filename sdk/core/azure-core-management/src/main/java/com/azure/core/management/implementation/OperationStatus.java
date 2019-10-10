@@ -28,7 +28,7 @@ public class OperationStatus<T> {
         this.pollStrategy = pollStrategy;
         this.result = null;
         this.error = null;
-        this.status = pollStrategy.status();
+        this.status = pollStrategy.getStatus();
     }
 
     /**
@@ -61,7 +61,7 @@ public class OperationStatus<T> {
     /**
      * @return the current status of the long running operation.
      */
-    public String status() {
+    public String getStatus() {
         return status;
     }
 
@@ -70,7 +70,7 @@ public class OperationStatus<T> {
      * not done or if the operation failed, then return null.
      * @return The result of the operation, or null if the operation isn't done yet or if it failed.
      */
-    public T result() {
+    public T getResult() {
         return result;
     }
 
@@ -79,7 +79,7 @@ public class OperationStatus<T> {
      * done or did not fail, then return null.
      * @return The error of the operation, or null if the operation isn't done or didn't fail.
      */
-    public HttpResponseException error() {
+    public HttpResponseException getError() {
         return error;
     }
 
@@ -93,8 +93,8 @@ public class OperationStatus<T> {
         }
 
         return new OperationDescription(
-                this.pollStrategy.methodParser().fullyQualifiedMethodName(),
-                this.pollStrategy.strategyData(),
+                this.pollStrategy.getMethodParser().getFullyQualifiedMethodName(),
+                this.pollStrategy.getStrategyData(),
                 this.originalHttpRequest);
     }
 

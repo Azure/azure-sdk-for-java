@@ -14,12 +14,14 @@ import rx.Observable;
 import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountUpdateParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.AccessTier;
+import com.microsoft.azure.management.storage.v2019_04_01.AzureFilesIdentityBasedAuthentication;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2019_04_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2019_04_01.Encryption;
 import com.microsoft.azure.management.storage.v2019_04_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2019_04_01.Identity;
 import com.microsoft.azure.management.storage.v2019_04_01.Kind;
+import com.microsoft.azure.management.storage.v2019_04_01.LargeFileSharesState;
 import com.microsoft.azure.management.storage.v2019_04_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_04_01.Endpoints;
 import com.microsoft.azure.management.storage.v2019_04_01.ProvisioningState;
@@ -88,6 +90,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
+        return this.inner().azureFilesIdentityBasedAuthentication();
+    }
+
+    @Override
     public DateTime creationTime() {
         return this.inner().creationTime();
     }
@@ -95,11 +102,6 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public CustomDomain customDomain() {
         return this.inner().customDomain();
-    }
-
-    @Override
-    public Boolean enableAzureFilesAadIntegration() {
-        return this.inner().enableAzureFilesAadIntegration();
     }
 
     @Override
@@ -135,6 +137,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public Kind kind() {
         return this.inner().kind();
+    }
+
+    @Override
+    public LargeFileSharesState largeFileSharesState() {
+        return this.inner().largeFileSharesState();
     }
 
     @Override
@@ -229,21 +236,21 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
-    public StorageAccountImpl withCustomDomain(CustomDomain customDomain) {
+    public StorageAccountImpl withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         if (isInCreateMode()) {
-            this.createParameter.withCustomDomain(customDomain);
+            this.createParameter.withAzureFilesIdentityBasedAuthentication(azureFilesIdentityBasedAuthentication);
         } else {
-            this.updateParameter.withCustomDomain(customDomain);
+            this.updateParameter.withAzureFilesIdentityBasedAuthentication(azureFilesIdentityBasedAuthentication);
         }
         return this;
     }
 
     @Override
-    public StorageAccountImpl withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration) {
+    public StorageAccountImpl withCustomDomain(CustomDomain customDomain) {
         if (isInCreateMode()) {
-            this.createParameter.withEnableAzureFilesAadIntegration(enableAzureFilesAadIntegration);
+            this.createParameter.withCustomDomain(customDomain);
         } else {
-            this.updateParameter.withEnableAzureFilesAadIntegration(enableAzureFilesAadIntegration);
+            this.updateParameter.withCustomDomain(customDomain);
         }
         return this;
     }
@@ -274,6 +281,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
             this.createParameter.withIdentity(identity);
         } else {
             this.updateParameter.withIdentity(identity);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+        if (isInCreateMode()) {
+            this.createParameter.withLargeFileSharesState(largeFileSharesState);
+        } else {
+            this.updateParameter.withLargeFileSharesState(largeFileSharesState);
         }
         return this;
     }

@@ -29,7 +29,7 @@ public class AsyncSamples {
             .then(queueAsyncClient.enqueueMessage("This is message 2"))
             .subscribe(
                 response -> {
-                    System.out.println("Message successfully equeueed by queueAsyncClient. Message id:" + response.messageId());
+                    System.out.println("Message successfully equeueed by queueAsyncClient. Message id:" + response.getMessageId());
                 },
                 err -> {
                     System.out.println("Error thrown when enqueue the message. Error message: " + err.getMessage());

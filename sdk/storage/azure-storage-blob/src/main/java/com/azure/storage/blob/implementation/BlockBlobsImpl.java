@@ -4,30 +4,30 @@
 
 package com.azure.storage.blob.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.BodyParam;
-import com.azure.core.implementation.annotation.ExpectedResponses;
-import com.azure.core.implementation.annotation.Get;
-import com.azure.core.implementation.annotation.HeaderParam;
-import com.azure.core.implementation.annotation.Host;
-import com.azure.core.implementation.annotation.HostParam;
-import com.azure.core.implementation.annotation.PathParam;
-import com.azure.core.implementation.annotation.Put;
-import com.azure.core.implementation.annotation.QueryParam;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceInterface;
-import com.azure.core.implementation.annotation.ServiceMethod;
-import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AccessTierOptional;
+import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobsGetBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobsStageBlockFromURLResponse;
-import com.azure.storage.blob.models.BlockBlobsStageBlockResponse;
-import com.azure.storage.blob.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
@@ -78,7 +78,7 @@ public final class BlockBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
@@ -93,7 +93,7 @@ public final class BlockBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -116,7 +116,7 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final AccessTierOptional tier = null;
+        final AccessTier tier = null;
         final String requestId = null;
         final String blobType = "BlockBlob";
         final String blobContentType = null;
@@ -156,63 +156,63 @@ public final class BlockBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, Map<String, String> metadata, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, Map<String, String> metadata, AccessTier tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String blobType = "BlockBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
-            blobContentType = blobHTTPHeaders.blobContentType();
+            blobContentType = blobHTTPHeaders.getBlobContentType();
         }
         String blobContentEncoding = null;
         if (blobHTTPHeaders != null) {
-            blobContentEncoding = blobHTTPHeaders.blobContentEncoding();
+            blobContentEncoding = blobHTTPHeaders.getBlobContentEncoding();
         }
         String blobContentLanguage = null;
         if (blobHTTPHeaders != null) {
-            blobContentLanguage = blobHTTPHeaders.blobContentLanguage();
+            blobContentLanguage = blobHTTPHeaders.getBlobContentLanguage();
         }
         byte[] blobContentMD5 = null;
         if (blobHTTPHeaders != null) {
-            blobContentMD5 = blobHTTPHeaders.blobContentMD5();
+            blobContentMD5 = blobHTTPHeaders.getBlobContentMD5();
         }
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
-            blobCacheControl = blobHTTPHeaders.blobCacheControl();
+            blobCacheControl = blobHTTPHeaders.getBlobCacheControl();
         }
         String blobContentDisposition = null;
         if (blobHTTPHeaders != null) {
-            blobContentDisposition = blobHTTPHeaders.blobContentDisposition();
+            blobContentDisposition = blobHTTPHeaders.getBlobContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -269,19 +269,19 @@ public final class BlockBlobsImpl {
         final String comp = "block";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
@@ -344,35 +344,35 @@ public final class BlockBlobsImpl {
         final String comp = "block";
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         OffsetDateTime sourceIfModifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfModifiedSince = sourceModifiedAccessConditions.sourceIfModifiedSince();
+            sourceIfModifiedSince = sourceModifiedAccessConditions.getSourceIfModifiedSince();
         }
         OffsetDateTime sourceIfUnmodifiedSince = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.sourceIfUnmodifiedSince();
+            sourceIfUnmodifiedSince = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
         }
         String sourceIfMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfMatch = sourceModifiedAccessConditions.sourceIfMatch();
+            sourceIfMatch = sourceModifiedAccessConditions.getSourceIfMatch();
         }
         String sourceIfNoneMatch = null;
         if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatch = sourceModifiedAccessConditions.sourceIfNoneMatch();
+            sourceIfNoneMatch = sourceModifiedAccessConditions.getSourceIfNoneMatch();
         }
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
@@ -395,7 +395,7 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final AccessTierOptional tier = null;
+        final AccessTier tier = null;
         final String requestId = null;
         final String comp = "blocklist";
         final String blobCacheControl = null;
@@ -438,63 +438,63 @@ public final class BlockBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, AccessTier tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "blocklist";
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {
-            blobCacheControl = blobHTTPHeaders.blobCacheControl();
+            blobCacheControl = blobHTTPHeaders.getBlobCacheControl();
         }
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
-            blobContentType = blobHTTPHeaders.blobContentType();
+            blobContentType = blobHTTPHeaders.getBlobContentType();
         }
         String blobContentEncoding = null;
         if (blobHTTPHeaders != null) {
-            blobContentEncoding = blobHTTPHeaders.blobContentEncoding();
+            blobContentEncoding = blobHTTPHeaders.getBlobContentEncoding();
         }
         String blobContentLanguage = null;
         if (blobHTTPHeaders != null) {
-            blobContentLanguage = blobHTTPHeaders.blobContentLanguage();
+            blobContentLanguage = blobHTTPHeaders.getBlobContentLanguage();
         }
         byte[] blobContentMD5 = null;
         if (blobHTTPHeaders != null) {
-            blobContentMD5 = blobHTTPHeaders.blobContentMD5();
+            blobContentMD5 = blobHTTPHeaders.getBlobContentMD5();
         }
         String blobContentDisposition = null;
         if (blobHTTPHeaders != null) {
-            blobContentDisposition = blobHTTPHeaders.blobContentDisposition();
+            blobContentDisposition = blobHTTPHeaders.getBlobContentDisposition();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         String encryptionKey = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.encryptionKey();
+            encryptionKey = cpkInfo.getEncryptionKey();
         }
         String encryptionKeySha256 = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.encryptionKeySha256();
+            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
         }
         EncryptionAlgorithmType encryptionAlgorithm = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.encryptionAlgorithm();
+            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
         }
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifModifiedSince = modifiedAccessConditions.ifModifiedSince();
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         OffsetDateTime ifUnmodifiedSince = null;
         if (modifiedAccessConditions != null) {
-            ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
-            ifMatch = modifiedAccessConditions.ifMatch();
+            ifMatch = modifiedAccessConditions.getIfMatch();
         }
         String ifNoneMatch = null;
         if (modifiedAccessConditions != null) {
-            ifNoneMatch = modifiedAccessConditions.ifNoneMatch();
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
@@ -543,7 +543,7 @@ public final class BlockBlobsImpl {
         final String comp = "blocklist";
         String leaseId = null;
         if (leaseAccessConditions != null) {
-            leaseId = leaseAccessConditions.leaseId();
+            leaseId = leaseAccessConditions.getLeaseId();
         }
         return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
     }

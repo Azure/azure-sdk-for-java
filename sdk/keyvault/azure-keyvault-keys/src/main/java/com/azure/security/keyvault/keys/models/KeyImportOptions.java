@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
-public class KeyImportOptions extends KeyBase {
+public class KeyImportOptions extends KeyProperties {
 
     /**
      * The Key Material.
@@ -32,7 +32,7 @@ public class KeyImportOptions extends KeyBase {
      * @param hsm The hsm value to set.
      * @return the KeyImportOptions object itself.
      */
-    public KeyImportOptions hsm(Boolean hsm) {
+    public KeyImportOptions setHsm(Boolean hsm) {
         this.hsm = hsm;
         return this;
     }
@@ -41,7 +41,7 @@ public class KeyImportOptions extends KeyBase {
      * Get the hsm value of the key being imported.
      * @return the hsm value.
      */
-    public Boolean hsm() {
+    public Boolean isHsm() {
         return this.hsm;
     }
 
@@ -49,7 +49,7 @@ public class KeyImportOptions extends KeyBase {
      * Get the key material of the key being imported.
      * @return the key material.
      */
-    public JsonWebKey keyMaterial() {
+    public JsonWebKey getKeyMaterial() {
         return keyMaterial;
     }
 

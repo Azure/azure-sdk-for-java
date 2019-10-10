@@ -8,7 +8,10 @@ import java.util.List;
 /**
  * Response of a REST API that returns page.
  *
- * @param <T> the type items in the page
+ * @see Page
+ * @see Response
+ *
+ * @param <T> The type of items in the page.
  */
 public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable {
 
@@ -17,7 +20,7 @@ public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable 
      *
      * @return The items in the page.
      */
-    default List<T> value() {
-        return items();
+    default List<T> getValue() {
+        return getItems();
     }
 }

@@ -3,10 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.IntegrationTestBase;
-import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.apache.qpid.proton.Proton;
@@ -24,7 +23,6 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +43,7 @@ public class BackCompatTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
 
+    private MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubAsyncClient client;
     private EventHubAsyncProducer producer;
     private EventHubAsyncConsumer consumer;
@@ -57,20 +56,17 @@ public class BackCompatTest extends IntegrationTestBase {
     public TestName testName = new TestName();
 
     @Override
-    protected String testName() {
+    protected String getTestName() {
         return testName.getMethodName();
     }
 
     @Override
     protected void beforeTest() {
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
-        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider, tracerProvider);
+        client = createBuilder().buildAsyncClient();
         consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
-            .partitionId(PARTITION_ID);
+            .setPartitionId(PARTITION_ID);
         producer = client.createProducer(producerOptions);
     }
 
@@ -106,7 +102,7 @@ public class BackCompatTest extends IntegrationTestBase {
         message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes(UTF_8)))));
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
 
-        final EventData eventData = new EventData(message);
+        final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
         StepVerifier.create(consumer.receive().filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
@@ -116,12 +112,12 @@ public class BackCompatTest extends IntegrationTestBase {
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {
-        Assert.assertEquals(expected.size(), event.properties().size());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(event.body()).toString());
+        Assert.assertEquals(expected.size(), event.getProperties().size());
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(event.getBody()).toString());
 
         expected.forEach((key, value) -> {
-            Assert.assertTrue(event.properties().containsKey(key));
-            Assert.assertEquals(value, event.properties().get(key));
+            Assert.assertTrue(event.getProperties().containsKey(key));
+            Assert.assertEquals(value, event.getProperties().get(key));
         });
     }
 }

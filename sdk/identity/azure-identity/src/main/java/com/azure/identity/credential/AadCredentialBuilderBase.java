@@ -9,6 +9,7 @@ package com.azure.identity.credential;
  */
 public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
     String clientId;
+    String tenantId;
 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
@@ -17,7 +18,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
-        this.identityClientOptions.authorityHost(authorityHost);
+        this.identityClientOptions.setAuthorityHost(authorityHost);
         return (T) this;
     }
 
@@ -29,6 +30,17 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
         this.clientId = clientId;
+        return (T) this;
+    }
+
+    /**
+     * Sets the tenant ID of the application.
+     * @param tenantId the tenant ID of the application.
+     * @return itself
+     */
+    @SuppressWarnings("unchecked")
+    public T tenantId(String tenantId) {
+        this.tenantId = tenantId;
         return (T) this;
     }
 }

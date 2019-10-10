@@ -23,6 +23,8 @@ import com.microsoft.azure.management.storage.v2019_04_01.Usages;
 import com.microsoft.azure.management.storage.v2019_04_01.ManagementPolicies;
 import com.microsoft.azure.management.storage.v2019_04_01.BlobServices;
 import com.microsoft.azure.management.storage.v2019_04_01.BlobContainers;
+import com.microsoft.azure.management.storage.v2019_04_01.FileServices;
+import com.microsoft.azure.management.storage.v2019_04_01.FileShares;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -37,6 +39,8 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     private ManagementPolicies managementPolicies;
     private BlobServices blobServices;
     private BlobContainers blobContainers;
+    private FileServices fileServices;
+    private FileShares fileShares;
     /**
     * Get a Configurable instance that can be used to create StorageManager with optional configuration.
     *
@@ -152,6 +156,26 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
             this.blobContainers = new BlobContainersImpl(this);
         }
         return this.blobContainers;
+    }
+
+    /**
+     * @return Entry point to manage FileServices.
+     */
+    public FileServices fileServices() {
+        if (this.fileServices == null) {
+            this.fileServices = new FileServicesImpl(this);
+        }
+        return this.fileServices;
+    }
+
+    /**
+     * @return Entry point to manage FileShares.
+     */
+    public FileShares fileShares() {
+        if (this.fileShares == null) {
+            this.fileShares = new FileSharesImpl(this);
+        }
+        return this.fileShares;
     }
 
     /**

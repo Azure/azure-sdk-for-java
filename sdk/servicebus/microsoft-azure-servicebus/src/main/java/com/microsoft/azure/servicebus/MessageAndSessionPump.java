@@ -151,7 +151,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
             receiveMessageFuture.handleAsync((message, receiveEx) -> {
                 if (receiveEx != null) {
                     receiveEx = ExceptionUtil.extractAsyncCompletionCause(receiveEx);
-                    TRACE_LOGGER.error("Receiving message from entity '{}' failed.", this.entityPath, receiveEx);
+                    TRACE_LOGGER.info("Receiving message from entity '{}' failed.", this.entityPath, receiveEx);
                     this.notifyExceptionToMessageHandler(receiveEx, ExceptionPhase.RECEIVE);
                     this.receiveAndPumpMessage();
                 } else {
@@ -176,7 +176,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                             TRACE_LOGGER.debug("Invoking onMessage with message containing sequence number '{}'", message.getSequenceNumber());
                             onMessageFuture = COMPLETED_FUTURE.thenComposeAsync((v) -> this.messageHandler.onMessageAsync(message), this.customCodeExecutor);
                         } catch (Exception onMessageSyncEx) {
-                            TRACE_LOGGER.error("Invocation of onMessage with message containing sequence number '{}' threw unexpected exception", message.getSequenceNumber(), onMessageSyncEx);
+                            TRACE_LOGGER.info("Invocation of onMessage with message containing sequence number '{}' threw unexpected exception", message.getSequenceNumber(), onMessageSyncEx);
                             onMessageFuture = new CompletableFuture<Void>();
                             onMessageFuture.completeExceptionally(onMessageSyncEx);
                         }
@@ -189,7 +189,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         onMessageFuture.handleAsync((v, onMessageEx) -> {
                             if (onMessageEx != null) {
                                 onMessageEx = ExceptionUtil.extractAsyncCompletionCause(onMessageEx);
-                                TRACE_LOGGER.error("onMessage with message containing sequence number '{}' threw exception", message.getSequenceNumber(), onMessageEx);
+                                TRACE_LOGGER.info("onMessage with message containing sequence number '{}' threw exception", message.getSequenceNumber(), onMessageEx);
                                 this.notifyExceptionToMessageHandler(onMessageEx, ExceptionPhase.USERCALLBACK);
                             }
                             if (this.innerReceiver.getReceiveMode() == ReceiveMode.PEEKLOCK) {
@@ -222,7 +222,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                                 updateDispositionFuture.handleAsync((u, updateDispositionEx) -> {
                                     if (updateDispositionEx != null) {
                                         updateDispositionEx = ExceptionUtil.extractAsyncCompletionCause(updateDispositionEx);
-                                        TRACE_LOGGER.error("{} message with sequence number '{}' failed", dispositionPhase == ExceptionPhase.COMPLETE ? "Completing" : "Abandoning", message.getSequenceNumber(), updateDispositionEx);
+                                        TRACE_LOGGER.info("{} message with sequence number '{}' failed", dispositionPhase == ExceptionPhase.COMPLETE ? "Completing" : "Abandoning", message.getSequenceNumber(), updateDispositionEx);
                                         this.notifyExceptionToMessageHandler(updateDispositionEx, dispositionPhase);
                                     }
                                     this.receiveAndPumpMessage();
@@ -253,7 +253,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
                     // Timeout exception means no session available.. it is expected so no need to notify client
                     if (!(acceptSessionEx instanceof TimeoutException)) {
-                        TRACE_LOGGER.error("Accepting a session from entity '{}' failed.", this.entityPath, acceptSessionEx);
+                        TRACE_LOGGER.info("Accepting a session from entity '{}' failed.", this.entityPath, acceptSessionEx);
                         this.notifyExceptionToSessionHandler(acceptSessionEx, ExceptionPhase.ACCEPTSESSION);
                     }
 
@@ -297,7 +297,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
             receiverFuture.handleAsync((message, receiveEx) -> {
                 if (receiveEx != null) {
                     receiveEx = ExceptionUtil.extractAsyncCompletionCause(receiveEx);
-                    TRACE_LOGGER.error("Receiving message from session '{}' on entity '{}' failed.", session.getSessionId(), this.entityPath, receiveEx);
+                    TRACE_LOGGER.info("Receiving message from session '{}' on entity '{}' failed.", session.getSessionId(), this.entityPath, receiveEx);
                     this.notifyExceptionToSessionHandler(receiveEx, ExceptionPhase.RECEIVE);
                     sessionTracker.shouldRetryOnNoMessageOrException().thenAcceptAsync((shouldRetry) -> {
                         if (shouldRetry) {
@@ -317,7 +317,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         sessionTracker.notifyMessageReceived();
                         // There is no need to renew message locks as session messages are locked for a day
                         ScheduledFuture<?> renewCancelTimer = Timer.schedule(() -> {
-                            TRACE_LOGGER.warn("onMessage task timed out. Cancelling loop to renew lock on session '{}'", session.getSessionId());
+                            TRACE_LOGGER.info("onMessage task timed out. Cancelling loop to renew lock on session '{}'", session.getSessionId());
                             sessionTracker.sessionRenewLockLoop.cancelLoop();
                         },
                             this.sessionHandlerOptions.getMaxAutoRenewDuration(),
@@ -328,7 +328,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         try {
                             onMessageFuture = COMPLETED_FUTURE.thenComposeAsync((v) -> this.sessionHandler.onMessageAsync(session, message), this.customCodeExecutor);
                         } catch (Exception onMessageSyncEx) {
-                            TRACE_LOGGER.error("Invocation of onMessage with message containing sequence number '{}' threw unexpected exception", message.getSequenceNumber(), onMessageSyncEx);
+                            TRACE_LOGGER.info("Invocation of onMessage with message containing sequence number '{}' threw unexpected exception", message.getSequenceNumber(), onMessageSyncEx);
                             onMessageFuture = new CompletableFuture<Void>();
                             onMessageFuture.completeExceptionally(onMessageSyncEx);
                         }
@@ -342,7 +342,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                             renewCancelTimer.cancel(true);
                             if (onMessageEx != null) {
                                 onMessageEx = ExceptionUtil.extractAsyncCompletionCause(onMessageEx);
-                                TRACE_LOGGER.error("onMessage with message containing sequence number '{}' threw exception", message.getSequenceNumber(), onMessageEx);
+                                TRACE_LOGGER.info("onMessage with message containing sequence number '{}' threw exception", message.getSequenceNumber(), onMessageEx);
                                 this.notifyExceptionToSessionHandler(onMessageEx, ExceptionPhase.USERCALLBACK);
                             }
                             if (this.receiveMode == ReceiveMode.PEEKLOCK) {
@@ -371,7 +371,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                                 updateDispositionFuture.handleAsync((u, updateDispositionEx) -> {
                                     if (updateDispositionEx != null) {
                                         updateDispositionEx = ExceptionUtil.extractAsyncCompletionCause(updateDispositionEx);
-                                        TRACE_LOGGER.error("{} message with sequence number '{}' failed", dispositionPhase == ExceptionPhase.COMPLETE ? "Completing" : "Abandoning", message.getSequenceNumber(), updateDispositionEx);
+                                        TRACE_LOGGER.info("{} message with sequence number '{}' failed", dispositionPhase == ExceptionPhase.COMPLETE ? "Completing" : "Abandoning", message.getSequenceNumber(), updateDispositionEx);
                                         this.notifyExceptionToSessionHandler(updateDispositionEx, dispositionPhase);
                                     }
                                     this.receiveFromSessionAndPumpMessage(sessionTracker);
@@ -448,7 +448,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
                 // close current session and accept another session
                 ScheduledFuture<?> renewCancelTimer = Timer.schedule(() -> {
-                    TRACE_LOGGER.warn("Closing session timed out. Cancelling loop to renew lock on session '{}'", this.session.getSessionId());
+                    TRACE_LOGGER.info("Closing session timed out. Cancelling loop to renew lock on session '{}'", this.session.getSessionId());
                     SessionTracker.this.sessionRenewLockLoop.cancelLoop();
                 },
                     this.messageAndSessionPump.sessionHandlerOptions.getMaxAutoRenewDuration(),
@@ -458,7 +458,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                 try {
                     onCloseFuture = COMPLETED_FUTURE.thenComposeAsync((v) -> this.messageAndSessionPump.sessionHandler.OnCloseSessionAsync(session), this.messageAndSessionPump.customCodeExecutor);
                 } catch (Exception onCloseSyncEx) {
-                    TRACE_LOGGER.error("Invocation of onCloseSession on session '{}' threw unexpected exception", this.session.getSessionId(), onCloseSyncEx);
+                    TRACE_LOGGER.info("Invocation of onCloseSession on session '{}' threw unexpected exception", this.session.getSessionId(), onCloseSyncEx);
                     onCloseFuture = new CompletableFuture<>();
                     onCloseFuture.completeExceptionally(onCloseSyncEx);
                 }
@@ -472,7 +472,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                     renewCancelTimer.cancel(true);
                     if (onCloseEx != null) {
                         onCloseEx = ExceptionUtil.extractAsyncCompletionCause(onCloseEx);
-                        TRACE_LOGGER.error("onCloseSession on session '{}' threw exception", session.getSessionId(), onCloseEx);
+                        TRACE_LOGGER.info("onCloseSession on session '{}' threw exception", session.getSessionId(), onCloseEx);
                         this.messageAndSessionPump.notifyExceptionToSessionHandler(onCloseEx, ExceptionPhase.USERCALLBACK);
                     }
 
@@ -533,7 +533,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
             if (remainingTime.isNegative()) {
                 // Lock likely expired. May be there is clock skew. Assume some minimum time
                 remainingTime = MessageAndSessionPump.MINIMUM_MESSAGE_LOCK_VALIDITY;
-                TRACE_LOGGER.warn("Lock of '{}' already expired. May be there is clock skew. Still trying to renew lock", identifier);
+                TRACE_LOGGER.info("Lock of '{}' already expired. May be there is clock skew. Still trying to renew lock", identifier);
             }
 
             Duration buffer = remainingTime.dividedBy(2).compareTo(MAXIMUM_RENEW_LOCK_BUFFER) > 0 ? MAXIMUM_RENEW_LOCK_BUFFER : remainingTime.dividedBy(2);
@@ -574,7 +574,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         this.innerReceiver.renewMessageLockAsync(message).handleAsync((v, renewLockEx) -> {
                             if (renewLockEx != null) {
                                 renewLockEx = ExceptionUtil.extractAsyncCompletionCause(renewLockEx);
-                                TRACE_LOGGER.error("Renewing lock on '{}' failed", this.messageIdentifier, renewLockEx);
+                                TRACE_LOGGER.info("Renewing lock on '{}' failed", this.messageIdentifier, renewLockEx);
                                 this.messageAndSessionPump.notifyExceptionToMessageHandler(renewLockEx, ExceptionPhase.RENEWMESSAGELOCK);
                                 if (!(renewLockEx instanceof MessageLockLostException || renewLockEx instanceof OperationCancelledException)) {
                                     this.loop();
@@ -628,7 +628,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         this.session.renewSessionLockAsync().handleAsync((v, renewLockEx) -> {
                             if (renewLockEx != null) {
                                 renewLockEx = ExceptionUtil.extractAsyncCompletionCause(renewLockEx);
-                                TRACE_LOGGER.error("Renewing lock on '{}' failed", this.sessionIdentifier, renewLockEx);
+                                TRACE_LOGGER.info("Renewing lock on '{}' failed", this.sessionIdentifier, renewLockEx);
                                 this.messageAndSessionPump.notifyExceptionToSessionHandler(renewLockEx, ExceptionPhase.RENEWSESSIONLOCK);
                                 if (!(renewLockEx instanceof SessionLockLostException || renewLockEx instanceof OperationCancelledException)) {
                                     this.loop();

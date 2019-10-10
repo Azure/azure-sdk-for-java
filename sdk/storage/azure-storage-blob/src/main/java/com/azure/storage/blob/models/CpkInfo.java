@@ -4,7 +4,7 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -47,7 +47,7 @@ public final class CpkInfo {
      *
      * @return the encryptionKey value.
      */
-    public String encryptionKey() {
+    public String getEncryptionKey() {
         return this.encryptionKey;
     }
 
@@ -60,7 +60,7 @@ public final class CpkInfo {
      * @param encryptionKey the encryptionKey value to set.
      * @return the CpkInfo object itself.
      */
-    public CpkInfo encryptionKey(String encryptionKey) {
+    public CpkInfo setEncryptionKey(String encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
     }
@@ -72,7 +72,7 @@ public final class CpkInfo {
      *
      * @return the encryptionKeySha256 value.
      */
-    public String encryptionKeySha256() {
+    public String getEncryptionKeySha256() {
         return this.encryptionKeySha256;
     }
 
@@ -84,7 +84,7 @@ public final class CpkInfo {
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the CpkInfo object itself.
      */
-    public CpkInfo encryptionKeySha256(String encryptionKeySha256) {
+    public CpkInfo setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
@@ -97,7 +97,7 @@ public final class CpkInfo {
      *
      * @return the encryptionAlgorithm value.
      */
-    public EncryptionAlgorithmType encryptionAlgorithm() {
+    public EncryptionAlgorithmType getEncryptionAlgorithm() {
         return this.encryptionAlgorithm;
     }
 
@@ -110,7 +110,7 @@ public final class CpkInfo {
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the CpkInfo object itself.
      */
-    public CpkInfo encryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {
+    public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
         return this;
     }

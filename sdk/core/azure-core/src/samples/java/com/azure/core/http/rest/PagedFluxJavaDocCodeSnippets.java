@@ -3,10 +3,13 @@
 
 package com.azure.core.http.rest;
 
+import org.reactivestreams.Subscription;
+import reactor.core.CoreSubscriber;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Mono;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
-import reactor.core.CoreSubscriber;
-import reactor.core.publisher.Mono;
 
 /**
  * Code snippets for {@link PagedFlux}
@@ -22,11 +25,9 @@ public final class PagedFluxJavaDocCodeSnippets {
         // Subscribe to process one item at a time
         pagedFlux
             .log()
-            .doOnSubscribe(
-                ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
-            .doOnNext(item -> System.out.println("Processing item " + item))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .subscribe(item -> System.out.println("Processing item " + item),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedflux.items
 
         // BEGIN: com.azure.core.http.rest.pagedflux.pages
@@ -34,11 +35,9 @@ public final class PagedFluxJavaDocCodeSnippets {
         pagedFlux
             .byPage()
             .log()
-            .doOnSubscribe(ignoredVal -> System.out
-                .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedflux.pages
 
         // BEGIN: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
@@ -48,13 +47,14 @@ public final class PagedFluxJavaDocCodeSnippets {
         pagedFlux
             .byPage(continuationToken)
             .log()
-            .doOnSubscribe(ignoredVal -> System.out
-                .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .doOnSubscribe(ignored -> System.out.println(
+                "Subscribed to paged flux processing pages starting from: " + continuationToken))
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
     }
+
     /**
      * Code snippets for creating an instance of {@link PagedFlux}
      * @return An instance of {@link PagedFlux}
@@ -93,11 +93,11 @@ public final class PagedFluxJavaDocCodeSnippets {
         // Start processing the results from first page
         pagedFlux.byPage()
             .log()
-            .doOnSubscribe(ignoredVal -> System.out
-                .println("Subscribed to paged flux processing pages starting from first page"))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .doOnSubscribe(ignoredVal -> System.out.println(
+                "Subscribed to paged flux processing pages starting from first page"))
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedflux.bypage
 
         // BEGIN: com.azure.core.http.rest.pagedflux.bypage#String
@@ -107,9 +107,9 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
-            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
+                error -> System.err.println("Error occurred " + error),
+                () -> System.out.println("Completed processing."));
         // END: com.azure.core.http.rest.pagedflux.bypage#String
     }
 
@@ -120,11 +120,23 @@ public final class PagedFluxJavaDocCodeSnippets {
         PagedFlux<Integer> pagedFlux = createAnInstance();
 
         // BEGIN: com.azure.core.http.rest.pagedflux.subscribe
-        pagedFlux.log()
-            .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
-            .doOnNext(item -> System.out.println("Processing item " + item))
-            .doOnComplete(() -> System.out.println("Completed processing"))
-            .subscribe();
+        pagedFlux.subscribe(new BaseSubscriber<Integer>() {
+            @Override
+            protected void hookOnSubscribe(Subscription subscription) {
+                System.out.println("Subscribed to paged flux processing items");
+                super.hookOnSubscribe(subscription);
+            }
+
+            @Override
+            protected void hookOnNext(Integer value) {
+                System.out.println("Processing item " + value);
+            }
+
+            @Override
+            protected void hookOnComplete() {
+                System.out.println("Completed processing");
+            }
+        });
         // END: com.azure.core.http.rest.pagedflux.subscribe
     }
 

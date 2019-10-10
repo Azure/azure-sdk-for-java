@@ -112,10 +112,10 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
     public Observable<StorageAccount> listAsync() {
         StorageAccountsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<StorageAccountInner>, Observable<StorageAccountInner>>() {
+        .flatMapIterable(new Func1<Page<StorageAccountInner>, Iterable<StorageAccountInner>>() {
             @Override
-            public Observable<StorageAccountInner> call(Page<StorageAccountInner> innerPage) {
-                return Observable.from(innerPage.items());
+            public Iterable<StorageAccountInner> call(Page<StorageAccountInner> page) {
+                return page.items();
             }
         })
         .map(new Func1<StorageAccountInner, StorageAccount>() {

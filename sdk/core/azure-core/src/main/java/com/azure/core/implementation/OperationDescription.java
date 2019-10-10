@@ -44,9 +44,9 @@ public class OperationDescription implements Serializable {
                                 HttpRequest originalHttpRequest) {
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.pollStrategyData = pollStrategyData;
-        this.headers = originalHttpRequest.headers().toMap();
-        this.url = originalHttpRequest.url();
-        this.httpMethod = originalHttpRequest.httpMethod().toString();
+        this.headers = originalHttpRequest.getHeaders().toMap();
+        this.url = originalHttpRequest.getUrl();
+        this.httpMethod = originalHttpRequest.getHttpMethod().toString();
     }
 
     /**
@@ -54,7 +54,7 @@ public class OperationDescription implements Serializable {
      *
      * @return the Serializable poll strategy data
      */
-    public Serializable pollStrategyData() {
+    public Serializable getPollStrategyData() {
         return this.pollStrategyData;
     }
 
@@ -63,14 +63,14 @@ public class OperationDescription implements Serializable {
      *
      * @return the originating requests url
      */
-    public URL url() {
+    public URL getUrl() {
         return this.url;
     }
 
     /**
      * @return the originating requests http method.
      */
-    public String httpMethod() {
+    public String getHttpMethod() {
         return this.httpMethod;
     }
 
@@ -79,7 +79,7 @@ public class OperationDescription implements Serializable {
      *
      * @return the originating requests headers
      */
-    public Map<String, String> headers() {
+    public Map<String, String> getHeaders() {
         return this.headers;
     }
 
@@ -88,7 +88,7 @@ public class OperationDescription implements Serializable {
      *
      * @return the originating method name
      */
-    String methodName() {
+    String getMethodName() {
         int lastIndex = this.fullyQualifiedMethodName.lastIndexOf(".");
         return this.fullyQualifiedMethodName.substring(lastIndex + 1);
     }

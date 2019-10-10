@@ -31,8 +31,9 @@ public final class AzureBlobStorageImpl {
      *
      * @param url the url value.
      */
-    void setUrl(String url) {
+    AzureBlobStorageImpl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**
@@ -54,8 +55,33 @@ public final class AzureBlobStorageImpl {
      *
      * @param version the version value.
      */
-    void setVersion(String version) {
+    AzureBlobStorageImpl setVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     */
+    private PathRenameMode pathRenameMode;
+
+    /**
+     * Gets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     *
+     * @return the pathRenameMode value.
+     */
+    public PathRenameMode getPathRenameMode() {
+        return this.pathRenameMode;
+    }
+
+    /**
+     * Sets Determines the behavior of the rename operation. Possible values include: 'legacy', 'posix'.
+     *
+     * @param pathRenameMode the pathRenameMode value.
+     */
+    AzureBlobStorageImpl setPathRenameMode(PathRenameMode pathRenameMode) {
+        this.pathRenameMode = pathRenameMode;
+        return this;
     }
 
     /**

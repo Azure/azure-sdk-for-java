@@ -3,13 +3,12 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.implementation.annotation.Immutable;
-import com.azure.core.util.configuration.BaseConfigurations;
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
@@ -29,20 +28,20 @@ public class EnvironmentCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
-        this.configuration = ConfigurationManager.getConfiguration().clone();
+        this.configuration = Configuration.getGlobalConfiguration().clone();
         this.identityClientOptions = identityClientOptions;
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Mono.fromSupplier(() -> {
-            if (configuration.contains(BaseConfigurations.AZURE_CLIENT_ID)
-                && configuration.contains(BaseConfigurations.AZURE_CLIENT_SECRET)
-                && configuration.contains(BaseConfigurations.AZURE_TENANT_ID)) {
+            if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
+                && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_SECRET)
+                && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)) {
                 // TODO: support other clouds
-                return new ClientSecretCredential(configuration.get(BaseConfigurations.AZURE_TENANT_ID),
-                    configuration.get(BaseConfigurations.AZURE_CLIENT_ID),
-                    configuration.get(BaseConfigurations.AZURE_CLIENT_SECRET),
+                return new ClientSecretCredential(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+                    configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID),
+                    configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET),
                     identityClientOptions);
             }
 
@@ -50,6 +49,6 @@ public class EnvironmentCredential implements TokenCredential {
             throw logger.logExceptionAsError(new ClientAuthenticationException(
                 "Cannot create any credentials with the current environment variables",
                 null));
-        }).flatMap(cred -> cred.getToken(scopes));
+        }).flatMap(cred -> cred.getToken(request));
     }
 }

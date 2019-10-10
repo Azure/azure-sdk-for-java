@@ -38,14 +38,19 @@ public final class SharedKeyCredential {
      * @param accountKey The account access key used to authenticate the request.
      */
     public SharedKeyCredential(String accountName, String accountKey) {
-        Objects.requireNonNull(accountName);
-        Objects.requireNonNull(accountKey);
+        Objects.requireNonNull(accountName, "'accountName' cannot be null.");
+        Objects.requireNonNull(accountKey, "'accountKey' cannot be null.");
         this.accountName = accountName;
         this.accountKey = accountKey;
     }
 
     /**
      * Creates a SharedKey credential from the passed connection string.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.common.credentials.SharedKeyCredential.fromConnectionString#String}
+     *
      * @param connectionString Connection string used to build the SharedKey credential.
      * @return a SharedKey credential if the connection string contains AccountName and AccountKey
      * @throws IllegalArgumentException If {@code connectionString} doesn't have AccountName or AccountKey.
@@ -72,7 +77,7 @@ public final class SharedKeyCredential {
      *
      * @return The account name.
      */
-    public String accountName() {
+    public String getAccountName() {
         return accountName;
     }
 
@@ -154,7 +159,7 @@ public final class SharedKeyCredential {
                 canonicalizedHeaders.append('\n');
             }
 
-            canonicalizedHeaders.append(key)
+            canonicalizedHeaders.append(key.toLowerCase(Locale.ROOT))
                 .append(':')
                 .append(headers.get(key));
         }

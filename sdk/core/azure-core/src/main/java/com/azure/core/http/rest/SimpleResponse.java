@@ -17,12 +17,12 @@ public class SimpleResponse<T> implements Response<T> {
     private final T value;
 
     /**
-     * Creates a SimpleResponse.
+     * Creates a {@link SimpleResponse}.
      *
-     * @param request the request which resulted in this response
-     * @param statusCode the status code of the HTTP response
-     * @param headers the headers of the HTTP response
-     * @param value the deserialized value
+     * @param request The request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param value The deserialized value of the HTTP response.
      */
     public SimpleResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value) {
         this.request = request;
@@ -32,31 +32,35 @@ public class SimpleResponse<T> implements Response<T> {
     }
 
     /**
-     * Creates a SimpleResponse from a response and a value.
+     * Creates a {@link SimpleResponse} from a response and a value.
      *
-     * @param response the response the needs to be mapped
-     * @param value the value to put into the new response
+     * @param response The response that needs to be mapped.
+     * @param value The value to put into the new response.
      */
     public SimpleResponse(Response<?> response, T value) {
-        this.request = response.request();
-        this.statusCode = response.statusCode();
-        this.headers = response.headers();
+        this.request = response.getRequest();
+        this.statusCode = response.getStatusCode();
+        this.headers = response.getHeaders();
         this.value = value;
     }
 
     /**
-     * @return the request which resulted in this RestResponse.
+     * Gets the request which resulted in this {@link SimpleResponse}.
+     *
+     * @return The request which resulted in this {@link SimpleResponse}.
      */
     @Override
-    public HttpRequest request() {
+    public HttpRequest getRequest() {
         return request;
     }
 
     /**
-     * @return the status code of the HTTP response.
+     * Gets the status code of the HTTP response.
+     *
+     * @return The status code of the HTTP response.
      */
     @Override
-    public int statusCode() {
+    public int getStatusCode() {
         return statusCode;
     }
 
@@ -64,15 +68,17 @@ public class SimpleResponse<T> implements Response<T> {
      * {@inheritDoc}
      */
     @Override
-    public HttpHeaders headers() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
     /**
-     * @return the deserialized value of the HTTP response.
+     * Gets the deserialized value of the HTTP response.
+     *
+     * @return The deserialized value of the HTTP response.
      */
     @Override
-    public T value() {
+    public T getValue() {
         return value;
     }
 }

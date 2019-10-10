@@ -6,6 +6,7 @@ package com.azure.security.keyvault.secrets;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
@@ -37,10 +38,12 @@ public class ManagingDeletedSecrets {
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-            .expires(OffsetDateTime.now().plusYears(1)));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1))));
 
         client.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
-            .expires(OffsetDateTime.now().plusYears(1)));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1))));
 
         // The storage account was closed, need to delete its credentials from the key vault.
         client.deleteSecret("BankAccountPassword");
@@ -65,7 +68,7 @@ public class ManagingDeletedSecrets {
 
         // You can list all the deleted and non-purged secrets, assuming key vault is soft-delete enabled.
         for (DeletedSecret deletedSecret : client.listDeletedSecrets()) {
-            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
+            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.getRecoveryId());
         }
 
         // If the key vault is soft-delete enabled, then for permanent deletion deleted secrets need to be purged.

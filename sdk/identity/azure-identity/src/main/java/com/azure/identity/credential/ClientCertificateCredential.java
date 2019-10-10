@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.credentials.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -38,7 +39,7 @@ public class ClientCertificateCredential implements TokenCredential {
      */
     ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword,
                                 IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(certificatePath);
+        Objects.requireNonNull(certificatePath, "'certificatePath' cannot be null.");
         this.clientCertificate = certificatePath;
         this.clientCertificatePassword = certificatePassword;
         identityClient =
@@ -50,11 +51,11 @@ public class ClientCertificateCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         if (clientCertificatePassword != null) {
-            return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, scopes);
+            return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, request);
         } else {
-            return identityClient.authenticateWithPemCertificate(clientCertificate, scopes);
+            return identityClient.authenticateWithPemCertificate(clientCertificate, request);
         }
     }
 }

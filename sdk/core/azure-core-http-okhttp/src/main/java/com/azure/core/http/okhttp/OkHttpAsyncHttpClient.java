@@ -4,10 +4,12 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -26,6 +28,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -58,7 +61,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
-                httpClient.newCall(okHttpRequest).enqueue(new OkHttpCallback(sink, request));
+                Call call = httpClient.newCall(okHttpRequest);
+                call.enqueue(new OkHttpCallback(sink, request));
+                sink.onCancel(() -> call.cancel());
             }, sink::error);
         }));
     }
@@ -72,21 +77,27 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
         return Mono.just(new okhttp3.Request.Builder())
             .map(rb -> {
-                rb.url(request.url());
-                if (request.headers() != null) {
-                    return rb.headers(okhttp3.Headers.of(request.headers().toMap()));
+                rb.url(request.getUrl());
+                if (request.getHeaders() != null) {
+                    Map<String, String> headers = new HashMap<>();
+                    for (HttpHeader hdr : request.getHeaders()) {
+                        if (hdr.getValue() != null) {
+                            headers.put(hdr.getName(), hdr.getValue());
+                        }
+                    }
+                    return rb.headers(okhttp3.Headers.of(headers));
                 } else {
                     return rb.headers(okhttp3.Headers.of(new HashMap<>()));
                 }
             })
             .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
-                if (request.httpMethod() == HttpMethod.GET) {
+                if (request.getHttpMethod() == HttpMethod.GET) {
                     return Mono.just(rb.get());
-                } else if (request.httpMethod() == HttpMethod.HEAD) {
+                } else if (request.getHttpMethod() == HttpMethod.HEAD) {
                     return Mono.just(rb.head());
                 } else {
-                    return toOkHttpRequestBody(request.body(), request.headers())
-                            .map(requestBody -> rb.method(request.httpMethod().toString(), requestBody));
+                    return toOkHttpRequestBody(request.getBody(), request.getHeaders())
+                            .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
                 }
             })
             .map(rb -> rb.build());
@@ -105,7 +116,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             : toByteString(bbFlux);
 
         return bsMono.map(bs -> {
-            String contentType = headers.value("Content-Type");
+            String contentType = headers.getValue("Content-Type");
             if (contentType == null) {
                 return RequestBody.create(bs, MEDIA_TYPE_OCTET_STREAM);
             } else {
@@ -127,7 +138,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return a mono emitting aggregated ByteString
      */
     private static Mono<ByteString> toByteString(Flux<ByteBuffer> bbFlux) {
-        Objects.requireNonNull(bbFlux);
+        Objects.requireNonNull(bbFlux, "'bbFlux' cannot be null.");
         return Mono.using(okio.Buffer::new,
             buffer -> bbFlux.reduce(buffer, (b, byteBuffer) -> {
                 try {
@@ -173,6 +184,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
         OkHttpResponse(Response innerResponse, HttpRequest request) {
+            super(request);
             this.statusCode = innerResponse.code();
             this.headers = fromOkHttpHeaders(innerResponse.headers());
             if (innerResponse.body() == null) {
@@ -188,34 +200,33 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     rb -> Mono.just(rb),
                     // Resource cleanup
                     // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                    ResponseBody::close);
+                    ResponseBody::close, /* Change in behavior since reactor-core 3.3.0.RELEASE */ false);
             }
-            super.request(request);
         }
 
         @Override
-        public int statusCode() {
+        public int getStatusCode() {
             return this.statusCode;
         }
 
         @Override
-        public String headerValue(String name) {
-            return this.headers.value(name);
+        public String getHeaderValue(String name) {
+            return this.headers.getValue(name);
         }
 
         @Override
-        public HttpHeaders headers() {
+        public HttpHeaders getHeaders() {
             return this.headers;
         }
 
         @Override
-        public Flux<ByteBuffer> body() {
+        public Flux<ByteBuffer> getBody() {
             return this.responseBodyMono
                 .flatMapMany(irb -> toFluxByteBuffer(irb.byteStream()));
         }
 
         @Override
-        public Mono<byte[]> bodyAsByteArray() {
+        public Mono<byte[]> getBodyAsByteArray() {
             return this.responseBodyMono
                 .flatMap(rb -> {
                     try {
@@ -228,7 +239,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         @Override
-        public Mono<String> bodyAsString() {
+        public Mono<String> getBodyAsString() {
             return this.responseBodyMono
                 .flatMap(rb -> {
                     try {
@@ -241,8 +252,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         @Override
-        public Mono<String> bodyAsString(Charset charset) {
-            return bodyAsByteArray()
+        public Mono<String> getBodyAsString(Charset charset) {
+            return getBodyAsByteArray()
                 .map(bytes -> new String(bytes, charset));
         }
 

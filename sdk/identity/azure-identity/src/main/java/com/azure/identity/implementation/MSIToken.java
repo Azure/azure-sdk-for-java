@@ -49,12 +49,12 @@ public final class MSIToken extends AccessToken {
     }
 
     @Override
-    public String token() {
+    public String getToken() {
         return accessToken;
     }
 
     @Override
-    public OffsetDateTime expiresOn() {
+    public OffsetDateTime getExpiresOn() {
         return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
     }
 

@@ -3,14 +3,11 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
@@ -20,19 +17,16 @@ import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
-import com.azure.storage.file.models.FileUploadRangeFromURLInfo;
+import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -47,13 +41,13 @@ import java.util.Map;
  * @see FileClientBuilder
  * @see FileAsyncClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
+@ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Creates a FileClient that wraps a FileAsyncClient and blocks requests.
+     * Creates a FileClient that wraps a FileAsyncClient and requests.
      *
      * @param fileAsyncClient FileAsyncClient that is used to send requests
      */
@@ -63,11 +57,58 @@ public class FileClient {
 
     /**
      * Get the url of the storage file client.
+     *
      * @return the URL of the storage file client.
-     * @throws RuntimeException If the file is using a malformed URL.
      */
-    public URL getFileUrl() {
+    public String getFileUrl() {
         return fileAsyncClient.getFileUrl();
+    }
+
+    /**
+     * Opens a file input stream to download the file.
+     * <p>
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileInputStream openInputStream() {
+        return openInputStream(new FileRange(0));
+    }
+
+    /**
+     * Opens a file input stream to download the specified range of the file.
+     * <p>
+     *
+     * @param range {@link FileRange}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileInputStream openInputStream(FileRange range) {
+        return new StorageFileInputStream(fileAsyncClient, range.getStart(), range.getEnd());
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileOutputStream getFileOutputStream() {
+        return getFileOutputStream(0);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
+     * will be overwritten.
+     *
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
+     * @return A {@link StorageFileOutputStream} object used to write data to the file.
+     * @throws StorageException If a storage service error occurred.
+     */
+    public final StorageFileOutputStream getFileOutputStream(long offset) {
+        return new StorageFileOutputStream(fileAsyncClient, offset);
     }
 
     /**
@@ -84,10 +125,11 @@ public class FileClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return The {@link FileInfo file info}
-     * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
+     * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an
+     * invalid resource name.
      */
     public FileInfo create(long maxSize) {
-        return createWithResponse(maxSize, null, null, null, null, null, Context.NONE).value();
+        return createWithResponse(maxSize, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -107,16 +149,20 @@ public class FileClient {
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
+     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory
+     * is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
-        String filePermission, Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<Response<FileInfo>> response = fileAsyncClient.createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context);
+    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+        Context context) {
+        Mono<Response<FileInfo>> response = fileAsyncClient
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -133,12 +179,13 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
+     * naming rules.
      * @return The {@link FileCopyInfo file copy info}
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public FileCopyInfo startCopy(String sourceUrl, Map<String, String> metadata) {
-        return startCopyWithResponse(sourceUrl, metadata, null, Context.NONE).value();
+        return startCopyWithResponse(sourceUrl, metadata, null, Context.NONE).getValue();
     }
 
     /**
@@ -154,15 +201,17 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
+     * naming rules.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileCopyInfo file copy info} and the status of copying the file.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public Response<FileCopyInfo> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
-                                                        Duration timeout, Context context) {
+        Duration timeout, Context context) {
         Mono<Response<FileCopyInfo>> response = fileAsyncClient.startCopyWithResponse(sourceUrl, metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -198,13 +247,14 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-file">Azure Docs</a>.</p>
      *
      * @param copyId Specifies the copy id which has copying pending status associate with it.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of aborting copy the file.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse abortCopyWithResponse(String copyId, Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
+    public Response<Void> abortCopyWithResponse(String copyId, Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.abortCopyWithResponse(copyId, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -224,9 +274,10 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
+     * @return The properties of the file.
      */
-    public void downloadToFile(String downloadFilePath) {
-        downloadToFile(downloadFilePath, null);
+    public FileProperties downloadToFile(String downloadFilePath) {
+        return downloadToFileWithResponse(downloadFilePath, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -239,16 +290,23 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadToFile#string-filerange}
+     * {@codesnippet com.azure.storage.file.fileClient.downloadToFileWithResponse#string-filerange-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional byte range which returns file data only from the specified range.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The response of the file properties.
      */
-    public void downloadToFile(String downloadFilePath, FileRange range) {
-        fileAsyncClient.downloadToFile(downloadFilePath, range).block();
+    public Response<FileProperties> downloadToFileWithResponse(String downloadFilePath, FileRange range,
+            Duration timeout, Context context) {
+        Mono<Response<FileProperties>> response = fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range,
+            context);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -266,7 +324,7 @@ public class FileClient {
      * @return The {@link FileDownloadInfo file download info}
      */
     public FileDownloadInfo downloadWithProperties() {
-        return downloadWithPropertiesWithResponse(null, null, null, Context.NONE).value();
+        return downloadWithPropertiesWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -282,14 +340,18 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
-     * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to true, as long as the range is less than or equal to 4 MB in size.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to
+     * true, as long as the range is less than or equal to 4 MB in size.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileDownloadInfo file download info} headers and response status code
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileDownloadInfo> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Mono<Response<FileDownloadInfo>> response = fileAsyncClient.downloadWithPropertiesWithResponse(range, rangeGetContentMD5, context);
+    public Response<FileDownloadInfo> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5,
+        Duration timeout, Context context) {
+        Mono<Response<FileDownloadInfo>> response = fileAsyncClient
+            .downloadWithPropertiesWithResponse(range, rangeGetContentMD5, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -324,20 +386,21 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
-     * @return A response that only contains headers and response status code
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that only contains headers and response status code
      * @throws StorageException If the directory doesn't exist or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public VoidResponse deleteWithResponse(Duration timeout, Context context) {
-        Mono<VoidResponse> response = fileAsyncClient.deleteWithResponse(context);
+    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = fileAsyncClient.deleteWithResponse(context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Retrieves the properties of the storage account's file.
-     * The properties includes file metadata, last modified date, is server encrypted, and eTag.
+     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -351,12 +414,12 @@ public class FileClient {
      * @return {@link FileProperties Storage file properties}
      */
     public FileProperties getProperties() {
-        return getPropertiesWithResponse(null, Context.NONE).value();
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
     /**
-     * Retrieves the properties of the storage account's file.
-     * The properties includes file metadata, last modified date, is server encrypted, and eTag.
+     * Retrieves the properties of the storage account's file. The properties includes file metadata, last modified
+     * date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -367,7 +430,8 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a>.</p>
      *
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileProperties Storage file properties} with headers and status code
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
@@ -404,7 +468,8 @@ public class FileClient {
      */
     public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE).value();
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -429,7 +494,8 @@ public class FileClient {
      * @param httpHeaders The user settable file http headers.
      * @param smbProperties The user settable file smb properties.
      * @param filePermission The file permission of the file
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileInfo file info} with headers and status code
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,7 +503,8 @@ public class FileClient {
      */
     public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
-        Mono<Response<FileInfo>> response = fileAsyncClient.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);
+        Mono<Response<FileInfo>> response = fileAsyncClient
+            .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -464,7 +531,7 @@ public class FileClient {
      * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public FileMetadataInfo setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, null, Context.NONE).value();
+        return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
     }
 
     /**
@@ -486,19 +553,22 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileMetadataInfo file meta info} with headers and status code
      * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+    public Response<FileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
+        Context context) {
         Mono<Response<FileMetadataInfo>> response = fileAsyncClient.setMetadataWithResponse(metadata, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an in-place write on the specified file.
+     * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an
+     * in-place write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -510,16 +580,19 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
+     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is
+     * set to clear, the value of this header must be set to zero..
      * @return The {@link FileUploadInfo file upload info}
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
+     * code 413 (Request Entity Too Large)
      */
     public FileUploadInfo upload(ByteBuffer data, long length) {
-        return uploadWithResponse(data, length, null, Context.NONE).value();
+        return uploadWithResponse(data, length, null, Context.NONE).getValue();
     }
 
-   /**
-     * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an in-place write on the specified file.
+    /**
+     * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an
+     * in-place write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -531,20 +604,25 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is
+     * set to clear, the value of this header must be set to zero.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link FileUploadInfo file upload info}
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
+     * code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Duration timeout, Context context) {
+    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Duration timeout,
+        Context context) {
         Mono<Response<FileUploadInfo>> response = fileAsyncClient.uploadWithResponse(Flux.just(data), length, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Uploads a range of bytes to specific of a file in storage file service. Upload operations performs an in-place write on the specified file.
+     * Uploads a range of bytes to specific of a file in storage file service. Upload operations performs an in-place
+     * write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -557,15 +635,20 @@ public class FileClient {
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
+     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
+     * code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Duration timeout, Context context) {
-        Mono<Response<FileUploadInfo>> response = fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset, context);
+    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Duration timeout,
+        Context context) {
+        Mono<Response<FileUploadInfo>> response = fileAsyncClient
+            .uploadWithResponse(Flux.just(data), length, offset, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -576,7 +659,7 @@ public class FileClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromURL#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromUrl#long-long-long-uri}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -585,12 +668,13 @@ public class FileClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceURI Specifies the URL of the source file.
-     * @return The {@link FileUploadRangeFromURLInfo file upload range from url info}
+     * @return The {@link FileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public FileUploadRangeFromURLInfo uploadRangeFromURL(long length, long destinationOffset, long sourceOffset,
-        URI sourceURI) {
-        return uploadRangeFromURLWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE).value();
+    public FileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
+                                                         URI sourceURI) {
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -600,7 +684,7 @@ public class FileClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromURLWithResponse#long-long-long-uri-duration-context}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromUrlWithResponse#long-long-long-uri-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -609,22 +693,24 @@ public class FileClient {
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
      * @param sourceURI Specifies the URL of the source file.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link FileUploadRangeFromURLInfo file upload range from url info} with headers
+     * @return A response containing the {@link FileUploadRangeFromUrlInfo file upload range from url info} with headers
      * and response status code.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
-    public Response<FileUploadRangeFromURLInfo> uploadRangeFromURLWithResponse(long length, long destinationOffset,
-        long sourceOffset, URI sourceURI, Duration timeout, Context context) {
-        Mono<Response<FileUploadRangeFromURLInfo>> response = fileAsyncClient.uploadRangeFromURLWithResponse(length,
+    public Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
+            long sourceOffset, URI sourceURI, Duration timeout, Context context) {
+        Mono<Response<FileUploadRangeFromUrlInfo>> response = fileAsyncClient.uploadRangeFromUrlWithResponse(length,
             destinationOffset, sourceOffset, sourceURI, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
-     * Clears a range of bytes to specific of a file in storage file service. Clear operations performs an in-place write on the specified file.
+     * Clears a range of bytes to specific of a file in storage file service. Clear operations performs an in-place
+     * write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -639,11 +725,12 @@ public class FileClient {
      * @return The {@link FileUploadInfo file upload info}
      */
     public FileUploadInfo clearRange(long length) {
-        return clearRangeWithResponse(length, 0, null, Context.NONE).value();
+        return clearRangeWithResponse(length, 0, null, Context.NONE).getValue();
     }
 
     /**
-     * Clears a range of bytes to specific of a file in storage file service. Upload operations performs an in-place write on the specified file.
+     * Clears a range of bytes to specific of a file in storage file service. Upload operations performs an in-place
+     * write on the specified file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -655,13 +742,16 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
+     * {@code null}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileUploadInfo> clearRangeWithResponse(long length, long offset, Duration timeout, Context context) {
+    public Response<FileUploadInfo> clearRangeWithResponse(long length, long offset, Duration timeout,
+        Context context) {
         Mono<Response<FileUploadInfo>> response = fileAsyncClient.clearRangeWithResponse(length, offset, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -717,7 +807,8 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
@@ -757,7 +848,8 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
      * @param maxResults Optional max number of results returned per page
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
@@ -767,7 +859,8 @@ public class FileClient {
     }
 
     /**
-     * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link FileClient#listHandles()} (Integer)} .
+     * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link
+     * FileClient#listHandles()} (Integer)} .
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -778,21 +871,20 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout concludes a {@link RuntimeException} will be thrown.
+     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all
+     * handles.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The counts of number of handles closed
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<Integer> forceCloseHandles(String handleId, Duration timeout, Context context) {
-        // TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
-        // TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
         return new PagedIterable<>(fileAsyncClient.forceCloseHandlesWithOptionalTimeout(handleId, timeout, context));
     }
 
     /**
-     * Get snapshot id which attached to {@link FileClient}.
-     * Return {@code null} if no snapshot id attached.
+     * Get snapshot id which attached to {@link FileClient}. Return {@code null} if no snapshot id attached.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -800,80 +892,47 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.getShareSnapshotId}
      *
-     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base
+     * share.
      */
     public String getShareSnapshotId() {
         return fileAsyncClient.getShareSnapshotId();
     }
 
     /**
-     * Generates a SAS token with the specified parameters
+     * Get the share name of file client.
      *
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param permissions The {@code FileSASPermission} permission for the SAS
-     * @return A string that represents the SAS token
+     * <p>Get the share name. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getShareName}
+     *
+     * @return The share name of the file.
      */
-    public String generateSAS(OffsetDateTime expiryTime, FileSASPermission permissions) {
-        return this.fileAsyncClient.generateSAS(permissions, expiryTime);
+    public String getShareName() {
+        return this.fileAsyncClient.getShareName();
     }
 
     /**
-     * Generates a SAS token with the specified parameters
+     * Get file path of the client.
      *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @return A string that represents the SAS token
+     * <p>Get the file path. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getFilePath}
+     *
+     * @return The path of the file.
      */
-    public String generateSAS(String identifier) {
-        return this.fileAsyncClient.generateSAS(identifier);
+    public String getFilePath() {
+        return this.fileAsyncClient.getFilePath();
     }
 
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange);
-    }
 
     /**
-     * Generates a SAS token with the specified parameters
+     * Get associated account name.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.FileClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the share this SAS references if any
-     * @param permissions The {@code FileSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @param cacheControl An optional {@code String} cache-control header for the SAS.
-     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
-     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
-     * @param contentLanguage An optional {@code String} content-language header for the SAS.
-     * @param contentType An optional {@code String} content-type header for the SAS.
-     * @return A string that represents the SAS token
+     * @return account name associated with this storage resource.
      */
-    public String generateSAS(String identifier, FileSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        return this.fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    public String getAccountName() {
+        return this.fileAsyncClient.getAccountName();
     }
 }
 

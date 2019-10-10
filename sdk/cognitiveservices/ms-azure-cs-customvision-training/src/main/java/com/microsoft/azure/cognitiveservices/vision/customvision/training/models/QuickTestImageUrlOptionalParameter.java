@@ -22,11 +22,6 @@ public class QuickTestImageUrlOptionalParameter {
     private UUID iterationId;
 
     /**
-     * The url property.
-     */
-    private String url;
-
-    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -48,26 +43,6 @@ public class QuickTestImageUrlOptionalParameter {
      */
     public QuickTestImageUrlOptionalParameter withIterationId(UUID iterationId) {
         this.iterationId = iterationId;
-        return this;
-    }
-
-    /**
-     * Get the url value.
-     *
-     * @return the url value
-     */
-    public String url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url value.
-     *
-     * @param url the url value to set
-     * @return the QuickTestImageUrlOptionalParameter object itself.
-     */
-    public QuickTestImageUrlOptionalParameter withUrl(String url) {
-        this.url = url;
         return this;
     }
 

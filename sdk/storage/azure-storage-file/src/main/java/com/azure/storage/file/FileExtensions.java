@@ -19,11 +19,13 @@ public class FileExtensions {
      */
     public static void filePermissionAndKeyHelper(String filePermission, String  filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
-            throw new IllegalArgumentException(FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID);
+            throw new IllegalArgumentException(
+                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID);
         }
 
         if (filePermission != null) {
-            Utility.assertInBounds("filePermission", filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
+            Utility.assertInBounds("filePermission",
+                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
         }
     }
 }

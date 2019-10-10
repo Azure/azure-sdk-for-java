@@ -31,7 +31,7 @@ public final class IdentityClientOptions {
     /**
      * @return the Azure Active Directory endpoint to acquire tokens.
      */
-    public String authorityHost() {
+    public String getAuthorityHost() {
         return authorityHost;
     }
 
@@ -40,7 +40,7 @@ public final class IdentityClientOptions {
      * @param authorityHost the Azure Active Directory endpoint
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions authorityHost(String authorityHost) {
+    public IdentityClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
     }
@@ -48,7 +48,7 @@ public final class IdentityClientOptions {
     /**
      * @return the max number of retries when an authentication request fails.
      */
-    public int maxRetry() {
+    public int getMaxRetry() {
         return maxRetry;
     }
 
@@ -57,7 +57,7 @@ public final class IdentityClientOptions {
      * @param maxRetry the number of retries
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions maxRetry(int maxRetry) {
+    public IdentityClientOptions setMaxRetry(int maxRetry) {
         this.maxRetry = maxRetry;
         return this;
     }
@@ -65,7 +65,7 @@ public final class IdentityClientOptions {
     /**
      * @return a Function to calculate seconds of timeout on every retried request.
      */
-    public Function<Integer, Integer> retryTimeout() {
+    public Function<Integer, Integer> getRetryTimeout() {
         return retryTimeout;
     }
 
@@ -74,7 +74,7 @@ public final class IdentityClientOptions {
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions retryTimeout(Function<Integer, Integer> retryTimeout) {
+    public IdentityClientOptions setRetryTimeout(Function<Integer, Integer> retryTimeout) {
         this.retryTimeout = retryTimeout;
         return this;
     }
@@ -82,7 +82,7 @@ public final class IdentityClientOptions {
     /**
      * @return the options for proxy configuration.
      */
-    public ProxyOptions proxyOptions() {
+    public ProxyOptions getProxyOptions() {
         return proxyOptions;
     }
 
@@ -91,7 +91,7 @@ public final class IdentityClientOptions {
      * @param proxyOptions the options for proxy configuration
      * @return IdentityClientOptions
      */
-    public IdentityClientOptions proxyOptions(ProxyOptions proxyOptions) {
+    public IdentityClientOptions setProxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.Configuration;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.StorageException;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
  *  and how to get and set properties.
  */
 public class DirectorySample {
-    private static final String ENDPOINT = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -67,7 +67,7 @@ public class DirectorySample {
         try {
             directoryClient.listFilesAndDirectories().forEach(
                 fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s%n",
-                    fileRef.isDirectory(), fileRef.name()));
+                    fileRef.isDirectory(), fileRef.getName()));
         } catch (StorageException e) {
             System.out.println("Failed to list all the subdirectories and files. Reasons: " + e.getMessage());
         }
@@ -75,7 +75,7 @@ public class DirectorySample {
         // Get the parent directory properties.
         try {
             DirectoryProperties propertiesResponse = directoryClient.getProperties();
-            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.eTag());
+            System.out.printf("This is the eTag of the directory: %s%n", propertiesResponse.getETag());
         } catch (StorageException e) {
             System.out.println("Failed to get the properties of the parent directory");
         }

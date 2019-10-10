@@ -4,8 +4,8 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -70,7 +70,7 @@ public final class HandleItem {
      *
      * @return the handleId value.
      */
-    public String handleId() {
+    public String getHandleId() {
         return this.handleId;
     }
 
@@ -80,7 +80,7 @@ public final class HandleItem {
      * @param handleId the handleId value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem handleId(String handleId) {
+    public HandleItem setHandleId(String handleId) {
         this.handleId = handleId;
         return this;
     }
@@ -91,7 +91,7 @@ public final class HandleItem {
      *
      * @return the path value.
      */
-    public String path() {
+    public String getPath() {
         return this.path;
     }
 
@@ -102,7 +102,7 @@ public final class HandleItem {
      * @param path the path value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem path(String path) {
+    public HandleItem setPath(String path) {
         this.path = path;
         return this;
     }
@@ -113,7 +113,7 @@ public final class HandleItem {
      *
      * @return the fileId value.
      */
-    public String fileId() {
+    public String getFileId() {
         return this.fileId;
     }
 
@@ -124,7 +124,7 @@ public final class HandleItem {
      * @param fileId the fileId value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem fileId(String fileId) {
+    public HandleItem setFileId(String fileId) {
         this.fileId = fileId;
         return this;
     }
@@ -135,7 +135,7 @@ public final class HandleItem {
      *
      * @return the parentId value.
      */
-    public String parentId() {
+    public String getParentId() {
         return this.parentId;
     }
 
@@ -146,7 +146,7 @@ public final class HandleItem {
      * @param parentId the parentId value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem parentId(String parentId) {
+    public HandleItem setParentId(String parentId) {
         this.parentId = parentId;
         return this;
     }
@@ -157,7 +157,7 @@ public final class HandleItem {
      *
      * @return the sessionId value.
      */
-    public String sessionId() {
+    public String getSessionId() {
         return this.sessionId;
     }
 
@@ -168,7 +168,7 @@ public final class HandleItem {
      * @param sessionId the sessionId value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem sessionId(String sessionId) {
+    public HandleItem setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
     }
@@ -178,7 +178,7 @@ public final class HandleItem {
      *
      * @return the clientIp value.
      */
-    public String clientIp() {
+    public String getClientIp() {
         return this.clientIp;
     }
 
@@ -188,7 +188,7 @@ public final class HandleItem {
      * @param clientIp the clientIp value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem clientIp(String clientIp) {
+    public HandleItem setClientIp(String clientIp) {
         this.clientIp = clientIp;
         return this;
     }
@@ -199,11 +199,11 @@ public final class HandleItem {
      *
      * @return the openTime value.
      */
-    public OffsetDateTime openTime() {
+    public OffsetDateTime getOpenTime() {
         if (this.openTime == null) {
             return null;
         }
-        return this.openTime.dateTime();
+        return this.openTime.getDateTime();
     }
 
     /**
@@ -213,7 +213,7 @@ public final class HandleItem {
      * @param openTime the openTime value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem openTime(OffsetDateTime openTime) {
+    public HandleItem setOpenTime(OffsetDateTime openTime) {
         if (openTime == null) {
             this.openTime = null;
         } else {
@@ -228,11 +228,11 @@ public final class HandleItem {
      *
      * @return the lastReconnectTime value.
      */
-    public OffsetDateTime lastReconnectTime() {
+    public OffsetDateTime getLastReconnectTime() {
         if (this.lastReconnectTime == null) {
             return null;
         }
-        return this.lastReconnectTime.dateTime();
+        return this.lastReconnectTime.getDateTime();
     }
 
     /**
@@ -242,7 +242,7 @@ public final class HandleItem {
      * @param lastReconnectTime the lastReconnectTime value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem lastReconnectTime(OffsetDateTime lastReconnectTime) {
+    public HandleItem setLastReconnectTime(OffsetDateTime lastReconnectTime) {
         if (lastReconnectTime == null) {
             this.lastReconnectTime = null;
         } else {
