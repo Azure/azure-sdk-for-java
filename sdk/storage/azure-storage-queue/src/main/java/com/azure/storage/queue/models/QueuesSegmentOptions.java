@@ -73,7 +73,7 @@ public final class QueuesSegmentOptions {
     /**
      * @return the maximum number of queues to include in a single response
      */
-    public Integer getMaxResults() {
+    public int getMaxResults() {
         return maxResults;
     }
 

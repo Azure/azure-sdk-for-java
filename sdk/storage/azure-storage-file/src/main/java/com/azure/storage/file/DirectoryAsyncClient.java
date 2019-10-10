@@ -25,7 +25,7 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileReference;
+import com.azure.storage.file.models.StorageFileItem;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
@@ -423,9 +423,9 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure
      * Docs</a>.</p>
      *
-     * @return {@link FileReference File info} in the storage directory
+     * @return {@link StorageFileItem File info} in the storage directory
      */
-    public PagedFlux<FileReference> listFilesAndDirectories() {
+    public PagedFlux<StorageFileItem> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -446,15 +446,15 @@ public class DirectoryAsyncClient {
      * with.
      * @param maxResults Optional maximum number of files and/or directories to return per page. If the request does not
      * specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @return {@link FileReference File info} in this directory with prefix and max number of return results.
+     * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      */
-    public PagedFlux<FileReference> listFilesAndDirectories(String prefix, Integer maxResults) {
+    public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResults) {
         return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, null, Context.NONE);
     }
 
-    PagedFlux<FileReference> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults,
-                                                                        Duration timeout, Context context) {
-        Function<String, Mono<PagedResponse<FileReference>>> retriever =
+    PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults,
+                                                                          Duration timeout, Context context) {
+        Function<String, Mono<PagedResponse<StorageFileItem>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResults, null, context), timeout)
@@ -842,18 +842,18 @@ public class DirectoryAsyncClient {
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
-    private List<FileReference> convertResponseAndGetNumOfResults(
+    private List<StorageFileItem> convertResponseAndGetNumOfResults(
         DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        Set<FileReference> fileReferences = new TreeSet<>(Comparator.comparing(FileReference::getName));
+        Set<StorageFileItem> storageFileItems = new TreeSet<>(Comparator.comparing(StorageFileItem::getName));
         if (response.getValue().getSegment() != null) {
             response.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> fileReferences.add(new FileReference(directoryItem.getName(),
+                .forEach(directoryItem -> storageFileItems.add(new StorageFileItem(directoryItem.getName(),
                     true, null)));
             response.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> fileReferences.add(new FileReference(fileItem.getName(), false,
+                .forEach(fileItem -> storageFileItems.add(new StorageFileItem(fileItem.getName(), false,
                     fileItem.getProperties())));
         }
 
-        return new ArrayList<>(fileReferences);
+        return new ArrayList<>(storageFileItems);
     }
 }
