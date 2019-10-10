@@ -542,7 +542,10 @@
   </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
-    <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+    <Or>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
+    </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
                   URF_UNREAD_FIELD,
                   SIC_INNER_SHOULD_BE_STATIC_ANON,

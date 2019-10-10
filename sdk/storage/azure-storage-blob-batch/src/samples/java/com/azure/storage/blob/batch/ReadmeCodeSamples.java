@@ -5,24 +5,26 @@ package com.azure.storage.blob.batch;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Code samples for the READEME.md
  */
 public class ReadmeCodeSamples {
-    private BlobServiceClient blobServiceClient;
-    private BlobBatchClient blobBatchClient;
-    private List<String> blobUrls;
-    private String blobUrl;
-    private String blobUrl2;
-    private String blobUrlWithSnapshot;
-    private String blobUrlWithLease;
+    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().buildClient();
+    private BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
+    private String blobUrl = "https://account.core.windows.net/containerName/blobName";
+    private String blobUrl2 = "https://account.core.windows.net/containerName/blobName2";
+    private String blobUrlWithSnapshot = "https://account.core.windows.net/containerName/blobName?snapshot=<DateTime>";
+    private String blobUrlWithLease = "https://account.core.windows.net/containerName/blobNameWithLease";
+    private List<String> blobUrls = Arrays.asList(blobUrl, blobUrl2, blobUrlWithSnapshot, blobUrlWithLease);
 
     public void creatingBlobBatchClient() {
         BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
