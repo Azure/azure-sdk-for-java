@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-certificates</artifactId>
-  <version>4.0.0-preview.5</version>
+  <version>4.0.0-preview.4</version>
 
   <name>Microsoft Azure client library for KeyVault Certificates</name>
   <description>This module contains client library for Microsoft Azure KeyVault Certificates.</description>
