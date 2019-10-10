@@ -74,11 +74,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
+     * Constructor for use by {@link BlobClientBuilder}.
      *
      * @param azureBlobStorage the API client for blob storage
+     * @param snapshot The optional snapshot id of the snapshot blob
+     * @param cpk The optional client provided key
+     * @param accountName The account name
      */
-    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
+    protected BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot, CpkInfo cpk, String accountName) {
         super(azureBlobStorage, snapshot, cpk, accountName);
     }
 
@@ -271,10 +274,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
                     accessConditionsFinal.getLeaseAccessConditions())
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
-                    .map(x -> {
-                        pool.returnBuffer(buffer);
-                        return blockId;
-                    }).flux();
+                    .map(x -> blockId)
+                    .doFinally(x -> pool.returnBuffer(buffer))
+                    .flux();
 
             }) // TODO: parallelism?
             .collect(Collectors.toList())
@@ -357,8 +359,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             }, this::uploadFileCleanup);
     }
 
-
-    private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
+    /**
+     * Resource Supplier for UploadFile
+     * @param filePath The path for the file
+     * @return {@code AsynchronousFileChannel}
+     * @throws IOException an input output exception.
+     */
+    protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
         try {
             return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {

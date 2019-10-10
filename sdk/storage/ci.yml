@@ -44,9 +44,9 @@ stages:
         - name: azure-storage-blob
           safeName: azurestorageblob
           stagingProfileId: 88192f04117501
-        # - name: azure-storage-blob-cryptography
-        #   safeName: azurestorageblobcryptography
-        #   stagingProfileId: 88192f04117501
+        - name: azure-storage-blob-cryptography
+          safeName: azurestorageblobcryptography
+          stagingProfileId: 88192f04117501
         - name: azure-storage-file
           safeName: azurestoragefile
           stagingProfileId: 88192f04117501

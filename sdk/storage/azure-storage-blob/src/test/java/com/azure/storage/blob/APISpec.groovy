@@ -244,7 +244,6 @@ class APISpec extends Specification {
             if (recordLiveMode) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
-
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
