@@ -44,11 +44,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-keyvault-keys</artifactId>
-      <version>4.0.0-preview.5</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.0.0-preview.6</version>
       <scope>test</scope>

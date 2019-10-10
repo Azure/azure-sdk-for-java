@@ -5,7 +5,6 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 
 /**
  *
@@ -15,7 +14,7 @@ public class EncryptedBlobClientBuilderJavaDocCodeSnippets {
 
     private AsyncKeyEncryptionKey key = JavaDocCodeSnippetsHelpers.getKey();
     private AsyncKeyEncryptionKeyResolver keyResolver = JavaDocCodeSnippetsHelpers.getKeyResolver();
-    private KeyWrapAlgorithm keyWrapAlgorithm = KeyWrapAlgorithm.RSA_OAEP;
+    private String keyWrapAlgorithm = "keyWrapAlgorithm";
 
     /**
      * Code snippet for {@link EncryptedBlobClientBuilder#buildEncryptedBlobAsyncClient()}
