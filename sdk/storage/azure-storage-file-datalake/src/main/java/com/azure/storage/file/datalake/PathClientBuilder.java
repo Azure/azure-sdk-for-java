@@ -4,4 +4,6 @@
 package com.azure.storage.file.datalake;
 
 public class PathClientBuilder {
+
+    // TODO: Make sure pipeline includes exception mapping and etag scrubbing (post process)
 }

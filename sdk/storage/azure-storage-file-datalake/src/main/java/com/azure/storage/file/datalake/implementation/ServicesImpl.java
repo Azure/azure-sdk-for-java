@@ -70,17 +70,21 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListFileSystemsResponse> listFileSystemsWithRestResponseAsync(Context context) {
         final String resource = "account";
+        final String prefix = null;
         final String continuation = null;
+        final Integer maxResults = null;
         final String requestId = null;
         final Integer timeout = null;
-        return service.listFileSystems(this.client.getUrl(), resource, this.client.getPrefix(), continuation, this.client.getMaxResults(), requestId, timeout, this.client.getVersion(), context);
+        return service.listFileSystems(this.client.getUrl(), resource, prefix, continuation, maxResults, requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
      * List FileSystems
      * List filesystems and their properties in given account.
      *
+     * @param prefix Filters results to filesystems within the specified prefix.
      * @param continuation Optional.  When deleting a directory, the number of paths that are deleted with each invocation is limited.  If the number of paths to be deleted exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater than 5,000, the response will include up to 5,000 items.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
@@ -88,8 +92,8 @@ public final class ServicesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesListFileSystemsResponse> listFileSystemsWithRestResponseAsync(String continuation, String requestId, Integer timeout, Context context) {
+    public Mono<ServicesListFileSystemsResponse> listFileSystemsWithRestResponseAsync(String prefix, String continuation, Integer maxResults, String requestId, Integer timeout, Context context) {
         final String resource = "account";
-        return service.listFileSystems(this.client.getUrl(), resource, this.client.getPrefix(), continuation, this.client.getMaxResults(), requestId, timeout, this.client.getVersion(), context);
+        return service.listFileSystems(this.client.getUrl(), resource, prefix, continuation, maxResults, requestId, timeout, this.client.getVersion(), context);
     }
 }

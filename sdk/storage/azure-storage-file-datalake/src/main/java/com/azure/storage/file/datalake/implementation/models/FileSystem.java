@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Filesystem model.
+ * The FileSystem model.
  */
 @Fluent
-public final class Filesystem {
+public final class FileSystem {
     /*
      * The name property.
      */
@@ -43,9 +43,9 @@ public final class Filesystem {
      * Set the name property: The name property.
      *
      * @param name the name value to set.
-     * @return the Filesystem object itself.
+     * @return the FileSystem object itself.
      */
-    public Filesystem setName(String name) {
+    public FileSystem setName(String name) {
         this.name = name;
         return this;
     }
@@ -63,9 +63,9 @@ public final class Filesystem {
      * Set the lastModified property: The lastModified property.
      *
      * @param lastModified the lastModified value to set.
-     * @return the Filesystem object itself.
+     * @return the FileSystem object itself.
      */
-    public Filesystem setLastModified(String lastModified) {
+    public FileSystem setLastModified(String lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -83,9 +83,9 @@ public final class Filesystem {
      * Set the eTag property: The eTag property.
      *
      * @param eTag the eTag value to set.
-     * @return the Filesystem object itself.
+     * @return the FileSystem object itself.
      */
-    public Filesystem setETag(String eTag) {
+    public FileSystem setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

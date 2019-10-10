@@ -24,7 +24,6 @@ import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.file.datalake.implementation.models.BlobHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
@@ -32,8 +31,10 @@ import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathLeaseAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathsAppendDataResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsCreateResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsDeleteResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsFlushDataResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsLeaseResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsReadResponse;
@@ -82,12 +83,12 @@ public final class PathsImpl {
         @Put("{filesystem}/{path}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<PathsCreateResponse> create(@HostParam("url") String url, @QueryParam("resource") PathResourceType resource, @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode, @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-umask") String umask, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, Context context);
+        Mono<PathsCreateResponse> create(@HostParam("url") String url, @QueryParam("resource") PathResourceType resource, @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode, @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-umask") String umask, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, Context context);
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<PathsUpdateResponse> update(@HostParam("url") String url, @QueryParam("action") PathUpdateAction action, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-acl") String acl, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+        Mono<PathsUpdateResponse> update(@HostParam("url") String url, @QueryParam("action") PathUpdateAction action, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-acl") String acl, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Post("{filesystem}/{path}")
         @ExpectedResponses({200, 201, 202})
@@ -113,6 +114,16 @@ public final class PathsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<PathsSetAccessControlResponse> setAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions, @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+
+        @Patch("{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsFlushDataResponse> flushData(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+
+        @Patch("{filesystem}/{path}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        Mono<PathsAppendDataResponse> appendData(@HostParam("url") String url, @QueryParam("position") Long position, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @BodyParam("application/json; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
     }
 
     /**
@@ -128,13 +139,17 @@ public final class PathsImpl {
         final PathResourceType resource = null;
         final String continuation = null;
         final PathRenameMode mode = null;
+        final String renameSource = null;
         final String sourceLeaseId = null;
+        final String properties = null;
+        final String permissions = null;
+        final String umask = null;
         final String requestId = null;
         final Integer timeout = null;
         final String cacheControl = null;
         final String contentEncoding = null;
-        final String contentDisposition = null;
         final String contentLanguage = null;
+        final String contentDisposition = null;
         final String contentType = null;
         final String leaseId = null;
         final String ifMatch = null;
@@ -145,7 +160,7 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.create(this.client.getUrl(), resource, continuation, mode, this.client.getRenameSource(), sourceLeaseId, this.client.getProperties(), this.client.getPermissions(), this.client.getUmask(), requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentDisposition, contentLanguage, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
+        return service.create(this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -155,11 +170,14 @@ public final class PathsImpl {
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory". Possible values include: 'directory', 'file'.
      * @param continuation Optional.  When deleting a directory, the number of paths that are deleted with each invocation is limited.  If the number of paths to be deleted exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue deleting the directory.
      * @param mode Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename operation. The value must be "legacy" or "posix", and the default value will be "posix". Possible values include: 'legacy', 'posix'.
+     * @param renameSource An optional file or directory to be renamed.  The value must have the following format: "/{filesystem}/{path}".  If "x-ms-properties" is specified, the properties will overwrite the existing properties; otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.
      * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the leaase ID must match.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
+     * @param umask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file or directory to be created.  The resulting permission is given by p bitwise and not u, where p is the permission and u is the umask.  For example, if p is 0777 and u is 0057, then the resulting permission is 0720.  The default permission is 0777 for a directory and 0666 for a file.  The default umask is 0027.  The umask must be specified in 4-digit octal notation (e.g. 0766).
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param pathHTTPHeaders Additional parameters for the operation.
-     * @param blobHTTPHeaders Additional parameters for the operation.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param sourceModifiedAccessConditions Additional parameters for the operation.
@@ -168,7 +186,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String sourceLeaseId, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
         String cacheControl = null;
         if (pathHTTPHeaders != null) {
             cacheControl = pathHTTPHeaders.getCacheControl();
@@ -177,17 +195,17 @@ public final class PathsImpl {
         if (pathHTTPHeaders != null) {
             contentEncoding = pathHTTPHeaders.getContentEncoding();
         }
+        String contentLanguage = null;
+        if (pathHTTPHeaders != null) {
+            contentLanguage = pathHTTPHeaders.getContentLanguage();
+        }
         String contentDisposition = null;
         if (pathHTTPHeaders != null) {
             contentDisposition = pathHTTPHeaders.getContentDisposition();
         }
-        String contentLanguage = null;
-        if (blobHTTPHeaders != null) {
-            contentLanguage = blobHTTPHeaders.getContentLanguage();
-        }
         String contentType = null;
-        if (blobHTTPHeaders != null) {
-            contentType = blobHTTPHeaders.getContentType();
+        if (pathHTTPHeaders != null) {
+            contentType = pathHTTPHeaders.getContentType();
         }
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -229,7 +247,7 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.create(this.client.getUrl(), resource, continuation, mode, this.client.getRenameSource(), sourceLeaseId, this.client.getProperties(), this.client.getPermissions(), this.client.getUmask(), requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentDisposition, contentLanguage, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
+        return service.create(this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -248,23 +266,25 @@ public final class PathsImpl {
         final Boolean retainUncommittedData = null;
         final Boolean close = null;
         final Long contentLength = null;
+        final String properties = null;
         final String owner = null;
         final String group = null;
+        final String permissions = null;
         final String acl = null;
         final String requestId = null;
         final Integer timeout = null;
         final String leaseId = null;
         final String cacheControl = null;
+        final String contentType = null;
         final String contentDisposition = null;
         final String contentEncoding = null;
-        final String contentType = null;
         final String contentLanguage = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         String transactionalContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, this.client.getProperties(), owner, group, this.client.getPermissions(), acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentDisposition, contentEncoding, contentType, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -278,21 +298,22 @@ public final class PathsImpl {
      * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the difference between an intermediate flush to a file stream and the final close of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a file change notification with a property indicating that this is the final update (the file stream has been closed). If "false" a change notification is raised indicating the file has changed. The default is false. This query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
      * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param pathHTTPHeaders Additional parameters for the operation.
-     * @param blobHTTPHeaders Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String owner, String group, String acl, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, BlobHTTPHeaders blobHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.getLeaseId();
@@ -300,6 +321,10 @@ public final class PathsImpl {
         String cacheControl = null;
         if (pathHTTPHeaders != null) {
             cacheControl = pathHTTPHeaders.getCacheControl();
+        }
+        String contentType = null;
+        if (pathHTTPHeaders != null) {
+            contentType = pathHTTPHeaders.getContentType();
         }
         String contentDisposition = null;
         if (pathHTTPHeaders != null) {
@@ -309,13 +334,9 @@ public final class PathsImpl {
         if (pathHTTPHeaders != null) {
             contentEncoding = pathHTTPHeaders.getContentEncoding();
         }
-        String contentType = null;
-        if (blobHTTPHeaders != null) {
-            contentType = blobHTTPHeaders.getContentType();
-        }
         String contentLanguage = null;
-        if (blobHTTPHeaders != null) {
-            contentLanguage = blobHTTPHeaders.getContentLanguage();
+        if (pathHTTPHeaders != null) {
+            contentLanguage = pathHTTPHeaders.getContentLanguage();
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
@@ -336,7 +357,7 @@ public final class PathsImpl {
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, this.client.getProperties(), owner, group, this.client.getPermissions(), acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentDisposition, contentEncoding, contentType, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -480,6 +501,7 @@ public final class PathsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final PathGetPropertiesAction action = null;
+        final Boolean upn = null;
         final String requestId = null;
         final Integer timeout = null;
         final String leaseId = null;
@@ -487,7 +509,7 @@ public final class PathsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.getProperties(this.client.getUrl(), action, this.client.isUpn(), requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.getProperties(this.client.getUrl(), action, upn, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -495,6 +517,7 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined properties for a path. Get Access Control List returns the access control list for a path. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned. If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical Namespace must be enabled for the account), otherwise the properties are returned. Possible values include: 'getAccessControl', 'getStatus'.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseAccessConditions Additional parameters for the operation.
@@ -504,7 +527,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(PathGetPropertiesAction action, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsGetPropertiesResponse> getPropertiesWithRestResponseAsync(PathGetPropertiesAction action, Boolean upn, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.getLeaseId();
@@ -527,7 +550,7 @@ public final class PathsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getProperties(this.client.getUrl(), action, this.client.isUpn(), requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.getProperties(this.client.getUrl(), action, upn, requestId, timeout, this.client.getVersion(), leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -605,6 +628,7 @@ public final class PathsImpl {
         final Integer timeout = null;
         final String owner = null;
         final String group = null;
+        final String permissions = null;
         final String acl = null;
         final String requestId = null;
         final String action = "setAccessControl";
@@ -613,7 +637,7 @@ public final class PathsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, this.client.getPermissions(), acl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, permissions, acl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -622,6 +646,7 @@ public final class PathsImpl {
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
      * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
@@ -631,7 +656,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PathsSetAccessControlResponse> setAccessControlWithRestResponseAsync(Integer timeout, String owner, String group, String acl, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<PathsSetAccessControlResponse> setAccessControlWithRestResponseAsync(Integer timeout, String owner, String group, String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String action = "setAccessControl";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -655,6 +680,147 @@ public final class PathsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, this.client.getPermissions(), acl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, permissions, acl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final Long position = null;
+        final Boolean retainUncommittedData = null;
+        final Boolean close = null;
+        final Long contentLength = null;
+        final String requestId = null;
+        final String action = "flush";
+        final String leaseId = null;
+        final String cacheControl = null;
+        final String contentType = null;
+        final String contentDisposition = null;
+        final String contentEncoding = null;
+        final String contentLanguage = null;
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        String transactionalContentMD5Converted = null;
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        return service.flushData(this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, requestId, this.client.getVersion(), action, leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.  It is required when uploading data to be appended to the file and when flushing previously uploaded data to the file.  The value must be the position where the data is to be appended.  Uploaded data is not immediately flushed, or written, to the file.  To flush, the previously uploaded data must be contiguous, the position parameter must be specified and equal to the length of the file after all data has been written, and there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations.  If "true", uncommitted data is retained after the flush operation completes; otherwise, the uncommitted data is deleted after the flush operation.  The default is false.  Data at offsets less than the specified position are written to the file when flush succeeds, but this optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is the final change to distinguish the difference between an intermediate flush to a file stream and the final close of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a file change notification with a property indicating that this is the final update (the file stream has been closed). If "false" a change notification is raised indicating the file has changed. The default is false. This query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
+     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param pathHTTPHeaders Additional parameters for the operation.
+     * @param modifiedAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "flush";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String cacheControl = null;
+        if (pathHTTPHeaders != null) {
+            cacheControl = pathHTTPHeaders.getCacheControl();
+        }
+        String contentType = null;
+        if (pathHTTPHeaders != null) {
+            contentType = pathHTTPHeaders.getContentType();
+        }
+        String contentDisposition = null;
+        if (pathHTTPHeaders != null) {
+            contentDisposition = pathHTTPHeaders.getContentDisposition();
+        }
+        String contentEncoding = null;
+        if (pathHTTPHeaders != null) {
+            contentEncoding = pathHTTPHeaders.getContentEncoding();
+        }
+        String contentLanguage = null;
+        if (pathHTTPHeaders != null) {
+            contentLanguage = pathHTTPHeaders.getContentLanguage();
+        }
+        String ifMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifMatch = modifiedAccessConditions.getIfMatch();
+        }
+        String ifNoneMatch = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatch = modifiedAccessConditions.getIfNoneMatch();
+        }
+        OffsetDateTime ifModifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSince = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.flushData(this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, requestId, this.client.getVersion(), action, leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Context context) {
+        final Long position = null;
+        final Integer timeout = null;
+        final Long contentLength = null;
+        final String requestId = null;
+        final String action = "append";
+        final String leaseId = null;
+        String transactionalContentMD5Converted = null;
+        return service.appendData(this.client.getUrl(), position, timeout, contentLength, transactionalContentMD5Converted, body, requestId, this.client.getVersion(), action, leaseId, context);
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is appended to the file.  It is required when uploading data to be appended to the file and when flushing previously uploaded data to the file.  The value must be the position where the data is to be appended.  Uploaded data is not immediately flushed, or written, to the file.  To flush, the previously uploaded data must be contiguous, the position parameter must be specified and equal to the length of the file after all data has been written, and there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data".  Must be 0 for "Flush Data".  Must be the length of the request content in bytes for "Append Data".
+     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Additional parameters for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsAppendDataResponse> appendDataWithRestResponseAsync(Flux<ByteBuffer> body, Long position, Integer timeout, Long contentLength, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, Context context) {
+        final String action = "append";
+        String leaseId = null;
+        if (leaseAccessConditions != null) {
+            leaseId = leaseAccessConditions.getLeaseId();
+        }
+        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+        return service.appendData(this.client.getUrl(), position, timeout, contentLength, transactionalContentMD5Converted, body, requestId, this.client.getVersion(), action, leaseId, context);
     }
 }

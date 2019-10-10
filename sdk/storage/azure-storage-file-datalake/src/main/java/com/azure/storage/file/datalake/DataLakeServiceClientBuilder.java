@@ -33,7 +33,7 @@ public final class DataLakeServiceClientBuilder extends BaseClientBuilder {
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
      */
     public DataLakeServiceClient buildClient() {
-        return new DataLakeServiceClient(buildAsyncClient());
+        return new DataLakeServiceClient();
     }
 
     /**

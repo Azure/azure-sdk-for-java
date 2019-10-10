@@ -92,7 +92,7 @@ public final class FileSystemsImpl {
 
     /**
      * Create FileSystem
-     * Create a filesystem rooted at the specified location. If the filesystem already exists, the operation fails.  This operation does not support conditional HTTP requests.
+     * Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.  This operation does not support conditional HTTP requests.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,16 +100,18 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsCreateResponse> createWithRestResponseAsync(Context context) {
+        final String properties = null;
         final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
-        return service.create(this.client.getUrl(), this.client.getProperties(), resource, requestId, timeout, this.client.getVersion(), context);
+        return service.create(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
      * Create FileSystem
-     * Create a filesystem rooted at the specified location. If the filesystem already exists, the operation fails.  This operation does not support conditional HTTP requests.
+     * Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.  This operation does not support conditional HTTP requests.
      *
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
@@ -117,14 +119,14 @@ public final class FileSystemsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsCreateResponse> createWithRestResponseAsync(String requestId, Integer timeout, Context context) {
+    public Mono<FileSystemsCreateResponse> createWithRestResponseAsync(String properties, String requestId, Integer timeout, Context context) {
         final String resource = "filesystem";
-        return service.create(this.client.getUrl(), this.client.getProperties(), resource, requestId, timeout, this.client.getVersion(), context);
+        return service.create(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
      * Set FileSystem Properties
-     * Set properties for the filesystem.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Set properties for the FileSystem.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,18 +134,20 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithRestResponseAsync(Context context) {
+        final String properties = null;
         final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setProperties(this.client.getUrl(), this.client.getProperties(), resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setProperties(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
      * Set FileSystem Properties
-     * Set properties for the filesystem.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Set properties for the FileSystem.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set.  If the filesystem exists, any properties not included in the list will be removed.  All properties are removed if the header is omitted.  To merge new and existing properties, first get all existing properties and the current E-Tag, then make a conditional request with the E-Tag and include values for all properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Additional parameters for the operation.
@@ -152,7 +156,7 @@ public final class FileSystemsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithRestResponseAsync(String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithRestResponseAsync(String properties, String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String resource = "filesystem";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
@@ -164,7 +168,7 @@ public final class FileSystemsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setProperties(this.client.getUrl(), this.client.getProperties(), resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setProperties(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -201,7 +205,7 @@ public final class FileSystemsImpl {
 
     /**
      * Delete FileSystem
-     * Marks the filesystem for deletion.  When a filesystem is deleted, a filesystem with the same identifier cannot be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with the same identifier will fail with status code 409 (Conflict), with the service returning additional error information indicating that the filesystem is being deleted. All other operations, including operations on any files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is being deleted. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Marks the FileSystem for deletion.  When a FileSystem is deleted, a FileSystem with the same identifier cannot be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with the same identifier will fail with status code 409 (Conflict), with the service returning additional error information indicating that the filesystem is being deleted. All other operations, including operations on any files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is being deleted. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +223,7 @@ public final class FileSystemsImpl {
 
     /**
      * Delete FileSystem
-     * Marks the filesystem for deletion.  When a filesystem is deleted, a filesystem with the same identifier cannot be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with the same identifier will fail with status code 409 (Conflict), with the service returning additional error information indicating that the filesystem is being deleted. All other operations, including operations on any files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is being deleted. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Marks the FileSystem for deletion.  When a FileSystem is deleted, a FileSystem with the same identifier cannot be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with the same identifier will fail with status code 409 (Conflict), with the service returning additional error information indicating that the filesystem is being deleted. All other operations, including operations on any files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is being deleted. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -246,7 +250,7 @@ public final class FileSystemsImpl {
 
     /**
      * List Paths
-     * List filesystem paths and their properties.
+     * List FileSystem paths and their properties.
      *
      * @param recursive Required.
      * @param context The context to associate with this operation.
@@ -257,19 +261,23 @@ public final class FileSystemsImpl {
     public Mono<FileSystemsListPathsResponse> listPathsWithRestResponseAsync(boolean recursive, Context context) {
         final String continuation = null;
         final String path = null;
+        final Integer maxResults = null;
+        final Boolean upn = null;
         final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
-        return service.listPaths(this.client.getUrl(), continuation, path, recursive, this.client.getMaxResults(), this.client.isUpn(), resource, requestId, timeout, this.client.getVersion(), context);
+        return service.listPaths(this.client.getUrl(), continuation, path, recursive, maxResults, upn, resource, requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
      * List Paths
-     * List filesystem paths and their properties.
+     * List FileSystem paths and their properties.
      *
      * @param recursive Required.
      * @param continuation Optional.  When deleting a directory, the number of paths that are deleted with each invocation is limited.  If the number of paths to be deleted exceeds this limit, a continuation token is returned in this response header.  When a continuation token is returned in the response, it must be specified in a subsequent invocation of the delete operation to continue deleting the directory.
      * @param path Optional.  Filters results to paths within the specified directory. An error occurs if the directory does not exist.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater than 5,000, the response will include up to 5,000 items.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
@@ -277,8 +285,8 @@ public final class FileSystemsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsListPathsResponse> listPathsWithRestResponseAsync(boolean recursive, String continuation, String path, String requestId, Integer timeout, Context context) {
+    public Mono<FileSystemsListPathsResponse> listPathsWithRestResponseAsync(boolean recursive, String continuation, String path, Integer maxResults, Boolean upn, String requestId, Integer timeout, Context context) {
         final String resource = "filesystem";
-        return service.listPaths(this.client.getUrl(), continuation, path, recursive, this.client.getMaxResults(), this.client.isUpn(), resource, requestId, timeout, this.client.getVersion(), context);
+        return service.listPaths(this.client.getUrl(), continuation, path, recursive, maxResults, upn, resource, requestId, timeout, this.client.getVersion(), context);
     }
 }

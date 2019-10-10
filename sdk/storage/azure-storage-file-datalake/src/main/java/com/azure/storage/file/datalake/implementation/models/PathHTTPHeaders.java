@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Additional parameters for a set of operations, such as: Paths_create,
- * Paths_update.
+ * Paths_update, Paths_flushData.
  */
 @Fluent
 public final class PathHTTPHeaders {
@@ -28,10 +28,24 @@ public final class PathHTTPHeaders {
     private String contentEncoding;
 
     /*
+     * Optional. Set the blob's content language. If specified, this property
+     * is stored with the blob and returned with a read request.
+     */
+    @JsonProperty(value = "")
+    private String contentLanguage;
+
+    /*
      * Optional. Sets the blob's Content-Disposition header.
      */
     @JsonProperty(value = "")
     private String contentDisposition;
+
+    /*
+     * Optional. Sets the blob's content type. If specified, this property is
+     * stored with the blob and returned with a read request.
+     */
+    @JsonProperty(value = "")
+    private String contentType;
 
     /**
      * Get the cacheControl property: Optional. Sets the blob's cache control.
@@ -82,6 +96,30 @@ public final class PathHTTPHeaders {
     }
 
     /**
+     * Get the contentLanguage property: Optional. Set the blob's content
+     * language. If specified, this property is stored with the blob and
+     * returned with a read request.
+     *
+     * @return the contentLanguage value.
+     */
+    public String getContentLanguage() {
+        return this.contentLanguage;
+    }
+
+    /**
+     * Set the contentLanguage property: Optional. Set the blob's content
+     * language. If specified, this property is stored with the blob and
+     * returned with a read request.
+     *
+     * @param contentLanguage the contentLanguage value to set.
+     * @return the PathHTTPHeaders object itself.
+     */
+    public PathHTTPHeaders setContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
+        return this;
+    }
+
+    /**
      * Get the contentDisposition property: Optional. Sets the blob's
      * Content-Disposition header.
      *
@@ -100,6 +138,30 @@ public final class PathHTTPHeaders {
      */
     public PathHTTPHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
+        return this;
+    }
+
+    /**
+     * Get the contentType property: Optional. Sets the blob's content type. If
+     * specified, this property is stored with the blob and returned with a
+     * read request.
+     *
+     * @return the contentType value.
+     */
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: Optional. Sets the blob's content type. If
+     * specified, this property is stored with the blob and returned with a
+     * read request.
+     *
+     * @param contentType the contentType value to set.
+     * @return the PathHTTPHeaders object itself.
+     */
+    public PathHTTPHeaders setContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 }
