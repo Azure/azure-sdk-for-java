@@ -50,7 +50,7 @@ Netty and include OkHTTP client in your pom.xml.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.5</version>
+  <version>1.0.0-preview.6</version>
 </dependency>
 ```
 
@@ -273,7 +273,7 @@ BlobServiceClient storageClient = new BlobServiceClientBuilder()
 
 ## Troubleshooting
 
-When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP
+When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 

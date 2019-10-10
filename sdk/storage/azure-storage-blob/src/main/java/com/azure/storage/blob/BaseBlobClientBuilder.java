@@ -12,6 +12,7 @@ import com.azure.storage.common.Constants;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 
 /**
+ * RESERVED FOR INTERNAL USE ONLY
  * Base builder for Azure Storage Blobs.
  * @param <T> Generic type that extends {@link BaseClientBuilder}.
  */
@@ -46,7 +47,7 @@ public abstract class BaseBlobClientBuilder<T extends BaseClientBuilder<T>> exte
      * @return the {@code UserAgentPolicy} that will be used in the {@link HttpPipeline}.
      */
     @Override
-    protected final UserAgentPolicy getUserAgentPolicy() {
+    protected UserAgentPolicy getUserAgentPolicy() {
         return new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, super.getConfiguration());
     }
 
