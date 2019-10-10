@@ -9,6 +9,8 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.JCommander.Builder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -19,6 +21,43 @@ import reactor.core.publisher.Flux;
 public class PerfStressProgram {
     private static AtomicInteger _completedOperations = new AtomicInteger();
     private static long[] _lastCompletionNanoTimes;
+
+    public static void Run(Class<?>[] classes, String[] args) {
+        String[] commands = Arrays.stream(classes).map(c -> GetCommandName(c.getSimpleName()))
+                .toArray(i -> new String[i]);
+
+        PerfStressOptions[] options = Arrays.stream(classes).map(c -> {
+            try {
+                return c.getConstructors()[0].getParameterTypes()[0].getConstructors()[0].newInstance();
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | SecurityException e) {
+                throw new RuntimeException(e);
+            }
+        }).toArray(i -> new PerfStressOptions[i]);
+
+        Builder builder = JCommander.newBuilder();
+
+        for (int i = 0; i < commands.length; i++) {
+            builder.addCommand(commands[i], options[i]);
+        }
+
+        JCommander jc = builder.build();
+
+        jc.parse(args);
+
+        String parsedCommand = jc.getParsedCommand();
+        if (parsedCommand == null || parsedCommand.isEmpty()) {
+            jc.usage();
+        } else {
+            int index = Arrays.asList(commands).indexOf(parsedCommand);
+            Run(classes[index], options[index]);
+        }
+    }
+
+    private static String GetCommandName(String testName) {
+        String lower = testName.toLowerCase();
+        return lower.endsWith("test") ? lower.substring(0, lower.length() - 4) : lower;
+    }
 
     public static void Run(Class<?> testClass, PerfStressOptions options) {
         System.out.println("=== Options ===");
@@ -63,19 +102,16 @@ public class PerfStressProgram {
 
                 setupStatus.dispose();
 
-                long endNanoTime = System.nanoTime() + ((long)options.Duration * 1000000000);
- 
+                long endNanoTime = System.nanoTime() + ((long) options.Duration * 1000000000);
+
                 int[] lastCompleted = new int[] { 0 };
                 Disposable progressStatus = PrintStatus(
-                    "=== Progress ===" + System.lineSeparator() +
-                    "Current\t\tTotal",
-                    () -> {
-                        int totalCompleted = _completedOperations.get();
-                        int currentCompleted = totalCompleted - lastCompleted[0];
-                        lastCompleted[0] = totalCompleted;
-                        return currentCompleted + "\t\t" + totalCompleted;
-                    },
-                    true);
+                        "=== Progress ===" + System.lineSeparator() + "Current\t\tTotal", () -> {
+                            int totalCompleted = _completedOperations.get();
+                            int currentCompleted = totalCompleted - lastCompleted[0];
+                            lastCompleted[0] = totalCompleted;
+                            return currentCompleted + "\t\t" + totalCompleted;
+                        }, true);
 
                 try {
                     forkJoinPool.submit(() -> {

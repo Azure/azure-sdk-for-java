@@ -4,13 +4,14 @@ import com.microsoft.storageperf.core.PerfStressProgram;
 
 public class App {
     public static void main(String[] args) {
-        CountOptions options = new CountOptions();
-        options.Count = 5;
+        Class<?>[] testClasses;
 
         try {
-            PerfStressProgram.Run(Class.forName("com.microsoft.storageperf.GetBlobsTest"), options);
+            testClasses = new Class<?>[] { Class.forName("com.microsoft.storageperf.GetBlobsTest") };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        PerfStressProgram.Run(testClasses, args);
     }
 }
