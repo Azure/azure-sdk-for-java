@@ -9,22 +9,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The FilesystemList model.
+ * The FileSystemList model.
  */
 @Fluent
-public final class FilesystemList {
+public final class FileSystemList {
     /*
      * The filesystems property.
      */
     @JsonProperty(value = "filesystems")
-    private List<Filesystem> filesystems;
+    private List<FileSystem> filesystems;
 
     /**
      * Get the filesystems property: The filesystems property.
      *
      * @return the filesystems value.
      */
-    public List<Filesystem> getFilesystems() {
+    public List<FileSystem> getFilesystems() {
         return this.filesystems;
     }
 
@@ -32,9 +32,9 @@ public final class FilesystemList {
      * Set the filesystems property: The filesystems property.
      *
      * @param filesystems the filesystems value to set.
-     * @return the FilesystemList object itself.
+     * @return the FileSystemList object itself.
      */
-    public FilesystemList setFilesystems(List<Filesystem> filesystems) {
+    public FileSystemList setFilesystems(List<FileSystem> filesystems) {
         this.filesystems = filesystems;
         return this;
     }

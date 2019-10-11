@@ -22,7 +22,7 @@ public final class FileSystemCreateHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /*
-     * An HTTP entity tag associated with the filesystem.
+     * An HTTP entity tag associated with the FileSystem.
      */
     @JsonProperty(value = "ETag")
     private String eTag;
@@ -91,7 +91,7 @@ public final class FileSystemCreateHeaders {
 
     /**
      * Get the eTag property: An HTTP entity tag associated with the
-     * filesystem.
+     * FileSystem.
      *
      * @return the eTag value.
      */
@@ -101,7 +101,7 @@ public final class FileSystemCreateHeaders {
 
     /**
      * Set the eTag property: An HTTP entity tag associated with the
-     * filesystem.
+     * FileSystem.
      *
      * @param eTag the eTag value to set.
      * @return the FileSystemCreateHeaders object itself.

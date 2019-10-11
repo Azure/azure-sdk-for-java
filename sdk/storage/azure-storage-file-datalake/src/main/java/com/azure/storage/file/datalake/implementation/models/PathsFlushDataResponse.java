@@ -9,27 +9,19 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /**
- * Contains all response data for the listFileSystems operation.
+ * Contains all response data for the flushData operation.
  */
-public final class ServicesListFileSystemsResponse extends ResponseBase<ServiceListFileSystemsHeaders, FileSystemList> {
+public final class PathsFlushDataResponse extends ResponseBase<PathFlushDataHeaders, Void> {
     /**
-     * Creates an instance of ServicesListFileSystemsResponse.
+     * Creates an instance of PathsFlushDataResponse.
      *
-     * @param request the request which resulted in this ServicesListFileSystemsResponse.
+     * @param request the request which resulted in this PathsFlushDataResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesListFileSystemsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, FileSystemList value, ServiceListFileSystemsHeaders headers) {
+    public PathsFlushDataResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PathFlushDataHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
-    }
-
-    /**
-     * @return the deserialized response body.
-     */
-    @Override
-    public FileSystemList getValue() {
-        return super.getValue();
     }
 }

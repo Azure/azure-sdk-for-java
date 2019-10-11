@@ -1,8 +1,5 @@
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
-
 public class PathAccessConditions {
 
     private final ModifiedAccessConditions modifiedAccessConditions;
