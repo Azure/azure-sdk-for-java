@@ -34,7 +34,7 @@ AppConfiguration to use Netty HTTP client.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.0.0-preview.5</version>
+    <version>1.0.0-preview.6</version>
 </dependency>
 ```
 
