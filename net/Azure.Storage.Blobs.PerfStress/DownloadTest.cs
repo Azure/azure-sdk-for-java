@@ -14,9 +14,9 @@ namespace Azure.Storage.Blobs.PerfStress
             _blobClient = BlobContainerClient.GetBlobClient("downloadtest");
         }
 
-        public override async Task GlobalSetup()
+        public override async Task GlobalSetupAsync()
         {
-            await base.GlobalSetup();
+            await base.GlobalSetupAsync();
 
             using var stream = RandomStream.Create(Options.Size);
             

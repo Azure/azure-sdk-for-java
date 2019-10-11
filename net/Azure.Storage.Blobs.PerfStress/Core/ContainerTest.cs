@@ -15,13 +15,13 @@ namespace Azure.Storage.Blobs.PerfStress.Core
             BlobContainerClient = BlobServiceClient.GetBlobContainerClient(ContainerName);
         }
 
-        public override async Task GlobalSetup()
+        public override async Task GlobalSetupAsync()
         {
             await base.GlobalSetupAsync();
             await BlobContainerClient.CreateAsync();
         }
 
-        public override async Task GlobalCleanup()
+        public override async Task GlobalCleanupAsync()
         {
             await BlobContainerClient.DeleteAsync();
             await base.GlobalCleanupAsync();

@@ -12,9 +12,9 @@ namespace Azure.Storage.Blobs.PerfStress
         {
         }
 
-        public override async Task GlobalSetup()
+        public override async Task GlobalSetupAsync()
         {
-            await base.GlobalSetup();
+            await base.GlobalSetupAsync();
 
             var uploadTasks = new Task[Options.Count];
             for (var i = 0; i < uploadTasks.Length; i++)
