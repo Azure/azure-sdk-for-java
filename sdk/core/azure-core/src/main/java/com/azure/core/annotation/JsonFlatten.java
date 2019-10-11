@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * the wire.
  *
  */
-@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 public @interface JsonFlatten {
 }

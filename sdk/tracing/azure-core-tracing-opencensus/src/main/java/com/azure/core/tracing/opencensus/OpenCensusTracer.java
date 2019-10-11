@@ -26,15 +26,49 @@ import static io.opencensus.trace.Link.Type.PARENT_LINKED_SPAN;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
- * context propagation.
+ * context propagation. Singleton OpenCensus tracer capable of starting and exporting spans.
  *
  * <p>
  * This helper class supports W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP
  * and AMQP requests.
  */
 public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
-    // Singleton OpenCensus tracer capable of starting and exporting spans.
     private static final Tracer TRACER = Tracing.getTracer();
+    /**
+     * Key for {@link Context} which indicates that the context contains OpenCensus span data. This span will be used
+     * as the parent span for all spans the SDK creates.
+     * <p>
+     * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
+     */
+    String OPENCENSUS_SPAN_KEY = "opencensus-span";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are
+     * created.
+     * <p>
+     * If no span name is listed when the span is created it will default to using the calling method's name.
+     */
+    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains an entity path.
+     */
+    String ENTITY_PATH = "entity-path";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains the hostname.
+     */
+    String HOST_NAME = "hostname";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains a message span context.
+     */
+    String SPAN_CONTEXT = "span-context";
+
+    /**
+     * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
+     */
+    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
 
     // standard attributes with AMQP request
     private static final String COMPONENT = "component";

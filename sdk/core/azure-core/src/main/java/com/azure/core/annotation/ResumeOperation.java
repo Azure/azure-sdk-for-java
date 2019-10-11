@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for method representing continuation operation.
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface ResumeOperation {
 }

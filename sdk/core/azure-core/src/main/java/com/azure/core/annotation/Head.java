@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  * {@literal @}Head(https://management.azure.com/{storageAccountId})
  *  boolean checkNameAvailability(@PathParam("nextLink") String storageAccountId);</pre>
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface Head {
     /**
      * Get the relative path of the annotated method's HEAD URL.

@@ -42,9 +42,9 @@ import static java.lang.annotation.ElementType.TYPE;
  *     Secret get(@HostParam("vaultName") String vaultName, @PathParam("secretName") String secretName);
  *  }</pre>
  */
-@Target(value = {TYPE})
 // Record this annotation in the class file and make it available during runtime.
 @Retention(RetentionPolicy.RUNTIME)
+@Target(value = {TYPE})
 public @interface Host {
     /**
      * Get the protocol/scheme, host, and optional port number in a single string.

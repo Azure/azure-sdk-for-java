@@ -12,8 +12,8 @@ import static java.lang.annotation.ElementType.TYPE;
 /**
  * Annotation to give the service interfaces a name that correlates to the service that is usable in a programmatic way.
  */
-@Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({TYPE})
 public @interface ServiceInterface {
     /**
      * Name of the service - this must be short and without spaces.

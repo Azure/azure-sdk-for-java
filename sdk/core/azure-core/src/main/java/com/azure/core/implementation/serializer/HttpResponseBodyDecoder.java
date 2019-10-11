@@ -313,7 +313,7 @@ final class HttpResponseBodyDecoder {
                     PagedResponseBase<?, ?> restResponse = (PagedResponseBase<?, ?>) wireResponse;
                     result =
                         new PagedResponseBase<>(restResponse.getRequest(), restResponse.getStatusCode(),
-                            restResponse.getHeaders(), restResponse.getItems(), restResponse.getNextLink(),
+                            restResponse.getHeaders(), restResponse.getItems(), restResponse.getContinuationToken(),
                             restResponse.getDeserializedHeaders());
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
                     ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;

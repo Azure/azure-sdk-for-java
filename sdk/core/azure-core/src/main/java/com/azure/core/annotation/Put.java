@@ -30,8 +30,8 @@ import java.lang.annotation.Target;
  *  Secret createOrUpdate(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName")
  *  String secretName, @BodyParam SecretCreateParameters secret);</pre>
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface Put {
     /**
      * Get the relative path of the annotated method's PUT URL.

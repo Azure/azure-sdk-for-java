@@ -13,8 +13,8 @@ import static java.lang.annotation.ElementType.TYPE;
  * Annotation given to all immutable classes. If a class has this annotation, checks can be made to ensure all
  * fields in this class are final.
  */
-@Target({TYPE})
 @Retention(RetentionPolicy.SOURCE)
+@Target({TYPE})
 public @interface Immutable {
 
 }

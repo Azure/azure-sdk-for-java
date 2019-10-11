@@ -30,8 +30,8 @@ import java.lang.annotation.Target;
  *  Secret patch(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String
  *  secretName, @BodyParam SecretUpdateParameters updateParameters); </pre>
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface Patch {
     /**
      * Get the relative path of the annotated method's PATCH URL.

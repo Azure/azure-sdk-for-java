@@ -12,42 +12,6 @@ import com.azure.core.util.Context;
  */
 public interface Tracer {
     /**
-     * Key for {@link Context} which indicates that the context contains OpenCensus span data. This span will be used
-     * as the parent span for all spans the SDK creates.
-     * <p>
-     * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
-     */
-    String OPENCENSUS_SPAN_KEY = "opencensus-span";
-
-    /**
-     * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are
-     * created.
-     * <p>
-     * If no span name is listed when the span is created it will default to using the calling method's name.
-     */
-    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
-
-    /**
-     * Key for {@link Context} which indicates that the context contains an entity path.
-     */
-    String ENTITY_PATH = "entity-path";
-
-    /**
-     * Key for {@link Context} which indicates that the context contains the hostname.
-     */
-    String HOST_NAME = "hostname";
-
-    /**
-     * Key for {@link Context} which indicates that the context contains a message span context.
-     */
-    String SPAN_CONTEXT = "span-context";
-
-    /**
-     * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
-     */
-    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
-
-    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span

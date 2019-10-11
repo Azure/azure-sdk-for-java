@@ -12,8 +12,8 @@ import static java.lang.annotation.ElementType.TYPE;
 /**
  * Annotation given to all service client builder classes.
  */
-@Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({TYPE})
 public @interface ServiceClientBuilder {
 
     /**

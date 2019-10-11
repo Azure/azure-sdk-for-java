@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  * {@literal @}Get({nextLink})
  * {@literal List<VirtualMachine>} listNext(@PathParam("nextLink") String nextLink);</pre>
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface Get {
     /**
      * Get the relative path of the annotated method's GET URL.

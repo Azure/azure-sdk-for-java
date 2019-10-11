@@ -14,8 +14,8 @@ import static java.lang.annotation.ElementType.TYPE;
  * annotation, checks can be made to ensure all API meets this expectation. Similarly, classes that are not annotated
  * with this annotation should not have fluent APIs.
  */
-@Target({TYPE})
 @Retention(RetentionPolicy.SOURCE)
+@Target({TYPE})
 public @interface Fluent {
 
 }

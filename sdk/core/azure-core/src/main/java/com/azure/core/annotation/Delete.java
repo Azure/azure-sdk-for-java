@@ -29,8 +29,8 @@ import java.lang.annotation.Target;
  *  void delete(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String
  *  secretName);</pre>
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface Delete {
     /**
      * Get the relative path of the annotated method's DELETE URL.

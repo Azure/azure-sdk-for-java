@@ -29,8 +29,8 @@ import java.lang.annotation.Target;
  *  NameValuePair generateFunctionKey(@PathParam("functionApp") String functionApp, @PathParam("name") String
  *  function, @PathParam("keyName") String keyName);</pre>
  */
-@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
 public @interface Post {
     /**
      * Get the relative path of the annotated method's POST URL.

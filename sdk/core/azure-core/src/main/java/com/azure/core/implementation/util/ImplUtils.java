@@ -149,7 +149,7 @@ public final class ImplUtils {
      */
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
                                                    BiFunction<String, Context, Publisher<T>> content) {
-        String nextPageLink = page.getNextLink();
+        String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getItems());
         }
