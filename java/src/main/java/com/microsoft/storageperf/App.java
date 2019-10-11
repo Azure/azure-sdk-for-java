@@ -7,7 +7,10 @@ public class App {
         Class<?>[] testClasses;
 
         try {
-            testClasses = new Class<?>[] { Class.forName("com.microsoft.storageperf.GetBlobsTest") };
+            testClasses = new Class<?>[] {
+                Class.forName("com.microsoft.storageperf.GetBlobsTest"),
+                Class.forName("com.microsoft.storageperf.GetBlobsV8Test"),
+            };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
