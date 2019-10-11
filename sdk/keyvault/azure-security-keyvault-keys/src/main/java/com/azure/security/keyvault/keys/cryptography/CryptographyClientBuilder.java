@@ -288,7 +288,7 @@ public class CryptographyClientBuilder {
      *
      * The latest service version will be used if not provided {@link ServiceVersion}
      *
-     * @param version ServiceVersion of the service API used when making requests.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @return The updated CryptographyClientBuilder object.
      */
     public CryptographyClientBuilder serviceVersion(ServiceVersion version) {

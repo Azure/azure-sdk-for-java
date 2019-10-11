@@ -6,7 +6,6 @@ package com.azure.data.appconfiguration;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.ServiceVersionPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.util.Configuration;
@@ -158,12 +157,6 @@ public final class ConfigurationClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
-        if (version == null) {
-            policies.add(new ServiceVersionPolicy(ServiceVersion.getLatest().toString()));
-        } else {
-            policies.add(new ServiceVersionPolicy(version.toString()));
-        }
-
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -318,7 +311,7 @@ public final class ConfigurationClientBuilder {
      *
      * The latest service version will be used if not provided {@link ServiceVersion}
      *
-     * @param version ServiceVersion of the service API used when making requests.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder serviceVersion(ServiceVersion version) {
