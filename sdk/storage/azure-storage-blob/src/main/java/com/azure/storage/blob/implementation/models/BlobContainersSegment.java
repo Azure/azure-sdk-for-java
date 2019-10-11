@@ -18,7 +18,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
-public final class ListContainersSegmentResponse {
+public final class BlobContainersSegment {
     /*
      * The serviceEndpoint property.
      */
@@ -28,7 +28,7 @@ public final class ListContainersSegmentResponse {
     /*
      * The prefix property.
      */
-    @JsonProperty(value = "Prefix", required = true)
+    @JsonProperty(value = "Prefix")
     private String prefix;
 
     /*
@@ -40,8 +40,14 @@ public final class ListContainersSegmentResponse {
     /*
      * The maxResults property.
      */
-    @JsonProperty(value = "MaxResults", required = true)
-    private int maxResults;
+    @JsonProperty(value = "MaxResults")
+    private Integer maxResults;
+
+    /*
+     * The nextMarker property.
+     */
+    @JsonProperty(value = "NextMarker", required = true)
+    private String nextMarker;
 
     private static final class ContainersWrapper {
         @JacksonXmlProperty(localName = "Container")
@@ -54,16 +60,10 @@ public final class ListContainersSegmentResponse {
     }
 
     /*
-     * The containerItems property.
+     * The blobContainerItems property.
      */
-    @JsonProperty(value = "Containers", required = true)
-    private ContainersWrapper containerItems;
-
-    /*
-     * The nextMarker property.
-     */
-    @JsonProperty(value = "NextMarker", required = true)
-    private String nextMarker;
+    @JsonProperty(value = "Containers")
+    private ContainersWrapper blobContainerItems;
 
     /**
      * Get the serviceEndpoint property: The serviceEndpoint property.
@@ -78,9 +78,9 @@ public final class ListContainersSegmentResponse {
      * Set the serviceEndpoint property: The serviceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
-     * @return the ListContainersSegmentResponse object itself.
+     * @return the BlobContainersSegment object itself.
      */
-    public ListContainersSegmentResponse setServiceEndpoint(String serviceEndpoint) {
+    public BlobContainersSegment setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -98,9 +98,9 @@ public final class ListContainersSegmentResponse {
      * Set the prefix property: The prefix property.
      *
      * @param prefix the prefix value to set.
-     * @return the ListContainersSegmentResponse object itself.
+     * @return the BlobContainersSegment object itself.
      */
-    public ListContainersSegmentResponse setPrefix(String prefix) {
+    public BlobContainersSegment setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -118,9 +118,9 @@ public final class ListContainersSegmentResponse {
      * Set the marker property: The marker property.
      *
      * @param marker the marker value to set.
-     * @return the ListContainersSegmentResponse object itself.
+     * @return the BlobContainersSegment object itself.
      */
-    public ListContainersSegmentResponse setMarker(String marker) {
+    public BlobContainersSegment setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -130,7 +130,7 @@ public final class ListContainersSegmentResponse {
      *
      * @return the maxResults value.
      */
-    public int getMaxResults() {
+    public Integer getMaxResults() {
         return this.maxResults;
     }
 
@@ -138,33 +138,10 @@ public final class ListContainersSegmentResponse {
      * Set the maxResults property: The maxResults property.
      *
      * @param maxResults the maxResults value to set.
-     * @return the ListContainersSegmentResponse object itself.
+     * @return the BlobContainersSegment object itself.
      */
-    public ListContainersSegmentResponse setMaxResults(int maxResults) {
+    public BlobContainersSegment setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
-        return this;
-    }
-
-    /**
-     * Get the containerItems property: The containerItems property.
-     *
-     * @return the containerItems value.
-     */
-    public List<BlobContainerItem> getContainerItems() {
-        if (this.containerItems == null) {
-            this.containerItems = new ContainersWrapper(new ArrayList<BlobContainerItem>());
-        }
-        return this.containerItems.items;
-    }
-
-    /**
-     * Set the containerItems property: The containerItems property.
-     *
-     * @param blobContainerItems the containerItems value to set.
-     * @return the ListContainersSegmentResponse object itself.
-     */
-    public ListContainersSegmentResponse setContainerItems(List<BlobContainerItem> blobContainerItems) {
-        this.containerItems = new ContainersWrapper(blobContainerItems);
         return this;
     }
 
@@ -181,10 +158,33 @@ public final class ListContainersSegmentResponse {
      * Set the nextMarker property: The nextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
-     * @return the ListContainersSegmentResponse object itself.
+     * @return the BlobContainersSegment object itself.
      */
-    public ListContainersSegmentResponse setNextMarker(String nextMarker) {
+    public BlobContainersSegment setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
+        return this;
+    }
+
+    /**
+     * Get the blobContainerItems property: The blobContainerItems property.
+     *
+     * @return the blobContainerItems value.
+     */
+    public List<BlobContainerItem> getBlobContainerItems() {
+        if (this.blobContainerItems == null) {
+            this.blobContainerItems = new ContainersWrapper(new ArrayList<BlobContainerItem>());
+        }
+        return this.blobContainerItems.items;
+    }
+
+    /**
+     * Set the blobContainerItems property: The blobContainerItems property.
+     *
+     * @param blobContainerItems the blobContainerItems value to set.
+     * @return the BlobContainersSegment object itself.
+     */
+    public BlobContainersSegment setBlobContainerItems(List<BlobContainerItem> blobContainerItems) {
+        this.blobContainerItems = new ContainersWrapper(blobContainerItems);
         return this;
     }
 }

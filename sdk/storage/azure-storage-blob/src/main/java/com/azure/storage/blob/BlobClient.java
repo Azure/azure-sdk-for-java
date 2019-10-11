@@ -46,11 +46,10 @@ public class BlobClient extends BlobClientBase {
     private final BlobAsyncClient client;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
-     *
+     * Protected constructor for use by {@link BlobClientBuilder}.
      * @param client the async blob client
      */
-    BlobClient(BlobAsyncClient client) {
+    protected BlobClient(BlobAsyncClient client) {
         super(client);
         this.client = client;
     }

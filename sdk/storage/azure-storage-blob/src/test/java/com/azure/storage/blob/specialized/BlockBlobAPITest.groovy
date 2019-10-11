@@ -1061,6 +1061,33 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
+    // (discovered when a leaseId was invalid)
+    @Unroll
+    @Requires({liveMode()})
+    def "UploadBufferPool lock three or more buffers"() {
+        setup:
+        bac.upload(defaultFlux, defaultDataSize).block()
+        def leaseID = setupBlobLeaseCondition(bac, garbageLeaseID)
+        def accessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+
+        when:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize as int)
+            .setNumBuffers(numBuffers as int)
+        blobac.uploadWithResponse(Flux.just(getRandomData(dataLength as int)), parallelTransferOptions, null, null,
+            null, accessConditions).block()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        dataLength | blockSize | numBuffers
+        16         | 7         | 2
+        16         | 5         | 2
+    }
+
     /*def "Upload NRF progress"() {
         setup:
         def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)

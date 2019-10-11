@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobItem,BlobProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,ContainerItem,ContainerProperties,CopyStatusType,CorsRule,CpkInfo,CustomerProvidedKeyInfo,DataLakeStorageError,DataLakeStorageErrorError,DataLakeStorageErrorException,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobsIncludeItem,ListContainersIncludeType,Logging,Metrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,RetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,SignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,StorageError,StorageErrorCode,StorageErrorException,StorageServiceProperties,StorageServiceStats,SyncCopyStatusType,UserDelegationKey
+custom-types: AccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobContainerItem,BlobItem,BlobContainerProperties,BlobProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,CorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,Logging,Metrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,RetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,SignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,StorageError,StorageErrorCode,StorageErrorException,StorageServiceStats,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -726,19 +726,6 @@ directive:
     }
 ```
 
-### ListContainersSegmentResponse
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ListContainersSegmentResponse
-  transform: >
-    if (!$.required.includes("Prefix")) {
-      $.required.push("Prefix");
-      $.required.push("MaxResults");
-      $.required.push("NextMarker");
-    }
-```
-
 ### SignedIdentifier
 ``` yaml
 directive:
@@ -934,4 +921,85 @@ directive:
         delete $["200"];
         $["202"] = response;
     }
+```
+
+### Rename ListContainersIncludeType to ListBlobContainersIncludeType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.ListContainersInclude
+  transform: >
+    $["x-ms-enum"].name = "ListBlobContainersIncludeType";
+```
+
+### /?restype=service&comp=properties
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobServiceProperties) {
+        $.BlobServiceProperties = $.StorageServiceProperties;
+        delete $.StorageServiceProperties;
+        $.BlobServiceProperties.xml = { "name": "StorageServiceProperties" };
+    }
+    if (!$.BlobContainerProperties) {
+        $.BlobContainerProperties = $.ContainerProperties;
+        delete $.ContainerProperties;
+    }
+    if (!$.BlobContainerItem) {
+        $.BlobContainerItem = $.ContainerItem;
+        const path = $.BlobContainerItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobContainerProperties");
+        $.BlobContainerItem.properties.Properties.$ref = path;
+        delete $.ContainerItem;
+    }
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    if (!$.BlobServiceProperties) {
+        const props = $.BlobServiceProperties = $.StorageServiceProperties;
+        props.name = "BlobServiceProperties";
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/BlobServiceProperties") };
+        delete $.StorageServiceProperties;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
+  transform: >
+    const param = $.put.parameters[0];
+    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/BlobServiceProperties");
+        $.put.parameters[0] = { "$ref": path };
+    }
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/BlobServiceProperties");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+```
+
+### /?comp=list
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobContainersSegment) {
+        $.BlobContainersSegment = $.ListContainersSegmentResponse;
+        delete $.ListContainersSegmentResponse;
+        $.BlobContainersSegment["x-az-public"] = false;
+        $.BlobContainersSegment.required.push("NextMarker");
+        $.BlobContainersSegment.properties.BlobContainerItems = $.BlobContainersSegment.properties.ContainerItems;
+        delete $.BlobContainersSegment.properties.ContainerItems;
+        const path = $.BlobContainersSegment.properties.BlobContainerItems.items.$ref.replace(/[#].*$/, "#/definitions/BlobContainerItem");
+        $.BlobContainersSegment.properties.BlobContainerItems.items.$ref = path;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"]
+  transform: >
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && !def["$ref"].endsWith("BlobContainersSegment")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/BlobContainersSegment");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+    $.get.operationId = "Service_ListBlobContainersSegment";
 ```
