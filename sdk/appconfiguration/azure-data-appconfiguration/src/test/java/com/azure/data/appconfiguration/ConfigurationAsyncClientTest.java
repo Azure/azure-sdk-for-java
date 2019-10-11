@@ -38,13 +38,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                    .credential(credentials)
+                    .credential(connectionString)
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                    .credential(credentials)
+                    .credential(connectionString)
                     .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .addPolicy(interceptorManager.getRecordPolicy())

@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 
 /**
@@ -30,23 +29,20 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @throws IllegalStateException If configuration credentials cannot be created.
      */
     public ConfigurationClient createAsyncConfigurationClientWithPipeline() {
-        try {
-            String connectionString = getConnectionString();
-            // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
-            HttpPipeline pipeline = new HttpPipelineBuilder()
-                .policies(/* add policies */)
-                .build();
 
-            ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-                .pipeline(pipeline)
-                .endpoint("https://myconfig.azure.net/")
-                .credential(new ConfigurationClientCredentials(connectionString))
-                .buildClient();
-            // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
-            return configurationClient;
-        } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
-        }
+        String connectionString = getConnectionString();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(/* add policies */)
+            .build();
+
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+            .pipeline(pipeline)
+            .endpoint("https://myconfig.azure.net/")
+            .credential(connectionString)
+            .buildClient();
+        // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+        return configurationClient;
     }
 
     /**
@@ -56,17 +52,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @throws IllegalStateException If configuration credentials cannot be created
      */
     public ConfigurationAsyncClient createAsyncConfigurationClient() {
-        try {
-            String connectionString = getConnectionString();
-            // BEGIN: com.azure.data.applicationconfig.async.configurationclient.instantiation
-            ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
-                .buildAsyncClient();
-            // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
-            return configurationAsyncClient;
-        } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
-        }
+        String connectionString = getConnectionString();
+        // BEGIN: com.azure.data.applicationconfig.async.configurationclient.instantiation
+        ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder()
+            .credential(connectionString)
+            .buildAsyncClient();
+        // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
+        return configurationAsyncClient;
     }
 
     /**
@@ -76,17 +68,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @throws IllegalStateException If configuration credentials cannot be created
      */
     public ConfigurationClient createSyncConfigurationClient() {
-        try {
-            String connectionString = getConnectionString();
-            // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
-            ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
-                .buildClient();
-            // END: com.azure.data.applicationconfig.configurationclient.instantiation
-            return configurationClient;
-        } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
-        }
+        String connectionString = getConnectionString();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+            .credential(connectionString)
+            .buildClient();
+        // END: com.azure.data.applicationconfig.configurationclient.instantiation
+        return configurationClient;
     }
 
     /**
