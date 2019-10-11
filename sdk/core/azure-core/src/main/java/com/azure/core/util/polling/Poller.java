@@ -173,7 +173,7 @@ public class Poller<T> {
             : activationOperation.get().map(response -> {
                 pollResponse.set(new PollResponse<>(OperationStatus.NOT_STARTED, response));
                 return response;
-        });
+            });
 
         this.fluxHandle = asyncPollRequestWithDelay()
             .flux()
