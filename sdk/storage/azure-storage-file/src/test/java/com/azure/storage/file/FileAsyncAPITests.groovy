@@ -5,6 +5,7 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
@@ -27,14 +28,14 @@ import java.time.ZoneOffset
 class FileAsyncAPITests extends APISpec {
     FileAsyncClient primaryFileAsyncClient
     ShareClient shareClient
-    def shareName
-    def filePath
+    String shareName
+    String filePath
     def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
     def dataLength = defaultData.remaining()
-    static def testMetadata
-    static def httpHeaders
-    static def smbProperties
-    static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
+    static Map<String, String> testMetadata
+    static FileHTTPHeaders httpHeaders
+    static FileSmbProperties smbProperties
+    static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
         shareName = testResourceName.randomName(methodName, 60)
@@ -139,25 +140,31 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(null, null))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null, null))
 
         then:
         uploadVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
 
-        downloadVerifier.assertNext {
-            assert it.getValue().getContentLength() == dataLength
-            assert FileTestHelper.assertResponseStatusCode(it, 200)
-            assert it.getValue().getSmbProperties()
-            assert it.getValue().getSmbProperties().getFilePermissionKey()
-            assert it.getValue().getSmbProperties().getNtfsFileAttributes()
-            assert it.getValue().getSmbProperties().getFileLastWriteTime()
-            assert it.getValue().getSmbProperties().getFileCreationTime()
-            assert it.getValue().getSmbProperties().getFileChangeTime()
-            assert it.getValue().getSmbProperties().getParentId()
-            assert it.getValue().getSmbProperties().getFileId()
-        }.verifyComplete()
+        downloadVerifier.assertNext({ response ->
+            assert FileTestHelper.assertResponseStatusCode(response, 200)
+            def headers = response.getHeaders()
+            assert Long.parseLong(headers.getValue("Content-Length")) == dataLength
+            assert headers.getValue("ETag")
+            assert headers.getValue("Last-Modified")
+            assert headers.getValue("x-ms-file-permission-key")
+            assert headers.getValue("x-ms-file-attributes")
+            assert headers.getValue("x-ms-file-last-write-time")
+            assert headers.getValue("x-ms-file-creation-time")
+            assert headers.getValue("x-ms-file-change-time")
+            assert headers.getValue("x-ms-file-parent-id")
+            assert headers.getValue("x-ms-file-file-id")
+
+            FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                .flatMap({ data -> assert defaultData.array() == data } )
+                .then()
+        }).verifyComplete()
 
         cleanup:
         defaultData.clear()
@@ -169,7 +176,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 1))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, dataLength), true))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(1, dataLength), true))
 
         then:
         uploadVerifier.assertNext {

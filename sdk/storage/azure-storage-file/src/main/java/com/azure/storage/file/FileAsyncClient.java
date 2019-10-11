@@ -3,10 +3,6 @@
 
 package com.azure.storage.file;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -25,7 +21,6 @@ import com.azure.storage.file.implementation.models.FileRangeWriteType;
 import com.azure.storage.file.implementation.models.FileUploadRangeFromURLHeaders;
 import com.azure.storage.file.implementation.models.FileUploadRangeHeaders;
 import com.azure.storage.file.implementation.models.FilesCreateResponse;
-import com.azure.storage.file.implementation.models.FilesDownloadResponse;
 import com.azure.storage.file.implementation.models.FilesGetPropertiesResponse;
 import com.azure.storage.file.implementation.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
@@ -34,7 +29,6 @@ import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLRespo
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
-import com.azure.storage.file.models.FileDownloadInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
@@ -44,6 +38,11 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -64,10 +63,10 @@ import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
+import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -362,8 +361,8 @@ public class FileAsyncClient {
                 }
                 return chunks;
             }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
-                downloadWithPropertiesWithResponse(chunk, false, context)
-                .map(dar -> dar.getValue().getBody())
+                downloadWithResponse(chunk, false, context)
+                .map(Response::getValue)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(fbb -> FluxUtil
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
@@ -397,15 +396,15 @@ public class FileAsyncClient {
      *
      * <p>Download the file with its metadata and properties. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithProperties}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.download}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
-     * @return The {@link FileDownloadInfo file download Info}
+     * @return A reactive response containing the file data.
      */
-    public Mono<FileDownloadInfo> downloadWithProperties() {
-        return downloadWithPropertiesWithResponse(null, null).flatMap(FluxUtil::toMono);
+    public Flux<ByteBuffer> download() {
+        return downloadWithResponse(null, null).flatMapMany(Response::getValue);
     }
 
     /**
@@ -415,7 +414,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithResponse#filerange-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -423,20 +422,18 @@ public class FileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to
      * true, as long as the range is less than or equal to 4 MB in size.
-     * @return A response containing the {@link FileDownloadInfo file download Info} with headers and response status
-     * code
+     * @return A reactive response containing response data and the file data.
      */
-    public Mono<Response<FileDownloadInfo>> downloadWithPropertiesWithResponse(FileRange range,
-        Boolean rangeGetContentMD5) {
-        return withContext(context -> downloadWithPropertiesWithResponse(range, rangeGetContentMD5, context));
+    public Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5) {
+        return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context));
     }
 
-    Mono<Response<FileDownloadInfo>> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5,
+    Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5,
         Context context) {
         String rangeString = range == null ? null : range.toString();
         return postProcessResponse(azureFileStorageClient.files()
             .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context))
-            .map(this::downloadWithPropertiesResponse);
+            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
     /**
@@ -1157,20 +1154,6 @@ public class FileAsyncClient {
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         FileInfo fileInfo = new FileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, fileInfo);
-    }
-
-    private Response<FileDownloadInfo> downloadWithPropertiesResponse(final FilesDownloadResponse response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        Map<String, String> metadata = response.getDeserializedHeaders().getMetadata();
-        Long contentLength = response.getDeserializedHeaders().getContentLength();
-        String contentType = response.getDeserializedHeaders().getContentType();
-        String contentRange = response.getDeserializedHeaders().getContentRange();
-        Flux<ByteBuffer> body = response.getValue();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength,
-            contentType, contentRange, body, smbProperties);
-        return new SimpleResponse<>(response, fileDownloadInfo);
     }
 
     private Response<FileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {

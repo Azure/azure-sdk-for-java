@@ -6,11 +6,13 @@ package com.azure.storage.file;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
-import com.azure.storage.file.models.FileDownloadInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
@@ -20,13 +22,18 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -44,6 +51,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
+    private final ClientLogger logger = new ClientLogger(FileClient.class);
+
     private final FileAsyncClient fileAsyncClient;
 
     /**
@@ -321,10 +330,11 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
-     * @return The {@link FileDownloadInfo file download info}
+     * @param stream A non-null {@link OutputStream} where the downloaded data will be written.
+     * @throws NullPointerException If {@code stream} is {@code null}.
      */
-    public FileDownloadInfo downloadWithProperties() {
-        return downloadWithPropertiesWithResponse(null, null, null, Context.NONE).getValue();
+    public void download(OutputStream stream) {
+        downloadWithResponse(stream, null, null, null, Context.NONE);
     }
 
     /**
@@ -334,25 +344,38 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.downloadWithPropertiesWithResponse#FileRange-Boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.downloadWithResponse#OutputStream-FileRange-Boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
+     * @param stream A non-null {@link OutputStream} where the downloaded data will be written.
      * @param range Optional byte range which returns file data only from the specified range.
      * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to
      * true, as long as the range is less than or equal to 4 MB in size.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link FileDownloadInfo file download info} headers and response status code
+     * @return A response containing the headers and response status code
+     * @throws NullPointerException If {@code stream} is {@code null}.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileDownloadInfo> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5,
+    public Response<Void> downloadWithResponse(OutputStream stream, FileRange range, Boolean rangeGetContentMD5,
         Duration timeout, Context context) {
-        Mono<Response<FileDownloadInfo>> response = fileAsyncClient
-            .downloadWithPropertiesWithResponse(range, rangeGetContentMD5, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
+        Mono<Response<Void>> download = fileAsyncClient.downloadWithResponse(range, rangeGetContentMD5, context)
+            .flatMapMany(response -> response.getValue().doOnNext(buffer -> {
+                try {
+                    stream.write(FluxUtil.byteBufferToArray(buffer));
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(new UncheckedIOException(ex));
+                }
+            }).map(buffer -> response))
+            .last()
+            .map(response -> new SimpleResponse<>(response, null));
+
+        return Utility.blockWithOptionalTimeout(download, timeout);
     }
 
     /**

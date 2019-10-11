@@ -7,6 +7,8 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.NtfsFileAttributes;
+import reactor.core.publisher.Flux;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -19,7 +21,6 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
-import reactor.core.publisher.Flux;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link FileClient} and {@link FileAsyncClient}.
@@ -323,46 +324,31 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadWithProperties()}
+     * Generates a code sample for using {@link FileAsyncClient#download()}
      */
     public void downloadDataAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithProperties
-        fileAsyncClient.downloadWithProperties().subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.download
+        fileAsyncClient.download().subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.downloadWithProperties
+        // END: com.azure.storage.file.fileAsyncClient.download
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadWithPropertiesWithResponse(FileRange, Boolean)}
+     * Generates a code sample for using {@link FileAsyncClient#downloadWithResponse(FileRange, Boolean)}
      */
-    public void downloadDataAsyncMaxOverload() {
+    public void downloadWithProperties() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean
-        fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false).
-            subscribe(
-                response -> { },
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete downloading the data!")
+        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithResponse#filerange-boolean
+        fileAsyncClient.downloadWithResponse(new FileRange(1024, 2047L), false)
+            .subscribe(response ->
+                    System.out.printf("Complete downloading the data with status code %d%n", response.getStatusCode()),
+                error -> System.err.println(error.getMessage())
             );
-        // END: com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadWithPropertiesWithResponse(FileRange, Boolean)}
-     */
-    public void downloadWithPropertiesWithResponse() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
-        fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false)
-            .subscribe(
-                response -> System.out.println("Complete downloading the data with status code: " + response.getStatusCode()),
-                error -> System.err.print(error.toString())
-            );
-        // END: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
+        // END: com.azure.storage.file.fileAsyncClient.downloadWithResponse#filerange-boolean
     }
 
     /**

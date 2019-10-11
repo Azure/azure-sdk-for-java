@@ -15,6 +15,7 @@ import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 
 class FileSASTests extends APISpec {
@@ -201,17 +202,14 @@ class FileSASTests extends APISpec {
             .sasToken(sas)
             .buildFileClient()
 
-        def downloadResponse = client.downloadWithProperties()
+        def stream = new ByteArrayOutputStream()
+        client.download(stream)
 
-        def responseBody = downloadResponse.getBody().toIterable().iterator().next()
-
-        client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
+        client.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), (long) data.length())
 
         then:
         notThrown(StorageException)
-        for(int i = 0; i < data.length(); i++) {
-            responseBody.get(i) == data.getBytes()[i]
-        }
+        stream.toByteArray() == data.getBytes(StandardCharsets.UTF_8)
     }
 
     def "FileSAS network test upload fails"() {
