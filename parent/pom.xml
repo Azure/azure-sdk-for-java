@@ -126,7 +126,7 @@
     <commons-net.version>3.3</commons-net.version>
     <fluentsdk.version>1.14.0</fluentsdk.version>
     <codesnippet4javadoc.version>0.31</codesnippet4javadoc.version>
-    <oauth2-oidc-sdk.version>6.41</oauth2-oidc-sdk.version>
+    <oauth2-oidc-sdk.version>6.14</oauth2-oidc-sdk.version>
     <metrics.version>4.0.5</metrics.version>
     <rxjava2.version>2.2.4</rxjava2.version>
     <commons-io.version>2.5</commons-io.version>
