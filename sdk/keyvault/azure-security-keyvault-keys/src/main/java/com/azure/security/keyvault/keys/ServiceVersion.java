@@ -1,11 +1,11 @@
-package com.azure.data.appconfiguration;
+package com.azure.security.keyvault.keys;
 
 public enum ServiceVersion {
-    V1_0("1.0");
+    V7_0("7.0");
 
     ServiceVersion(String version) { }
 
     public static ServiceVersion getLatest() {
-        return V1_0;
+        return V7_0;
     }
 }

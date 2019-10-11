@@ -1,4 +1,4 @@
-package com.azure.data.appconfiguration;
+package com.azure.security.keyvault.secrets;
 
 public enum ServiceVersion {
     V1_0("1.0");

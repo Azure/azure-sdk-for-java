@@ -1,11 +1,11 @@
-package com.azure.data.appconfiguration;
+package com.azure.storage.common;
 
 public enum ServiceVersion {
-    V1_0("1.0");
+    V2018_11_09("2011-08-18");
 
     ServiceVersion(String version) { }
 
     public static ServiceVersion getLatest() {
-        return V1_0;
+        return V2018_11_09;
     }
 }

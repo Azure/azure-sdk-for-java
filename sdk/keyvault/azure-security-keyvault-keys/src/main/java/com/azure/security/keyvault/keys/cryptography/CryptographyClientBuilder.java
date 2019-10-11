@@ -73,6 +73,7 @@ public class CryptographyClientBuilder {
     HttpLogOptions httpLogOptions;
     final RetryPolicy retryPolicy;
     Configuration configuration;
+    ServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -281,4 +282,18 @@ public class CryptographyClientBuilder {
         this.configuration = configuration;
         return this;
     }
+
+    /**
+     * Sets the {@link ServiceVersion} that is used when making API requests.
+     *
+     * The latest service version will be used if not provided {@link ServiceVersion}
+     *
+     * @param version ServiceVersion of the service API used when making requests.
+     * @return The updated CryptographyClientBuilder object.
+     */
+    public CryptographyClientBuilder serviceVersion(ServiceVersion version) {
+        this.version = version;
+        return this;
+    }
+
 }

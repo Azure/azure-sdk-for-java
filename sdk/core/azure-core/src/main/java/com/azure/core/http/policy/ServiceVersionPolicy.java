@@ -33,7 +33,12 @@ public class ServiceVersionPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
-            context.getHttpRequest().setUrl(urlBuilder.setQuery(apiVersion).toURL());
+            String queryString = urlBuilder.queryString();
+            if (queryString != null) {
+                context.getHttpRequest().setUrl(urlBuilder.setQuery(queryString + apiVersion).toURL());
+            } else {
+                context.getHttpRequest().setUrl(urlBuilder.setQuery(apiVersion).toURL());
+            }
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }

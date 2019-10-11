@@ -68,6 +68,7 @@ public final class KeyClientBuilder {
     private HttpLogOptions httpLogOptions;
     private final RetryPolicy retryPolicy;
     private Configuration configuration;
+    private ServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -232,6 +233,19 @@ public final class KeyClientBuilder {
     public KeyClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ServiceVersion} that is used when making API requests.
+     *
+     * The latest service version will be used if not provided {@link ServiceVersion}
+     *
+     * @param version ServiceVersion of the service API used when making requests.
+     * @return The updated KeyClientBuilder object.
+     */
+    public KeyClientBuilder serviceVersion(ServiceVersion version) {
+        this.version = version;
         return this;
     }
 
