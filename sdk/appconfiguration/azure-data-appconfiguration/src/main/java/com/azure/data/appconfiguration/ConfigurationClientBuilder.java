@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.ServiceVersionPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.util.Configuration;
@@ -83,6 +84,7 @@ public final class ConfigurationClientBuilder {
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
+    private ServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -156,6 +158,12 @@ public final class ConfigurationClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
+        if (version == null) {
+            policies.add(new ServiceVersionPolicy(ServiceVersion.getLatest().toString()));
+        } else {
+            policies.add(new ServiceVersionPolicy(version.toString()));
+        }
+
         policies.add(new ConfigurationCredentialsPolicy(buildCredential));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -302,6 +310,19 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ServiceVersion} that is used when making API requests.
+     *
+     * The latest service version will be used if not provided {@link ServiceVersion}
+     *
+     * @param version ServiceVersion of the service API used when making requests.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder serviceVersion(ServiceVersion version) {
+        this.version = version;
         return this;
     }
 
