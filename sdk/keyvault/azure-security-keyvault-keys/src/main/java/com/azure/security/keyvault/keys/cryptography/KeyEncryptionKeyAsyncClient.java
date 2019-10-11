@@ -23,9 +23,10 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
      *
      * @param keyId The identifier of the key to use for cryptography operations.
      * @param pipeline The HttpPipeline that the HTTP requests and responses flow through.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
      */
-    KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline) {
-        super(keyId, pipeline);
+    KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline, ServiceVersion version) {
+        super(keyId, pipeline, version);
     }
 
     /**

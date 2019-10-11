@@ -21,6 +21,7 @@ import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
+import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -130,12 +131,13 @@ public class CryptographyClientBuilder {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
         }
+        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
 
         if (pipeline != null) {
             if (jsonWebKey != null) {
-                return new CryptographyAsyncClient(jsonWebKey, pipeline);
+                return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
             } else {
-                return new CryptographyAsyncClient(keyId, pipeline);
+                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
             }
         }
 
@@ -144,23 +146,23 @@ public class CryptographyClientBuilder {
                 "Key Vault credentials are required to build the Cryptography async client"));
         }
 
-        HttpPipeline pipeline = setupPipeline();
+        HttpPipeline pipeline = setupPipeline(serviceVersion);
 
         if (jsonWebKey != null) {
-            return new CryptographyAsyncClient(jsonWebKey, pipeline);
+            return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
         } else {
-            return new CryptographyAsyncClient(keyId, pipeline);
+            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
         }
     }
 
-    HttpPipeline setupPipeline() {
+    HttpPipeline setupPipeline(ServiceVersion serviceVersion) {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration));
+            buildConfiguration, serviceVersion.toString()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));

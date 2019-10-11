@@ -114,9 +114,10 @@ public final class CertificateClientBuilder {
         if (buildEndpoint == null) {
             throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
+        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new CertificateAsyncClient(endpoint, pipeline);
+            return new CertificateAsyncClient(endpoint, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -125,7 +126,7 @@ public final class CertificateClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration, serviceVersion.getVersionString()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
@@ -138,7 +139,7 @@ public final class CertificateClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new CertificateAsyncClient(endpoint, pipeline);
+        return new CertificateAsyncClient(endpoint, pipeline, serviceVersion);
     }
 
     /**

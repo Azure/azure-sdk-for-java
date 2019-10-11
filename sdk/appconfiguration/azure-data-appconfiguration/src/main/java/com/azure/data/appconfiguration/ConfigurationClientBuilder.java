@@ -140,9 +140,10 @@ public final class ConfigurationClientBuilder {
         String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
+        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new ConfigurationAsyncClient(buildEndpoint, pipeline);
+            return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
         }
 
         ConfigurationClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
@@ -153,7 +154,7 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration));
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration, serviceVersion.getVersionString()));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
@@ -171,7 +172,7 @@ public final class ConfigurationClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new ConfigurationAsyncClient(buildEndpoint, pipeline);
+        return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
     }
 
     /**
