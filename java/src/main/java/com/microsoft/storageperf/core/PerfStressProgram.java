@@ -3,7 +3,9 @@ package com.microsoft.storageperf.core;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,10 +26,18 @@ public class PerfStressProgram {
     private static long[] _lastCompletionNanoTimes;
 
     public static void Run(Class<?>[] classes, String[] args) {
-        String[] commands = Arrays.stream(classes).map(c -> GetCommandName(c.getSimpleName()))
+        List<Class<?>> classList = new ArrayList<>(Arrays.asList(classes));
+
+        try {
+            classList.add(Class.forName("com.microsoft.storageperf.core.NoOpTest"));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        
+        String[] commands = classList.stream().map(c -> GetCommandName(c.getSimpleName()))
                 .toArray(i -> new String[i]);
 
-        PerfStressOptions[] options = Arrays.stream(classes).map(c -> {
+        PerfStressOptions[] options = classList.stream().map(c -> {
             try {
                 return c.getConstructors()[0].getParameterTypes()[0].getConstructors()[0].newInstance();
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -51,7 +61,7 @@ public class PerfStressProgram {
             jc.usage();
         } else {
             int index = Arrays.asList(commands).indexOf(parsedCommand);
-            Run(classes[index], options[index]);
+            Run(classList.get(index), options[index]);
         }
     }
 
