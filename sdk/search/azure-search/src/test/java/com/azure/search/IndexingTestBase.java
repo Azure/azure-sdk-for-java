@@ -38,7 +38,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
             .searchServiceName(searchServiceName)
             .pipeline(
                 new HttpPipelineBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
+                    .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                     .policies(new SearchApiKeyPipelinePolicy(apiKeyCredentials))
                     .build()
             ).build();

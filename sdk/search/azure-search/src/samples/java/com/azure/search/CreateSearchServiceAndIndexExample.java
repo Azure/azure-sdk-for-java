@@ -79,7 +79,7 @@ public class CreateSearchServiceAndIndexExample {
             .searchServiceName(searchServiceName)
             .pipeline(
                 new HttpPipelineBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
+                    .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                     .policies(new SearchApiKeyPipelinePolicy(new ApiKeyCredentials(adminKey)))
                     .build())
             .build();

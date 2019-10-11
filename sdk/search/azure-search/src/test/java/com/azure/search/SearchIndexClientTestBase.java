@@ -140,7 +140,7 @@ public class SearchIndexClientTestBase extends TestBase {
                 .searchDnsSuffix("search.windows.net")
                 .indexName(indexName)
                 .apiVersion("2019-05-06")
-                .httpClient(new NettyAsyncHttpClientBuilder().setWiretap(true).build())
+                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())

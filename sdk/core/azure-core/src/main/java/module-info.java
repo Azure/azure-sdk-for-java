@@ -48,7 +48,8 @@ module com.azure.core {
         com.azure.security.keyvault.secrets,    // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+        com.azure.storage.queue,                // FIXME this should not be a long-term solution
+        com.azure.search;                       // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.entities to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution
@@ -75,7 +76,8 @@ module com.azure.core {
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.blob.batch,           // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+        com.azure.storage.queue,                // FIXME this should not be a long-term solution
+        com.azure.search;                       // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.serializer to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution
@@ -83,7 +85,8 @@ module com.azure.core {
         com.azure.identity,                     // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+        com.azure.storage.queue,                // FIXME this should not be a long-term solution
+        com.azure.search;                       // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.serializer.jackson to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution
@@ -91,7 +94,8 @@ module com.azure.core {
         com.azure.identity,                     // FIXME this should not be a long-term solution
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+        com.azure.storage.queue,                // FIXME this should not be a long-term solution
+        com.azure.search;                       // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.util to
         com.azure.core.amqp,                    // FIXME this should not be a long-term solution
         com.azure.core.management,              // FIXME this should not be a long-term solution
@@ -109,7 +113,8 @@ module com.azure.core {
         com.azure.storage.blob,                 // FIXME this should not be a long-term solution
         com.azure.storage.blob.batch,           // FIXME this should not be a long-term solution
         com.azure.storage.file,                 // FIXME this should not be a long-term solution
-        com.azure.storage.queue;                // FIXME this should not be a long-term solution
+        com.azure.storage.queue,                // FIXME this should not be a long-term solution
+        com.azure.search;                       // FIXME this should not be a long-term solution
     exports com.azure.core.implementation.exception to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution

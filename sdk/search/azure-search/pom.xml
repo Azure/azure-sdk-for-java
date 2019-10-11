@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.5.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -19,21 +19,52 @@
   <version>1.0.0-preview.1</version>
   <packaging>jar</packaging>
 
+  <properties>
+    <project.automatic.module.name>com.azure.search</project.automatic.module.name>
+  </properties>
+
+
+  <build>
+    <plugins>
+      <!-- temporarily disable warnings as build failures until the reference to com.microsoft.azure is removed -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <failOnWarning>false</failOnWarning>
+        </configuration>
+      </plugin>
+      <!-- temporarily disable spotbugs errors -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <configuration>
+          <failOnError>false</failOnError>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-runtime</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-authentication</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.0.0-preview.6</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.0.0-preview.6</version>
+      <scope>compile</scope>
+    </dependency>
 
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.6</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -44,11 +75,11 @@
       <artifactId>reactor-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Test dependencies for creating search resources -->
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.6</version>
-      <scope>test</scope>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -56,18 +87,7 @@
       <version>1.24.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-codec-http</artifactId>
-      <version>4.1.38.Final</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.4</version>
-      <scope>compile</scope>
-    </dependency>
+
   </dependencies>
 
 </project>

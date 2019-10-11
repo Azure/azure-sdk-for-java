@@ -5,7 +5,6 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.SearchApiKeyPipelinePolicy;
@@ -52,8 +51,8 @@ public class SearchIndexClientBuilder {
     public SearchIndexClientBuilder() {
         searchDnsSuffix = "search.windows.net";
         apiVersion = "2019-05-06";
-        httpClient = new NettyAsyncHttpClientBuilder().setWiretap(true).build();
         policies = new ArrayList<>();
+        httpClient = HttpClient.createDefault();
     }
 
     /**
