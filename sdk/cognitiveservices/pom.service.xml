@@ -18,6 +18,7 @@
     <module>ms-azure-cs-customsearch</module>
     <module>ms-azure-cs-entitysearch</module>
     <module>ms-azure-cs-imagesearch</module>
+    <module>ms-azure-cs-inkrecognizer</module>
     <module>ms-azure-cs-newssearch</module>
     <module>ms-azure-cs-videosearch</module>
     <module>ms-azure-cs-visualsearch</module>
