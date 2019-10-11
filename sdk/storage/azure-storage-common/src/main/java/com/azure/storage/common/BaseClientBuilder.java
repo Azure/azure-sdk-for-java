@@ -74,6 +74,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        addOptionalEncryptionPolicy(policies);
         policies.add(getUserAgentPolicy());
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -116,6 +117,13 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
         applyServiceSpecificValidations(builder);
 
         return builder.build();
+    }
+
+    /**
+     * Adds an optional encryption policy that decrypts encrypted blobs.
+     * @param policies The list of policies to add an optional encryption policy to.
+     */
+    protected void addOptionalEncryptionPolicy(List<HttpPipelinePolicy> policies) {
     }
 
     /**
