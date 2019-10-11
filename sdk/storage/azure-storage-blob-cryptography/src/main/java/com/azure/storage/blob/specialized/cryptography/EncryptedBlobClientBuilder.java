@@ -111,7 +111,51 @@ public final class EncryptedBlobClientBuilder {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        HttpPipeline pipeline = (httpPipeline == null) ? buildPipeline() : httpPipeline;
+        if (httpPipeline != null) {
+            return new AzureBlobStorageBuilder()
+                .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+                .pipeline(httpPipeline)
+                .build();
+        }
+
+        String userAgentName = BlobCryptographyConfiguration.NAME;
+        String userAgentVersion = BlobCryptographyConfiguration.VERSION;
+        Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
+
+        // Closest to API goes first, closest to wire goes last.
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddDatePolicy());
+
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
+        }
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
+        policies.addAll(additionalPolicies);
+
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(new ResponseValidationPolicyBuilder()
+            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+            .build());
+
+        policies.add(new HttpLoggingPolicy(logOptions));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
+
         return new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline)
@@ -187,46 +231,6 @@ public final class EncryptedBlobClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Key Wrap Algorithm must be specified with a Key."));
         }
-    }
-
-    private HttpPipeline buildPipeline() {
-        String userAgentName = BlobCryptographyConfiguration.NAME;
-        String userAgentVersion = BlobCryptographyConfiguration.VERSION;
-        Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
-
-        // Closest to API goes first, closest to wire goes last.
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
-        }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
-
-        policies.addAll(additionalPolicies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build());
-
-        policies.add(new HttpLoggingPolicy(logOptions));
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
     }
 
     /**

@@ -166,7 +166,17 @@ public final class SpecializedBlobClientBuilder {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        HttpPipeline pipeline = (httpPipeline == null) ? buildPipeline() : httpPipeline;
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (sharedKeyCredential != null) {
+                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            } else if (tokenCredential != null) {
+                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                return null;
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new AzureBlobStorageBuilder()
             .pipeline(pipeline)
@@ -261,20 +271,6 @@ public final class SpecializedBlobClientBuilder {
                 new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
         return this;
-    }
-
-    private HttpPipeline buildPipeline() {
-        return BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
     }
 
     /**

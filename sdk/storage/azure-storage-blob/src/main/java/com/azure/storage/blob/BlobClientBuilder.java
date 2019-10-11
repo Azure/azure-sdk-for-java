@@ -35,7 +35,6 @@ import java.util.Objects;
  * BlobClients} and {@link BlobAsyncClient BlobAsyncClients}, call {@link #buildClient() buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
- * <p>The client needs the URL of the blob and may need access credentials. {@link }</p>
  * <p>
  * The following information must be provided on this builder:
  *
@@ -116,16 +115,7 @@ public final class BlobClientBuilder {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        HttpPipeline pipeline = (httpPipeline == null) ? buildPipeline() : httpPipeline;
-
-        return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline)
-            .build(), snapshot, customerProvidedKey, accountName);
-    }
-
-    private HttpPipeline buildPipeline() {
-        return BuilderHelper.buildPipeline(() -> {
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
                 return new SharedKeyCredentialPolicy(sharedKeyCredential);
             } else if (tokenCredential != null) {
@@ -136,6 +126,11 @@ public final class BlobClientBuilder {
                 return null;
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+            .pipeline(pipeline)
+            .build(), snapshot, customerProvidedKey, accountName);
     }
 
     /**

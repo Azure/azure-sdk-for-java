@@ -113,8 +113,8 @@ public final class QueueServiceClientBuilder {
     }
 
     /**
-     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link QueueServiceAsyncClient} is created.
+     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time this is called a new
+     * instance of {@link QueueServiceAsyncClient} is created.
      *
      * <p>
      * If {@link QueueServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
@@ -132,8 +132,8 @@ public final class QueueServiceClientBuilder {
     }
 
     /**
-     * Creates a {@link QueueServiceClient} based on options set in the builder. Every time {@code buildClient()} is
-     * called a new instance of {@link QueueServiceClient} is created.
+     * Creates a {@link QueueServiceClient} based on options set in the builder. Every time this is called a new
+     * instance of {@link QueueServiceClient} is created.
      *
      * <p>
      * If {@link QueueServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link

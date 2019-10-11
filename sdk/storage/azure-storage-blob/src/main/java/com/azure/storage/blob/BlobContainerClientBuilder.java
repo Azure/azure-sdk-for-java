@@ -100,7 +100,17 @@ public final class BlobContainerClientBuilder {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        HttpPipeline pipeline = (httpPipeline == null) ? buildPipeline() : httpPipeline;
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (sharedKeyCredential != null) {
+                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            } else if (tokenCredential != null) {
+                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                return null;
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
@@ -137,20 +147,6 @@ public final class BlobContainerClientBuilder {
         }
 
         return this;
-    }
-
-    private HttpPipeline buildPipeline() {
-        return BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
     }
 
     /**

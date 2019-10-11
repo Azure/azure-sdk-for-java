@@ -129,8 +129,8 @@ class APISpec extends Specification {
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
 
-    private InterceptorManager interceptorManager
-    private boolean recordLiveMode
+    InterceptorManager interceptorManager
+    boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
     def containerName
