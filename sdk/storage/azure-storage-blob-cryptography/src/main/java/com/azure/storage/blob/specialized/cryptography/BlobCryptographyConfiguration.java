@@ -3,6 +3,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 class BlobCryptographyConfiguration {
+    //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "azure-storage-blob-cryptography";
     static final String VERSION = "12.0.0-preview.5";
 }
