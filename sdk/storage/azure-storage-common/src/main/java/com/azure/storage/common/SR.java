@@ -77,6 +77,8 @@ public final class SR {
     public static final String LOG_VERSION_UNSUPPORTED = "A storage log version of %s is unsupported.";
     public static final String MARK_EXPIRED = "Stream mark expired.";
     public static final String MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION = "The client could not finish the operation within specified maximum execution timeout.";
+    public static final String METADATA_KEY_INVALID = "The key for one of the metadata key-value pairs is null, empty, or whitespace.";
+    public static final String METADATA_VALUE_INVALID = "The value for one of the metadata key-value pairs is null, empty, or whitespace.";
     public static final String MISSING_CREDENTIALS = "No credentials provided.";
     public static final String MISSING_MANDATORY_DATE_HEADER = "Canonicalization did not find a non-empty x-ms-date header in the request. Please use a request with a valid x-ms-date header in RFC 123 format.";
     public static final String MISSING_MANDATORY_PARAMETER_FOR_SAS = "Missing mandatory parameters for valid Shared Access Signature.";
