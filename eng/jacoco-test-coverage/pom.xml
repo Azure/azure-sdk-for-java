@@ -28,9 +28,9 @@
     <azure-core-http-netty.version>1.0.0-preview.7</azure-core-http-netty.version>
     <azure-core-management.version>1.0.0-preview.7</azure-core-management.version>
     <azure-core-test.version>1.0.0-preview.7</azure-core-test.version>
-    <azure-data-appconfiguration.version>1.0.0-preview.6</azure-data-appconfiguration.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.5</azure-data-appconfiguration.version>
     <azure-identity.version>1.0.0-preview.6</azure-identity.version>
-    <azure-keyvault.version>4.0.0-preview.6</azure-keyvault.version>
+    <azure-keyvault.version>4.0.0-preview.5</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.5</azure-messaging-eventhubs.version>
     <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.3</azure-messaging-eventhubs-checkpointstore-blob.version>
     <azure-storage-common.version>12.0.0-preview.5</azure-storage-common.version>
@@ -87,6 +87,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>${azure-identity.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-keyvault-certificates</artifactId>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
