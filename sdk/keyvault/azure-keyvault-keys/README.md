@@ -103,7 +103,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
     ```Bash
-    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list set
+    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list create
     ```
     > --key-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, create
@@ -282,6 +282,7 @@ The following sections provide several code snippets covering some of the most c
 - [Encrypt Asynchronously](#encryp-asynchronously)
 - [Decrypt Asynchronously](#decrypt-asynchronously)
 
+> Note : You should add "System.in.read()" or "Thread.Sleep()" after the function calls in the main class/thread to allow Async functions/operations to execute and finish before the main application/thread exits.
 
 ### Create a Key Asynchronously
 
