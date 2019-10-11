@@ -10,9 +10,11 @@ module com.azure.storage.common {
 
     exports com.azure.storage.common.implementation.credentials to
         com.azure.storage.blob,
-        com.azure.storage.blob.cryptography;
+        com.azure.storage.blob.cryptography,
+        com.azure.storage.file;
 
     exports com.azure.storage.common.implementation.policy to
         com.azure.storage.blob,
-        com.azure.storage.blob.cryptography;
+        com.azure.storage.blob.cryptography,
+        com.azure.storage.file;
 }

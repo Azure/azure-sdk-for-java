@@ -125,7 +125,7 @@ public final class BlobClientBuilder {
     }
 
     private HttpPipeline buildPipeline() {
-        return BuilderHelper.buildPipeline(() -> BuilderHelper.getUserAgentPolicy(configuration), () -> {
+        return BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
                 return new SharedKeyCredentialPolicy(sharedKeyCredential);
             } else if (tokenCredential != null) {
@@ -135,7 +135,7 @@ public final class BlobClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
     }
 
     /**

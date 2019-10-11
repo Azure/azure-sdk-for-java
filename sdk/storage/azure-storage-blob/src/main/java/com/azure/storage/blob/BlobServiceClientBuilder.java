@@ -115,7 +115,7 @@ public final class BlobServiceClientBuilder {
     }
 
     private HttpPipeline buildPipeline() {
-        return BuilderHelper.buildPipeline(() -> BuilderHelper.getUserAgentPolicy(configuration), () -> {
+        return BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
                 return new SharedKeyCredentialPolicy(sharedKeyCredential);
             } else if (tokenCredential != null) {
@@ -123,9 +123,10 @@ public final class BlobServiceClientBuilder {
             } else if (sasTokenCredential != null) {
                 return new SasTokenCredentialPolicy(sasTokenCredential);
             } else {
-                return null;
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Authorization credentials must be set."));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
     }
 
     /**
