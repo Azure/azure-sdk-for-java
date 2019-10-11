@@ -4,7 +4,6 @@
 package com.azure.storage.file;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 import com.azure.core.annotation.ServiceClient;
@@ -17,6 +16,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -50,6 +50,7 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
@@ -183,7 +184,7 @@ public class FileAsyncClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, smbProperties.getFilePermissionKey());
+        validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
@@ -599,7 +600,7 @@ public class FileAsyncClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, smbProperties.getFilePermissionKey());
+        validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
@@ -1235,5 +1236,24 @@ public class FileAsyncClient {
         Boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
         FileMetadataInfo fileMetadataInfo = new FileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, fileMetadataInfo);
+    }
+
+    /**
+     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
+     * the file permission is of valid length.
+     * @param filePermission The file permission.
+     * @param filePermissionKey The file permission key.
+     * @throws IllegalArgumentException for invalid file permission or file permission keys.
+     */
+    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+        if (filePermission != null && filePermissionKey != null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
+        }
+
+        if (filePermission != null) {
+            Utility.assertInBounds("filePermission",
+                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
+        }
     }
 }

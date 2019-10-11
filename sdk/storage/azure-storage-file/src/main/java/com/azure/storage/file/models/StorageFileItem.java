@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * Contains file or directory reference information in the storage File service.
  */
 @Immutable
-public final class FileReference {
+public final class StorageFileItem {
     private final String name;
     private final boolean isDirectory;
     private final FileProperty fileProperty;
@@ -21,7 +21,7 @@ public final class FileReference {
      * @param isDirectory A boolean set to true if the reference is a directory, false if the reference is a file.
      * @param fileProperty Property of a file. Pass {@code null} if the reference is a directory.
      */
-    public FileReference(final String name, final boolean isDirectory, final FileProperty fileProperty) {
+    public StorageFileItem(final String name, final boolean isDirectory, final FileProperty fileProperty) {
         this.name = name;
         this.isDirectory = isDirectory;
         this.fileProperty = fileProperty;
