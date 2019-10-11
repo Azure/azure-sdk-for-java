@@ -93,17 +93,17 @@ public class Poller<T> {
     private final Consumer<Poller<T>> cancelOperation;
 
     /*
-     * Indicate to poll automatically or not when poller is created.
-     * default value is false;
-     */
-    private boolean autoPollingEnabled;
-
-    /*
      * This handle to Flux allow us to perform polling operation in asynchronous manner.
      * This could be shared among many subscriber. One of the subscriber will be this poller itself.
      * Once subscribed, this Flux will continue to poll for status until poll operation is done/complete.
      */
     private final Flux<PollResponse<T>> fluxHandle;
+
+    /*
+     * Indicate to poll automatically or not when poller is created.
+     * default value is false;
+     */
+    private boolean autoPollingEnabled;
 
     /*
      * Since constructor create a subscriber and start auto polling. This handle will be used to dispose the subscriber
