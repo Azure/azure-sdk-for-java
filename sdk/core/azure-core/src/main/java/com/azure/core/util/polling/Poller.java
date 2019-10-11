@@ -10,7 +10,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -62,7 +61,6 @@ import java.util.function.Supplier;
  * {@codesnippet com.azure.core.util.polling.poller.poll-manually}
  *
  * @param <T> Type of poll response value
- *
  * @see PollResponse
  * @see OperationStatus
  */
@@ -113,22 +111,21 @@ public class Poller<T> {
 
     /**
      * Creates a {@link Poller} instance with poll interval and poll operation. The polling starts immediately by
-     * invoking {@code pollOperation}. The next poll cycle will be defined by {@code retryAfter} value in {@link
-     * PollResponse}. In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
+     * invoking {@code pollOperation}. The next poll cycle will be defined by {@code retryAfter} value in
+     * {@link PollResponse}. In absence of {@code retryAfter}, the {@link Poller} will use {@code pollInterval}.
      *
      * <p><strong>Create poller object</strong></p>
      * {@codesnippet com.azure.core.util.polling.poller.initialize.interval.polloperation}
      *
      * @param pollInterval Non null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This must never
-     *     return {@code null} and always have a non-null {@link OperationStatus}. {@link Mono} returned from poll
-     *     operation should never return {@link Mono#error(Throwable)}. If an unexpected scenario happens during the
-     *     poll operation, it should be handled by the client library and return a valid {@link PollResponse}. However
-     *     if the poll operation returns {@link Mono#error(Throwable)}, the {@link Poller} will disregard it and
-     *     continue to poll.
-     *
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code
-     *     pollInterval} or {@code pollOperation} are {@code null}
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This must never return
+     *     {@code null} and always have a non-null {@link OperationStatus}. {@link Mono} returned from poll operation
+     *     should never return {@link Mono#error(Throwable)}. If an unexpected scenario happens during the poll
+     *     operation, it should be handled by the client library and return a valid {@link PollResponse}. However if
+     *     the poll operation returns {@link Mono#error(Throwable)}, the {@link Poller} will disregard it and continue
+     *     to poll.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
+     *     {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
         this(pollInterval, pollOperation, null, null);
@@ -137,24 +134,23 @@ public class Poller<T> {
     /**
      * Creates a {@link Poller} instance with poll interval, poll operation, and optional cancel operation. Polling
      * starts immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value in
-     * {@link PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use {@code
-     * pollInterval}.
+     * {@link PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use
+     * {@code pollInterval}.
      *
      * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This must never
-     *     return {@code null} and always have a non-null {@link OperationStatus}. {@link Mono} returned from poll
-     *     operation should never return {@link Mono#error(Throwable)}. If an unexpected scenario happens during the
-     *     poll operation, it should be handled by the client library and return a valid {@link PollResponse}. However
-     *     if the poll operation returns {@link Mono#error(Throwable)}, the {@link Poller} will disregard it and
-     *     continue to poll.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This must never return
+     *     {@code null} and always have a non-null {@link OperationStatus}. {@link Mono} returned from poll operation
+     *     should never return {@link Mono#error(Throwable)}. If an unexpected scenario happens during the poll
+     *     operation, it should be handled by the client library and return a valid {@link PollResponse}. However if
+     *     the poll operation returns {@link Mono#error(Throwable)}, the {@link Poller} will disregard it and continue
+     *     to poll.
      * @param activationOperation The activation operation to be called by the {@link Poller} instance before
-     *     calling {@code pollOperation}. It can be {@code null} which will indicate to the {@link Poller} that {@code
-     *     pollOperation} can be called straight away.
-     * @param cancelOperation Cancel operation if cancellation is supported by the service. If it is {@code null},
-     *     then the cancel operation is not supported.
-     *
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code
-     *     pollInterval} or {@code pollOperation} are {@code null}
+     *     calling {@code pollOperation}. It can be {@code null} which will indicate to the {@link Poller} that
+     *     {@code pollOperation} can be called straight away.
+     * @param cancelOperation Cancel operation if cancellation is supported by the service. If it is {@code null}, then
+     *     the cancel operation is not supported.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
+     *      {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                   Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
@@ -192,25 +188,23 @@ public class Poller<T> {
         this.cancelOperation = cancelOperation;
     }
 
-
     /**
      * Create a {@link Poller} instance with poll interval, poll operation and cancel operation. The polling starts
-     * immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value in {@link
-     * PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller} will use {@code
-     * pollInterval}.
+     * immediately by invoking {@code pollOperation}. The next poll cycle will be defined by retryAfter value
+     * in {@link PollResponse}. In absence of {@link PollResponse#getRetryAfter()}, the {@link Poller}
+     * will use {@code pollInterval}.
      *
      * @param pollInterval Not-null and greater than zero poll interval.
-     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback
-     *     into the client library, which must never return {@code null}, and which must always have a non-null {@link
-     *     OperationStatus}. {@link Mono} returned from poll operation should never return {@link
-     *     Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should be handled by client
-     *     library and return a valid {@link PollResponse}. However if poll operation returns {@link
-     *     Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
+     * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into
+     *     the client library, which must never return {@code null}, and which must always have a non-null
+     *     {@link OperationStatus}. {@link Mono} returned from poll operation should never return
+     *     {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should be handled by
+     *     client library and return a valid {@link PollResponse}. However if poll operation returns
+     *     {@link Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}
-     *     which will indicate to the {@link Poller} that cancel operation is not supported by Azure service.
-     *
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code
-     *     pollInterval} or {@code pollOperation} are {@code null}
+     *      which will indicate to the {@link Poller} that cancel operation is not supported by Azure service.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
+     * {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                   Consumer<Poller<T>> cancelOperation) {
@@ -253,8 +247,8 @@ public class Poller<T> {
     }
 
     /**
-     * Enables user to take control of polling and trigger manual poll operation. It will call poll operation once. This
-     * will not turn off auto polling.
+     * Enables user to take control of polling and trigger manual poll operation. It will call poll operation once.
+     * This will not turn off auto polling.
      *
      * <p><strong>Manual polling</strong></p>
      * <p>
@@ -292,7 +286,6 @@ public class Poller<T> {
      * <p>It will enable auto-polling if it was disable by user.
      *
      * @param timeout The duration for which execution is blocked and waits for polling to complete.
-     *
      * @return returns final {@link PollResponse} when polling is complete as defined in {@link OperationStatus}.
      */
     public PollResponse<T> block(Duration timeout) {
@@ -306,9 +299,7 @@ public class Poller<T> {
      * Blocks indefinitely until given {@link OperationStatus} is received.
      *
      * @param statusToBlockFor The desired {@link OperationStatus} to block for.
-     *
      * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToBlockFor}.
-     *
      * @throws IllegalArgumentException If {@code statusToBlockFor} is {@code null}.
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor) {
@@ -316,16 +307,14 @@ public class Poller<T> {
     }
 
     /**
-     * Blocks until given {@code statusToBlockFor} is received or the {@code timeout} elapses. If a {@code null} {@code
-     * timeout} is given, it will block indefinitely.
+     * Blocks until given {@code statusToBlockFor} is received or the {@code timeout} elapses. If a {@code null}
+     * {@code timeout} is given, it will block indefinitely.
      *
-     * @param statusToBlockFor The desired {@link OperationStatus} to block for and it can be any valid {@link
-     *     OperationStatus} value.
+     * @param statusToBlockFor The desired {@link OperationStatus} to block for and it can be any valid
+     *     {@link OperationStatus} value.
      * @param timeout The time after which it will stop blocking. A {@code null} value will cause to block
      *     indefinitely. Zero or negative are not valid values.
-     *
      * @return {@link PollResponse} for matching desired status to block for.
-     *
      * @throws IllegalArgumentException if {@code timeout} is zero or negative and if {@code statusToBlockFor} is
      *     {@code null}.
      */
