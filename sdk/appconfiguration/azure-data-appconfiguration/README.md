@@ -30,6 +30,14 @@ Use the client library for App Configuration to create and manage application co
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
 AppConfiguration to use Netty HTTP client. 
 
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core-http-netty</artifactId>
+    <version>1.0.0-preview.5</version>
+</dependency>
+```
+
 ### Alternate HTTP client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
