@@ -15,7 +15,7 @@ Please see [here](src/main/java/com/microsoft/azure/loganalytics/samples) for co
 
 To get the binaries of the official Microsoft Azure Log Analytics SDK as distributed by Microsoft, reade for use within your project, you can use Maven.
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-loganalytics;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-loganalytics;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>

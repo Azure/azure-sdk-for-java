@@ -18,7 +18,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -44,7 +44,7 @@ AppConfiguration to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
 <!-- Add AppConfiguration dependency without Netty HTTP client -->
 <dependency>
@@ -59,7 +59,7 @@ Netty and include OkHTTP client in your pom.xml.
     </exclusions>
 </dependency>
 ```
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
 <!-- Add OkHTTP client to use with AppConfiguration -->
 <dependency>

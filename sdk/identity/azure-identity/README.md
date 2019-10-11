@@ -37,7 +37,7 @@ The Azure Identity library provides Azure Active Directory token authentication 
 ### Adding the package to your project
 
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
-[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-identity;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>

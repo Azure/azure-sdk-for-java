@@ -10,7 +10,7 @@ Azure Core allows client libraries to expose common functionality in a consisten
 
 Typically, you will not need to install or specifically depend on Azure Core, instead it will be transitively downloaded by your build tool when you depend on of the client libraries using it. In case you want to depend on it explicitly (to implement your own client library, for example), include the following Maven dependency:
 
-[//]: # ({x-version-update-start;com.azure:azure-core;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>

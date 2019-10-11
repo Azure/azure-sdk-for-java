@@ -13,7 +13,7 @@ documentation][api_documentation] | [Samples][samples]
 - [Maven][maven]
 
 ### Adding the package to your product
-[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
@@ -31,7 +31,7 @@ Tracing OpenCensus to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <!-- Add Tracing OpenCensus without Netty HTTP client -->
 <dependency>
@@ -47,13 +47,13 @@ Netty and include OkHTTP client in your pom.xml.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
 <!-- Add OkHTTP client to use with Tracing OpenCensus package -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.5</version>
+  <version>1.0.0-preview.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

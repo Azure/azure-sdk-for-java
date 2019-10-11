@@ -54,7 +54,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -93,7 +93,7 @@ EventHubAsyncClient client = new EventHubClientBuilder()
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-identity;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>

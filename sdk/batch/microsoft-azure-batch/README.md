@@ -62,7 +62,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 If you are using released builds from 7.0.0, add the following to your POM file:
 
-[//]: # ({x-version-update-start;com.microsoft.azure:com.microsoft.azure;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:com.microsoft.azure;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>

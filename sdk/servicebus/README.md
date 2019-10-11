@@ -28,7 +28,7 @@ This library is build using:
 
 The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus%22)
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus;current})
 ```
 <dependency> 
   <groupId>com.microsoft.azure</groupId> 

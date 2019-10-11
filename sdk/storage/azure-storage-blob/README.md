@@ -17,7 +17,7 @@ definition, such as text or binary data.
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
@@ -35,7 +35,7 @@ Storage Blob to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-blob;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <!-- Add Storage Blob dependency without Netty HTTP client -->
 <dependency>
@@ -51,7 +51,7 @@ Netty and include OkHTTP client in your pom.xml.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
 <!-- Add OkHTTP client to use with Storage Blob -->
 <dependency>

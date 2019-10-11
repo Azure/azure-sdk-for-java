@@ -22,7 +22,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>

@@ -79,7 +79,7 @@ For more information on using Java with Azure, see [here](https://azure.microsof
 
 To get the binaries of this library as distributed by Microsoft, ready for use within your project, you can use Maven. Add the following fragment to you POM's dependencies.
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-complete;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-complete;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>

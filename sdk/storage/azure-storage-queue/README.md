@@ -15,7 +15,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-queue;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
@@ -32,7 +32,7 @@ Storage Queue to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-queue;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
 ```xml
 <!-- Add Storage Queue dependency without Netty HTTP client -->
 <dependency>
@@ -48,7 +48,7 @@ Netty and include OkHTTP client in your pom.xml.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
 <!-- Add OkHTTP client to use with Storage Queue -->
 <dependency>

@@ -87,7 +87,7 @@ Jar dependency binary information for maven and gradle can be found here at [mav
 
 For example, using maven, you can add the following dependency to your maven pom file:
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;current})
 ```xml
 <dependency>
   <groupId>com.microsoft.azure</groupId>

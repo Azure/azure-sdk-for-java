@@ -1,6 +1,6 @@
 # Azure File client library for Java
 The Server Message Block (SMB) protocol is the preferred file share protocol used on-premises today.
-The Microsoft Azure File service enables customers to leverage the availability and scalability of Azure’s Cloud Infrastructure as a Service (IaaS) SMB without having to rewrite SMB client applications.
+The Microsoft Azure File service enables customers to leverage the availability and scalability of Azure's Cloud Infrastructure as a Service (IaaS) SMB without having to rewrite SMB client applications.
 
 Files stored in Azure File service shares are accessible via the SMB protocol, and also via REST APIs.
 The File service offers the following four resources: the storage account, shares, directories, and files.
@@ -19,7 +19,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
@@ -37,7 +37,7 @@ Storage File to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-file;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-storage-file;current})
 ```xml
 <!-- Add Storage File dependency without Netty HTTP client -->
 <dependency>
@@ -53,7 +53,7 @@ Netty and include OkHTTP client in your pom.xml.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
 <!-- Add OkHTTP client to use with Storage File -->
 <dependency>
