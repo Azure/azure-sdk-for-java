@@ -26,6 +26,10 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <project.automatic.module.name>com.azure.sdk.template</project.automatic.module.name>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
