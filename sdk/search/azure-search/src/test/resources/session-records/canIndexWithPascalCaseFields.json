@@ -1,40 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk17b38164be87.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk891279941c76.search.windows.net/indexes('books')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "6b2c2e77-69c8-474a-a95a-e1555f778111",
+      "request-id" : "8010ace5-86b7-4097-bd0d-028c036ba98a",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 21:11:14 GMT",
+      "Date" : "Thu, 10 Oct 2019 23:45:09 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "144",
+      "elapsed-time" : "149",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "228",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk17b38164be87.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk891279941c76.search.windows.net/indexes('books')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"123\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk17b38164be87.search.windows.net/indexes('books')/docs/$count?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk891279941c76.search.windows.net/indexes('books')/docs/$count?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f103965f-e44e-4048-9895-a3dafdef5c15",
+      "request-id" : "7d485b33-ce7f-47ca-b1fe-3bd2a852c12f",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 21:11:17 GMT",
+      "Date" : "Thu, 10 Oct 2019 23:45:11 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "23",
+      "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "4",

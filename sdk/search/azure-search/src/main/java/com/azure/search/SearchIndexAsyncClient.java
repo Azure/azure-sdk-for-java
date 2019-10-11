@@ -178,7 +178,7 @@ public class SearchIndexAsyncClient {
      * @return response containing the document index result.
      */
     public Mono<Response<DocumentIndexResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
-        return this.indexWithResponse(new IndexBatch().addMergeAction(documents));
+        return withContext(context -> mergeDocumentsWithResponse(documents, context));
     }
 
     @SuppressWarnings("unchecked")

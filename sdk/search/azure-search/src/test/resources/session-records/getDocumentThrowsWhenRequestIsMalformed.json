@@ -1,37 +1,37 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk4ee58456a1c4.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfa4750816b9e.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2eb545c2-0a72-4fc5-9452-da7de6e7a756",
+      "request-id" : "2488b900-d7b8-44a5-ac30-e68e28d63f7b",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Oct 2019 20:20:42 GMT",
+      "Date" : "Thu, 10 Oct 2019 23:35:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "130",
+      "elapsed-time" : "111",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "227",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk4ee58456a1c4.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Body" : "{\"@odata.context\":\"https://azs-sdkfa4750816b9e.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk4ee58456a1c4.search.windows.net/indexes('hotels')/docs('2')?$select=HotelId%2cThisFieldDoesNotExist&api-version=2019-05-06",
+    "Uri" : "https://azs-sdkfa4750816b9e.search.windows.net/indexes('hotels')/docs('2')?$select=HotelId%2cThisFieldDoesNotExist&api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bbb641f6-5b01-4525-8a2b-de618a886320",
+      "request-id" : "c5a66a90-5a97-4051-85cd-6a408ff5a251",
       "StatusCode" : "400",
-      "Date" : "Mon, 07 Oct 2019 20:20:45 GMT",
+      "Date" : "Thu, 10 Oct 2019 23:35:23 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
       "elapsed-time" : "2",

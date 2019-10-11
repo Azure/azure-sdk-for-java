@@ -799,48 +799,54 @@ public class IndexingSyncTests extends IndexingTestBase {
             .addUploadAction(hotelsToUpload)
             .addMergeOrUploadAction(hotelsToMergeOrUpload);
 
-        Response<DocumentIndexResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
+        Context context = new Context("key", "value");
+
+        Response<DocumentIndexResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, context);
         waitForIndexing();
 
         Assert.assertEquals(200, indexResponse.getStatusCode());
         DocumentIndexResult result = indexResponse.getValue();
         Assert.assertEquals(2, result.getResults().size());
 
-        Response<DocumentIndexResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
+        Response<DocumentIndexResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, context);
         waitForIndexing();
 
         Assert.assertEquals(200, updateResponse.getStatusCode());
         result = updateResponse.getValue();
         Assert.assertEquals(1, result.getResults().size());
 
-        Response<DocumentIndexResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
+        Response<DocumentIndexResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
+            hotelsToMergeOrUpload,
+            context);
         waitForIndexing();
 
         Assert.assertEquals(200, mergeOrUploadResponse.getStatusCode());
         result = mergeOrUploadResponse.getValue();
         Assert.assertEquals(2, result.getResults().size());
 
-        Response<DocumentIndexResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
+        Response<DocumentIndexResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, context);
         waitForIndexing();
 
         Assert.assertEquals(200, deleteResponse.getStatusCode());
         result = deleteResponse.getValue();
         Assert.assertEquals(1, result.getResults().size());
 
-        Response<DocumentIndexResult> batchResponse = client.indexWithResponse(batch);
+        Response<DocumentIndexResult> batchResponse = client.indexWithResponse(batch, context);
         waitForIndexing();
 
         Assert.assertEquals(200, batchResponse.getStatusCode());
         result = batchResponse.getValue();
         Assert.assertEquals(4, result.getResults().size());
 
-        Response<Document> documentResponse = client.getDocumentWithResponse("3", null,
-            new SearchRequestOptions());
+        Response<Document> documentResponse = client.getDocumentWithResponse("3",
+            null,
+            new SearchRequestOptions(),
+            context);
         Assert.assertEquals(200, documentResponse.getStatusCode());
         Document doc = documentResponse.getValue();
         Assert.assertEquals(4, doc.get("Rating"));
 
-        Response<Long> countResponse = client.getDocumentCountWithResponse();
+        Response<Long> countResponse = client.getDocumentCountWithResponse(context);
         Assert.assertEquals(200, countResponse.getStatusCode());
         Long count = countResponse.getValue();
         Assert.assertEquals(4L, count.longValue());
