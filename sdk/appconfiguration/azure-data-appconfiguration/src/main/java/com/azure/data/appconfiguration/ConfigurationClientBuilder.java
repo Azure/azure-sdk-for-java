@@ -108,9 +108,9 @@ public final class ConfigurationClientBuilder {
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
-     *     {@link #credential(String) connectionString} are set through the builder. Or can be set
+     *     {@link #connectionString(String) connectionString} are set through the builder. Or can be set
      *     explicitly by calling {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #credential(String) connectionString} has not been set.
+     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationClient buildClient() {
         return new ConfigurationClient(buildAsyncClient());
@@ -128,9 +128,9 @@ public final class ConfigurationClientBuilder {
      *
      * @return A ConfigurationAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
-     *     {@link #credential(String) connectionString} are set through the builder. Or can be set
+     *     {@link #connectionString(String) connectionString} are set through the builder. Or can be set
      *     explicitly by calling {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #credential(String) connectionString} has not been set.
+     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
@@ -200,7 +200,7 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public ConfigurationClientBuilder credential(String connectionString) {
+    public ConfigurationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
 
         try {
