@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 

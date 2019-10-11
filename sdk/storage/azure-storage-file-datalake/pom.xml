@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-datalake</artifactId>
-  <version>12.0.0-preview.4</version>
+  <version>12.0.0-preview.5</version>
 
   <name>Microsoft Azure client library for File Storage Data Lake</name>
   <description>This module contains client library for Microsoft Azure File Storage Data Lake.</description>
@@ -40,12 +40,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.0.0-preview.4</version>
+      <version>12.0.0-preview.5</version>
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -54,19 +54,20 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>

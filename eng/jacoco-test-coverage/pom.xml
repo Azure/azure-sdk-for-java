@@ -10,7 +10,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
@@ -23,24 +23,24 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <azure-core.version>1.0.0-preview.6</azure-core.version>
-    <azure-core-amqp.version>1.0.0-preview.6</azure-core-amqp.version>
-    <azure-core-http-netty.version>1.0.0-preview.6</azure-core-http-netty.version>
-    <azure-core-management.version>1.0.0-preview.6</azure-core-management.version>
-    <azure-core-test.version>1.0.0-preview.6</azure-core-test.version>
-    <azure-data-appconfiguration.version>1.0.0-preview.5</azure-data-appconfiguration.version>
-    <azure-identity.version>1.0.0-preview.5</azure-identity.version>
-    <azure-keyvault.version>4.0.0-preview.5</azure-keyvault.version>
-    <azure-messaging-eventhubs.version>5.0.0-preview.4</azure-messaging-eventhubs.version>
-    <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.2</azure-messaging-eventhubs-checkpointstore-blob.version>
-    <azure-storage-common.version>12.0.0-preview.4</azure-storage-common.version>
-    <azure-storage-blob.version>12.0.0-preview.4</azure-storage-blob.version>
-    <azure-storage-blob-batch.version>12.0.0-preview.4</azure-storage-blob-batch.version>
-    <azure-storage-blob-cryptography.version>12.0.0-preview.4</azure-storage-blob-cryptography.version>
-    <azure-storage-file.version>12.0.0-preview.4</azure-storage-file.version>
-    <azure-storage-file-datalake.version>12.0.0-preview.4</azure-storage-file-datalake.version>
-    <azure-storage-queue.version>12.0.0-preview.4</azure-storage-queue.version>
-    <azure-storage-queue-cryptography.version>12.0.0-preview.4</azure-storage-queue-cryptography.version>
+    <azure-core.version>1.0.0-preview.7</azure-core.version>
+    <azure-core-amqp.version>1.0.0-preview.7</azure-core-amqp.version>
+    <azure-core-http-netty.version>1.0.0-preview.7</azure-core-http-netty.version>
+    <azure-core-management.version>1.0.0-preview.7</azure-core-management.version>
+    <azure-core-test.version>1.0.0-preview.7</azure-core-test.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.6</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.6</azure-identity.version>
+    <azure-keyvault.version>4.0.0-preview.6</azure-keyvault.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.5</azure-messaging-eventhubs.version>
+    <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.3</azure-messaging-eventhubs-checkpointstore-blob.version>
+    <azure-storage-common.version>12.0.0-preview.5</azure-storage-common.version>
+    <azure-storage-blob.version>12.0.0-preview.5</azure-storage-blob.version>
+    <azure-storage-blob-batch.version>12.0.0-preview.5</azure-storage-blob-batch.version>
+    <azure-storage-blob-cryptography.version>12.0.0-preview.5</azure-storage-blob-cryptography.version>
+    <azure-storage-file.version>12.0.0-preview.5</azure-storage-file.version>
+    <azure-storage-file-datalake.version>12.0.0-preview.5</azure-storage-file-datalake.version>
+    <azure-storage-queue.version>12.0.0-preview.5</azure-storage-queue.version>
+    <azure-storage-queue-cryptography.version>12.0.0-preview.5</azure-storage-queue-cryptography.version>
     <project.automatic.module.name>com.azure.eng.jacoco.test.coverage</project.automatic.module.name>
   </properties>
 

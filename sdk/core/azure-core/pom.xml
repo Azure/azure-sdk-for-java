@@ -7,14 +7,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-preview.6</version>
+  <version>1.0.0-preview.7</version>
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>

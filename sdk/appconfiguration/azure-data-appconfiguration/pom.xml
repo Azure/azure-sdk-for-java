@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -49,14 +49,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>

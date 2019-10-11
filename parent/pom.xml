@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.4.0</version>
+  <version>1.5.0</version>
 
   <name>Microsoft Azure SDK for Java Parent</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
