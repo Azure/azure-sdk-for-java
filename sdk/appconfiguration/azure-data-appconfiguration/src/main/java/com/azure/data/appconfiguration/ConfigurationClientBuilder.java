@@ -108,7 +108,7 @@ public final class ConfigurationClientBuilder {
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
-     *     {@link #connectionString(String) connectionString} are set through the builder. Or can be set
+     *     {@link #connectionString(String) connectionString} is called. Or can be set
      *     explicitly by calling {@link #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
@@ -128,7 +128,7 @@ public final class ConfigurationClientBuilder {
      *
      * @return A ConfigurationAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
-     *     {@link #connectionString(String) connectionString} are set through the builder. Or can be set
+     *     {@link #connectionString(String) connectionString} is called. Or can be set
      *     explicitly by calling {@link #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
