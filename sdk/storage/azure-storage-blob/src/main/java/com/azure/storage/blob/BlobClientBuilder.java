@@ -7,29 +7,20 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
-import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.io.OutputStream;
@@ -37,7 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -58,11 +48,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class})
 public final class BlobClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
-
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
 
     private String endpoint;
@@ -77,9 +62,9 @@ public final class BlobClientBuilder {
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
-    private List<HttpPipelinePolicy> additionalPolicies;
-    private HttpLogOptions logOptions;
-    private RequestRetryOptions retryOptions;
+    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private HttpLogOptions logOptions = new HttpLogOptions();
+    private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
@@ -140,45 +125,17 @@ public final class BlobClientBuilder {
     }
 
     private HttpPipeline buildPipeline() {
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-
-        policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION,
-            (configuration == null) ? Configuration.NONE : configuration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
-        }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
-
-        policies.addAll(this.additionalPolicies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(makeValidationPolicy());
-
-        policies.add(new HttpLoggingPolicy(logOptions));
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-    }
-
-    private HttpPipelinePolicy makeValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build();
+        return BuilderHelper.buildPipeline(() -> BuilderHelper.getUserAgentPolicy(configuration), () -> {
+            if (sharedKeyCredential != null) {
+                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            } else if (tokenCredential != null) {
+                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                return null;
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies);
     }
 
     /**
@@ -268,29 +225,10 @@ public final class BlobClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public BlobClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
+            this::credential, this::endpoint, logger);
 
-        Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
-
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
-
-        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'connectionString' must contain 'AccountName' and 'AccountKey'."));
-        }
-
-        String endpointProtocol = connectionStringPieces.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionStringPieces.get(ENDPOINT_SUFFIX);
-
-        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            endpoint(String.format("%s://%s.blob.%s", endpointProtocol, accountName,
-                endpointSuffix.replaceFirst("^\\.", "")));
-        }
-
-        this.accountName = accountName;
-
-        return credential(new SharedKeyCredential(accountName, accountKey));
+        return this;
     }
 
     /**
@@ -322,7 +260,7 @@ public final class BlobClientBuilder {
             this.snapshot = parts.getSnapshot();
 
             String sasToken = parts.getSasQueryParameters().encode();
-            if (ImplUtils.isNullOrEmpty(sasToken)) {
+            if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
