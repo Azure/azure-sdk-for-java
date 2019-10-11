@@ -40,7 +40,7 @@ import java.util.Objects;
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credential.
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credential it requires to
  * construct a client, set the ConfigurationClientCredentials with
- * {@link #credential(ConfigurationClientCredentials) this}.</p>
+ * {@link #connectionString(String) this}.</p>
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
