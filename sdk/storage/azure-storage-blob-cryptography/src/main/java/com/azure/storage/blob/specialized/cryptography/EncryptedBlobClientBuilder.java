@@ -69,11 +69,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
-
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
 
     private String endpoint;
@@ -306,16 +301,16 @@ public final class EncryptedBlobClientBuilder {
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
 
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
+        String accountName = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+        String accountKey = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'connectionString' must contain 'AccountName' and 'AccountKey'."));
         }
 
-        String endpointProtocol = connectionStringPieces.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionStringPieces.get(ENDPOINT_SUFFIX);
+        String endpointProtocol = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
             endpoint(String.format("%s://%s.blob.%s", endpointProtocol, accountName,

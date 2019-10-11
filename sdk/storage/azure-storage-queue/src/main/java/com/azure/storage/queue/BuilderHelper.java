@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.implementation.util;
+package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -32,16 +32,9 @@ import java.util.function.Supplier;
 
 /**
  * This class provides helper methods for common builder patterns.
- *
- * RESERVED FOR INTERNAL USE.
  */
-public final class BuilderHelper {
-    private static final String ACCOUNT_NAME = "accountname";
-    private static final String ACCOUNT_KEY = "accountkey";
-    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
-    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
-
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file";
+final class BuilderHelper {
+    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
 
     /**
@@ -55,25 +48,25 @@ public final class BuilderHelper {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain 'AccountName' or 'AccountKey'.
      */
-    public static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
+    static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
         Consumer<SharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
 
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
+        String accountName = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+        String accountKey = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'connectionString' must contain 'AccountName' and 'AccountKey'."));
         }
 
-        String endpointProtocol = connectionStringPieces.get(ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionStringPieces.get(ENDPOINT_SUFFIX);
+        String endpointProtocol = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            endpointSetter.accept(String.format("%s://%s.file.%s", endpointProtocol, accountName,
+            endpointSetter.accept(String.format("%s://%s.queue.%s", endpointProtocol, accountName,
                 endpointSuffix.replaceFirst("^\\.", "")));
         }
 
@@ -92,7 +85,7 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration) {
         // Closest to API goes first, closest to wire goes last.

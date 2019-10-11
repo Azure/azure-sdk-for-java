@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.file;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -32,11 +32,9 @@ import java.util.function.Supplier;
 
 /**
  * This class provides helper methods for common builder patterns.
- *
- * RESERVED FOR INTERNAL USE.
  */
-public final class BuilderHelper {
-    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
+final class BuilderHelper {
+    private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file";
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
 
     /**
@@ -50,7 +48,7 @@ public final class BuilderHelper {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain 'AccountName' or 'AccountKey'.
      */
-    public static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
+    static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
         Consumer<SharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
@@ -68,7 +66,7 @@ public final class BuilderHelper {
         String endpointSuffix = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            endpointSetter.accept(String.format("%s://%s.blob.%s", endpointProtocol, accountName,
+            endpointSetter.accept(String.format("%s://%s.file.%s", endpointProtocol, accountName,
                 endpointSuffix.replaceFirst("^\\.", "")));
         }
 
@@ -87,7 +85,7 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
+    static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> additionalPolicies, Configuration configuration) {
         // Closest to API goes first, closest to wire goes last.
@@ -140,7 +138,6 @@ public final class BuilderHelper {
     private static HttpPipelinePolicy getResponseValidationPolicy() {
         return new ResponseValidationPolicyBuilder()
             .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build();
     }
 }

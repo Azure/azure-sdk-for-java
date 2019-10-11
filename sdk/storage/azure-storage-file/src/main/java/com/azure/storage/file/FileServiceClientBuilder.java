@@ -19,7 +19,6 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.implementation.util.BuilderHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
