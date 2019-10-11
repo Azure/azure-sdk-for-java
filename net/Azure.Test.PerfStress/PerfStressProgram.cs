@@ -19,7 +19,9 @@ namespace Azure.Test.PerfStress
 
         public static async Task Main(Assembly assembly, string[] args)
         {
-            var testTypes = assembly.ExportedTypes.Where(t => typeof(IPerfStressTest).IsAssignableFrom(t) && !t.IsAbstract);
+            var testTypes = assembly.ExportedTypes
+                .Where(t => typeof(IPerfStressTest).IsAssignableFrom(t) && !t.IsAbstract)
+                .Append(typeof(NoOpTest));
 
             var optionTypes = GetOptionTypes(testTypes);
 
