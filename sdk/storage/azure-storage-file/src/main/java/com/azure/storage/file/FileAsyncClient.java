@@ -1248,7 +1248,7 @@ public class FileAsyncClient {
     private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID);
+                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
         }
 
         if (filePermission != null) {
