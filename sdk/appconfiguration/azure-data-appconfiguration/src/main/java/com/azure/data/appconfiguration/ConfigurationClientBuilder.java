@@ -207,10 +207,10 @@ public final class ConfigurationClientBuilder {
             this.credential = new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException err) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm."));
+                    "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
         } catch (NoSuchAlgorithmException err) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated."));
+                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
         }
 
         this.endpoint = credential.getBaseUri();
