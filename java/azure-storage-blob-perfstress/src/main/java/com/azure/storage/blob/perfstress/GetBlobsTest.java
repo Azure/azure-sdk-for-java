@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import com.azure.perfstress.CountOptions;
 
+import com.azure.storage.blob.perfstress.core.ContainerTest;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

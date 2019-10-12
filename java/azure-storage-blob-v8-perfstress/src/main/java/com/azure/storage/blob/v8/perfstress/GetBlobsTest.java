@@ -4,13 +4,14 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import com.azure.perfstress.CountOptions;
+import com.azure.storage.blob.v8.perfstress.core.ContainerTest;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-public class GetBlobsV8Test extends ContainerV8Test<CountOptions> {
-    public GetBlobsV8Test(CountOptions options) {
+public class GetBlobsTest extends ContainerTest<CountOptions> {
+    public GetBlobsTest(CountOptions options) {
         super(options);
     }
 

@@ -1,4 +1,4 @@
-package com.azure.storage.blob.v8.perfstress;
+package com.azure.storage.blob.v8.perfstress.core;
 
 import com.azure.perfstress.PerfStressOptions;
 
@@ -11,12 +11,12 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
-public abstract class ContainerV8Test<TOptions extends PerfStressOptions> extends ServiceV8Test<TOptions> {
+public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
     protected static final String ContainerName = "perfstress-" + UUID.randomUUID().toString();
 
     protected final CloudBlobContainer CloudBlobContainer;
 
-    public ContainerV8Test(TOptions options) {
+    public ContainerTest(TOptions options) {
         super(options);
 
         try {

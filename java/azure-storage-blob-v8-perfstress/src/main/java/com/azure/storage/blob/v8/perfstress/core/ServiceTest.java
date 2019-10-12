@@ -1,4 +1,4 @@
-package com.azure.storage.blob.v8.perfstress;
+package com.azure.storage.blob.v8.perfstress.core;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -9,11 +9,11 @@ import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.azure.perfstress.PerfStressOptions;
 import com.azure.perfstress.PerfStressTest;
 
-public abstract class ServiceV8Test<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
     protected final CloudBlobClient CloudBlobClient;
 
-    public ServiceV8Test(TOptions options) {
+    public ServiceTest(TOptions options) {
         super(options);
 
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");

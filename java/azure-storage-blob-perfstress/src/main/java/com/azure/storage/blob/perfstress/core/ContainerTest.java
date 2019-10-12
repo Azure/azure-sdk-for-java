@@ -1,4 +1,4 @@
-package com.azure.storage.blob.perfstress;
+package com.azure.storage.blob.perfstress.core;
 
 import com.azure.storage.blob.ContainerAsyncClient;
 import com.azure.storage.blob.ContainerClient;
