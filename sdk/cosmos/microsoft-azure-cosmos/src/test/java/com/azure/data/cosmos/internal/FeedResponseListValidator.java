@@ -173,7 +173,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
 
                     for(FeedResponse<T> fp: feedList) {
-                        pageValidator.validate(fp); 
+                        pageValidator.validate(fp);
                     }
                 }
             });
@@ -191,15 +191,15 @@ public interface FeedResponseListValidator<T extends Resource> {
                         if (value instanceof Double) {
 
                             Double d = result.getDouble("_aggregate");
-                            assertThat(d).isEqualTo(value);                
+                            assertThat(d).isEqualTo(value);
                         } else if (value instanceof Integer) {
 
                             Integer d = result.getInt("_aggregate");
-                            assertThat(d).isEqualTo(value);                
+                            assertThat(d).isEqualTo(value);
                         } else if (value instanceof String) {
 
                             String d = result.getString("_aggregate");
-                            assertThat(d).isEqualTo(value);                
+                            assertThat(d).isEqualTo(value);
                         } else if (value instanceof Document){
 
                             assertThat(result.toString()).isEqualTo(value.toString());
@@ -280,10 +280,10 @@ public interface FeedResponseListValidator<T extends Resource> {
                             assertThat(queryMetrics.getTotalQueryExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
                             assertThat(queryMetrics.getOutputDocumentCount()).isGreaterThan(0);
                             assertThat(queryMetrics.getRetrievedDocumentCount()).isGreaterThan(0);
-                            assertThat(queryMetrics.getDocumentLoadTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getDocumentLoadTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getDocumentWriteTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getVMExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
-                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getPhysicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getQueryCompilationTime().compareTo(Duration.ZERO)).isGreaterThan(0);
                             assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
