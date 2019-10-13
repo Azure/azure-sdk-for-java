@@ -15,7 +15,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import reactor.core.Exceptions;
@@ -210,9 +210,9 @@ public class BlobPartitionManager implements PartitionManager {
                     break;
             }
         });
-        BlobProperties blobProperties = blobItem.getProperties();
+        BlobItemProperties blobProperties = blobItem.getProperties();
         partitionOwnership.setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli());
-        partitionOwnership.setETag(blobProperties.getEtag());
+        partitionOwnership.setETag(blobProperties.getETag());
         return partitionOwnership;
     }
 
