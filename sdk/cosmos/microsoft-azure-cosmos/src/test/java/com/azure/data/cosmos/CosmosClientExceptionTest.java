@@ -8,6 +8,7 @@ import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -85,9 +86,9 @@ public class CosmosClientExceptionTest {
     @Test(groups = { "unit" }, dataProvider = "subTypes")
     public void statusCodeIsCorrect(Class<CosmosClientException> type, int expectedStatusCode) {
         try {
-            final CosmosClientException instance = type
-                .getConstructor(String.class, HttpHeaders.class,  String.class)
-                .newInstance("some-message", null, "some-uri");
+            Constructor<CosmosClientException> constructor = type.getDeclaredConstructor(String.class, HttpHeaders.class, String.class);
+            constructor.setAccessible(true);
+            final CosmosClientException instance = constructor.newInstance("some-message", null, "some-uri");
             assertEquals(instance.statusCode(), expectedStatusCode);
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
             String message = lenientFormat("could not create instance of %s due to %s", type, error);
