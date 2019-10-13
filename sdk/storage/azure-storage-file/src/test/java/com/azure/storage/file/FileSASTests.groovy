@@ -1,20 +1,18 @@
 package com.azure.storage.file
 
-
+import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
-import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IpRange
+import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.AccessPolicy
 import com.azure.storage.file.models.SignedIdentifier
 import com.azure.storage.file.models.StorageException
 import spock.lang.Unroll
 
-import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 
@@ -156,7 +154,7 @@ class FileSASTests extends APISpec {
         setup:
         String data = "test"
         primaryFileClient.create(Constants.KB)
-        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
+        primaryFileClient.upload(getInputStream(data.getBytes()), (long) data.length())
 
         def permissions = new FileSasPermission()
             .setReadPermission(true)
@@ -205,7 +203,7 @@ class FileSASTests extends APISpec {
         def stream = new ByteArrayOutputStream()
         client.download(stream)
 
-        client.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), (long) data.length())
+        client.upload(getInputStream(data.getBytes(StandardCharsets.UTF_8)), (long) data.length())
 
         then:
         notThrown(StorageException)
@@ -257,7 +255,7 @@ class FileSASTests extends APISpec {
             .sasToken(sas)
             .buildFileClient()
 
-        client.upload(ByteBuffer.wrap(data.getBytes()), (long) data.length())
+        client.upload(getInputStream(data.getBytes()), (long) data.length())
 
         then:
         thrown(StorageException)

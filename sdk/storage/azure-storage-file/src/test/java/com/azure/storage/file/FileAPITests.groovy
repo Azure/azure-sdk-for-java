@@ -19,7 +19,6 @@ import com.azure.storage.file.models.StorageException
 import spock.lang.Ignore
 import spock.lang.Unroll
 
-import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
@@ -32,8 +31,9 @@ class FileAPITests extends APISpec {
     ShareClient shareClient
     String shareName
     String filePath
-    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
-    def dataLength = defaultData.remaining()
+    def data = "default".getBytes(StandardCharsets.UTF_8)
+    def defaultData = getInputStream(data)
+    def dataLength = defaultData.available()
     static Map<String, String> testMetadata
     static FileHTTPHeaders httpHeaders
     static FileSmbProperties smbProperties
@@ -160,9 +160,6 @@ class FileAPITests extends APISpec {
     def "Upload and download data"() {
         given:
         primaryFileClient.create(dataLength)
-        def dataBytes = new byte[dataLength]
-        defaultData.get(dataBytes)
-        defaultData.rewind()
 
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null, null, null)
@@ -184,18 +181,12 @@ class FileAPITests extends APISpec {
         headers.getValue("x-ms-file-parent-id")
         headers.getValue("x-ms-file-id")
 
-        dataBytes == stream.toByteArray()
-
-        cleanup:
-        defaultData.clear()
+        data == stream.toByteArray()
     }
 
     def "Upload and download data with args"() {
         given:
         primaryFileClient.create(1024)
-        def dataBytes = new byte[dataLength]
-        defaultData.get(dataBytes)
-        defaultData.rewind()
 
         when:
         def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, 1, null, null)
@@ -207,10 +198,7 @@ class FileAPITests extends APISpec {
         FileTestHelper.assertResponseStatusCode(downloadResponse, 206)
         Long.parseLong(downloadResponse.getHeaders().getValue("Content-Length")) == dataLength
 
-        dataBytes == stream.toByteArray()
-
-        cleanup:
-        defaultData.clear()
+        data == stream.toByteArray()
     }
 
     def "Upload data error"() {
@@ -220,15 +208,12 @@ class FileAPITests extends APISpec {
         then:
         def e = thrown(StorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.RESOURCE_NOT_FOUND)
-
-        cleanup:
-        defaultData.clear()
     }
 
     def "Upload and clear range" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = getInputStream(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
 
@@ -241,15 +226,12 @@ class FileAPITests extends APISpec {
         for (def b : stream.toByteArray()) {
             b == 0
         }
-
-        cleanup:
-        fullInfoData.clear()
     }
 
     def "Upload and clear range with args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = getInputStream(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
 
@@ -267,7 +249,7 @@ class FileAPITests extends APISpec {
     def "Clear range error" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = getInputStream(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
 
@@ -282,7 +264,7 @@ class FileAPITests extends APISpec {
     def "Clear range error args" () {
         given:
         def fullInfoString = "please clear the range"
-        def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
+        def fullInfoData = getInputStream(fullInfoString.getBytes(StandardCharsets.UTF_8))
         primaryFileClient.create(fullInfoString.length())
         primaryFileClient.upload(fullInfoData, fullInfoString.length())
 
@@ -298,13 +280,14 @@ class FileAPITests extends APISpec {
     def "Upload data length mismatch"() {
         given:
         primaryFileClient.create(1024)
+
         when:
         primaryFileClient.uploadWithResponse(defaultData, size, 0, null, Context.NONE)
+
         then:
         def e = thrown(UnexpectedLengthException)
         e.getMessage().contains(errMsg)
-        cleanup:
-        defaultData.clear()
+
         where:
         size | errMsg
         6 | "more than"
@@ -349,7 +332,7 @@ class FileAPITests extends APISpec {
         }
 
         primaryFileClient.create(data.length())
-        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), data.length())
+        primaryFileClient.upload(getInputStream(data.getBytes(StandardCharsets.UTF_8)), data.length())
 
         when:
         primaryFileClient.downloadToFile(downloadFile.getPath())
@@ -372,7 +355,7 @@ class FileAPITests extends APISpec {
         }
 
         primaryFileClient.create(data.length())
-        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8)), data.length())
+        primaryFileClient.upload(getInputStream(data.getBytes(StandardCharsets.UTF_8)), data.length())
 
         when:
         primaryFileClient.downloadToFile(downloadFile.getPath())
@@ -394,7 +377,7 @@ class FileAPITests extends APISpec {
         def length = 5
         def destinationOffset = 0
 
-        primaryFileClient.upload(ByteBuffer.wrap(data.getBytes()), data.length())
+        primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
         def credential = SharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))

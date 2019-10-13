@@ -23,14 +23,13 @@ import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
@@ -597,7 +596,7 @@ public class FileClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long}
+     * {@codesnippet com.azure.storage.file.FileClient.upload#InputStream-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -609,7 +608,7 @@ public class FileClient {
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
      * code 413 (Request Entity Too Large)
      */
-    public FileUploadInfo upload(ByteBuffer data, long length) {
+    public FileUploadInfo upload(InputStream data, long length) {
         return uploadWithResponse(data, length, 0L, null, Context.NONE).getValue();
     }
 
@@ -621,7 +620,7 @@ public class FileClient {
      *
      * <p>Upload data "default" starting from 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#InputStream-long-Long-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -638,10 +637,11 @@ public class FileClient {
      * code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Long offset, Duration timeout,
+    public Response<FileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(fileAsyncClient.uploadWithResponse(Flux.just(data), length, offset,
-            context), timeout);
+        return Utility.blockWithOptionalTimeout(fileAsyncClient.uploadWithResponse(Utility
+                .convertStreamToByteBuffer(data, length, (int) FileAsyncClient.FILE_DEFAULT_BLOCK_SIZE),
+            length, offset, context), timeout);
     }
 
     /**

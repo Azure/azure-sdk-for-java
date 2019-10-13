@@ -15,11 +15,12 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -174,7 +175,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.abortCopy#string
         fileClient.abortCopy("someCopyId");
-        System.out.printf("Abort copying the file completed.");
+        System.out.println("Abort copying the file completed.");
         // END: com.azure.storage.file.fileClient.abortCopy#string
     }
 
@@ -191,15 +192,33 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#upload(ByteBuffer, long)}
+     * Generates a code sample for using {@link FileClient#upload(InputStream, long)}
      */
     public void uploadData() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.upload#bytebuffer-long
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        FileUploadInfo response = fileClient.upload(defaultData, defaultData.remaining());
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+
+        // BEGIN: com.azure.storage.file.FileClient.upload#InputStream-long
+        InputStream uploadData = new ByteArrayInputStream(data);
+        FileUploadInfo response = fileClient.upload(uploadData, data.length);
         System.out.println("Complete uploading the data with eTag: " + response.getETag());
-        // END: com.azure.storage.file.fileClient.upload#bytebuffer-long
+        // END: com.azure.storage.file.FileClient.upload#InputStream-long
+    }
+
+    /**
+     * Code snippet for {@link FileClient#uploadWithResponse(InputStream, long, Long, Duration, Context)}.
+     */
+    public void uploadWithResponse() {
+        FileClient fileClient = createClientWithCredential();
+        byte[] data = "default".getBytes(StandardCharsets.UTF_8);
+
+        // BEGIN: com.azure.storage.file.FileClient.uploadWithResponse#InputStream-long-Long-Duration-Context
+        InputStream uploadData = new ByteArrayInputStream(data);
+        Response<FileUploadInfo> response = fileClient.uploadWithResponse(uploadData, data.length, 0L,
+            Duration.ofSeconds(30), null);
+        System.out.printf("Completed uploading the data with response %d%n.", response.getStatusCode());
+        System.out.printf("ETag of the file is %s%n", response.getValue().getETag());
+        // END: com.azure.storage.file.FileClient.uploadWithResponse#InputStream-long-Long-Duration-Context
     }
 
     /**
@@ -432,7 +451,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
         fileClient.setMetadata(null);
-        System.out.printf("Setting the file metadata completed.");
+        System.out.println("Setting the file metadata completed.");
         // END: com.azure.storage.file.fileClient.setMetadata#map.clearMetadata
     }
 
@@ -457,7 +476,7 @@ public class FileJavaDocCodeSamples {
         String filePermission = "filePermission";
         // NOTE: filePermission and filePermissionKey should never be both set
         fileClient.setProperties(1024, httpHeaders, smbProperties, filePermission);
-        System.out.printf("Setting the file httpHeaders completed.");
+        System.out.println("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string
     }
 
@@ -469,7 +488,7 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
         FileInfo response = fileClient.setProperties(1024, null, null, null);
-        System.out.printf("Setting the file httpHeaders completed.");
+        System.out.println("Setting the file httpHeaders completed.");
         // END: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string.clearHttpHeaderspreserveSMBProperties
     }
 
