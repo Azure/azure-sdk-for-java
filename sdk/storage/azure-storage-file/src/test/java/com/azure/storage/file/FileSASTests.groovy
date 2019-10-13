@@ -209,7 +209,7 @@ class FileSASTests extends APISpec {
 
         then:
         notThrown(StorageException)
-        stream.toByteArray() == data.getBytes(StandardCharsets.UTF_8)
+        Arrays.copyOfRange(stream.toByteArray(), 0, data.length()) == data.getBytes(StandardCharsets.UTF_8)
     }
 
     def "FileSAS network test upload fails"() {

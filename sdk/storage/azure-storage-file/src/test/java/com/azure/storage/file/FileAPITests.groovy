@@ -165,7 +165,7 @@ class FileAPITests extends APISpec {
         defaultData.rewind()
 
         when:
-        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null, null)
+        def uploadResponse = primaryFileClient.uploadWithResponse(defaultData, dataLength, null, null, null)
         def stream = new ByteArrayOutputStream()
         def downloadResponse = primaryFileClient.downloadWithResponse(stream, null, null, null, null)
         def headers = downloadResponse.getHeaders()
@@ -182,7 +182,7 @@ class FileAPITests extends APISpec {
         headers.getValue("x-ms-file-creation-time")
         headers.getValue("x-ms-file-change-time")
         headers.getValue("x-ms-file-parent-id")
-        headers.getValue("x-ms-file-file-id")
+        headers.getValue("x-ms-file-id")
 
         dataBytes == stream.toByteArray()
 

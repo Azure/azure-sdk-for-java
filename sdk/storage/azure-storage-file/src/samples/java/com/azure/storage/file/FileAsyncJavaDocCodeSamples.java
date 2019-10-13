@@ -224,34 +224,6 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long)}
-     */
-    public void uploadWithResponse() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining()).subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
-        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, long)}
-     */
-    public void uploadWithResponseOverload() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024).subscribe(
-            response -> System.out.println("Complete deleting the file with status code" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
-        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
-    }
-
-    /**
      * Generates a code sample for using {@link FileAsyncClient#clearRange(long)}
      */
     public void clearRangeAsync() {

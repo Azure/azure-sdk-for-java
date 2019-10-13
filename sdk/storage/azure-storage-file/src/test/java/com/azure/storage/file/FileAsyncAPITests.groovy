@@ -31,7 +31,7 @@ class FileAsyncAPITests extends APISpec {
     String shareName
     String filePath
     def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
-    def dataLength = defaultData.remaining()
+    Long dataLength = defaultData.remaining()
     static Map<String, String> testMetadata
     static FileHTTPHeaders httpHeaders
     static FileSmbProperties smbProperties
@@ -139,7 +139,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(dataLength).block()
 
         when:
-        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength))
+        def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(Flux.just(defaultData), dataLength, 0L))
         def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null, null))
 
         then:
@@ -159,10 +159,10 @@ class FileAsyncAPITests extends APISpec {
             assert headers.getValue("x-ms-file-creation-time")
             assert headers.getValue("x-ms-file-change-time")
             assert headers.getValue("x-ms-file-parent-id")
-            assert headers.getValue("x-ms-file-file-id")
+            assert headers.getValue("x-ms-file-id")
 
             FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .flatMap({ data -> assert defaultData.array() == data } )
+                .flatMap({ data -> assert defaultData.array() == data })
                 .then()
         }).verifyComplete()
 
@@ -185,7 +185,9 @@ class FileAsyncAPITests extends APISpec {
 
         downloadVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 206)
-            assert it.getValue().getContentLength() == dataLength
+            assert Long.parseLong(it.getHeaders().getValue("Content-Length")) == dataLength
+            FluxUtil.collectBytesInByteBufferStream(it.getValue())
+                .flatMap({ data -> assert data == defaultData.array()})
         }.verifyComplete()
 
         cleanup:
@@ -194,7 +196,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Upload data error"() {
         when:
-        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength, 1))
+        def updateDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.upload(Flux.just(defaultData), dataLength))
 
         then:
         updateDataErrorVerifier.verifyErrorSatisfies {
@@ -225,13 +227,13 @@ class FileAsyncAPITests extends APISpec {
 
         where:
         size | errMsg
-        6 | "more than"
-        8 | "less than"
+        6    | "more than"
+        8    | "less than"
     }
 
     def "Download data error"() {
         when:
-        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 1023), false))
+        def downloadDataErrorVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(0, 1023), false))
 
         then:
         downloadDataErrorVerifier.verifyErrorSatisfies({
@@ -239,7 +241,7 @@ class FileAsyncAPITests extends APISpec {
         })
     }
 
-    def "Upload and clear range" () {
+    def "Upload and clear range"() {
         given:
         def fullInfoString = "please clear the range"
         def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
@@ -248,18 +250,23 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 0))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(0, 6), false))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(0, 6), false))
 
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
-            assert it.getValue().getBody() != null
+            FluxUtil.collectBytesInByteBufferStream(it.getValue())
+                .flatMap({ data ->
+                    for (def b : data) {
+                        assert b == 0
+                    }
+                })
         }
     }
 
-    def "Upload and clear range with args" () {
+    def "Upload and clear range with args"() {
         given:
         def fullInfoString = "please clear the range"
         def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
@@ -268,21 +275,26 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def clearRangeVerifier = StepVerifier.create(primaryFileAsyncClient.clearRangeWithResponse(7, 1))
-        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1, 7), false))
+        def downloadResponseVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new FileRange(1, 7), false))
 
         then:
         clearRangeVerifier.assertNext {
             FileTestHelper.assertResponseStatusCode(it, 201)
         }
         downloadResponseVerifier.assertNext {
-            assert it.getValue().getBody() != null
+            FluxUtil.collectBytesInByteBufferStream(it.getValue())
+                .flatMap({ data ->
+                    for (def b : data) {
+                        assert b == 0
+                    }
+                })
         }
 
         cleanup:
         fullInfoData.clear()
     }
 
-    def "Clear range error" () {
+    def "Clear range error"() {
         given:
         def fullInfoString = "please clear the range"
         def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
@@ -298,7 +310,7 @@ class FileAsyncAPITests extends APISpec {
         }
     }
 
-    def "Clear range error args" () {
+    def "Clear range error args"() {
         given:
         def fullInfoString = "please clear the range"
         def fullInfoData = ByteBuffer.wrap(fullInfoString.getBytes(StandardCharsets.UTF_8))
@@ -373,7 +385,7 @@ class FileAsyncAPITests extends APISpec {
         def downloadFromFileVerifier = StepVerifier.create(primaryFileAsyncClient.downloadToFile(downloadFile.getPath()))
 
         then:
-        downloadFromFileVerifier.assertNext{
+        downloadFromFileVerifier.assertNext {
             assert it.getContentLength() == data.length()
         }.verifyComplete()
         def scanner = new Scanner(downloadFile).useDelimiter("\\Z")
@@ -408,14 +420,16 @@ class FileAsyncAPITests extends APISpec {
             .buildFileAsyncClient()
 
         client.create(1024).block()
-        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() +"?" + sasToken).toURI()).block()
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileAsyncClient.getFileUrl().toString() + "?" + sasToken).toURI()).block()
 
         then:
-        def result = new String(client.downloadWithProperties().block().getBody().blockLast().array())
-
-        for(int i = 0; i < length; i++) {
-            result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
-        }
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(client.download()))
+            .assertNext({
+                def result = new String(it)
+                for (int i = 0; i < length; i++) {
+                    result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
+                }
+            })
     }
 
     def "Start copy"() {

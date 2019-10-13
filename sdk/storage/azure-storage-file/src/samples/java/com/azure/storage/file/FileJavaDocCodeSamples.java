@@ -203,33 +203,6 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, Duration, Context)}
-     */
-    public void uploadWithResponse() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Duration-Context
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
-            Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete uploading the data with status code: " + response.getStatusCode());
-        // END: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Duration-Context
-    }
-
-    /**
-     * Generates a code sample for using {@link FileClient#uploadWithResponse(ByteBuffer, long, long, Duration,
-     * Context)}
-     */
-    public void uploadWithResponseMaxOverload() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        Response<FileUploadInfo> response = fileClient.uploadWithResponse(defaultData, defaultData.remaining(),
-            1024, Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete uploading the data with status code: " + response.getStatusCode());
-        // END: com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context
-    }
-
-    /**
      * Generates a code sample for using {@link FileClient#clearRange(long)}
      */
     public void clearRange() {
