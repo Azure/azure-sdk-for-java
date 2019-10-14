@@ -201,7 +201,7 @@ BlobClient blobClient = new BlobClientBuilder()
 
 Create a container from a BlobServiceClient.
 ```java
-blobServiceClient.createContainer("mycontainer");
+blobServiceClient.createBlobContainer("mycontainer");
 ```
 
 or
