@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress.Core
 {
-    public abstract class ContainerV11Test<TOptions> : ServiceV11Test<TOptions> where TOptions: PerfStressOptions
+    public abstract class ContainerTest<TOptions> : ServiceTest<TOptions> where TOptions: PerfStressOptions
     {
         private const string _containerPrefix = "perfstress";
         protected static string ContainerName { get; private set; }
 
-        static ContainerV11Test()
+        static ContainerTest()
         {
             ContainerName = _containerPrefix + "-" + Guid.NewGuid();
         }
 
         protected CloudBlobContainer CloudBlobContainer { get; private set; }
 
-        public ContainerV11Test(TOptions options) : base(options)
+        public ContainerTest(TOptions options) : base(options)
         {
             CloudBlobContainer = CloudBlobClient.GetContainerReference(ContainerName);
         }

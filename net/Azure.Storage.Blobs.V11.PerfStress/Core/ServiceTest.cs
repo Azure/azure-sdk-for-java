@@ -5,11 +5,11 @@ using System;
 
 namespace Azure.Storage.Blobs.PerfStress.Core
 {
-    public abstract class ServiceV11Test<TOptions> : PerfStressTest<TOptions> where TOptions : PerfStressOptions
+    public abstract class ServiceTest<TOptions> : PerfStressTest<TOptions> where TOptions : PerfStressOptions
     {
         protected CloudBlobClient CloudBlobClient { get; private set; }
 
-        public ServiceV11Test(TOptions options) : base(options)
+        public ServiceTest(TOptions options) : base(options)
         {
             var connectionString = Environment.GetEnvironmentVariable("STORAGE_CONNECTION_STRING");
 

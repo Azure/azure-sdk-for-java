@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class DownloadV11Test : ContainerV11Test<SizeOptions>
+    public class DownloadTest : ContainerTest<SizeOptions>
     {
         private readonly CloudBlockBlob _cloudBlockBlob;
 
-        public DownloadV11Test(SizeOptions options) : base(options)
+        public DownloadTest(SizeOptions options) : base(options)
         {
             _cloudBlockBlob = CloudBlobContainer.GetBlockBlobReference("downloadv11test");
         }

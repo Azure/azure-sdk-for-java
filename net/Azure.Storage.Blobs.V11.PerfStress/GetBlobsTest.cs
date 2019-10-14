@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Azure.Storage.Blobs.PerfStress
 {
-    public class GetBlobsV11Test : ContainerV11Test<CountOptions>
+    public class GetBlobsTest : ContainerTest<CountOptions>
     {
-        public GetBlobsV11Test(CountOptions options) : base(options) { }
+        public GetBlobsTest(CountOptions options) : base(options) { }
 
         public override async Task GlobalSetupAsync()
         {
