@@ -136,7 +136,7 @@ public final class KeyClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration, serviceVersion.getVersionString()));
+            buildConfiguration, serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
@@ -239,8 +239,10 @@ public final class KeyClientBuilder {
 
     /**
      * Sets the {@link ServiceVersion} that is used when making API requests.
-     *
-     * The latest service version will be used if not provided {@link ServiceVersion}
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @return The updated KeyClientBuilder object.

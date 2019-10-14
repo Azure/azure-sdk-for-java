@@ -6,7 +6,7 @@ package com.azure.security.keyvault.certificates;
 /**
  * The versions of Azure Key Vault supported by this client library.
  */
-public enum ServiceVersion {
+public enum ServiceVersion implements com.azure.core.http.ServiceVersion {
     V7_0("7.0");
 
     private final String version;
@@ -16,10 +16,9 @@ public enum ServiceVersion {
     }
 
     /**
-     * Gets the string representation of the {@link ServiceVersion}
-     *
-     * @return the string representation of the {@link ServiceVersion}
+     * {@inheritDoc}
      */
+    @Override
     public String getVersionString() {
         return this.version;
     }
