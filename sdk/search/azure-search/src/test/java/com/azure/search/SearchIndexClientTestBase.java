@@ -8,23 +8,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.common.jsonwrapper.JsonWrapper;
 import com.azure.search.common.jsonwrapper.api.JsonApi;
 import com.azure.search.common.jsonwrapper.api.Type;
 import com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.test.environment.setup.SearchIndexService;
-import com.azure.search.test.environment.setup.AzureSearchResources;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -34,55 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SearchIndexClientTestBase extends TestBase {
-
-    private final ClientLogger logger = new ClientLogger(SearchIndexClientTestBase.class);
+public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
     protected static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-    protected String searchServiceName;
-    protected ApiKeyCredentials apiKeyCredentials;
-    protected SearchIndexService searchServiceHotelsIndex;
-
-    private static AzureSearchResources azureSearchResources;
     private JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-
-    @Rule
-    public TestName testName = new TestName();
-
-    @BeforeClass
-    public static void beforeClass() {
-        initializeAzureResources();
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        azureSearchResources.deleteResourceGroup();
-    }
-
-    @Override
-    protected void beforeTest() {
-        if (!interceptorManager.isPlaybackMode()) {
-            azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup();
-            azureSearchResources.createService();
-
-            searchServiceName = azureSearchResources.getSearchServiceName();
-            apiKeyCredentials = new ApiKeyCredentials(azureSearchResources.getSearchAdminKey());
-        }
-    }
-
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-        azureSearchResources.deleteService();
-    }
-
-    @Override
-    public String getTestName() {
-        return testName.getMethodName();
-    }
 
     protected <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
@@ -180,21 +125,6 @@ public class SearchIndexClientTestBase extends TestBase {
                 Assert.fail(e.getMessage());
             }
         }
-    }
-
-    private static void initializeAzureResources() {
-        String appId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-        String azureDomainId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String secret = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
-
-        ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
-            appId,
-            azureDomainId,
-            secret,
-            AzureEnvironment.AZURE);
-
-        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
     }
 
     protected void waitForIndexing() {
