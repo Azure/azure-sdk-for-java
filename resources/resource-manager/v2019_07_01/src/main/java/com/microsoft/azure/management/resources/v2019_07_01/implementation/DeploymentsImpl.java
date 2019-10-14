@@ -516,7 +516,7 @@ class DeploymentsImpl extends WrapperImpl<DeploymentsInner> implements Deploymen
         return this.getInnerAsync(resourceGroupName, name).flatMap(new Func1<DeploymentExtendedInner, Observable<DeploymentExtended>> () {
             @Override
             public Observable<DeploymentExtended> call(DeploymentExtendedInner innerT) {
-                if (inner == null) {
+                if (innerT == null) {
                     return Observable.empty();
                 } else {
                     return Observable.just((DeploymentExtended)wrapModel(innerT));

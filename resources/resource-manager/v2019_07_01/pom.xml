@@ -46,10 +46,12 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
+			      <version>1.6.14</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-arm-client-runtime</artifactId>
+			      <version>1.6.14</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
