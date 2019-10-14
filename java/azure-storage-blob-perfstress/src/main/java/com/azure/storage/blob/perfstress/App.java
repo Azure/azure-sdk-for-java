@@ -6,14 +6,12 @@ public class App {
     public static void main(String[] args) {
         Class<?>[] testClasses;
 
-try {
-    testClasses = new Class<?>[] {
-        Class.forName("com.azure.storage.blob.perfstress.GetBlobsTest"),
-    };
-} catch (ClassNotFoundException e) {
-    throw new RuntimeException(e);
-}
+        try {
+            testClasses = new Class<?>[] { Class.forName("com.azure.storage.blob.perfstress.GetBlobsTest"), };
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-PerfStressProgram.Run(testClasses, args);
+        PerfStressProgram.Run(testClasses, args);
     }
 }
