@@ -13,7 +13,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpredirectUrioint
+     * @param authorityHost the Azure Active Directory endpoint
      * @return itself
      */
     @SuppressWarnings("unchecked")
