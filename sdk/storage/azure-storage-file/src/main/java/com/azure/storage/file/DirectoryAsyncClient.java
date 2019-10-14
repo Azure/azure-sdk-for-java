@@ -26,12 +26,12 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.StorageFileItem;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import java.nio.charset.StandardCharsets;
+import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -852,7 +852,7 @@ public class DirectoryAsyncClient {
                     true, null)));
             response.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> storageFileItems.add(new StorageFileItem(fileItem.getName(), false,
-                    fileItem.getProperties())));
+                    fileItem.getProperties().getContentLength())));
         }
 
         return new ArrayList<>(storageFileItems);
