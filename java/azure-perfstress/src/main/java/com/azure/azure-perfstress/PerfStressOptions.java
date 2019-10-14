@@ -8,6 +8,9 @@ public class PerfStressOptions {
     @Parameter(names = { "-d", "--duration" }, description = "Duration of test in seconds")
     public int Duration = 10;
 
+    @Parameter(names = { "-i", "--iterations" }, description = "Number of iterations of main test loop")
+    public int Iterations = 1;
+
     @Parameter(names = { "--no-cleanup" }, description = "Disables test cleanup")
     public boolean NoCleanup = false;
 

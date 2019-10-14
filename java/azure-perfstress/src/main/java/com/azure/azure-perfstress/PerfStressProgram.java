@@ -82,6 +82,7 @@ public class PerfStressProgram {
         }
 
         System.out.println();
+        System.out.println();
         Disposable setupStatus = PrintStatus("=== Setup ===", () -> ".", false);
         Disposable cleanupStatus = null;
 
@@ -106,7 +107,13 @@ public class PerfStressProgram {
                     RunTests(tests, options.Sync, options.Parallel, options.Warmup, "Warmup");
                 }
 
-                RunTests(tests, options.Sync, options.Parallel, options.Duration, "Test");
+                for (int i=0; i < options.Iterations; i++) {
+                    String title = "Test";
+                    if (options.Iterations > 1) {
+                        title += " " + i;
+                    }
+                    RunTests(tests, options.Sync, options.Parallel, options.Duration, title);
+                }
             } finally {
                 if (!options.NoCleanup) {
                     if (cleanupStatus == null) {
