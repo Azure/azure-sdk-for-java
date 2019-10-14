@@ -2,6 +2,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -31,7 +32,9 @@ class CPKTest extends APISpec {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(primaryCredential)
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         cpkContainer = builder.buildClient()
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()

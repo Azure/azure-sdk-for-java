@@ -1256,7 +1256,7 @@ public class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Certificate> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig, Context context) {
-        Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null");
+        Objects.requireNonNull(mergeCertificateConfig, "'mergeCertificateConfig' cannot be null.");
         return client.mergeCertificateWithResponse(mergeCertificateConfig, context).block();
     }
 

@@ -28,7 +28,7 @@ public class TestResourceNamer extends ResourceNamer {
      */
     public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
         super(name);
-        Objects.requireNonNull(recordedData);
+        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
         this.recordedData = recordedData;
         this.testMode = testMode;
     }

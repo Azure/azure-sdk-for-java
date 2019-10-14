@@ -7,13 +7,13 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
-  <version>1.0.0-preview.5</version>
+  <version>1.0.0-preview.6</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.5</version>
+      <version>1.0.0-preview.6</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

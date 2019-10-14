@@ -34,22 +34,22 @@ public class BlobClientBuilderJavaDocCodeSnippets {
      * Code snippet for {@link BlobClientBuilder#buildClient()} using connection string
      */
     public void blobClientConnectionString() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.Builder.buildClient
+        // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildClient
         BlobClient client = new BlobClientBuilder()
             .connectionString(connectionString)
             .buildClient();
-        // END: com.azure.storage.blob.specialized.BlobClientBase.Builder.buildClient
+        // END: com.azure.storage.blob.BlobClientBuilder.buildClient
     }
 
     /**
      * Code snippet for {@link BlobClientBuilder#buildAsyncClient()} using connection string
      */
     public void blobAsyncClientConnectionString() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.Builder.buildAsyncClient
+        // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildAsyncClient
         BlobAsyncClient client = new BlobClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
-        // END: com.azure.storage.blob.specialized.BlobClientBase.Builder.buildAsyncClient
+        // END: com.azure.storage.blob.BlobClientBuilder.buildAsyncClient
     }
 
     /**

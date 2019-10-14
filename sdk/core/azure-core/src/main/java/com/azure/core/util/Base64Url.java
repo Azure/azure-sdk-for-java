@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
- * Wrapper over Base64Url encoded byte array used during serialization and deserialization.
+ * Encodes and decodes using Base64 URL encoding.
  */
 public final class Base64Url {
     /**
@@ -63,10 +63,10 @@ public final class Base64Url {
     }
 
     /**
-     * Encode a byte array into Base64Url encoded bytes.
+     * Encodes a byte array into Base64Url encoded bytes.
      *
      * @param bytes The byte array to encode.
-     * @return a Base64Url instance
+     * @return A new Base64Url instance.
      */
     public static Base64Url encode(byte[] bytes) {
         if (bytes == null) {
@@ -86,7 +86,7 @@ public final class Base64Url {
     }
 
     /**
-     * Decode the bytes and return.
+     * Decode the bytes and returns its value.
      *
      * @return The decoded byte array.
      */
@@ -95,8 +95,7 @@ public final class Base64Url {
             return null;
         }
 
-        final byte[] decodedBytes = Base64Util.decodeURL(bytes);
-        return decodedBytes;
+        return Base64Util.decodeURL(bytes);
     }
 
     @Override

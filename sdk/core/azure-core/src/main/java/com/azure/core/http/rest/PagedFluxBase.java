@@ -68,8 +68,8 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        Objects.requireNonNull(firstPageRetriever, "First page supplier cannot be null");
-        Objects.requireNonNull(nextPageRetriever, "Next page retriever function cannot be null");
+        Objects.requireNonNull(firstPageRetriever, "'firstPageRetriever' cannot be null.");
+        Objects.requireNonNull(nextPageRetriever, "'nextPageRetriever' function cannot be null.");
         this.firstPageRetriever = firstPageRetriever;
         this.nextPageRetriever = nextPageRetriever;
     }
