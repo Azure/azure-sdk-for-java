@@ -374,6 +374,9 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
+     * @see #copyFromURL(URL)
+     * @see #beginCopyFromUrl(URL)
+     * @see #beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
@@ -391,6 +394,9 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
+     * @see #copyFromURL(URL)
+     * @see #beginCopyFromUrl(URL)
+     * @see #beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)
      * @param copyId The id of the copy operation to abort.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
