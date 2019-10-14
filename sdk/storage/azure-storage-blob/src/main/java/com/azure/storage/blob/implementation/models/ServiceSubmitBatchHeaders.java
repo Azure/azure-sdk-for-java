@@ -18,7 +18,7 @@ public final class ServiceSubmitBatchHeaders {
      * The media type of the body of the response. For batch requests, this is
      * multipart/mixed; boundary=batchresponse_GUID
      */
-    @JsonProperty(value = "Content-Type")
+    @JsonProperty(value = "content-type")
     private String contentType;
 
     /*

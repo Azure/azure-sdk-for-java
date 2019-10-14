@@ -33,6 +33,7 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+lowercase-header-names: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: HandleItem,FileHTTPHeaders,ShareItem,FileServiceProperties,CorsRule,ShareProperties,Range,CopyStatusType,SignedIdentifier,SourceModifiedAccessConditions,StorageErrorException,StorageErrorCode,StorageError,StorageServiceProperties
