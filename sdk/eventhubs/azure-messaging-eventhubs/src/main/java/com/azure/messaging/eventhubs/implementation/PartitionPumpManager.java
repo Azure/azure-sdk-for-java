@@ -3,9 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
-
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.tracing.ProcessKind;
@@ -126,8 +123,8 @@ public class PartitionPumpManager {
         eventHubConsumer.receive().subscribe(eventData -> {
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
-                if (processSpanContext.getData(SPAN_CONTEXT).isPresent()) {
-                    eventData.addContext(SPAN_CONTEXT, processSpanContext);
+                if (processSpanContext.getData("span-context").isPresent()) {
+                    eventData.addContext("span-context", processSpanContext);
                 }
                 partitionProcessor.processEvent(partitionContext, eventData).doOnEach(signal ->
                     endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
@@ -186,7 +183,7 @@ public class PartitionPumpManager {
      * Starts a new process tracing span and attached context the EventData object for users.
      */
     private Context startProcessTracingSpan(EventData eventData) {
-        Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
+        Object diagnosticId = eventData.getProperties().get("diagnostic-id");
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }

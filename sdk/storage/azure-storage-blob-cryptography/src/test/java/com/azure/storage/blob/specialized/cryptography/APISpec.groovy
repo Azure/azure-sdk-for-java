@@ -1,6 +1,5 @@
 package com.azure.storage.blob.specialized.cryptography
 
-import com.azure.core.credentials.BasicAuthenticationCredential
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.core.http.HttpClient
@@ -30,7 +29,6 @@ import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.crypto.SecretKey
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime

@@ -27,7 +27,7 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
 
 /**
  * Pipeline policy that creates an OpenCensus span which traces the service request.

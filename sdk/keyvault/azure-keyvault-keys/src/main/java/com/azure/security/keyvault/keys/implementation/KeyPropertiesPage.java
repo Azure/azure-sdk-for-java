@@ -33,7 +33,7 @@ public final class KeyPropertiesPage implements Page<KeyProperties> {
      * @return The link to the next page.
      */
     @Override
-    public String getNextLink() {
+    public String getContinuationToken() {
         return this.nextLink;
     }
 

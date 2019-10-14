@@ -25,7 +25,7 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
      * @return The link to the next page or {@code null} if there are no more resources to fetch.
      */
     @Override
-    public String getNextLink() {
+    public String getContinuationToken() {
         return this.nextLink;
     }
 

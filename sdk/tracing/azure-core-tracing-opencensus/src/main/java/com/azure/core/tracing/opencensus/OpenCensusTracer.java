@@ -40,7 +40,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      * <p>
      * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
      */
-    String OPENCENSUS_SPAN_KEY = "opencensus-span";
+    public static final String OPENCENSUS_SPAN_KEY = "opencensus-span";
 
     /**
      * Key for {@link Context} which indicates that the context contains the name for the OpenCensus spans that are
@@ -48,27 +48,27 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      * <p>
      * If no span name is listed when the span is created it will default to using the calling method's name.
      */
-    String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
+    public static final String OPENCENSUS_SPAN_NAME_KEY = "opencensus-span-name";
 
     /**
      * Key for {@link Context} which indicates that the context contains an entity path.
      */
-    String ENTITY_PATH = "entity-path";
+    public static final String ENTITY_PATH = "entity-path";
 
     /**
      * Key for {@link Context} which indicates that the context contains the hostname.
      */
-    String HOST_NAME = "hostname";
+    public static final String HOST_NAME = "hostname";
 
     /**
      * Key for {@link Context} which indicates that the context contains a message span context.
      */
-    String SPAN_CONTEXT = "span-context";
+    public static final String SPAN_CONTEXT = "span-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
      */
-    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+    public static final String DIAGNOSTIC_ID_KEY = "diagnostic-id";
 
     // standard attributes with AMQP request
     private static final String COMPONENT = "component";

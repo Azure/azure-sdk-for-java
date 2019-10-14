@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opencensus.implementation;
 
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.SPAN_CONTEXT;
 
 import com.azure.core.util.Context;
 import io.opencensus.trace.SpanContext;

@@ -35,7 +35,7 @@ class ItemPage<T> implements Page<T> {
     }
 
     @Override
-    public String getNextLink() {
+    public String getContinuationToken() {
         return nextLink;
     }
 }

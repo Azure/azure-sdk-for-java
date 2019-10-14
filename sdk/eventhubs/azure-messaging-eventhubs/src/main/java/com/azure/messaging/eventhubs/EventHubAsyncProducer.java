@@ -43,10 +43,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -359,9 +355,9 @@ public class EventHubAsyncProducer implements Closeable {
                         Context parentContext = eventData.getContext();
                         if (isFirst.getAndSet(false)) {
                             // update sendSpanContext only once
-                            Context entityContext = parentContext.addData(ENTITY_PATH, link.getEntityPath());
+                            Context entityContext = parentContext.addData("entity-Path", link.getEntityPath());
                             sendSpanContext.set(tracerProvider.startSpan(
-                                entityContext.addData(HOST_NAME, link.getHostname()), ProcessKind.SEND));
+                                entityContext.addData("hostname", link.getHostname()), ProcessKind.SEND));
                         }
 
                         // add span context on event data
@@ -376,7 +372,7 @@ public class EventHubAsyncProducer implements Closeable {
     }
 
     private EventData setSpanContext(EventData event, Context parentContext) {
-        Optional<Object> eventContextData = event.getContext().getData(SPAN_CONTEXT);
+        Optional<Object> eventContextData = event.getContext().getData("span-context");
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), link it to the span
             Object spanContextObject = eventContextData.get();
@@ -395,12 +391,12 @@ public class EventHubAsyncProducer implements Closeable {
             // Starting the span makes the sampling decision (nothing is logged at this time)
             Context eventSpanContext = tracerProvider.startSpan(parentContext, ProcessKind.RECEIVE);
             if (eventSpanContext != null) {
-                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
+                Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData("diagnostic-id");
 
                 if (eventDiagnosticIdOptional.isPresent()) {
-                    event.addProperty(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get().toString());
+                    event.addProperty("diagnostic-id", eventDiagnosticIdOptional.get().toString());
                     tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                    event.addContext(SPAN_CONTEXT, eventSpanContext);
+                    event.addContext("span-context", eventSpanContext);
                 }
             }
         }

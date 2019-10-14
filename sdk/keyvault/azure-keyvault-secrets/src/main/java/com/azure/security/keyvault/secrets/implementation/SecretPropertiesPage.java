@@ -33,7 +33,7 @@ public final class SecretPropertiesPage implements Page<SecretProperties> {
      * @return The link to the next page.
      */
     @Override
-    public String getNextLink() {
+    public String getContinuationToken() {
         return this.nextLink;
     }
 

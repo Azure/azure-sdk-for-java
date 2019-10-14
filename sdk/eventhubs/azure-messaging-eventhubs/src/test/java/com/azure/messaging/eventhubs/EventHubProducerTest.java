@@ -36,9 +36,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -54,6 +51,10 @@ import static org.mockito.Mockito.when;
  * Unit tests to verify functionality of {@link EventHubProducer}.
  */
 public class EventHubProducerTest {
+    private static final String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+    private static final String SPAN_CONTEXT = "span-context";
+    private static final String OPENCENSUS_SPAN_KEY = "opencensus-span";
+
     @Mock
     private AmqpSendLink sendLink;
     @Captor
