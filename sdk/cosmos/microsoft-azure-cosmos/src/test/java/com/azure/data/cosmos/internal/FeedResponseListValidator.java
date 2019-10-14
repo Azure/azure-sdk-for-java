@@ -276,7 +276,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                         if (shouldHaveMetrics) {
                             QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
-                            assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThan(0);
+                            assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getTotalQueryExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
                             assertThat(queryMetrics.getOutputDocumentCount()).isGreaterThan(0);
                             assertThat(queryMetrics.getRetrievedDocumentCount()).isGreaterThan(0);
