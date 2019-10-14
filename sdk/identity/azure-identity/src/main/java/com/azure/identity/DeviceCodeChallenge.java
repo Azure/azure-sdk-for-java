@@ -18,18 +18,18 @@ public class DeviceCodeChallenge {
      *
      * @param userCode code which user needs to provide when authenticating at the verification URI
      * @param deviceCode code which should be included in the request for the access token
-     * @param verificationUri URI where user can authenticate
+     * @param verificationUrl URI where user can authenticate
      * @param expiresIn expiration time of device code in seconds
-     * @param interval interval at which the STS should be polled at
+     * @param pollInterval pollInterval at which the STS should be polled at
      * @param message message which should be displayed to the user
      */
-    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUri, long expiresIn,
-                               long interval, String message) {
+    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUrl, Duration expiresIn,
+                               Duration pollInterval, String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
-        this.verificationUri = verificationUri;
-        this.expiresIn = Duration.ofSeconds(expiresIn);
-        this.interval = Duration.ofSeconds(interval);
+        this.verificationUrl = verificationUrl;
+        this.expiresIn = expiresIn;
+        this.pollInterval = pollInterval;
         this.message = message;
     }
 
@@ -37,11 +37,11 @@ public class DeviceCodeChallenge {
 
     private final String deviceCode;
 
-    private final String verificationUri;
+    private final String verificationUrl;
 
     private final Duration expiresIn;
 
-    private final Duration interval;
+    private final Duration pollInterval;
 
     private final String message;
 
@@ -63,8 +63,8 @@ public class DeviceCodeChallenge {
     /**
      * @return URI where user can authenticate.
      */
-    public String getVerificationUri() {
-        return verificationUri;
+    public String getVerificationUrl() {
+        return verificationUrl;
     }
 
     /**
@@ -75,10 +75,10 @@ public class DeviceCodeChallenge {
     }
 
     /**
-     * @return interval at which the STS should be polled at.
+     * @return pollInterval at which the STS should be polled at.
      */
-    public Duration getInterval() {
-        return interval;
+    public Duration getPollInterval() {
+        return pollInterval;
     }
 
     /**

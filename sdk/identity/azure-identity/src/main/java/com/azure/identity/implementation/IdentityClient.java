@@ -243,7 +243,8 @@ public class IdentityClient {
         return Mono.fromFuture(() -> {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
                 dc -> deviceCodeConsumer.accept(new DeviceCodeChallenge(dc.userCode(), dc.deviceCode(),
-                    dc.verificationUri(), dc.expiresIn(), dc.interval(), dc.message()))).build();
+                    dc.verificationUri(), Duration.ofSeconds(dc.expiresIn()), Duration.ofSeconds(dc.interval()),
+                    dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
         }).map(MsalToken::new);
     }
@@ -253,7 +254,7 @@ public class IdentityClient {
      *
      * @param request the details of the token request
      * @param authorizationCode the oauth2 authorization code
-     * @param redirectUri the redirectUri where the authorization code is sent to
+     * @param redirectUri the redirectUrl where the authorization code is sent to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequest request, String authorizationCode,

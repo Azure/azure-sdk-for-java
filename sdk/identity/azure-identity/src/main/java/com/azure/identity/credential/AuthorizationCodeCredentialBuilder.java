@@ -19,7 +19,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
 
     private String authCode;
-    private String redirectUri;
+    private String redirectUrl;
 
     /**
      * Sets the authorization code on the builder.
@@ -39,11 +39,11 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      * to complete the {@link AuthorizationCodeCredential} construction from there.
      * This is also called Reply URLs in some contexts.
      *
-     * @param redirectUri the redirect URI to send the authorization code
+     * @param redirectUrl the redirect URL to send the authorization code
      * @return the AuthorizationCodeCredentialBuilder itself
      */
-    public AuthorizationCodeCredentialBuilder redirectUri(String redirectUri) {
-        this.redirectUri = redirectUri;
+    public AuthorizationCodeCredentialBuilder redirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
         return this;
     }
 
@@ -54,11 +54,11 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
                 put("authorizationCode", authCode);
-                put("redirectUri", redirectUri);
+                put("redirectUrl", redirectUrl);
             }});
         try {
             return new AuthorizationCodeCredential(clientId, tenantId, authCode,
-                new URI(redirectUri), identityClientOptions);
+                new URI(redirectUrl), identityClientOptions);
         } catch (URISyntaxException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
