@@ -15,6 +15,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import java.util.concurrent.TimeUnit;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -104,8 +105,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void addSettingNullKey() {
-        assertRunnableThrowsException(() -> client.addSetting(null, null, "A Value").block(), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.addSetting(null).block(), NullPointerException.class);
+        StepVerifier.create(client.addSetting(null, null, "A Value"))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+
+        StepVerifier.create(client.addSetting(null))
+            .expectError(NullPointerException.class)
+            .verify();
     }
 
     /**
@@ -182,8 +188,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void setSettingNullKey() {
-        assertRunnableThrowsException(() -> client.setSetting(null, NO_LABEL, "A Value").block(), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.setSettingWithResponse(null, false).block(), NullPointerException.class);
+
+        StepVerifier.create(client.setSetting(null, NO_LABEL, "A Value"))
+            .verifyError(IllegalArgumentException.class);
+        StepVerifier.create(client.setSettingWithResponse(null, false))
+            .verifyError(NullPointerException.class);
     }
 
     /**
@@ -289,8 +298,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
     public void deleteSettingNullKey() {
-        assertRunnableThrowsException(() -> client.deleteSetting(null, null).block(), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.deleteSettingWithResponse(null, false).block(), NullPointerException.class);
+        StepVerifier.create(client.deleteSetting(null, null))
+            .verifyError(IllegalArgumentException.class);
+        StepVerifier.create(client.deleteSettingWithResponse(null, false))
+            .verifyError(NullPointerException.class);
     }
 
     /**

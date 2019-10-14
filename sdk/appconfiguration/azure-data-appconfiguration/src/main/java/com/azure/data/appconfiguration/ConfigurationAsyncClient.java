@@ -21,6 +21,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -112,8 +113,12 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return withContext(context -> addSetting(setting, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(context -> addSetting(setting, context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -136,7 +141,11 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> addSetting(setting, context));
+        try {
+            return withContext(context -> addSetting(setting, context));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
@@ -146,7 +155,7 @@ public final class ConfigurationAsyncClient {
         // This service method call is similar to setSetting except we're passing If-Not-Match = "*". If the service
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
-                getETagValue(ETAG_ANY), context)
+            getETagValue(ETAG_ANY), context)
             .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
@@ -175,9 +184,14 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(String key, String label, String value) {
-        return withContext(context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
-                false, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(
+                context -> setSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value),
+                    false, context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -211,7 +225,11 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting,
                                                                        boolean ifUnchanged) {
-        return withContext(context -> setSetting(setting, ifUnchanged, context));
+        try {
+            return withContext(context -> setSetting(setting, ifUnchanged, context));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, boolean ifUnchanged,
@@ -253,7 +271,11 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key, String label) {
-        return getSetting(key, label, null);
+        try {
+            return getSetting(key, label, null);
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -279,9 +301,14 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime asOfDateTime) {
-        return withContext(context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
-                false, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(
+                context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
+                    false, context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -311,7 +338,11 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting,
                                                                        OffsetDateTime asOfDateTime,
                                                                        boolean ifChanged) {
-        return withContext(context -> getSetting(setting, asOfDateTime, ifChanged, context));
+        try {
+            return withContext(context -> getSetting(setting, asOfDateTime, ifChanged, context));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime asOfDateTime,
@@ -347,9 +378,13 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(String key, String label) {
-        return withContext(
-            context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(
+                context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -383,7 +418,11 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting,
                                                                           boolean ifUnchanged) {
-        return withContext(context -> deleteSetting(setting, ifUnchanged, context));
+        try {
+            return withContext(context -> deleteSetting(setting, ifUnchanged, context));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, boolean ifUnchanged,
@@ -416,9 +455,13 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setReadOnly(String key, String label) {
-        return withContext(context -> setReadOnly(
-            new ConfigurationSetting().setKey(key).setLabel(label), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(context -> setReadOnly(
+                new ConfigurationSetting().setKey(key).setLabel(label), context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -440,7 +483,11 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> setReadOnly(setting, context));
+        try {
+            return withContext(context -> setReadOnly(setting, context));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, Context context) {
@@ -473,8 +520,12 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> clearReadOnly(String key, String label) {
-        return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     /**
@@ -488,15 +539,19 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.clearReadOnlyWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to unlock based on its key and optional label combination.
-     * @return A REST response containing the unlocked ConfigurationSetting, or {@code null} if didn't exist.
-     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
-     * also throw HttpResponseException described below).
+     * @return A REST response containing the unlocked ConfigurationSetting, or {@code null} if didn't exist. {@code
+     * null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will also
+     * throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> clearReadOnlyWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> clearReadOnly(setting, context));
+        try {
+            return withContext(context -> clearReadOnly(setting, context));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     Mono<Response<ConfigurationSetting>> clearReadOnly(ConfigurationSetting setting, Context context) {
@@ -506,8 +561,10 @@ public final class ConfigurationAsyncClient {
         return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(),
             null, null, context)
             .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
+            .doOnSuccess(
+                response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
+            .doOnError(
+                error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -526,8 +583,12 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector) {
-        return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(selector, context)),
-            continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
+        try {
+            return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(selector, context)),
+                continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex))));
+        }
     }
 
     PagedFlux<ConfigurationSetting> listSettings(SettingSelector selector, Context context) {
@@ -536,33 +597,43 @@ public final class ConfigurationAsyncClient {
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listNextPageSettings(Context context, String continuationToken) {
-        if (continuationToken == null || continuationToken.isEmpty()) {
-            return Mono.empty();
-        }
+        try {
+            if (continuationToken == null || continuationToken.isEmpty()) {
+                return Mono.empty();
+            }
 
-        return service.listKeyValues(serviceEndpoint, continuationToken, context)
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
-                error));
+            return service.listKeyValues(serviceEndpoint, continuationToken, context)
+                .doOnSubscribe(
+                    ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
+                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
+                .doOnError(
+                    error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
+                        error));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector selector, Context context) {
-        if (selector == null) {
-            return service.listKeyValues(serviceEndpoint, null, null, null, null, context)
-                .doOnRequest(ignoredValue -> logger.info("Listing all ConfigurationSettings"))
-                .doOnSuccess(response -> logger.info("Listed all ConfigurationSettings"))
-                .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
+        try {
+            if (selector == null) {
+                return service.listKeyValues(serviceEndpoint, null, null, null, null, context)
+                    .doOnRequest(ignoredValue -> logger.info("Listing all ConfigurationSettings"))
+                    .doOnSuccess(response -> logger.info("Listed all ConfigurationSettings"))
+                    .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
+            }
+
+            String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
+            String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
+
+            return service.listKeyValues(serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), context)
+                .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
+                .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
+                .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
         }
-
-        String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-        String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
-        String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
-
-        return service.listKeyValues(serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
-            .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
-            .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
 
     }
 
@@ -585,44 +656,60 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return new PagedFlux<>(() ->
-            withContext(context -> listSettingRevisionsFirstPage(selector, context)),
-            continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+        try {
+            return new PagedFlux<>(() ->
+                withContext(context -> listSettingRevisionsFirstPage(selector, context)),
+                continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex))));
+        }
     }
 
     Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result;
+        try {
+            Mono<PagedResponse<ConfigurationSetting>> result;
 
-        if (selector != null) {
-            String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
-            String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
-            String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;
+            if (selector != null) {
+                String fields = ImplUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+                String keys = ImplUtils.arrayToString(selector.getKeys(), key -> key);
+                String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
+                String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;
 
-            result =
-                service.listKeyValueRevisions(
-                    serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), range, context)
-                    .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
-                    .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
-                    .doOnError(
-                        error -> logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
-        } else {
-            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
-                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
-                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
-                .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
+                result =
+                    service.listKeyValueRevisions(
+                        serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), range, context)
+                        .doOnRequest(
+                            ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
+                        .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
+                        .doOnError(
+                            error -> logger
+                                .warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
+            } else {
+                result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
+                    .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
+                    .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
+                    .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
+            }
+
+            return result;
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
         }
-
-        return result;
     }
 
     Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
-        return result;
+        try {
+            Mono<PagedResponse<ConfigurationSetting>> result = service
+                .listKeyValues(serviceEndpoint, nextPageLink, context)
+                .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+                .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                    error));
+            return result;
+        } catch (RuntimeException ex) {
+            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+        }
+
     }
 
     PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
