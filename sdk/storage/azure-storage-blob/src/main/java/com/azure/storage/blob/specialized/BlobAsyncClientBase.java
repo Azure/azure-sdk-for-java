@@ -14,6 +14,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobUrlParts;
@@ -286,7 +287,7 @@ public class BlobAsyncClientBase {
         final ModifiedAccessConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions()
             : sourceModifiedAccessConditions;
-        final BlobAccessConditions accessConditions = destAccessConditions == null
+        final BlobAccessConditions destinationAccessConditions = destAccessConditions == null
             ? new BlobAccessConditions()
             : destAccessConditions;
 
@@ -301,7 +302,22 @@ public class BlobAsyncClientBase {
 
         return new Poller<>(Duration.ofSeconds(1),
             response -> onPoll(response),
-            () -> onStart(sourceUrl, metadata, tier, priority, sourceConditions, accessConditions, copyId),
+            () -> {
+                final Mono<BlobsStartCopyFromURLResponse> restResponse = withContext(
+                    context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
+                        sourceUrl, null, metadata, tier, priority, null, sourceConditions,
+                        destinationAccessConditions.getModifiedAccessConditions(),
+                        destinationAccessConditions.getLeaseAccessConditions(), context));
+
+                return postProcessResponse(restResponse)
+                    .map(response -> {
+                        final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+                        copyId.set(headers.getCopyId());
+
+                        return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(), headers.getCopyStatus(),
+                            headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                    });
+            },
             unused -> {
                 final String copyIdentifier = copyId.get();
 
@@ -313,45 +329,30 @@ public class BlobAsyncClientBase {
             });
     }
 
-    private Mono<BlobCopyInfo> onStart(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
-            RehydratePriority priority, SourceModifiedAccessConditions sourceModifiedAccessConditions,
-            BlobAccessConditions destAccessConditions, AtomicReference<String> copyIdReference) {
-
-        final Mono<BlobsStartCopyFromURLResponse> restResponse = withContext(
-            context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
-                sourceUrl, null, metadata, tier, priority, null, sourceModifiedAccessConditions,
-                destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
-                context));
-
-        return postProcessResponse(restResponse)
-            .map(response -> {
-                final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
-                copyIdReference.set(headers.getCopyId());
-
-                return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(),
-                    headers.getCopyStatus(), headers.getETag(), headers.getLastModified(), headers.getErrorCode());
-            });
-    }
-
     private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
+        if (pollResponse.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == OperationStatus.FAILED) {
+            return Mono.just(pollResponse);
+        }
+
         return getProperties().map(response -> {
             final CopyStatusType status = response.getCopyStatus();
             final BlobCopyInfo result = new BlobCopyInfo(response.getCopySource(), response.getCopyId(), status,
                 response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
 
-            PollResponse.OperationStatus operationStatus;
+            OperationStatus operationStatus;
             switch (status) {
                 case SUCCESS:
-                    operationStatus = PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED;
+                    operationStatus = OperationStatus.SUCCESSFULLY_COMPLETED;
                     break;
                 case FAILED:
-                    operationStatus = PollResponse.OperationStatus.NOT_STARTED;
+                    operationStatus = OperationStatus.NOT_STARTED;
                     break;
                 case ABORTED:
-                    operationStatus = PollResponse.OperationStatus.USER_CANCELLED;
+                    operationStatus = OperationStatus.USER_CANCELLED;
                     break;
                 case PENDING:
-                    operationStatus = PollResponse.OperationStatus.IN_PROGRESS;
+                    operationStatus = OperationStatus.IN_PROGRESS;
                     break;
                 default:
                     throw logger.logExceptionAsError(new IllegalArgumentException(

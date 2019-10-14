@@ -20,7 +20,7 @@ import java.util.Objects;
 @Immutable
 public class BlobCopyInfo {
     private final String copyId;
-    private final String sourceUrl;
+    private final String copySource;
     private final CopyStatusType copyStatus;
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -30,17 +30,16 @@ public class BlobCopyInfo {
      * Creates an instance of {@link BlobCopyInfo}.
      *
      * @param copyId The identifier of the copy operation.
-     * @param sourceUrl The url of the source blob. The contents are being copied from this blob.
+     * @param copySource The url of the source blob. The contents are being copied from this blob.
      * @param copyStatus The status of the copy operation.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      *
-     * @throws NullPointerException If {@code id}, {@code targetUrl}, {@code sourceUrl}, {@code eTag}, or
-     *     {@code copyStatus} is null.
+     * @throws NullPointerException If {@code id}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
-    public BlobCopyInfo(String sourceUrl, String copyId, CopyStatusType copyStatus, String eTag,
+    public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
                         OffsetDateTime lastModified, String error) {
-        this.copyId = Objects.requireNonNull(copyId, "'id' cannot be null.");
-        this.sourceUrl = Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null.");
+        this.copyId = Objects.requireNonNull(copyId, "'copyId' cannot be null.");
+        this.copySource = Objects.requireNonNull(copySource, "'copySource' cannot be null.");
         this.copyStatus = Objects.requireNonNull(copyStatus, "'copyStatus' cannot be null.");
         this.eTag = Objects.requireNonNull(eTag, "'eTag' cannot be null.");
         this.lastModified = lastModified;
@@ -62,7 +61,7 @@ public class BlobCopyInfo {
      * @return The url of the source blob.
      */
     public String getCopySourceUrl() {
-        return sourceUrl;
+        return copySource;
     }
 
     /**

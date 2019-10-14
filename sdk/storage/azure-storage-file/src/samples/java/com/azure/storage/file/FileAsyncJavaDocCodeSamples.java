@@ -129,12 +129,12 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#startCopy(String, Map)}
+     * Generates a code sample for using {@link FileAsyncClient#beginCopy(String, Map)}
      */
     public void copyFileAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.startCopy#string-map
-        fileAsyncClient.startCopy("https://{accountName}.file.core.windows.net?{SASToken}",
+        fileAsyncClient.beginCopy("https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata")).subscribe(
                 response -> System.out.println("Successfully copied the file;"),
                 error -> System.err.println(error.toString()),

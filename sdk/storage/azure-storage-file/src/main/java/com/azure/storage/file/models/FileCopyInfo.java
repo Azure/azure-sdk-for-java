@@ -4,24 +4,31 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.storage.file.FileAsyncClient;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Contains copy information about a File in the storage File service.
+ *
+ * @see FileAsyncClient#beginCopy(String, Map)
  */
 @Immutable
 public final class FileCopyInfo {
+    private final String copySource;
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final String copyId;
     private final CopyStatusType copyStatus;
+    private final String error;
 
     /**
      * Creates an instance of copy information about a specific File.
      *
-     * @param eTag Entity tag that corresponds to the directory.
-     * @param lastModified Last time the directory was modified.
+     * @param eTag If the copy is completed, contains the ETag of the destination file. If the copy is not complete,
+     *     contains the ETag of the empty file created at the start of the copy.
+     * @param lastModified The date/time that the copy operation to the destination file completed.
      * @param copyId String identifier for this copy operation.
      * @param copyStatus State of the copy operation with these values:
      *                       <ul>
@@ -29,26 +36,30 @@ public final class FileCopyInfo {
      *                           <li>pending: the copy is still in progress.</li>
      *                       </ul>
      */
-    public FileCopyInfo(final String eTag, final OffsetDateTime lastModified, final String copyId, final CopyStatusType copyStatus) {
+    public FileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
+                        OffsetDateTime lastModified, String error) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.copyId = copyId;
         this.copyStatus = copyStatus;
+        this.copySource = copySource;
+        this.error = error;
     }
 
     /**
-     * Gets the entity tag that corresponds to the directory.
+     * If the copy is completed, contains the ETag of the destination file. If the copy is not complete, contains the
+     * ETag of the empty file created at the start of the copy.
      *
-     * @return Entity tag that corresponds to the directory.
+     * @return The ETag for the copy.
      */
     public String getETag() {
         return eTag;
     }
 
     /**
-     * Gets the last time the directory was modified.
+     * Gets the date/time that the copy operation to the destination file completed.
      *
-     * @return Last time the directory was modified.
+     * @return Gets the date/time that the copy operation to the destination file completed.
      */
     public OffsetDateTime getLastModified() {
         return lastModified;
@@ -74,5 +85,24 @@ public final class FileCopyInfo {
      */
     public CopyStatusType getCopyStatus() {
         return copyStatus;
+    }
+
+    /**
+     * Gets the the source file used in the last attempted copy file operation.
+     *
+     * @return The url of the source file.
+     */
+    public String getCopySourceUrl() {
+        return copySource;
+    }
+
+    /**
+     * Gets an error description associated with the copy operation.
+     *
+     * @return An error description associated with the copy, or {@code null} if there is no error associated with this
+     *     copy operation.
+     */
+    public String getError() {
+        return error;
     }
 }
