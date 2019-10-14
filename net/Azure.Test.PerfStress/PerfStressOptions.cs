@@ -7,6 +7,9 @@ namespace Azure.Test.PerfStress
         [Option('d', "duration", Default = 10, HelpText = "Duration of test in seconds")]
         public int Duration { get; set; }
 
+        [Option('i', "iterations", Default = 1, HelpText = "Number of iterations of main test loop")]
+        public int Iterations { get; set; }
+
         [Option("no-cleanup", HelpText = "Disables test cleanup")]
         public bool NoCleanup { get; set; }
 
