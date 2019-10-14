@@ -225,7 +225,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 ### Uploading a blob from `File`
 
-Upload a file to a blob using BlockClient generated from BlobContainerClient.
+Upload a file to a blob using BlobClient generated from BlobContainerClient.
 
 ```java
 
