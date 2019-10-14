@@ -6,7 +6,6 @@ package com.azure.core.http;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -15,8 +14,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * The outgoing Http request.
  */
-public class HttpRequest implements Serializable {
-    private static final long serialVersionUID = 6338479743058758810L;
+public class HttpRequest {
     private final ClientLogger logger = new ClientLogger(HttpRequest.class);
 
     private HttpMethod httpMethod;
@@ -94,15 +92,6 @@ public class HttpRequest implements Serializable {
      */
     public URL getUrl() {
         return url;
-    }
-
-    /**
-     * Get the target address as a String.
-     *
-     * @return the target address
-     */
-    public String getUrlString() {
-        return url.toString();
     }
 
     /**
