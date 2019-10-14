@@ -5,7 +5,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.StorageErrorCode;
+import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.StorageException;
 
 import java.time.Duration;
@@ -50,7 +50,7 @@ public class QueueExceptionSamples {
                 }
             );
         } catch (StorageException e) {
-            if (e.getMessage().contains(StorageErrorCode.MESSAGE_NOT_FOUND.toString())) {
+            if (e.getMessage().contains(QueueErrorCode.MESSAGE_NOT_FOUND.toString())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");
@@ -65,7 +65,7 @@ public class QueueExceptionSamples {
                 }
             );
         } catch (StorageException e) {
-            if (e.getMessage().contains(StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE.toString())) {
+            if (e.getMessage().contains(QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE.toString())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");

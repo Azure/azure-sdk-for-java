@@ -17,33 +17,33 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
-public final class StorageServiceProperties {
+public final class QueueServiceProperties {
     /*
      * Azure Analytics Logging settings
      */
     @JsonProperty(value = "Logging")
-    private Logging logging;
+    private QueueAnalyticsLogging logging;
 
     /*
      * A summary of request statistics grouped by API in hourly aggregates for
      * queues
      */
-    @JsonProperty(value = "HourMetrics")
-    private Metrics hourMetrics;
+    @JsonProperty(value = "Metrics")
+    private QueueMetrics hourMetrics;
 
     /*
      * a summary of request statistics grouped by API in minute aggregates for
      * queues
      */
-    @JsonProperty(value = "MinuteMetrics")
-    private Metrics minuteMetrics;
+    @JsonProperty(value = "Metrics")
+    private QueueMetrics minuteMetrics;
 
     private static final class CorsWrapper {
         @JacksonXmlProperty(localName = "CorsRule")
-        private final List<CorsRule> items;
+        private final List<QueueCorsRule> items;
 
         @JsonCreator
-        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<CorsRule> items) {
+        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<QueueCorsRule> items) {
             this.items = items;
         }
     }
@@ -59,7 +59,7 @@ public final class StorageServiceProperties {
      *
      * @return the logging value.
      */
-    public Logging getLogging() {
+    public QueueAnalyticsLogging getLogging() {
         return this.logging;
     }
 
@@ -67,9 +67,9 @@ public final class StorageServiceProperties {
      * Set the logging property: Azure Analytics Logging settings.
      *
      * @param logging the logging value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the QueueServiceProperties object itself.
      */
-    public StorageServiceProperties setLogging(Logging logging) {
+    public QueueServiceProperties setLogging(QueueAnalyticsLogging logging) {
         this.logging = logging;
         return this;
     }
@@ -80,7 +80,7 @@ public final class StorageServiceProperties {
      *
      * @return the hourMetrics value.
      */
-    public Metrics getHourMetrics() {
+    public QueueMetrics getHourMetrics() {
         return this.hourMetrics;
     }
 
@@ -89,9 +89,9 @@ public final class StorageServiceProperties {
      * API in hourly aggregates for queues.
      *
      * @param hourMetrics the hourMetrics value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the QueueServiceProperties object itself.
      */
-    public StorageServiceProperties setHourMetrics(Metrics hourMetrics) {
+    public QueueServiceProperties setHourMetrics(QueueMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -102,7 +102,7 @@ public final class StorageServiceProperties {
      *
      * @return the minuteMetrics value.
      */
-    public Metrics getMinuteMetrics() {
+    public QueueMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
 
@@ -111,9 +111,9 @@ public final class StorageServiceProperties {
      * by API in minute aggregates for queues.
      *
      * @param minuteMetrics the minuteMetrics value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the QueueServiceProperties object itself.
      */
-    public StorageServiceProperties setMinuteMetrics(Metrics minuteMetrics) {
+    public QueueServiceProperties setMinuteMetrics(QueueMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -123,9 +123,9 @@ public final class StorageServiceProperties {
      *
      * @return the cors value.
      */
-    public List<CorsRule> getCors() {
+    public List<QueueCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new CorsWrapper(new ArrayList<CorsRule>());
+            this.cors = new CorsWrapper(new ArrayList<QueueCorsRule>());
         }
         return this.cors.items;
     }
@@ -134,9 +134,9 @@ public final class StorageServiceProperties {
      * Set the cors property: The set of CORS rules.
      *
      * @param cors the cors value to set.
-     * @return the StorageServiceProperties object itself.
+     * @return the QueueServiceProperties object itself.
      */
-    public StorageServiceProperties setCors(List<CorsRule> cors) {
+    public QueueServiceProperties setCors(List<QueueCorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }

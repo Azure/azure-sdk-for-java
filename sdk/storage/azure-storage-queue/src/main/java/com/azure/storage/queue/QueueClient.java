@@ -12,13 +12,14 @@ import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.PeekedMessage;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.SignedIdentifier;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -257,7 +258,7 @@ public final class QueueClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageException If the queue doesn't exist
      */
-    public PagedIterable<SignedIdentifier> getAccessPolicy() {
+    public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
         return new PagedIterable<>(client.getAccessPolicy());
     }
 
@@ -277,7 +278,7 @@ public final class QueueClient {
      * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public void setAccessPolicy(List<SignedIdentifier> permissions) {
+    public void setAccessPolicy(List<QueueSignedIdentifier> permissions) {
         setAccessPolicyWithResponse(permissions, null, Context.NONE);
     }
 
@@ -302,7 +303,7 @@ public final class QueueClient {
      * or the queue will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<Void> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout,
+    public Response<Void> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setAccessPolicyWithResponse(permissions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);

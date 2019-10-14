@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.queue.PostProcessor.postProcessResponse;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -20,22 +17,26 @@ import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.PeekedMessage;
-import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.SignedIdentifier;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.queue.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -286,8 +287,8 @@ public final class QueueAsyncClient {
      * @return The stored access policies specified on the queue.
      * @throws StorageException If the queue doesn't exist
      */
-    public PagedFlux<SignedIdentifier> getAccessPolicy() {
-        Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
+    public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
+        Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever =
             marker -> postProcessResponse(this.client.queues()
                 .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE))
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -317,7 +318,7 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Mono<Void> setAccessPolicy(List<SignedIdentifier> permissions) {
+    public Mono<Void> setAccessPolicy(List<QueueSignedIdentifier> permissions) {
         return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
     }
 
@@ -338,11 +339,11 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Mono<Response<Void>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions) {
         return withContext(context -> setAccessPolicyWithResponse(permissions, context));
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+    Mono<Response<Void>> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Context context) {
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -350,14 +351,14 @@ public final class QueueAsyncClient {
         signed identifiers is not really necessary.
          */
         if (permissions != null) {
-            for (SignedIdentifier permission : permissions) {
-                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStart() != null) {
-                    permission.getAccessPolicy().setStart(
-                        permission.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
+            for (QueueSignedIdentifier permission : permissions) {
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
+                    permission.getAccessPolicy().setStartsOn(
+                        permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                 }
-                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiry() != null) {
-                    permission.getAccessPolicy().setExpiry(
-                        permission.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiresOn() != null) {
+                    permission.getAccessPolicy().setExpiresOn(
+                        permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         }

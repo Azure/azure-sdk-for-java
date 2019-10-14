@@ -5,13 +5,12 @@ import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.SasProtocol
-
 import com.azure.storage.common.IpRange
+import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.azure.storage.queue.models.AccessPolicy
 import com.azure.storage.queue.models.EnqueuedMessage
-import com.azure.storage.queue.models.SignedIdentifier
+import com.azure.storage.queue.models.QueueAccessPolicy
+import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.StorageException
 import org.junit.Test
 import spock.lang.Unroll
@@ -206,10 +205,10 @@ class QueueSASTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1).truncatedTo(ChronoUnit.SECONDS)
         def startTime = getUTCNow().minusDays(1).truncatedTo(ChronoUnit.SECONDS)
 
-        SignedIdentifier identifier = new SignedIdentifier()
+        QueueSignedIdentifier identifier = new QueueSignedIdentifier()
             .setId(testResourceName.randomUuid())
-            .setAccessPolicy(new AccessPolicy().setPermission(permissions.toString())
-                .setExpiry(expiryTime).setStart(startTime))
+            .setAccessPolicy(new QueueAccessPolicy().setPermissions(permissions.toString())
+                .setExpiresOn(expiryTime).setStartsOn(startTime))
         queueClient.setAccessPolicy(Arrays.asList(identifier))
 
         when:

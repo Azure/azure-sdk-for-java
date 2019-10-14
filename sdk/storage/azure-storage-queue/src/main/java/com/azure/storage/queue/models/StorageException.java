@@ -20,7 +20,7 @@ import com.azure.core.exception.HttpResponseException;
 public final class StorageException extends HttpResponseException {
     private static final String ERROR_CODE = "x-ms-error-code";
 
-    private final StorageErrorCode errorCode;
+    private final QueueErrorCode errorCode;
     private final String message;
 
     /**
@@ -31,14 +31,14 @@ public final class StorageException extends HttpResponseException {
      */
     public StorageException(StorageErrorException e, String responseBody) {
         super(e.getMessage(), e.getResponse(), e);
-        this.errorCode = StorageErrorCode.fromString(e.getResponse().getHeaders().getValue(ERROR_CODE));
+        this.errorCode = QueueErrorCode.fromString(e.getResponse().getHeaders().getValue(ERROR_CODE));
         this.message = responseBody;
     }
 
     /**
      * @return The error code returned by the service.
      */
-    public StorageErrorCode getErrorCode() {
+    public QueueErrorCode getErrorCode() {
         return this.errorCode;
     }
 

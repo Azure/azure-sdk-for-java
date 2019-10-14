@@ -26,7 +26,7 @@ import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyRespon
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyResponse;
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataResponse;
-import com.azure.storage.queue.models.SignedIdentifier;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.StorageErrorException;
 import java.util.List;
 import java.util.Map;
@@ -284,7 +284,7 @@ public final class QueuesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String queueName, List<SignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
+    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String queueName, List<QueueSignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
         return service.setAccessPolicy(queueName, this.client.getUrl(), queueAclConverted, timeout, this.client.getVersion(), requestId, comp, context);
