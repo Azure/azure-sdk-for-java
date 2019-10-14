@@ -28,25 +28,25 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterable<T> extends IterableStream<T> {
-    private final PagedFluxBase<T, ? extends PagedResponse<T>> pagedFlux;
+    private final PagedFluxBase<T, ? extends PagedResponse<T>> pagedFluxBase;
 
     /**
-     * Creates instance given {@link PagedFlux}.
-     * @param pagedFlux to use as iterable
+     * Creates instance given {@link PagedFluxBase}.
+     * @param pagedFluxBase to use as iterable
      */
-    public <P extends PagedResponse<T>> PagedIterable(PagedFluxBase<T, P> pagedFlux) {
-        super(pagedFlux);
-        this.pagedFlux = pagedFlux;
+    public <P extends PagedResponse<T>> PagedIterable(PagedFluxBase<T, P> pagedFluxBase) {
+        super(pagedFluxBase);
+        this.pagedFluxBase = pagedFluxBase;
     }
 
     /**
      * Retrieve the {@link Stream}, one page at a time.
      * It will provide same {@link Stream} of T values from starting if called multiple times.
-     * @return {@link Stream} of {@link PagedResponse}
+     * @return {@link Stream} of a Response that extends {@link PagedResponse}
      */
     @SuppressWarnings("unchecked")
     public <P extends PagedResponse<T>> Stream<P> streamByPage() {
-        return (Stream<P>) pagedFlux.byPage().toStream();
+        return (Stream<P>) pagedFluxBase.byPage().toStream();
     }
 
     /**
@@ -55,11 +55,12 @@ public class PagedIterable<T> extends IterableStream<T> {
      *
      * @param continuationToken The continuation token used to fetch the next page
      *
-     * @return {@link Stream} of {@link PagedResponse}, starting from the page associated with the continuation token
+     * @return {@link Stream} of a Response that extends {@link PagedResponse}, starting from the page associated
+     * with the continuation token
      */
     @SuppressWarnings("unchecked")
-    public <P extends  PagedResponse<T>> Stream<P> streamByPage(String continuationToken) {
-        return (Stream<P>) pagedFlux.byPage(continuationToken).toStream();
+    public <P extends PagedResponse<T>> Stream<P> streamByPage(String continuationToken) {
+        return (Stream<P>) pagedFluxBase.byPage(continuationToken).toStream();
     }
 
     /**
@@ -69,7 +70,7 @@ public class PagedIterable<T> extends IterableStream<T> {
      */
     @SuppressWarnings("unchecked")
     public <P extends  PagedResponse<T>> Iterable<P> iterableByPage() {
-        return (Iterable<P>) pagedFlux.byPage().toIterable();
+        return (Iterable<P>) pagedFluxBase.byPage().toIterable();
     }
 
     /**
@@ -83,6 +84,6 @@ public class PagedIterable<T> extends IterableStream<T> {
      */
     @SuppressWarnings("unchecked")
     public <P extends  PagedResponse<T>> Iterable<P> iterableByPage(String continuationToken) {
-        return (Iterable<P>) pagedFlux.byPage(continuationToken).toIterable();
+        return (Iterable<P>) pagedFluxBase.byPage(continuationToken).toIterable();
     }
 }
