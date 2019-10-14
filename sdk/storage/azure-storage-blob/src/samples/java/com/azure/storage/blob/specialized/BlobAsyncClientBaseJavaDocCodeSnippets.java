@@ -51,11 +51,11 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL)}
      */
-    public void startCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL
+    public void beginCopyFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL
         client.beginCopyFromUrl(url).getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL
     }
 
     /**
