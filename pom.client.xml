@@ -718,14 +718,19 @@
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
               <argLine>
-                <!-- KeyVault tests fail without these exports -->
+                <!-- KeyVault tests fail without these exports. -->
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+
+                <!-- Mockito uses reflection to create PollResponses in tests. -->
+                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
+
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
               </argLine>
