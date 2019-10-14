@@ -198,7 +198,7 @@ public class Poller<T> {
      * @param pollOperation The polling operation to be called by the {@link Poller} instance. This is a callback into
      *     the client library, which must never return {@code null}, and which must always have a non-null
      *     {@link OperationStatus}. {@link Mono} returned from poll operation should never return
-     *     {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation, it should be handled by
+     *     {@link Mono#error(Throwable)}. If any unexpected scenario happens in poll operation, it should be handled by
      *     client library and return a valid {@link PollResponse}. However if poll operation returns
      *     {@link Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}
