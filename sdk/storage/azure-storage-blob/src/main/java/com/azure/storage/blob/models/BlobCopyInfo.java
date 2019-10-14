@@ -33,8 +33,11 @@ public class BlobCopyInfo {
      * @param copySource The url of the source blob. The contents are being copied from this blob.
      * @param copyStatus The status of the copy operation.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
+     * @param eTag If the copy is completed, contains the ETag of the destination blob. If the copy is not complete,
+     *     contains the ETag of the empty blob created.
+     * @param lastModified The date/time that the copy operation to the destination blob completed.
      *
-     * @throws NullPointerException If {@code id}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
+     * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
                         OffsetDateTime lastModified, String error) {
