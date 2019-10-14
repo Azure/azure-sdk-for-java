@@ -9,7 +9,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
-import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageException;
 import reactor.core.publisher.Mono;
 
