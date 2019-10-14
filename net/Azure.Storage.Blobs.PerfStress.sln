@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29325.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Storage.Blobs.PerfStress", "Azure.Storage.Blobs.PerfStress.csproj", "{34598033-BB50-4686-9950-F2EA2CC37C61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Storage.Blobs.PerfStress", "Azure.Storage.Blobs.PerfStress\Azure.Storage.Blobs.PerfStress.csproj", "{34598033-BB50-4686-9950-F2EA2CC37C61}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0200BBFD-1184-4B41-B65A-8AB03E6D47DB} = {0200BBFD-1184-4B41-B65A-8AB03E6D47DB}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Test.PerfStress", "..\Azure.Test.PerfStress\Azure.Test.PerfStress.csproj", "{0200BBFD-1184-4B41-B65A-8AB03E6D47DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Test.PerfStress", "Azure.Test.PerfStress\Azure.Test.PerfStress.csproj", "{0200BBFD-1184-4B41-B65A-8AB03E6D47DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Storage.Blobs.V11.PerfStress", "..\Azure.Storage.Blobs.V11.PerfStress\Azure.Storage.Blobs.V11.PerfStress.csproj", "{3906F3EA-9303-4791-9C86-CC34B396DF18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Storage.Blobs.V11.PerfStress", "Azure.Storage.Blobs.V11.PerfStress\Azure.Storage.Blobs.V11.PerfStress.csproj", "{3906F3EA-9303-4791-9C86-CC34B396DF18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
