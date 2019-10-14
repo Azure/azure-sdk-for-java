@@ -126,8 +126,8 @@ class BlobBatchHelper {
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
          */
-        StorageException exception = new StorageException(new StorageErrorException(responseBody,
-            batchOperationResponse.asHttpResponse(responseBody)), responseBody);
+        StorageException exception = new StorageException(responseBody,
+            batchOperationResponse.asHttpResponse(responseBody), responseBody);
         batchOperationResponse.setException(exception);
 
         if (throwOnError) {

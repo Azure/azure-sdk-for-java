@@ -4,7 +4,6 @@
 package com.azure.storage.file;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
@@ -194,9 +193,9 @@ public class FileAsyncClient {
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
 
-        return postProcessResponse(azureFileStorageClient.files()
+        return azureFileStorageClient.files()
             .createWithRestResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context))
+                fileLastWriteTime, null, metadata, filePermission, filePermissionKey, httpHeaders, context)
             .map(this::createFileInfoResponse);
     }
 
@@ -246,8 +245,8 @@ public class FileAsyncClient {
 
     Mono<Response<FileCopyInfo>> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
         Context context) {
-        return postProcessResponse(azureFileStorageClient.files()
-            .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, context))
+        return azureFileStorageClient.files()
+            .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, context)
             .map(this::startCopyResponse);
     }
 
@@ -290,8 +289,7 @@ public class FileAsyncClient {
     }
 
     Mono<Response<Void>> abortCopyWithResponse(String copyId, Context context) {
-        return postProcessResponse(azureFileStorageClient.files()
-            .abortCopyWithRestResponseAsync(shareName, filePath, copyId, context))
+        return azureFileStorageClient.files().abortCopyWithRestResponseAsync(shareName, filePath, copyId, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -435,8 +433,8 @@ public class FileAsyncClient {
     Mono<Response<FileDownloadInfo>> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5,
         Context context) {
         String rangeString = range == null ? null : range.toString();
-        return postProcessResponse(azureFileStorageClient.files()
-            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context))
+        return azureFileStorageClient.files()
+            .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context)
             .map(this::downloadWithPropertiesResponse);
     }
 
@@ -479,8 +477,7 @@ public class FileAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.files()
-            .deleteWithRestResponseAsync(shareName, filePath, context))
+        return azureFileStorageClient.files().deleteWithRestResponseAsync(shareName, filePath, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -523,8 +520,8 @@ public class FileAsyncClient {
     }
 
     Mono<Response<FileProperties>> getPropertiesWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.files()
-            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, context))
+        return azureFileStorageClient.files()
+            .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, context)
             .map(this::getPropertiesResponse);
     }
 
@@ -610,9 +607,9 @@ public class FileAsyncClient {
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
 
-        return postProcessResponse(azureFileStorageClient.files()
+        return azureFileStorageClient.files()
             .setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context))
+                fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, httpHeaders, context)
             .map(this::setPropertiesResponse);
     }
 
@@ -669,8 +666,8 @@ public class FileAsyncClient {
     }
 
     Mono<Response<FileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return postProcessResponse(azureFileStorageClient.files()
-            .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context))
+        return azureFileStorageClient.files()
+            .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context)
             .map(this::setMetadataResponse);
     }
 
@@ -721,9 +718,9 @@ public class FileAsyncClient {
 
     Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Context context) {
         FileRange range = new FileRange(0, length - 1);
-        return postProcessResponse(azureFileStorageClient.files()
+        return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE,
-                length, data, null, null, context))
+                length, data, null, null, context)
             .map(this::uploadResponse);
     }
 
@@ -781,9 +778,9 @@ public class FileAsyncClient {
     Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, long offset,
         Context context) {
         FileRange range = new FileRange(offset, offset + length - 1);
-        return postProcessResponse(azureFileStorageClient.files()
+        return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE,
-                length, data, null, null, context))
+                length, data, null, null, context)
             .map(this::uploadResponse);
     }
 
@@ -843,9 +840,9 @@ public class FileAsyncClient {
         FileRange destinationRange = new FileRange(destinationOffset, destinationOffset + length - 1);
         FileRange sourceRange = new FileRange(sourceOffset, sourceOffset + length - 1);
 
-        return postProcessResponse(azureFileStorageClient.files()
+        return azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(),
-                sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context))
+                sourceURI.toString(), 0, null, sourceRange.toString(), null, null, context)
             .map(this::uploadRangeFromUrlResponse);
     }
 
@@ -893,9 +890,9 @@ public class FileAsyncClient {
 
     Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
         FileRange range = new FileRange(offset, offset + length - 1);
-        return postProcessResponse(azureFileStorageClient.files()
+        return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.CLEAR, 0L,
-                null, null, null, context))
+                null, null, null, context)
             .map(this::uploadResponse);
     }
 
@@ -981,14 +978,14 @@ public class FileAsyncClient {
     PagedFlux<FileRange> listRangesWithOptionalTimeout(FileRange range, Duration timeout, Context context) {
         String rangeString = range == null ? null : range.toString();
         Function<String, Mono<PagedResponse<FileRange>>> retriever =
-            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().stream().map(FileRange::new).collect(Collectors.toList()),
                     null,
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -1032,7 +1029,7 @@ public class FileAsyncClient {
 
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResults, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResults, null, snapshot,
                     context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -1040,7 +1037,7 @@ public class FileAsyncClient {
                     response.getHeaders(),
                     response.getValue().getHandleList(),
                     response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -1068,7 +1065,7 @@ public class FileAsyncClient {
 
     PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
+            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
                 .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
                     snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -1076,7 +1073,7 @@ public class FileAsyncClient {
                     response.getHeaders(),
                     Collections.singletonList(response.getDeserializedHeaders().getNumberOfHandlesClosed()),
                     response.getDeserializedHeaders().getMarker(),
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }

@@ -558,3 +558,56 @@ directive:
         "public final class FilesAndDirectoriesListSegment {",
         "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
 ```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: SharesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: DirectorysImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: FilesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+```

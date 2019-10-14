@@ -4,6 +4,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpResponse;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
@@ -19,34 +20,29 @@ import com.azure.core.exception.HttpResponseException;
  */
 public final class StorageException extends HttpResponseException {
     private static final String ERROR_CODE = "x-ms-error-code";
-
-    private final StorageErrorCode errorCode;
-    private final String message;
-
     /**
      * Constructs a {@code StorageException} from the given {@link StorageErrorException}.
      *
-     * @param e The StorageErrorException returned from the service.
-     * @param responseBody The exception body.
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
+     * @param value the error code of the exception.
      */
-    public StorageException(StorageErrorException e, String responseBody) {
-        super(e.getMessage(), e.getResponse(), e);
-        this.errorCode = StorageErrorCode.fromString(e.getResponse().getHeaders().getValue(ERROR_CODE));
-        this.message = responseBody;
+    public StorageException(String message, HttpResponse response, Object value) {
+        super(message, response, value);
     }
 
     /**
      * @return The error code returned by the service.
      */
     public StorageErrorCode getErrorCode() {
-        return this.errorCode;
+        return StorageErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
     }
 
     /**
      * @return The message returned by the service.
      */
     public String getServiceMessage() {
-        return this.message;
+        return super.getMessage();
     }
 
     /**

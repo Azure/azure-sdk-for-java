@@ -4,7 +4,6 @@
 package com.azure.storage.file;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
@@ -180,8 +179,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB, context))
+        return azureFileStorageClient.shares()
+            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -228,8 +227,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .createSnapshotWithRestResponseAsync(shareName, null, metadata, context))
+        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(shareName, null, metadata, context)
             .map(this::mapCreateSnapshotResponse);
     }
 
@@ -272,8 +270,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, null, context))
+        return azureFileStorageClient.shares()
+            .deleteWithRestResponseAsync(shareName, snapshot, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -319,8 +317,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareProperties>> getPropertiesWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, context))
+        return azureFileStorageClient.shares()
+            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, context)
             .map(this::mapGetPropertiesResponse);
     }
 
@@ -366,8 +364,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB, Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .setQuotaWithRestResponseAsync(shareName, null, quotaInGB, context))
+        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -425,8 +422,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .setMetadataWithRestResponseAsync(shareName, null, metadata, context))
+        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -447,8 +443,8 @@ public class ShareAsyncClient {
      */
     public PagedFlux<SignedIdentifier> getAccessPolicy() {
         Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
-            marker -> postProcessResponse(this.azureFileStorageClient.shares()
-                .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE))
+            marker -> this.azureFileStorageClient.shares()
+                .getAccessPolicyWithRestResponseAsync(shareName, Context.NONE)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -523,8 +519,8 @@ public class ShareAsyncClient {
             }
         }
 
-        return postProcessResponse(azureFileStorageClient.shares()
-            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, context))
+        return azureFileStorageClient.shares()
+            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, context)
             .map(this::mapToShareInfoResponse);
     }
 
@@ -566,8 +562,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<ShareStatistics>> getStatisticsWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .getStatisticsWithRestResponseAsync(shareName, context))
+        return azureFileStorageClient.shares()
+            .getStatisticsWithRestResponseAsync(shareName, context)
             .map(this::mapGetStatisticsResponse);
     }
 
@@ -622,7 +618,7 @@ public class ShareAsyncClient {
     Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         DirectoryAsyncClient directoryAsyncClient = getDirectoryClient(directoryName);
-        return postProcessResponse(directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata))
+        return directoryAsyncClient.createWithResponse(smbProperties, filePermission, metadata)
             .map(response -> new SimpleResponse<>(response, directoryAsyncClient));
     }
 
@@ -695,8 +691,8 @@ public class ShareAsyncClient {
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
-        return postProcessResponse(fileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context))
+        return fileAsyncClient
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context)
             .map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
@@ -741,7 +737,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, Context context) {
-        return postProcessResponse(getDirectoryClient(directoryName).deleteWithResponse(context));
+        return getDirectoryClient(directoryName).deleteWithResponse(context);
     }
 
     /**
@@ -785,7 +781,7 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<Void>> deleteFileWithResponse(String fileName, Context context) {
-        return postProcessResponse(getFileClient(fileName).deleteWithResponse(context));
+        return getFileClient(fileName).deleteWithResponse(context);
     }
 
     /**
@@ -821,8 +817,8 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
         // NOTE: Should we check for null or empty?
         SharePermission sharePermission = new SharePermission().setPermission(filePermission);
-        return postProcessResponse(azureFileStorageClient.shares()
-            .createPermissionWithRestResponseAsync(shareName, sharePermission, null, context))
+        return azureFileStorageClient.shares()
+            .createPermissionWithRestResponseAsync(shareName, sharePermission, null, context)
             .map(response -> new SimpleResponse<>(response, response.getDeserializedHeaders().getFilePermissionKey()));
     }
 
@@ -855,8 +851,8 @@ public class ShareAsyncClient {
     }
 
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
-        return postProcessResponse(azureFileStorageClient.shares()
-            .getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context))
+        return azureFileStorageClient.shares()
+            .getPermissionWithRestResponseAsync(shareName, filePermissionKey, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 

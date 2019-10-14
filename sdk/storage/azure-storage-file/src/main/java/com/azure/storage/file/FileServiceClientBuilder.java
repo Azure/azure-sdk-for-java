@@ -11,7 +11,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 

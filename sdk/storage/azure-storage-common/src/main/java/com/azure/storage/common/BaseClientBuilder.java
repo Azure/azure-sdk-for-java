@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
+import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.util.ArrayList;
@@ -98,6 +99,7 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
 
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        policies.add(new ScrubEtagPolicy());
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
