@@ -446,6 +446,10 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
+    private <T> void assertException(Throwable exception, Class<T> expectedExceptionType) {
+        assertEquals(expectedExceptionType, exception.getClass());
+    }
+
     private void debug(String... messages) {
         if (debug) {
             StringBuilder sb =
@@ -486,7 +490,4 @@ public class PollerTests {
             return name;
         }
     }
-
-    void assertException(Throwable exception, Class expectedExceptionType) {
-        assertEquals(expectedExceptionType, exception.getClass()); }
 }
