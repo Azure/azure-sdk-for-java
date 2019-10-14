@@ -43,6 +43,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashSet;
@@ -413,7 +414,8 @@ public class IdentityClient {
                     || responseCode == 429
                     || responseCode == 404
                     || (responseCode >= 500 && responseCode <= 599)) {
-                    int retryTimeoutInMs = options.getRetryTimeout().apply(RANDOM.nextInt(retry));
+                    int retryTimeoutInMs = options.getRetryTimeout().apply(Duration.ofSeconds(RANDOM.nextInt(retry))).
+                        getNano() / 1000;
                     // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                     //
                     retryTimeoutInMs =

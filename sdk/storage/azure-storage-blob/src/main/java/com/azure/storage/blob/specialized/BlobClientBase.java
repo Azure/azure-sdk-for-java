@@ -25,6 +25,9 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -32,7 +35,6 @@ import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -386,16 +388,14 @@ public class BlobClientBase {
         Utility.assertNotNull("stream", stream);
         Mono<Response<Void>> download = client
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
-            .flatMapMany(res -> res.getValue()
-                .doOnNext(bf -> {
-                    try {
-                        stream.write(FluxUtil.byteBufferToArray(bf));
-                    } catch (IOException e) {
-                        throw logger.logExceptionAsError(new UncheckedIOException(e));
-                    }
-                }).map(bf -> res))
-            .last()
-            .map(response -> new SimpleResponse<>(response, null));
+            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new SimpleResponse<>(response, null)));
 
         return Utility.blockWithOptionalTimeout(download, timeout);
     }
