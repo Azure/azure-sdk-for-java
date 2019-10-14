@@ -273,7 +273,7 @@ public class FileJavaDocCodeSamples {
      */
     public void download() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.download#OutputStream
+        // BEGIN: com.azure.storage.file.FileClient.download#OutputStream
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             fileClient.download(stream);
@@ -282,7 +282,7 @@ public class FileJavaDocCodeSamples {
         } catch (Throwable throwable) {
             System.err.printf("Downloading failed with exception. Message: %s%n", throwable.getMessage());
         }
-        // END: com.azure.storage.file.fileClient.download#OutputStream
+        // END: com.azure.storage.file.FileClient.download#OutputStream
     }
 
     /**

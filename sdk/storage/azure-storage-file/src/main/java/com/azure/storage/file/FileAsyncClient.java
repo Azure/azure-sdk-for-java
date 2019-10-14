@@ -720,8 +720,8 @@ public class FileAsyncClient {
 
     Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         Context context) {
-        offset = (offset == null) ? 0 : offset;
-        FileRange range = new FileRange(offset, offset + length - 1);
+        long rangeOffset = (offset == null) ? 0L : offset;
+        FileRange range = new FileRange(rangeOffset, rangeOffset + length - 1);
         return postProcessResponse(azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE,
                 length, data, null, null, context))

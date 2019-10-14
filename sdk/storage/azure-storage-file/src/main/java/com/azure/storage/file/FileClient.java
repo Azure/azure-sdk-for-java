@@ -111,8 +111,7 @@ public class FileClient {
      * Creates and opens an output stream to write data to the file. If the file already exists on the service, it will
      * be overwritten.
      *
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
      * @throws StorageException If a storage service error occurred.
      */
@@ -325,7 +324,7 @@ public class FileClient {
      *
      * <p>Download the file with its metadata and properties. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadWithProperties}
+     * {@codesnippet com.azure.storage.file.FileClient.download#OutputStream}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
@@ -627,8 +626,7 @@ public class FileClient {
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -734,8 +732,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
-     * null}
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
