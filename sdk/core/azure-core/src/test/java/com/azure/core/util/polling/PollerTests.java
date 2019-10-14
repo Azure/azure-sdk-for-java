@@ -211,6 +211,29 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
+
+    /** Test where SDK Client is subscribed to only final/last response.
+     * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+     * This scenario is setup where source will generate successful response returned after few in progress response.
+     * But the subscriber is only interested in last response, The test will ensure subscriber
+     * only gets last PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED.
+     */
+    @Test
+    public void subscribeToOnlyFinalEventSuccessfullyCompleteInNSecondsTest() {
+        PollResponse<Response> success = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created: Cert A"));
+        PollResponse<Response> inProgress = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
+
+        Duration pollInterval = Duration.ofMillis(500);
+
+        when(pollOperation.apply(any())).thenReturn(Mono.just(inProgress), Mono.just(success));
+
+        Poller<Response> createCertPoller = new Poller<>(pollInterval, pollOperation);
+
+        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, createCertPoller.block().getStatus());
+        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, createCertPoller.getStatus());
+        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+    }
+
     /**
      * Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate successful response returned
@@ -237,8 +260,8 @@ public class PollerTests {
             .expectNext(inProgress)
             .then(() -> poller.setAutoPollingEnabled(false))
             .expectNoEvent(waitTime)
-            .then(() -> poller.cancelOperation())
-            .verifyError();
+            .thenCancel() // Cancel our subscription. This does not affect upstream poller.
+            .verify();
 
         Assert.assertEquals(OperationStatus.IN_PROGRESS, poller.getStatus());
         Assert.assertFalse(poller.isAutoPollingEnabled());
