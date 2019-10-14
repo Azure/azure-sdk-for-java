@@ -4,8 +4,11 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobCopyOperation;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -55,12 +58,17 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#startCopyFromURL(URL)}
+     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL)}
      */
-    public void startCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.BlobClient.startCopyFromURL#URL
-        System.out.printf("Copy identifier: %s%n", client.startCopyFromURL(url));
-        // END: com.azure.storage.blob.BlobClient.startCopyFromURL#URL
+    public void beginCopyFromUrl() {
+        // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
+        Poller<BlobCopyOperation> poller = client.beginCopyFromUrl(url);
+
+        // This blocks until either the copy operation has completed, failed, or been cancelled.
+        PollResponse<BlobCopyOperation> response = poller.block();
+        BlobCopyOperation operation = response.getValue();
+        System.out.printf("Copy identifier: %s%n", operation.getId());
+        // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
     }
 
     /**
@@ -206,23 +214,25 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#startCopyFromURLWithResponse(URL, Map, AccessTier, RehydratePriority,
-     * ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
+     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
      */
-    public void startCopyFromURLWithResponseCodeSnippets() {
+    public void beginCopyFromUrlCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
-        System.out.printf("Copy identifier: %s%n",
-            client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-                modifiedAccessConditions, blobAccessConditions, timeout,
-                new Context(key2, value2)));
-        // END: com.azure.storage.blob.BlobClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        Poller<BlobCopyOperation> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
+            RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions);
+
+        // This blocks until either the copy operation has completed, failed, or been cancelled.
+        PollResponse<BlobCopyOperation> response = poller.block();
+        BlobCopyOperation operation = response.getValue();
+        System.out.printf("Copy identifier: %s%n", operation.getId());
+        // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
     /**
