@@ -3,11 +3,14 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * Contains copy information about a File in the storage File service.
  */
+@Immutable
 public final class FileCopyInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
@@ -34,6 +37,8 @@ public final class FileCopyInfo {
     }
 
     /**
+     * Gets the entity tag that corresponds to the directory.
+     *
      * @return Entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -41,6 +46,8 @@ public final class FileCopyInfo {
     }
 
     /**
+     * Gets the last time the directory was modified.
+     *
      * @return Last time the directory was modified.
      */
     public OffsetDateTime getLastModified() {
@@ -48,6 +55,8 @@ public final class FileCopyInfo {
     }
 
     /**
+     * Gets the string identifier for this copy operation.
+     *
      * @return String identifier for this copy operation.
      */
     public String getCopyId() {
@@ -55,9 +64,13 @@ public final class FileCopyInfo {
     }
 
     /**
-     * @return State of the copy operation with these values:
-     *                       - success: the copy completed successfully.
-     *                       - pending: the copy is still in progress.
+     * Gets the status of the copy operation. The status could be:
+     * <ol>
+     *     <li>{@link CopyStatusType#SUCCESS success}: The copy completed successfully.</li>
+     *     <li>{@link CopyStatusType#PENDING pending}: The copy is still in progress.</li>
+     * </ol>
+     *
+     * @return Status of the copy operation.
      */
     public CopyStatusType getCopyStatus() {
         return copyStatus;
