@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -122,8 +123,8 @@ public class Poller<T> {
      *     operation, it should be handled by the client library and return a valid {@link PollResponse}. However if
      *     the poll operation returns {@link Mono#error(Throwable)}, the {@link Poller} will disregard it and continue
      *     to poll.
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
-     *     {@code pollInterval} or {@code pollOperation} are {@code null}
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
+     * @throws NullPointerException if {@code pollInterval} or {@code pollOperation} is {@code null}.
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
         this(pollInterval, pollOperation, null, null);
@@ -152,17 +153,15 @@ public class Poller<T> {
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                   Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
-        if (pollInterval == null || pollInterval.compareTo(Duration.ZERO) <= 0) {
+
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                "Null, negative or zero value for poll interval is not allowed."));
-        }
-        if (pollOperation == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                "Null value for poll operation is not allowed."));
+                "Negative or zero value for 'pollInterval' is not allowed."));
         }
 
         this.pollInterval = pollInterval;
-        this.pollOperation = pollOperation;
+        this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
 
         // When the first item is emitted, we set the poll response to it. So the first invocation of pollOperation can
         // leverage this value.

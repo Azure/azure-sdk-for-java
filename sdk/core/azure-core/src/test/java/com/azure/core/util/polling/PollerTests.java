@@ -60,6 +60,22 @@ public class PollerTests {
     }
 
     /**
+     * Verify we cannot pass in null pollInterval.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorPollIntervalNull() {
+        new Poller<>(null, pollOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
+    }
+
+    /**
+     * Verify we cannot pass in null pollInterval.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorPollOperationNull() {
+        new Poller<>(Duration.ofSeconds(1), null, () -> Mono.just(new Response("Foo")), cancelOperation);
+    }
+
+    /**
      * Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate few in-progress response followed by few OTHER responses and finally successfully completed response.
      * The sdk client will only subscribe for a specific OTHER response and final successful response.
