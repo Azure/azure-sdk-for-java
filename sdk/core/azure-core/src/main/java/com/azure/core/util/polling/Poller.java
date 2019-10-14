@@ -10,7 +10,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -80,12 +79,6 @@ public class Poller<T> {
     private final Duration pollInterval;
 
     /*
-     * This will save last poll response.
-     */
-    private final AtomicReference<PollResponse<T>> pollResponse = new AtomicReference<>(
-        new PollResponse<>(OperationStatus.NOT_STARTED, null));
-
-    /*
      * This will be called when cancel operation is triggered.
      */
     private final Consumer<Poller<T>> cancelOperation;
@@ -96,6 +89,11 @@ public class Poller<T> {
      * Once subscribed, this Flux will continue to poll for status until poll operation is done/complete.
      */
     private final Flux<PollResponse<T>> fluxHandle;
+
+    /*
+     * This will save last poll response.
+     */
+    private volatile PollResponse<T> pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, null);
 
     /*
      * Indicate to poll automatically or not when poller is created.
@@ -171,7 +169,7 @@ public class Poller<T> {
         final Mono<T> onActivation = activationOperation == null
             ? Mono.empty()
             : activationOperation.get().map(response -> {
-                pollResponse.set(new PollResponse<>(OperationStatus.NOT_STARTED, response));
+                this.pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, response);
                 return response;
             });
 
@@ -227,7 +225,7 @@ public class Poller<T> {
 
         // We can not cancel an operation if it was never started
         // It only make sense to call cancel operation if current status IN_PROGRESS.
-        final PollResponse<T> response = pollResponse.get();
+        final PollResponse<T> response = this.pollResponse;
         if (response != null && response.getStatus() != OperationStatus.IN_PROGRESS) {
             return;
         }
@@ -257,10 +255,10 @@ public class Poller<T> {
      * @return A {@link Mono} that returns {@link PollResponse}. This will call poll operation once.
      */
     public Mono<PollResponse<T>> poll() {
-        return pollOperation.apply(pollResponse.get())
+        return pollOperation.apply(this.pollResponse)
             .doOnEach(pollResponseSignal -> {
                 if (pollResponseSignal.get() != null) {
-                    pollResponse.set(pollResponseSignal.get());
+                    this.pollResponse = pollResponseSignal.get();
                 }
             });
     }
@@ -366,7 +364,7 @@ public class Poller<T> {
      * @return mono of poll response
      */
     private Mono<PollResponse<T>> asyncPollRequestWithDelay() {
-        return Mono.defer(() -> this.pollOperation.apply(pollResponse.get())
+        return Mono.defer(() -> this.pollOperation.apply(this.pollResponse)
             .delaySubscription(getCurrentDelay())
             .onErrorResume(throwable -> {
                 // We should never get here and since we want to continue polling
@@ -375,7 +373,7 @@ public class Poller<T> {
             })
             .doOnEach(pollResponseSignal -> {
                 if (pollResponseSignal.get() != null) {
-                    pollResponse.set(pollResponseSignal.get());
+                    this.pollResponse = pollResponseSignal.get();
                 }
             }));
     }
@@ -384,7 +382,7 @@ public class Poller<T> {
      * We will use {@link PollResponse#getRetryAfter()} if it is greater than zero otherwise use poll interval.
      */
     private Duration getCurrentDelay() {
-        final PollResponse<T> current = pollResponse.get();
+        final PollResponse<T> current = pollResponse;
 
         return (current != null
             && current.getRetryAfter() != null
@@ -408,7 +406,7 @@ public class Poller<T> {
         this.autoPollingEnabled = autoPollingEnabled;
         if (this.autoPollingEnabled) {
             if (!activeSubscriber()) {
-                this.fluxDisposable = this.fluxHandle.subscribe(pr -> pollResponse.set(pr));
+                this.fluxDisposable = this.fluxHandle.subscribe(pr -> this.pollResponse = pr);
             }
         } else {
             if (activeSubscriber()) {
@@ -428,7 +426,7 @@ public class Poller<T> {
      * @return true if operation is done/complete.
      */
     private boolean hasCompleted() {
-        final PollResponse<T> current = pollResponse.get();
+        final PollResponse<T> current = this.pollResponse;
 
         return current != null && (current.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
             || current.getStatus() == OperationStatus.FAILED
@@ -458,7 +456,7 @@ public class Poller<T> {
      * @return Current status or {@code null} if no status is available.
      */
     public OperationStatus getStatus() {
-        final PollResponse<T> current = pollResponse.get();
+        final PollResponse<T> current = this.pollResponse;
         return current != null ? current.getStatus() : null;
     }
 }
