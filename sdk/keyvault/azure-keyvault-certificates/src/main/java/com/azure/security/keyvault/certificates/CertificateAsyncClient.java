@@ -22,6 +22,7 @@ import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -106,11 +107,11 @@ public class CertificateAsyncClient {
      * @return A {@link Poller} polling on the create certificate operation status.
      */
     public Poller<CertificateOperation, Certificate> beginCreateCertificate(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
-        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), activationOperation(name, policy, enabled, tags), fetchResultOperation(name), cancelOperation(name));
+        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), fetchResultOperation(name), activationOperation(name, policy, enabled, tags), cancelOperation(name));
     }
 
-    private Consumer<Poller<CertificateOperation, Certificate>> cancelOperation(String name) {
-        return poller -> withContext(context -> cancelCertificateOperationWithResponse(name, context));
+    private Function<Poller<CertificateOperation, Certificate>, Mono<CertificateOperation>> cancelOperation(String name) {
+        return poller -> withContext(context -> cancelCertificateOperationWithResponse(name, context)).flatMap(FluxUtil::toMono);
     }
 
     private Supplier<Mono<CertificateOperation>> activationOperation(String name, CertificatePolicy policy, boolean enabled, Map<String, String> tags) {
