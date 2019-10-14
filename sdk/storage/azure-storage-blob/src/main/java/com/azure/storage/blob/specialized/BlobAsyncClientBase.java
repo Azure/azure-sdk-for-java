@@ -10,8 +10,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.HttpGetterInfo;
@@ -19,10 +22,14 @@ import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobCopyOperation;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -44,10 +51,12 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -238,11 +247,13 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     *
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     *     cancelled.
      */
-    public Mono<String> startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceUrl) {
+        return beginCopyFromUrl(sourceUrl, null, null, null, null, null);
     }
 
     /**
@@ -255,42 +266,102 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
-     * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
-     * related to when the blob was changed relative to the given request. The request will fail if the specified
-     * condition is not satisfied.
+     * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP
+     *     Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
+     *     conditions related to when the blob was changed relative to the given request. The request will fail if the
+     *     specified condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
-     * @return A reactive response containing the copy ID for the long running operation.
+     *
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     *     cancelled.
      */
-    public Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata,
-        AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions) {
-        return withContext(context -> startCopyFromURLWithResponse(sourceURL, metadata, tier, priority,
-            sourceModifiedAccessConditions, destAccessConditions, context));
-    }
+    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions) {
 
-    Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
-        RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions, Context context) {
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
-            ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
-        destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        final ModifiedAccessConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
+            ? new ModifiedAccessConditions()
+            : sourceModifiedAccessConditions;
+        final BlobAccessConditions accessConditions = destAccessConditions == null
+            ? new BlobAccessConditions()
+            : destAccessConditions;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
-        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceModifiedAccessConditions.getIfModifiedSince())
-            .setSourceIfUnmodifiedSince(sourceModifiedAccessConditions.getIfUnmodifiedSince())
-            .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
-            .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
+        final SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+            .setSourceIfModifiedSince(sourceModifiedCondition.getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceModifiedCondition.getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceModifiedCondition.getIfMatch())
+            .setSourceIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
-        return this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, tier, priority, null, sourceConditions,
-            destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
-            context).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
+        final AtomicReference<String> copyId = new AtomicReference<>();
+
+        return new Poller<>(Duration.ofSeconds(1),
+            response -> onPoll(response),
+            () -> onStart(sourceUrl, metadata, tier, priority, sourceConditions, accessConditions, copyId),
+            unused -> {
+                final String copyIdentifier = copyId.get();
+
+                if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
+                    logger.info("Cancelling copy operation for copy: {}", copyIdentifier);
+
+                    Utility.blockWithOptionalTimeout(abortCopyFromURL(copyIdentifier), null);
+                }
+            });
+    }
+
+    private Mono<BlobCopyOperation> onStart(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
+            RehydratePriority priority, SourceModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions, AtomicReference<String> copyIdReference) {
+
+        final Mono<BlobsStartCopyFromURLResponse> restResponse = withContext(
+            context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
+                sourceUrl, null, metadata, tier, priority, null, sourceModifiedAccessConditions,
+                destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
+                context));
+
+        return postProcessResponse(restResponse)
+            .map(response -> {
+                final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+                copyIdReference.set(headers.getCopyId());
+
+                return new BlobCopyOperation(headers.getCopyId(), getBlobUrl(), sourceUrl.toString(),
+                    headers.getCopyStatus(), headers.getErrorCode());
+            });
+    }
+
+    private Mono<PollResponse<BlobCopyOperation>> onPoll(PollResponse<BlobCopyOperation> pollResponse) {
+        final BlobCopyOperation lastStatus = pollResponse.getValue();
+
+        return getProperties().map(response -> {
+            final CopyStatusType status = response.getCopyStatus();
+            final BlobCopyOperation result = new BlobCopyOperation(lastStatus.getId(), lastStatus.getTargetUrl(),
+                lastStatus.getSourceUrl(), status, response.getCopyStatusDescription());
+
+            PollResponse.OperationStatus operationStatus;
+            switch (status) {
+                case SUCCESS:
+                    operationStatus = PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED;
+                    break;
+                case FAILED:
+                    operationStatus = PollResponse.OperationStatus.NOT_STARTED;
+                    break;
+                case ABORTED:
+                    operationStatus = PollResponse.OperationStatus.USER_CANCELLED;
+                    break;
+                case PENDING:
+                    operationStatus = PollResponse.OperationStatus.IN_PROGRESS;
+                    break;
+                default:
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "Status is not supported. Status: " + status));
+            }
+
+            return new PollResponse<>(operationStatus, result);
+        });
     }
 
     /**
