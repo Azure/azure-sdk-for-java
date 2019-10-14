@@ -11,7 +11,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * signed identifier.
  */
-@JacksonXmlRootElement(localName = "QueueSignedIdentifier")
+@JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
 public final class QueueSignedIdentifier {
     /*

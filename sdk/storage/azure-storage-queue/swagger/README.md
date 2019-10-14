@@ -217,7 +217,9 @@ directive:
       delete $.Metrics;
       $.QueueMetrics.xml = {"name": "Metrics"};
       $.QueueServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/QueueMetrics";
+      $.QueueServiceProperties.properties.HourMetrics.xml = {"name": "HourMetrics"};
       $.QueueServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/QueueMetrics";
+      $.QueueServiceProperties.properties.MinuteMetrics.xml = {"name": "MinuteMetrics"};
     }
     if (!$.QueueCorsRule) {
       $.QueueCorsRule = $.CorsRule;
@@ -287,6 +289,7 @@ directive:
     if (!$.QueueSignedIdentifier) {
       $.QueueSignedIdentifier = $.SignedIdentifier;
       delete $.SignedIdentifier;
+      $.QueueSignedIdentifier.xml = {"name": "SignedIdentifier"};
       $.SignedIdentifiers.items["$ref"] = "#/definitions/QueueSignedIdentifier";
     }
 - from: swagger-document
