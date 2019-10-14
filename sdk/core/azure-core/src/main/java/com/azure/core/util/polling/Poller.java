@@ -154,7 +154,7 @@ public class Poller<T> {
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation,
                   Supplier<Mono<T>> activationOperation, Consumer<Poller<T>> cancelOperation) {
-        if (pollInterval == null || pollInterval.toNanos() <= 0) {
+        if (pollInterval == null || pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Null, negative or zero value for poll interval is not allowed."));
         }
@@ -380,15 +380,15 @@ public class Poller<T> {
             }));
     }
 
-    /*
-     * We will use  {@link PollResponse#getRetryAfter} if it is greater than zero otherwise use poll interval.
+    /**
+     * We will use {@link PollResponse#getRetryAfter()} if it is greater than zero otherwise use poll interval.
      */
     private Duration getCurrentDelay() {
         final PollResponse<T> current = pollResponse.get();
 
         return (current != null
             && current.getRetryAfter() != null
-            && current.getRetryAfter().toNanos() > 0) ? current.getRetryAfter() : pollInterval;
+            && current.getRetryAfter().compareTo(Duration.ZERO) > 0) ? current.getRetryAfter() : pollInterval;
     }
 
     /**

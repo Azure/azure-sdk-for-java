@@ -43,10 +43,27 @@ public class PollerTests {
         Mockito.framework().clearInlineMocks();
     }
 
-    /* Test where SDK Client is subscribed all responses.
+    /**
+     * Verify we cannot pass in poll duration of {@link Duration#ZERO}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorPollIntervalZero() {
+        new Poller<>(Duration.ZERO, pollOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
+    }
+
+    /**
+     * Verify we cannot pass in poll negative duration.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorPollIntervalNegative() {
+        new Poller<>(Duration.ofSeconds(-1), pollOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
+    }
+
+    /**
+     * Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate few in-progress response followed by few OTHER responses and finally successfully completed response.
      * The sdk client will only subscribe for a specific OTHER response and final successful response.
-     **/
+     */
     @Test
     public void subscribeToSpecificOtherOperationStatusTest() {
         // Arrange
@@ -81,10 +98,11 @@ public class PollerTests {
         Assert.assertEquals(pollerObserver.getStatus(), OperationStatus.SUCCESSFULLY_COMPLETED);
     }
 
-    /* Test where SDK Client is subscribed all responses.
+    /**
+     * Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate few in-progress response followed by few OTHER status responses and finally successfully completed response.
      * The sdk client will block for a specific OTHER status.
-     **/
+     */
     @Test
     public void blockForCustomOperationStatusTest() {
         final OperationStatus expected = OperationStatus.fromString("OTHER_2");
@@ -106,12 +124,13 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
-    /* Test where SDK Client is subscribed all responses.
+    /**
+     * Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate successful response returned
      * after few in-progress response. But the sdk client will stop polling in between
      * and activate polling in between. The client will miss few in progress response and
      * subscriber will get get final successful response.
-     **/
+     */
     @Ignore("When auto-subscription is turned off, the observer still polls. https://github.com/Azure/azure-sdk-for-java/issues/5805")
     @Test
     public void subscribeToAllPollEventStopPollingAfterNSecondsAndRestartedTest() {
@@ -192,11 +211,12 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
-    /* Test where SDK Client is subscribed all responses.
+    /**
+     * Test where SDK Client is subscribed all responses.
      * This scenario is setup where source will generate successful response returned
      * after few in-progress response. But the sdk client will stop polling in between
      * and subscriber should never get final successful response.
-     **/
+     */
     @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/5809")
     @Test
     public void subscribeToAllPollEventStopPollingAfterNSecondsTest() {
