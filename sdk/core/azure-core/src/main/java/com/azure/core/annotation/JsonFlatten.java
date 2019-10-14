@@ -3,6 +3,8 @@
 
 package com.azure.core.annotation;
 
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,7 +17,7 @@ import java.lang.annotation.Target;
  * the wire.
  *
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})
 public @interface JsonFlatten {
 }

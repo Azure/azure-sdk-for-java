@@ -3,7 +3,7 @@
 
 package com.azure.core;
 
-import com.azure.core.implementation.entity.HttpBinJSON;
+import com.azure.core.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 

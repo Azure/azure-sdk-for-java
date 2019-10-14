@@ -18,7 +18,7 @@ import reactor.util.context.Context;
 
 import java.util.concurrent.Semaphore;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
 
 /**
  * Sample demonstrates how to list secrets and versions of a given secret in the key vault with tracing enabled.

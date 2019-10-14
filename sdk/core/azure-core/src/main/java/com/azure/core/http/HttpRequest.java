@@ -46,8 +46,8 @@ public class HttpRequest implements Serializable {
         this.httpMethod = httpMethod;
         try {
             this.url = new URL(url);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL"));
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL", ex));
         }
         this.headers = new HttpHeaders();
     }
@@ -125,8 +125,8 @@ public class HttpRequest implements Serializable {
     public HttpRequest setUrl(String url) {
         try {
             this.url = new URL(url);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL."));
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
         return this;
     }

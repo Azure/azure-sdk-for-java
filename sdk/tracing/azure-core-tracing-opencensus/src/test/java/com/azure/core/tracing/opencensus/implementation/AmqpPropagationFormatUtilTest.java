@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opencensus.implementation;
 
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.SPAN_CONTEXT;
 import com.azure.core.util.Context;
-import io.opencensus.trace.*;
+import io.opencensus.trace.SpanContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 
 public class AmqpPropagationFormatUtilTest {
 

@@ -19,7 +19,7 @@ public final class IssuerPropertiesPage implements Page<IssuerProperties> {
      * The link to the next page.
      */
     @JsonProperty("nextLink")
-    private String nextLink;
+    private String continuationToken;
 
     /**
      * The list of items.
@@ -34,7 +34,7 @@ public final class IssuerPropertiesPage implements Page<IssuerProperties> {
      */
     @Override
     public String getContinuationToken() {
-        return this.nextLink;
+        return this.continuationToken;
     }
 
     /**

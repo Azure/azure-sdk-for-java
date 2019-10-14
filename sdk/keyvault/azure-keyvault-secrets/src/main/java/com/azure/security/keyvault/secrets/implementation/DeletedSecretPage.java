@@ -19,7 +19,7 @@ public final class DeletedSecretPage implements Page<DeletedSecret> {
      * The link to the next page.
      */
     @JsonProperty("nextLink")
-    private String nextLink;
+    private String continuationToken;
 
     /**
      * The list of items.
@@ -34,7 +34,7 @@ public final class DeletedSecretPage implements Page<DeletedSecret> {
      */
     @Override
     public String getContinuationToken() {
-        return this.nextLink;
+        return this.continuationToken;
     }
 
     /**

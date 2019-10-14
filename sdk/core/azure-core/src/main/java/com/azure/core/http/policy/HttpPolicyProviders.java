@@ -14,8 +14,8 @@ import java.util.function.Supplier;
  */
 public final class HttpPolicyProviders {
 
-    private static final Map<Class<? extends HttpPolicyProvider>, ServiceLoader<? extends HttpPolicyProvider>> SERVICE_LOADERS =
-        new HashMap<>();
+    private static final Map<Class<? extends HttpPolicyProvider>, ServiceLoader<? extends HttpPolicyProvider>>
+        SERVICE_LOADERS = new HashMap<>();
 
     private HttpPolicyProviders() {
         // no-op

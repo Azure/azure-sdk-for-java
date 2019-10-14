@@ -3,15 +3,16 @@
 
 package com.azure.core.annotation;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
  * Annotation for method representing continuation operation.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD})
+@Retention(RUNTIME)
+@Target(METHOD)
 public @interface ResumeOperation {
 }

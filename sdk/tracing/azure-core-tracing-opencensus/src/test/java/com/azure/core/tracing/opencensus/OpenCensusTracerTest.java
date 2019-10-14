@@ -3,6 +3,9 @@
 
 package com.azure.core.tracing.opencensus;
 
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.SPAN_CONTEXT;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.tracing.opencensus.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.util.Context;
@@ -12,9 +15,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;

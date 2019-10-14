@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
