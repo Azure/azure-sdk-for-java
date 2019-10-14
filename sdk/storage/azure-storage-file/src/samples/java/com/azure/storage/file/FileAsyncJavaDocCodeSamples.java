@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
@@ -131,31 +133,19 @@ public class FileAsyncJavaDocCodeSamples {
     /**
      * Generates a code sample for using {@link FileAsyncClient#beginCopy(String, Map)}
      */
-    public void copyFileAsync() {
+    public void beginCopy() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.startCopy#string-map
-        fileAsyncClient.beginCopy("https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata")).subscribe(
-                response -> System.out.println("Successfully copied the file;"),
-                error -> System.err.println(error.toString()),
-                () -> System.out.println("Complete copying the file.")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.startCopy#string-map
-    }
+        // BEGIN: com.azure.storage.file.fileAsyncClient.beginCopy#string-map
+        Poller<FileCopyInfo> poller = fileAsyncClient.beginCopy(
+            "https://{accountName}.file.core.windows.net?{SASToken}",
+            Collections.singletonMap("file", "metadata"));
 
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#startCopyWithResponse(String, Map)}
-     */
-    public void startCopyWithResponse() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map
-        fileAsyncClient.startCopyWithResponse("https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata")).subscribe(
-                response ->
-                    System.out.println("Successfully copying the file with status code: " + response.getStatusCode()),
-                error -> System.err.println(error.toString())
-        );
-        // END: com.azure.storage.file.fileAsyncClient.startCopyWithResponse#string-map
+        poller.getObserver().subscribe(response -> {
+                final FileCopyInfo value = response.getValue();
+                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+            }, error -> System.err.println("Error: " + error),
+            () -> System.out.println("Complete copying the file."));
+        // END: com.azure.storage.file.fileAsyncClient.beginCopy#string-map
     }
 
     /**

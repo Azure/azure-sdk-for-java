@@ -73,7 +73,7 @@ public class FileSample {
 
         FileCopyInfo copyResponse;
         try {
-            copyResponse = destFileClient.startCopy(sourceURL, null);
+            copyResponse = destFileClient.beginCopy(sourceURL, null);
         } catch (FileStorageException e) {
             throw new RuntimeException("Failed to start the copy of source file. Reasons: " + e.getMessage());
         }

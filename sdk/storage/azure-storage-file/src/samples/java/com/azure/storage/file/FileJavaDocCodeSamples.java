@@ -4,6 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
@@ -143,29 +144,20 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#startCopy(String, Map)}
+     * Generates a code sample for using {@link FileClient#beginCopy(String, Map)}
      */
-    public void startCopy() {
+    public void beginCopy() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.startCopy#string-map
-        FileCopyInfo response = fileClient.startCopy(
+        // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map
+        Poller<FileCopyInfo> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"));
-        System.out.println("Complete copying the file with copy Id: " + response.getCopyId());
-        // END: com.azure.storage.file.fileClient.startCopy#string-map
-    }
 
-    /**
-     * Generates a code sample for using {@link FileClient#startCopyWithResponse(String, Map, Duration, Context)}
-     */
-    public void startCopyWithResponse() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
-        Response<FileCopyInfo> response = fileClient.startCopyWithResponse(
-            "https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.println("Complete copying the file with copy Id: " + response.getValue().getCopyId());
-        // END: com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context
+        poller.getObserver().subscribe(response -> {
+                final FileCopyInfo value = response.getValue();
+                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+            });
+        // END: com.azure.storage.file.fileClient.beginCopy#string-map
     }
 
     /**

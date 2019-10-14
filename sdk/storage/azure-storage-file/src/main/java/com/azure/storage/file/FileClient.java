@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
@@ -181,7 +182,7 @@ public class FileClient {
      *
      * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.startCopy#string-map}
+     * {@codesnippet com.azure.storage.file.fileClient.beginCopy#string-map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
@@ -189,39 +190,11 @@ public class FileClient {
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
-     * @return The {@link FileCopyInfo file copy info}
+     * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public FileCopyInfo startCopy(String sourceUrl, Map<String, String> metadata) {
-        return startCopyWithResponse(sourceUrl, metadata, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Copies a blob or file to a destination file within the storage account.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
-     *
-     * {@codesnippet com.azure.storage.file.fileClient.startCopyWithResponse#string-map-duration-context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
-     *
-     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
-     * naming rules.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link FileCopyInfo file copy info} and the status of copying the file.
-     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
-     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
-     */
-    public Response<FileCopyInfo> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
-        Duration timeout, Context context) {
-        Mono<Response<FileCopyInfo>> response = fileAsyncClient.startCopyWithResponse(sourceUrl, metadata, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+    public Poller<FileCopyInfo> beginCopy(String sourceUrl, Map<String, String> metadata) {
+        return fileAsyncClient.beginCopy(sourceUrl, metadata);
     }
 
     /**
