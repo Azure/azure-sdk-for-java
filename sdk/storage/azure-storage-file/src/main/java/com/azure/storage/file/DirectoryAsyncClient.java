@@ -445,8 +445,9 @@ public class DirectoryAsyncClient {
      *
      * @param prefix Optional prefix which filters the results to return only files and directories whose name begins
      * with.
-     * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page. If the request does not
-     * specify maxResultsPerPage or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page. If the request
+     * does not specify maxResultsPerPage or specifies a value greater than 5,000,
+     * the server will return up to 5,000 items.
      * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      */
     public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage) {
