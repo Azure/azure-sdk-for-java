@@ -18,15 +18,20 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class PollerTests {
     @Mock
     private Function<PollResponse<Response>, Mono<PollResponse<Response>>> pollOperation;
+
+    @Mock
+    private Consumer<Poller<Response>> cancelOperation;
 
     @Before
     public void beforeTest() {
@@ -164,7 +169,7 @@ public class PollerTests {
 
     /*
      * Test where SDK Client is subscribed all responses.
-     * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
+     * The last response in this case will be OperationStatus.SUCCESSFULLY_COMPLETED
      * This scenario is setup where source will generate successful response returned after few in-progress response.
      **/
     @Test
@@ -194,12 +199,12 @@ public class PollerTests {
      **/
     @Ignore("https://github.com/Azure/azure-sdk-for-java/issues/5809")
     @Test
-    public void subscribeToAllPollEventStopPollingAfterNSecondsTest() throws Exception {
+    public void subscribeToAllPollEventStopPollingAfterNSecondsTest() {
         // Assert
         Duration pollInterval = Duration.ofSeconds(1);
         Duration waitTime = Duration.ofSeconds(3);
         PollResponse<Response> success = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created: Cert A"));
-        PollResponse<Response> inProgress = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS,new Response("Starting : Cert A"));
+        PollResponse<Response> inProgress = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
 
         when(pollOperation.apply(any())).thenReturn(Mono.just(inProgress), Mono.just(inProgress), Mono.just(success));
 
@@ -219,75 +224,69 @@ public class PollerTests {
         Assert.assertFalse(poller.isAutoPollingEnabled());
     }
 
-//
-//    /* Test where SDK Client is subscribed all responses.
-//     * This scenario is setup where source will generate successful response returned
-//     * after few in-progress response. The sdk client will stop auto polling. It
-//     * will subscribe and start receiving responses .The subscriber will get final successful response.
-//     **/
-//    @Test
-//    public void stopAutoPollAndManualPoll() throws Exception {
-//
-//        PollResponse<Response> successPollResponse = new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created : Cert A"));
-//        PollResponse<Response> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
-//
-//        long totalTimeoutInMillis = 1000 * 1;
-//        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
-//
-//        Function<PollResponse<Response>, Mono<PollResponse<Response>>> pollOperation =
-//            createPollOperation(inProgressPollResponse,
-//                successPollResponse, totalTimeoutInMillis / 2);
-//
-//        Poller<Response> createCertPoller = new Poller<>(pollInterval, pollOperation);
-//        createCertPoller.setAutoPollingEnabled(false);
-//        while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
-//            PollResponse<Response> pollResponse = createCertPoller.poll().block();
-//            Thread.sleep(pollInterval.toMillis());
-//        }
-//
-//        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-//        Assert.assertFalse(createCertPoller.isAutoPollingEnabled());
-//
-//    }
-//
-//    /* Test where SDK Client is subscribed all responses.
-//     * This scenario is setup where source will generate user cancelled response returned
-//     * after few in-progress response. The sdk client will wait for it to cancel get final USER_CANCELLED response.
-//     **/
-//    @Test
-//    public void subscribeToAllPollEventCancelOperatopnTest() throws Exception {
-//
-//        PollResponse<Response> cancelPollResponse = new PollResponse<>(OperationStatus.USER_CANCELLED, new Response("Cancelled : Cert A"));
-//        PollResponse<Response> inProgressPollResponse = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, new Response("Starting : Cert A"));
-//
-//        long totalTimeoutInMillis = 1000 * 1;
-//        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 10);
-//
-//        Function<PollResponse<Response>, Mono<PollResponse<Response>>> pollOperation =
-//            createPollOperation(inProgressPollResponse,
-//                cancelPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
-//
-//        Poller<Response> createCertPoller = new Poller<>(pollInterval, pollOperation);
-//        createCertPoller.getObserver().subscribe(pr -> {
-//            debug("Got Response " + pr.getStatus().toString() + " " + pr.getValue().response);
-//        });
-//        Thread t = new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(totalTimeoutInMillis / 2);
-//                    debug("Cancelling operation");
-//                    createCertPoller.cancelOperation();
-//                } catch (Exception e) {
-//                }
-//            }
-//        };
-//        t.start();
-//
-//        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.USER_CANCELLED);
-//        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.USER_CANCELLED);
-//        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
-//    }
+    /**
+     * Test where SDK Client is subscribed all responses. This scenario is setup where source will generate successful
+     * response returned after few in-progress response. The sdk client will stop auto polling. It will subscribe and
+     * start receiving responses .The subscriber will get final successful response.
+     */
+    @Test
+    public void stopAutoPollAndManualPoll() {
+        // Arrange
+        final List<PollResponse<Response>> responses = new ArrayList<>();
+        responses.add(new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting : Cert A")));
+        responses.add(new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Middle: Cert A")));
+        responses.add(new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new Response("Created : Cert A")));
+
+        long totalTimeoutInMillis = 1000;
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
+
+        when(pollOperation.apply(any())).thenReturn(Mono.just(responses.get(0)), Mono.just(responses.get(1)), Mono.just(responses.get(2)));
+
+        Poller<Response> poller = new Poller<>(pollInterval, pollOperation);
+        poller.setAutoPollingEnabled(false);
+
+        // Act & Assert
+        int counter = 0;
+        while (poller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
+            counter++;
+
+            PollResponse<Response> pollResponse = poller.poll().block();
+            Assert.assertSame("Counter: " + counter + " did not match.", responses.get(counter), pollResponse);
+        }
+
+        Assert.assertSame(OperationStatus.SUCCESSFULLY_COMPLETED, poller.getStatus());
+        Assert.assertFalse(poller.isAutoPollingEnabled());
+    }
+
+    /**
+     * Test where SDK Client is subscribed all responses. This scenario is setup where source will generate user
+     * cancelled response returned after few in-progress response. The sdk client will wait for it to cancel get final
+     * USER_CANCELLED response.
+     */
+    @Test
+    public void subscribeToAllPollEventCancelOperationTest() {
+        Duration pollInterval = Duration.ofMillis(500);
+        PollResponse<Response> cancellation = new PollResponse<>(OperationStatus.USER_CANCELLED, new Response("Created : Cert A"));
+        PollResponse<Response> first = new PollResponse<>(OperationStatus.IN_PROGRESS, new Response("Starting: Cert A"));
+
+        when(pollOperation.apply(any())).thenReturn(Mono.just(first), Mono.just(cancellation));
+
+        // Act
+        Poller<Response> poller = new Poller<>(pollInterval, pollOperation, null, cancelOperation);
+
+        // Assert
+        StepVerifier.create(poller.getObserver())
+            .expectNext(first)
+            .then(() -> poller.cancelOperation())
+            .thenCancel() // cancel this actual subscriber, this does not affect the parent operation.
+            .verify();
+
+        Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.block().getStatus());
+        Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.getStatus());
+        Assert.assertTrue(poller.isAutoPollingEnabled());
+
+        verify(cancelOperation, Mockito.times(1)).accept(poller);
+    }
 
     public static class Response {
         private final String response;
@@ -298,6 +297,11 @@ public class PollerTests {
 
         public String getResponse() {
             return response;
+        }
+
+        @Override
+        public String toString() {
+            return "Response: " + response;
         }
     }
 }
