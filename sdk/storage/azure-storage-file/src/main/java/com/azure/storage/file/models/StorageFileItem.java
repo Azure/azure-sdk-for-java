@@ -12,19 +12,19 @@ import com.azure.core.annotation.Immutable;
 public final class StorageFileItem {
     private final String name;
     private final boolean isDirectory;
-    private final FileProperty fileProperty;
+    private final Long fileSize;
 
     /**
      * Creates an instance of file or directory reference information about a specific Share.
      *
      * @param name Name of the file or the directory.
      * @param isDirectory A boolean set to true if the reference is a directory, false if the reference is a file.
-     * @param fileProperty Property of a file. Pass {@code null} if the reference is a directory.
+     * @param fileSize Size of a file. Pass {@code null} if the reference is a directory.
      */
-    public StorageFileItem(final String name, final boolean isDirectory, final FileProperty fileProperty) {
+    public StorageFileItem(final String name, final boolean isDirectory, final Long fileSize) {
         this.name = name;
         this.isDirectory = isDirectory;
-        this.fileProperty = fileProperty;
+        this.fileSize = fileSize;
     }
 
     /**
@@ -42,10 +42,10 @@ public final class StorageFileItem {
     }
 
     /**
-     * @return Property of a file. Return {@code null} if the reference is a directory.
+     * @return Size of a file, {@code null} if the reference is a directory.
      */
-    public FileProperty getFileProperties() {
-        return fileProperty;
+    public Long getFileSize() {
+        return fileSize;
     }
 
 }

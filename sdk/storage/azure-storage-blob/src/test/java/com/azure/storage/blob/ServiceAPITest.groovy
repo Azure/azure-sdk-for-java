@@ -387,7 +387,7 @@ class ServiceAPITest extends APISpec {
         serviceURL.getAccountInfo()
 
         then:
-        thrown(StorageException)
+        thrown(IllegalArgumentException)
     }
 
 

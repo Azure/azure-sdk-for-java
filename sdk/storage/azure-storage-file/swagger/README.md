@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,FileHTTPHeaders,ShareItem,FileServiceProperties,CorsRule,ShareProperties,FileProperty,Range,CopyStatusType,SignedIdentifier,SourceModifiedAccessConditions,StorageErrorException,StorageErrorCode,StorageError,StorageServiceProperties
+custom-types: HandleItem,FileHTTPHeaders,ShareItem,FileServiceProperties,CorsRule,ShareProperties,Range,CopyStatusType,SignedIdentifier,SourceModifiedAccessConditions,StorageErrorException,StorageErrorCode,StorageError,StorageServiceProperties
 ```
 
 ### Query Parameters

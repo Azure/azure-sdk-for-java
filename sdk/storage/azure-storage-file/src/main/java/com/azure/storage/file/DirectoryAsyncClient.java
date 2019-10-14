@@ -26,12 +26,12 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.StorageFileItem;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import java.nio.charset.StandardCharsets;
+import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -443,8 +443,9 @@ public class DirectoryAsyncClient {
      *
      * @param prefix Optional prefix which filters the results to return only files and directories whose name begins
      * with.
-     * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page. If the request does not
-     * specify maxResultsPerPage or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page. If the request
+     * does not specify maxResultsPerPage or specifies a value greater than 5,000,
+     * the server will return up to 5,000 items.
      * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      */
     public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage) {
@@ -850,7 +851,7 @@ public class DirectoryAsyncClient {
                     true, null)));
             response.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> storageFileItems.add(new StorageFileItem(fileItem.getName(), false,
-                    fileItem.getProperties())));
+                    fileItem.getProperties().getContentLength())));
         }
 
         return new ArrayList<>(storageFileItems);
