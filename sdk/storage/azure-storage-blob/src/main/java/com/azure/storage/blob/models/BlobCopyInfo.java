@@ -8,6 +8,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -19,28 +20,30 @@ import java.util.Objects;
 @Immutable
 public class BlobCopyInfo {
     private final String copyId;
-    private final String targetUrl;
     private final String sourceUrl;
     private final CopyStatusType copyStatus;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
     private final String error;
 
     /**
      * Creates an instance of {@link BlobCopyInfo}.
      *
      * @param copyId The identifier of the copy operation.
-     * @param targetUrl The url of the destination blob. The contents are being copied to this blob.
      * @param sourceUrl The url of the source blob. The contents are being copied from this blob.
      * @param copyStatus The status of the copy operation.
      * @param error An error message for the copy operation. {@code null} if there are no errors.
      *
-     * @throws NullPointerException If {@code id}, {@code targetUrl}, {@code sourceUrl}, or {@code copyStatus} is
-     *     null.
+     * @throws NullPointerException If {@code id}, {@code targetUrl}, {@code sourceUrl}, {@code eTag}, or
+     *     {@code copyStatus} is null.
      */
-    public BlobCopyInfo(String copyId, String targetUrl, String sourceUrl, CopyStatusType copyStatus, String error) {
+    public BlobCopyInfo(String sourceUrl, String copyId, CopyStatusType copyStatus, String eTag,
+                        OffsetDateTime lastModified, String error) {
         this.copyId = Objects.requireNonNull(copyId, "'id' cannot be null.");
-        this.targetUrl = Objects.requireNonNull(targetUrl, "'targetUrl' cannot be null.");
         this.sourceUrl = Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null.");
         this.copyStatus = Objects.requireNonNull(copyStatus, "'copyStatus' cannot be null.");
+        this.eTag = Objects.requireNonNull(eTag, "'eTag' cannot be null.");
+        this.lastModified = lastModified;
         this.error = error;
     }
 
@@ -53,23 +56,12 @@ public class BlobCopyInfo {
         return copyId;
     }
 
-    // Gets the url of the destination blob.
-
     /**
-     * Gets the url of the destination blob. Contents are being copied to this blob.
-     *
-     * @return The url of the destination blob.
-     */
-    public String getTargetUrl() {
-        return targetUrl;
-    }
-
-    /**
-     * Gets the url of the source blob. Contents are being copied from this blob to {@link #getTargetUrl()}.
+     * Gets the url of the source blob.
      *
      * @return The url of the source blob.
      */
-    public String getSourceUrl() {
+    public String getCopySourceUrl() {
         return sourceUrl;
     }
 
@@ -78,7 +70,7 @@ public class BlobCopyInfo {
      *
      * @return The status of the copy operation.
      */
-    public CopyStatusType getStatus() {
+    public CopyStatusType getCopyStatus() {
         return copyStatus;
     }
 
@@ -90,5 +82,26 @@ public class BlobCopyInfo {
      */
     public String getError() {
         return error;
+    }
+
+    /**
+     * Gets the date/time that the copy operation to the destination blob completed.
+     *
+     * @return The date/time that the copy operation to the destination blob completed.
+     */
+    public OffsetDateTime getLastModified() {
+        return lastModified;
+    }
+
+    /**
+     * If the copy is complete, contains the ETag of the destination blob. If the copy isn't complete, contains the
+     * ETag of the empty blob created at the start of the copy.
+     *
+     * The ETag value will be in quotes.
+     *
+     * @return The ETag for the copy.
+     */
+    public String getETag() {
+        return eTag;
     }
 }

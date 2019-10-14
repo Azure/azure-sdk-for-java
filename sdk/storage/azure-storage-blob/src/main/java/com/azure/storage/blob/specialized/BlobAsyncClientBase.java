@@ -245,7 +245,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      *
@@ -264,7 +264,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
@@ -328,18 +328,16 @@ public class BlobAsyncClientBase {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
                 copyIdReference.set(headers.getCopyId());
 
-                return new BlobCopyInfo(headers.getCopyId(), getBlobUrl(), sourceUrl.toString(),
-                    headers.getCopyStatus(), headers.getErrorCode());
+                return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(),
+                    headers.getCopyStatus(), headers.getETag(), headers.getLastModified(), headers.getErrorCode());
             });
     }
 
     private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
-        final BlobCopyInfo lastStatus = pollResponse.getValue();
-
         return getProperties().map(response -> {
             final CopyStatusType status = response.getCopyStatus();
-            final BlobCopyInfo result = new BlobCopyInfo(lastStatus.getCopyId(), lastStatus.getTargetUrl(),
-                lastStatus.getSourceUrl(), status, response.getCopyStatusDescription());
+            final BlobCopyInfo result = new BlobCopyInfo(response.getCopySource(), response.getCopyId(), status,
+                response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
 
             PollResponse.OperationStatus operationStatus;
             switch (status) {
