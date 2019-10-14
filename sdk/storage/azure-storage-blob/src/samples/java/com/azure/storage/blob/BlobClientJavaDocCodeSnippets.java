@@ -67,7 +67,7 @@ public class BlobClientJavaDocCodeSnippets {
         // This blocks until either the copy operation has completed, failed, or been cancelled.
         PollResponse<BlobCopyOperation> response = poller.block();
         BlobCopyOperation operation = response.getValue();
-        System.out.printf("Copy identifier: %s%n", operation.getId());
+        System.out.printf("Copy identifier: %s%n", operation.getCopyId());
         // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
     }
 
@@ -231,7 +231,7 @@ public class BlobClientJavaDocCodeSnippets {
         // This blocks until either the copy operation has completed, failed, or been cancelled.
         PollResponse<BlobCopyOperation> response = poller.block();
         BlobCopyOperation operation = response.getValue();
-        System.out.printf("Copy identifier: %s%n", operation.getId());
+        System.out.printf("Copy identifier: %s%n", operation.getCopyId());
         // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 

@@ -338,7 +338,7 @@ public class BlobAsyncClientBase {
 
         return getProperties().map(response -> {
             final CopyStatusType status = response.getCopyStatus();
-            final BlobCopyOperation result = new BlobCopyOperation(lastStatus.getId(), lastStatus.getTargetUrl(),
+            final BlobCopyOperation result = new BlobCopyOperation(lastStatus.getCopyId(), lastStatus.getTargetUrl(),
                 lastStatus.getSourceUrl(), status, response.getCopyStatusDescription());
 
             PollResponse.OperationStatus operationStatus;

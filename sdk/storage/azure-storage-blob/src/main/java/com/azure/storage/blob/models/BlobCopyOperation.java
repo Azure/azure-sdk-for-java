@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 @Immutable
 public class BlobCopyOperation {
-    private final String id;
+    private final String copyId;
     private final String targetUrl;
     private final String sourceUrl;
     private final CopyStatusType copyStatus;
@@ -27,7 +27,7 @@ public class BlobCopyOperation {
     /**
      * Creates an instance of {@link BlobCopyOperation}.
      *
-     * @param id The identifier of the copy operation.
+     * @param copyId The identifier of the copy operation.
      * @param targetUrl The url of the destination blob. The contents are being copied to this blob.
      * @param sourceUrl The url of the source blob. The contents are being copied from this blob.
      * @param copyStatus The status of the copy operation.
@@ -36,8 +36,8 @@ public class BlobCopyOperation {
      * @throws NullPointerException If {@code id}, {@code targetUrl}, {@code sourceUrl}, or {@code copyStatus} is
      *     null.
      */
-    public BlobCopyOperation(String id, String targetUrl, String sourceUrl, CopyStatusType copyStatus, String error) {
-        this.id = Objects.requireNonNull(id, "'id' cannot be null.");
+    public BlobCopyOperation(String copyId, String targetUrl, String sourceUrl, CopyStatusType copyStatus, String error) {
+        this.copyId = Objects.requireNonNull(copyId, "'id' cannot be null.");
         this.targetUrl = Objects.requireNonNull(targetUrl, "'targetUrl' cannot be null.");
         this.sourceUrl = Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null.");
         this.copyStatus = Objects.requireNonNull(copyStatus, "'copyStatus' cannot be null.");
@@ -51,8 +51,8 @@ public class BlobCopyOperation {
      *
      * @return The identifier for the copy operation.
      */
-    public String getId() {
-        return id;
+    public String getCopyId() {
+        return copyId;
     }
 
     // Gets the url of the destination blob.
