@@ -3,7 +3,11 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.storage.file.datalake.implementation.models.FileSystemListPathsHeaders;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathCreateHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathList;
 
 import java.time.OffsetDateTime;
 
@@ -14,10 +18,20 @@ import java.time.OffsetDateTime;
 public class PathItem {
     private String eTag;
     private OffsetDateTime lastModifiedTime;
+    private long contentLength;
+    private String group;
+    private boolean isDirectory;
+    private String name;
+    private String owner;
+    private String permissions;
 
     public PathItem(PathCreateHeaders generatedHeaders) {
         this.eTag = generatedHeaders.getETag();
         this.lastModifiedTime = generatedHeaders.getLastModified();
+    }
+
+    public PathItem(Path path) {
+
     }
 
     /**

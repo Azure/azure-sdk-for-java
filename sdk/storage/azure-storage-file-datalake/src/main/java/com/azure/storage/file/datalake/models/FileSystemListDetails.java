@@ -42,7 +42,7 @@ public final class FileSystemListDetails {
     /**
      * @return the listing flags
      */
-    public FileSystemListDetails toIncludeType() {
+    public ListFileSystemsIncludeType toIncludeType() {
         if (this.retrieveMetadata) {
             return ListFileSystemsIncludeType.METADATA;
         }

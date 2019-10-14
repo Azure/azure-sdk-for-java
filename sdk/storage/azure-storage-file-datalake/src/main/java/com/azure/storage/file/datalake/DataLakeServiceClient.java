@@ -3,6 +3,183 @@
 
 package com.azure.storage.file.datalake;
 
-public class DataLakeServiceClient {
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.PublicAccessType;
 
+import java.time.Duration;
+import java.util.Map;
+
+/**
+ * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
+ * does not hold any state about a particular storage account but is instead a convenient way of sending off appropriate
+ * requests to the resource on the service. It may also be used to construct URLs to file systems, files and
+ * directories.
+ *
+ * <p>
+ * This client contains operations on a data lake service account. Operations on a file system are available on
+ * {@link FileSystemClient} through {@link #getFileSystemClient(String)}, and operations on a file or directory are
+ * available on {@link FileClient} and {@link DirectoryClient} respectively.
+ */
+@ServiceClient(builder = DataLakeServiceClientBuilder.class)
+public class DataLakeServiceClient {
+    private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
+
+    /**
+     * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
+     */
+    DataLakeServiceClient(DataLakeServiceAsyncClient dataLakeServiceAsyncClient) {
+        this.dataLakeServiceAsyncClient = dataLakeServiceAsyncClient;
+    }
+
+    /**
+     * Initializes a {@link FileSystemClient} object pointing to the specified file system. This method does not create
+     * a file system. It simply constructs the URL to the file system and offers access to methods relevant to file
+     * systems.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String}
+     *
+     * @param fileSystemName The name of the file system to point to.
+     * @return A {@link FileSystemClient} object pointing to the specified file system
+     */
+    public FileSystemClient getFileSystemClient(String fileSystemName) {
+        return new FileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName));
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return dataLakeServiceAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Creates a new file system within a storage account. If a file system with the same name already exists, the
+     * operation fails. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String}
+     *
+     * @param fileSystemName Name of the file system to create
+     * @return The {@link FileSystemClient} used to interact with the file system created.
+     */
+    public FileSystemClient createFileSystem(String fileSystemName) {
+        return createFileSystemWithResponse(fileSystemName, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new file system within a storage account. If a file system with the same name already exists, the
+     * operation fails. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystemWithResponse#String-Map-PublicAccessType-Context}
+     *
+     * @param fileSystemName Name of the file system to create
+     * @param metadata Metadata to associate with the file system.
+     * @param accessType Specifies how the data in this file system is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link FileSystemClient} used
+     * to interact with the file system created.
+     */
+    public Response<FileSystemClient> createFileSystemWithResponse(String fileSystemName,
+        Map<String, String> metadata, PublicAccessType accessType, Context context) {
+        FileSystemClient client = getFileSystemClient(fileSystemName);
+        return new SimpleResponse<>(client.createWithResponse(metadata, accessType, null, context), client);
+    }
+
+    /**
+     * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
+     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String}
+     *
+     * @param fileSystemName Name of the file system to delete
+     */
+    public void deleteFileSystem(String fileSystemName) {
+        deleteFileSystemWithResponse(fileSystemName, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
+     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     *
+     * @param fileSystemName Name of the file system to delete
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers
+     */
+    public Response<Void> deleteFileSystemWithResponse(String fileSystemName, Context context) {
+        return null;
+//        return dataLakeServiceAsyncClient.deleteFileSystemWithResponse(fileSystemName, context);
+    }
+
+    /**
+     * Gets the URL of the storage account represented by this client.
+     *
+     * @return the URL.
+     */
+    public String getAccountUrl() {
+        return dataLakeServiceAsyncClient.getAccountUrl();
+    }
+
+    // TODO (gapra) : Make this return correct type
+    /**
+     * Returns a lazy loaded list of file systems in this account. The returned {@link PagedIterable} can be consumed
+     * while new items are automatically retrieved as needed. For more information, see the <a
+     * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems}
+     *
+     * @return The list of file systems.
+     */
+    public PagedIterable<BlobContainerItem> listFileSystems() {
+        return this.listFileSystems(new ListFileSystemsOptions(), null);
+    }
+
+    /**
+     * Returns a lazy loaded list of file system in this account. The returned {@link PagedIterable} can be consumed
+     * while new items are automatically retrieved as needed. For more information, see the <a
+     * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     *
+     * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The list of containers.
+     */
+    public PagedIterable<BlobContainerItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
+        return null;
+//        return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystems(options, timeout));
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.dataLakeServiceAsyncClient.getAccountName();
+    }
 }

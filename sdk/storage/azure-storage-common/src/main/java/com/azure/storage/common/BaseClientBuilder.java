@@ -63,6 +63,20 @@ public abstract class BaseClientBuilder<T extends BaseClientBuilder<T>> {
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private Configuration configuration;
 
+    protected BaseClientBuilder copyBuilder(BaseClientBuilder copy) {
+        this.pipeline = copy.pipeline;
+        this.accountName = copy.accountName;
+        this.endpoint = copy.endpoint;
+        this.sharedKeyCredential = copy.sharedKeyCredential;
+        this.tokenCredential = copy.tokenCredential;
+        this.sasTokenCredential = copy.sasTokenCredential;
+        this.httpClient = copy.httpClient;
+        this.httpLogOptions = copy.httpLogOptions;
+        this.retryOptions = copy.retryOptions;
+        this.configuration = copy.configuration;
+        return this;
+    }
+
     /**
      * Assembles the pipeline based on Storage's standard policies and any custom policies set by the user.
      *

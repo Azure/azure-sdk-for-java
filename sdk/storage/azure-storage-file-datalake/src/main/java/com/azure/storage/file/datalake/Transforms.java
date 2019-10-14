@@ -2,13 +2,19 @@ package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
+import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
+import com.azure.storage.file.datalake.models.FileSystemItem;
+import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
 class Transforms {
@@ -84,5 +90,37 @@ class Transforms {
             .setLeaseState(toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()))
             .setLeaseStatus(toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()))
             .setPublicAccess(toDataLakePublicAccessType(blobContainerProperties.getBlobPublicAccess()));
+    }
+
+    static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
+        return new BlobContainerListDetails()
+            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata());
+    }
+
+    static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
+        return new ListBlobContainersOptions()
+            .setDetails(toBlobContainerListDetails(listFileSystemsOptions.getDetails()))
+            .setMaxResults(listFileSystemsOptions.getMaxResults())
+            .setPrefix(listFileSystemsOptions.getPrefix());
+    }
+
+    static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
+        return new FileSystemItem()
+            .setMetadata(blobContainerItem.getMetadata())
+            .setName(blobContainerItem.getName())
+            .setProperties(toFileSystemProperties(blobContainerItem.getProperties()));
+    }
+
+    static FileSystemProperties toFileSystemProperties(com.azure.storage.blob.models.BlobContainerProperties
+        blobContainerProperties) {
+        return new FileSystemProperties()
+            .setEtag(blobContainerProperties.getEtag())
+            .setHasImmutabilityPolicy(blobContainerProperties.isHasImmutabilityPolicy())
+            .setHasLegalHold(blobContainerProperties.isHasLegalHold())
+            .setLastModified(blobContainerProperties.getLastModified())
+            .setLeaseDuration(toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()))
+            .setLeaseState(toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()))
+            .setLeaseStatus(toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()))
+            .setPublicAccess(toDataLakePublicAccessType(blobContainerProperties.getPublicAccess()));
     }
 }

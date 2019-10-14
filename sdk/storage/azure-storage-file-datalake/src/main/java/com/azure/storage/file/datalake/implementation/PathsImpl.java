@@ -118,11 +118,7 @@ public final class PathsImpl {
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-<<<<<<< HEAD
-        Mono<PathsFlushDataResponse> flushData(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
-=======
         Mono<PathsFlushDataResponse> flushData(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData, @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({202})
@@ -164,11 +160,7 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-<<<<<<< HEAD
-        return service.create(this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentDisposition, contentLanguage, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
-=======
         return service.create(this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
     }
 
     /**
@@ -194,11 +186,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
-    public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-=======
     public Mono<PathsCreateResponse> createWithRestResponseAsync(PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions, String umask, String requestId, Integer timeout, PathHTTPHeaders pathHTTPHeaders, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
         String cacheControl = null;
         if (pathHTTPHeaders != null) {
             cacheControl = pathHTTPHeaders.getCacheControl();
@@ -259,11 +247,7 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-<<<<<<< HEAD
-        return service.create(this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentDisposition, contentLanguage, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
-=======
         return service.create(this.client.getUrl(), resource, continuation, mode, renameSource, sourceLeaseId, properties, permissions, umask, requestId, timeout, this.client.getVersion(), cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
     }
 
     /**
@@ -300,11 +284,7 @@ public final class PathsImpl {
         String transactionalContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-<<<<<<< HEAD
-        return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentDisposition, contentEncoding, contentType, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
-=======
         return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
     }
 
     /**
@@ -333,11 +313,7 @@ public final class PathsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
-    public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, BlobHTTPHeaders blobHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-=======
     public Mono<PathsUpdateResponse> updateWithRestResponseAsync(PathUpdateAction action, Flux<ByteBuffer> body, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String properties, String owner, String group, String permissions, String acl, String requestId, Integer timeout, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
         String leaseId = null;
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.getLeaseId();
@@ -381,11 +357,7 @@ public final class PathsImpl {
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-<<<<<<< HEAD
-        return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentDisposition, contentEncoding, contentType, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
-=======
         return service.update(this.client.getUrl(), action, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, properties, owner, group, permissions, acl, body, requestId, timeout, this.client.getVersion(), leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
     }
 
     /**
@@ -729,26 +701,16 @@ public final class PathsImpl {
         final String action = "flush";
         final String leaseId = null;
         final String cacheControl = null;
-<<<<<<< HEAD
-        final String contentDisposition = null;
-        final String contentEncoding = null;
-        final String contentType = null;
-=======
         final String contentType = null;
         final String contentDisposition = null;
         final String contentEncoding = null;
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
         final String contentLanguage = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
         String transactionalContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-<<<<<<< HEAD
-        return service.flushData(this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, requestId, this.client.getVersion(), action, leaseId, cacheControl, contentDisposition, contentEncoding, contentType, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
-=======
         return service.flushData(this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, requestId, this.client.getVersion(), action, leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
     }
 
     /**
@@ -763,21 +725,13 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseAccessConditions Additional parameters for the operation.
      * @param pathHTTPHeaders Additional parameters for the operation.
-<<<<<<< HEAD
-     * @param blobHTTPHeaders Additional parameters for the operation.
-=======
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
-    public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, BlobHTTPHeaders blobHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-=======
     public Mono<PathsFlushDataResponse> flushDataWithRestResponseAsync(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, byte[] transactionalContentMD5, String requestId, LeaseAccessConditions leaseAccessConditions, PathHTTPHeaders pathHTTPHeaders, ModifiedAccessConditions modifiedAccessConditions, Context context) {
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
         final String action = "flush";
         String leaseId = null;
         if (leaseAccessConditions != null) {
@@ -787,13 +741,10 @@ public final class PathsImpl {
         if (pathHTTPHeaders != null) {
             cacheControl = pathHTTPHeaders.getCacheControl();
         }
-<<<<<<< HEAD
-=======
         String contentType = null;
         if (pathHTTPHeaders != null) {
             contentType = pathHTTPHeaders.getContentType();
         }
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
         String contentDisposition = null;
         if (pathHTTPHeaders != null) {
             contentDisposition = pathHTTPHeaders.getContentDisposition();
@@ -802,19 +753,9 @@ public final class PathsImpl {
         if (pathHTTPHeaders != null) {
             contentEncoding = pathHTTPHeaders.getContentEncoding();
         }
-<<<<<<< HEAD
-        String contentType = null;
-        if (blobHTTPHeaders != null) {
-            contentType = blobHTTPHeaders.getContentType();
-        }
-        String contentLanguage = null;
-        if (blobHTTPHeaders != null) {
-            contentLanguage = blobHTTPHeaders.getContentLanguage();
-=======
         String contentLanguage = null;
         if (pathHTTPHeaders != null) {
             contentLanguage = pathHTTPHeaders.getContentLanguage();
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
         }
         String ifMatch = null;
         if (modifiedAccessConditions != null) {
@@ -835,11 +776,7 @@ public final class PathsImpl {
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-<<<<<<< HEAD
-        return service.flushData(this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, requestId, this.client.getVersion(), action, leaseId, cacheControl, contentDisposition, contentEncoding, contentType, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
-=======
         return service.flushData(this.client.getUrl(), timeout, position, retainUncommittedData, close, contentLength, transactionalContentMD5Converted, requestId, this.client.getVersion(), action, leaseId, cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
->>>>>>> 440e5832a8314f15507c5a3479e7454d73860811
     }
 
     /**
