@@ -140,7 +140,7 @@ public class PagedIterableJavaDocCodeSnippets {
      */
     public CustomPagedFlux<String> createCustomInstance() {
 
-        // BEGIN: com.azure.core.http.rest.pagedflux.instantiation
+        // BEGIN: com.azure.core.http.rest.custompagedflux.instantiation
         // A supplier that fetches the first page of data from source/service
         Supplier<Mono<PagedResponse<String>>> firstPageRetriever = () -> null;
 
@@ -150,7 +150,7 @@ public class PagedIterableJavaDocCodeSnippets {
 
         CustomPagedFlux<String> pagedFlux = new CustomPagedFlux<>(firstPageRetriever,
             nextPageRetriever);
-        // END: com.azure.core.http.rest.pagedflux.instantiation
+        // END: com.azure.core.http.rest.custompagedflux.instantiation
         return pagedFlux;
     }
 
