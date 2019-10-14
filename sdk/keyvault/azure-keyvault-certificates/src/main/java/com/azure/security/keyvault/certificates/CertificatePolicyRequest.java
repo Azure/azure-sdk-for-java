@@ -18,10 +18,10 @@ class CertificatePolicyRequest {
     CertificatePolicyRequest(CertificatePolicy certificatePolicy) {
         this.keyProperties =  new KeyProperties(certificatePolicy);
         this.x509CertificateProperties = new X509CertificateProperties(certificatePolicy);
-        this.secretProperties = certificatePolicy.secretContentType() != null ? new SecretProperties(certificatePolicy.secretContentType().toString()) : null;
+        this.secretProperties = certificatePolicy.getContentType() != null ? new SecretProperties(certificatePolicy.getContentType().toString()) : null;
         this.issuerParameters = new IssuerParameters(certificatePolicy);
-        this.lifetimeActionRequests = certificatePolicy.lifetimeActions() != null ? parseLifeTimeActions(certificatePolicy.lifetimeActions()) : null;
-        this.attributes = new CertificateRequestAttributes().enabled(certificatePolicy.enabled());
+        this.lifetimeActionRequests = certificatePolicy.getLifetimeActions() != null ? parseLifeTimeActions(certificatePolicy.getLifetimeActions()) : null;
+        this.attributes = new CertificateRequestAttributes().enabled(certificatePolicy.isEnabled());
     }
 
     private List<LifetimeActionRequest> parseLifeTimeActions(List<LifetimeAction> input) {

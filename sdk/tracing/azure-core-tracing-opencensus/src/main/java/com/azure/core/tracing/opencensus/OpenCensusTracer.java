@@ -96,7 +96,7 @@ public class OpenCensusTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void end(int responseCode, Throwable throwable, Context context) {
-        Objects.requireNonNull(context, "'context' cannot be null");
+        Objects.requireNonNull(context, "'context' cannot be null.");
         final Span span = getSpan(context);
         if (span == null) {
             return;

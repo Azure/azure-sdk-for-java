@@ -13,6 +13,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -25,11 +26,12 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileReference;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -43,7 +45,6 @@ import java.util.TreeSet;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.FileExtensions.filePermissionAndKeyHelper;
 import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
@@ -83,7 +84,7 @@ public class DirectoryAsyncClient {
      */
     DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
         String snapshot, String accountName) {
-        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
@@ -183,7 +184,7 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
+        validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
@@ -334,7 +335,7 @@ public class DirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        filePermissionAndKeyHelper(filePermission, properties.getFilePermissionKey());
+        validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.setFilePermission(filePermission, FileConstants.PRESERVE);
@@ -423,9 +424,9 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure
      * Docs</a>.</p>
      *
-     * @return {@link FileReference File info} in the storage directory
+     * @return {@link StorageFileItem File info} in the storage directory
      */
-    public PagedFlux<FileReference> listFilesAndDirectories() {
+    public PagedFlux<StorageFileItem> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null);
     }
 
@@ -446,15 +447,15 @@ public class DirectoryAsyncClient {
      * with.
      * @param maxResults Optional maximum number of files and/or directories to return per page. If the request does not
      * specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @return {@link FileReference File info} in this directory with prefix and max number of return results.
+     * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      */
-    public PagedFlux<FileReference> listFilesAndDirectories(String prefix, Integer maxResults) {
+    public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResults) {
         return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, null, Context.NONE);
     }
 
-    PagedFlux<FileReference> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults,
-                                                                        Duration timeout, Context context) {
-        Function<String, Mono<PagedResponse<FileReference>>> retriever =
+    PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults,
+                                                                          Duration timeout, Context context) {
+        Function<String, Mono<PagedResponse<StorageFileItem>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResults, null, context), timeout)
@@ -842,18 +843,37 @@ public class DirectoryAsyncClient {
         return new SimpleResponse<>(response, directorySetMetadataInfo);
     }
 
-    private List<FileReference> convertResponseAndGetNumOfResults(
+    private List<StorageFileItem> convertResponseAndGetNumOfResults(
         DirectorysListFilesAndDirectoriesSegmentResponse response) {
-        Set<FileReference> fileReferences = new TreeSet<>(Comparator.comparing(FileReference::getName));
+        Set<StorageFileItem> storageFileItems = new TreeSet<>(Comparator.comparing(StorageFileItem::getName));
         if (response.getValue().getSegment() != null) {
             response.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> fileReferences.add(new FileReference(directoryItem.getName(),
+                .forEach(directoryItem -> storageFileItems.add(new StorageFileItem(directoryItem.getName(),
                     true, null)));
             response.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> fileReferences.add(new FileReference(fileItem.getName(), false,
-                    fileItem.getProperties())));
+                .forEach(fileItem -> storageFileItems.add(new StorageFileItem(fileItem.getName(), false,
+                    fileItem.getProperties().getContentLength())));
         }
 
-        return new ArrayList<>(fileReferences);
+        return new ArrayList<>(storageFileItems);
+    }
+
+    /**
+     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
+     * the file permission is of valid length.
+     * @param filePermission The file permission.
+     * @param filePermissionKey The file permission key.
+     * @throws IllegalArgumentException for invalid file permission or file permission keys.
+     */
+    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+        if (filePermission != null && filePermissionKey != null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
+        }
+
+        if (filePermission != null) {
+            Utility.assertInBounds("filePermission",
+                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
+        }
     }
 }

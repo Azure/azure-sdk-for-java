@@ -116,7 +116,7 @@ public final class QueueServiceAsyncClient {
      * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
-        Objects.requireNonNull(queueName);
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         return withContext(context -> createQueueWithResponse(queueName, metadata, context));
     }
 

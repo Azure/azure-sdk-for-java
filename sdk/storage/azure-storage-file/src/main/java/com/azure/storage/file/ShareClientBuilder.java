@@ -70,7 +70,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
     }
 
     private AzureFileStorageImpl constructImpl() {
-        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
 
         if (!super.hasCredential()) {
             throw logger.logExceptionAsError(
@@ -179,7 +179,7 @@ public class ShareClientBuilder extends BaseFileClientBuilder<ShareClientBuilder
      * @throws NullPointerException If {@code shareName} is {@code null}.
      */
     public ShareClientBuilder shareName(String shareName) {
-        this.shareName = Objects.requireNonNull(shareName);
+        this.shareName = Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         return this;
     }
 

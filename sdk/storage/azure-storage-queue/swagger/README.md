@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: StorageError,StorageErrorException,StorageErrorCode,SignedIdentifier,EnqueuedMessage,DequeuedMessage,PeekedMessage,QueueMessage,QueueItem,StorageServiceProperties,StorageServiceStats,CorsRule,AccessPolicy,Logging,Metrics,RetentionPolicy
+custom-types: StorageError,StorageErrorException,StorageErrorCode,SignedIdentifier,EnqueuedMessage,DequeuedMessage,PeekedMessage,QueueItem,StorageServiceProperties,StorageServiceStats,CorsRule,AccessPolicy,Logging,Metrics,RetentionPolicy
 custom-types-subpackage: models
 ```
 

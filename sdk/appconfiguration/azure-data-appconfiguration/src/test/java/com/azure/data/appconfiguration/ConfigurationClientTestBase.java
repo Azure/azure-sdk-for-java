@@ -3,7 +3,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -47,7 +46,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
-    private static String connectionString;
+    static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
 

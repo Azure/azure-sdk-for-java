@@ -61,8 +61,8 @@ public class PagedIterable<T> extends IterableStream<T> {
     }
 
     /**
-     * Provides {@link Iterable} API for{ @link PagedResponse}
-     * It will provide same collection of T values from starting if called multiple times.
+     * Provides {@link Iterable} API for {@link PagedResponse}
+     * It will provide same collection of {@code T} values from starting if called multiple times.
      * @return {@link Iterable} interface
      */
     public Iterable<PagedResponse<T>> iterableByPage() {

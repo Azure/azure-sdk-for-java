@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Flux;
@@ -45,7 +44,7 @@ class PipelineSample {
         // We add in a policy to track the type of HTTP method calls we make.
         // We also want to see the Header information of our HTTP requests, so we specify the detail level.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
+                .connectionString(connectionString)
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
                 .buildAsyncClient();

@@ -58,7 +58,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromRSA(keyPair);
             String keyName = "testRsaKey";
             Key importedKey = client.importKey(keyName, key);
-            key.setKid(importedKey.id());
+            key.setKid(importedKey.getId());
             key.setKeyOps(importedKey.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
@@ -96,7 +96,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromRSA(keyPair);
             String keyName = "testRsaKeyWrapUnwrap";
             Key importedKey = client.importKey(keyName, key);
-            key.setKid(importedKey.id());
+            key.setKid(importedKey.getId());
             key.setKeyOps(importedKey.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
@@ -135,7 +135,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromRSA(keyPair);
             String keyName = "testRsaKeySignVerify";
             Key importedKey = client.importKey(keyName, key);
-            key.setKid(importedKey.id());
+            key.setKid(importedKey.getId());
             key.setKeyOps(importedKey.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)
@@ -193,7 +193,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromEC(keyPair, provider);
             String keyName = "testEcKey" + crv.toString();
             Key imported = client.importKey(keyName, key);
-            key.setKid(imported.id());
+            key.setKid(imported.getId());
             key.setKeyOps(imported.getKeyMaterial().getKeyOps());
             CryptographyClient cryptoClient = new CryptographyClientBuilder()
                 .pipeline(pipeline)

@@ -35,7 +35,7 @@ public final class KeyVaultCredentialPolicy implements HttpPipelinePolicy {
      * @param credential the token credential to authenticate the request
      */
     public KeyVaultCredentialPolicy(TokenCredential credential) {
-        Objects.requireNonNull(credential);
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.cache = new ScopeTokenCache(credential::getToken);
     }
 

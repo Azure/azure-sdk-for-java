@@ -8,8 +8,8 @@ module com.azure.identity {
     requires transitive com.azure.core;
 
     requires msal4j;
-    requires jna;
-    requires jna.platform;
+    requires com.sun.jna;
+    requires com.sun.jna.platform;
     requires nanohttpd;
     requires org.reactivestreams;
 

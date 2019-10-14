@@ -7,11 +7,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-import java.security.GeneralSecurityException;
 import java.time.OffsetDateTime;
 
 /**
@@ -31,23 +29,20 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @throws IllegalStateException If configuration credentials cannot be created.
      */
     public ConfigurationClient createAsyncConfigurationClientWithPipeline() {
-        try {
-            String connectionString = getConnectionString();
-            // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
-            HttpPipeline pipeline = new HttpPipelineBuilder()
-                .policies(/* add policies */)
-                .build();
 
-            ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-                .pipeline(pipeline)
-                .endpoint("https://myconfig.azure.net/")
-                .credential(new ConfigurationClientCredentials(connectionString))
-                .buildClient();
-            // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
-            return configurationClient;
-        } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
-        }
+        String connectionString = getConnectionString();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(/* add policies */)
+            .build();
+
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+            .pipeline(pipeline)
+            .endpoint("https://myconfig.azure.net/")
+            .connectionString(connectionString)
+            .buildClient();
+        // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+        return configurationClient;
     }
 
     /**
@@ -57,17 +52,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @throws IllegalStateException If configuration credentials cannot be created
      */
     public ConfigurationAsyncClient createAsyncConfigurationClient() {
-        try {
-            String connectionString = getConnectionString();
-            // BEGIN: com.azure.data.applicationconfig.async.configurationclient.instantiation
-            ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
-                .buildAsyncClient();
-            // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
-            return configurationAsyncClient;
-        } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
-        }
+        String connectionString = getConnectionString();
+        // BEGIN: com.azure.data.applicationconfig.async.configurationclient.instantiation
+        ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .buildAsyncClient();
+        // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
+        return configurationAsyncClient;
     }
 
     /**
@@ -77,17 +68,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @throws IllegalStateException If configuration credentials cannot be created
      */
     public ConfigurationClient createSyncConfigurationClient() {
-        try {
-            String connectionString = getConnectionString();
-            // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
-            ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
-                .buildClient();
-            // END: com.azure.data.applicationconfig.configurationclient.instantiation
-            return configurationClient;
-        } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
-        }
+        String connectionString = getConnectionString();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
+        ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+            .connectionString(connectionString)
+            .buildClient();
+        // END: com.azure.data.applicationconfig.configurationclient.instantiation
+        return configurationClient;
     }
 
     /**
@@ -97,11 +84,11 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String-String
         ConfigurationSetting result = configurationClient
-            .addSetting("prodDBConnection", "db_connection", null);
-        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
+            .addSetting("prodDBConnection", "westUS", "db_connection");
+        System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.addSetting#String-String-String
 
-    /*
+    /**
       Generates code sample for using {@link ConfigurationClient#addSettingWithResponse(ConfigurationSetting, Context)}
      */
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.addSettingWithResponse#ConfigurationSetting-Context
@@ -110,8 +97,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 new ConfigurationSetting()
                     .setKey("prodDBConnection").setLabel("westUS").setValue("db_connection"),
                 new Context(key1, value1));
-        System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
-            responseResultSetting.getValue().getValue());
+        final ConfigurationSetting resultSetting = responseResultSetting.getValue();
+        System.out.printf("Key: %s, Label: %s, Value: %s", resultSetting.getKey(), resultSetting.getLabel(),
+            resultSetting.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.addSettingWithResponse#ConfigurationSetting-Context
     }
 
@@ -122,12 +110,12 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String-String
         ConfigurationSetting result = configurationClient
-            .setSetting("prodDBConnection", null, "db_connection");
-        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
+            .setSetting("prodDBConnection", "westUS", "db_connection");
+        System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
 
         // Update the value of the setting to "updated_db_connection".
-        result = configurationClient.setSetting("prodDBConnection", null, "updated_db_connection");
-        System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
+        result = configurationClient.setSetting("prodDBConnection", "westUS", "updated_db_connection");
+        System.out.printf("Key: %s, Label: %s, Value: %s", result.getKey(), result.getLabel(), result.getValue());
         // END: com.azure.data.appconfiguration.ConfigurationClient.setSetting#String-String-String
 
     /**
@@ -172,16 +160,16 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // END: com.azure.data.applicationconfig.configurationclient.getSetting#string-string-OffsetDateTime
 
     /**
-      Generates code sample for using {@link ConfigurationClient#getSettingWithResponse(ConfigurationSetting, boolean, Context)}
+      Generates code sample for using {@link ConfigurationClient#getSettingWithResponse(ConfigurationSetting, OffsetDateTime, boolean, Context)}
      */
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-boolean-Context
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context
         // Retrieve the setting with the key-label "prodDBConnection"-"westUS".
         Response<ConfigurationSetting> responseResultSetting = configurationClient
-            .getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false,
+            .getSettingWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), null, false,
                 new Context(key1, value1));
         System.out.printf("Key: %s, Value: %s", responseResultSetting.getValue().getKey(),
             responseResultSetting.getValue().getValue());
-        // END: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-boolean-Context
+        // END: com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context
     }
 
     /**

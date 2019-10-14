@@ -44,14 +44,14 @@ public class HelloWorld {
 
         // Let's Get the Cloud Rsa Key from the key vault.
         Key cloudRsaKey = keyClient.getKey("CloudRsaKey");
-        System.out.printf("Key is returned with name %s and type %s \n", cloudRsaKey.name(),
+        System.out.printf("Key is returned with name %s and type %s \n", cloudRsaKey.getName(),
             cloudRsaKey.getKeyMaterial().getKty());
 
         // After one year, the Cloud Rsa Key is still required, we need to update the expiry time of the key.
         // The update method can be used to update the expiry attribute of the key.
-        cloudRsaKey.setExpires(cloudRsaKey.expires().plusYears(1));
-        Key updatedKey = keyClient.updateKey(cloudRsaKey);
-        System.out.printf("Key's updated expiry time %s \n", updatedKey.expires());
+        cloudRsaKey.getProperties().setExpires(cloudRsaKey.getProperties().getExpires().plusYears(1));
+        Key updatedKey = keyClient.updateKeyProperties(cloudRsaKey.getProperties());
+        System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires());
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.

@@ -163,7 +163,7 @@ public class MockHttpResponse extends HttpResponse {
      */
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        Objects.requireNonNull(charset);
+        Objects.requireNonNull(charset, "'charset' cannot be null.");
 
         return bodyBytes == null
                 ? Mono.empty()

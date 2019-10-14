@@ -7,9 +7,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -42,7 +40,7 @@ import java.util.Objects;
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credential.
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credential it requires to
  * construct a client, set the ConfigurationClientCredentials with
- * {@link #credential(ConfigurationClientCredentials) this}.</p>
+ * {@link #connectionString(String) this}.</p>
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
@@ -79,7 +77,7 @@ public final class ConfigurationClientBuilder {
     private final HttpHeaders headers;
 
     private ConfigurationClientCredentials credential;
-    private URL endpoint;
+    private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
@@ -110,9 +108,9 @@ public final class ConfigurationClientBuilder {
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
-     *     {@link #credential(ConfigurationClientCredentials) credential} are set through the builder. Or can be set
+     *     {@link #connectionString(String) connectionString} is called. Or can be set
      *     explicitly by calling {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #credential(ConfigurationClientCredentials)} has not been set.
+     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationClient buildClient() {
         return new ConfigurationClient(buildAsyncClient());
@@ -130,15 +128,15 @@ public final class ConfigurationClientBuilder {
      *
      * @return A ConfigurationAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} has not been set. This setting is automatically set when
-     *     {@link #credential(ConfigurationClientCredentials) credential} are set through the builder. Or can be set
+     *     {@link #connectionString(String) connectionString} is called. Or can be set
      *     explicitly by calling {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #credential(ConfigurationClientCredentials)} has not been set.
+     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         ConfigurationClientCredentials configurationCredentials = getConfigurationCredentials(buildConfiguration);
-        URL buildEndpoint = getBuildEndpoint(configurationCredentials);
+        String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
 
@@ -185,11 +183,11 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder endpoint(String endpoint) {
         try {
-            this.endpoint = new URL(endpoint);
+            new URL(endpoint);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
-
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -197,13 +195,26 @@ public final class ConfigurationClientBuilder {
      * Sets the credential to use when authenticating HTTP requests. Also, sets the {@link #endpoint(String) endpoint}
      * for this ConfigurationClientBuilder.
      *
-     * @param credential The credential to use for authenticating HTTP requests.
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
+     * secret={secret_value}"
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public ConfigurationClientBuilder credential(ConfigurationClientCredentials credential) {
-        this.credential = Objects.requireNonNull(credential);
+    public ConfigurationClientBuilder connectionString(String connectionString) {
+        Objects.requireNonNull(connectionString);
+
+        try {
+            this.credential = new ConfigurationClientCredentials(connectionString);
+        } catch (InvalidKeyException err) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "The secret is invalid and cannot instantiate the HMAC-SHA256 algorithm.", err));
+        } catch (NoSuchAlgorithmException err) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
+        }
+
         this.endpoint = credential.getBaseUri();
+
         return this;
     }
 
@@ -307,7 +318,7 @@ public final class ConfigurationClientBuilder {
         }
     }
 
-    private URL getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
+    private String getBuildEndpoint(ConfigurationClientCredentials buildCredentials) {
         if (endpoint != null) {
             return endpoint;
         } else if (buildCredentials != null) {

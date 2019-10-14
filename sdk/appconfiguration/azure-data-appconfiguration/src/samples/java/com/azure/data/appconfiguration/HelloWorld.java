@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 import java.security.InvalidKeyException;
@@ -28,7 +27,7 @@ public class HelloWorld {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .credential(new ConfigurationClientCredentials(connectionString))
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // Name of the key to add to the configuration service.

@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.models.ComplexConfiguration;
@@ -52,7 +51,7 @@ public class ConfigurationSets {
 
         // Instantiate a configuration client that will be used to call the configuration service.
         ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-            .credential(new ConfigurationClientCredentials(connectionString))
+            .connectionString(connectionString)
             .buildAsyncClient();
 
         // Demonstrates two different complex objects being stored in Azure App Configuration; one used for beta and the

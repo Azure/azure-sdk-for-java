@@ -16,6 +16,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobHTTPHeaders
@@ -843,6 +844,52 @@ class BlockBlobAPITest extends APISpec {
         return result.remaining() == 0
     }
 
+    /*      Reporter for testing Progress Receiver
+    *        Will count the number of reports that are triggered         */
+    class Reporter implements ProgressReceiver {
+        private final long blockSize
+        private long reportingCount
+
+        Reporter(long blockSize) {
+            this.blockSize = blockSize;
+        }
+
+        @Override
+        void reportProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload with reporter"() {
+        when:
+        def uploadReporter = new Reporter(blockSize);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize).setNumBuffers(bufferCount).setProgressReceiver(uploadReporter)
+
+        def response = blobac
+            .uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions, null, null, null, null)
+            .block()
+
+        then:
+        response.getStatusCode() == 201
+        uploadReporter.getReportingCount() == size / blockSize
+
+        where:
+        size        | blockSize | bufferCount
+        10          | 10        |           8
+        20          | 1         |           5
+        100         | 50        |           2
+        1024 * 1024 | 1024      |         100
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
@@ -1012,6 +1059,33 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
+    // (discovered when a leaseId was invalid)
+    @Unroll
+    @Requires({liveMode()})
+    def "UploadBufferPool lock three or more buffers"() {
+        setup:
+        bac.upload(defaultFlux, defaultDataSize).block()
+        def leaseID = setupBlobLeaseCondition(bac, garbageLeaseID)
+        def accessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+
+        when:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize as int)
+            .setNumBuffers(numBuffers as int)
+        blobac.uploadWithResponse(Flux.just(getRandomData(dataLength as int)), parallelTransferOptions, null, null,
+            null, accessConditions).block()
+
+        then:
+        thrown(StorageException)
+
+        where:
+        dataLength | blockSize | numBuffers
+        16         | 7         | 2
+        16         | 5         | 2
     }
 
     /*def "Upload NRF progress"() {

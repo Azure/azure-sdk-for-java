@@ -3,7 +3,8 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.CertificateBase;
+import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
+import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -16,18 +17,22 @@ import java.time.ZoneOffset;
 class CertificateRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads secretBase.notBefore, secretBase.expires and secretBase.enabled fields
-     * from {@code secretBase}
-     * @param certificateBase the {@link CertificateBase} object with populated attributes
+     * Creates an instance of SecretRequestAttributes. Reads certificateProperties.notBefore, certificateProperties.expires and certificateProperties.enabled fields
+     * from {@code certificateProperties}
+     * @param certificateProperties the {@link CertificateProperties} object with populated attributes
      */
-    CertificateRequestAttributes(CertificateBase certificateBase) {
-        if (certificateBase.notBefore() != null) {
-            this.notBefore = certificateBase.notBefore().toEpochSecond();
+    CertificateRequestAttributes(CertificateProperties certificateProperties) {
+        if (certificateProperties.getNotBefore() != null) {
+            this.notBefore = certificateProperties.getNotBefore().toEpochSecond();
         }
-        if (certificateBase.expires() != null) {
-            this.expires = certificateBase.expires().toEpochSecond();
+        if (certificateProperties.getExpires() != null) {
+            this.expires = certificateProperties.getExpires().toEpochSecond();
         }
-        this.enabled = certificateBase.enabled();
+        this.enabled = certificateProperties.isEnabled();
+    }
+
+    CertificateRequestAttributes(CertificateImportOptions certificateImportOptions) {
+        this.enabled = certificateImportOptions.isEnabled();
     }
 
     CertificateRequestAttributes() {

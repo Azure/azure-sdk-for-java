@@ -24,7 +24,7 @@ import com.azure.storage.queue.implementation.models.MessagesClearResponse;
 import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
 import com.azure.storage.queue.implementation.models.MessagesEnqueueResponse;
 import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
-import com.azure.storage.queue.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.models.StorageErrorException;
 import reactor.core.publisher.Mono;
 
