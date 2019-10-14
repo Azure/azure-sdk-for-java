@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Base64Url;
+import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.PagedResponseBase;

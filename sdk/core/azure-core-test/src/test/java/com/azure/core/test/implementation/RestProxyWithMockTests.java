@@ -35,7 +35,7 @@ import com.azure.core.implementation.http.ContentType;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
-import com.azure.core.util.Base64Url;
+import com.azure.core.implementation.Base64Url;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.charset.StandardCharsets;
