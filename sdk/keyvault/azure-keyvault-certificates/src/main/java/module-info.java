@@ -4,7 +4,7 @@
 module com.azure.security.keyvault.certificates {
 
     requires transitive com.azure.core;
-    requires commons.codec;
+    requires org.apache.commons.codec;
 
     exports com.azure.security.keyvault.certificates.models;
     exports com.azure.security.keyvault.certificates.models.webkey;
