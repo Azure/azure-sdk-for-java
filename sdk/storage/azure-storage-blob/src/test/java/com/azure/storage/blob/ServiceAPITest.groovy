@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
+import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CorsRule
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.Logging
@@ -16,7 +17,6 @@ import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.models.StaticWebsite
 import com.azure.storage.blob.models.StorageAccountInfo
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.models.StorageServiceProperties
 import com.azure.storage.blob.models.StorageServiceStats
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -29,7 +29,7 @@ import java.time.OffsetDateTime
 class ServiceAPITest extends APISpec {
     def setup() {
         RetentionPolicy disabled = new RetentionPolicy().setEnabled(false)
-        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
             .setDeleteRetentionPolicy(disabled)
             .setCors(null)
@@ -44,7 +44,7 @@ class ServiceAPITest extends APISpec {
 
     def cleanup() {
         RetentionPolicy disabled = new RetentionPolicy().setEnabled(false)
-        primaryBlobServiceClient.setProperties(new StorageServiceProperties()
+        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
             .setDeleteRetentionPolicy(disabled)
             .setCors(null)
@@ -160,7 +160,7 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
-    def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
+    def validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
         return received.getLogging().isRead() == sent.getLogging().isRead() &&
             received.getLogging().isDelete() == sent.getLogging().isDelete() &&
             received.getLogging().isWrite() == sent.getLogging().isWrite() &&
@@ -217,7 +217,7 @@ class ServiceAPITest extends APISpec {
             .setIndexDocument("myIndex.html")
             .setErrorDocument404Path("custom/error/path.html")
 
-        StorageServiceProperties sentProperties = new StorageServiceProperties()
+        BlobServiceProperties sentProperties = new BlobServiceProperties()
             .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
             .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
             .setDeleteRetentionPolicy(retentionPolicy)
@@ -228,7 +228,7 @@ class ServiceAPITest extends APISpec {
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
         sleepIfRecord(30 * 1000)
 
-        StorageServiceProperties receivedProperties = primaryBlobServiceClient.getProperties()
+        BlobServiceProperties receivedProperties = primaryBlobServiceClient.getProperties()
 
         then:
         headers.getValue("x-ms-request-id") != null
@@ -258,7 +258,7 @@ class ServiceAPITest extends APISpec {
             .setIndexDocument("myIndex.html")
             .setErrorDocument404Path("custom/error/path.html")
 
-        StorageServiceProperties sentProperties = new StorageServiceProperties()
+        BlobServiceProperties sentProperties = new BlobServiceProperties()
             .setLogging(logging).setCors(corsRules).setDefaultServiceVersion(defaultServiceVersion)
             .setMinuteMetrics(minuteMetrics).setHourMetrics(hourMetrics)
             .setDeleteRetentionPolicy(retentionPolicy)
@@ -271,7 +271,7 @@ class ServiceAPITest extends APISpec {
     def "Set props error"() {
         when:
         getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
-            .setProperties(new StorageServiceProperties())
+            .setProperties(new BlobServiceProperties())
 
         then:
         thrown(StorageException)
