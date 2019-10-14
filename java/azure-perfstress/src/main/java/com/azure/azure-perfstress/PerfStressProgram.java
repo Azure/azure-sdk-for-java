@@ -134,17 +134,6 @@ public class PerfStressProgram {
         }
 
         cleanupStatus.dispose();
-
-        System.out.println("=== Results ===");
-
-        double averageElapsedSeconds = (Arrays.stream(_lastCompletionNanoTimes).average().orElse(Double.NaN))
-                / 1000000000;
-        double operationsPerSecond = _completedOperations.get() / averageElapsedSeconds;
-        double secondsPerOperation = 1 / operationsPerSecond;
-
-        System.out.printf("Completed %d operations in an average of %.2fs (%.2f ops/s, %.3f s/op)%n",
-                _completedOperations.get(), averageElapsedSeconds, operationsPerSecond, secondsPerOperation);
-        System.out.println();
     }
 
     public static void RunTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
@@ -177,6 +166,17 @@ public class PerfStressProgram {
         }
 
         progressStatus.dispose();
+
+        System.out.println("=== Results ===");
+
+        double averageElapsedSeconds = (Arrays.stream(_lastCompletionNanoTimes).average().orElse(Double.NaN))
+                / 1000000000;
+        double operationsPerSecond = _completedOperations.get() / averageElapsedSeconds;
+        double secondsPerOperation = 1 / operationsPerSecond;
+
+        System.out.printf("Completed %d operations in an average of %.2fs (%.2f ops/s, %.3f s/op)%n",
+                _completedOperations.get(), averageElapsedSeconds, operationsPerSecond, secondsPerOperation);
+        System.out.println();
     }
 
     private static void RunLoop(PerfStressTest<?> test, long endNanoTime) {
