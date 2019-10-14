@@ -18,64 +18,16 @@
 
 import argparse
 from datetime import timedelta
-from enum import Enum
 import os
 import re
 import time
-
-version_update_start_marker = re.compile(r'\{x-version-update-start;([^;]+);([^}]+)\}')	
-version_update_end_marker = re.compile(r'\{x-version-update-end\}')
-version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
-# regex for the version string is suggested one directly from semver.org
-# it's worth noting that both regular expressions on that page have start
-# of line (^) and end of line ($) anchors which need to be removed since
-# what's being matched is in the middle of the string
-# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-version_regex_str = r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
-
-class UpdateType(Enum):
-    external_dependency = 'external_dependency'
-    library = 'library'
-    all = 'all'
-
-    # defining string is necessary to get ArgumentParser's help output to produce
-    # human readable values of UpdateType
-    def __str__(self):
-        return self.value
-
-class BuildType(Enum):
-    client = 'client'
-    data = 'data'
-    management = 'management'
-    
-    # defining string is necessary to get ArgumentParser's help output to produce
-    # human readable values of BuildType
-    def __str__(self):
-        return self.value
-
-class CodeModule:
-    def __init__(self, module_str):
-        # For library versions there will be up to 3 items resulting from the split
-        # which will be module name, dependency version and current version. For
-        # external dependency versions there should only be 2 items resulting from
-        # the split which will be module name and external dependency version. 
-        items = module_str.split(';')
-        if len(items) == 2: 
-            self.name = items[0]
-            self.dependency = items[1].strip()
-        elif len(items) == 3:
-            self.name = items[0]
-            self.dependency = items[1]
-            self.current = items[2].strip()
-        else: 
-            raise ValueError('unable to parse module string: ' + module_str)
-
-    def __str__(self):
-        # current may or may not exist
-        try:
-            return self.name + ': Dependency version=' + self.dependency + ': Current version=' + self.current
-        except AttributeError:
-            return self.name + ': External Dependency version=' + self.dependency
+from utils import BuildType
+from utils import CodeModule
+from utils import UpdateType
+from utils import version_regex_str_no_anchor
+from utils import version_update_start_marker
+from utils import version_update_end_marker
+from utils import version_update_marker
 
 def update_versions(version_map, target_file):
 
@@ -119,7 +71,7 @@ def update_versions(version_map, target_file):
                     else:
                         raise ValueError('Invalid version type: {} for module: {}.\nFile={}\nLine={}'.format(version_type, module_name, target_file, line))
 
-                    newline = re.sub(version_regex_str, new_version, line)
+                    newline = re.sub(version_regex_str_no_anchor, new_version, line)
                     newlines.append(newline)
                     file_changed = True
                 else:

@@ -12,58 +12,22 @@
 # and the current versions.
 #
 #
-#    python utilities/set_versions.py --ut [current|dependency|all] --bt [client|data|management] --bq <BuildQualifierString>
+#    python utilities/set_versions.py --ut [library|external_dependency|all] --bt [client|data|management] --bq <BuildQualifierString>
 #
 # The script must be run at the root of azure-sdk-for-java.
 
 import argparse
 from datetime import timedelta
-from enum import Enum
 import os
 import re
 import time
+from utils import BuildType
+from utils import CodeModule
+from utils import UpdateType
+from utils import version_regex_str_with_anchor
 
-version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
-# regex for the version string is suggested one directly from semver.org which is
-# used to verify that the resulting string is in the correct format after the build_qualifier
-# is appended.
-# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-version_regex = re.compile(r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$')
-
-class UpdateType(Enum):
-    current = 'current'
-    dependency = 'dependency'
-    all = 'all'
-
-    # defining string is necessary to get ArgumentParser's help output to produce
-    # human readable values of UpdateType
-    def __str__(self):
-        return self.value
-
-class BuildType(Enum):
-    client = 'client'
-    data = 'data'
-    management = 'management'
-    
-    # defining string is necessary to get ArgumentParser's help output to produce
-    # human readable values of BuildType
-    def __str__(self):
-        return self.value
-
-class CodeModule:
-    def __init__(self, module_str):
-        # For library versions there will be up to 3 items resulting from the split
-        # which will be module name, dependency version and current version.
-        items = module_str.split(';')
-        if len(items) == 3: 
-            self.name = items[0]
-            self.dependency = items[1]
-            self.current = items[2].strip()
-        else: 
-            raise ValueError('unable to parse module string: ' + module_str)
-
-    def __str__(self):
-        return self.name + ';' + self.dependency + ';' + self.current + '\n'
+# The regex string we want should be the anchored one since the entire string is what's being matched
+version_regex = re.compile(version_regex_str_with_anchor)
 
 def update_versions_file(update_type, build_type, build_qualifier):
 
@@ -78,7 +42,7 @@ def update_versions_file(update_type, build_type, build_qualifier):
                 newlines.append(raw_line)
             else:
                 module = CodeModule(stripped_line)
-                if update_type == UpdateType.current or update_type == UpdateType.all:
+                if update_type == UpdateType.library or update_type == UpdateType.all:
                     if '-' in module.current:
                         module.current += build_qualifier
                     else:
@@ -86,7 +50,7 @@ def update_versions_file(update_type, build_type, build_qualifier):
                     match = version_regex.match(module.current)
                     if not match:
                         raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
-                if update_type == UpdateType.dependency or update_type == UpdateType.all:
+                if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
                     if '-' in module.dependency:
                         module.dependency += build_qualifier
                     else:
@@ -94,7 +58,7 @@ def update_versions_file(update_type, build_type, build_qualifier):
                     match = version_regex.match(module.dependency)
                     if not match:
                         raise ValueError('{}\'s dependency version + build qualifier {} is not a valid semver version'.format(module.name, module.dependency + build_qualifier))
-                newlines.append(str(module))
+                newlines.append(module.string_for_version_file())
 
     with open(version_file, 'w') as f:
         for line in newlines:
