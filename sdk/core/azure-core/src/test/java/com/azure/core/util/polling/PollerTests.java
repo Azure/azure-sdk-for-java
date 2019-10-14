@@ -227,7 +227,6 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
-
     /** Test where SDK Client is subscribed to only final/last response.
      * The last response in this case will be PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED
      * This scenario is setup where source will generate successful response returned after few in progress response.
