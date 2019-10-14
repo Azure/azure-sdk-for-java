@@ -150,7 +150,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * Register configuration function.
      *
      * The configuration function will be invoked with {@link okhttp3.OkHttpClient.Builder}
-     * when {@link this#build()} is called, the function can set arbitrary configuration
+     * when build is called, the function can set arbitrary configuration
      * on the builder.
      *
      * @param configFunction the configuration setter function
