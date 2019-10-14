@@ -37,7 +37,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
                 httpProxyPort = "80";
             }
 
-            HttpClient httpClient = new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP,
+            HttpClient httpClient = new NettyAsyncHttpClientBuilder().setProxy(new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(httpProxyHost, Integer.parseInt(httpProxyPort)))).build();
 
             builder = builder.httpClient(httpClient);
