@@ -62,7 +62,7 @@ public class PollerTests {
     /**
      * Verify we cannot pass in null pollInterval.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorPollIntervalNull() {
         new Poller<>(null, pollOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
     }
@@ -70,7 +70,7 @@ public class PollerTests {
     /**
      * Verify we cannot pass in null pollInterval.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void constructorPollOperationNull() {
         new Poller<>(Duration.ofSeconds(1), null, () -> Mono.just(new Response("Foo")), cancelOperation);
     }
