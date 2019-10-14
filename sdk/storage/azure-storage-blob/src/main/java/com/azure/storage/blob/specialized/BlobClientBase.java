@@ -14,7 +14,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobCopyOperation;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
@@ -218,7 +218,7 @@ public class BlobClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceURL) {
+    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceURL) {
         return beginCopyFromUrl(sourceURL, null, null, null, null, null);
     }
 
@@ -245,9 +245,9 @@ public class BlobClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceURL, Map<String, String> metadata, AccessTier tier,
-        RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions) {
+    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceURL, Map<String, String> metadata, AccessTier tier,
+                                                 RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+                                                 BlobAccessConditions destAccessConditions) {
 
         return client.beginCopyFromUrl(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
                 destAccessConditions);

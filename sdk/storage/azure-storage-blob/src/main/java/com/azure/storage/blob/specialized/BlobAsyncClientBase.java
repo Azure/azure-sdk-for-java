@@ -26,7 +26,7 @@ import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobCopyOperation;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
@@ -252,7 +252,7 @@ public class BlobAsyncClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceUrl) {
+    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceUrl) {
         return beginCopyFromUrl(sourceUrl, null, null, null, null, null);
     }
 
@@ -279,7 +279,7 @@ public class BlobAsyncClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
+    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
             BlobAccessConditions destAccessConditions) {
 
@@ -313,7 +313,7 @@ public class BlobAsyncClientBase {
             });
     }
 
-    private Mono<BlobCopyOperation> onStart(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
+    private Mono<BlobCopyInfo> onStart(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, SourceModifiedAccessConditions sourceModifiedAccessConditions,
             BlobAccessConditions destAccessConditions, AtomicReference<String> copyIdReference) {
 
@@ -328,17 +328,17 @@ public class BlobAsyncClientBase {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
                 copyIdReference.set(headers.getCopyId());
 
-                return new BlobCopyOperation(headers.getCopyId(), getBlobUrl(), sourceUrl.toString(),
+                return new BlobCopyInfo(headers.getCopyId(), getBlobUrl(), sourceUrl.toString(),
                     headers.getCopyStatus(), headers.getErrorCode());
             });
     }
 
-    private Mono<PollResponse<BlobCopyOperation>> onPoll(PollResponse<BlobCopyOperation> pollResponse) {
-        final BlobCopyOperation lastStatus = pollResponse.getValue();
+    private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
+        final BlobCopyInfo lastStatus = pollResponse.getValue();
 
         return getProperties().map(response -> {
             final CopyStatusType status = response.getCopyStatus();
-            final BlobCopyOperation result = new BlobCopyOperation(lastStatus.getCopyId(), lastStatus.getTargetUrl(),
+            final BlobCopyInfo result = new BlobCopyInfo(lastStatus.getCopyId(), lastStatus.getTargetUrl(),
                 lastStatus.getSourceUrl(), status, response.getCopyStatusDescription());
 
             PollResponse.OperationStatus operationStatus;

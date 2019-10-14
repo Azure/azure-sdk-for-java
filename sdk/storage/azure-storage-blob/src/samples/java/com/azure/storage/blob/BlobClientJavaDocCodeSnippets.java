@@ -8,7 +8,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobCopyOperation;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -62,11 +62,11 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void beginCopyFromUrl() {
         // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
-        Poller<BlobCopyOperation> poller = client.beginCopyFromUrl(url);
+        Poller<BlobCopyInfo> poller = client.beginCopyFromUrl(url);
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
-        PollResponse<BlobCopyOperation> response = poller.block();
-        BlobCopyOperation operation = response.getValue();
+        PollResponse<BlobCopyInfo> response = poller.block();
+        BlobCopyInfo operation = response.getValue();
         System.out.printf("Copy identifier: %s%n", operation.getCopyId());
         // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
     }
@@ -225,12 +225,12 @@ public class BlobClientJavaDocCodeSnippets {
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
-        Poller<BlobCopyOperation> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
+        Poller<BlobCopyInfo> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
             RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions);
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
-        PollResponse<BlobCopyOperation> response = poller.block();
-        BlobCopyOperation operation = response.getValue();
+        PollResponse<BlobCopyInfo> response = poller.block();
+        BlobCopyInfo operation = response.getValue();
         System.out.printf("Copy identifier: %s%n", operation.getCopyId());
         // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
