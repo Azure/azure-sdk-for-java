@@ -34,7 +34,6 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
@@ -130,8 +129,8 @@ class APISpec extends Specification {
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
 
-    private InterceptorManager interceptorManager
-    private boolean recordLiveMode
+    InterceptorManager interceptorManager
+    boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
     def containerName
@@ -289,19 +288,14 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         if (credential != null) {
             builder.credential(credential)
         }
 
-        return builder
-    }
-
-    def addOptionalRecording(BaseClientBuilder<? extends BaseClientBuilder> builder) {
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
         return builder
     }
 

@@ -3,9 +3,6 @@
 
 package com.azure.storage.blob;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -33,6 +30,8 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,7 +40,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import reactor.core.publisher.Mono;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -629,7 +630,8 @@ public final class BlobContainerAsyncClient {
 
         return postProcessResponse(Utility.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
-                marker, options.getMaxResults(), options.getDetails().toList(), null, null, Context.NONE), timeout));
+                marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
+                null, null, Context.NONE), timeout));
     }
 
     /**
@@ -748,7 +750,7 @@ public final class BlobContainerAsyncClient {
 
         return postProcessResponse(Utility.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
-                options.getPrefix(), marker, options.getMaxResults(), options.getDetails().toList(), null, null,
+                options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toList(), null, null,
                 Context.NONE),
             timeout));
     }

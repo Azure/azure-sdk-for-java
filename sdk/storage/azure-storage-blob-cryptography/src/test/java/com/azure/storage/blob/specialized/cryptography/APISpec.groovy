@@ -21,7 +21,6 @@ import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -223,19 +222,14 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         if (credential != null) {
             builder.credential(credential)
         }
 
-        return builder
-    }
-
-    def addOptionalRecording(BaseClientBuilder<? extends BaseClientBuilder> builder) {
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
         return builder
     }
 
@@ -250,7 +244,9 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         if (credential != null) {
             builder.credential(credential)

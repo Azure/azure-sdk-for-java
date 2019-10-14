@@ -222,7 +222,7 @@ public final class QueueServiceAsyncClient {
     PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout,
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
@@ -233,7 +233,7 @@ public final class QueueServiceAsyncClient {
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
             nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
-                .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
+                .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

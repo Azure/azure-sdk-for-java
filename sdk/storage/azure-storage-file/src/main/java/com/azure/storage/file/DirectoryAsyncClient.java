@@ -26,12 +26,12 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.StorageFileItem;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
-import java.nio.charset.StandardCharsets;
+import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -412,7 +412,7 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Lists all sub-directories and files in this directory without their prefix or maxResult.
+     * Lists all sub-directories and files in this directory without their prefix or maxResults in single page.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -445,20 +445,21 @@ public class DirectoryAsyncClient {
      *
      * @param prefix Optional prefix which filters the results to return only files and directories whose name begins
      * with.
-     * @param maxResults Optional maximum number of files and/or directories to return per page. If the request does not
-     * specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page. If the request
+     * does not specify maxResultsPerPage or specifies a value greater than 5,000,
+     * the server will return up to 5,000 items.
      * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      */
-    public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResults) {
-        return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, null, Context.NONE);
+    public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage) {
+        return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, null, Context.NONE);
     }
 
-    PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResults,
+    PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
                                                                           Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<StorageFileItem>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
-                    marker, maxResults, null, context), timeout)
+                    marker, maxResultsPerPage, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -481,20 +482,20 @@ public class DirectoryAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
-     * @param maxResult Optional maximum number of results will return per page
+     * @param maxResultPerPage Optional maximum number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its
      * subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
-    public PagedFlux<HandleItem> listHandles(Integer maxResult, boolean recursive) {
-        return listHandlesWithOptionalTimeout(maxResult, recursive, null, Context.NONE);
+    public PagedFlux<HandleItem> listHandles(Integer maxResultPerPage, boolean recursive) {
+        return listHandlesWithOptionalTimeout(maxResultPerPage, recursive, null, Context.NONE);
     }
 
-    PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResult, boolean recursive, Duration timeout,
+    PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
             marker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResult, null, snapshot,
+                .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
@@ -852,7 +853,7 @@ public class DirectoryAsyncClient {
                     true, null)));
             response.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> storageFileItems.add(new StorageFileItem(fileItem.getName(), false,
-                    fileItem.getProperties())));
+                    fileItem.getProperties().getContentLength())));
         }
 
         return new ArrayList<>(storageFileItems);
