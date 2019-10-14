@@ -110,7 +110,7 @@ public class PerfStressProgram {
                 for (int i=0; i < options.Iterations; i++) {
                     String title = "Test";
                     if (options.Iterations > 1) {
-                        title += " " + i;
+                        title += " " + (i + 1);
                     }
                     RunTests(tests, options.Sync, options.Parallel, options.Duration, title);
                 }
