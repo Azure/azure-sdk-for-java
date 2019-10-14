@@ -3,8 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequest;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;

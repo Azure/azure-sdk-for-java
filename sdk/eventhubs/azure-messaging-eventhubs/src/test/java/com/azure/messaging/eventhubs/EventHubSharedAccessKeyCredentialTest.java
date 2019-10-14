@@ -3,7 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.TokenRequest;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.test.StepVerifier;

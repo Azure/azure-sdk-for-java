@@ -3,9 +3,9 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.credentials.SimpleTokenCache;
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.SimpleTokenCache;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequest;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;

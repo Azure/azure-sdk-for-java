@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.credentials;
+package com.azure.core.credential;
 
 import org.junit.Assert;
 import org.junit.Test;

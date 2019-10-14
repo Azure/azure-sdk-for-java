@@ -3,7 +3,7 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.BaseClientBuilder;

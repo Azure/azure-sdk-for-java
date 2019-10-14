@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.AccessToken;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.TokenRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import org.junit.Assert;
