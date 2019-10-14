@@ -121,10 +121,6 @@ public final class BlobContainerClientBuilder {
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.endpoint#String}
-     *
      * @param endpoint URL of the service
      * @return the updated BlobContainerClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -244,10 +240,6 @@ public final class BlobContainerClientBuilder {
 
     /**
      * Sets the name of the container.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
      *
      * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root},
      * will be used.

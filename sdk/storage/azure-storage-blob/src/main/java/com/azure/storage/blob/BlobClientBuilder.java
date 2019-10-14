@@ -235,10 +235,6 @@ public final class BlobClientBuilder {
      * with blobs in the root container, it is best to set the endpoint to the account url and specify the blob name
      * separately using the {@link BlobClientBuilder#blobName(String) blobName} method.</p>
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.endpoint#String}
-     *
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -267,10 +263,6 @@ public final class BlobClientBuilder {
 
     /**
      * Sets the name of the container that contains the blob.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
      *
      * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root},
      * will be used.
