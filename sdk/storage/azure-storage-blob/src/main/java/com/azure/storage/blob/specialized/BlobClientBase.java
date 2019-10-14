@@ -9,10 +9,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobCopyOperation;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
@@ -213,10 +215,11 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @return The copy ID for the long running operation.
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     *     cancelled.
      */
-    public String startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null, null, Context.NONE).getValue();
+    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceURL) {
+        return beginCopyFromUrl(sourceURL, null, null, null, null, null);
     }
 
     /**
@@ -238,18 +241,16 @@ public class BlobClientBase {
      * related to when the blob was changed relative to the given request. The request will fail if the specified
      * condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The copy ID for the long running operation.
+     *
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     *     cancelled.
      */
-    public Response<String> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
+    public Poller<BlobCopyOperation> beginCopyFromUrl(URL sourceURL, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
-        Mono<Response<String>> response = client
-            .startCopyFromURLWithResponse(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
-                destAccessConditions, context);
+        BlobAccessConditions destAccessConditions) {
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return client.beginCopyFromUrl(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
+                destAccessConditions);
     }
 
     /**
