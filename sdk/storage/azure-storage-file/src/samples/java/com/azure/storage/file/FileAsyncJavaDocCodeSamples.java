@@ -209,18 +209,18 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#upload(Flux, long, long)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, Long)}
      */
     public void uploadDataMaxOverloadAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete deleting the file!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
+        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
     }
 
     /**
