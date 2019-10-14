@@ -217,9 +217,7 @@ directive:
       delete $.Metrics;
       $.QueueMetrics.xml = {"name": "Metrics"};
       $.QueueServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/QueueMetrics";
-      $.QueueServiceProperties.properties.HourMetrics.xml = {"name": "HourMetrics"};
       $.QueueServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/QueueMetrics";
-      $.QueueServiceProperties.properties.MinuteMetrics.xml = {"name": "MinuteMetrics"};
     }
     if (!$.QueueCorsRule) {
       $.QueueCorsRule = $.CorsRule;
@@ -310,4 +308,14 @@ directive:
       delete $.QueueAccessPolicy.properties.Permission;
     }
     $.QueueSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/QueueAccessPolicy";
+```
+
+### QueueServiceProperties Annotation Fix
+``` yaml
+directive:
+- from: QueueServiceProperties.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private QueueMetrics hourMetrics;').
+      replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private QueueMetrics minuteMetrics;');
 ```

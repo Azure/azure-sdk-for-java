@@ -28,14 +28,14 @@ public final class QueueServiceProperties {
      * A summary of request statistics grouped by API in hourly aggregates for
      * queues
      */
-    @JsonProperty(value = "Metrics")
+    @JsonProperty(value = "HourMetrics")
     private QueueMetrics hourMetrics;
 
     /*
      * a summary of request statistics grouped by API in minute aggregates for
      * queues
      */
-    @JsonProperty(value = "Metrics")
+    @JsonProperty(value = "MinuteMetrics")
     private QueueMetrics minuteMetrics;
 
     private static final class CorsWrapper {
