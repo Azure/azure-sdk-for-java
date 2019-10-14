@@ -54,9 +54,11 @@ namespace HttpMock
 
                 foreach (var header in request.Headers.Where(h => !_excludedRequestHeaders.Contains(h.Key) && !_contentRequestHeaders.Contains(h.Key)))
                 {
-                    upstreamRequest.Headers.Add(header.Key, values: header.Value);
+                    if (!upstreamRequest.Headers.TryAddWithoutValidation(header.Key, values: header.Value)) {
+                        throw new InvalidOperationException($"Could not add header {header.Key} with value {header.Value}");
+                    }
                 }
-                
+
                 using (var upstreamResponseMessage = await _httpClient.SendAsync(upstreamRequest))
                 {
                     var headers = new List<KeyValuePair<string, StringValues>>();
