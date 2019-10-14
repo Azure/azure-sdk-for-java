@@ -151,7 +151,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         where:
         options                                                                                              | _
         new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues")                          | _
-        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setMaxResults(2)         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setMaxResultsPerPage(2)  | _
         new QueuesSegmentOptions().setPrefix("queueserviceasyncapitestslistqueues").setIncludeMetadata(true) | _
     }
 
