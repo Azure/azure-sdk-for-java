@@ -6,6 +6,8 @@ package com.azure.storage.queue.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
+import static com.azure.storage.common.Constants.HeaderConstants.ERROR_CODE;
+
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
  * Users can inspect the status code and error code to determine the cause of the error response. The exception message
@@ -19,7 +21,6 @@ import com.azure.core.http.HttpResponse;
  * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">sample file</a></p>
  */
 public final class StorageException extends HttpResponseException {
-    private static final String ERROR_CODE = "x-ms-error-code";
     /**
      * Constructs a {@code StorageException} from the given {@link StorageErrorException}.
      *

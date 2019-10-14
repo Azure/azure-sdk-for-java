@@ -32,10 +32,7 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.process()
-            .flatMap(response -> {
-                HttpResponse responseAfterScrub = scrubETagHeader(response);
-                return Mono.justOrEmpty(responseAfterScrub);
-            });
+            .flatMap(response -> Mono.just(scrubETagHeader(response)));
     }
 
 
