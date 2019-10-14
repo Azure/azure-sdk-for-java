@@ -1020,17 +1020,17 @@ public class FileAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
-     * @param maxResults Optional maximum number of results will return per page
+     * @param maxResultsPerPage Optional maximum number of results will return per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
-    public PagedFlux<HandleItem> listHandles(Integer maxResults) {
-        return listHandlesWithOptionalTimeout(maxResults, null, Context.NONE);
+    public PagedFlux<HandleItem> listHandles(Integer maxResultsPerPage) {
+        return listHandlesWithOptionalTimeout(maxResultsPerPage, null, Context.NONE);
     }
 
-    PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResults, Duration timeout, Context context) {
+    PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultsPerPage, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
             marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResults, null, snapshot,
+                .listHandlesWithRestResponseAsync(shareName, filePath, marker, maxResultsPerPage, null, snapshot,
                     context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

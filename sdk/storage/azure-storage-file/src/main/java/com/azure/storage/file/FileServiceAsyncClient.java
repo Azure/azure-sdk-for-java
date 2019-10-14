@@ -165,7 +165,7 @@ public final class FileServiceAsyncClient {
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout,
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
@@ -180,7 +180,7 @@ public final class FileServiceAsyncClient {
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
             nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context),
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
                 timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

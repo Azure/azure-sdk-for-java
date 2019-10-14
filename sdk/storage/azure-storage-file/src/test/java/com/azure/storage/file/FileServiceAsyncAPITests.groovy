@@ -152,10 +152,10 @@ class FileServiceAsyncAPITests extends APISpec {
 
         where:
         options                                                                                                     | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter")                           | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResults(2)          | 3      | false           | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter")                           | 3 | false | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(true)  | 3 | true  | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(false) | 3 | false | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3 | false | true
     }
 
     @Unroll

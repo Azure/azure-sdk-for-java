@@ -247,7 +247,7 @@ public final class BlobServiceAsyncClient {
 
         return Utility.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
-                options.getPrefix(), marker, options.getMaxResults(), options.getDetails().toIncludeType(), null,
+                options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
                 null, Context.NONE), timeout);
     }
 
