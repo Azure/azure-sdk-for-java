@@ -49,6 +49,8 @@ public class PartitionPumpManager {
     private final EventPosition initialEventPosition;
     private final EventHubAsyncClient eventHubAsyncClient;
     private final TracerProvider tracerProvider;
+    private final String diagnosticIdKey = "diagnostic-id";
+    private final String spanContextKey = "span-context";
 
     /**
      * Creates an instance of partition pump manager.
@@ -123,8 +125,8 @@ public class PartitionPumpManager {
         eventHubConsumer.receive().subscribe(eventData -> {
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
-                if (processSpanContext.getData("span-context").isPresent()) {
-                    eventData.addContext("span-context", processSpanContext);
+                if (processSpanContext.getData(spanContextKey).isPresent()) {
+                    eventData.addContext(spanContextKey, processSpanContext);
                 }
                 partitionProcessor.processEvent(partitionContext, eventData).doOnEach(signal ->
                     endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
@@ -183,7 +185,7 @@ public class PartitionPumpManager {
      * Starts a new process tracing span and attached context the EventData object for users.
      */
     private Context startProcessTracingSpan(EventData eventData) {
-        Object diagnosticId = eventData.getProperties().get("diagnostic-id");
+        Object diagnosticId = eventData.getProperties().get(diagnosticIdKey);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
