@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.credentials;
+package com.azure.core.credential;
 
 import java.time.OffsetDateTime;
 
@@ -10,16 +10,16 @@ import java.time.OffsetDateTime;
  */
 public class AccessToken {
     private final String token;
-    private final OffsetDateTime expiresOn;
+    private final OffsetDateTime expiresAt;
 
     /**
      * Creates an access token instance.
      * @param token the token string.
-     * @param expiresOn the expiration time.
+     * @param expiresAt the expiration time.
      */
-    public AccessToken(String token, OffsetDateTime expiresOn) {
+    public AccessToken(String token, OffsetDateTime expiresAt) {
         this.token = token;
-        this.expiresOn = expiresOn.minusMinutes(2); // 2 minutes before token expires
+        this.expiresAt = expiresAt.minusMinutes(2); // 2 minutes before token expires
     }
 
     /**
@@ -32,14 +32,14 @@ public class AccessToken {
     /**
      * @return the time when the token expires, in UTC.
      */
-    public OffsetDateTime getExpiresOn() {
-        return expiresOn;
+    public OffsetDateTime getExpiresAt() {
+        return expiresAt;
     }
 
     /**
      * @return if the token has expired.
      */
     public boolean isExpired() {
-        return OffsetDateTime.now().isAfter(expiresOn);
+        return OffsetDateTime.now().isAfter(expiresAt);
     }
 }

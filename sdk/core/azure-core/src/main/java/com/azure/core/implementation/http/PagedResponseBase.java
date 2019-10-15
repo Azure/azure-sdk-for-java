@@ -23,20 +23,20 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
     private final H deserializedHeaders;
     private final HttpHeaders headers;
     private final List<T> items;
-    private final String nextLink;
+    private final String continuationToken;
 
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
                              H deserializedHeaders) {
-        this(request, statusCode, headers, page.getItems(), page.getNextLink(), deserializedHeaders);
+        this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
 
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String nextLink,
-                             H deserializedHeaders) {
+    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
+                             String continuationToken, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
         this.items = items;
-        this.nextLink = nextLink;
+        this.continuationToken = continuationToken;
         this.deserializedHeaders = deserializedHeaders;
     }
 
@@ -52,8 +52,8 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public String getNextLink() {
-        return nextLink;
+    public String getContinuationToken() {
+        return continuationToken;
     }
 
     /**

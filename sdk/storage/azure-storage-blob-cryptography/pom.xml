@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.0.0-preview.4</version>
+  <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
 
   <name>Microsoft Azure client library for Blob Storage cryptography</name>
   <description>This module contains client library for Microsoft Azure Blob Storage cryptography.</description>
@@ -40,18 +40,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.0.0-preview.4</version>
+      <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.0.0-preview.6</version>
+      <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -76,10 +76,10 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;dependency} -->
       <scope>test</scope>
     </dependency>
-    <!--    <dependency>-->
+<!--    <dependency>-->
 <!--      <groupId>io.projectreactor</groupId>-->
 <!--      <artifactId>reactor-test</artifactId>-->
 <!--      <scope>test</scope>-->

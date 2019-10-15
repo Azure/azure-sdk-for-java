@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequest;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;

@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequest;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
