@@ -61,10 +61,11 @@ public interface SerializerAdapter {
      *
      * 'Matching' headers are the REST API returned headers those with:
      * 1. header names same as name of a properties in the entity.
-     * 2. header names start with value of {@link com.azure.core.annotation.HeaderCollection} annotation applied to the properties in the entity.
+     * 2. header names start with value of {@link com.azure.core.annotation.HeaderCollection} annotation applied to the
+     * properties in the entity.
      *
-     * When needed, the 'header entity' types must be declared as first generic argument of {@link com.azure.core.http.rest.ResponseBase}
-     * returned by java proxy method corresponding to the REST API.
+     * When needed, the 'header entity' types must be declared as first generic argument of
+     * {@link com.azure.core.http.rest.ResponseBase} returned by java proxy method corresponding to the REST API.
      * e.g.
      * {@code Mono<RestResponseBase<FooMetadataHeaders, Void>> getMetadata(args);}
      * {@code
