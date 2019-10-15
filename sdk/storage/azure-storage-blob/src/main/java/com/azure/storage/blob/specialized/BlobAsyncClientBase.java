@@ -24,7 +24,6 @@ import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
-import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;

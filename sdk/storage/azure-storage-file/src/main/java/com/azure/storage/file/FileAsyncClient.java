@@ -306,7 +306,7 @@ public class FileAsyncClient {
                 }
 
                 return new PollResponse<>(operationStatus, result);
-        }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED"), lastInfo));
+            }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED"), lastInfo));
     }
 
     /**

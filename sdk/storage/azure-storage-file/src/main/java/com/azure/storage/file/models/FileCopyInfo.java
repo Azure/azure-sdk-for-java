@@ -35,6 +35,8 @@ public final class FileCopyInfo {
      *                           <li>success: the copy completed successfully.</li>
      *                           <li>pending: the copy is still in progress.</li>
      *                       </ul>
+     * @param copySource The url of the source file.
+     * @param error An error message for the copy operation. {@code null} if there are no errors.
      */
     public FileCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
                         OffsetDateTime lastModified, String error) {
