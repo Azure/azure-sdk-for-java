@@ -73,7 +73,7 @@ public final class QueueServiceSasSignatureValues {
     }
 
     QueueServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
-                                   OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier) {
+        OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier) {
         if (version != null) {
             this.version = version;
         }
