@@ -430,6 +430,7 @@ public class FileAsyncClient {
     Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5,
         Context context) {
         String rangeString = range == null ? null : range.toString();
+
         return azureFileStorageClient.files()
             .downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
