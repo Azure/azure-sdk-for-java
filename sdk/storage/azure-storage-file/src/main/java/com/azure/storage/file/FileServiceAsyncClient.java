@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 import com.azure.core.annotation.ServiceClient;
@@ -116,7 +117,11 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public PagedFlux<ShareItem> listShares() {
-        return listShares(null);
+        try {
+            return listShares(null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -150,7 +155,11 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
-        return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
+        try {
+            return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -164,31 +173,35 @@ public final class FileServiceAsyncClient {
      */
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout,
         Context context) {
-        final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
-        List<ListSharesIncludeType> include = new ArrayList<>();
+        try {
+            final String prefix = (options != null) ? options.getPrefix() : null;
+            final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
+            List<ListSharesIncludeType> include = new ArrayList<>();
 
-        if (options != null) {
-            if (options.isIncludeMetadata()) {
-                include.add(ListSharesIncludeType.METADATA);
+            if (options != null) {
+                if (options.isIncludeMetadata()) {
+                    include.add(ListSharesIncludeType.METADATA);
+                }
+
+                if (options.isIncludeSnapshots()) {
+                    include.add(ListSharesIncludeType.SNAPSHOTS);
+                }
             }
 
-            if (options.isIncludeSnapshots()) {
-                include.add(ListSharesIncludeType.SNAPSHOTS);
-            }
+            Function<String, Mono<PagedResponse<ShareItem>>> retriever =
+                nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                        .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
+                    timeout)
+                    .map(response -> new PagedResponseBase<>(response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        response.getValue().getShareItems(),
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders()));
+            return new PagedFlux<>(() -> retriever.apply(marker), retriever);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
         }
-
-        Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
-                timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getShareItems(),
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()));
-        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
     /**
@@ -208,7 +221,11 @@ public final class FileServiceAsyncClient {
      * @return Storage account {@link FileServiceProperties File service properties}
      */
     public Mono<FileServiceProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -228,7 +245,11 @@ public final class FileServiceAsyncClient {
      * @return A response containing the Storage account {@link FileServiceProperties File service properties}
      */
     public Mono<Response<FileServiceProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
@@ -270,7 +291,11 @@ public final class FileServiceAsyncClient {
      * </ul>
      */
     public Mono<Void> setProperties(FileServiceProperties properties) {
-        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -311,7 +336,11 @@ public final class FileServiceAsyncClient {
      * </ul>
      */
     public Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties) {
-        return withContext(context -> setPropertiesWithResponse(properties, context));
+        try {
+            return withContext(context -> setPropertiesWithResponse(properties, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
@@ -337,7 +366,11 @@ public final class FileServiceAsyncClient {
      * @throws StorageException If a share with the same name already exists
      */
     public Mono<ShareAsyncClient> createShare(String shareName) {
-        return createShareWithResponse(shareName, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createShareWithResponse(shareName, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -367,7 +400,11 @@ public final class FileServiceAsyncClient {
      */
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB) {
-        return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB, context));
+        try {
+            return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
@@ -395,7 +432,11 @@ public final class FileServiceAsyncClient {
      * @throws StorageException If the share doesn't exist
      */
     public Mono<Void> deleteShare(String shareName) {
-        return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -417,7 +458,11 @@ public final class FileServiceAsyncClient {
      * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
-        return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
+        try {
+            return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
