@@ -17,8 +17,9 @@ import java.nio.charset.Charset;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static io.netty.handler.codec.http.HttpHeaders.Names.ETAG;
+
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
-    private static final String ETAG = "eTag";
 
     private HttpResponse innerHttpResponse;
     private HttpHeaders headers;
