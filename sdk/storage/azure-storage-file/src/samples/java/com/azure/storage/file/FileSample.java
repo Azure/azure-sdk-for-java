@@ -3,6 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -71,21 +72,20 @@ public class FileSample {
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
-        FileCopyInfo copyResponse;
-        try {
-            copyResponse = destFileClient.beginCopy(sourceURL, null);
-        } catch (FileStorageException e) {
-            throw new RuntimeException("Failed to start the copy of source file. Reasons: " + e.getMessage());
-        }
+        Poller<FileCopyInfo> poller = destFileClient.beginCopy(sourceURL, null);
 
-        // Abort the copy if the status is pending.
-        if (copyResponse.getCopyStatus() == CopyStatusType.PENDING) {
-            try {
-                destFileClient.abortCopy(copyResponse.getCopyId());
-            } catch (FileStorageException e) {
-                System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
+        poller.getObserver().subscribe(pollResponse -> {
+            final FileCopyInfo copyInfo = pollResponse.getValue();
+
+            // Abort the copy if the status is pending.
+            if (copyInfo.getCopyStatus() == CopyStatusType.PENDING) {
+                try {
+                    destFileClient.abortCopy(copyInfo.getCopyId());
+                } catch (FileStorageException e) {
+                    System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
+                }
             }
-        }
+        });
 
         // Upload a local file to the storage.
         String filePath = "C:/resourcePath/";

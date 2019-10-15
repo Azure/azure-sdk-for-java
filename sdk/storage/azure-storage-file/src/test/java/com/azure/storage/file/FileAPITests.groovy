@@ -7,15 +7,18 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.polling.Poller
 import com.azure.storage.common.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
+import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
-import com.azure.storage.file.models.FileStorageException
+import com.azure.storage.file.models.StorageErrorCode
+import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -412,11 +415,13 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null, null)
+        Poller<FileCopyInfo> copyInfoResponse = primaryFileClient.copy(sourceURL, null)
+        def verifier = StepVerifier.create(copyInfoResponse.getObserver())
 
         then:
-        FileTestHelper.assertResponseStatusCode(copyInfoResponse, 202)
-        copyInfoResponse.getValue().getCopyId() != null
+        verifier.assertNext({
+                it.getValue().getCopyId() != null
+            }).thenCancel().verify()
     }
 
     def "Start copy error"() {
