@@ -211,6 +211,15 @@ Create a container using BlobContainerClient.
 blobContainerClient.create();
 ```
 
+Get an existing container, or create a new one if it doesn't exist
+```
+BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
+if(!blobContainerClient.exists()){
+    //Container does not exist so create it
+    blobContainerClient = blobServiceClient.createBlobContainer(containerName);
+}
+```
+
 ### Uploading a blob from a stream
 
 Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
