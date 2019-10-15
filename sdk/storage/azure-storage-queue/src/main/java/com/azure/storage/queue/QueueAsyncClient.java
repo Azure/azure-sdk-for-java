@@ -482,7 +482,7 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue a message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.dequeueMessages}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getMessages}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -492,8 +492,8 @@ public final class QueueAsyncClient {
      * it contains other metadata about the message.
      * @throws StorageException If the queue doesn't exist
      */
-    public PagedFlux<DequeuedMessage> dequeueMessages() {
-        return dequeueMessagesWithOptionalTimeout(1, null, null, Context.NONE);
+    public PagedFlux<DequeuedMessage> getMessages() {
+        return getMessagesWithOptionalTimeout(1, null, null, Context.NONE);
     }
 
     /**
@@ -504,7 +504,7 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue up to 5 messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getMessages#integer}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -517,8 +517,8 @@ public final class QueueAsyncClient {
      * used to interact with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages) {
-        return dequeueMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
+    public PagedFlux<DequeuedMessage> getMessages(Integer maxMessages) {
+        return getMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
     }
 
     /**
@@ -529,7 +529,7 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getMessages#integer-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -545,11 +545,11 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
-    public PagedFlux<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout) {
-        return dequeueMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
+    public PagedFlux<DequeuedMessage> getMessages(Integer maxMessages, Duration visibilityTimeout) {
+        return getMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
     }
 
-    PagedFlux<DequeuedMessage> dequeueMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
+    PagedFlux<DequeuedMessage> getMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<DequeuedMessage>>> retriever =

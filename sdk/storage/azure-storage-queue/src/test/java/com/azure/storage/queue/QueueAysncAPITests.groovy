@@ -315,7 +315,7 @@ class QueueAysncAPITests extends APISpec {
         def expectMsg = "test message"
         queueAsyncClient.enqueueMessage(expectMsg).block()
         when:
-        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages())
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.getMessages())
         then:
         dequeueMsgVerifier.assertNext {
             assert expectMsg.equals(it.getMessageText())
@@ -330,7 +330,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.enqueueMessage(expectMsg1).block()
         queueAsyncClient.enqueueMessage(expectMsg2).block()
         when:
-        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages(2))
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.getMessages(2))
         then:
         dequeueMsgVerifier.assertNext {
             assert expectMsg1.equals(it.getMessageText())
@@ -343,7 +343,7 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         when:
-        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.dequeueMessages(33))
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.getMessages(33))
         then:
         dequeueMsgVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, StorageErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
@@ -439,7 +439,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.enqueueMessage("test message 1").block()
         queueAsyncClient.enqueueMessage("test message 2").block()
         queueAsyncClient.enqueueMessage("test message 3").block()
-        def dequeueMsg = queueAsyncClient.dequeueMessages().blockFirst()
+        def dequeueMsg = queueAsyncClient.getMessages().blockFirst()
         when:
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getPropertiesWithResponse())
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt()))
@@ -465,7 +465,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def expectMsg = "test message"
         queueAsyncClient.enqueueMessage(expectMsg).block()
-        def dequeueMessage = queueAsyncClient.dequeueMessages().blockFirst()
+        def dequeueMessage = queueAsyncClient.getMessages().blockFirst()
         when:
         def deleteMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
         def deletePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
@@ -487,7 +487,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         queueAsyncClient.enqueueMessage("test message before update").block()
 
-        def dequeueMsg = queueAsyncClient.dequeueMessages().blockFirst()
+        def dequeueMsg = queueAsyncClient.getMessages().blockFirst()
         when:
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(updateMsg,
             dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), Duration.ofSeconds(1)))
@@ -507,7 +507,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def updateMsg = "Updated test message"
         queueAsyncClient.enqueueMessage("test message before update").block()
-        def dequeueMessage = queueAsyncClient.dequeueMessages().blockFirst()
+        def dequeueMessage = queueAsyncClient.getMessages().blockFirst()
         when:
         def updateMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
         def updatePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"

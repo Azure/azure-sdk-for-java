@@ -416,9 +416,9 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Dequeue a message</p>
+     * <p>Receive a message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages}
+     * {@codesnippet com.azure.storage.queue.queueClient.getMessages}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -428,8 +428,8 @@ public final class QueueClient {
      * it contains other metadata about the message.
      * @throws StorageException If the queue doesn't exist
      */
-    public PagedIterable<DequeuedMessage> dequeueMessages() {
-        return dequeueMessages(1, Duration.ofSeconds(30), null, Context.NONE);
+    public PagedIterable<DequeuedMessage> getMessages() {
+        return getMessages(1, Duration.ofSeconds(30), null, Context.NONE);
     }
 
     /**
@@ -438,9 +438,9 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Dequeue up to 5 messages</p>
+     * <p>Receive up to 5 messages</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer}
+     * {@codesnippet com.azure.storage.queue.queueClient.getMessages#integer}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -453,8 +453,8 @@ public final class QueueClient {
      * used to interact with the message and other metadata about the message.
      * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public PagedIterable<DequeuedMessage> dequeueMessages(Integer maxMessages) {
-        return dequeueMessages(maxMessages, Duration.ofSeconds(30), null, Context.NONE);
+    public PagedIterable<DequeuedMessage> getMessages(Integer maxMessages) {
+        return getMessages(maxMessages, Duration.ofSeconds(30), null, Context.NONE);
     }
 
     /**
@@ -463,9 +463,9 @@ public final class QueueClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
+     * <p>Receive up to 5 messages and give them a 60 second timeout period</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration-duration-context}
+     * {@codesnippet com.azure.storage.queue.queueClient.getMessages#integer-duration-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -474,7 +474,7 @@ public final class QueueClient {
      * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
      * range is 1 to 32 messages.
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If left
-     * empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
+     * empty the received messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -485,10 +485,10 @@ public final class QueueClient {
      * outside of the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<DequeuedMessage> dequeueMessages(Integer maxMessages, Duration visibilityTimeout,
-        Duration timeout, Context context) {
+    public PagedIterable<DequeuedMessage> getMessages(Integer maxMessages, Duration visibilityTimeout,
+                                                      Duration timeout, Context context) {
         return new PagedIterable<>(
-            client.dequeueMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context));
+            client.getMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context));
     }
 
     /**

@@ -128,7 +128,7 @@ class QueueSASTests extends APISpec {
             .sasToken(sasPermissions)
             .buildClient()
         clientPermissions.enqueueMessage("sastest")
-        def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(2).iterator()
+        def dequeueMsgIterPermissions = clientPermissions.getMessages(2).iterator()
 
         then:
         notThrown(StorageException)
@@ -178,7 +178,7 @@ class QueueSASTests extends APISpec {
             .sasToken(sasPermissions)
             .buildClient()
         clientPermissions.updateMessage("testing", resp.getMessageId(), resp.getPopReceipt(), Duration.ZERO)
-        def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
+        def dequeueMsgIterPermissions = clientPermissions.getMessages(1).iterator()
 
         then:
         notThrown(StorageException)
@@ -227,7 +227,7 @@ class QueueSASTests extends APISpec {
             .sasToken(sasIdentifier)
             .buildClient()
         clientIdentifier.enqueueMessage("sastest")
-        def dequeueMsgIterIdentifier = clientIdentifier.dequeueMessages(2).iterator()
+        def dequeueMsgIterIdentifier = clientIdentifier.getMessages(2).iterator()
 
         then:
         notThrown(StorageException)

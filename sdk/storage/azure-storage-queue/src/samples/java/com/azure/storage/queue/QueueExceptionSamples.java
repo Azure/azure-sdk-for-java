@@ -44,7 +44,7 @@ public class QueueExceptionSamples {
 
         // Delete message with wrong message id.
         try {
-            queueClientResponse.getValue().dequeueMessages().forEach(
+            queueClientResponse.getValue().getMessages().forEach(
                 msg -> {
                     queueClient.deleteMessage("wrong id", msg.getPopReceipt());
                 }
@@ -59,7 +59,7 @@ public class QueueExceptionSamples {
 
         // Delete message with wrong pop receipt.
         try {
-            queueClient.dequeueMessages().forEach(
+            queueClient.getMessages().forEach(
                 msg -> {
                     queueClient.deleteMessage(msg.getMessageId(), "Wrong Pop Receipt");
                 }
