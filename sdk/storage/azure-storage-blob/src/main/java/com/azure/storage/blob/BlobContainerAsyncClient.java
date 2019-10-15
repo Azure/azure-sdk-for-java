@@ -3,9 +3,6 @@
 
 package com.azure.storage.blob;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -33,6 +30,8 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,7 +40,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import reactor.core.publisher.Mono;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -252,8 +252,8 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
-        return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, context))
+        return this.azureBlobStorage.containers().createWithRestResponseAsync(
+            null, null, metadata, accessType, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -300,8 +300,8 @@ public final class BlobContainerAsyncClient {
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
-        return postProcessResponse(this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null, null,
-            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context))
+        return this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null, null,
+            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -339,8 +339,8 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions,
         Context context) {
-        return postProcessResponse(this.azureBlobStorage.containers()
-            .getPropertiesWithRestResponseAsync(null, null, null, leaseAccessConditions, context))
+        return this.azureBlobStorage.containers()
+            .getPropertiesWithRestResponseAsync(null, null, null, leaseAccessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, new BlobContainerProperties(rb.getDeserializedHeaders())));
     }
 
@@ -390,9 +390,9 @@ public final class BlobContainerAsyncClient {
                 "If-Modified-Since is the only HTTP access condition supported for this API"));
         }
 
-        return postProcessResponse(this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.containers().setMetadataWithRestResponseAsync(null, null,
             metadata, null, accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(),
-            context)).map(response -> new SimpleResponse<>(response, null));
+            context).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -430,10 +430,10 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
         Context context) {
-        return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null,
             null, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response,
             new BlobContainerAccessPolicies(response.getDeserializedHeaders().getBlobPublicAccess(),
-                response.getValue()))));
+                response.getValue())));
     }
 
     /**
@@ -515,9 +515,9 @@ public final class BlobContainerAsyncClient {
             }
         }
 
-        return postProcessResponse(this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(null,
+        return this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(null,
             identifiers, null, accessType, null, accessConditions.getLeaseAccessConditions(),
-            accessConditions.getModifiedAccessConditions(), context))
+            accessConditions.getModifiedAccessConditions(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -627,9 +627,10 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
-        return postProcessResponse(Utility.applyOptionalTimeout(
+        return Utility.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
-                marker, options.getMaxResults(), options.getDetails().toList(), null, null, Context.NONE), timeout));
+            marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
+            null, null, Context.NONE), timeout);
     }
 
     /**
@@ -746,11 +747,11 @@ public final class BlobContainerAsyncClient {
                 new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
-        return postProcessResponse(Utility.applyOptionalTimeout(
+        return Utility.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
-                options.getPrefix(), marker, options.getMaxResults(), options.getDetails().toList(), null, null,
+                options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toList(), null, null,
                 Context.NONE),
-            timeout));
+            timeout);
     }
 
     /**
@@ -782,8 +783,7 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
-        return postProcessResponse(
-            this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context))
+        return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null, context)
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.getDeserializedHeaders())));
     }
 
