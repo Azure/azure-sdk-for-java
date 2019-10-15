@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.blob.implementation.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -103,8 +102,8 @@ public final class BlobBatchAsyncClient {
     }
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
-        return postProcessResponse(client.services().submitBatchWithRestResponseAsync(
-            batch.getBody(), batch.getContentLength(), batch.getContentType(), context))
+        return client.services().submitBatchWithRestResponseAsync(
+            batch.getBody(), batch.getContentLength(), batch.getContentType(), context)
             .flatMap(response -> BlobBatchHelper.mapBatchResponse(batch, response, throwOnAnyFailure, logger));
     }
 
