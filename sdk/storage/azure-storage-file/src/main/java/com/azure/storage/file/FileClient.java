@@ -6,11 +6,13 @@ package com.azure.storage.file;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
-import com.azure.storage.file.models.FileDownloadInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
@@ -20,13 +22,18 @@ import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
@@ -44,6 +51,8 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class FileClient {
+    private final ClientLogger logger = new ClientLogger(FileClient.class);
+
     private final FileAsyncClient fileAsyncClient;
 
     /**
@@ -88,8 +97,8 @@ public class FileClient {
     }
 
     /**
-     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
-     * will be overwritten.
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it will
+     * be overwritten.
      *
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
      * @throws StorageException If a storage service error occurred.
@@ -99,11 +108,10 @@ public class FileClient {
     }
 
     /**
-     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
-     * will be overwritten.
+     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it will
+     * be overwritten.
      *
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
      * @throws StorageException If a storage service error occurred.
      */
@@ -303,7 +311,7 @@ public class FileClient {
      * @return The response of the file properties.
      */
     public Response<FileProperties> downloadToFileWithResponse(String downloadFilePath, FileRange range,
-            Duration timeout, Context context) {
+        Duration timeout, Context context) {
         Mono<Response<FileProperties>> response = fileAsyncClient.downloadToFileWithResponse(downloadFilePath, range,
             context);
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -316,15 +324,16 @@ public class FileClient {
      *
      * <p>Download the file with its metadata and properties. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.downloadWithProperties}
+     * {@codesnippet com.azure.storage.file.FileClient.download#OutputStream}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
-     * @return The {@link FileDownloadInfo file download info}
+     * @param stream A non-null {@link OutputStream} where the downloaded data will be written.
+     * @throws NullPointerException If {@code stream} is {@code null}.
      */
-    public FileDownloadInfo downloadWithProperties() {
-        return downloadWithPropertiesWithResponse(null, null, null, Context.NONE).getValue();
+    public void download(OutputStream stream) {
+        downloadWithResponse(stream, null, null, null, Context.NONE);
     }
 
     /**
@@ -334,25 +343,37 @@ public class FileClient {
      *
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.downloadWithPropertiesWithResponse#FileRange-Boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.downloadWithResponse#OutputStream-FileRange-Boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
+     * @param stream A non-null {@link OutputStream} where the downloaded data will be written.
      * @param range Optional byte range which returns file data only from the specified range.
      * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to
      * true, as long as the range is less than or equal to 4 MB in size.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing the {@link FileDownloadInfo file download info} headers and response status code
+     * @return A response containing the headers and response status code
+     * @throws NullPointerException If {@code stream} is {@code null}.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileDownloadInfo> downloadWithPropertiesWithResponse(FileRange range, Boolean rangeGetContentMD5,
+    public Response<Void> downloadWithResponse(OutputStream stream, FileRange range, Boolean rangeGetContentMD5,
         Duration timeout, Context context) {
-        Mono<Response<FileDownloadInfo>> response = fileAsyncClient
-            .downloadWithPropertiesWithResponse(range, rangeGetContentMD5, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
+        Mono<Response<Void>> download = fileAsyncClient.downloadWithResponse(range, rangeGetContentMD5, context)
+            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new SimpleResponse<>(response, null)));
+
+        return Utility.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -574,7 +595,7 @@ public class FileClient {
      *
      * <p>Upload data "default" to the file in Storage File Service. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuffer-long}
+     * {@codesnippet com.azure.storage.file.FileClient.upload#InputStream-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -586,38 +607,8 @@ public class FileClient {
      * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
      * code 413 (Request Entity Too Large)
      */
-    public FileUploadInfo upload(ByteBuffer data, long length) {
-        return uploadWithResponse(data, length, null, Context.NONE).getValue();
-    }
-
-    /**
-     * Uploads a range of bytes to the beginning of a file in storage file service. Upload operations performs an
-     * in-place write on the specified file.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Upload "default" to the file. </p>
-     *
-     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-Duration-Context}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
-     *
-     * @param data The data which will upload to the storage file.
-     * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is
-     * set to clear, the value of this header must be set to zero.
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link FileUploadInfo file upload info}
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
-     * code 413 (Request Entity Too Large)
-     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
-     */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, Duration timeout,
-        Context context) {
-        Mono<Response<FileUploadInfo>> response = fileAsyncClient.uploadWithResponse(Flux.just(data), length, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+    public FileUploadInfo upload(InputStream data, long length) {
+        return uploadWithResponse(data, length, 0L, null, Context.NONE).getValue();
     }
 
     /**
@@ -628,15 +619,14 @@ public class FileClient {
      *
      * <p>Upload data "default" starting from 1024. </p>
      *
-     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#ByteBuffer-long-long-Duration-Context}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadWithResponse#InputStream-long-Long-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -645,11 +635,11 @@ public class FileClient {
      * code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileUploadInfo> uploadWithResponse(ByteBuffer data, long length, long offset, Duration timeout,
+    public Response<FileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset, Duration timeout,
         Context context) {
-        Mono<Response<FileUploadInfo>> response = fileAsyncClient
-            .uploadWithResponse(Flux.just(data), length, offset, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(fileAsyncClient.uploadWithResponse(Utility
+                .convertStreamToByteBuffer(data, length, (int) FileAsyncClient.FILE_DEFAULT_BLOCK_SIZE),
+            length, offset, context), timeout);
     }
 
     /**
@@ -672,7 +662,7 @@ public class FileClient {
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public FileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
-                                                         URI sourceURI) {
+        URI sourceURI) {
         return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
             .getValue();
     }
@@ -702,7 +692,7 @@ public class FileClient {
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-            long sourceOffset, URI sourceURI, Duration timeout, Context context) {
+        long sourceOffset, URI sourceURI, Duration timeout, Context context) {
         Mono<Response<FileUploadRangeFromUrlInfo>> response = fileAsyncClient.uploadRangeFromUrlWithResponse(length,
             destinationOffset, sourceOffset, sourceURI, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -742,8 +732,7 @@ public class FileClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being transmitted in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}
+     * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -847,15 +836,15 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
-     * @param maxResults Optional max number of results returned per page
+     * @param maxResultsPerPage Optional max number of results returned per page
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<HandleItem> listHandles(Integer maxResults, Duration timeout, Context context) {
-        return new PagedIterable<>(fileAsyncClient.listHandlesWithOptionalTimeout(maxResults, timeout, context));
+    public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, Duration timeout, Context context) {
+        return new PagedIterable<>(fileAsyncClient.listHandlesWithOptionalTimeout(maxResultsPerPage, timeout, context));
     }
 
     /**

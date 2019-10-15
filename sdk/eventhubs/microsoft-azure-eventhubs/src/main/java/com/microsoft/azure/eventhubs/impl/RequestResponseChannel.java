@@ -104,7 +104,7 @@ public class RequestResponseChannel implements IOObject {
             final OperationResult<Message, Exception> onResponse) {
 
         if (message == null) {
-            throw new IllegalArgumentException("message cannot be null");
+            throw new IllegalArgumentException("message cannot be null.");
         }
         if (message.getMessageId() != null) {
             throw new IllegalArgumentException("message.getMessageId() should be null");

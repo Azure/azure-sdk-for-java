@@ -44,7 +44,7 @@ class PipelineSample {
         // We add in a policy to track the type of HTTP method calls we make.
         // We also want to see the Header information of our HTTP requests, so we specify the detail level.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-                .credential(new ConfigurationClientCredentials(connectionString))
+                .connectionString(connectionString)
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
                 .buildAsyncClient();

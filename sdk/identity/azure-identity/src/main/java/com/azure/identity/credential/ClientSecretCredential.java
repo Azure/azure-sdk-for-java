@@ -39,8 +39,8 @@ public class ClientSecretCredential implements TokenCredential {
      */
     ClientSecretCredential(String tenantId, String clientId, String clientSecret,
                            IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(clientSecret);
-        Objects.requireNonNull(identityClientOptions);
+        Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
+        Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)

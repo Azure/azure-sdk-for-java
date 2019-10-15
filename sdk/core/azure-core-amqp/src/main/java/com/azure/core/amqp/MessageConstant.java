@@ -125,7 +125,7 @@ public enum MessageConstant {
      * @throws NullPointerException if {@code constant} is {@code null}.
      */
     public static MessageConstant fromString(String headerValue) {
-        Objects.requireNonNull(headerValue);
+        Objects.requireNonNull(headerValue, "'headerValue' cannot be null.");
 
         return RESERVED_CONSTANTS_MAP.get(headerValue);
     }

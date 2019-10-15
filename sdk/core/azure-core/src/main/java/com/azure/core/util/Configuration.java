@@ -3,8 +3,8 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -15,84 +15,84 @@ import java.util.function.Function;
  */
 public class Configuration implements Cloneable {
     /**
-     * Noop Configuration object used to opt out of using global configurations when constructing client libraries.
+     * No-op {@link Configuration} object used to opt out of using global configurations when constructing client
+     * libraries.
      */
     public static final Configuration NONE = new NoopConfiguration();
 
     // Default properties - these are what we read from the environment
     /**
-     * URI of the proxy for HTTP connections.
+     * URL of the proxy for HTTP connections.
      */
     public static final String PROPERTY_HTTP_PROXY = "HTTP_PROXY";
 
     /**
-     * URI of the proxy for HTTPS connections.
+     * URL of the proxy for HTTPS connections.
      */
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
 
     /**
-     * List of hosts or CIDR to not proxy.
+     * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
      */
     public static final String PROPERTY_NO_PROXY = "NO_PROXY";
 
     /**
-     * AAD MSI Credentials.
+     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
      */
     public static final String PROPERTY_MSI_ENDPOINT = "MSI_ENDPOINT";
 
     /**
-     * AAD MSI Credentials.
+     * Secret when connecting to Azure Active Directory using managed service identity (MSI).
      */
     public static final String PROPERTY_MSI_SECRET = "MSI_SECRET";
 
     /**
-     * Azure subscription.
+     * Subscription id to use when connecting to Azure resources.
      */
     public static final String PROPERTY_AZURE_SUBSCRIPTION_ID = "AZURE_SUBSCRIPTION_ID";
 
     /**
-     * Azure username for U/P Auth.
+     * Username to use when performing username/password authentication with Azure.
      */
     public static final String PROPERTY_AZURE_USERNAME = "AZURE_USERNAME";
 
     /**
-     * Azure password for U/P Auth.
+     * Username to use when performing username/password authentication with Azure.
      */
     public static final String PROPERTY_AZURE_PASSWORD = "AZURE_PASSWORD";
 
     /**
-     * AAD
+     * Client id to use when performing service principal authentication with Azure.
      */
     public static final String PROPERTY_AZURE_CLIENT_ID = "AZURE_CLIENT_ID";
 
     /**
-     * AAD
+     * Client secret to use when performing service principal authentication with Azure.
      */
     public static final String PROPERTY_AZURE_CLIENT_SECRET = "AZURE_CLIENT_SECRET";
 
     /**
-     * AAD
+     * Tenant id for the Azure resources.
      */
     public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
 
     /**
-     * Azure resource group.
+     * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
 
     /**
-     * The name of the Azure cloud to connect to.
+     * Name of the Azure cloud to connect to.
      */
     public static final String PROPERTY_AZURE_CLOUD = "AZURE_CLOUD";
 
     /**
-     * Disables telemetry.
+     * Disables telemetry collection.
      */
     public static final String PROPERTY_AZURE_TELEMETRY_DISABLED = "AZURE_TELEMETRY_DISABLED";
 
-
     /**
-     * Enable console logging by setting a log level.
+     * Enables logging by setting a log level.
      */
     public static final String PROPERTY_AZURE_LOG_LEVEL = "AZURE_LOG_LEVEL";
 
@@ -124,7 +124,7 @@ public class Configuration implements Cloneable {
     };
 
     /**
-     * TODO
+     * Gets the global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
@@ -148,7 +148,9 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * @return the global configuration store.
+     * Gets the global configuration store shared by all client libraries.
+     *
+     * @return The global configuration store.
      */
     public static Configuration getGlobalConfiguration() {
         return GLOBAL_CONFIGURATION;
@@ -158,7 +160,7 @@ public class Configuration implements Cloneable {
      * Gets the value of the configuration.
      *
      * @param name Name of the configuration.
-     * @return Value of the configuration if found, otherwise null.
+     * @return Value of the configuration if found, otherwise {@code null}.
      */
     public String get(String name) {
         return getOrLoad(name);
@@ -167,11 +169,11 @@ public class Configuration implements Cloneable {
     /**
      * Gets the value of the configuration converted to {@code T}.
      *
-     * If no configuration is found the default is returned.
+     * If no configuration is found, the {@code defaultValue} is returned.
      *
      * @param name Name of the configuration.
      * @param defaultValue Value to return if the configuration isn't found.
-     * @param <T> Generic type that the configuration is converted to if found.
+     * @param <T> Type that the configuration is converted to if found.
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
@@ -243,11 +245,11 @@ public class Configuration implements Cloneable {
     /**
      * Adds a configuration with the given value.
      *
-     * If a configuration with the same name already exists this will update it to the passed value.
+     * If a configuration with the same name already exists, this will update it to the passed value.
      *
      * @param name Name of the configuration.
      * @param value Value of the configuration.
-     * @return the updated Configuration object.
+     * @return The updated Configuration object.
      */
     public Configuration put(String name, String value) {
         configurations.put(name, value);
@@ -258,7 +260,7 @@ public class Configuration implements Cloneable {
      * Removes the configuration.
      *
      * @param name Name of the configuration.
-     * @return If the configuration was removed the value of it, otherwise null.
+     * @return If the configuration was removed the value of it, otherwise {@code null}.
      */
     public String remove(String name) {
         return configurations.remove(name);
@@ -275,7 +277,7 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * @return a clone of the Configuration object.
+     * @return A clone of the Configuration object.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {

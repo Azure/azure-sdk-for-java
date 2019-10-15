@@ -299,8 +299,8 @@ public final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
+                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max)));
         }
     }
 
@@ -537,9 +537,19 @@ public final class Utility {
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + blockSize > length ? length - pos : blockSize;
                 byte[] cache = new byte[(int) count];
-                int lastIndex = data.read(cache);
-                currentTotalLength[0] += lastIndex;
-                if (lastIndex < count) {
+                int numOfBytes = 0;
+                int offset = 0;
+                // Revise the casting if the max allowed network data transmission is over 2G.
+                int len = (int) count;
+                while (numOfBytes != -1 && offset < count) {
+                    numOfBytes = data.read(cache, offset, len);
+                    offset += numOfBytes;
+                    len -= numOfBytes;
+                    if (numOfBytes != -1) {
+                        currentTotalLength[0] += numOfBytes;
+                    }
+                }
+                if (numOfBytes == -1 && currentTotalLength[0] < length) {
                     throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
                         String.format("Request body emitted %d bytes, less than the expected %d bytes.",
                             currentTotalLength[0], length), currentTotalLength[0], length));
@@ -555,7 +565,7 @@ public final class Utility {
                                 totalLength, length), totalLength, length));
                     }
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error deatils: "
+                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
                         + e.getMessage()));
                 }
             });

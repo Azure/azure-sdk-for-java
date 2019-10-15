@@ -6,7 +6,7 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -22,14 +22,15 @@
     <azure-storage-blob.version>11.0.2</azure-storage-blob.version>
 
     <!-- Track 2 client library versions -->
-    <azure-core.version>1.0.0-preview.5</azure-core.version>
-    <azure-data-appconfiguration.version>1.0.0-preview.4</azure-data-appconfiguration.version>
-    <azure-identity.version>1.0.0-preview.4</azure-identity.version>
-    <azure-keyvault.version>4.0.0-preview.4</azure-keyvault.version>
+    <azure-core.version>1.0.0-preview.6</azure-core.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.5</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.5</azure-identity.version>
+    <azure-keyvault.version>4.0.0-preview.5</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.4</azure-messaging-eventhubs.version>
     <azure-messaging-eventhubs-checkpointstore-blob.version>1.0.0-preview.2</azure-messaging-eventhubs-checkpointstore-blob.version>
     <azure-storage-common.version>12.0.0-preview.4</azure-storage-common.version>
     <azure-storage-blob.version>12.0.0-preview.4</azure-storage-blob.version>
+    <azure-storage-blob-batch.version>12.0.0-preview.4</azure-storage-blob-batch.version>
     <azure-storage-blob-cryptography.version>12.0.0-preview.4</azure-storage-blob-cryptography.version>
     <azure-storage-file.version>12.0.0-preview.4</azure-storage-file.version>
     <azure-storage-file-datalake.version>12.0.0-preview.4</azure-storage-file-datalake.version>
@@ -84,7 +85,10 @@
                 <source>..\..\sdk\storage\azure-storage-common\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob\src\samples\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-batch\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-batch\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\main\java\com</source>
+                <source>..\..\sdk\storage\azure-storage-blob-cryptography\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file\src\main\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file\src\samples\java\com</source>
                 <source>..\..\sdk\storage\azure-storage-file-datalake\src\main\java\com</source>
@@ -222,6 +226,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
           <version>${azure-storage-blob.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-batch</artifactId>
+          <version>${azure-storage-blob-batch.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

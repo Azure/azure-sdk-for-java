@@ -11,53 +11,47 @@ documentation][api_documentation] | [Samples][samples]
 ### Prerequisites
 - Java Development Kit (JDK) with version 8 or above
 - [Maven][maven]
-```xml
-<dependency>
-    <groupId>io.opencensus</groupId>
-    <artifactId>opencensus-api</artifactId>
-    <version>0.21.0</version>
-</dependency>
-
-<dependency>
-    <groupId>io.opencensus</groupId>
-    <artifactId>opencensus-impl</artifactId>
-    <version>0.21.0</version>
-</dependency>
-```
 
 ### Adding the package to your product
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-tracing-opencensus</artifactId>
-    <version>1.0.0-preview.3</version>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-tracing-opencensus</artifactId>
+  <version>1.0.0-preview.3</version>
 </dependency>
 ```
 
 ### Default HTTP Client
-All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+Tracing OpenCensus to use Netty HTTP client. 
+
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
 
 ```xml
+<!-- Add Tracing OpenCensus without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-netty</artifactId>
-    <version>1.0.0-preview.4</version>
+    <artifactId>azure-core-tracing-opencensus</artifactId>
+    <version>1.0.0-preview.3</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
+</dependency>
+
+<!-- Add OkHTTP client to use with Tracing OpenCensus package -->
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-okhttp</artifactId>
+  <version>1.0.0-preview.4</version>
 </dependency>
 ```
 
-This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
-
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
-
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.0.0-preview.4</version>
-</dependency>
-```
-
-### Configuring HTTP clients
+### Configuring HTTP Clients
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders][create-eventhubs-builders], unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:

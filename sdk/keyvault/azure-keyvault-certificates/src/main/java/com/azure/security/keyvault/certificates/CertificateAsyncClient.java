@@ -323,7 +323,7 @@ public class CertificateAsyncClient {
     }
 
     Mono<Response<Certificate>> updateCertificatePropertiesWithResponse(CertificateProperties certificateProperties, Context context) {
-        Objects.requireNonNull(certificateProperties, "The certificate properties input parameter cannot be null");
+        Objects.requireNonNull(certificateProperties, "certificateProperties' cannot be null.");
         CertificateUpdateParameters parameters = new CertificateUpdateParameters()
             .tags(certificateProperties.getTags())
             .certificateAttributes(new CertificateRequestAttributes(certificateProperties));
@@ -935,7 +935,7 @@ public class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Certificate>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateConfig) {
-        Objects.requireNonNull(mergeCertificateConfig, "The merge certificate configuration cannot be null");
+        Objects.requireNonNull(mergeCertificateConfig, "'mergeCertificateConfig' cannot be null.");
         return withContext(context -> mergeCertificateWithResponse(mergeCertificateConfig, context));
     }
 
