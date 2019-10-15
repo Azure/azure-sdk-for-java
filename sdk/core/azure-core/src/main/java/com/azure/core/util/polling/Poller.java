@@ -96,7 +96,6 @@ public class Poller<T, R> {
      */
     private final Supplier<Mono<R>> fetchResultOperation;
 
-
     /*
      * This handle to Flux allow us to perform polling operation in asynchronous manner.
      * This could be shared among many subscriber. One of the subscriber will be this poller itself.
@@ -108,7 +107,6 @@ public class Poller<T, R> {
      * This will save last poll response.
      */
     private volatile PollResponse<T> pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, null);
-
 
     /*
      * Since constructor create a subscriber and start auto polling. This handle will be used to dispose the subscriber
@@ -131,7 +129,7 @@ public class Poller<T, R> {
      *     operation, it should be handled by the client library and return a valid {@link PollResponse}. However if
      *     the poll operation returns {@link Mono#error(Throwable)}, the {@link Poller} will disregard it and continue
      *     to poll.
-     * @param fetchResultOperation the operation to be called to fetch final result after polling has been completed.
+     * @param fetchResultOperation The operation to be called to fetch final result after polling has been completed.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
      * @throws NullPointerException if {@code pollInterval} or {@code pollOperation} is {@code null}.
      */
@@ -156,7 +154,7 @@ public class Poller<T, R> {
      * @param activationOperation The activation operation to be called by the {@link Poller} instance before
      *     calling {@code pollOperation}. It can be {@code null} which will indicate to the {@link Poller} that
      *     {@code pollOperation} can be called straight away.
-     * @param fetchResultOperation the operation to be called to fetch final result after polling has been completed.
+     * @param fetchResultOperation The operation to be called to fetch final result after polling has been completed.
      * @param cancelOperation Cancel operation if cancellation is supported by the service. If it is {@code null}, then
      *     the cancel operation is not supported.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
@@ -167,6 +165,7 @@ public class Poller<T, R> {
                   Function<Poller<T, R>, Mono<T>> cancelOperation) {
 
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
@@ -211,7 +210,7 @@ public class Poller<T, R> {
      *     {@link Mono#error(Throwable)}. If any unexpected scenario happens in poll operation, it should be handled by
      *     client library and return a valid {@link PollResponse}. However if poll operation returns
      *     {@link Mono#error(Throwable)}, the {@link Poller} will disregard that and continue to poll.
-     * @param fetchResultOperation the operation to be called to fetch final result after polling has been completed.
+     * @param fetchResultOperation The operation to be called to fetch final result after polling has been completed.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null}
      *      which will indicate to the {@link Poller} that cancel operation is not supported by Azure service.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if
@@ -229,6 +228,7 @@ public class Poller<T, R> {
      * It will call cancelOperation if status is {@link OperationStatus#IN_PROGRESS} otherwise it does nothing.
      *
      * @throws UnsupportedOperationException when the cancel operation is not supported by the Azure service.
+     * @return A {@link Mono} containing the response.
      */
     public Mono<T> cancelOperation() throws UnsupportedOperationException {
         if (this.cancelOperation == null) {
@@ -253,7 +253,7 @@ public class Poller<T, R> {
      * @return A {@link Mono} containing the final output.
      */
     public Mono<R> result() {
-        if (!getStatus().equals(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED)) {
+        if (getStatus() == null || !getStatus().equals(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED)) {
             return Mono.error(new IllegalAccessException("The poll operation has not successfully completed."));
         }
         return fetchResultOperation.get();

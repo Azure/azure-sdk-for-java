@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class PollerTests {
-    public static final String OUTPUT_NAME = "Bar";
+    private static final String OUTPUT_NAME = "Bar";
     @Mock
     private Function<PollResponse<Response>, Mono<PollResponse<Response>>> pollOperation;
 

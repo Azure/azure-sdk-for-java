@@ -66,6 +66,7 @@ public final class PollResponse<T> {
         /**
          * Creates or finds a {@link OperationStatus} from its string representation.
          * @param name a name to look for
+         * @param isComplete a status to indicate if the operation is complete or not.
          * @return the corresponding {@link OperationStatus}
          */
         public static OperationStatus fromString(String name, boolean isComplete) {
