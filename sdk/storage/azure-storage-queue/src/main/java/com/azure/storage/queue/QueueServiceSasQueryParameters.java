@@ -26,15 +26,16 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
     /**
      * Creates a new {@link QueueServiceSasQueryParameters} object.
      *
-     * @param queryParamsMap All query parameters for the request as key-value pairs
-     * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
-     * queryParamsMap
+     * @param queryParametersMap All query parameters for the request as key-value pairs
+     * @param removeSasParametersFromMap When {@code true}, the SAS query parameters will be removed from
+     * {@code queryParametersMap}
      */
-    public QueueServiceSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        super(queryParamsMap, removeSASParametersFromMap);
+    public QueueServiceSasQueryParameters(Map<String, String[]> queryParametersMap,
+           boolean removeSasParametersFromMap) {
+        super(queryParametersMap, removeSasParametersFromMap);
 
-        this.identifier = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
-            removeSASParametersFromMap);
+        this.identifier = getQueryParameter(queryParametersMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
+            removeSasParametersFromMap);
     }
 
 

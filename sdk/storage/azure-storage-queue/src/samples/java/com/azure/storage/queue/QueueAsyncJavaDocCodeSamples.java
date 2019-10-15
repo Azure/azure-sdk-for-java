@@ -267,8 +267,8 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
         client.dequeueMessages().subscribe(
             dequeuedMessage -> {
-                client.updateMessageWithResponse("newText", dequeuedMessage.getMessageId(),
-                    dequeuedMessage.getPopReceipt(), null).subscribe(
+                client.updateMessageWithResponse(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt(), "newText",
+                    null).subscribe(
                         response -> System.out.println("Complete updating the message with status code:"
                             + response.getStatusCode()),
                         updateError -> System.err.print(updateError.toString()),

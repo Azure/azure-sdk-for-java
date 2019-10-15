@@ -651,7 +651,7 @@ public final class QueueAsyncClient {
      */
     public Mono<UpdatedMessage> updateMessage(String messageText, String messageId, String popReceipt,
         Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout)
+        return updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -667,9 +667,9 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
-     * @param messageText Updated value for the message
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
+     * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
      * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to
@@ -677,8 +677,8 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message, or
      * the {@code visibilityTimeout} is outside the allowed bounds
      */
-    public Mono<Response<UpdatedMessage>> updateMessageWithResponse(String messageText, String messageId,
-        String popReceipt, Duration visibilityTimeout) {
+    public Mono<Response<UpdatedMessage>> updateMessageWithResponse(String messageId, String popReceipt,
+           String messageText, Duration visibilityTimeout) {
         return withContext(context ->
             updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context));
     }

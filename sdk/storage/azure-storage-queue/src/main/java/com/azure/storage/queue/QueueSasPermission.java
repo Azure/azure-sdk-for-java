@@ -75,11 +75,11 @@ public final class QueueSasPermission {
     /**
      * Sets the read permission status.
      *
-     * @param hadReadPermission Permission status to set
+     * @param hasReadPermission Permission status to set
      * @return the updated QueueSasPermission object.
      */
-    public QueueSasPermission setReadPermission(boolean hadReadPermission) {
-        this.readPermission = hadReadPermission;
+    public QueueSasPermission setReadPermission(boolean hasReadPermission) {
+        this.readPermission = hasReadPermission;
         return this;
     }
 
