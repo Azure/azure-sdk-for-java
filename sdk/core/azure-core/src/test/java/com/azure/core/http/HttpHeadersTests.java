@@ -5,6 +5,9 @@ package com.azure.core.http;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -30,5 +33,14 @@ public class HttpHeadersTests {
 
         headers.put("a", null);
         assertNull(headers.getValue("a"));
+    }
+
+    @Test
+    public void testToString() {
+        Map<String, HttpHeader> testHeadersMap = new HashMap<>();
+        HttpHeader header = new HttpHeader("Content-Length", "7");
+        testHeadersMap.put("content-length", header);
+
+        assertEquals("Content-Length=7", testHeadersMap.toString());
     }
 }

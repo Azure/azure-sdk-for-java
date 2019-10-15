@@ -3,10 +3,7 @@
 
 package com.azure.core.http;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -144,5 +141,19 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public Stream<HttpHeader> stream() {
         return headers.values().stream();
+    }
+
+    @Override
+    public String toString() {
+        Collection<HttpHeader> httpHeaderCollection = headers.values();
+        StringBuilder stringBuilder = new StringBuilder();
+        int index = 0;
+        for (HttpHeader httpHeader : httpHeaderCollection) {
+            stringBuilder.append(httpHeader.getName()).append("=").append(httpHeader.getValue());
+            if (index < httpHeaderCollection.size())
+                stringBuilder.append(",");
+            index++;
+        }
+        return stringBuilder.toString();
     }
 }
