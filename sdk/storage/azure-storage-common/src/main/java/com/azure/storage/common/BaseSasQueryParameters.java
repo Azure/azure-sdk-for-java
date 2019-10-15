@@ -69,14 +69,14 @@ public abstract class BaseSasQueryParameters {
     /**
      * Helper method to get a query parameter
      *
+     * @param <T> The object type.
      * @param parameters A {@code Map} of parameters to values to search.
      * @param name The name of parameter to find.
      * @param remove Whether or not to remove the parameter from the map.
      * @param converter Function that transforms the value to a String.
-     * @param <T> The object type.
      * @return The object
      */
-    protected <T> T getQueryParameter(Map<String, String[]> parameters, String name, Boolean remove, Function<String,
+    protected <T> T getQueryParameter(Map<String, String[]> parameters, String name, boolean remove, Function<String,
         T> converter) {
         String[] parameterValue = parameters.get(name);
         if (parameterValue == null) {
