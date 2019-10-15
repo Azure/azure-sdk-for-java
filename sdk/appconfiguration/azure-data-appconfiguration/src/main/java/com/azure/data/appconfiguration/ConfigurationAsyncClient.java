@@ -28,6 +28,7 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -88,9 +89,13 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(String key, String label, String value) {
-        return withContext(
-            context -> addSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
-            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        try {
+            return withContext(
+                context -> addSetting(new ConfigurationSetting().setKey(key).setLabel(label).setValue(value), context))
+                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -117,7 +122,7 @@ public final class ConfigurationAsyncClient {
             return withContext(context -> addSetting(setting, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -144,7 +149,7 @@ public final class ConfigurationAsyncClient {
         try {
             return withContext(context -> addSetting(setting, context));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -190,7 +195,7 @@ public final class ConfigurationAsyncClient {
                     false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -228,7 +233,7 @@ public final class ConfigurationAsyncClient {
         try {
             return withContext(context -> setSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -274,7 +279,7 @@ public final class ConfigurationAsyncClient {
         try {
             return getSetting(key, label, null);
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -307,7 +312,7 @@ public final class ConfigurationAsyncClient {
                     false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -341,7 +346,7 @@ public final class ConfigurationAsyncClient {
         try {
             return withContext(context -> getSetting(setting, asOfDateTime, ifChanged, context));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -383,7 +388,7 @@ public final class ConfigurationAsyncClient {
                 context -> deleteSetting(new ConfigurationSetting().setKey(key).setLabel(label), false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -421,7 +426,7 @@ public final class ConfigurationAsyncClient {
         try {
             return withContext(context -> deleteSetting(setting, ifUnchanged, context));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -460,7 +465,7 @@ public final class ConfigurationAsyncClient {
                 new ConfigurationSetting().setKey(key).setLabel(label), context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -486,7 +491,7 @@ public final class ConfigurationAsyncClient {
         try {
             return withContext(context -> setReadOnly(setting, context));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -525,7 +530,7 @@ public final class ConfigurationAsyncClient {
                 context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -551,9 +556,11 @@ public final class ConfigurationAsyncClient {
         try {
             return withContext(context -> clearReadOnly(setting, context));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
+
+
 
     Mono<Response<ConfigurationSetting>> clearReadOnly(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
@@ -611,7 +618,7 @@ public final class ConfigurationAsyncClient {
                     error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
                         error));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -633,7 +640,7 @@ public final class ConfigurationAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
 
     }
@@ -694,7 +701,7 @@ public final class ConfigurationAsyncClient {
 
             return result;
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
     }
 
@@ -708,7 +715,7 @@ public final class ConfigurationAsyncClient {
                     error));
             return result;
         } catch (RuntimeException ex) {
-            return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+            return monoError(logger, ex);
         }
 
     }
