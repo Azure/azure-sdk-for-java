@@ -55,7 +55,7 @@ public class PagedFluxTest {
     public void testPagedFluxConverter() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
 
-        StepVerifier.create(pagedFlux.mapTo(String::valueOf))
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf))
             .expectNext("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14")
             .verifyComplete();
     }
@@ -72,11 +72,11 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
-        StepVerifier.create(pagedFlux.mapTo(String::valueOf).byPage().log())
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
             .expectNextCount(5)
             .verifyComplete();
 
-        StepVerifier.create(pagedFlux.mapTo(String::valueOf).byPage().log())
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(0).getValue().equals(pagedResponse.getValue()))
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(1).getValue().equals(pagedResponse.getValue()))
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(2).getValue().equals(pagedResponse.getValue()))
@@ -89,11 +89,11 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSinglePageConvertedType() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
-        StepVerifier.create(pagedFlux.mapTo(String::valueOf).byPage().log())
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
             .expectNextCount(1)
             .verifyComplete();
 
-        StepVerifier.create(pagedFlux.mapTo(String::valueOf).byPage().log())
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage().log())
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(0).getValue().equals(pagedResponse.getValue()))
             .verifyComplete();
     }

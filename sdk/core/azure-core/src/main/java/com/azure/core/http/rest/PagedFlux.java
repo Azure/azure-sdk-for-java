@@ -74,20 +74,19 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param <S> The mapped type.
      * @return A PagedFlux of type S.
      */
-    public <S> PagedFlux<S> mapTo(Function<T, S> mapper) {
+    public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
         return new PagedFlux<S>(() -> getFirstPageRetriever().get()
-            .map(pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(),
-                pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-                pagedResponse.getNextLink(),
-                null)),
+            .map(mapPagedResponse(mapper)),
             continuationToken -> getNextPageRetriever().apply(continuationToken)
-                .map(pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(),
-                    pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-                    pagedResponse.getNextLink(),
-                    null)));
+                .map(mapPagedResponse(mapper)));
+    }
+
+    private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getNextLink(),
+            null);
     }
 }
