@@ -243,8 +243,7 @@ public class IdentityClient {
         return Mono.fromFuture(() -> {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
                 dc -> deviceCodeConsumer.accept(new DeviceCodeChallenge(dc.userCode(), dc.deviceCode(),
-                    dc.verificationUri(), Duration.ofSeconds(dc.expiresIn()), Duration.ofSeconds(dc.interval()),
-                    dc.message()))).build();
+                    dc.verificationUri(), Duration.ofSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
         }).map(MsalToken::new);
     }

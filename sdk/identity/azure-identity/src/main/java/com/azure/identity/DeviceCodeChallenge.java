@@ -20,16 +20,14 @@ public class DeviceCodeChallenge {
      * @param deviceCode code which should be included in the request for the access token
      * @param verificationUrl URI where user can authenticate
      * @param expiresIn expiration time of device code in seconds
-     * @param pollInterval pollInterval at which the STS should be polled at
      * @param message message which should be displayed to the user
      */
     public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUrl, Duration expiresIn,
-                               Duration pollInterval, String message) {
+                               String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUrl = verificationUrl;
         this.expiresIn = expiresIn;
-        this.pollInterval = pollInterval;
         this.message = message;
     }
 
@@ -40,8 +38,6 @@ public class DeviceCodeChallenge {
     private final String verificationUrl;
 
     private final Duration expiresIn;
-
-    private final Duration pollInterval;
 
     private final String message;
 
@@ -72,13 +68,6 @@ public class DeviceCodeChallenge {
      */
     public Duration getExpiresIn() {
         return expiresIn;
-    }
-
-    /**
-     * @return pollInterval at which the STS should be polled at.
-     */
-    public Duration getPollInterval() {
-        return pollInterval;
     }
 
     /**
