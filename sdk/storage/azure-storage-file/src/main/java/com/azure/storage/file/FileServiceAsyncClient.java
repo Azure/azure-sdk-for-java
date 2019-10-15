@@ -4,7 +4,6 @@
 package com.azure.storage.file;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
@@ -166,7 +165,7 @@ public final class FileServiceAsyncClient {
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout,
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
@@ -180,15 +179,15 @@ public final class FileServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context),
+            nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
                 timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().getShareItems(),
                     response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
@@ -233,7 +232,7 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context))
+        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -316,8 +315,7 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
-        return postProcessResponse(azureFileStorageClient.services()
-            .setPropertiesWithRestResponseAsync(properties, context))
+        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -376,8 +374,8 @@ public final class FileServiceAsyncClient {
         Integer quotaInGB, Context context) {
         ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null, accountName);
 
-        return postProcessResponse(shareAsyncClient.createWithResponse(metadata, quotaInGB, context))
-            .map(response -> new SimpleResponse<>(response, shareAsyncClient));
+        return shareAsyncClient.createWithResponse(metadata, quotaInGB, context).map(response ->
+            new SimpleResponse<>(response, shareAsyncClient));
     }
 
     /**
@@ -427,8 +425,8 @@ public final class FileServiceAsyncClient {
         if (ImplUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
-        return postProcessResponse(azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
+        return azureFileStorageClient.shares()
+            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

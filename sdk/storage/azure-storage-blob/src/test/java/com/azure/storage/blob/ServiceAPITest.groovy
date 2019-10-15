@@ -125,7 +125,7 @@ class ServiceAPITest extends APISpec {
         }
 
         expect:
-        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResults(PAGE_RESULTS), null)
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
@@ -151,7 +151,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -387,7 +387,7 @@ class ServiceAPITest extends APISpec {
         serviceURL.getAccountInfo()
 
         then:
-        thrown(StorageException)
+        thrown(IllegalArgumentException)
     }
 
 

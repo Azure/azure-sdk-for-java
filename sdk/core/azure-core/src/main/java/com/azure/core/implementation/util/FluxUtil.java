@@ -5,9 +5,11 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
@@ -108,6 +110,18 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> toMono(Response<T> response) {
         return Mono.justOrEmpty(response.getValue());
+    }
+
+    /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link Mono}.
+     *
+     * @param logger The {@link ClientLogger} to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link Mono} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> Mono<T> monoError(ClientLogger logger, RuntimeException ex) {
+        return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
     }
 
     /**

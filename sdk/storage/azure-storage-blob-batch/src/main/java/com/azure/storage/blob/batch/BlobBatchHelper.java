@@ -9,7 +9,6 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
-import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.StorageException;
 import reactor.core.publisher.Mono;
 
@@ -126,8 +125,8 @@ class BlobBatchHelper {
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
          */
-        StorageException exception = new StorageException(new StorageErrorException(responseBody,
-            batchOperationResponse.asHttpResponse(responseBody)), responseBody);
+        StorageException exception = new StorageException(responseBody,
+            batchOperationResponse.asHttpResponse(responseBody), responseBody);
         batchOperationResponse.setException(exception);
 
         if (throwOnError) {

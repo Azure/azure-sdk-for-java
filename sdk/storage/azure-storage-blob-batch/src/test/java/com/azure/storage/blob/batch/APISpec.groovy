@@ -25,7 +25,6 @@ import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.BaseClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import spock.lang.Requires
@@ -231,19 +230,14 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        addOptionalRecording(builder)
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
 
         if (credential != null) {
             builder.credential(credential)
         }
 
-        return builder
-    }
-
-    def addOptionalRecording(BaseClientBuilder<? extends BaseClientBuilder> builder) {
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
         return builder
     }
 

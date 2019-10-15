@@ -3,10 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.TokenRequest;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
