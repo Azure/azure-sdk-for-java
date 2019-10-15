@@ -41,7 +41,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  *
  * <p>
@@ -73,6 +74,23 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         super(azureBlobStorage, snapshot, cpk, accountName);
     }
 
+    private static String pageRangeToString(PageRange pageRange) {
+        if (pageRange.getStart() < 0 || pageRange.getEnd() <= 0) {
+            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
+                + "0 if specified.");
+        }
+        if (pageRange.getStart() % PAGE_BYTES != 0) {
+            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
+        }
+        if (pageRange.getEnd() % PAGE_BYTES != PAGE_BYTES - 1) {
+            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
+        }
+        if (pageRange.getEnd() <= pageRange.getStart()) {
+            throw new IllegalArgumentException("PageRange's End value must be after the start.");
+        }
+        return "bytes=" + pageRange.getStart() + '-' + pageRange.getEnd();
+    }
+
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
      * information, see the
@@ -84,6 +102,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
+     *
      * @return A reactive response containing the information of the created page blob.
      */
     public Mono<PageBlobItem> create(long size) {
@@ -97,7 +116,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -106,9 +126,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param headers {@link BlobHTTPHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
+     *
      * @return A reactive response containing the information of the created page blob.
+     *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
-     * {@code sequenceNumber} isn't null and is less than 0.
+     *                                  {@code sequenceNumber} isn't null and is less than 0.
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
         Map<String, String> metadata, BlobAccessConditions accessConditions) {
@@ -156,10 +178,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
      * default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     *
      * @return A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
-        return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+        return uploadPagesWithResponse(pageRange, body, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -172,23 +195,31 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
      * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
      * default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     * @param contentMd5 An MD5 hash of the page content. This hash is used to verify the integrity of the page during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
      * @param pageBlobAccessConditions {@link PageBlobAccessConditions}
+     *
      * @return A reactive response containing the information of the uploaded pages.
+     *
      * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
-        PageBlobAccessConditions pageBlobAccessConditions) {
-        return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
+        byte[] contentMd5, PageBlobAccessConditions pageBlobAccessConditions) {
+        return withContext(context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobAccessConditions,
+            context));
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
+    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
         PageBlobAccessConditions pageBlobAccessConditions, Context context) {
         pageBlobAccessConditions = pageBlobAccessConditions == null
             ? new PageBlobAccessConditions()
@@ -202,7 +233,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         String pageRangeStr = pageRangeToString(pageRange);
 
         return this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null,
-            null, body, pageRange.getEnd() - pageRange.getStart() + 1, null, null, null, pageRangeStr, null,
+            null, body, pageRange.getEnd() - pageRange.getStart() + 1, contentMd5, null, null, pageRangeStr, null,
             pageBlobAccessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             pageBlobAccessConditions.getSequenceNumberAccessConditions(),
             pageBlobAccessConditions.getModifiedAccessConditions(), context)
@@ -227,6 +258,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * authentication is required to perform the operation.
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source page
      * blob.
+     *
      * @return A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
@@ -241,7 +273,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -251,11 +284,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source blob.
-     * @param sourceContentMD5 An MD5 hash of the block content from the source blob. If specified, the service will
-     * calculate the MD5 of the received data and fail the request if it does not match the provided MD5.
+     * @param sourceContentMD5 An MD5 hash of the page content. This hash is used to verify the integrity of the page
+     * during transport. When this header is specified, the storage service compares the hash of the content that has
+     * arrived with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not
+     * match, the operation will fail.
      * @param destAccessConditions {@link PageBlobAccessConditions}
      * @param sourceAccessConditions {@link SourceModifiedAccessConditions}
+     *
      * @return A reactive response containing the information of the uploaded pages.
+     *
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
     public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL,
@@ -304,6 +341,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
+     *
      * @return A reactive response containing the information of the cleared pages.
      */
     public Mono<PageBlobItem> clearPages(PageRange pageRange) {
@@ -316,13 +354,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .clearPagesWithResponse#PageRange-PageBlobAccessConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
      * @param pageBlobAccessConditions {@link PageBlobAccessConditions}
+     *
      * @return A reactive response containing the information of the cleared pages.
+     *
      * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
@@ -359,6 +400,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRanges#BlobRange}
      *
      * @param blobRange {@link BlobRange}
+     *
      * @return A reactive response containing the information of the cleared pages.
      */
     public Mono<PageList> getPageRanges(BlobRange blobRange) {
@@ -371,10 +413,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .getPageRangesWithResponse#BlobRange-BlobAccessConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobAccessConditions}
+     *
      * @return A reactive response emitting all the page ranges.
      */
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
@@ -406,6 +450,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
+     *
      * @return A reactive response emitting all the different page ranges.
      */
     public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
@@ -419,14 +464,17 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
      * previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as
      * long as the snapshot specified by prevsnapshot is the older of the two.
      * @param accessConditions {@link BlobAccessConditions}
+     *
      * @return A reactive response emitting all the different page ranges.
+     *
      * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
     public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
@@ -461,6 +509,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
+     *
      * @return A reactive response emitting the resized page blob.
      */
     public Mono<PageBlobItem> resize(long size) {
@@ -473,12 +522,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.resizeWithResponse#long-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .resizeWithResponse#long-BlobAccessConditions}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
      * @param accessConditions {@link BlobAccessConditions}
+     *
      * @return A reactive response emitting the resized page blob.
+     *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES}
      */
     public Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobAccessConditions accessConditions) {
@@ -501,16 +553,19 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Sets the page blob's sequence number. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
+     * Sets the page blob's sequence number. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.updateSequenceNumber#SequenceNumberActionType-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .updateSequenceNumber#SequenceNumberActionType-Long}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
      * use to track requests and manage concurrency issues.
+     *
      * @return A reactive response emitting the updated page blob.
      */
     public Mono<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber) {
@@ -518,18 +573,22 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Sets the page blob's sequence number. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
+     * Sets the page blob's sequence number. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
      * use to track requests and manage concurrency issues.
      * @param accessConditions {@link BlobAccessConditions}
+     *
      * @return A reactive response emitting the updated page blob.
+     *
      * @throws IllegalArgumentException If {@code sequenceNumber} isn't null and is less than 0
      */
     public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
@@ -550,16 +609,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
 
         return this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null,
-                null, action, null, sequenceNumber, null,
-                accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
+            null, action, null, sequenceNumber, null,
+            accessConditions.getLeaseAccessConditions(), accessConditions.getModifiedAccessConditions(), context)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
     }
 
     /**
-     * Begins an operation to start an incremental copy from one page blob's snapshot to this page blob. The snapshot is
+     * Begins an operation to start an incremental copy from one page blob's snapshot to this page blob. The snapshot
+     * is
      * copied such that only the differential changes between the previously copied snapshot are transferred to the
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
-     * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
+     * usual. For more information, see the Azure Docs
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
      * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
@@ -569,6 +630,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
+     *
      * @return A reactive response emitting the copy status.
      */
     public Mono<CopyStatusType> copyIncremental(URL source, String snapshot) {
@@ -576,23 +638,28 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Begins an operation to start an incremental copy from one page blob's snapshot to this page blob. The snapshot is
+     * Begins an operation to start an incremental copy from one page blob's snapshot to this page blob. The snapshot
+     * is
      * copied such that only the differential changes between the previously copied snapshot are transferred to the
      * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
-     * usual. For more information, see the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
+     * usual. For more information, see the Azure Docs
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a>
      * and
      * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient
+     * .copyIncrementalWithResponse#URL-String-ModifiedAccessConditions}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
+     *
      * @return A reactive response emitting the copy status.
+     *
      * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
@@ -613,22 +680,5 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(
             null, null, source, null, null, modifiedAccessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyStatus()));
-    }
-
-    private static String pageRangeToString(PageRange pageRange) {
-        if (pageRange.getStart() < 0 || pageRange.getEnd() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
-                + "0 if specified.");
-        }
-        if (pageRange.getStart() % PAGE_BYTES != 0) {
-            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
-        }
-        if (pageRange.getEnd() % PAGE_BYTES != PAGE_BYTES - 1) {
-            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
-        }
-        if (pageRange.getEnd() <= pageRange.getStart()) {
-            throw new IllegalArgumentException("PageRange's End value must be after the start.");
-        }
-        return "bytes=" + pageRange.getStart() + '-' + pageRange.getEnd();
     }
 }

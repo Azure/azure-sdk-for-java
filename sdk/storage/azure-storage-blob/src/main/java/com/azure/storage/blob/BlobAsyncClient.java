@@ -271,7 +271,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
-                return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
+                return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(), null,
                     accessConditionsFinal.getLeaseAccessConditions())
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> blockId)
@@ -344,7 +344,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                             progressReceiver, progressLock, totalProgress);
 
                         return getBlockBlobAsyncClient()
-                            .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
+                            .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null, null);
                     })
                     .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
                         new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
