@@ -33,6 +33,7 @@ public class PagedIterable<T> extends IterableStream<T> {
     /**
      * Creates instance given {@link PagedFluxBase}.
      * @param pagedFluxBase to use as iterable
+     * @param <P> The response extending from {@link PagedResponse}
      */
     public <P extends PagedResponse<T>> PagedIterable(PagedFluxBase<T, P> pagedFluxBase) {
         super(pagedFluxBase);
@@ -42,6 +43,8 @@ public class PagedIterable<T> extends IterableStream<T> {
     /**
      * Retrieve the {@link Stream}, one page at a time.
      * It will provide same {@link Stream} of T values from starting if called multiple times.
+     *
+     * @param <P> The response extending from {@link PagedResponse}
      * @return {@link Stream} of a Response that extends {@link PagedResponse}
      */
     @SuppressWarnings("unchecked")
@@ -54,7 +57,7 @@ public class PagedIterable<T> extends IterableStream<T> {
      * continuation token. To start from first page, use {@link #streamByPage()} instead.
      *
      * @param continuationToken The continuation token used to fetch the next page
-     *
+     * @param <P> The response extending from {@link PagedResponse}
      * @return {@link Stream} of a Response that extends {@link PagedResponse}, starting from the page associated
      * with the continuation token
      */
@@ -66,6 +69,8 @@ public class PagedIterable<T> extends IterableStream<T> {
     /**
      * Provides {@link Iterable} API for{ @link PagedResponse}
      * It will provide same collection of T values from starting if called multiple times.
+     *
+     * @param <P> The response extending from {@link PagedResponse}
      * @return {@link Iterable} interface
      */
     @SuppressWarnings("unchecked")
@@ -79,7 +84,7 @@ public class PagedIterable<T> extends IterableStream<T> {
      * It will provide same collection of T values from starting if called multiple times.
      *
      * @param continuationToken The continuation token used to fetch the next page
-     *
+     * @param <P> The response extending from {@link PagedResponse}
      * @return {@link Iterable} interface
      */
     @SuppressWarnings("unchecked")
