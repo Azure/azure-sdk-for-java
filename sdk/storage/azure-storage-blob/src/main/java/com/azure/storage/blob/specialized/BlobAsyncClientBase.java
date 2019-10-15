@@ -251,7 +251,7 @@ public class BlobAsyncClientBase {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      *
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
-     *     cancelled.
+     * cancelled.
      */
     public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceUrl) {
         return beginCopyFromUrl(sourceUrl, null, null, null, null, null);
@@ -272,13 +272,13 @@ public class BlobAsyncClientBase {
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP
-     *     Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
-     *     conditions related to when the blob was changed relative to the given request. The request will fail if the
-     *     specified condition is not satisfied.
+     * Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
+     * conditions related to when the blob was changed relative to the given request. The request will fail if the
+     * specified condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      *
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
-     *     cancelled.
+     * cancelled.
      */
     public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
