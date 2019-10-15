@@ -1023,3 +1023,80 @@ directive:
     }
     $.get.operationId = "Service_ListBlobContainersSegment";
 ```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: ContainersImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: BlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: AppendBlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: BlockBlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: PageBlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+```
