@@ -4,11 +4,12 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.Constants
@@ -343,8 +344,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         def e = thrown(BlobStorageException)
-        e.getErrorCode() == StorageErrorCode.CONDITION_NOT_MET ||
-            e.getErrorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+        e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
+            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID

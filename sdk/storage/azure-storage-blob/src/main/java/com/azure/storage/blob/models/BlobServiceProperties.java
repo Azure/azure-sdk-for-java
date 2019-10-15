@@ -63,7 +63,7 @@ public final class BlobServiceProperties {
     /*
      * The deleteRetentionPolicy property.
      */
-    @JsonProperty(value = "RetentionPolicy")
+    @JsonProperty(value = "DeleteRetentionPolicy")
     private BlobRetentionPolicy deleteRetentionPolicy;
 
     /*

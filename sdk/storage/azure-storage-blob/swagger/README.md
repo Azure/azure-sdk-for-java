@@ -1191,7 +1191,8 @@ directive:
   where: $
   transform: >
     return $.replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private BlobMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private BlobMetrics minuteMetrics;');
+      replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private BlobMetrics minuteMetrics;').
+      replace('@JsonProperty(value = "RetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;', '@JsonProperty(value = "DeleteRetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;');
 ```
 
 ### Rename BlobHttpHeaders to BlobHttpHeader
