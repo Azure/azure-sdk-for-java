@@ -5,7 +5,7 @@ import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.Constants
-import com.azure.storage.common.IpRange
+import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.AccessPolicy
@@ -163,7 +163,7 @@ class FileSASTests extends APISpec {
             .setDeletePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new IpRange()
+        def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
         def sasProtocol = SasProtocol.HTTPS_HTTP
@@ -180,7 +180,7 @@ class FileSASTests extends APISpec {
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
-            .setIpRange(ipRange)
+            .setSasIpRange(ipRange)
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -222,7 +222,7 @@ class FileSASTests extends APISpec {
             .setDeletePermission(true)
         def startTime = getUTCNow().minusDays(1)
         def expiryTime = getUTCNow().plusDays(1)
-        def ipRange = new IpRange()
+        def ipRange = new SasIpRange()
             .setIpMin("0.0.0.0")
             .setIpMax("255.255.255.255")
         def sasProtocol = SasProtocol.HTTPS_HTTP
@@ -239,7 +239,7 @@ class FileSASTests extends APISpec {
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
-            .setIpRange(ipRange)
+            .setSasIpRange(ipRange)
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)

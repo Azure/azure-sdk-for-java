@@ -5,6 +5,7 @@ package com.azure.storage.common;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
+import com.azure.storage.common.sas.SasIpRange;
 import java.time.OffsetDateTime;
 
 /**
@@ -39,7 +40,7 @@ public final class AccountSasSignatureValues {
 
     private String permissions;
 
-    private IpRange ipRange;
+    private SasIpRange sasIpRange;
 
     private String services;
 
@@ -62,7 +63,7 @@ public final class AccountSasSignatureValues {
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IpRange} ip address range for the SAS
+     * @param sasIpRange An optional {@code SasIpRange} ip address range for the SAS
      * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
      * @return A string that represents the SAS token
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
@@ -71,7 +72,7 @@ public final class AccountSasSignatureValues {
     public static String generateAccountSas(SharedKeyCredential sharedKeyCredential, AccountSasService
         accountSASService, AccountSasResourceType accountSASResourceType, AccountSasPermission accountSASPermission,
                                             OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            IpRange ipRange, SasProtocol sasProtocol) {
+                                            SasIpRange sasIpRange, SasProtocol sasProtocol) {
 
         AccountSasSignatureValues values = new AccountSasSignatureValues();
 
@@ -85,7 +86,7 @@ public final class AccountSasSignatureValues {
             values.setVersion(version);
         }
 
-        values.setIpRange(ipRange);
+        values.setSasIpRange(sasIpRange);
         values.setProtocol(sasProtocol);
 
         AccountSasQueryParameters sasQueryParameters = values.generateSasQueryParameters(sharedKeyCredential);
@@ -188,20 +189,20 @@ public final class AccountSasSignatureValues {
     }
 
     /**
-     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IpRange getIpRange() {
-        return ipRange;
+    public SasIpRange getSasIpRange() {
+        return sasIpRange;
     }
 
     /**
-     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
-     * @param ipRange Allowed IP range to set
+     * @param sasIpRange Allowed IP range to set
      * @return the updated AccountSasSignatureValues object.
      */
-    public AccountSasSignatureValues setIpRange(IpRange ipRange) {
-        this.ipRange = ipRange;
+    public AccountSasSignatureValues setSasIpRange(SasIpRange sasIpRange) {
+        this.sasIpRange = sasIpRange;
         return this;
     }
 
@@ -266,7 +267,7 @@ public final class AccountSasSignatureValues {
         String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
 
         return new AccountSasQueryParameters(this.version, this.services, resourceTypes,
-            this.protocol, this.startTime, this.expiryTime, this.ipRange, this.permissions, signature);
+            this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions, signature);
     }
 
     private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
@@ -278,7 +279,7 @@ public final class AccountSasSignatureValues {
             this.startTime == null ? Constants.EMPTY_STRING
                 : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.ipRange == null ? Constants.EMPTY_STRING : this.ipRange.toString(),
+            this.sasIpRange == null ? Constants.EMPTY_STRING : this.sasIpRange.toString(),
             this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
             this.version,
             Constants.EMPTY_STRING // Account SAS requires an additional newline character
