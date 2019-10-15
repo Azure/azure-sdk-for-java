@@ -62,7 +62,7 @@ public class AuthorizationCodeCredentialTest {
 
         // test
         AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder()
-                .clientId(clientId).authorizationCode(authCode1).redirectUri(redirectUri.toString()).build();
+                .clientId(clientId).authorizationCode(authCode1).redirectUrl(redirectUri.toString()).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
