@@ -521,7 +521,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> clearReadOnly(String key, String label) {
         try {
-            return withContext(context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
+            return withContext(
+                context -> clearReadOnly(new ConfigurationSetting().setKey(key).setLabel(label), context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
             return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
@@ -539,9 +540,9 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.clearReadOnlyWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to unlock based on its key and optional label combination.
-     * @return A REST response containing the unlocked ConfigurationSetting, or {@code null} if didn't exist. {@code
-     * null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will also
-     * throw HttpResponseException described below).
+     * @return A REST response containing the unlocked ConfigurationSetting, or {@code null} if didn't exist.
+     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
+     * also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
