@@ -16,13 +16,15 @@ Please check back as we add samples and link them here.
 
 To get the binaries of the official Microsoft Azure Event Grid Java SDK as distributed by Microsoft, reade for use within your project, you can use Maven.
 
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-eventgrid;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventgrid</artifactId>
-    <version>LATEST</version>
+    <version>1.3.0</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ## Prerequisites
 
