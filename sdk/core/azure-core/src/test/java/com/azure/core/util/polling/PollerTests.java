@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -35,6 +36,15 @@ public class PollerTests {
     @Mock
     private Function<Poller<Response, CertificateOutput>, Mono<Response>> cancelOperation;
 
+    @Mock
+    private Supplier<Mono<CertificateOutput>> fetchResultOperation;
+
+    @Mock
+    private Function<Poller<Response, Void>, Mono<Response>> voidCancelOperation;
+
+    @Mock
+    private Supplier<Mono<Void>> voidResultOperation;
+
     @Before
     public void beforeTest() {
         MockitoAnnotations.initMocks(this);
@@ -51,7 +61,7 @@ public class PollerTests {
     @Test(expected = IllegalArgumentException.class)
     public void constructorPollIntervalZero() {
         new Poller<Response, CertificateOutput>(Duration.ZERO, pollOperation,
-            createFetchResultOperation("Bar"), () -> Mono.just(new Response("Foo")), cancelOperation);
+            fetchResultOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
     }
 
     /**
@@ -59,7 +69,7 @@ public class PollerTests {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructorPollIntervalNegative() {
-        new Poller<>(Duration.ofSeconds(-1), pollOperation, createFetchResultOperation("Bar"),
+        new Poller<>(Duration.ofSeconds(-1), pollOperation, fetchResultOperation,
             () -> Mono.just(new Response("Foo")), cancelOperation);
     }
 
@@ -68,7 +78,7 @@ public class PollerTests {
      */
     @Test(expected = NullPointerException.class)
     public void constructorPollIntervalNull() {
-        new Poller<>(null, pollOperation, createFetchResultOperation("Bar"),
+        new Poller<>(null, pollOperation, fetchResultOperation,
             () -> Mono.just(new Response("Foo")), cancelOperation);
     }
 
@@ -77,7 +87,7 @@ public class PollerTests {
      */
     @Test(expected = NullPointerException.class)
     public void constructorPollOperationNull() {
-        new Poller<>(Duration.ofSeconds(1), null, createFetchResultOperation("Bar"),
+        new Poller<>(Duration.ofSeconds(1), null, fetchResultOperation,
             () -> Mono.just(new Response("Foo")), cancelOperation);
     }
 
@@ -107,7 +117,7 @@ public class PollerTests {
 
         // Act
         final Poller<Response, CertificateOutput> pollerObserver = new Poller<Response, CertificateOutput>(pollInterval,
-            pollOperation, createFetchResultOperation("Bar"));
+            pollOperation, fetchResultOperation);
 
         // Assert
         StepVerifier.create(pollerObserver.getObserver())
@@ -140,7 +150,7 @@ public class PollerTests {
 
         // Act
         final Poller<Response, CertificateOutput> createCertPoller = new Poller<>(Duration.ofMillis(100), pollOperation,
-            createFetchResultOperation("Bar"));
+            fetchResultOperation);
         final PollResponse<Response> pollResponse = createCertPoller.blockUntil(expected);
 
         // Assert
@@ -166,7 +176,7 @@ public class PollerTests {
         when(pollOperation.apply(any())).thenReturn(Mono.just(inProgressPollResponse), Mono.just(successPollResponse));
 
         // Act
-        final Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, createFetchResultOperation("Bar"));
+        final Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
 
         // Assert
         StepVerifier.create(poller.getObserver())
@@ -196,7 +206,7 @@ public class PollerTests {
 
         when(pollOperation.apply(any())).thenReturn(Mono.just(initial), Mono.just(inProgress), Mono.just(success));
 
-        Poller<Response, CertificateOutput> poller = new Poller<>(Duration.ofSeconds(1), pollOperation, createFetchResultOperation("Bar"));
+        Poller<Response, CertificateOutput> poller = new Poller<>(Duration.ofSeconds(1), pollOperation, fetchResultOperation);
 
         // Act & Assert
         poller.setAutoPollingEnabled(false);
@@ -225,7 +235,7 @@ public class PollerTests {
 
         when(pollOperation.apply(any())).thenReturn(Mono.just(inProgressPollResponse), Mono.just(successPollResponse));
 
-        Poller<Response, CertificateOutput> createCertPoller = new Poller<>(pollInterval, pollOperation, createFetchResultOperation("Bar"));
+        Poller<Response, CertificateOutput> createCertPoller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
 
         while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
             Thread.sleep(pollInterval.toMillis());
@@ -249,8 +259,9 @@ public class PollerTests {
         Duration pollInterval = Duration.ofMillis(500);
 
         when(pollOperation.apply(any())).thenReturn(Mono.just(inProgress), Mono.just(success));
+        when(fetchResultOperation.get()).thenReturn(Mono.just(new CertificateOutput(OUTPUT_NAME)));
 
-        Poller<Response, CertificateOutput> createCertPoller = new Poller<>(pollInterval, pollOperation, createFetchResultOperation(OUTPUT_NAME));
+        Poller<Response, CertificateOutput> createCertPoller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
 
         Assert.assertEquals(OUTPUT_NAME, createCertPoller.block().getName());
         Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, createCertPoller.getStatus());
@@ -275,7 +286,7 @@ public class PollerTests {
         when(pollOperation.apply(any())).thenReturn(Mono.just(inProgress), Mono.just(inProgress), Mono.just(success));
 
         // Act
-        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, createFetchResultOperation(OUTPUT_NAME), null,
+        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation, null,
             ignored -> Mono.just(new Response("Foo")));
 
         // Assert
@@ -308,7 +319,7 @@ public class PollerTests {
 
         when(pollOperation.apply(any())).thenReturn(Mono.just(responses.get(0)), Mono.just(responses.get(1)), Mono.just(responses.get(2)));
 
-        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, createFetchResultOperation(OUTPUT_NAME));
+        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
         poller.setAutoPollingEnabled(false);
 
         // Act & Assert
@@ -338,7 +349,7 @@ public class PollerTests {
         when(pollOperation.apply(any())).thenReturn(Mono.just(first), Mono.just(cancellation));
 
         // Act
-        Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, createFetchResultOperation(OUTPUT_NAME), null, cancelOperation);
+        Poller<Response, Void> poller = new Poller<Response, Void>(pollInterval, pollOperation, voidResultOperation, null, voidCancelOperation);
 
         // Assert
         StepVerifier.create(poller.getObserver())
@@ -353,16 +364,12 @@ public class PollerTests {
         Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.getStatus());
         Assert.assertTrue(poller.isAutoPollingEnabled());
 
-        verify(cancelOperation, Mockito.times(1)).apply(poller);
+        verify(voidCancelOperation, Mockito.times(1)).apply(poller);
     }
 
 
     private <T> void assertException(Throwable exception, Class<T> expectedExceptionType) {
         assertEquals(expectedExceptionType, exception.getClass());
-    }
-
-    private Supplier<Mono<CertificateOutput>> createFetchResultOperation(String certName) {
-        return () -> Mono.defer(() -> Mono.just(new CertificateOutput(certName)));
     }
 
     public static class Response {

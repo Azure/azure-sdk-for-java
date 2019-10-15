@@ -70,8 +70,10 @@ public final class PollResponse<T> {
          * @return the corresponding {@link OperationStatus}
          */
         public static OperationStatus fromString(String name, boolean isComplete) {
-            OperationStatus status =  fromString(name, OperationStatus.class);
-            status.completed = isComplete;
+            OperationStatus status = fromString(name, OperationStatus.class);
+            if (status != null) {
+                status.completed = isComplete;
+            }
             return status;
         }
 

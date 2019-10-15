@@ -86,12 +86,6 @@ public class Poller<T, R> {
     private final Function<Poller<T, R>, Mono<T>> cancelOperation;
 
     /*
-     * Indicate to poll automatically or not when poller is created.
-     * default value is false;
-     */
-    private boolean autoPollingEnabled;
-
-    /*
      * This will be called when final result needs to be retrieved after polling has completed.
      */
     private final Supplier<Mono<R>> fetchResultOperation;
@@ -113,6 +107,12 @@ public class Poller<T, R> {
      * when client disable auto polling.
      */
     private Disposable fluxDisposable;
+
+    /*
+     * Indicate to poll automatically or not when poller is created.
+     * default value is false;
+     */
+    private boolean autoPollingEnabled;
 
     /**
      * Creates a {@link Poller} instance with poll interval and poll operation. The polling starts immediately by
