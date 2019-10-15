@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -22,6 +23,7 @@ import java.util.Map;
  * Defines headers for GetProperties operation.
  */
 @JacksonXmlRootElement(localName = "Blob-GetProperties-Headers")
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 @Fluent
 public final class BlobGetPropertiesHeaders {
     /*

@@ -7,6 +7,7 @@ package com.azure.storage.file.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.ImplUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -15,6 +16,7 @@ import java.time.OffsetDateTime;
  * Defines headers for UploadRange operation.
  */
 @JacksonXmlRootElement(localName = "File-UploadRange-Headers")
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 @Fluent
 public final class FileUploadRangeHeaders {
     /*

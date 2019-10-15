@@ -5,6 +5,7 @@
 package com.azure.storage.file.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Defines headers for ListSharesSegment operation.
  */
 @JacksonXmlRootElement(localName = "Service-ListSharesSegment-Headers")
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 @Fluent
 public final class ServiceListSharesSegmentHeaders {
     /*
