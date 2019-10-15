@@ -42,7 +42,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.5</version>
+    <version>1.0.0-preview.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
