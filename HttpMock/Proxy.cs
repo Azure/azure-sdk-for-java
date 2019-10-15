@@ -97,13 +97,21 @@ namespace HttpMock
             }
         }
 
-        public static Task SendDownstreamResponse(UpstreamResponse upstreamResponse, HttpResponse response)
+        public static Task SendDownstreamResponse(HttpRequest request, UpstreamResponse upstreamResponse, HttpResponse response, bool cached)
         {
             response.StatusCode = upstreamResponse.StatusCode;
 
             foreach (var header in upstreamResponse.Headers)
             {
-                response.Headers.Add(header.Key, header.Value);
+                // For cached responses, copy the client-request-id header from request since client requires these to match
+                if (cached && header.Key == "x-ms-client-request-id")
+                {
+                    response.Headers.Add(header.Key, request.Headers[header.Key]);
+                }
+                else
+                {
+                    response.Headers.Add(header.Key, header.Value);
+                }
             }
 
             return response.Body.WriteAsync(upstreamResponse.Content, 0, upstreamResponse.Content.Length);

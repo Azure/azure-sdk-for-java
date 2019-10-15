@@ -105,7 +105,7 @@ namespace HttpMock
                             {
                                 _lastUpstreamResponse = upstreamResponse;
                             }
-                            await Proxy.SendDownstreamResponse(upstreamResponse, response);
+                            await Proxy.SendDownstreamResponse(request, upstreamResponse, response, cached: true);
                         }
                         else if (Options.CacheLast && request.Path.Value == "/last")
                         {
@@ -117,7 +117,7 @@ namespace HttpMock
                             // Used for perf testing the cache lookup and downstream response generation.  This allows a perf client like
                             // "wrk" to directly request the last response without using the server as an HTTP proxy, since "wrk" is much
                             // slower when using a proxy (50k vs 6k RPS).
-                            await Proxy.SendDownstreamResponse(_lastUpstreamResponse, response);
+                            await Proxy.SendDownstreamResponse(request, _lastUpstreamResponse, response, cached: true);
                         }
                         else
                         {
@@ -127,7 +127,7 @@ namespace HttpMock
                             }
 
                             upstreamResponse = await Proxy.SendUpstreamRequest(request);
-                            await Proxy.SendDownstreamResponse(upstreamResponse, response);
+                            await Proxy.SendDownstreamResponse(request, upstreamResponse, response, cached: false);
                             _cache.AddOrUpdate(key, upstreamResponse, (k, r) => upstreamResponse);
 
                             if (Options.CacheLast)
