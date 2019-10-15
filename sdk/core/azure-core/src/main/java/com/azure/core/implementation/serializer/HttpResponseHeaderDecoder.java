@@ -32,16 +32,10 @@ final class HttpResponseHeaderDecoder {
         if (headerType == null) {
             return Mono.empty();
         } else {
-            return Mono.defer(() -> {
-                try {
-                    return Mono.justOrEmpty(serializer.deserialize(httpResponse.getHeaders(), decodeData.getHeadersType()));
-                } catch (IOException e) {
-                    return Mono.error(new HttpResponseException(
-                        "HTTP response has malformed headers",
-                        httpResponse,
-                        e));
-                }
-            });
+            return Mono.fromCallable(() ->
+                    serializer.deserialize(httpResponse.getHeaders(), decodeData.getHeadersType()))
+                .onErrorResume(IOException.class, e -> Mono.error(new HttpResponseException(
+                    "HTTP response has malformed headers", httpResponse, e)));
         }
     }
 }
