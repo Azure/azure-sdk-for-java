@@ -3,8 +3,6 @@
 
 package com.azure.storage.file;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -20,17 +18,20 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.implementation.models.ListSharesIncludeType;
-import com.azure.storage.file.models.CorsRule;
+import com.azure.storage.file.models.FileCorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -256,16 +257,16 @@ public final class FileServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return An empty response
-     * @throws StorageException When one of the following is true
+     * @throws FileStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
-     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link FileCorsRule#getAllowedHeaders() allowed headers}, {@link FileCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link FileCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link FileCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      */
@@ -297,16 +298,16 @@ public final class FileServiceAsyncClient {
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
-     * @throws StorageException When one of the following is true
+     * @throws FileStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
-     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link FileCorsRule#getAllowedHeaders() allowed headers}, {@link FileCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link FileCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link FileCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      */
@@ -334,7 +335,7 @@ public final class FileServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareAsyncClient ShareAsyncClient}
-     * @throws StorageException If a share with the same name already exists
+     * @throws FileStorageException If a share with the same name already exists
      */
     public Mono<ShareAsyncClient> createShare(String shareName) {
         return createShareWithResponse(shareName, null, null).flatMap(FluxUtil::toMono);
@@ -362,8 +363,8 @@ public final class FileServiceAsyncClient {
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
-     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the allowed
-     * range.
+     * @throws FileStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * allowed range.
      */
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB) {
@@ -392,7 +393,7 @@ public final class FileServiceAsyncClient {
      *
      * @param shareName Name of the share
      * @return An empty response
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
     public Mono<Void> deleteShare(String shareName) {
         return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
@@ -414,7 +415,7 @@ public final class FileServiceAsyncClient {
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws FileStorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
         return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));

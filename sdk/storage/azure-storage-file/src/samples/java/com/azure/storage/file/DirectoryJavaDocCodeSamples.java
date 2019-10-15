@@ -8,7 +8,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.NtfsFileAttributes;
 
@@ -158,13 +158,13 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHTTPHeaders,
+     * Generates a code sample for using {@link DirectoryClient#createFileWithResponse(String, long, FileHttpHeaders,
      * FileSmbProperties, String, Map, Duration, Context)}
      */
     public void createFileMaxOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryClient.createFile#string-long-filehttpheaders-filesmbproperties-string-map-duration-context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
             .setFileContentType("text/html")
             .setFileContentEncoding("gzip")
             .setFileContentLanguage("en")

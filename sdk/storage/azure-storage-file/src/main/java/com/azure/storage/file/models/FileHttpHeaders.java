@@ -13,9 +13,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * Additional parameters for a set of operations, such as: Files_create,
  * Files_setHTTPHeaders.
  */
-@JacksonXmlRootElement(localName = "file-HTTP-headers")
+@JacksonXmlRootElement(localName = "file-http-headers")
 @Fluent
-public final class FileHTTPHeaders {
+public final class FileHttpHeaders {
     /*
      * Sets the MIME content type of the file. The default type is
      * 'application/octet-stream'.
@@ -69,9 +69,9 @@ public final class FileHTTPHeaders {
      * file. The default type is 'application/octet-stream'.
      *
      * @param fileContentType the fileContentType value to set.
-     * @return the FileHTTPHeaders object itself.
+     * @return the FileHttpHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentType(String fileContentType) {
+    public FileHttpHeaders setFileContentType(String fileContentType) {
         this.fileContentType = fileContentType;
         return this;
     }
@@ -91,9 +91,9 @@ public final class FileHTTPHeaders {
      * have been applied to the file.
      *
      * @param fileContentEncoding the fileContentEncoding value to set.
-     * @return the FileHTTPHeaders object itself.
+     * @return the FileHttpHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentEncoding(String fileContentEncoding) {
+    public FileHttpHeaders setFileContentEncoding(String fileContentEncoding) {
         this.fileContentEncoding = fileContentEncoding;
         return this;
     }
@@ -113,9 +113,9 @@ public final class FileHTTPHeaders {
      * used by this resource.
      *
      * @param fileContentLanguage the fileContentLanguage value to set.
-     * @return the FileHTTPHeaders object itself.
+     * @return the FileHttpHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentLanguage(String fileContentLanguage) {
+    public FileHttpHeaders setFileContentLanguage(String fileContentLanguage) {
         this.fileContentLanguage = fileContentLanguage;
         return this;
     }
@@ -135,9 +135,9 @@ public final class FileHTTPHeaders {
      * File service stores this value but does not use or modify it.
      *
      * @param fileCacheControl the fileCacheControl value to set.
-     * @return the FileHTTPHeaders object itself.
+     * @return the FileHttpHeaders object itself.
      */
-    public FileHTTPHeaders setFileCacheControl(String fileCacheControl) {
+    public FileHttpHeaders setFileCacheControl(String fileCacheControl) {
         this.fileCacheControl = fileCacheControl;
         return this;
     }
@@ -155,9 +155,9 @@ public final class FileHTTPHeaders {
      * Set the fileContentMD5 property: Sets the file's MD5 hash.
      *
      * @param fileContentMD5 the fileContentMD5 value to set.
-     * @return the FileHTTPHeaders object itself.
+     * @return the FileHttpHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentMD5(byte[] fileContentMD5) {
+    public FileHttpHeaders setFileContentMD5(byte[] fileContentMD5) {
         this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
@@ -177,9 +177,9 @@ public final class FileHTTPHeaders {
      * Content-Disposition header.
      *
      * @param fileContentDisposition the fileContentDisposition value to set.
-     * @return the FileHTTPHeaders object itself.
+     * @return the FileHttpHeaders object itself.
      */
-    public FileHTTPHeaders setFileContentDisposition(String fileContentDisposition) {
+    public FileHttpHeaders setFileContentDisposition(String fileContentDisposition) {
         this.fileContentDisposition = fileContentDisposition;
         return this;
     }
