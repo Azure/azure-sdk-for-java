@@ -1,7 +1,7 @@
-# Azure Storage Blobs client library for Java
+# Azure Storage Blob client library for Java
 
-Azure Blob storage is Microsoft's object storage solution for the cloud. Blob
-storage is optimized for storing massive amounts of unstructured data.
+Azure Blob Storage is Microsoft's object storage solution for the cloud. Blob
+Storage is optimized for storing massive amounts of unstructured data.
 Unstructured data is data that does not adhere to a particular data model or
 definition, such as text or binary data.
 
@@ -11,7 +11,7 @@ definition, such as text or binary data.
 
 ### Prerequisites
 
--  Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -19,57 +19,57 @@ definition, such as text or binary data.
 
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-storage-blob</artifactId>
-  <version>12.0.0-preview.4</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob</artifactId>
+    <version>12.0.0-preview.4</version>
 </dependency>
 ```
 
 ### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-Storage Blob to use Netty HTTP client. 
+All client libraries, by default, use the Netty HTTP client. Adding the above dependency will automatically configure 
+Storage Blob to use the Netty HTTP client. 
 
 ### Alternate HTTP client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
+If, instead of Netty it is preferable to use OkHTTP, there is an HTTP client available for that too. Exclude the default
+Netty and include the OkHTTP client in your pom.xml.
 
 ```xml
-<!-- Add Storage Blob dependency without Netty HTTP client -->
+<!-- Add the Storage Blob dependency without the Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
     <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
+        <exclusion>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
     </exclusions>
 </dependency>
 
-<!-- Add OkHTTP client to use with Storage Blob -->
+<!-- Add the OkHTTP client to use with Storage Blob -->
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.6</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-core-http-okhttp</artifactId>
+    <version>1.0.0-preview.6</version>
 </dependency>
 ```
 
 ### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
+When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient) unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this by allowing users to provide custom (or customized) `com.azure.core.http.HttpClient` instances.
 
 For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
 
 ```java
 HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
+        .port(8080)
+        .wiretap(true)
+        .build();
 ```
 
 ### Create a Storage Account
-To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
+To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
 
-```Powershell
+```bash
 az stoage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
@@ -78,81 +78,91 @@ az stoage account create \
 
 ### Authenticate the client
 
-In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
-To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
+In order to interact with the Storage Service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
+To make this possible you'll need the Account SAS (shared access signature) string of the Storage Account. Learn more at [SAS Token][sas_token]
 
 #### Get credentials
 
-- **SAS Token**
+##### **SAS Token**
 
-a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
+a. Use the Azure CLI snippet below to get the SAS token from the Storage Account.
 
-```Powershell
-az storage blob generate-sas
-    --name {queue name}
-    --expiry {date/time to expire SAS token}
-    --permission {permission to grant}
-    --connection-string {connection string of the storage account}
-    --services {storage services the SAS allows}
+```bash
+az storage blob generate-sas \
+    --account-name {Storage Account name} \
+    --container-name {container name} \
+    --name {blob name} \
+    --permissions {permissions to grant} \
+    --expiry {datetime to expire the SAS token} \
+    --services {storage services the SAS allows} \
     --resource-types {resource types the SAS allows}
 ```
 
-```Powershell
+Example:
+
+```bash
 CONNECTION_STRING=<connection-string>
 
-az storage blob generate-sas
-    --name javasdksas
-    --expiry 2019-06-05
-    --permission rpau
-    --connection-string $CONNECTION_STRING
+az storage blob generate-sas \
+    --account-name MyStorageAccount \
+    --container-name MyContainer \
+    --name MyBlob \
+    --permissions racdw \
+    --expiry 2020-06-15
 ```
+
 b. Alternatively, get the Account SAS Token from the Azure Portal.
-```
-Go to your storage account -> Shared access signature -> Click on Generate SAS and connection string (after setup)
-```
 
-- **Shared Key Credential**
+1. Go to your Storage Account
+2. Select `Shared access signature` from the menu on the left
+3. Click on `Generate SAS and connection string` (after setup)
 
-a. Use account name and account key. Account name is your storage account name.
-```
-// Here is where we get the key
-Go to your storage account -> Access keys -> Key 1/ Key 2 -> Key
-```
-b. Use the connection string
-```
-// Here is where we get the key
-Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
-```
+##### **Shared Key Credential**
+
+a. Use Account name and Account key. Account name is your Storage Account name.
+
+1. Go to your Storage Account
+2. Select `Access keys` from the menu on the left
+3. Under `key1`/`key2` copy the contents of the `Key` field
+
+or
+
+b. Use the connection string.
+
+1. Go to your Storage Account
+2. Select `Access keys` from the menu on the left
+3. Under `key1`/`key2` copy the contents of the `Connection string` field
 
 ## Key concepts
 
-Blob storage is designed for:
+Blob Storage is designed for:
 
-- Serving images or documents directly to a browser.
-- Storing files for distributed access.
-- Streaming video and audio.
-- Writing to log files.
-- Storing data for backup and restore, disaster recovery, and archiving.
-- Storing data for analysis by an on-premises or Azure-hosted service.
+- Serving images or documents directly to a browser
+- Storing files for distributed access
+- Streaming video and audio
+- Writing to log files
+- Storing data for backup and restore, disaster recovery, and archiving
+- Storing data for analysis by an on-premises or Azure-hosted service
 
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
 
-- [Create BlobServiceClient](#create-blobserviceclient)
-- [Create ContainerClient](#create-containerclient)
-- [Create BlobClient](#create-blobclient)
+- [Create a `BlobServiceClient`](#create-a-blobserviceclient)
+- [Create a `BlobContainerClient`](#create-a-blobcontainerclient)
+- [Create a `BlobClient`](#create-a-blobclient)
 - [Create a container](#create-a-container)
-- [Upload a blob from InputStream](#uploading-a-blob-from-a-stream)
-- [Upload a blob from File](#uploading-a-blob-from-file)
-- [Download a blob to OutputStream](#downloading-a-blob-to-output-stream)
-- [Download a blob to File](#downloading-a-blob-to-local-path)
-- [Enumerating blobs](#enumerating-blobs)
-- [Authenticate with Azure.Identity](#authenticate-with-azureidentity)
+- [Upload a blob from a stream](#upload-a-blob-from-a-stream)
+- [Upload a blob from local path](#upload-a-blob-from-local-path)
+- [Download a blob to a stream](#download-a-blob-to-a-stream)
+- [Download a blob to local path](#download-a-blob-to-local-path)
+- [Enumerate blobs](#enumerate-blobs)
+- [Authenticate with Azure Identity](#authenticate-with-azure-identity)
 
-### Create BlobServiceClient
+### Create a `BlobServiceClient`
 
-Create a BlobServiceClient using the [`sasToken`](#get-credentials) generated above.
+Create a `BlobServiceClient` using the [`sasToken`](#get-credentials) generated above.
+
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .endpoint("<your-storage-blob-url>")
@@ -160,82 +170,87 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .buildClient();
 ```
 
-### Create BlobContainerClient
+### Create a `BlobContainerClient`
 
-Create a BlobContainerClient if a BlobServiceClient exists.
+Create a `BlobContainerClient` using a `BlobServiceClient`.
+
 ```java
 BlobContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
 ```
 
 or
 
-Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) generated above.
+Create a `BlobContainerClient` from the builder [`sasToken`](#get-credentials) generated above.
+
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-         .endpoint("<your-storage-blob-url>")
-         .sasToken("<your-sasToken>")
-         .containerName("mycontainer")
-         .buildClient();
+        .endpoint("<your-storage-blob-url>")
+        .sasToken("<your-sasToken>")
+        .containerName("mycontainer")
+        .buildClient();
 ```
 
-### Create BlobClient
+### Create a `BlobClient`
 
-Create a BlobClient if container client exists.
+Create a `BlobClient` using a `BlobContainerClient`.
+
 ```java
 BlobClient blobClient = blobContainerClient.getBlobClient("myblob").getBlockBlobClient();
 ```
 
 or
 
-Create the BlobClient from the builder [`sasToken`](#get-credentials) generated above.
+Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
+
 ```java
 BlobClient blobClient = new BlobClientBuilder()
-         .endpoint("<your-storage-blob-url>")
-         .sasToken("<your-sasToken>")
-         .containerName("mycontainer")
-         .blobName("myblob")
-         .buildBlobClient();
+        .endpoint("<your-storage-blob-url>")
+        .sasToken("<your-sasToken>")
+        .containerName("mycontainer")
+        .blobName("myblob")
+        .buildBlobClient();
 ```
 
 ### Create a container
 
-Create a container from a BlobServiceClient.
+Create a container using a `BlobServiceClient`.
+
 ```java
 blobServiceClient.createContainer("mycontainer");
 ```
 
 or
 
-Create a container using BlobContainerClient.
+Create a container using a `BlobContainerClient`.
+
 ```java
 blobContainerClient.create();
 ```
 
-### Uploading a blob from a stream
+### Upload a blob from a stream
 
-Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
+Upload from an `InputStream` to a blob using a `BlockBlobClient` generated from a `BlobContainerClient`.
 
 ```java
-BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
+BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
 }
 ```
 
-### Uploading a blob from `File`
+### Upload a blob from local path
 
-Upload a file to a blob using BlockBlobClient generated from BlobContainerClient.
+Upload a file to a blob using a `BlockBlobClient` generated from a `BlobContainerClient`.
 
 ```java
-
-BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
+BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("myblockblob").getBlockBlobClient();
 blockBlobClient.uploadFromFile("local-file.jpg");
 ```
 
-### Downloading a blob to output stream
+### Download a blob to a stream
 
-Download blob to output stream using BlobClient.
+Download a blob to an `OutputStream` using a `BlobClient`.
 
 ```java
 try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -243,16 +258,18 @@ try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 }
 ```
 
-### Downloading a blob to local path
+### Download a blob to local path
 
-Download blob to local file using BlobClient.
+Download blob to a local file using a `BlobClient`.
+
 ```java
 blobClient.downloadToFile("downloaded-file.jpg");
 ```
 
-### Enumerating blobs
+### Enumerate blobs
 
-Enumerating all blobs using BlobContainerClient
+Enumerating all blobs using a `BlobContainerClient`.
+
 ```java
 blobContainerClient.listBlobsFlat()
         .forEach(
@@ -260,12 +277,12 @@ blobContainerClient.listBlobsFlat()
         );
 ```
 
-### Authenticate with Azure.Identity
+### Authenticate with Azure Identity
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
 ```java
-BlobServiceClient storageClient = new BlobServiceClientBuilder()
+BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
         .endpoint(endpoint)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -281,20 +298,20 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 
 Get started with our [Blob samples][samples]:
 
-1. [Basic Examples][samples_basic]: Create storage, container, blob clients, Upload, download, and list blobs.
-1. [File Transfer Examples][samples_file_transfer]: Upload and download a large file through blobs.
-1. [Storage Error Examples][samples_storage_error]: Handle the exceptions from storage blob service side.
-1. [List Container Examples][samples_list_containers]: Create, list and delete containers.
-1. [Set metadata and HTTPHeaders Examples][samples_metadata]: Set metadata for container and blob, and set HTTPHeaders for blob.
-1. [Azure Identity Examples][samples_identity]: Use DefaultAzureCredential to do the authentication.
+1. [Basic Examples][samples_basic]: Create storage, container and blob clients. Upload, download and list blobs.
+2. [File Transfer Examples][samples_file_transfer]: Upload and download a large file through blobs.
+3. [Storage Error Examples][samples_storage_error]: Handle the exceptions thrown from the Storage Blob service side.
+4. [List Container Examples][samples_list_containers]: Create, list and delete containers.
+5. [Set Metadata and HTTPHeaders Examples][samples_metadata]: Set metadata for containers and blobs, and set HTTPHeaders for blobs.
+6. [Azure Identity Examples][samples_identity]: Use `DefaultAzureCredential` to do the authentication.
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs%2FREADME.png)
 
@@ -304,15 +321,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
-[maven]: https://maven.apache.org/
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_ps]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-powershell
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
 [storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_sub]: https://azure.microsoft.com/free/
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: src/samples
