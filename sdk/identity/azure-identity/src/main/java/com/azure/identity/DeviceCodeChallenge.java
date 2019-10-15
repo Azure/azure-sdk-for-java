@@ -18,7 +18,7 @@ public class DeviceCodeChallenge {
      *
      * @param userCode code which user needs to provide when authenticating at the verification URI
      * @param deviceCode code which should be included in the request for the access token
-     * @param verificationUrl URI where user can authenticate
+     * @param verificationUrl URL where user can authenticate
      * @param expiresIn expiration time of device code in seconds
      * @param message message which should be displayed to the user
      */
@@ -57,7 +57,7 @@ public class DeviceCodeChallenge {
     }
 
     /**
-     * @return URI where user can authenticate.
+     * @return URL where user can authenticate.
      */
     public String getVerificationUrl() {
         return verificationUrl;
