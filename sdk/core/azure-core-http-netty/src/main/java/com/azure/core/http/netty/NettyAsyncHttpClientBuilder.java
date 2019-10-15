@@ -9,7 +9,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
-import java.util.function.Function;
 
 /**
  * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
@@ -29,7 +28,6 @@ public class NettyAsyncHttpClientBuilder {
     private boolean enableWiretap;
     private int port = 80;
     private NioEventLoopGroup nioEventLoopGroup;
-    private Function<HttpClient, HttpClient> configFunction;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of
@@ -77,11 +75,11 @@ public class NettyAsyncHttpClientBuilder {
                                 String.format("Unknown Proxy type '%s' in use. Not configuring Netty proxy.",
                                     proxyOptions.getType())));
                     }
-                    if (proxyOptions.getUserName() != null) {
+                    if (proxyOptions.getUsername() != null) {
                         // Netty supports only Basic proxy authentication and we default to it.
                         return tcpConfig.proxy(ts -> ts.type(nettyProxy)
                                 .address(proxyOptions.getAddress())
-                                .username(proxyOptions.getUserName())
+                                .username(proxyOptions.getUsername())
                                 .password(userName -> proxyOptions.getPassword())
                                 .build());
                     } else {
@@ -90,9 +88,6 @@ public class NettyAsyncHttpClientBuilder {
                 }
                 return tcpConfig;
             });
-        if (this.configFunction != null) {
-            nettyHttpClient = this.configFunction.apply(nettyHttpClient);
-        }
         return new NettyAsyncHttpClient(nettyHttpClient);
     }
 
@@ -157,21 +152,6 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
         this.nioEventLoopGroup = nioEventLoopGroup;
-        return this;
-    }
-
-    /**
-     * Register configuration function.
-     *
-     * The configuration function will be invoked with {@link HttpClient}
-     * when build is called, the function can set arbitrary configuration
-     * on the builder.
-     *
-     * @param configFunction the configuration setter function
-     * @return the updated NettyAsyncHttpClientBuilder object
-     */
-    public NettyAsyncHttpClientBuilder configuration(Function<HttpClient, HttpClient> configFunction) {
-        this.configFunction = configFunction;
         return this;
     }
 }

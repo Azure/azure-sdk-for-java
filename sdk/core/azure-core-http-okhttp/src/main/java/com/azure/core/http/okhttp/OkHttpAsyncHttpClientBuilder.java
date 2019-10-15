@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
@@ -35,7 +34,6 @@ public class OkHttpAsyncHttpClientBuilder {
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
     private ProxyOptions proxyOptions;
-    private Function<OkHttpClient.Builder, OkHttpClient.Builder> configFunction;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
@@ -135,7 +133,7 @@ public class OkHttpAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#proxy}
+     * {@codesnippet com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions}
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated OkHttpAsyncHttpClientBuilder object
@@ -143,22 +141,6 @@ public class OkHttpAsyncHttpClientBuilder {
     public OkHttpAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
         this.proxyOptions = proxyOptions;
-        return this;
-    }
-
-    /**
-     * Register configuration function.
-     *
-     * The configuration function will be invoked with {@link okhttp3.OkHttpClient.Builder}
-     * when build is called, the function can set arbitrary configuration
-     * on the builder.
-     *
-     * @param configFunction the configuration setter function
-     * @return the updated OkHttpAsyncHttpClientBuilder object
-     */
-    public OkHttpAsyncHttpClientBuilder configuration(Function<OkHttpClient.Builder, OkHttpClient.Builder>
-                                                                 configFunction) {
-        this.configFunction = configFunction;
         return this;
     }
 
@@ -209,23 +191,20 @@ public class OkHttpAsyncHttpClientBuilder {
             }
             Proxy proxy = new Proxy(proxyType, this.proxyOptions.getAddress());
             httpClientBuilder = httpClientBuilder.proxy(proxy);
-            if (proxyOptions.getUserName() != null) {
+            if (proxyOptions.getUsername() != null) {
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator((route, response) -> {
                     // By default azure-core supports only Basic authentication at the moment.
                     // If user need other scheme such as Digest then they can use 'configuration'
                     // to get access to the underlying builder and can set 'proxyAuthenticator'.
                     // In future when we ever support Digest in core-level then we can look at
                     // response.challenges and get the scheme from there.
-                    String credential = Credentials.basic(proxyOptions.getUserName(),
+                    String credential = Credentials.basic(proxyOptions.getUsername(),
                             proxyOptions.getPassword());
                     return response.request().newBuilder()
                             .header("Proxy-Authorization", credential)
                             .build();
                 });
             }
-        }
-        if (this.configFunction != null) {
-            httpClientBuilder = this.configFunction.apply(httpClientBuilder);
         }
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
     }

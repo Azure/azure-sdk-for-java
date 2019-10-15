@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ProxyOptions {
     private final InetSocketAddress address;
     private final Type type;
-    private String userName;
+    private String username;
     private String password;
 
 
@@ -30,12 +30,12 @@ public class ProxyOptions {
     /**
      * Set the proxy credentials.
      *
-     * @param userName proxy user name
+     * @param username proxy user name
      * @param password proxy password
      * @return the updated ProxyOptions object
      */
-    public ProxyOptions credentials(String userName, String password) {
-        this.userName = Objects.requireNonNull(userName, "'userName' cannot be null.");
+    public ProxyOptions credentials(String username, String password) {
+        this.username = Objects.requireNonNull(username, "'username' cannot be null.");
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
         return this;
     }
@@ -57,8 +57,8 @@ public class ProxyOptions {
     /**
      * @return the proxy user name.
      */
-    public String getUserName() {
-        return this.userName;
+    public String getUsername() {
+        return this.username;
     }
 
     /**
