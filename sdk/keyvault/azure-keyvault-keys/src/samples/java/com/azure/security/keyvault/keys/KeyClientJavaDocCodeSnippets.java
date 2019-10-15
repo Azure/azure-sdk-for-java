@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
@@ -255,7 +255,7 @@ public final class KeyClientJavaDocCodeSnippets {
      */
     public void purgeDeletedKeyWithResponseSnippets() {
         KeyClient keyClient = createClient();
-        
+
         // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKeyWithResponse#string-Context
         Response<Void> purgedResponse = keyClient.purgeDeletedKeyWithResponse("deletedKeyName",
             new Context(key2, value2));

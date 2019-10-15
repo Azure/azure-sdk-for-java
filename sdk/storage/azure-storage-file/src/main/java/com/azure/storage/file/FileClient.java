@@ -836,15 +836,15 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
-     * @param maxResults Optional max number of results returned per page
+     * @param maxResultsPerPage Optional max number of results returned per page
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<HandleItem> listHandles(Integer maxResults, Duration timeout, Context context) {
-        return new PagedIterable<>(fileAsyncClient.listHandlesWithOptionalTimeout(maxResults, timeout, context));
+    public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, Duration timeout, Context context) {
+        return new PagedIterable<>(fileAsyncClient.listHandlesWithOptionalTimeout(maxResultsPerPage, timeout, context));
     }
 
     /**

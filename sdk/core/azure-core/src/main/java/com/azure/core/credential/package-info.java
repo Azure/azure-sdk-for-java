@@ -4,4 +4,4 @@
 /**
  * Package containing basic credential classes for authentication purposes.
  */
-package com.azure.core.credentials;
+package com.azure.core.credential;

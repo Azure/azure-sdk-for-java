@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Signal;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
-
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);
     private final List<Tracer> tracers = new ArrayList<>();
@@ -60,11 +58,6 @@ public class TracerProvider {
     public void endSpan(Context context, Signal<Void> signal) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(signal, "'signal' cannot be null.");
-
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        if (!context.getData(OPENCENSUS_SPAN_KEY).isPresent()) {
-            return;
-        }
 
         switch (signal.getType()) {
             case ON_COMPLETE:

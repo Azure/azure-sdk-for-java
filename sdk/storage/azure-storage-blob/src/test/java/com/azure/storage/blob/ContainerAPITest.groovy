@@ -822,7 +822,7 @@ class ContainerAPITest extends APISpec {
         setup:
         def PAGE_SIZE = 2
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true)).setMaxResults(PAGE_SIZE)
+            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(PAGE_SIZE)
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -836,7 +836,7 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs flat options fail"() {
         when:
-        new ListBlobsOptions().setMaxResults(0)
+        new ListBlobsOptions().setMaxResultsPerPage(0)
 
         then:
         thrown(IllegalArgumentException)
@@ -852,25 +852,25 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "list blobs with sync client"
-        def pagedIterable = cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
+        def pagedIterable = cc.listBlobsFlat(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null)
         def pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next()
-        def pagedSyncResponse2 = pagedIterable.iterableByPage(pagedSyncResponse1.getNextLink()).iterator().next()
+        def pagedSyncResponse2 = pagedIterable.iterableByPage(pagedSyncResponse1.getContinuationToken()).iterator().next()
 
         then:
         pagedSyncResponse1.getValue().size() == PAGE_SIZE
         pagedSyncResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
-        pagedSyncResponse2.getNextLink() == null
+        pagedSyncResponse2.getContinuationToken() == null
 
 
         when: "list blobs with async client"
-        def pagedFlux = ccAsync.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE))
+        def pagedFlux = ccAsync.listBlobsFlat(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE))
         def pagedResponse1 = pagedFlux.byPage().blockFirst()
-        def pagedResponse2 = pagedFlux.byPage(pagedResponse1.getNextLink()).blockFirst()
+        def pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst()
 
         then:
         pagedResponse1.getValue().size() == PAGE_SIZE
         pagedResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
-        pagedResponse2.getNextLink() == null
+        pagedResponse2.getContinuationToken() == null
     }
 
     def "List blobs flat error"() {
@@ -897,7 +897,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        cc.listBlobsFlat(new ListBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -916,7 +916,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when: "Consume results by page"
-        cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
+        cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
         notThrown(Exception)
@@ -1052,7 +1052,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options maxResults"() {
         setup:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-                .setRetrieveUncommittedBlobs(true)).setMaxResults(1)
+                .setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(1)
         def normalName = "a" + generateBlobName()
         def copyName = "c" + generateBlobName()
         def metadataName = "m" + generateBlobName()
@@ -1071,7 +1071,7 @@ class ContainerAPITest extends APISpec {
     def "List blobs hier options fail"() {
         when:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveSnapshots(snapshots))
-                .setMaxResults(maxResults)
+                .setMaxResultsPerPage(maxResults)
         cc.listBlobsHierarchy(null, options, null).iterator().hasNext()
 
         then:
@@ -1122,21 +1122,21 @@ class ContainerAPITest extends APISpec {
             bc.create(512)
         }
 
-        def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResults(PAGE_SIZE), null)
+        def blobs = cc.listBlobsHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null)
 
         when:
         def firstPage = blobs.iterableByPage().iterator().next()
 
         then:
         firstPage.getValue().size() == PAGE_SIZE
-        firstPage.getNextLink() != null
+        firstPage.getContinuationToken() != null
 
         when:
-        def secondPage = blobs.iterableByPage(firstPage.getNextLink()).iterator().next()
+        def secondPage = blobs.iterableByPage(firstPage.getContinuationToken()).iterator().next()
 
         then:
         secondPage.getValue().size() == NUM_BLOBS - PAGE_SIZE
-        secondPage.getNextLink() == null
+        secondPage.getContinuationToken() == null
     }
 
     def "List blobs flat simple"() {
@@ -1149,7 +1149,7 @@ class ContainerAPITest extends APISpec {
         }
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
-        cc.listBlobsFlat(new ListBlobsOptions().setMaxResults(PAGE_SIZE), null).stream().count() == NUM_BLOBS
+        cc.listBlobsFlat(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null).stream().count() == NUM_BLOBS
     }
 
     def "List blobs hier error"() {

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.entities;
+package com.azure.core.test.implementation.entities;
 
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
