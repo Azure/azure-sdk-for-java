@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Logging")
 @Fluent
-public final class Logging {
+public final class QueueAnalyticsLogging {
     /*
      * The version of Storage Analytics to configure.
      */
@@ -42,7 +42,7 @@ public final class Logging {
      * The retentionPolicy property.
      */
     @JsonProperty(value = "RetentionPolicy", required = true)
-    private RetentionPolicy retentionPolicy;
+    private QueueRetentionPolicy retentionPolicy;
 
     /**
      * Get the version property: The version of Storage Analytics to configure.
@@ -57,9 +57,9 @@ public final class Logging {
      * Set the version property: The version of Storage Analytics to configure.
      *
      * @param version the version value to set.
-     * @return the Logging object itself.
+     * @return the QueueAnalyticsLogging object itself.
      */
-    public Logging setVersion(String version) {
+    public QueueAnalyticsLogging setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -79,9 +79,9 @@ public final class Logging {
      * logged.
      *
      * @param delete the delete value to set.
-     * @return the Logging object itself.
+     * @return the QueueAnalyticsLogging object itself.
      */
-    public Logging setDelete(boolean delete) {
+    public QueueAnalyticsLogging setDelete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -101,9 +101,9 @@ public final class Logging {
      * logged.
      *
      * @param read the read value to set.
-     * @return the Logging object itself.
+     * @return the QueueAnalyticsLogging object itself.
      */
-    public Logging setRead(boolean read) {
+    public QueueAnalyticsLogging setRead(boolean read) {
         this.read = read;
         return this;
     }
@@ -123,9 +123,9 @@ public final class Logging {
      * logged.
      *
      * @param write the write value to set.
-     * @return the Logging object itself.
+     * @return the QueueAnalyticsLogging object itself.
      */
-    public Logging setWrite(boolean write) {
+    public QueueAnalyticsLogging setWrite(boolean write) {
         this.write = write;
         return this;
     }
@@ -135,7 +135,7 @@ public final class Logging {
      *
      * @return the retentionPolicy value.
      */
-    public RetentionPolicy getRetentionPolicy() {
+    public QueueRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -143,9 +143,9 @@ public final class Logging {
      * Set the retentionPolicy property: The retentionPolicy property.
      *
      * @param retentionPolicy the retentionPolicy value to set.
-     * @return the Logging object itself.
+     * @return the QueueAnalyticsLogging object itself.
      */
-    public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public QueueAnalyticsLogging setRetentionPolicy(QueueRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

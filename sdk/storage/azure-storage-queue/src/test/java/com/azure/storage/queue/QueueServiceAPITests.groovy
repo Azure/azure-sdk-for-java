@@ -3,15 +3,14 @@
 
 package com.azure.storage.queue
 
-
-import com.azure.storage.queue.models.Logging
-import com.azure.storage.queue.models.Metrics
+import com.azure.storage.queue.models.QueueAnalyticsLogging
+import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueItem
+import com.azure.storage.queue.models.QueueMetrics
+import com.azure.storage.queue.models.QueueRetentionPolicy
+import com.azure.storage.queue.models.QueueServiceProperties
 import com.azure.storage.queue.models.QueuesSegmentOptions
-import com.azure.storage.queue.models.RetentionPolicy
-import com.azure.storage.queue.models.StorageErrorCode
-import com.azure.storage.queue.models.StorageException
-import com.azure.storage.queue.models.StorageServiceProperties
+import com.azure.storage.queue.models.QueueStorageException
 import spock.lang.Unroll
 
 class QueueServiceAPITests extends APISpec {
@@ -44,17 +43,17 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.createQueue(queueName)
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMesage)
 
         where:
         queueName      | statusCode | errMesage
-        "a_b"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
-        "-ab"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
-        "a--b"         | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
-        "Abc"          | 400        | StorageErrorCode.INVALID_RESOURCE_NAME
-        "ab"           | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
-        "verylong" * 8 | 400        | StorageErrorCode.OUT_OF_RANGE_INPUT
+        "a_b"          | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
+        "-ab"          | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
+        "a--b"         | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
+        "Abc"          | 400        | QueueErrorCode.INVALID_RESOURCE_NAME
+        "ab"           | 400        | QueueErrorCode.OUT_OF_RANGE_INPUT
+        "verylong" * 8 | 400        | QueueErrorCode.OUT_OF_RANGE_INPUT
     }
 
     def "Create null"() {
@@ -90,8 +89,8 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value"), null, null)
 
         then:
-        def e = thrown(StorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, StorageErrorCode.INVALID_METADATA)
+        def e = thrown(QueueStorageException)
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.INVALID_METADATA)
     }
 
     def "Delete queue"() {
@@ -105,8 +104,8 @@ class QueueServiceAPITests extends APISpec {
 
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
-        def e = thrown(StorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+        def e = thrown(QueueStorageException)
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
     def "Delete queue error"() {
@@ -114,8 +113,8 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 60), null, null)
 
         then:
-        def e = thrown(StorageException)
-        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, StorageErrorCode.QUEUE_NOT_FOUND)
+        def e = thrown(QueueStorageException)
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
     @Unroll
@@ -158,17 +157,17 @@ class QueueServiceAPITests extends APISpec {
     def "Get and set properties"() {
         given:
         def originalProperties = primaryQueueServiceClient.getProperties()
-        def retentionPolicy = new RetentionPolicy().setEnabled(true)
+        def retentionPolicy = new QueueRetentionPolicy().setEnabled(true)
             .setDays(3)
-        def logging = new Logging().setVersion("1.0")
+        def logging = new QueueAnalyticsLogging().setVersion("1.0")
             .setDelete(true)
             .setWrite(true)
             .setRetentionPolicy(retentionPolicy)
-        def metrics = new Metrics().setEnabled(true)
+        def metrics = new QueueMetrics().setEnabled(true)
             .setIncludeAPIs(false)
             .setRetentionPolicy(retentionPolicy)
             .setVersion("1.0")
-        def updatedProperties = new StorageServiceProperties().setLogging(logging)
+        def updatedProperties = new QueueServiceProperties().setLogging(logging)
             .setHourMetrics(metrics)
             .setMinuteMetrics(metrics)
             .setCors(new ArrayList<>())
