@@ -57,6 +57,18 @@
       <version>1.0.0-preview.6</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -79,13 +91,23 @@
     <!-- Test dependencies for creating search resources -->
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-runtime</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure</artifactId>
       <version>1.24.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-search</artifactId>
+      <version>1.24.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
     </dependency>
 
   </dependencies>
