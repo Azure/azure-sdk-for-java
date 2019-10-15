@@ -1,17 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.security.keyvault.secrets;
+
+import com.azure.core.http.ServiceVersion;
 
 /**
- * The versions of Azure App Configuration supported by this client library.
+ * The versions of Azure Key Vault supported by this client library.
  */
-public enum ServiceVersion implements com.azure.core.http.ServiceVersion {
-    V1_0("1.0");
+public enum SecretServiceVersion implements ServiceVersion {
+    V7_0("7.0");
 
     private final String version;
 
-    ServiceVersion(String version) {
+    SecretServiceVersion(String version) {
         this.version = version;
     }
 
@@ -26,9 +28,9 @@ public enum ServiceVersion implements com.azure.core.http.ServiceVersion {
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return the latest {@link ServiceVersion}
+     * @return the latest {@link SecretServiceVersion}
      */
-    public static ServiceVersion getLatest() {
-        return V1_0;
+    public static SecretServiceVersion getLatest() {
+        return V7_0;
     }
 }

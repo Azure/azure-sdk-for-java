@@ -82,9 +82,9 @@ public class CertificateAsyncClient {
      *
      * @param endpoint URL for the Azure KeyVault service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
-     * @param version {@link ServiceVersion} of the service to be used when making requests.
+     * @param version {@link CertificateServiceVersion} of the service to be used when making requests.
      */
-    CertificateAsyncClient(URL endpoint, HttpPipeline pipeline, ServiceVersion version) {
+    CertificateAsyncClient(URL endpoint, HttpPipeline pipeline, CertificateServiceVersion version) {
         Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();
         this.service = RestProxy.create(CertificateService.class, pipeline);

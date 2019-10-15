@@ -68,7 +68,7 @@ public final class KeyClientBuilder {
     private HttpLogOptions httpLogOptions;
     private final RetryPolicy retryPolicy;
     private Configuration configuration;
-    private ServiceVersion version;
+    private KeyServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -121,7 +121,7 @@ public final class KeyClientBuilder {
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings
                     .getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
-        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
+        KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
             return new KeyAsyncClient(endpoint, pipeline, serviceVersion);
@@ -238,16 +238,16 @@ public final class KeyClientBuilder {
     }
 
     /**
-     * Sets the {@link ServiceVersion} that is used when making API requests.
+     * Sets the {@link KeyServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
-     * @param version {@link ServiceVersion} of the service to be used when making requests.
+     * @param version {@link KeyServiceVersion} of the service to be used when making requests.
      * @return The updated KeyClientBuilder object.
      */
-    public KeyClientBuilder serviceVersion(ServiceVersion version) {
+    public KeyClientBuilder serviceVersion(KeyServiceVersion version) {
         this.version = version;
         return this;
     }

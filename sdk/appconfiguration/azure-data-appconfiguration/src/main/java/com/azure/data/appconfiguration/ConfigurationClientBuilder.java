@@ -83,7 +83,7 @@ public final class ConfigurationClientBuilder {
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private ServiceVersion version;
+    private AppConfigurationServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -140,7 +140,7 @@ public final class ConfigurationClientBuilder {
         String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
-        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
+        AppConfigurationServiceVersion serviceVersion = version != null ? version : AppConfigurationServiceVersion.getLatest();
 
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
@@ -154,7 +154,7 @@ public final class ConfigurationClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration, serviceVersion.getVersionString()));
+        policies.add(new UserAgentPolicy(AzureConfiguration.NAME, AzureConfiguration.VERSION, buildConfiguration, serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
         policies.add(new AddDatePolicy());
@@ -308,16 +308,16 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the {@link ServiceVersion} that is used when making API requests.
+     * Sets the {@link AppConfigurationServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
-     * @param version {@link ServiceVersion} of the service to be used when making requests.
+     * @param version {@link AppConfigurationServiceVersion} of the service to be used when making requests.
      * @return The updated ConfigurationClientBuilder object.
      */
-    public ConfigurationClientBuilder serviceVersion(ServiceVersion version) {
+    public ConfigurationClientBuilder serviceVersion(AppConfigurationServiceVersion version) {
         this.version = version;
         return this;
     }

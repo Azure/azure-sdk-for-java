@@ -66,7 +66,7 @@ public final class SecretClientBuilder {
     private HttpLogOptions httpLogOptions;
     private final RetryPolicy retryPolicy;
     private Configuration configuration;
-    private ServiceVersion version;
+    private SecretServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -122,7 +122,7 @@ public final class SecretClientBuilder {
                 new IllegalStateException(
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
-        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
+        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
             return new SecretAsyncClient(endpoint, pipeline, serviceVersion);
@@ -137,7 +137,7 @@ public final class SecretClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration, serviceVersion.getVersionString()));
+            buildConfiguration, serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
@@ -253,16 +253,16 @@ public final class SecretClientBuilder {
     }
 
     /**
-     * Sets the {@link ServiceVersion} that is used when making API requests.
+     * Sets the {@link SecretServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
-     * @param version {@link ServiceVersion} of the service API used when making requests.
+     * @param version {@link SecretServiceVersion} of the service API used when making requests.
      * @return The updated SecretClientBuilder object.
      */
-    public SecretClientBuilder serviceVersion(ServiceVersion version) {
+    public SecretClientBuilder serviceVersion(SecretServiceVersion version) {
         this.version = version;
         return this;
     }

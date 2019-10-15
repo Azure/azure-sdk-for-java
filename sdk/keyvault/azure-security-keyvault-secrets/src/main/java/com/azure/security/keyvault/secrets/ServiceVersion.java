@@ -3,23 +3,24 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.http.ServiceVersion;
+
 /**
  * The versions of Azure Key Vault supported by this client library.
  */
-public enum ServiceVersion {
+public enum SecretServiceVersion implements ServiceVersion {
     V7_0("7.0");
 
     private final String version;
 
-    ServiceVersion(String version) {
+    SecretServiceVersion(String version) {
         this.version = version;
     }
 
     /**
-     * Gets the string representation of the {@link ServiceVersion}
-     *
-     * @return the string representation of the {@link ServiceVersion}
+     * {@inheritDoc}
      */
+    @Override
     public String getVersionString() {
         return this.version;
     }
@@ -27,9 +28,9 @@ public enum ServiceVersion {
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return the latest {@link ServiceVersion}
+     * @return the latest {@link SecretServiceVersion}
      */
-    public static ServiceVersion getLatest() {
+    public static SecretServiceVersion getLatest() {
         return V7_0;
     }
 }
