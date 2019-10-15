@@ -108,7 +108,7 @@ public final class QueuesImpl {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String requestId = null;
-        return service.create(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, context);
+        return service.create(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion().getVersionString(), requestId, context);
     }
 
     /**
@@ -124,7 +124,7 @@ public final class QueuesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesCreateResponse> createWithRestResponseAsync(String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
-        return service.create(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, context);
+        return service.create(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion().getVersionString(), requestId, context);
     }
 
     /**
@@ -139,7 +139,7 @@ public final class QueuesImpl {
     public Mono<QueuesDeleteResponse> deleteWithRestResponseAsync(String queueName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.delete(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, context);
+        return service.delete(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, context);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class QueuesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesDeleteResponse> deleteWithRestResponseAsync(String queueName, Integer timeout, String requestId, Context context) {
-        return service.delete(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, context);
+        return service.delete(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, context);
     }
 
     /**
@@ -170,7 +170,7 @@ public final class QueuesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "metadata";
-        return service.getProperties(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
+        return service.getProperties(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -186,7 +186,7 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String queueName, Integer timeout, String requestId, Context context) {
         final String comp = "metadata";
-        return service.getProperties(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
+        return service.getProperties(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -203,7 +203,7 @@ public final class QueuesImpl {
         final Map<String, String> metadata = null;
         final String requestId = null;
         final String comp = "metadata";
-        return service.setMetadata(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, context);
+        return service.setMetadata(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -220,7 +220,7 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesSetMetadataResponse> setMetadataWithRestResponseAsync(String queueName, Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         final String comp = "metadata";
-        return service.setMetadata(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, comp, context);
+        return service.setMetadata(queueName, this.client.getUrl(), timeout, metadata, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -236,7 +236,7 @@ public final class QueuesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "acl";
-        return service.getAccessPolicy(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
+        return service.getAccessPolicy(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -252,7 +252,7 @@ public final class QueuesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(String queueName, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
-        return service.getAccessPolicy(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
+        return service.getAccessPolicy(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -269,7 +269,7 @@ public final class QueuesImpl {
         final String requestId = null;
         final String comp = "acl";
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(null);
-        return service.setAccessPolicy(queueName, this.client.getUrl(), queueAclConverted, timeout, this.client.getVersion(), requestId, comp, context);
+        return service.setAccessPolicy(queueName, this.client.getUrl(), queueAclConverted, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -287,6 +287,6 @@ public final class QueuesImpl {
     public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String queueName, List<QueueSignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
-        return service.setAccessPolicy(queueName, this.client.getUrl(), queueAclConverted, timeout, this.client.getVersion(), requestId, comp, context);
+        return service.setAccessPolicy(queueName, this.client.getUrl(), queueAclConverted, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 }

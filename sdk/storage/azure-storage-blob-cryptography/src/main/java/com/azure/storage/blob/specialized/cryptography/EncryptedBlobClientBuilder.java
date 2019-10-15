@@ -21,7 +21,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -93,6 +95,7 @@ public final class EncryptedBlobClientBuilder {
     private AsyncKeyEncryptionKey keyWrapper;
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
+    private BlobServiceVersion version;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -111,11 +114,13 @@ public final class EncryptedBlobClientBuilder {
         if (ImplUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         if (httpPipeline != null) {
             return new AzureBlobStorageBuilder()
                 .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
                 .pipeline(httpPipeline)
+                .version(serviceVersion)
                 .build();
         }
 
@@ -163,6 +168,7 @@ public final class EncryptedBlobClientBuilder {
         return new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline)
+            .version(serviceVersion)
             .build();
     }
 
@@ -475,6 +481,21 @@ public final class EncryptedBlobClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder version(BlobServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

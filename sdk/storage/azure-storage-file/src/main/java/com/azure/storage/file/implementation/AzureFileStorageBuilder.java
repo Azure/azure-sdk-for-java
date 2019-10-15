@@ -7,6 +7,7 @@ package com.azure.storage.file.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.storage.file.FileServiceVersion;
 
 /**
  * A builder for creating a new instance of the AzureFileStorage type.
@@ -16,7 +17,7 @@ public final class AzureFileStorageBuilder {
     /*
      * Specifies the version of the operation to use for this request.
      */
-    private String version;
+    private FileServiceVersion version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -24,7 +25,7 @@ public final class AzureFileStorageBuilder {
      * @param version the version value.
      * @return the AzureFileStorageBuilder.
      */
-    public AzureFileStorageBuilder version(String version) {
+    public AzureFileStorageBuilder version(FileServiceVersion version) {
         this.version = version;
         return this;
     }
@@ -71,11 +72,7 @@ public final class AzureFileStorageBuilder {
             this.pipeline = RestProxy.createDefaultPipeline();
         }
         AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline);
-        if (this.version != null) {
-            client.setVersion(this.version);
-        } else {
-            client.setVersion("2019-02-02");
-        }
+        client.setVersion(this.version);
         if (this.url != null) {
             client.setUrl(this.url);
         }

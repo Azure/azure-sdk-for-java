@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.PathRenameMode;
 
 /**
@@ -39,23 +40,28 @@ public final class AzureBlobStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
-    private String version;
+    private BlobServiceVersion version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
      *
      * @return the version value.
      */
-    public String getVersion() {
+    public BlobServiceVersion getVersion() {
         return this.version;
     }
 
     /**
-     * Sets Specifies the version of the operation to use for this request.
+     * Sets the {@link BlobServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
      *
-     * @param version the version value.
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return The version value.
      */
-    AzureBlobStorageImpl setVersion(String version) {
+    public AzureBlobStorageImpl setVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
     }

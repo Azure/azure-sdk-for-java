@@ -1,17 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.storage.file;
+
+import com.azure.core.http.ServiceVersion;
 
 /**
  * The versions of Azure App Configuration supported by this client library.
  */
-public enum AppConfigurationServiceVersion implements com.azure.core.http.ServiceVersion {
-    V1_0("1.0");
+public enum FileServiceVersion implements ServiceVersion {
+    V2019_02_02("2019-02-02");
 
     private final String version;
 
-    AppConfigurationServiceVersion(String version) {
+    FileServiceVersion(String version) {
         this.version = version;
     }
 
@@ -26,9 +28,9 @@ public enum AppConfigurationServiceVersion implements com.azure.core.http.Servic
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return the latest {@link AppConfigurationServiceVersion}
+     * @return the latest {@link FileServiceVersion}
      */
-    public static AppConfigurationServiceVersion getLatest() {
-        return V1_0;
+    public static FileServiceVersion getLatest() {
+        return V2019_02_02;
     }
 }

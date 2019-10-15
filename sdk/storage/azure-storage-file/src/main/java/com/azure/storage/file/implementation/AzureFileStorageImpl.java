@@ -6,6 +6,7 @@ package com.azure.storage.file.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.storage.file.FileServiceVersion;
 
 /**
  * Initializes a new instance of the AzureFileStorage type.
@@ -14,14 +15,14 @@ public final class AzureFileStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
-    private String version;
+    private FileServiceVersion version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
      *
      * @return the version value.
      */
-    public String getVersion() {
+    public FileServiceVersion getVersion() {
         return this.version;
     }
 
@@ -30,7 +31,7 @@ public final class AzureFileStorageImpl {
      *
      * @param version the version value.
      */
-    AzureFileStorageImpl setVersion(String version) {
+    AzureFileStorageImpl setVersion(FileServiceVersion version) {
         this.version = version;
         return this;
     }

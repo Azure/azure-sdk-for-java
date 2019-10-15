@@ -6,6 +6,7 @@ package com.azure.storage.queue.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.storage.queue.QueueServiceVersion;
 
 /**
  * Initializes a new instance of the AzureQueueStorage type.
@@ -38,14 +39,14 @@ public final class AzureQueueStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
-    private String version;
+    private QueueServiceVersion version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
      *
      * @return the version value.
      */
-    public String getVersion() {
+    public QueueServiceVersion getVersion() {
         return this.version;
     }
 
@@ -54,7 +55,7 @@ public final class AzureQueueStorageImpl {
      *
      * @param version the version value.
      */
-    AzureQueueStorageImpl setVersion(String version) {
+    AzureQueueStorageImpl setVersion(QueueServiceVersion version) {
         this.version = version;
         return this;
     }

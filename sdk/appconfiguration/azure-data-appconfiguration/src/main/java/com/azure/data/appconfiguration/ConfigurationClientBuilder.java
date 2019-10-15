@@ -83,7 +83,7 @@ public final class ConfigurationClientBuilder {
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private AppConfigurationServiceVersion version;
+    private ConfigurationServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -140,7 +140,7 @@ public final class ConfigurationClientBuilder {
         String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
-        AppConfigurationServiceVersion serviceVersion = version != null ? version : AppConfigurationServiceVersion.getLatest();
+        ConfigurationServiceVersion serviceVersion = version != null ? version : ConfigurationServiceVersion.getLatest();
 
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);
@@ -308,16 +308,16 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Sets the {@link AppConfigurationServiceVersion} that is used when making API requests.
+     * Sets the {@link ConfigurationServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
-     * @param version {@link AppConfigurationServiceVersion} of the service to be used when making requests.
+     * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      * @return The updated ConfigurationClientBuilder object.
      */
-    public ConfigurationClientBuilder serviceVersion(AppConfigurationServiceVersion version) {
+    public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
         return this;
     }

@@ -21,7 +21,6 @@ import com.azure.security.keyvault.keys.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 
-import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +73,7 @@ public class CryptographyClientBuilder {
     HttpLogOptions httpLogOptions;
     final RetryPolicy retryPolicy;
     Configuration configuration;
-    ServiceVersion version;
+    CryptographyServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -131,7 +130,7 @@ public class CryptographyClientBuilder {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
         }
-        ServiceVersion serviceVersion = version != null ? version : ServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (pipeline != null) {
             if (jsonWebKey != null) {
@@ -155,7 +154,7 @@ public class CryptographyClientBuilder {
         }
     }
 
-    HttpPipeline setupPipeline(ServiceVersion serviceVersion) {
+    HttpPipeline setupPipeline(CryptographyServiceVersion serviceVersion) {
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
@@ -286,16 +285,16 @@ public class CryptographyClientBuilder {
     }
 
     /**
-     * Sets the {@link ServiceVersion} that is used when making API requests.
+     * Sets the {@link CryptographyServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
-     * @param version {@link ServiceVersion} of the service to be used when making requests.
+     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      * @return The updated CryptographyClientBuilder object.
      */
-    public CryptographyClientBuilder serviceVersion(ServiceVersion version) {
+    public CryptographyClientBuilder version(CryptographyServiceVersion version) {
         this.version = version;
         return this;
     }

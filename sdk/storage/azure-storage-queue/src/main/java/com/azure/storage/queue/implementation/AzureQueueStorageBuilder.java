@@ -7,6 +7,7 @@ package com.azure.storage.queue.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.storage.queue.QueueServiceVersion;
 
 /**
  * A builder for creating a new instance of the AzureQueueStorage type.
@@ -32,7 +33,7 @@ public final class AzureQueueStorageBuilder {
     /*
      * Specifies the version of the operation to use for this request.
      */
-    private String version;
+    private QueueServiceVersion version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -40,7 +41,7 @@ public final class AzureQueueStorageBuilder {
      * @param version the version value.
      * @return the AzureQueueStorageBuilder.
      */
-    public AzureQueueStorageBuilder version(String version) {
+    public AzureQueueStorageBuilder version(QueueServiceVersion version) {
         this.version = version;
         return this;
     }
@@ -74,11 +75,7 @@ public final class AzureQueueStorageBuilder {
         if (this.url != null) {
             client.setUrl(this.url);
         }
-        if (this.version != null) {
-            client.setVersion(this.version);
-        } else {
-            client.setVersion("2018-03-28");
-        }
+        client.setVersion(this.version);
         return client;
     }
 }

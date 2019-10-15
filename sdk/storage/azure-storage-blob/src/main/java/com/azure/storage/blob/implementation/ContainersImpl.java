@@ -166,7 +166,7 @@ public final class ContainersImpl {
         final PublicAccessType access = null;
         final String requestId = null;
         final String restype = "container";
-        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, context);
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion().getVersionString(), requestId, restype, context);
     }
 
     /**
@@ -184,7 +184,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainersCreateResponse> createWithRestResponseAsync(String containerName, Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId, Context context) {
         final String restype = "container";
-        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion(), requestId, restype, context);
+        return service.create(containerName, this.client.getUrl(), timeout, metadata, access, this.client.getVersion().getVersionString(), requestId, restype, context);
     }
 
     /**
@@ -201,7 +201,7 @@ public final class ContainersImpl {
         final String requestId = null;
         final String restype = "container";
         final String leaseId = null;
-        return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, context);
+        return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, leaseId, context);
     }
 
     /**
@@ -222,7 +222,7 @@ public final class ContainersImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.getLeaseId();
         }
-        return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, context);
+        return service.getProperties(containerName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, leaseId, context);
     }
 
     /**
@@ -241,7 +241,7 @@ public final class ContainersImpl {
         final String leaseId = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.delete(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.delete(containerName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -273,7 +273,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.delete(containerName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class ContainersImpl {
         final String comp = "metadata";
         final String leaseId = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
-        return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
+        return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion().getVersionString(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
     }
 
     /**
@@ -322,7 +322,7 @@ public final class ContainersImpl {
             ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
+        return service.setMetadata(containerName, this.client.getUrl(), timeout, metadata, this.client.getVersion().getVersionString(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, context);
     }
 
     /**
@@ -340,7 +340,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "acl";
         final String leaseId = null;
-        return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, leaseId, context);
+        return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, leaseId, context);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class ContainersImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.getLeaseId();
         }
-        return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, leaseId, context);
+        return service.getAccessPolicy(containerName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, leaseId, context);
     }
 
     /**
@@ -384,7 +384,7 @@ public final class ContainersImpl {
         SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(null);
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, access, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, access, this.client.getVersion().getVersionString(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -420,7 +420,7 @@ public final class ContainersImpl {
         SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(containerAcl);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, access, this.client.getVersion(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, access, this.client.getVersion().getVersionString(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -442,7 +442,7 @@ public final class ContainersImpl {
         final String action = "acquire";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.acquireLease(containerName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.acquireLease(containerName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -473,7 +473,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLease(containerName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.acquireLease(containerName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -494,7 +494,7 @@ public final class ContainersImpl {
         final String action = "release";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.releaseLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.releaseLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -524,7 +524,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.releaseLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -545,7 +545,7 @@ public final class ContainersImpl {
         final String action = "renew";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.renewLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.renewLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -575,7 +575,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.renewLease(containerName, this.client.getUrl(), timeout, leaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -596,7 +596,7 @@ public final class ContainersImpl {
         final String action = "break";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.breakLease(containerName, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.breakLease(containerName, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -626,7 +626,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLease(containerName, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.breakLease(containerName, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -648,7 +648,7 @@ public final class ContainersImpl {
         final String action = "change";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.changeLease(containerName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.changeLease(containerName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -679,7 +679,7 @@ public final class ContainersImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLease(containerName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.changeLease(containerName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion().getVersionString(), requestId, comp, restype, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -700,7 +700,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = null;
-        return service.listBlobFlatSegment(containerName, this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.listBlobFlatSegment(containerName, this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -722,7 +722,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listBlobFlatSegment(containerName, this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.listBlobFlatSegment(containerName, this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -744,7 +744,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = null;
-        return service.listBlobHierarchySegment(containerName, this.client.getUrl(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.listBlobHierarchySegment(containerName, this.client.getUrl(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -767,7 +767,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listBlobHierarchySegment(containerName, this.client.getUrl(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.listBlobHierarchySegment(containerName, this.client.getUrl(), prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -782,6 +782,6 @@ public final class ContainersImpl {
     public Mono<ContainersGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(String containerName, Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(containerName, this.client.getUrl(), this.client.getVersion(), restype, comp, context);
+        return service.getAccountInfo(containerName, this.client.getUrl(), this.client.getVersion().getVersionString(), restype, comp, context);
     }
 }

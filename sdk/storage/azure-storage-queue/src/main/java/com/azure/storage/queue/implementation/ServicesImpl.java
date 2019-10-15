@@ -130,7 +130,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -162,7 +162,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -178,7 +178,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
     }
 
     /**
@@ -197,7 +197,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String comp = "list";
         String includeConverted = null;
-        return service.listQueuesSegment(this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, comp, context);
+        return service.listQueuesSegment(this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 
     /**
@@ -217,6 +217,6 @@ public final class ServicesImpl {
     public Mono<ServicesListQueuesSegmentResponse> listQueuesSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, List<ListQueuesIncludeType> include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
-        return service.listQueuesSegment(this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, comp, context);
+        return service.listQueuesSegment(this.client.getUrl(), prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
     }
 }
