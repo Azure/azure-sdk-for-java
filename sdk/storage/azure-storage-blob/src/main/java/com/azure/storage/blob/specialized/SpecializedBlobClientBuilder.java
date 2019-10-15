@@ -184,7 +184,7 @@ public final class SpecializedBlobClientBuilder {
         return new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .version(serviceVersion)
+            .version(serviceVersion.getVersionString())
             .build();
     }
 

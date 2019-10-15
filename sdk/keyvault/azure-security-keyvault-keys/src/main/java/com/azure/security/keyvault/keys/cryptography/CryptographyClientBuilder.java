@@ -64,16 +64,15 @@ import java.util.Objects;
 public class CryptographyClientBuilder {
     final List<HttpPipelinePolicy> policies;
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
-
-    TokenCredential credential;
-    HttpPipeline pipeline;
-    JsonWebKey jsonWebKey;
-    String keyId;
-    HttpClient httpClient;
-    HttpLogOptions httpLogOptions;
+    private TokenCredential credential;
+    private HttpPipeline pipeline;
+    private JsonWebKey jsonWebKey;
+    private String keyId;
+    private HttpClient httpClient;
+    private HttpLogOptions httpLogOptions;
     final RetryPolicy retryPolicy;
-    Configuration configuration;
-    CryptographyServiceVersion version;
+    private Configuration configuration;
+    private CryptographyServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -173,6 +172,18 @@ public class CryptographyClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
+    }
+
+    TokenCredential getCredential() {
+        return credential;
+    }
+
+    HttpPipeline getPipeline() {
+        return pipeline;
+    }
+
+    CryptographyServiceVersion getVersion() {
+        return version;
     }
 
     /**
@@ -298,5 +309,4 @@ public class CryptographyClientBuilder {
         this.version = version;
         return this;
     }
-
 }

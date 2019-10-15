@@ -33,7 +33,7 @@ public final class AzureQueueStorageBuilder {
     /*
      * Specifies the version of the operation to use for this request.
      */
-    private QueueServiceVersion version;
+    private String version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -41,7 +41,7 @@ public final class AzureQueueStorageBuilder {
      * @param version the version value.
      * @return the AzureQueueStorageBuilder.
      */
-    public AzureQueueStorageBuilder version(QueueServiceVersion version) {
+    public AzureQueueStorageBuilder version(String version) {
         this.version = version;
         return this;
     }

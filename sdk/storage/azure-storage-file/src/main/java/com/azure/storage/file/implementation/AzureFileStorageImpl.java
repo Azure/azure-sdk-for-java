@@ -15,14 +15,14 @@ public final class AzureFileStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
-    private FileServiceVersion version;
+    private String version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
      *
      * @return the version value.
      */
-    public FileServiceVersion getVersion() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -31,7 +31,7 @@ public final class AzureFileStorageImpl {
      *
      * @param version the version value.
      */
-    AzureFileStorageImpl setVersion(FileServiceVersion version) {
+    AzureFileStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }

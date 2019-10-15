@@ -40,14 +40,14 @@ public final class AzureBlobStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
-    private BlobServiceVersion version;
+    private String version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
      *
      * @return the version value.
      */
-    public BlobServiceVersion getVersion() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -61,7 +61,7 @@ public final class AzureBlobStorageImpl {
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return The version value.
      */
-    public AzureBlobStorageImpl setVersion(BlobServiceVersion version) {
+    public AzureBlobStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }

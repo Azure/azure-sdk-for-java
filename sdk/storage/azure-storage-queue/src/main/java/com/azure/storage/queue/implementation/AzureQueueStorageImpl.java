@@ -39,14 +39,14 @@ public final class AzureQueueStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
-    private QueueServiceVersion version;
+    private String version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
      *
      * @return the version value.
      */
-    public QueueServiceVersion getVersion() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -55,7 +55,7 @@ public final class AzureQueueStorageImpl {
      *
      * @param version the version value.
      */
-    AzureQueueStorageImpl setVersion(QueueServiceVersion version) {
+    AzureQueueStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }

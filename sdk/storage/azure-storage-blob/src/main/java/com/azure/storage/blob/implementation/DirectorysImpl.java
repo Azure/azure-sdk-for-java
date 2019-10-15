@@ -120,7 +120,7 @@ public final class DirectorysImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.create(filesystem, path, this.client.getUrl(), timeout, directoryProperties, posixPermissions, posixUmask, this.client.getVersion().getVersionString(), requestId, resource, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.create(filesystem, path, this.client.getUrl(), timeout, directoryProperties, posixPermissions, posixUmask, this.client.getVersion(), requestId, resource, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -185,7 +185,7 @@ public final class DirectorysImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.create(filesystem, path, this.client.getUrl(), timeout, directoryProperties, posixPermissions, posixUmask, this.client.getVersion().getVersionString(), requestId, resource, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.create(filesystem, path, this.client.getUrl(), timeout, directoryProperties, posixPermissions, posixUmask, this.client.getVersion(), requestId, resource, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -221,7 +221,7 @@ public final class DirectorysImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.rename(filesystem, path, this.client.getUrl(), timeout, marker, this.client.getPathRenameMode(), renameSource, directoryProperties, posixPermissions, posixUmask, sourceLeaseId, this.client.getVersion().getVersionString(), requestId, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
+        return service.rename(filesystem, path, this.client.getUrl(), timeout, marker, this.client.getPathRenameMode(), renameSource, directoryProperties, posixPermissions, posixUmask, sourceLeaseId, this.client.getVersion(), requestId, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -307,7 +307,7 @@ public final class DirectorysImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.rename(filesystem, path, this.client.getUrl(), timeout, marker, this.client.getPathRenameMode(), renameSource, directoryProperties, posixPermissions, posixUmask, sourceLeaseId, this.client.getVersion().getVersionString(), requestId, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
+        return service.rename(filesystem, path, this.client.getUrl(), timeout, marker, this.client.getPathRenameMode(), renameSource, directoryProperties, posixPermissions, posixUmask, sourceLeaseId, this.client.getVersion(), requestId, cacheControl, contentType, contentEncoding, contentLanguage, contentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -330,7 +330,7 @@ public final class DirectorysImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.delete(filesystem, path, this.client.getUrl(), timeout, recursiveDirectoryDelete, marker, this.client.getVersion().getVersionString(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.delete(filesystem, path, this.client.getUrl(), timeout, recursiveDirectoryDelete, marker, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -372,7 +372,7 @@ public final class DirectorysImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(filesystem, path, this.client.getUrl(), timeout, recursiveDirectoryDelete, marker, this.client.getVersion().getVersionString(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.delete(filesystem, path, this.client.getUrl(), timeout, recursiveDirectoryDelete, marker, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -396,7 +396,7 @@ public final class DirectorysImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, posixPermissions, posixAcl, requestId, this.client.getVersion().getVersionString(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, posixPermissions, posixAcl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -439,7 +439,7 @@ public final class DirectorysImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, posixPermissions, posixAcl, requestId, this.client.getVersion().getVersionString(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setAccessControl(this.client.getUrl(), timeout, owner, group, posixPermissions, posixAcl, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -460,7 +460,7 @@ public final class DirectorysImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.getAccessControl(this.client.getUrl(), timeout, upn, requestId, this.client.getVersion().getVersionString(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.getAccessControl(this.client.getUrl(), timeout, upn, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -500,6 +500,6 @@ public final class DirectorysImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getAccessControl(this.client.getUrl(), timeout, upn, requestId, this.client.getVersion().getVersionString(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.getAccessControl(this.client.getUrl(), timeout, upn, requestId, this.client.getVersion(), action, leaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 }

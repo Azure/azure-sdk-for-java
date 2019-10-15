@@ -116,7 +116,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.getUrl(), blobServiceProperties, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), blobServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -133,7 +133,7 @@ public final class ServicesImpl {
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(BlobServiceProperties blobServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.getUrl(), blobServiceProperties, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), blobServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -149,7 +149,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -165,7 +165,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -181,7 +181,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -197,7 +197,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -216,7 +216,7 @@ public final class ServicesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
-        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
+        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -235,7 +235,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListBlobContainersIncludeType include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
-        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
+        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -252,7 +252,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -269,7 +269,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion().getVersionString(), requestId, restype, comp, context);
+        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -283,7 +283,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(this.client.getUrl(), this.client.getVersion().getVersionString(), restype, comp, context);
+        return service.getAccountInfo(this.client.getUrl(), this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -301,7 +301,7 @@ public final class ServicesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "batch";
-        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
+        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -319,6 +319,6 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
         final String comp = "batch";
-        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion().getVersionString(), requestId, comp, context);
+        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
     }
 }

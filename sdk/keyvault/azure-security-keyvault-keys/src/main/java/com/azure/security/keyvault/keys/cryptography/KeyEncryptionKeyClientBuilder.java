@@ -68,18 +68,18 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
      */
     @Override
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
-        this.keyId = keyId;
+        this.keyIdentifier(keyId);
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create key encryption key async client"));
         }
-        CryptographyServiceVersion serviceVersion = this.version != null ? this.version : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = this.getVersion() != null ? this.getVersion() : CryptographyServiceVersion.getLatest();
 
-        if (this.pipeline != null) {
-            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, this.pipeline, serviceVersion)));
+        if (this.getPipeline() != null) {
+            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, this.getPipeline(), serviceVersion)));
         }
 
-        if (this.credential == null) {
+        if (this.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Key Vault credentials are required to build the key encryption key async client"));
         }

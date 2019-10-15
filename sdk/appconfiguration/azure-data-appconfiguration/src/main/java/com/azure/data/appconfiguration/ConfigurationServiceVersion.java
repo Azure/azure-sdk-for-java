@@ -13,7 +13,7 @@ public enum ConfigurationServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    private ConfigurationServiceVersion(String version) {
+    ConfigurationServiceVersion(String version) {
         this.version = version;
     }
 

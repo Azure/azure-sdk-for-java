@@ -7,7 +7,6 @@ package com.azure.storage.blob.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.PathRenameMode;
 
 /**
@@ -34,7 +33,7 @@ public final class AzureBlobStorageBuilder {
     /*
      * Specifies the version of the operation to use for this request.
      */
-    private BlobServiceVersion version;
+    private String version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -42,7 +41,7 @@ public final class AzureBlobStorageBuilder {
      * @param version the version value.
      * @return the AzureBlobStorageBuilder.
      */
-    public AzureBlobStorageBuilder version(BlobServiceVersion version) {
+    public AzureBlobStorageBuilder version(String version) {
         this.version = version;
         return this;
     }

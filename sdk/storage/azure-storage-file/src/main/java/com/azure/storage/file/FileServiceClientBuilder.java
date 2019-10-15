@@ -105,7 +105,7 @@ public final class FileServiceClientBuilder {
         return new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion)
+            .version(serviceVersion.getVersionString())
             .build();
     }
 

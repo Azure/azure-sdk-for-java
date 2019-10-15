@@ -111,7 +111,7 @@ public class ShareClientBuilder {
         return new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion)
+            .version(serviceVersion.getVersionString())
             .build();
     }
 

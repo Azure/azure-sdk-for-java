@@ -17,7 +17,7 @@ public final class AzureFileStorageBuilder {
     /*
      * Specifies the version of the operation to use for this request.
      */
-    private FileServiceVersion version;
+    private String version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -25,7 +25,7 @@ public final class AzureFileStorageBuilder {
      * @param version the version value.
      * @return the AzureFileStorageBuilder.
      */
-    public AzureFileStorageBuilder version(FileServiceVersion version) {
+    public AzureFileStorageBuilder version(String version) {
         this.version = version;
         return this;
     }

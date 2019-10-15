@@ -116,7 +116,7 @@ public final class QueueClientBuilder {
         return new AzureQueueStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion)
+            .version(serviceVersion.getVersionString())
             .build();
     }
 

@@ -95,7 +95,7 @@ public final class MessagesImpl {
         final Integer visibilitytimeout = null;
         final Integer timeout = null;
         final String requestId = null;
-        return service.dequeue(queueName, this.client.getUrl(), numberOfMessages, visibilitytimeout, timeout, this.client.getVersion().getVersionString(), requestId, context);
+        return service.dequeue(queueName, this.client.getUrl(), numberOfMessages, visibilitytimeout, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -112,7 +112,7 @@ public final class MessagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesDequeueResponse> dequeueWithRestResponseAsync(String queueName, Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
-        return service.dequeue(queueName, this.client.getUrl(), numberOfMessages, visibilitytimeout, timeout, this.client.getVersion().getVersionString(), requestId, context);
+        return service.dequeue(queueName, this.client.getUrl(), numberOfMessages, visibilitytimeout, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -127,7 +127,7 @@ public final class MessagesImpl {
     public Mono<MessagesClearResponse> clearWithRestResponseAsync(String queueName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.clear(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, context);
+        return service.clear(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -142,7 +142,7 @@ public final class MessagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesClearResponse> clearWithRestResponseAsync(String queueName, Integer timeout, String requestId, Context context) {
-        return service.clear(queueName, this.client.getUrl(), timeout, this.client.getVersion().getVersionString(), requestId, context);
+        return service.clear(queueName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -160,7 +160,7 @@ public final class MessagesImpl {
         final Integer messageTimeToLive = null;
         final Integer timeout = null;
         final String requestId = null;
-        return service.enqueue(queueName, this.client.getUrl(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.getVersion().getVersionString(), requestId, context);
+        return service.enqueue(queueName, this.client.getUrl(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -178,7 +178,7 @@ public final class MessagesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(String queueName, QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
-        return service.enqueue(queueName, this.client.getUrl(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.getVersion().getVersionString(), requestId, context);
+        return service.enqueue(queueName, this.client.getUrl(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -195,7 +195,7 @@ public final class MessagesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String peekonly = "true";
-        return service.peek(queueName, this.client.getUrl(), numberOfMessages, timeout, this.client.getVersion().getVersionString(), requestId, peekonly, context);
+        return service.peek(queueName, this.client.getUrl(), numberOfMessages, timeout, this.client.getVersion(), requestId, peekonly, context);
     }
 
     /**
@@ -212,6 +212,6 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesPeekResponse> peekWithRestResponseAsync(String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
-        return service.peek(queueName, this.client.getUrl(), numberOfMessages, timeout, this.client.getVersion().getVersionString(), requestId, peekonly, context);
+        return service.peek(queueName, this.client.getUrl(), numberOfMessages, timeout, this.client.getVersion(), requestId, peekonly, context);
     }
 }

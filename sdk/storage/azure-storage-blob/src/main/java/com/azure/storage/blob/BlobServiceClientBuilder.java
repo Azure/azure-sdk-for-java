@@ -100,7 +100,7 @@ public final class BlobServiceClientBuilder {
         return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion)
+            .version(serviceVersion.getVersionString())
             .build(), customerProvidedKey, accountName);
     }
 
