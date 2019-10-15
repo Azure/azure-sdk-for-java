@@ -595,7 +595,7 @@ public final class ConfigurationAsyncClient {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(selector, context)),
                 continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex))));
+            return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
@@ -669,7 +669,7 @@ public final class ConfigurationAsyncClient {
                 withContext(context -> listSettingRevisionsFirstPage(selector, context)),
                 continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex))));
+            return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
