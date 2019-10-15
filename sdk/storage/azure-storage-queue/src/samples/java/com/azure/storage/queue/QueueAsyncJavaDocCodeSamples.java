@@ -168,46 +168,46 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages()}
+     * Generates a code sample for using {@link QueueAsyncClient#getMessages()}
      */
-    public void dequeueMessageAsync() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages
-        client.dequeueMessages().subscribe(
-            dequeuedMessage -> System.out.println("The message got from dequeue operation: "
-                + dequeuedMessage.getMessageText()),
+    public void getMessageAsync() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.getMessages
+        client.getMessages().subscribe(
+            message -> System.out.println("The message got from getMessages operation: "
+                + message.getMessageText()),
             error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete dequeuing the message!")
+            () -> System.out.println("Complete receiving the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages
+        // END: com.azure.storage.queue.queueAsyncClient.getMessages
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages(Integer)}
+     * Generates a code sample for using {@link QueueAsyncClient#getMessages(Integer)}
      */
-    public void dequeueMessageAsyncWithOverload() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer
-        client.dequeueMessages(5).subscribe(
-            dequeuedMessage -> System.out.println("The message got from dequeue operation: "
-                + dequeuedMessage.getMessageText()),
+    public void getMessageAsyncWithOverload() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.getMessages#integer
+        client.getMessages(5).subscribe(
+            message -> System.out.println("The message got from getMessages operation: "
+                + message.getMessageText()),
             error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete dequeuing the message!")
+            () -> System.out.println("Complete receiving the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer
+        // END: com.azure.storage.queue.queueAsyncClient.getMessages#integer
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#dequeueMessages(Integer, Duration)}
+     * Generates a code sample for using {@link QueueAsyncClient#getMessages(Integer, Duration)}
      */
-    public void dequeueMessageAsyncMaxOverload() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
-        client.dequeueMessages(5, Duration.ofSeconds(60))
+    public void getMessageAsyncMaxOverload() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.getMessages#integer-duration
+        client.getMessages(5, Duration.ofSeconds(60))
             .subscribe(
-                dequeuedMessage -> System.out.println("The message got from dequeue operation: "
-                    + dequeuedMessage.getMessageText()),
+                message -> System.out.println("The message got from getMessages operation: "
+                    + message.getMessageText()),
                 error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete dequeuing the message!")
+                () -> System.out.println("Complete receiving the message!")
             );
-        // END: com.azure.storage.queue.queueAsyncClient.dequeueMessages#integer-duration
+        // END: com.azure.storage.queue.queueAsyncClient.getMessages#integer-duration
     }
 
 
@@ -230,7 +230,7 @@ public class QueueAsyncJavaDocCodeSamples {
     public void peekMessageAsyncMaxOverload() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages#integer
         client.peekMessages(5).subscribe(
-            peekMessage -> System.out.printf("Peeked message %s has been dequeued %d times",
+            peekMessage -> System.out.printf("Peeked message %s has been received %d times",
                 peekMessage.getMessageId(), peekMessage.getDequeueCount()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete peeking the message!")
@@ -243,18 +243,18 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void updateMessageAsync() {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration
-        client.dequeueMessages().subscribe(
-            dequeuedMessage -> {
-                client.updateMessage("newText", dequeuedMessage.getMessageId(),
-                    dequeuedMessage.getPopReceipt(), null).subscribe(
+        client.getMessages().subscribe(
+            message -> {
+                client.updateMessage("newText", message.getMessageId(),
+                    message.getPopReceipt(), null).subscribe(
                         response -> {
                         },
                         updateError -> System.err.print(updateError.toString()),
                         () -> System.out.println("Complete updating the message!")
                 );
             },
-            dequeueError -> System.err.print(dequeueError.toString()),
-            () -> System.out.println("Complete dequeueing the message!")
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete receiving the message!")
         );
         // END: com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration
     }
@@ -265,18 +265,18 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void updateMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
-        client.dequeueMessages().subscribe(
-            dequeuedMessage -> {
-                client.updateMessageWithResponse("newText", dequeuedMessage.getMessageId(),
-                    dequeuedMessage.getPopReceipt(), null).subscribe(
+        client.getMessages().subscribe(
+            message -> {
+                client.updateMessageWithResponse("newText", message.getMessageId(),
+                    message.getPopReceipt(), null).subscribe(
                         response -> System.out.println("Complete updating the message with status code:"
                             + response.getStatusCode()),
                         updateError -> System.err.print(updateError.toString()),
                         () -> System.out.println("Complete updating the message!")
                 );
             },
-            dequeueError -> System.err.print(dequeueError.toString()),
-            () -> System.out.println("Complete dequeueing the message!")
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete receiving the message!")
         );
         // END: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
     }
@@ -286,17 +286,17 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void deleteMessageAsync() {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String
-        client.dequeueMessages().subscribe(
-            dequeuedMessage -> {
-                client.deleteMessage(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt()).subscribe(
+        client.getMessages().subscribe(
+            message -> {
+                client.deleteMessage(message.getMessageId(), message.getPopReceipt()).subscribe(
                     response -> {
                     },
                     deleteError -> System.err.print(deleteError.toString()),
                     () -> System.out.println("Complete deleting the message!")
                 );
             },
-            dequeueError -> System.err.print(dequeueError.toString()),
-            () -> System.out.println("Complete dequeueing the message!")
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete receiving the message!")
         );
         // END: com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String
     }
@@ -306,9 +306,9 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void deleteMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String
-        client.dequeueMessages().subscribe(
-            dequeuedMessage -> {
-                client.deleteMessageWithResponse(dequeuedMessage.getMessageId(), dequeuedMessage.getPopReceipt())
+        client.getMessages().subscribe(
+            message -> {
+                client.deleteMessageWithResponse(message.getMessageId(), message.getPopReceipt())
                     .subscribe(
                         response -> System.out.println("Complete deleting the message with status code: "
                             + response.getStatusCode()),
@@ -316,8 +316,8 @@ public class QueueAsyncJavaDocCodeSamples {
                         () -> System.out.println("Complete deleting the message!")
                     );
             },
-            dequeueError -> System.err.print(dequeueError.toString()),
-            () -> System.out.println("Complete dequeueing the message!")
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete receiving the message!")
         );
         // END: com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String
     }
