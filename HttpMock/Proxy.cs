@@ -13,6 +13,9 @@ namespace HttpMock
         private static readonly HttpClient _httpClient = new HttpClient();
 
         private static readonly string[] _excludedRequestHeaders = new string[] {
+            // Special case since value may be modified based on Options.UpstreamHost
+            "Host",
+            
             // Only applies to request between client and proxy
             "Proxy-Connection",
         };
@@ -25,15 +28,17 @@ namespace HttpMock
 
         public static async Task<UpstreamResponse> SendUpstreamRequest(HttpRequest request)
         {
+            var host = String.IsNullOrEmpty(Program.Options.UpstreamHost) ? request.Host.Host : Program.Options.UpstreamHost;
+
             var upstreamUriBuilder = new UriBuilder()
             {
                 Scheme = request.Scheme,
-                Host = request.Host.Host,
+                Host = host,
                 Path = request.Path.Value,
                 Query = request.QueryString.Value,
             };
 
-            if (request.Host.Port.HasValue)
+            if (String.IsNullOrEmpty(Program.Options.UpstreamHost) && request.Host.Port.HasValue)
             {
                 upstreamUriBuilder.Port = request.Host.Port.Value;
             }
@@ -42,6 +47,8 @@ namespace HttpMock
 
             using (var upstreamRequest = new HttpRequestMessage(new HttpMethod(request.Method), upstreamUri))
             {
+                upstreamRequest.Headers.Add("Host", host);
+
                 if (request.ContentLength > 0)
                 {
                     upstreamRequest.Content = new StreamContent(request.Body);

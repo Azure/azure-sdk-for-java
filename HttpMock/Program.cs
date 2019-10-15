@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime;
+using System.Text.Json;
 
 namespace HttpMock
 {
@@ -34,6 +35,9 @@ namespace HttpMock
 
             [Option('s', "service")]
             public Service? Service { get; set; }
+
+            [Option("upstreamHost", HelpText = "Hostname of upstream server.  If not set, uses hostname and port of incoming request (HTTP_PROXY mode).")]
+            public string UpstreamHost { get; set; }
         }
 
         public static HttpMockOptions Options { get; private set; }
@@ -54,6 +58,13 @@ namespace HttpMock
 
         static void Run()
         {
+            Console.WriteLine("=== Options ===");
+            Console.WriteLine(JsonSerializer.Serialize(Options, Options.GetType(), new JsonSerializerOptions()
+            {
+                WriteIndented = true,                
+            }));
+            Console.WriteLine();
+
             var allHeaders = Options.Headers.Concat(ServiceHeaders.Get(Options.Service));
 
             Console.WriteLine("=== Headers ===");
