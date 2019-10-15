@@ -31,7 +31,7 @@ public class HttpClientUtils {
     }
 
     private static Mono<CosmosClientException> createDocumentClientException(HttpResponse httpResponse) {
-        Mono<String> readStream = ResponseUtils.toString(httpResponse.body());
+        Mono<String> readStream = httpResponse.bodyAsString();
 
         return readStream.map(body -> {
             CosmosError cosmosError = BridgeInternal.createCosmosError(body);

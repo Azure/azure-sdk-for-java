@@ -219,14 +219,15 @@ public class GatewayAddressCache implements IAddressCache {
                     }
 
                     return addresses;
-                }).onErrorResume(ex -> {
-            CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(ex, CosmosClientException.class);
+                }).onErrorResume(throwable -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+            CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(unwrappedException, CosmosClientException.class);
             if (dce == null) {
                 logger.error("unexpected failure", ex);
                 if (forceRefreshPartitionAddressesModified) {
                     this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
                 }
-                return Mono.error(ex);
+                return Mono.error(unwrappedException);
             } else {
                 logger.debug("tryGetAddresses dce", dce);
                 if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
@@ -238,7 +239,7 @@ public class GatewayAddressCache implements IAddressCache {
                     logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
                     return Mono.empty();
                 }
-                return Mono.error(ex);
+                return Mono.error(unwrappedException);
             }
 
         });

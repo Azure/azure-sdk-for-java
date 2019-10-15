@@ -140,6 +140,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
+      <version>${reactor-netty.version}</version>
     </dependency>
 
     <dependency>
