@@ -54,7 +54,7 @@ public class DefaultAzureCredentialTest {
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                    && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
         } finally {
             // clean up
@@ -69,18 +69,18 @@ public class DefaultAzureCredentialTest {
         // setup
         String token1 = "token1";
         TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 

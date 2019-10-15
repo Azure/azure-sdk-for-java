@@ -54,7 +54,7 @@ public final class MSIToken extends AccessToken {
     }
 
     @Override
-    public OffsetDateTime getExpiresOn() {
+    public OffsetDateTime getExpiresAt() {
         return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
     }
 

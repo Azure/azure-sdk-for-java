@@ -42,12 +42,12 @@ public class ClientCertificateCredentialTest {
         String token2 = "token2";
         TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
         TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
-        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithPemCertificate(pemPath, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresOn));
+        when(identityClient.authenticateWithPemCertificate(pemPath, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        when(identityClient.authenticateWithPfxCertificate(pfxPath, pfxPassword, request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
@@ -55,13 +55,13 @@ public class ClientCertificateCredentialTest {
             new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pemCertificate(pemPath).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
         credential =
             new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId).pfxCertificate(pfxPath, pfxPassword).build();
         StepVerifier.create(credential.getToken(request2))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
-                && expiresOn.getSecond() == accessToken.getExpiresOn().getSecond())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
 

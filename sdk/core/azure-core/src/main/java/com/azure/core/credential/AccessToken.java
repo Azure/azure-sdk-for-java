@@ -32,7 +32,7 @@ public class AccessToken {
     /**
      * @return the time when the token expires, in UTC.
      */
-    public OffsetDateTime getExpiresOn() {
+    public OffsetDateTime getExpiresAt() {
         return expiresAt;
     }
 
