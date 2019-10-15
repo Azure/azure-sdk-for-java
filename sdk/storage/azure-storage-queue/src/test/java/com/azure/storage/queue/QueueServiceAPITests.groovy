@@ -143,7 +143,7 @@ class QueueServiceAPITests extends APISpec {
         where:
         options                                                                                         | _
         new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues")                          | _
-        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setMaxResults(2)         | _
+        new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setMaxResultsPerPage(2)  | _
         new QueuesSegmentOptions().setPrefix("queueserviceapitestslistqueues").setIncludeMetadata(true) | _
     }
 
