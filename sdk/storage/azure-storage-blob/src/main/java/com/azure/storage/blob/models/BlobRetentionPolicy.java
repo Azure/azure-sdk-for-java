@@ -14,7 +14,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
-public final class RetentionPolicy {
+public final class BlobRetentionPolicy {
     /*
      * Indicates whether a retention policy is enabled for the storage service
      */
@@ -43,9 +43,9 @@ public final class RetentionPolicy {
      * enabled for the storage service.
      *
      * @param enabled the enabled value to set.
-     * @return the RetentionPolicy object itself.
+     * @return the BlobRetentionPolicy object itself.
      */
-    public RetentionPolicy setEnabled(boolean enabled) {
+    public BlobRetentionPolicy setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -67,9 +67,9 @@ public final class RetentionPolicy {
      * this value will be deleted.
      *
      * @param days the days value to set.
-     * @return the RetentionPolicy object itself.
+     * @return the BlobRetentionPolicy object itself.
      */
-    public RetentionPolicy setDays(Integer days) {
+    public BlobRetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
     }

@@ -45,6 +45,7 @@ import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLRespons
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
 import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
+import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CpkInfo;
@@ -55,7 +56,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PathRenameMode;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -110,17 +110,17 @@ public final class BlobsImpl {
 
         @Patch("{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<BlobsSetAccessControlResponse> setAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String posixPermissions, @HeaderParam("x-ms-acl") String posixAcl, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Head("{filesystem}/{path}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<BlobsGetAccessControlResponse> getAccessControl(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version, @QueryParam("action") String action, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Put("{filesystem}/{path}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(DataLakeStorageErrorException.class)
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<BlobsRenameResponse> rename(@PathParam("filesystem") String filesystem, @PathParam("path") String path, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("mode") PathRenameMode pathRenameMode, @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-properties") String directoryProperties, @HeaderParam("x-ms-permissions") String posixPermissions, @HeaderParam("x-ms-umask") String posixUmask, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-type") String contentType, @HeaderParam("x-ms-content-encoding") String contentEncoding, @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("x-ms-content-disposition") String contentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")

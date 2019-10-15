@@ -26,6 +26,7 @@ import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListRespon
 import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
+import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockListType;
@@ -35,7 +36,6 @@ import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;

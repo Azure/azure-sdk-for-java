@@ -13,7 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "SignedIdentifier")
 @Fluent
-public final class SignedIdentifier {
+public final class BlobSignedIdentifier {
     /*
      * a unique id
      */
@@ -24,7 +24,7 @@ public final class SignedIdentifier {
      * The accessPolicy property.
      */
     @JsonProperty(value = "AccessPolicy", required = true)
-    private AccessPolicy accessPolicy;
+    private BlobAccessPolicy accessPolicy;
 
     /**
      * Get the id property: a unique id.
@@ -39,9 +39,9 @@ public final class SignedIdentifier {
      * Set the id property: a unique id.
      *
      * @param id the id value to set.
-     * @return the SignedIdentifier object itself.
+     * @return the BlobSignedIdentifier object itself.
      */
-    public SignedIdentifier setId(String id) {
+    public BlobSignedIdentifier setId(String id) {
         this.id = id;
         return this;
     }
@@ -51,7 +51,7 @@ public final class SignedIdentifier {
      *
      * @return the accessPolicy value.
      */
-    public AccessPolicy getAccessPolicy() {
+    public BlobAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
 
@@ -59,9 +59,9 @@ public final class SignedIdentifier {
      * Set the accessPolicy property: The accessPolicy property.
      *
      * @param accessPolicy the accessPolicy value to set.
-     * @return the SignedIdentifier object itself.
+     * @return the BlobSignedIdentifier object itself.
      */
-    public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy) {
+    public BlobSignedIdentifier setAccessPolicy(BlobAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }

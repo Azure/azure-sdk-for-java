@@ -8,16 +8,14 @@ import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobServiceProperties
-import com.azure.storage.blob.models.CorsRule
-import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.models.Logging
 
-import com.azure.storage.blob.models.Metrics
-import com.azure.storage.blob.models.RetentionPolicy
+import com.azure.storage.blob.models.ListBlobContainersOptions
+
+
 import com.azure.storage.blob.models.StaticWebsite
 import com.azure.storage.blob.models.StorageAccountInfo
 import com.azure.storage.blob.models.StorageException
-import com.azure.storage.blob.models.StorageServiceStats
+
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions

@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpResponse;
-import com.azure.storage.blob.models.StorageErrorCode;
 import com.azure.storage.blob.models.StorageException;
 
 /**

@@ -31,6 +31,7 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesResponse;
 import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
+import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
@@ -39,7 +40,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SequenceNumberAccessConditions;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;

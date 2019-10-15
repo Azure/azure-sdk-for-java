@@ -14,7 +14,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "Metrics")
 @Fluent
-public final class Metrics {
+public final class BlobMetrics {
     /*
      * The version of Storage Analytics to configure.
      */
@@ -38,7 +38,7 @@ public final class Metrics {
      * The retentionPolicy property.
      */
     @JsonProperty(value = "RetentionPolicy")
-    private RetentionPolicy retentionPolicy;
+    private BlobRetentionPolicy retentionPolicy;
 
     /**
      * Get the version property: The version of Storage Analytics to configure.
@@ -53,9 +53,9 @@ public final class Metrics {
      * Set the version property: The version of Storage Analytics to configure.
      *
      * @param version the version value to set.
-     * @return the Metrics object itself.
+     * @return the BlobMetrics object itself.
      */
-    public Metrics setVersion(String version) {
+    public BlobMetrics setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -75,9 +75,9 @@ public final class Metrics {
      * Blob service.
      *
      * @param enabled the enabled value to set.
-     * @return the Metrics object itself.
+     * @return the BlobMetrics object itself.
      */
-    public Metrics setEnabled(boolean enabled) {
+    public BlobMetrics setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -97,9 +97,9 @@ public final class Metrics {
      * summary statistics for called API operations.
      *
      * @param includeAPIs the includeAPIs value to set.
-     * @return the Metrics object itself.
+     * @return the BlobMetrics object itself.
      */
-    public Metrics setIncludeAPIs(Boolean includeAPIs) {
+    public BlobMetrics setIncludeAPIs(Boolean includeAPIs) {
         this.includeAPIs = includeAPIs;
         return this;
     }
@@ -109,7 +109,7 @@ public final class Metrics {
      *
      * @return the retentionPolicy value.
      */
-    public RetentionPolicy getRetentionPolicy() {
+    public BlobRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
 
@@ -117,9 +117,9 @@ public final class Metrics {
      * Set the retentionPolicy property: The retentionPolicy property.
      *
      * @param retentionPolicy the retentionPolicy value to set.
-     * @return the Metrics object itself.
+     * @return the BlobMetrics object itself.
      */
-    public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
+    public BlobMetrics setRetentionPolicy(BlobRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }

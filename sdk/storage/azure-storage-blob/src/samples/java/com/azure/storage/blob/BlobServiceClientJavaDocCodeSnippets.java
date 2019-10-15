@@ -7,10 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.models.Logging;
-import com.azure.storage.blob.models.Metrics;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.RetentionPolicy;
 import com.azure.storage.blob.models.StorageAccountInfo;
 
 import java.time.Duration;

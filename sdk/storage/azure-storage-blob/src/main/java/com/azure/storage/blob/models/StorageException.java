@@ -22,7 +22,7 @@ import static com.azure.storage.common.Constants.HeaderConstants.ERROR_CODE;
  */
 public final class StorageException extends HttpResponseException {
     /**
-     * Constructs a {@code StorageException} from the given {@link StorageErrorException}.
+     * Constructs a {@code StorageException}.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
@@ -35,8 +35,8 @@ public final class StorageException extends HttpResponseException {
     /**
      * @return The error code returned by the service.
      */
-    public StorageErrorCode getErrorCode() {
-        return StorageErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
+    public BlobErrorCode getErrorCode() {
+        return BlobErrorCode.fromString(super.getResponse().getHeaders().getValue(ERROR_CODE));
     }
 
     /**

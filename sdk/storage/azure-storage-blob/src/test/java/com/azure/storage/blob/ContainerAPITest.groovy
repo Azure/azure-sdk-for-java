@@ -4,7 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.AccessPolicy
+
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobListDetails
@@ -18,8 +18,7 @@ import com.azure.storage.blob.models.ListBlobsOptions
 
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.SignedIdentifier
-import com.azure.storage.blob.models.StorageErrorCode
+
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase

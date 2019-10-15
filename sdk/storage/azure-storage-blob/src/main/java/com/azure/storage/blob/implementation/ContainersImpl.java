@@ -37,12 +37,12 @@ import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseRespon
 import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataResponse;
+import com.azure.storage.blob.implementation.models.StorageErrorException;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
-import com.azure.storage.blob.models.StorageException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -402,7 +402,7 @@ public final class ContainersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String containerName, List<SignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<ContainersSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String containerName, List<BlobSignedIdentifier> containerAcl, Integer timeout, PublicAccessType access, String requestId, LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String restype = "container";
         final String comp = "acl";
         String leaseId = null;
