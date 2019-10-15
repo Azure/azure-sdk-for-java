@@ -17,7 +17,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  */
 @JacksonXmlRootElement(localName = "CorsRule")
 @Fluent
-public final class CorsRule {
+public final class FileCorsRule {
     /*
      * The origin domains that are permitted to make a request against the
      * storage service via CORS. The origin domain is the domain from which the
@@ -80,9 +80,9 @@ public final class CorsRule {
      * '*' to allow all origin domains to make requests via CORS.
      *
      * @param allowedOrigins the allowedOrigins value to set.
-     * @return the CorsRule object itself.
+     * @return the FileCorsRule object itself.
      */
-    public CorsRule setAllowedOrigins(String allowedOrigins) {
+    public FileCorsRule setAllowedOrigins(String allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
     }
@@ -102,9 +102,9 @@ public final class CorsRule {
      * the origin domain may use for a CORS request. (comma separated).
      *
      * @param allowedMethods the allowedMethods value to set.
-     * @return the CorsRule object itself.
+     * @return the FileCorsRule object itself.
      */
-    public CorsRule setAllowedMethods(String allowedMethods) {
+    public FileCorsRule setAllowedMethods(String allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
     }
@@ -124,9 +124,9 @@ public final class CorsRule {
      * domain may specify on the CORS request.
      *
      * @param allowedHeaders the allowedHeaders value to set.
-     * @return the CorsRule object itself.
+     * @return the FileCorsRule object itself.
      */
-    public CorsRule setAllowedHeaders(String allowedHeaders) {
+    public FileCorsRule setAllowedHeaders(String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
     }
@@ -148,9 +148,9 @@ public final class CorsRule {
      * request issuer.
      *
      * @param exposedHeaders the exposedHeaders value to set.
-     * @return the CorsRule object itself.
+     * @return the FileCorsRule object itself.
      */
-    public CorsRule setExposedHeaders(String exposedHeaders) {
+    public FileCorsRule setExposedHeaders(String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
     }
@@ -170,9 +170,9 @@ public final class CorsRule {
      * should cache the preflight OPTIONS request.
      *
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
-     * @return the CorsRule object itself.
+     * @return the FileCorsRule object itself.
      */
-    public CorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
+    public FileCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }

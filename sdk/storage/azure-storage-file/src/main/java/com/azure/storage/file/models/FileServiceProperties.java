@@ -23,21 +23,21 @@ public final class FileServiceProperties {
      * files.
      */
     @JsonProperty(value = "HourMetrics")
-    private Metrics hourMetrics;
+    private FileMetrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for
      * files.
      */
     @JsonProperty(value = "MinuteMetrics")
-    private Metrics minuteMetrics;
+    private FileMetrics minuteMetrics;
 
     private static final class CorsWrapper {
         @JacksonXmlProperty(localName = "CorsRule")
-        private final List<CorsRule> items;
+        private final List<FileCorsRule> items;
 
         @JsonCreator
-        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<CorsRule> items) {
+        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<FileCorsRule> items) {
             this.items = items;
         }
     }
@@ -54,7 +54,7 @@ public final class FileServiceProperties {
      *
      * @return the hourMetrics value.
      */
-    public Metrics getHourMetrics() {
+    public FileMetrics getHourMetrics() {
         return this.hourMetrics;
     }
 
@@ -65,7 +65,7 @@ public final class FileServiceProperties {
      * @param hourMetrics the hourMetrics value to set.
      * @return the FileServiceProperties object itself.
      */
-    public FileServiceProperties setHourMetrics(Metrics hourMetrics) {
+    public FileServiceProperties setHourMetrics(FileMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
     }
@@ -76,7 +76,7 @@ public final class FileServiceProperties {
      *
      * @return the minuteMetrics value.
      */
-    public Metrics getMinuteMetrics() {
+    public FileMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
 
@@ -87,7 +87,7 @@ public final class FileServiceProperties {
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the FileServiceProperties object itself.
      */
-    public FileServiceProperties setMinuteMetrics(Metrics minuteMetrics) {
+    public FileServiceProperties setMinuteMetrics(FileMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
     }
@@ -97,9 +97,9 @@ public final class FileServiceProperties {
      *
      * @return the cors value.
      */
-    public List<CorsRule> getCors() {
+    public List<FileCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new CorsWrapper(new ArrayList<CorsRule>());
+            this.cors = new CorsWrapper(new ArrayList<FileCorsRule>());
         }
         return this.cors.items;
     }
@@ -110,7 +110,7 @@ public final class FileServiceProperties {
      * @param cors the cors value to set.
      * @return the FileServiceProperties object itself.
      */
-    public FileServiceProperties setCors(List<CorsRule> cors) {
+    public FileServiceProperties setCors(List<FileCorsRule> cors) {
         this.cors = new CorsWrapper(cors);
         return this;
     }
