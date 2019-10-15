@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * Stats for the storage service.
+ * Statistics for the storage service.
  */
 @JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
-public final class StorageServiceStats {
+public final class QueueServiceStatistics {
     /*
      * Geo-Replication information for the Secondary Storage Service
      */
@@ -35,9 +35,9 @@ public final class StorageServiceStats {
      * Secondary Storage Service.
      *
      * @param geoReplication the geoReplication value to set.
-     * @return the StorageServiceStats object itself.
+     * @return the QueueServiceStatistics object itself.
      */
-    public StorageServiceStats setGeoReplication(GeoReplication geoReplication) {
+    public QueueServiceStatistics setGeoReplication(GeoReplication geoReplication) {
         this.geoReplication = geoReplication;
         return this;
     }

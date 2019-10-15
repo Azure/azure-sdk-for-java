@@ -5,12 +5,13 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
+import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.SignedIdentifier;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.UpdatedMessage;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -332,7 +333,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.setMetadata#map
         client.setMetadata(Collections.singletonMap("queue", "metadataMap"));
-        System.out.printf("Setting metadata completed.");
+        System.out.println("Setting metadata completed.");
         // END: com.azure.storage.queue.queueClient.setMetadata#map
     }
 
@@ -345,7 +346,7 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context
         client.setMetadataWithResponse(Collections.singletonMap("queue", "metadataMap"),
             Duration.ofSeconds(1), new Context(key1, value1));
-        System.out.printf("Setting metadata completed.");
+        System.out.println("Setting metadata completed.");
         // END: com.azure.storage.queue.queueClient.setMetadataWithResponse#map-duration-context
     }
 
@@ -356,7 +357,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.clearMetadata#map
         client.setMetadata(null);
-        System.out.printf("Clearing metadata completed.");
+        System.out.println("Clearing metadata completed.");
         // END: com.azure.storage.queue.queueClient.clearMetadata#map
     }
 
@@ -379,9 +380,9 @@ public class QueueJavaDocCodeSamples {
     public void getAccessPolicy() {
 
         // BEGIN: com.azure.storage.queue.queueClient.getAccessPolicy
-        for (SignedIdentifier permission : client.getAccessPolicy()) {
+        for (QueueSignedIdentifier permission : client.getAccessPolicy()) {
             System.out.printf("Access policy %s allows these permissions: %s", permission.getId(),
-                permission.getAccessPolicy().getPermission());
+                permission.getAccessPolicy().getPermissions());
         }
         // END: com.azure.storage.queue.queueClient.getAccessPolicy
     }
@@ -391,12 +392,12 @@ public class QueueJavaDocCodeSamples {
      */
     public void setAccessPolicy() {
         // BEGIN: com.azure.storage.queue.QueueClient.setAccessPolicy#List
-        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
-        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy().setPermissions("r")
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        QueueSignedIdentifier permission = new QueueSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         client.setAccessPolicy(Collections.singletonList(permission));
-        System.out.printf("Setting access policies completed.");
+        System.out.println("Setting access policies completed.");
         // END: com.azure.storage.queue.QueueClient.setAccessPolicy#List
     }
 
@@ -406,10 +407,10 @@ public class QueueJavaDocCodeSamples {
     public void setAccessPolicyWithResponse() {
 
         // BEGIN: com.azure.storage.queue.queueClient.setAccessPolicyWithResponse#List-Duration-Context
-        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
-        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy().setPermissions("r")
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        QueueSignedIdentifier permission = new QueueSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         Response<Void> response = client.setAccessPolicyWithResponse(Collections.singletonList(permission),
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting access policies completed with status code %d", response.getStatusCode());
@@ -423,7 +424,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.clearMessages
         client.clearMessages();
-        System.out.printf("Clearing messages completed.");
+        System.out.println("Clearing messages completed.");
         // END: com.azure.storage.queue.queueClient.clearMessages
     }
 

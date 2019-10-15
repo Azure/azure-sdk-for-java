@@ -3,9 +3,10 @@
 package com.azure.storage.queue;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.models.AccessPolicy;
+import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.SignedIdentifier;
+import com.azure.storage.queue.models.QueueSignedIdentifier;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -398,7 +399,7 @@ public class QueueAsyncJavaDocCodeSamples {
     public void clearMetadataAsync() {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMetadata#map
         client.setMetadata(null)
-            .subscribe(response -> System.out.printf("Clearing metadata completed."));
+            .subscribe(response -> System.out.println("Clearing metadata completed."));
         // END: com.azure.storage.queue.queueAsyncClient.clearMetadata#map
     }
 
@@ -421,7 +422,7 @@ public class QueueAsyncJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.getAccessPolicy
         client.getAccessPolicy()
             .subscribe(result -> System.out.printf("Access policy %s allows these permissions: %s",
-                result.getId(), result.getAccessPolicy().getPermission()));
+                result.getId(), result.getAccessPolicy().getPermissions()));
         // END: com.azure.storage.queue.queueAsyncClient.getAccessPolicy
     }
 
@@ -431,11 +432,11 @@ public class QueueAsyncJavaDocCodeSamples {
     public void setAccessPolicyWithResponse() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
-        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy().setPermissions("r")
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        QueueSignedIdentifier permission = new QueueSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         client.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed with status code %d",
                 response.getStatusCode()));
@@ -448,11 +449,11 @@ public class QueueAsyncJavaDocCodeSamples {
     public void setAccessPolicyAsync() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
-        AccessPolicy accessPolicy = new AccessPolicy().setPermission("r")
-            .setStart(OffsetDateTime.now(ZoneOffset.UTC))
-            .setExpiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+        QueueAccessPolicy accessPolicy = new QueueAccessPolicy().setPermissions("r")
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 
-        SignedIdentifier permission = new SignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
+        QueueSignedIdentifier permission = new QueueSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         client.setAccessPolicy(Collections.singletonList(permission))
             .subscribe(response -> System.out.println("Setting access policies completed."));
         // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
