@@ -12,9 +12,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * Additional parameters for a set of operations.
  */
-@JacksonXmlRootElement(localName = "blob-HTTP-headers")
+@JacksonXmlRootElement(localName = "blob-http-headers")
 @Fluent
-public final class BlobHTTPHeaders {
+public final class BlobHttpHeaders {
     /*
      * Optional. Sets the blob's cache control. If specified, this property is
      * stored with the blob and returned with a read request.
@@ -74,9 +74,9 @@ public final class BlobHTTPHeaders {
      * returned with a read request.
      *
      * @param blobCacheControl the blobCacheControl value to set.
-     * @return the BlobHTTPHeaders object itself.
+     * @return the BlobHttpHeaders object itself.
      */
-    public BlobHTTPHeaders setBlobCacheControl(String blobCacheControl) {
+    public BlobHttpHeaders setBlobCacheControl(String blobCacheControl) {
         this.blobCacheControl = blobCacheControl;
         return this;
     }
@@ -98,9 +98,9 @@ public final class BlobHTTPHeaders {
      * with a read request.
      *
      * @param blobContentType the blobContentType value to set.
-     * @return the BlobHTTPHeaders object itself.
+     * @return the BlobHttpHeaders object itself.
      */
-    public BlobHTTPHeaders setBlobContentType(String blobContentType) {
+    public BlobHttpHeaders setBlobContentType(String blobContentType) {
         this.blobContentType = blobContentType;
         return this;
     }
@@ -122,9 +122,9 @@ public final class BlobHTTPHeaders {
      * individual blocks were validated when each was uploaded.
      *
      * @param blobContentMD5 the blobContentMD5 value to set.
-     * @return the BlobHTTPHeaders object itself.
+     * @return the BlobHttpHeaders object itself.
      */
-    public BlobHTTPHeaders setBlobContentMD5(byte[] blobContentMD5) {
+    public BlobHttpHeaders setBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = ImplUtils.clone(blobContentMD5);
         return this;
     }
@@ -146,9 +146,9 @@ public final class BlobHTTPHeaders {
      * returned with a read request.
      *
      * @param blobContentEncoding the blobContentEncoding value to set.
-     * @return the BlobHTTPHeaders object itself.
+     * @return the BlobHttpHeaders object itself.
      */
-    public BlobHTTPHeaders setBlobContentEncoding(String blobContentEncoding) {
+    public BlobHttpHeaders setBlobContentEncoding(String blobContentEncoding) {
         this.blobContentEncoding = blobContentEncoding;
         return this;
     }
@@ -170,9 +170,9 @@ public final class BlobHTTPHeaders {
      * returned with a read request.
      *
      * @param blobContentLanguage the blobContentLanguage value to set.
-     * @return the BlobHTTPHeaders object itself.
+     * @return the BlobHttpHeaders object itself.
      */
-    public BlobHTTPHeaders setBlobContentLanguage(String blobContentLanguage) {
+    public BlobHttpHeaders setBlobContentLanguage(String blobContentLanguage) {
         this.blobContentLanguage = blobContentLanguage;
         return this;
     }
@@ -192,9 +192,9 @@ public final class BlobHTTPHeaders {
      * Content-Disposition header.
      *
      * @param blobContentDisposition the blobContentDisposition value to set.
-     * @return the BlobHTTPHeaders object itself.
+     * @return the BlobHttpHeaders object itself.
      */
-    public BlobHTTPHeaders setBlobContentDisposition(String blobContentDisposition) {
+    public BlobHttpHeaders setBlobContentDisposition(String blobContentDisposition) {
         this.blobContentDisposition = blobContentDisposition;
         return this;
     }

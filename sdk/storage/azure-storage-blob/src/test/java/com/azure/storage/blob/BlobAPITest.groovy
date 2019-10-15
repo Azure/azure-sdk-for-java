@@ -7,7 +7,8 @@ import com.azure.core.implementation.util.ImplUtils
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
@@ -19,8 +20,7 @@ import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.ReliableDownloadOptions
-
-import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
@@ -88,7 +88,7 @@ class BlobAPITest extends APISpec {
         def result = outStream.toByteArray()
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
         result.length == 0
     }
 
@@ -96,6 +96,7 @@ class BlobAPITest extends APISpec {
     This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
     HttpGetterInfo.
      */
+
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
@@ -196,7 +197,7 @@ class BlobAPITest extends APISpec {
         bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, bac, false, null, null).getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -361,7 +362,7 @@ class BlobAPITest extends APISpec {
         bc.getPropertiesWithResponse(bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -380,7 +381,7 @@ class BlobAPITest extends APISpec {
         bc.getProperties()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set HTTP headers null"() {
@@ -395,7 +396,7 @@ class BlobAPITest extends APISpec {
     def "Set HTTP headers min"() {
         setup:
         def properties = bc.getProperties()
-        def headers = new BlobHTTPHeaders()
+        def headers = new BlobHttpHeaders()
             .setBlobContentEncoding(properties.getContentEncoding())
             .setBlobContentDisposition(properties.getContentDisposition())
             .setBlobContentType("type")
@@ -412,7 +413,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
-        def putHeaders = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        def putHeaders = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -476,7 +477,7 @@ class BlobAPITest extends APISpec {
         bc.setHTTPHeadersWithResponse(null, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -495,7 +496,7 @@ class BlobAPITest extends APISpec {
         bc.setHTTPHeaders(null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set metadata all null"() {
@@ -586,7 +587,7 @@ class BlobAPITest extends APISpec {
         bc.setMetadataWithResponse(null, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -605,7 +606,7 @@ class BlobAPITest extends APISpec {
         bc.setMetadata(null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Snapshot"() {
@@ -689,7 +690,7 @@ class BlobAPITest extends APISpec {
         bc.createSnapshotWithResponse(null, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -708,7 +709,7 @@ class BlobAPITest extends APISpec {
         bc.createSnapshot()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Copy"() {
@@ -809,7 +810,7 @@ class BlobAPITest extends APISpec {
         bu2.startCopyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null, mac, null, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch
@@ -867,7 +868,7 @@ class BlobAPITest extends APISpec {
         bu2.startCopyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null, null, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -900,7 +901,7 @@ class BlobAPITest extends APISpec {
         bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().setLeaseId(garbageLeaseID), null, null)
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(BlobStorageException)
         e.getStatusCode() == 412
 
         cleanup:
@@ -988,7 +989,7 @@ class BlobAPITest extends APISpec {
         bc.startCopyFromURL(new URL("http://www.error.com"))
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Abort copy error"() {
@@ -999,7 +1000,7 @@ class BlobAPITest extends APISpec {
         bc.abortCopyFromURL("id")
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Sync copy"() {
@@ -1091,7 +1092,7 @@ class BlobAPITest extends APISpec {
         bu2.copyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, mac, null, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch
@@ -1150,7 +1151,7 @@ class BlobAPITest extends APISpec {
         bu2.copyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1169,7 +1170,7 @@ class BlobAPITest extends APISpec {
         bu2.copyFromURL(new URL(bc.getBlobUrl()))
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Delete"() {
@@ -1252,7 +1253,7 @@ class BlobAPITest extends APISpec {
         bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -1271,7 +1272,7 @@ class BlobAPITest extends APISpec {
         bc.delete()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -1401,8 +1402,8 @@ class BlobAPITest extends APISpec {
         bc.setAccessTier(AccessTier.fromString("garbage"))
 
         then:
-        def e = thrown(StorageException)
-        e.getErrorCode() == StorageErrorCode.INVALID_HEADER_VALUE
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_HEADER_VALUE
 
         cleanup:
         cc.delete()
@@ -1428,7 +1429,7 @@ class BlobAPITest extends APISpec {
         bc.setAccessTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId(leaseID), null, null)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
         cleanup:
         cc.delete()
@@ -1444,7 +1445,7 @@ class BlobAPITest extends APISpec {
         bc.setAccessTierWithResponse(AccessTier.HOT, null, new LeaseAccessConditions().setLeaseId("garbage"), null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -1482,7 +1483,7 @@ class BlobAPITest extends APISpec {
         bc.getProperties()
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
         undeleteHeaders.getValue("x-ms-request-id") != null
         undeleteHeaders.getValue("x-ms-version") != null
         undeleteHeaders.getValue("Date") != null
@@ -1506,7 +1507,7 @@ class BlobAPITest extends APISpec {
         bc.undelete()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get account info"() {

@@ -6,11 +6,10 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseAccessConditions
-
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PageBlobAccessConditions
 import com.azure.storage.blob.models.PageRange
@@ -18,7 +17,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberAccessConditions
 import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.models.SourceModifiedAccessConditions
-import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.BlobStorageException
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -66,7 +65,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create headers"() {
         setup:
-        def headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        def headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -156,7 +155,7 @@ class PageBlobAPITest extends APISpec {
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -173,7 +172,7 @@ class PageBlobAPITest extends APISpec {
             new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("id")), null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Upload page"() {
@@ -265,7 +264,7 @@ class PageBlobAPITest extends APISpec {
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), pac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -290,7 +289,7 @@ class PageBlobAPITest extends APISpec {
             null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Upload page from URL min"() {
@@ -356,7 +355,7 @@ class PageBlobAPITest extends APISpec {
             null, null, null, null)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
     }
 
     def "Upload page from URL MD5 fail"() {
@@ -372,7 +371,7 @@ class PageBlobAPITest extends APISpec {
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -439,7 +438,7 @@ class PageBlobAPITest extends APISpec {
         bc.uploadPagesFromURLWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, pac, null, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -499,7 +498,7 @@ class PageBlobAPITest extends APISpec {
         when:
         bc.uploadPagesFromURLWithResponse(pageRange, new URL(sourceURL.getBlobUrl()), null, null, null, smac, null, null)
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -589,7 +588,7 @@ class PageBlobAPITest extends APISpec {
         bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -611,7 +610,7 @@ class PageBlobAPITest extends APISpec {
         bc.clearPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1))
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get page ranges"() {
@@ -634,7 +633,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRanges(null)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
     }
 
     @Unroll
@@ -655,7 +654,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -682,7 +681,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRangesWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -701,7 +700,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRanges(null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get page ranges diff"() {
@@ -740,7 +739,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRangesDiff(null, snapId).iterator().hasNext()
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
     }
 
     @Unroll
@@ -759,7 +758,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -788,7 +787,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRangesDiffWithResponse(new BlobRange(0, PageBlobClient.PAGE_BYTES), snapId, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -807,7 +806,7 @@ class PageBlobAPITest extends APISpec {
         bc.getPageRangesDiff(null, "snapshot")
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -885,7 +884,7 @@ class PageBlobAPITest extends APISpec {
         bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -904,7 +903,7 @@ class PageBlobAPITest extends APISpec {
         bc.resize(0)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     @Unroll
@@ -969,7 +968,7 @@ class PageBlobAPITest extends APISpec {
         bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -988,7 +987,7 @@ class PageBlobAPITest extends APISpec {
         bc.updateSequenceNumber(SequenceNumberActionType.UPDATE, 0)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Start incremental copy"() {
@@ -1088,7 +1087,7 @@ class PageBlobAPITest extends APISpec {
         bu2.copyIncrementalWithResponse(new URL(bc.getBlobUrl()), snapshot, mac, null, null)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         where:
         modified | unmodified | match       | noneMatch
@@ -1106,7 +1105,7 @@ class PageBlobAPITest extends APISpec {
         bc.copyIncremental(new URL("https://www.error.com"), "snapshot")
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Get Container Name"() {

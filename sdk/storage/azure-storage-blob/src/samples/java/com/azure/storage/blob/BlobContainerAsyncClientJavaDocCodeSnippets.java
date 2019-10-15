@@ -4,8 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -188,10 +190,10 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         client.getAccessPolicy().subscribe(response -> {
             System.out.printf("Blob Access Type: %s%n", response.getBlobAccessType());
 
-            for (SignedIdentifier identifier : response.getIdentifiers()) {
+            for (BlobSignedIdentifier identifier : response.getIdentifiers()) {
                 System.out.printf("Identifier Name: %s, Permissions %s%n",
                     identifier.getId(),
-                    identifier.getAccessPolicy().getPermission());
+                    identifier.getAccessPolicy().getPermissions());
             }
         });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.getAccessPolicy
@@ -207,10 +209,10 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         client.getAccessPolicyWithResponse(accessConditions).subscribe(response -> {
             System.out.printf("Blob Access Type: %s%n", response.getValue().getBlobAccessType());
 
-            for (SignedIdentifier identifier : response.getValue().getIdentifiers()) {
+            for (BlobSignedIdentifier identifier : response.getValue().getIdentifiers()) {
                 System.out.printf("Identifier Name: %s, Permissions %s%n",
                     identifier.getId(),
-                    identifier.getAccessPolicy().getPermission());
+                    identifier.getAccessPolicy().getPermissions());
             }
         });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.getAccessPolicyWithResponse#LeaseAccessConditions
@@ -221,12 +223,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void setAccessPolicy() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicy#PublicAccessType-List
-        SignedIdentifier identifier = new SignedIdentifier()
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
-            .setAccessPolicy(new AccessPolicy()
-                .setStart(OffsetDateTime.now())
-                .setExpiry(OffsetDateTime.now().plusDays(7))
-                .setPermission("permissionString"));
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
 
         client.setAccessPolicy(PublicAccessType.CONTAINER, Collections.singletonList(identifier)).subscribe(
             response -> System.out.printf("Set access policy completed%n"),
@@ -239,12 +241,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void setAccessPolicy2() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions
-        SignedIdentifier identifier = new SignedIdentifier()
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
-            .setAccessPolicy(new AccessPolicy()
-                .setStart(OffsetDateTime.now())
-                .setExpiry(OffsetDateTime.now().plusDays(7))
-                .setPermission("permissionString"));
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
 
         BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))

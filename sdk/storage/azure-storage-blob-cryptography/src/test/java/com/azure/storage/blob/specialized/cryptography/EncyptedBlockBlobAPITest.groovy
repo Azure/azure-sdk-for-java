@@ -3,14 +3,12 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.storage.blob.BlobContainerClient
-
 import com.azure.storage.blob.models.BlobAccessConditions
-import com.azure.storage.blob.models.BlobHTTPHeaders
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.LeaseAccessConditions
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.ParallelTransferOptions
-
-import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.Constants
@@ -143,7 +141,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         normalAsyncClient.download().blockLast()
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
         when:
         bec.uploadFromFile(getRandomFile(KB).toPath().toString())
@@ -159,7 +157,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         normalClient.download(new ByteArrayOutputStream())
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
     }
 
@@ -227,7 +225,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Requires({ liveMode() })
     def "Encryption HTTP headers"() {
         setup:
-        BlobHTTPHeaders headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
+        BlobHttpHeaders headers = new BlobHttpHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
             .setBlobContentLanguage(contentLanguage)
@@ -344,7 +342,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.uploadWithResponse(defaultFlux, parallelTransferOptions, null, null, null, bac).block()
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(BlobStorageException)
         e.getErrorCode() == StorageErrorCode.CONDITION_NOT_MET ||
             e.getErrorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
 

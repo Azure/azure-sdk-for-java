@@ -4,7 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobMetrics;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -132,18 +135,18 @@ public class BlobServiceClientJavaDocCodeSnippets {
      */
     public void setProperties() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties
-        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
-        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
+        BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(3);
+        BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(1);
 
         BlobServiceProperties properties = new BlobServiceProperties()
-            .setLogging(new Logging()
+            .setLogging(new BlobAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
                 .setRetentionPolicy(loggingRetentionPolicy))
-            .setHourMetrics(new Metrics()
+            .setHourMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
-            .setMinuteMetrics(new Metrics()
+            .setMinuteMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
@@ -161,18 +164,18 @@ public class BlobServiceClientJavaDocCodeSnippets {
      */
     public void setPropertiesWithResponse() {
         // BEGIN: com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context
-        RetentionPolicy loggingRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(3);
-        RetentionPolicy metricsRetentionPolicy = new RetentionPolicy().setEnabled(true).setDays(1);
+        BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(3);
+        BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy().setEnabled(true).setDays(1);
 
         BlobServiceProperties properties = new BlobServiceProperties()
-            .setLogging(new Logging()
+            .setLogging(new BlobAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
                 .setRetentionPolicy(loggingRetentionPolicy))
-            .setHourMetrics(new Metrics()
+            .setHourMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
-            .setMinuteMetrics(new Metrics()
+            .setMinuteMetrics(new BlobMetrics()
                 .setEnabled(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 

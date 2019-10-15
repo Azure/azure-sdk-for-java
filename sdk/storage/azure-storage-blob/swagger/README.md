@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,BlobSignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,BlobSignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -982,72 +982,72 @@ directive:
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: ContainersImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: BlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: AppendBlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: BlockBlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 - from: PageBlobsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.blob.models.StorageErrorException",
-        "com.azure.storage.blob.models.StorageException"
+        "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "com.azure.storage.blob.models.BlobStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
       );
 ```
 
@@ -1192,4 +1192,18 @@ directive:
   transform: >
     return $.replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private BlobMetrics hourMetrics;').
       replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private BlobMetrics minuteMetrics;');
+```
+
+### Rename BlobHttpHeaders to BlobHttpHeader
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.BlobCacheControl["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentDisposition["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentEncoding["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentLanguage["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentMD5["x-ms-parameter-grouping"].name = "blob-http-headers";
+    $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
 ```
