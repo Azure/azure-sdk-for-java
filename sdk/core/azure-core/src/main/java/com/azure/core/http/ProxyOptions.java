@@ -34,7 +34,7 @@ public class ProxyOptions {
      * @param password proxy password
      * @return the updated ProxyOptions object
      */
-    public ProxyOptions credentials(String username, String password) {
+    public ProxyOptions setCredentials(String username, String password) {
         this.username = Objects.requireNonNull(username, "'username' cannot be null.");
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
         return this;

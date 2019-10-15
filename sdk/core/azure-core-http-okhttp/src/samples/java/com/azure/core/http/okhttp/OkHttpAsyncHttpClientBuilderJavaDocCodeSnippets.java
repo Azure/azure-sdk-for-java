@@ -26,7 +26,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
     }
 
     public void proxySample() {
-        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#proxy
+        // BEGIN: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions
         final String proxyHost = "<proxy-host>"; // e.g. localhost
         final int proxyPort = 9999; // Proxy port
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
@@ -34,7 +34,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
                 .proxy(proxyOptions)
                 .build();
-        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#proxy
+        // END: com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions
 
     }
 
@@ -48,7 +48,7 @@ public class OkHttpAsyncHttpClientBuilderJavaDocCodeSnippets {
         //
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(proxyHost, proxyPort));
-        proxyOptions = proxyOptions.credentials(proxyUser, proxyPassword);
+        proxyOptions = proxyOptions.setCredentials(proxyUser, proxyPassword);
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
                 .proxy(proxyOptions)
                 .build();
