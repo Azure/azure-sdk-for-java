@@ -59,7 +59,7 @@ public class PollerTests {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructorPollIntervalZero() {
-        new Poller<Response, CertificateOutput>(Duration.ZERO, pollOperation,
+        new Poller<>(Duration.ZERO, pollOperation,
             fetchResultOperation, () -> Mono.just(new Response("Foo")), cancelOperation);
     }
 

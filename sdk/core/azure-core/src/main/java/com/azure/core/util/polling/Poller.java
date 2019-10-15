@@ -14,6 +14,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.core.util.polling.PollResponse.OperationStatus.FAILED;
+
 /**
  * This class offers API that simplifies the task of executing long-running operations against an Azure service. The
  * {@link Poller} consists of a poll operation, a cancel operation, if it is supported by the Azure service, and a
@@ -182,7 +184,10 @@ public class Poller<T, R> {
             : activationOperation.get().map(response -> {
                 this.pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, response);
                 return response;
-            });
+            })
+            .doOnError(ex -> this.pollResponse = new PollResponse<>(FAILED, null))
+            .onErrorReturn(null);
+
 
         this.fluxHandle = asyncPollRequestWithDelay()
             .flux()
@@ -228,12 +233,12 @@ public class Poller<T, R> {
      * It will call cancelOperation if status is {@link OperationStatus#IN_PROGRESS} otherwise it does nothing.
      *
      * @throws UnsupportedOperationException when the cancel operation is not supported by the Azure service.
-     * @return A {@link Mono} containing the response.
+     * @return A {@link Mono} containing the poller response.
      */
     public Mono<T> cancelOperation() throws UnsupportedOperationException {
         if (this.cancelOperation == null) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "Cancel operation is not supported on this service/resource."));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(
+                "Cancel operation is not supported on this service/resource.")));
         }
 
         // We can not cancel an operation if it was never started
