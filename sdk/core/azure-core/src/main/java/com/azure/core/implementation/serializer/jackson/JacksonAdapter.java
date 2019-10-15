@@ -82,7 +82,9 @@ public class JacksonAdapter implements SerializerAdapter {
                 .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
                 .registerModule(FlatteningSerializer.getModule(simpleMapper()))
                 .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
-        headerMapper = initializeHeaderMapper(new ObjectMapper());
+        headerMapper = simpleMapper
+            .copy()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
     }
 
     /**
@@ -257,12 +259,6 @@ public class JacksonAdapter implements SerializerAdapter {
             .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
             .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
             .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
-        return mapper;
-    }
-
-    private static <T extends ObjectMapper> T initializeHeaderMapper(T mapper) {
-        initializeObjectMapper(mapper);
-        mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
         return mapper;
     }
 
