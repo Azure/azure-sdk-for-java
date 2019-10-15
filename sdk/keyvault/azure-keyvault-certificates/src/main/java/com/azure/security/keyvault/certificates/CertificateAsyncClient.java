@@ -754,7 +754,7 @@ public class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listCertificates() {
-        try{
+        try {
             return new PagedFlux<>(() -> withContext(context -> listCertificatesFirstPage(false, context)),
                 continuationToken -> withContext(context -> listCertificatesNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
