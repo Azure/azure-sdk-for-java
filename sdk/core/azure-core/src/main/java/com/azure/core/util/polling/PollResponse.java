@@ -37,35 +37,45 @@ public final class PollResponse<T> {
      * {@code USER_CANCELLED} or {@code FAILED}.
      */
     public static final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
+
+        private boolean completed;
+
         /** Represents that polling has not yet started for this long-running operation. */
-        public static final OperationStatus NOT_STARTED = fromString("NOT_STARTED");
+        public static final OperationStatus NOT_STARTED = fromString("NOT_STARTED", false);
 
         /** Represents that this long-running operation is in progress and not yet complete. */
-        public static final OperationStatus IN_PROGRESS = fromString("IN_PROGRESS");
+        public static final OperationStatus IN_PROGRESS = fromString("IN_PROGRESS", false);
 
         /** Represent that this long-running operation is completed successfully. */
-        public static final OperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED");
+        public static final OperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED",
+            true);
 
         /**
          * Represents that this long-running operation has failed to successfully complete, however this is still
          * considered as complete long-running operation, meaning that the {@link Poller} instance will report that it
          * is complete.
          */
-        public static final OperationStatus FAILED = fromString("FAILED");
+        public static final OperationStatus FAILED = fromString("FAILED", true);
 
         /**
          * Represents that this long-running operation is cancelled by user, however this is still
          * considered as complete long-running operation.
          */
-        public static final OperationStatus USER_CANCELLED = fromString("USER_CANCELLED");
+        public static final OperationStatus USER_CANCELLED = fromString("USER_CANCELLED", true);
 
         /**
          * Creates or finds a {@link OperationStatus} from its string representation.
          * @param name a name to look for
          * @return the corresponding {@link OperationStatus}
          */
-        public static OperationStatus fromString(String name) {
-            return fromString(name, OperationStatus.class);
+        public static OperationStatus fromString(String name, boolean isComplete) {
+            OperationStatus status =  fromString(name, OperationStatus.class);
+            status.completed = isComplete;
+            return status;
+        }
+
+        public boolean isComplete() {
+            return completed;
         }
     }
 
