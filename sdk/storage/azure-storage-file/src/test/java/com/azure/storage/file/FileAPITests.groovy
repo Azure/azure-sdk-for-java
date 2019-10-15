@@ -17,7 +17,6 @@ import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
-import com.azure.storage.file.models.StorageErrorCode
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -415,7 +414,7 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo> copyInfoResponse = primaryFileClient.copy(sourceURL, null)
+        Poller<FileCopyInfo> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null)
         def verifier = StepVerifier.create(copyInfoResponse.getObserver())
 
         then:
@@ -429,11 +428,14 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        primaryFileClient.startCopyWithResponse("some url", testMetadata, null, null)
+        Poller<FileCopyInfo> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata)
+        def verifier = StepVerifier.create(copyInfoPoller.getObserver())
 
         then:
-        def e = thrown(FileStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        verifier.verifyErrorSatisfies{
+            assert it instanceof FileStorageException
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        }
     }
 
     @Ignore
