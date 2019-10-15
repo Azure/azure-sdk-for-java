@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,7 +64,7 @@ public class QueueAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueAsyncClient} with {@code connectionString} which turns into
-     * {@link SharedKeyCredential}
+     * {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link QueueAsyncClient}
      */
@@ -426,7 +425,7 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicyWithResponse(List)}
+     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicyWithResponse(Iterable)}
      */
     public void setAccessPolicyWithResponse() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
@@ -443,7 +442,7 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicy(List)}
+     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicy(Iterable)}
      */
     public void setAccessPolicyAsync() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();

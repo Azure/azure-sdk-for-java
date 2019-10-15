@@ -26,8 +26,8 @@ public final class Constants {
      */
     public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
 
-    static final String HTTPS = "https";
-    static final String HTTPS_HTTP = "https,http";
+    public static final String HTTPS = "https";
+    public static final String HTTPS_HTTP = "https,http";
 
     private Constants() {
     }

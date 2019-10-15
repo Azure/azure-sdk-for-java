@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +31,7 @@ public class Sample {
     public void sample() throws IOException {
         // get service client
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
-            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
+            .credential(new StorageSharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -83,7 +83,7 @@ public class Sample {
     public void asyncSample() {
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
-            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
+            .credential(new StorageSharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
@@ -161,7 +161,7 @@ public class Sample {
 
         // get service client
         BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
-            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
+            .credential(new StorageSharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -191,7 +191,7 @@ public class Sample {
 
         // get service client
         BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder().endpoint(ACCOUNT_ENDPOINT)
-            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
+            .credential(new StorageSharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.setProxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 

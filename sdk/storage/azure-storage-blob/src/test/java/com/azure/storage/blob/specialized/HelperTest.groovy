@@ -10,14 +10,14 @@ import com.azure.storage.blob.BlobContainerSasPermission
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
-import com.azure.storage.common.AccountSasPermission
-import com.azure.storage.common.AccountSasResourceType
-import com.azure.storage.common.AccountSasSignatureValues
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.Constants
 import com.azure.storage.common.IpRange
-import com.azure.storage.common.SasProtocol
+import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -281,7 +281,7 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((SharedKeyCredential)creds)
+        v.generateSasQueryParameters((StorageSharedKeyCredential)creds)
 
         then:
         def e = thrown(NullPointerException)

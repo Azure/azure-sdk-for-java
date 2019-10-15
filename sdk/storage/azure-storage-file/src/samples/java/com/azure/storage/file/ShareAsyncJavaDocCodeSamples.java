@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
@@ -66,7 +66,7 @@ public class ShareAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link ShareAsyncClient} with {@code connectionString} which turns into
-     * {@link SharedKeyCredential}
+     * {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link ShareAsyncClient}
      */

@@ -157,7 +157,7 @@ class RequestRetryTestFactory {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             this.factory.tryNumber++;
-            if (this.factory.tryNumber > this.factory.options.maxTries()) {
+            if (this.factory.tryNumber > this.factory.options.getMaxTries()) {
                 throw new IllegalArgumentException("Try number has exceeded max tries");
             }
 
@@ -288,9 +288,9 @@ class RequestRetryTestFactory {
                     switch (this.factory.tryNumber) {
                         case 1:
                         case 2:
-                            return RETRY_TEST_OK_RESPONSE.delaySubscription(Duration.ofSeconds(options.tryTimeout() + 1));
+                            return RETRY_TEST_OK_RESPONSE.delaySubscription(Duration.ofSeconds(options.getTryTimeout() + 1));
                         case 3:
-                            return RETRY_TEST_OK_RESPONSE.delaySubscription(Duration.ofSeconds(options.tryTimeout() - 1));
+                            return RETRY_TEST_OK_RESPONSE.delaySubscription(Duration.ofSeconds(options.getTryTimeout() - 1));
                         default:
                             throw new IllegalArgumentException("Continued retrying after success");
                     }
@@ -362,9 +362,9 @@ class RequestRetryTestFactory {
             switch (this.factory.retryTestScenario) {
                 case RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING:
                     return (long) Math.ceil(
-                        ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.retryDelayInMs()) / 1000);
+                        ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getMaxRetryDelayInMs()) / 1000);
                 case RETRY_TEST_SCENARIO_FIXED_TIMING:
-                    return (long) Math.ceil(this.factory.options.retryDelayInMs() / 1000);
+                    return (long) Math.ceil(this.factory.options.getRetryDelayInMs() / 1000);
                 default:
                     throw new IllegalArgumentException("Invalid test scenario");
             }
@@ -408,9 +408,9 @@ class RequestRetryTestFactory {
         private Mono<HttpResponse> testMaxDelayBounds(Mono<HttpResponse> response) {
             return Mono.defer(() -> Mono.fromCallable(() -> {
                 OffsetDateTime now = OffsetDateTime.now();
-                if (now.isAfter(factory.time.plusSeconds((long) Math.ceil((factory.options.maxRetryDelayInMs() / 1000) + 1)))) {
+                if (now.isAfter(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) + 1)))) {
                     throw new IllegalArgumentException("Max retry delay exceeded");
-                } else if (now.isBefore(factory.time.plusSeconds((long) Math.ceil((factory.options.maxRetryDelayInMs() / 1000) - 1)))) {
+                } else if (now.isBefore(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) - 1)))) {
                     throw new IllegalArgumentException("Retry did not delay long enough");
                 }
 

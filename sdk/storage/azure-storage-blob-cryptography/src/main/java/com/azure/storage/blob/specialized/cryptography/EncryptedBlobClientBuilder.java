@@ -27,13 +27,13 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,7 +53,7 @@ import java.util.Objects;
  * {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
  * <li>Container and blob name if not specified in the {@link #endpoint(String)}, set through
  * {@link #containerName(String)} and {@link #blobName(String)} respectively.
- * <li>Credential set through {@link #credential(SharedKeyCredential)} , {@link #sasToken(String)}, or
+ * <li>Credential set through {@link #credential(StorageSharedKeyCredential)} , {@link #sasToken(String)}, or
  * {@link #connectionString(String)} if the container is not publicly accessible.
  * <li>Key and key wrapping algorithm (for encryption) and/or key resolver (for decryption) must be specified
  * through {@link #key(AsyncKeyEncryptionKey, String)} and {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}
@@ -77,7 +77,7 @@ public final class EncryptedBlobClientBuilder {
     private String blobName;
     private String snapshot;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -129,8 +129,8 @@ public final class EncryptedBlobClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        if (storageSharedKeyCredential != null) {
+            policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
@@ -234,14 +234,14 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public EncryptedBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public EncryptedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -256,7 +256,7 @@ public final class EncryptedBlobClientBuilder {
      */
     public EncryptedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -271,7 +271,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
@@ -284,14 +284,14 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder
      */
     public EncryptedBlobClientBuilder setAnonymousAccess() {
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
      * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
@@ -322,7 +322,7 @@ public final class EncryptedBlobClientBuilder {
         }
 
         this.accountName = accountName;
-        return credential(new SharedKeyCredential(accountName, accountKey));
+        return credential(new StorageSharedKeyCredential(accountName, accountKey));
     }
 
     /**

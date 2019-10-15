@@ -51,8 +51,9 @@ public final class RequestRetryOptions {
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
      * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
      * for more information.</p>
-     * @throws IllegalArgumentException If {@code retryDelayInMs} and {@code maxRetryDelayInMs} are not both null or
-     * non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL} or {@link RetryPolicyType#FIXED}.
+     * @throws IllegalArgumentException If {@code getRetryDelayInMs} and {@code getMaxRetryDelayInMs} are not both null
+     * or non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL}
+     * or {@link RetryPolicyType#FIXED}.
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
         Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
@@ -65,7 +66,7 @@ public final class RequestRetryOptions {
         }
 
         if (tryTimeout != null) {
-            Utility.assertInBounds("tryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
+            Utility.assertInBounds("getTryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
             this.tryTimeout = Integer.MAX_VALUE;
@@ -78,8 +79,8 @@ public final class RequestRetryOptions {
         }
 
         if (retryDelayInMs != null) {
-            Utility.assertInBounds("maxRetryDelayInMs", maxRetryDelayInMs, 1, Long.MAX_VALUE);
-            Utility.assertInBounds("retryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
+            Utility.assertInBounds("getMaxRetryDelayInMs", maxRetryDelayInMs, 1, Long.MAX_VALUE);
+            Utility.assertInBounds("getRetryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
             this.maxRetryDelayInMs = maxRetryDelayInMs;
             this.retryDelayInMs = retryDelayInMs;
         } else {
@@ -101,14 +102,14 @@ public final class RequestRetryOptions {
     /**
      * @return the maximum number of retries that will be attempted.
      */
-    public int maxTries() {
+    public int getMaxTries() {
         return this.maxTries;
     }
 
     /**
      * @return the maximum time, in seconds, allowed for a request until it is considered timed out.
      */
-    public int tryTimeout() {
+    public int getTryTimeout() {
         return this.tryTimeout;
     }
 
@@ -116,21 +117,21 @@ public final class RequestRetryOptions {
      * @return the URI of the secondary host where retries are attempted. If this is null then there is no secondary
      * host and all retries are attempted against the original host.
      */
-    public String secondaryHost() {
+    public String getSecondaryHost() {
         return this.secondaryHost;
     }
 
     /**
      * @return the delay in milliseconds between each retry attempt.
      */
-    public long retryDelayInMs() {
+    public long getRetryDelayInMs() {
         return retryDelayInMs;
     }
 
     /**
      * @return the maximum delay in milliseconds allowed between each retry.
      */
-    public long maxRetryDelayInMs() {
+    public long getMaxRetryDelayInMs() {
         return maxRetryDelayInMs;
     }
 

@@ -4,7 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
@@ -72,7 +72,7 @@ public class QueueJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueClient} with {@code connectionString} which turns into {@link
-     * SharedKeyCredential}
+     * StorageSharedKeyCredential}
      *
      * @return An instance of {@link QueueClient}
      */

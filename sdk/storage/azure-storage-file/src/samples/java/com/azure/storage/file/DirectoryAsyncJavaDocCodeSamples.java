@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
 import java.time.LocalDateTime;
@@ -61,7 +61,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link DirectoryAsyncClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link DirectoryAsyncClient}
      */
     public DirectoryAsyncClient createAsyncClientWithConnectionString() {

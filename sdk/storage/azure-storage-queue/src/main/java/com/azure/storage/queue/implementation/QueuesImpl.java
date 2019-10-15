@@ -20,6 +20,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.storage.queue.implementation.models.QueuesCreateResponse;
 import com.azure.storage.queue.implementation.models.QueuesDeleteResponse;
 import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyResponse;
@@ -28,8 +29,15 @@ import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyRespon
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
+
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import com.microsoft.azure.eventhubs.impl.IteratorUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -284,9 +292,9 @@ public final class QueuesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String queueName, List<SignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
+    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String queueName, Iterable<SignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
-        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(StreamSupport.stream(queueAcl.spliterator(), false).collect(Collectors.toList()));
         return service.setAccessPolicy(queueName, this.client.getUrl(), queueAclConverted, timeout, this.client.getVersion(), requestId, comp, context);
     }
 }

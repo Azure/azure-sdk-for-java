@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.sas;
+
+import com.azure.storage.common.SR;
 
 import java.util.Locale;
 
@@ -112,11 +114,11 @@ public final class AccountSasPermission {
     /**
      * Sets the add permission status.
      *
-     * @param hadAddPermission Permission status to set
+     * @param hasAddPermission Permission status to set
      * @return the updated AccountSasPermission object
      */
-    public AccountSasPermission setAddPermission(boolean hadAddPermission) {
-        this.addPermission = hadAddPermission;
+    public AccountSasPermission setAddPermission(boolean hasAddPermission) {
+        this.addPermission = hasAddPermission;
         return this;
     }
 
@@ -185,11 +187,11 @@ public final class AccountSasPermission {
      * Sets the list permission status. This permission grants the ability to list blob containers, blobs, shares,
      * directories, and files.
      *
-     * @param hadListPermission Permission status to set
+     * @param hasListPermission Permission status to set
      * @return the updated AccountSasPermission object
      */
-    public AccountSasPermission setListPermission(boolean hadListPermission) {
-        this.listPermission = hadListPermission;
+    public AccountSasPermission setListPermission(boolean hasListPermission) {
+        this.listPermission = hasListPermission;
         return this;
     }
 

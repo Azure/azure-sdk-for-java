@@ -14,7 +14,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
@@ -30,7 +30,6 @@ import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -49,7 +48,7 @@ import reactor.core.publisher.Mono;
  *
  * @see QueueClientBuilder
  * @see QueueClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueAsyncClient {
@@ -315,7 +314,7 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Mono<Void> setAccessPolicy(List<SignedIdentifier> permissions) {
+    public Mono<Void> setAccessPolicy(Iterable<SignedIdentifier> permissions) {
         return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
     }
 
@@ -336,11 +335,11 @@ public final class QueueAsyncClient {
      * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
      * or the queue will have more than five policies.
      */
-    public Mono<Response<Void>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions) {
+    public Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<SignedIdentifier> permissions) {
         return withContext(context -> setAccessPolicyWithResponse(permissions, context));
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Context context) {
+    Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<SignedIdentifier> permissions, Context context) {
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This

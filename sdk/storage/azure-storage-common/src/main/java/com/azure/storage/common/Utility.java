@@ -11,8 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -66,7 +65,8 @@ public final class Utility {
     /**
      * The length of a datestring that matches the MAX_PRECISION_PATTERN.
      */
-    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
+    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
+            .length();
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -385,7 +385,8 @@ public final class Utility {
             }
 
             try {
-                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("getHeaders").invoke(response);
+                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("getHeaders")
+                    .invoke(response);
                 //
                 if (eTag != null) {
                     rawHeaders.put(ETAG, eTag);
@@ -503,17 +504,18 @@ public final class Utility {
     }
 
     /**
-     * Searches for a {@link SharedKeyCredential} in the passed {@link HttpPipeline}.
+     * Searches for a {@link StorageSharedKeyCredential} in the passed {@link HttpPipeline}.
      *
      * @param httpPipeline Pipeline being searched
-     * @return a SharedKeyCredential if the pipeline contains one, otherwise null.
+     * @return a StorageSharedKeyCredential if the pipeline contains one, otherwise null.
      */
-    public static SharedKeyCredential getSharedKeyCredential(HttpPipeline httpPipeline) {
+    public static StorageSharedKeyCredential getSharedKeyCredential(HttpPipeline httpPipeline) {
         for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
-            if (httpPipelinePolicy instanceof SharedKeyCredentialPolicy) {
-                SharedKeyCredentialPolicy sharedKeyCredentialPolicy = (SharedKeyCredentialPolicy) httpPipelinePolicy;
-                return sharedKeyCredentialPolicy.sharedKeyCredential();
+            if (httpPipelinePolicy instanceof StorageSharedKeyCredentialPolicy) {
+                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy =
+                    (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
+                return storageSharedKeyCredentialPolicy.sharedKeyCredential();
             }
         }
         return null;

@@ -5,10 +5,10 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.common.BaseSasQueryParameters;
+import com.azure.storage.common.sas.BaseSasQueryParameters;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
+import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;

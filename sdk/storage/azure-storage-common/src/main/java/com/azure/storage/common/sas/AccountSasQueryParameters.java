@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.sas;
+
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.IpRange;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

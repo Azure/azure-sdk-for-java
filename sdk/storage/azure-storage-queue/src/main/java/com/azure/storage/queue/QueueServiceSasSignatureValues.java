@@ -5,9 +5,9 @@ package com.azure.storage.queue;
 
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
+import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.time.OffsetDateTime;
 
@@ -254,7 +254,7 @@ public final class QueueServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
+     * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link QueueServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
@@ -262,13 +262,13 @@ public final class QueueServiceSasSignatureValues {
      * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
      * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
      */
-    public QueueServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+    public QueueServiceSasQueryParameters generateSASQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK();
 
         // Signature is generated on the un-url-encoded values.
         String stringToSign = stringToSign();
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign);
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return new QueueServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.ipRange, this.identifier, this.permissions, signature);
