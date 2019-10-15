@@ -16,7 +16,7 @@ public class DeviceCodeChallenge {
     /**
      * Creates an instance of a device code challenge.
      *
-     * @param userCode code which user needs to provide when authenticating at the verification URI
+     * @param userCode code which user needs to provide when authenticating at the verification URL
      * @param deviceCode code which should be included in the request for the access token
      * @param verificationUrl URL where user can authenticate
      * @param expiresIn expiration time of device code in seconds
@@ -43,7 +43,7 @@ public class DeviceCodeChallenge {
 
 
     /**
-     * @return code which user needs to provide when authenticating at the verification URI.
+     * @return code which user needs to provide when authenticating at the verification URL.
      */
     public String getUserCode() {
         return userCode;
