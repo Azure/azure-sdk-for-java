@@ -29,6 +29,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -216,13 +218,19 @@ public class JacksonAdapter implements SerializerAdapter {
                             final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
                             try {
                                 if (!declaredFieldAccessibleBackup) {
-                                    declaredField.setAccessible(true);
+                                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                        declaredField.setAccessible(true);
+                                        return null;
+                                    });
                                 }
                                 declaredField.set(deserializedHeaders, headerCollection);
                             } catch (IllegalAccessException ignored) {
                             } finally {
                                 if (!declaredFieldAccessibleBackup) {
-                                    declaredField.setAccessible(declaredFieldAccessibleBackup);
+                                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                        declaredField.setAccessible(declaredFieldAccessibleBackup);
+                                        return null;
+                                    });
                                 }
                             }
                         }
