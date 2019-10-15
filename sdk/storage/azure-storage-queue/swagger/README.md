@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: StorageError,StorageErrorException,QueueErrorCode,QueueSignedIdentifier,EnqueuedMessage,DequeuedMessage,PeekedMessage,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,CorsRule
+custom-types: QueueErrorCode,QueueSignedIdentifier,EnqueuedMessage,DequeuedMessage,PeekedMessage,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
 custom-types-subpackage: models
 ```
 
@@ -318,4 +318,57 @@ directive:
   transform: >
     return $.replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private QueueMetrics hourMetrics;').
       replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private QueueMetrics minuteMetrics;');
+```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: QueuesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: MessagesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: MessageIdsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
 ```
