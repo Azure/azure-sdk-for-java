@@ -15,6 +15,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 import com.azure.core.util.polling.Poller;
 import com.azure.storage.common.Constants;
 import com.azure.storage.common.Utility;
@@ -29,7 +30,6 @@ import com.azure.storage.file.implementation.models.FilesCreateResponse;
 import com.azure.storage.file.implementation.models.FilesGetPropertiesResponse;
 import com.azure.storage.file.implementation.models.FilesSetHTTPHeadersResponse;
 import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
-import com.azure.storage.file.implementation.models.FilesStartCopyResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
@@ -52,7 +52,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
@@ -76,8 +75,6 @@ import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.core.util.polling.PollResponse.*;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -277,7 +274,14 @@ public class FileAsyncClient {
             return Mono.just(pollResponse);
         }
 
-        return getProperties().map(response -> {
+        final FileCopyInfo lastInfo = pollResponse.getValue();
+        if (lastInfo == null) {
+            logger.warning("FileCopyInfo does not exist. Activation operation failed.");
+            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED"), null));
+        }
+
+        return getProperties()
+            .map(response -> {
                 final CopyStatusType status = response.getCopyStatus();
                 final FileCopyInfo result = new FileCopyInfo(response.getCopySource(), response.getCopyId(), status,
                     response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
@@ -297,12 +301,13 @@ public class FileAsyncClient {
                         operationStatus = OperationStatus.IN_PROGRESS;
                         break;
                     default:
-                        throw logger.logExceptionAsError(new IllegalArgumentException(
-                            "Status is not supported. Status: " + status));
+                        // The OperationStatuses we created should end the polling loop. So this should not happen.
+                        throw Exceptions.propagate(logger.logExceptionAsError(new IllegalArgumentException(
+                            "Status is not supported. Status: " + status)));
                 }
 
                 return new PollResponse<>(operationStatus, result);
-        });
+        }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED"), lastInfo));
     }
 
     /**
