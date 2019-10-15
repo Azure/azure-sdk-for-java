@@ -352,7 +352,6 @@ public final class QueueClientBuilder {
         return this;
     }
 
-
     /**
      * Sets the {@link QueueServiceVersion} that is used when making API requests.
      * <p>
@@ -361,7 +360,7 @@ public final class QueueClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link QueueServiceVersion} of the service to be used when making requests.
-     * @return the updated FileClientBuilder object
+     * @return the updated QueueClientBuilder object
      */
     public QueueClientBuilder version(QueueServiceVersion version) {
         this.version = version;
