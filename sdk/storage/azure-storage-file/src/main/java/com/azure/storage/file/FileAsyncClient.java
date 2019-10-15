@@ -301,7 +301,7 @@ public class FileAsyncClient {
                         operationStatus = OperationStatus.IN_PROGRESS;
                         break;
                     default:
-                        // The OperationStatuses we created should end the polling loop. So this should not happen.
+                        // The OperationStatuses we created end the polling loop. This should not happen.
                         throw Exceptions.propagate(logger.logExceptionAsError(new IllegalArgumentException(
                             "Status is not supported. Status: " + status)));
                 }

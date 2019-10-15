@@ -61,6 +61,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -302,22 +303,18 @@ public class BlobAsyncClientBase {
 
         return new Poller<>(Duration.ofSeconds(1),
             response -> onPoll(response),
-            () -> {
-                final Mono<BlobsStartCopyFromURLResponse> restResponse = withContext(
-                    context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
-                        sourceUrl, null, metadata, tier, priority, null, sourceConditions,
-                        destinationAccessConditions.getModifiedAccessConditions(),
-                        destinationAccessConditions.getLeaseAccessConditions(), context));
+            () -> withContext(
+                context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
+                    sourceUrl, null, metadata, tier, priority, null, sourceConditions,
+                    destinationAccessConditions.getModifiedAccessConditions(),
+                    destinationAccessConditions.getLeaseAccessConditions(), context))
+                .map(response -> {
+                    final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+                    copyId.set(headers.getCopyId());
 
-                return postProcessResponse(restResponse)
-                    .map(response -> {
-                        final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
-                        copyId.set(headers.getCopyId());
-
-                        return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(), headers.getCopyStatus(),
-                            headers.getETag(), headers.getLastModified(), headers.getErrorCode());
-                    });
-            },
+                    return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(), headers.getCopyStatus(),
+                        headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                }),
             unused -> {
                 final String copyIdentifier = copyId.get();
 
@@ -333,6 +330,12 @@ public class BlobAsyncClientBase {
         if (pollResponse.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
             || pollResponse.getStatus() == OperationStatus.FAILED) {
             return Mono.just(pollResponse);
+        }
+
+        final BlobCopyInfo lastInfo = pollResponse.getValue();
+        if (lastInfo == null) {
+            logger.warning("BlobCopyInfo does not exist. Activation operation failed.");
+            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED"), null));
         }
 
         return getProperties().map(response -> {
@@ -355,12 +358,13 @@ public class BlobAsyncClientBase {
                     operationStatus = OperationStatus.IN_PROGRESS;
                     break;
                 default:
-                    throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Status is not supported. Status: " + status));
+                    // The OperationStatuses we created end the polling loop. This should not happen.
+                    throw Exceptions.propagate(logger.logExceptionAsError(new IllegalArgumentException(
+                        "Status is not supported. Status: " + status)));
             }
 
             return new PollResponse<>(operationStatus, result);
-        });
+        }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED"), lastInfo));
     }
 
     /**
