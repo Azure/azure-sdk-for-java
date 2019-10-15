@@ -3,8 +3,8 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequest;
 import com.azure.core.util.Configuration;
 import org.junit.Assert;
 import org.junit.Test;

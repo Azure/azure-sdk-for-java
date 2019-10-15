@@ -3,11 +3,11 @@
 
 package com.azure.core.annotation;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
  * Annotation for parameterized host name targeting a REST service.
@@ -42,9 +42,9 @@ import static java.lang.annotation.ElementType.TYPE;
  *     Secret get(@HostParam("vaultName") String vaultName, @PathParam("secretName") String secretName);
  *  }</pre>
  */
-@Target(value = {TYPE})
 // Record this annotation in the class file and make it available during runtime.
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RUNTIME)
+@Target(TYPE)
 public @interface Host {
     /**
      * Get the protocol/scheme, host, and optional port number in a single string.

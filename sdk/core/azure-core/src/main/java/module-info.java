@@ -17,7 +17,7 @@ module com.azure.core {
 
     // public API surface area
     exports com.azure.core.annotation;
-    exports com.azure.core.credentials;
+    exports com.azure.core.credential;
     exports com.azure.core.exception;
     exports com.azure.core.http;
     exports com.azure.core.http.policy;
@@ -52,6 +52,7 @@ module com.azure.core {
     exports com.azure.core.implementation.http to
         com.azure.core.management,              // FIXME this should not be a long-term solution
         com.azure.core.test,                    // FIXME this should not be a long-term solution
+        com.azure.core.tracing.opencensus,      // FIXME this should not be a long-term solution
         com.azure.data.appconfiguration,        // FIXME this should not be a long-term solution
         com.azure.http.netty,                   // FIXME this should not be a long-term solution
         com.azure.messaging.eventhubs.checkpointstore.blob,          // FIXME this should not be a long-term solution
