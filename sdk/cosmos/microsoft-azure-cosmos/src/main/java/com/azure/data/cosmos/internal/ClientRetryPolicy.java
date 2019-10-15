@@ -14,11 +14,12 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
- * 
+ *
  *  Client policy is combination of endpoint change retry + throttling retry.
  */
 public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
@@ -39,6 +40,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
     private URL locationEndpoint;
     private RetryContext retryContext;
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private AtomicInteger cnt = new AtomicInteger(0);
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
@@ -57,6 +59,11 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
+        logger.debug("retry count {}, isReadRequest {}, canUseMultipleWriteLocations {}, due to failure:",
+            cnt.incrementAndGet(),
+            isReadRequest,
+            canUseMultipleWriteLocations,
+            e);
         if (this.locationEndpoint == null) {
             // on before request is not invoked because Document Service Request creation failed.
             logger.error("locationEndpoint is null because ClientRetryPolicy::onBeforeRequest(.) is not invoked, " +
@@ -70,7 +77,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         if (clientException != null && clientException.cosmosResponseDiagnostics() != null) {
             this.cosmosResponseDiagnostics = clientException.cosmosResponseDiagnostics();
         }
-        if (clientException != null && 
+        if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
         {
@@ -94,7 +101,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
             return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest);
         }
 
-        if (clientException != null && 
+        if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
             return Mono.just(this.shouldRetryOnSessionNotAvailable());
