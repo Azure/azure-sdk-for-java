@@ -758,7 +758,7 @@ public final class SecretAsyncClient {
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
-     * @param continuationToken The {@link Page#getNextLink()} from a previous, successful call to one of the
+     * @param continuationToken The {@link Page#getContinuationToken()} from a previous, successful call to one of the
      *     list operations.
      * @return A {@link Mono} of {@link PagedResponse} that contains {@link DeletedSecret} from the next page of
      * results.

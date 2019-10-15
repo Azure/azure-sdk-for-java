@@ -5,7 +5,7 @@ package com.azure.core.http.policy;
 /**
  * Implementing classes automatically provide policies.
  */
-public interface PolicyProvider {
+public interface HttpPolicyProvider {
 
     /**
      * Creates the policy.

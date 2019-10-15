@@ -24,5 +24,5 @@ public interface Page<T> {
      *
      * @return A link to the next page, or {@code null} if there are no more results.
      */
-    String getNextLink();
+    String getContinuationToken();
 }

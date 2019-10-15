@@ -189,7 +189,7 @@ public final class BlobBatchAsyncClient {
             }
 
             @Override
-            public String getNextLink() {
+            public String getContinuationToken() {
                 return null;
             }
 
