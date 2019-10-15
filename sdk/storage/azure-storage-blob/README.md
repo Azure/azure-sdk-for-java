@@ -238,7 +238,7 @@ Upload a file to a blob using BlobClient generated from BlobContainerClient.
 
 ```java
 
-BlobClient blobClient = containerClient.getBlobClient("myblockblob");
+BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
 blobClient.uploadFromFile("local-file.jpg");
 ```
 
