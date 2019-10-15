@@ -20,7 +20,7 @@ import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageException;
+import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -94,7 +94,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param queueName Name of the queue
      * @return The {@link QueueAsyncClient QueueAsyncClient}
-     * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
     public Mono<QueueAsyncClient> createQueue(String queueName) {
         return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
@@ -113,7 +113,7 @@ public final class QueueServiceAsyncClient {
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
      * @return A response containing the {@link QueueAsyncClient QueueAsyncClient} and the status of creating the queue
-     * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
@@ -139,7 +139,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param queueName Name of the queue
      * @return An empty response
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Void> deleteQueue(String queueName) {
         return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
@@ -156,7 +156,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param queueName Name of the queue
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         return withContext(context -> deleteQueueWithResponse(queueName, context));
@@ -314,7 +314,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param properties Storage account Queue service properties
      * @return An empty response
-     * @throws StorageException When one of the following is true
+     * @throws QueueStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
@@ -355,7 +355,7 @@ public final class QueueServiceAsyncClient {
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
-     * @throws StorageException When one of the following is true
+     * @throws QueueStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>

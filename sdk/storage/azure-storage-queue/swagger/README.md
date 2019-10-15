@@ -328,47 +328,47 @@ directive:
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 - from: QueuesImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 - from: MessagesImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 - from: MessageIdsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 ```

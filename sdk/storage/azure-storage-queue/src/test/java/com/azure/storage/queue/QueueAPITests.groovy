@@ -9,7 +9,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueSignedIdentifier
-import com.azure.storage.queue.models.StorageException
+import com.azure.storage.queue.models.QueueStorageException
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -61,7 +61,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.delete()
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -80,7 +80,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.getProperties()
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -111,7 +111,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setMetadata(testMetadata)
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -123,7 +123,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setMetadata(invalidMetadata)
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMessage)
         where:
         invalidKey     | statusCode | errMessage
@@ -145,7 +145,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.getAccessPolicy().iterator().next()
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -181,7 +181,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setAccessPolicy(Collections.singletonList(permission))
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.INVALID_XML_DOCUMENT)
     }
 
@@ -227,7 +227,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.setAccessPolicyWithResponse(permissions, null, Context.NONE)
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.INVALID_XML_DOCUMENT)
     }
 
@@ -298,7 +298,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.dequeueMessages(33).iterator().next()
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
@@ -334,7 +334,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.peekMessages(33, null, null).iterator().next()
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
     }
 
@@ -342,7 +342,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.peekMessages().iterator().next()
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -368,7 +368,7 @@ class QueueAPITests extends APISpec {
         when:
         queueClient.clearMessagesWithResponse(null, null)
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -404,7 +404,7 @@ class QueueAPITests extends APISpec {
         def deletePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
         queueClient.deleteMessage(deleteMessageId, deletePopReceipt)
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         messageId | popReceipt | statusCode | errMsg
@@ -442,7 +442,7 @@ class QueueAPITests extends APISpec {
         def updatePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
         queueClient.updateMessage(updateMsg, updateMessageId, updatePopReceipt, Duration.ofSeconds(1))
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
         where:
         messageId | popReceipt | statusCode | errMsg

@@ -10,7 +10,7 @@ import com.azure.storage.queue.models.QueueMetrics
 import com.azure.storage.queue.models.QueueRetentionPolicy
 import com.azure.storage.queue.models.QueueServiceProperties
 import com.azure.storage.queue.models.QueuesSegmentOptions
-import com.azure.storage.queue.models.StorageException
+import com.azure.storage.queue.models.QueueStorageException
 import spock.lang.Unroll
 
 class QueueServiceAPITests extends APISpec {
@@ -43,7 +43,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.createQueue(queueName)
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMesage)
 
         where:
@@ -89,7 +89,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.createQueueWithResponse(queueName, Collections.singletonMap("metadata!", "value"), null, null)
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.INVALID_METADATA)
     }
 
@@ -104,7 +104,7 @@ class QueueServiceAPITests extends APISpec {
 
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 
@@ -113,7 +113,7 @@ class QueueServiceAPITests extends APISpec {
         primaryQueueServiceClient.deleteQueueWithResponse(testResourceName.randomName(methodName, 60), null, null)
 
         then:
-        def e = thrown(StorageException)
+        def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
     }
 

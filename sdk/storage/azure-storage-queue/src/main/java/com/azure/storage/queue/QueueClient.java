@@ -13,7 +13,7 @@ import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.PeekedMessage;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.azure.storage.queue.models.StorageException;
+import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +68,7 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
-     * @throws StorageException If a queue with the same name already exists in the queue service.
+     * @throws QueueStorageException If a queue with the same name already exists in the queue service.
      */
     public void create() {
         createWithResponse(null, null, Context.NONE);
@@ -91,7 +91,7 @@ public final class QueueClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If a queue with the same name and different metadata already exists in the queue
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists in the queue
      * service.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -112,7 +112,7 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void delete() {
         deleteWithResponse(null, Context.NONE);
@@ -134,7 +134,7 @@ public final class QueueClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
@@ -156,7 +156,7 @@ public final class QueueClient {
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public QueueProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
@@ -179,7 +179,7 @@ public final class QueueClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -206,7 +206,7 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, Context.NONE);
@@ -235,7 +235,7 @@ public final class QueueClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
@@ -256,7 +256,7 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
         return new PagedIterable<>(client.getAccessPolicy());
@@ -275,8 +275,8 @@ public final class QueueClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
-     * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
-     * or the queue will have more than five policies.
+     * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the queue will have more than five policies.
      */
     public void setAccessPolicy(List<QueueSignedIdentifier> permissions) {
         setAccessPolicyWithResponse(permissions, null, Context.NONE);
@@ -299,8 +299,8 @@ public final class QueueClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled out,
-     * or the queue will have more than five policies.
+     * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the queue will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Duration timeout,
@@ -321,7 +321,7 @@ public final class QueueClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void clearMessages() {
         clearMessagesWithResponse(null, Context.NONE);
@@ -343,7 +343,7 @@ public final class QueueClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
@@ -367,7 +367,7 @@ public final class QueueClient {
      * @return A {@link EnqueuedMessage} value that contains the {@link EnqueuedMessage#getMessageId() messageId} and
      * {@link EnqueuedMessage#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
      * about the enqueued message.
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public EnqueuedMessage enqueueMessage(String messageText) {
         return enqueueMessageWithResponse(messageText, null, null, null, Context.NONE).getValue();
@@ -401,8 +401,8 @@ public final class QueueClient {
      * @return A response containing the {@link EnqueuedMessage} value that contains the {@link
      * EnqueuedMessage#getMessageId() messageId} and {@link EnqueuedMessage#getPopReceipt() popReceipt} that are used to
      * interact with the message and other metadata about the enqueued message.
-     * @throws StorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive} are
-     * outside of the allowed limits.
+     * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
+     * are outside of the allowed limits.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<EnqueuedMessage> enqueueMessageWithResponse(String messageText, Duration visibilityTimeout,
@@ -427,7 +427,7 @@ public final class QueueClient {
      * @return The first {@link DequeuedMessage} in the queue, it contains {@link DequeuedMessage#getMessageId()
      * messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt} used to interact with the message, additionally
      * it contains other metadata about the message.
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public PagedIterable<DequeuedMessage> dequeueMessages() {
         return dequeueMessages(1, Duration.ofSeconds(30), null, Context.NONE);
@@ -452,7 +452,7 @@ public final class QueueClient {
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DequeuedMessage
      * contains {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt}
      * used to interact with the message and other metadata about the message.
-     * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
+     * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedIterable<DequeuedMessage> dequeueMessages(Integer maxMessages) {
         return dequeueMessages(maxMessages, Duration.ofSeconds(30), null, Context.NONE);
@@ -482,7 +482,7 @@ public final class QueueClient {
      * @return Up to {@code maxMessages} {@link DequeuedMessage DequeuedMessages} from the queue. Each DeqeuedMessage
      * contains {@link DequeuedMessage#getMessageId() messageId} and {@link DequeuedMessage#getPopReceipt() popReceipt}
      * used to interact with the message and other metadata about the message.
-     * @throws StorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
+     * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
@@ -536,7 +536,7 @@ public final class QueueClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Up to {@code maxMessages} {@link PeekedMessage PeekedMessages} from the queue. Each PeekedMessage
      * contains metadata about the message.
-     * @throws StorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
+     * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public PagedIterable<PeekedMessage> peekMessages(Integer maxMessages, Duration timeout, Context context) {
@@ -562,8 +562,8 @@ public final class QueueClient {
      * timeout period must be between 1 second and 7 days.
      * @return A {@link UpdatedMessage} that contains the new {@link UpdatedMessage#getPopReceipt() popReceipt} to
      * interact with the message, additionally contains the updated metadata about the message.
-     * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message, or
-     * the {@code visibilityTimeout} is outside the allowed bounds
+     * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
+     * or the {@code visibilityTimeout} is outside the allowed bounds.
      */
     public UpdatedMessage updateMessage(String messageText, String messageId, String popReceipt,
         Duration visibilityTimeout) {
@@ -594,8 +594,8 @@ public final class QueueClient {
      * @return A response containing the {@link UpdatedMessage} that contains the new {@link
      * UpdatedMessage#getPopReceipt() popReceipt} to interact with the message, additionally contains the updated
      * metadata about the message.
-     * @throws StorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message, or
-     * the {@code visibilityTimeout} is outside the allowed bounds
+     * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
+     * or the {@code visibilityTimeout} is outside the allowed bounds.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<UpdatedMessage> updateMessageWithResponse(String messageText, String messageId, String popReceipt,
@@ -619,7 +619,8 @@ public final class QueueClient {
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
-     * @throws StorageException If the queue or messageId don't exist or the popReceipt doesn't match on the message
+     * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
+     * message.
      */
     public void deleteMessage(String messageId, String popReceipt) {
         deleteMessageWithResponse(messageId, popReceipt, null, Context.NONE);
@@ -643,7 +644,8 @@ public final class QueueClient {
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the queue or messageId don't exist or the popReceipt doesn't match on the message
+     * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
+     * message.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,

@@ -20,7 +20,7 @@ import static com.azure.storage.common.Constants.HeaderConstants.ERROR_CODE;
  * <p><strong>Sample Code</strong></p>
  * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">sample file</a></p>
  */
-public final class StorageException extends HttpResponseException {
+public final class QueueStorageException extends HttpResponseException {
     /**
      * Constructs a {@code StorageException}.
      *
@@ -28,7 +28,7 @@ public final class StorageException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the error code of the exception.
      */
-    public StorageException(String message, HttpResponse response, Object value) {
+    public QueueStorageException(String message, HttpResponse response, Object value) {
         super(message, response, value);
     }
 

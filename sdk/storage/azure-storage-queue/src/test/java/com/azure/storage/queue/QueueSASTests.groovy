@@ -11,7 +11,7 @@ import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.EnqueuedMessage
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
-import com.azure.storage.queue.models.StorageException
+import com.azure.storage.queue.models.QueueStorageException
 import org.junit.Test
 import spock.lang.Unroll
 
@@ -130,7 +130,7 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(2).iterator()
 
         then:
-        notThrown(StorageException)
+        notThrown(QueueStorageException)
         "test" == dequeueMsgIterPermissions.next().getMessageText()
         "sastest" == dequeueMsgIterPermissions.next().getMessageText()
 
@@ -138,7 +138,7 @@ class QueueSASTests extends APISpec {
         clientPermissions.updateMessage("testing", resp.getMessageId(), resp.getPopReceipt(), Duration.ofHours(1))
 
         then:
-        thrown(StorageException)
+        thrown(QueueStorageException)
     }
 
     @Test
@@ -180,14 +180,14 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterPermissions = clientPermissions.dequeueMessages(1).iterator()
 
         then:
-        notThrown(StorageException)
+        notThrown(QueueStorageException)
         "testing" == dequeueMsgIterPermissions.next().getMessageText()
 
         when:
         clientPermissions.delete()
 
         then:
-        thrown(StorageException)
+        thrown(QueueStorageException)
     }
 
     // NOTE: Serializer for set access policy keeps milliseconds
@@ -229,7 +229,7 @@ class QueueSASTests extends APISpec {
         def dequeueMsgIterIdentifier = clientIdentifier.dequeueMessages(2).iterator()
 
         then:
-        notThrown(StorageException)
+        notThrown(QueueStorageException)
         "test" == dequeueMsgIterIdentifier.next().getMessageText()
         "sastest" == dequeueMsgIterIdentifier.next().getMessageText()
     }
@@ -259,13 +259,13 @@ class QueueSASTests extends APISpec {
         sc.createQueue("queue")
 
         then:
-        notThrown(StorageException)
+        notThrown(QueueStorageException)
 
         when:
         sc.deleteQueue("queue")
 
         then:
-        notThrown(StorageException)
+        notThrown(QueueStorageException)
     }
 
     @Test
@@ -292,7 +292,7 @@ class QueueSASTests extends APISpec {
         sc.listQueues()
 
         then:
-        notThrown(StorageException)
+        notThrown(QueueStorageException)
     }
 
 }

@@ -14,7 +14,7 @@ import com.azure.storage.queue.models.QueueMetrics
 import com.azure.storage.queue.models.QueueRetentionPolicy
 import com.azure.storage.queue.models.QueueServiceProperties
 import com.azure.storage.queue.models.QueueSignedIdentifier
-import com.azure.storage.queue.models.StorageException
+import com.azure.storage.queue.models.QueueStorageException
 
 import java.time.Duration
 
@@ -24,9 +24,9 @@ class QueueTestHelper {
     }
 
     static boolean assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode, QueueErrorCode errMessage) {
-        return throwable instanceof StorageException &&
-            ((StorageException) throwable).getStatusCode() == expectedStatusCode &&
-            ((StorageException) throwable).getErrorCode() == errMessage
+        return throwable instanceof QueueStorageException &&
+            ((QueueStorageException) throwable).getStatusCode() == expectedStatusCode &&
+            ((QueueStorageException) throwable).getErrorCode() == errMessage
     }
 
     static boolean assertQueuesAreEqual(QueueItem expected, QueueItem actual) {

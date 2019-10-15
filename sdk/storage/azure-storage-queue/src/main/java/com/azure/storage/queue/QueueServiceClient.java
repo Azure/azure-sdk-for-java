@@ -14,7 +14,7 @@ import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.StorageException;
+import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -78,7 +78,7 @@ public final class QueueServiceClient {
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
     public QueueClient createQueue(String queueName) {
         return createQueueWithResponse(queueName, null, null, Context.NONE).getValue();
@@ -100,7 +100,7 @@ public final class QueueServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the QueueClient and the status of creating the queue
-     * @throws StorageException If a queue with the same name and different metadata already exists
+     * @throws QueueStorageException If a queue with the same name and different metadata already exists
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
@@ -121,7 +121,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      */
     public void deleteQueue(String queueName) {
         deleteQueueWithResponse(queueName, null, Context.NONE);
@@ -141,7 +141,7 @@ public final class QueueServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the status of deleting the queue
-     * @throws StorageException If the queue doesn't exist
+     * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
@@ -280,7 +280,7 @@ public final class QueueServiceClient {
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
-     * @throws StorageException When one of the following is true
+     * @throws QueueStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
@@ -325,7 +325,7 @@ public final class QueueServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException When one of the following is true
+     * @throws QueueStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
