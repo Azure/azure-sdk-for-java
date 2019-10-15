@@ -5,7 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
@@ -34,7 +34,8 @@ public class HelloWorld {
         // Let's create a secret holding bank account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
-            .setExpires(OffsetDateTime.now().plusYears(1)));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1))));
 
         // Let's Get the bank secret from the key vault.
         Secret bankSecret = secretClient.getSecret("BankAccountPassword");
@@ -43,15 +44,17 @@ public class HelloWorld {
         // After one year, the bank account is still active, we need to update the expiry time of the secret.
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update
         // the value of the secret.
-        bankSecret.setExpires(bankSecret.getExpires().plusYears(1));
-        SecretBase updatedSecret = secretClient.updateSecret(bankSecret);
+        bankSecret.getProperties()
+            .setExpires(OffsetDateTime.now().plusYears(1));
+        SecretProperties updatedSecret = secretClient.updateSecretProperties(bankSecret.getProperties());
         System.out.printf("Secret's updated expiry time %s \n", updatedSecret.getExpires());
 
         // Bank forced a password update for security purposes. Let's change the value of the secret in the key vault.
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
         // change the value of the secret.
         secretClient.setSecret(new Secret("BankAccountPassword", "bhjd4DDgsa")
-            .setExpires(OffsetDateTime.now().plusYears(1)));
+            .setProperties(new SecretProperties()
+                .setExpires(OffsetDateTime.now().plusYears(1))));
 
         // The bank account was closed, need to delete its credentials from the key vault.
         secretClient.deleteSecret("BankAccountPassword");

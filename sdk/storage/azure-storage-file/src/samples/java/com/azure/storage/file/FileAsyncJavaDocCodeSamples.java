@@ -2,11 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileProperties;
@@ -46,7 +41,7 @@ public class FileAsyncJavaDocCodeSamples {
 
 
     /**
-     * Generates code sample for creating a {@link FileAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileAsyncClient} with SAS token.
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithSASToken() {
@@ -61,14 +56,14 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileAsyncClient} with {@link SASTokenCredential}
+     * Generates code sample for creating a {@link FileAsyncClient} with SAS token.
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithCredential() {
         // BEGIN: com.azure.storage.file.fileAsyncClient.instantiation.credential
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromQueryParameters(Utility.parseQueryString("${SASTokenQueryParams}")))
+            .sasToken("${SASTokenQueryParams}")
             .shareName("myshare")
             .resourcePath("myfilepath")
             .buildFileAsyncClient();
@@ -214,44 +209,16 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#upload(Flux, long, long)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, Long)}
      */
     public void uploadDataMaxOverloadAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
         ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.remaining()).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete deleting the file!")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.upload#flux-long-long
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long)}
-     */
-    public void uploadWithResponse() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining()).subscribe(
-            response -> System.out.println("Complete deleting the file with status code:" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
-        );
-        // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadWithResponse(Flux, long, long)}
-     */
-    public void uploadWithResponseOverload() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
-        ByteBuffer defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8));
-        fileAsyncClient.uploadWithResponse(Flux.just(defaultData), defaultData.remaining(), 1024).subscribe(
-            response -> System.out.println("Complete deleting the file with status code" + response.getStatusCode()),
-            error -> System.err.print(error.toString())
         );
         // END: com.azure.storage.file.fileAsyncClient.uploadWithResponse#flux-long-long
     }
@@ -299,76 +266,61 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURL(long, long, long, URI)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrl(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
-        fileAsyncClient.uploadRangeFromURL(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri
+        fileAsyncClient.uploadRangeFromUrl(6, 8, 0, new URI("filewithSAStoken")).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURL#long-long-long-uri
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromURLWithResponse(long, long, long, URI)}
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, URI)}
      * @throws URISyntaxException when the URI is invalid
      */
     public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
-        fileAsyncClient.uploadRangeFromURLWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri
+        fileAsyncClient.uploadRangeFromUrlWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromURLWithResponse#long-long-long-uri
+        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadWithProperties()}
+     * Generates a code sample for using {@link FileAsyncClient#download()}
      */
     public void downloadDataAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithProperties
-        fileAsyncClient.downloadWithProperties().subscribe(
+        // BEGIN: com.azure.storage.file.fileAsyncClient.download
+        fileAsyncClient.download().subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.downloadWithProperties
+        // END: com.azure.storage.file.fileAsyncClient.download
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadWithPropertiesWithResponse(FileRange, Boolean)}
+     * Generates a code sample for using {@link FileAsyncClient#downloadWithResponse(FileRange, Boolean)}
      */
-    public void downloadDataAsyncMaxOverload() {
+    public void downloadWithProperties() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean
-        fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false).
-            subscribe(
-                response -> { },
-                error -> System.err.print(error.toString()),
-                () -> System.out.println("Complete downloading the data!")
+        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithResponse#filerange-boolean
+        fileAsyncClient.downloadWithResponse(new FileRange(1024, 2047L), false)
+            .subscribe(response ->
+                    System.out.printf("Complete downloading the data with status code %d%n", response.getStatusCode()),
+                error -> System.err.println(error.getMessage())
             );
-        // END: com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean
-    }
-
-    /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadWithPropertiesWithResponse(FileRange, Boolean)}
-     */
-    public void downloadWithPropertiesWithResponse() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
-        fileAsyncClient.downloadWithPropertiesWithResponse(new FileRange(1024, 2047L), false)
-            .subscribe(
-                response -> System.out.println("Complete downloading the data with status code: " + response.getStatusCode()),
-                error -> System.err.print(error.toString())
-            );
-        // END: com.azure.storage.file.fileAsyncClient.downloadWithPropertiesWithResponse#filerange-boolean
+        // END: com.azure.storage.file.fileAsyncClient.downloadWithResponse#filerange-boolean
     }
 
     /**
@@ -390,21 +342,23 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#downloadToFile(String, FileRange)}
+     * Generates a code sample for using {@link FileAsyncClient#downloadToFileWithResponse(String, FileRange)}
      */
     public void downloadFileAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
-        fileAsyncClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L)).subscribe(
-            response -> {
-                if (Files.exists(Paths.get("somelocalfilepath"))) {
-                    System.out.println("Successfully downloaded the file.");
-                }
-            },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete downloading the file!")
-        );
-        // END: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
+        // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
+        fileAsyncClient.downloadToFileWithResponse("somelocalfilepath", new FileRange(1024, 2047L))
+            .subscribe(
+                response -> {
+                    if (Files.exists(Paths.get("somelocalfilepath"))) {
+                        System.out.println("Successfully downloaded the file with status code "
+                            + response.getStatusCode());
+                    }
+                },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete downloading the file!")
+            );
+        // END: com.azure.storage.file.fileAsyncClient.downloadToFileWithResponse#string-filerange
     }
 
     /**
@@ -642,36 +596,6 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#generateSAS(String, FileSASPermission, OffsetDateTime,
-     * OffsetDateTime, String, SASProtocol, IPRange, String, String, String, String, String)}
-     */
-    public void generateSASAsync() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-        String identifier = "identifier";
-        FileSASPermission permissions = new FileSASPermission()
-            .setRead(true)
-            .setCreate(true)
-            .setDelete(true)
-            .setWrite(true);
-        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1);
-        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
-        IPRange ipRange = new IPRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255");
-        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP;
-        String cacheControl = "cache";
-        String contentDisposition = "disposition";
-        String contentEncoding = "encoding";
-        String contentLanguage = "language";
-        String contentType = "type";
-        String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        String sas = fileAsyncClient.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol,
-            ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
-        // END: com.azure.storage.file.fileAsyncClient.generateSAS#String-FileSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange-String-String-String-String-String
-    }
-
-    /**
      * Generates a code sample for using {@link FileAsyncClient#getShareSnapshotId()}
      */
     public void getShareSnapshotIdAsync() {
@@ -679,7 +603,7 @@ public class FileAsyncJavaDocCodeSamples {
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         FileAsyncClient fileAsyncClient = new FileClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net")
-            .credential(SASTokenCredential.fromSASTokenString("${SASToken}"))
+            .sasToken("${SASToken}")
             .shareName("myshare")
             .resourcePath("myfiile")
             .snapshot(currentTime.toString())

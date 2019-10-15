@@ -33,6 +33,9 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+models-subpackage: implementation.models
+custom-types-subpackage: models
+custom-types: HandleItem,FileHTTPHeaders,ShareItem,FileServiceProperties,CorsRule,ShareProperties,Range,CopyStatusType,SignedIdentifier,SourceModifiedAccessConditions,StorageErrorException,StorageErrorCode,StorageError,StorageServiceProperties
 ```
 
 ### Query Parameters
@@ -554,4 +557,57 @@ directive:
       replace(
         "public final class FilesAndDirectoriesListSegment {",
         "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
+```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: SharesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: DirectorysImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: FilesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.file.models.StorageErrorException",
+        "com.azure.storage.file.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
 ```

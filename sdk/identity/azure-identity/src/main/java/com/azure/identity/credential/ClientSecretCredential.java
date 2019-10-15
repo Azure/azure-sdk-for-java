@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -38,8 +39,8 @@ public class ClientSecretCredential implements TokenCredential {
      */
     ClientSecretCredential(String tenantId, String clientId, String clientSecret,
                            IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(clientSecret);
-        Objects.requireNonNull(identityClientOptions);
+        Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
+        Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
@@ -49,7 +50,7 @@ public class ClientSecretCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
-        return identityClient.authenticateWithClientSecret(clientSecret, scopes);
+    public Mono<AccessToken> getToken(TokenRequest request) {
+        return identityClient.authenticateWithClientSecret(clientSecret, request);
     }
 }

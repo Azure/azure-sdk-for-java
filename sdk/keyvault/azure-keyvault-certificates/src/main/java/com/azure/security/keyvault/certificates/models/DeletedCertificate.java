@@ -5,6 +5,7 @@ package com.azure.security.keyvault.certificates.models;
 
 
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
+import com.azure.security.keyvault.certificates.CertificateClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -12,12 +13,14 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- *  Deleted Certificate is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link CertificateBase}.
- *  It is managed by Secret Service.
+ * Deleted Certificate is the resource consisting of name, recovery id, deleted date, scheduled purge date and its
+ * attributes inherited from {@link Certificate}.
+ * It is managed by Certificate Service.
  *
- *  @see CertificateAsyncClient
+ * @see CertificateAsyncClient
+ * @see CertificateClient
  */
-public final class DeletedCertificate extends CertificateBase {
+public final class DeletedCertificate extends Certificate {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
@@ -37,29 +40,12 @@ public final class DeletedCertificate extends CertificateBase {
     private OffsetDateTime deletedDate;
 
     /**
-     * The Certificate policy.
-     */
-    @JsonProperty("policy")
-    private CertificatePolicy certificatePolicy;
-
-    /**
      * Get the recoveryId identifier.
      *
      * @return the recoveryId identifier.
      */
-    public String recoveryId() {
+    public String getRecoveryId() {
         return this.recoveryId;
-    }
-
-    /**
-     * Set the recoveryId identifier.
-     *
-     * @param recoveryId The recoveryId identifier to set
-     * @return the DeletedSecret object itself.
-     */
-    public DeletedCertificate recoveryId(String recoveryId) {
-        this.recoveryId = recoveryId;
-        return this;
     }
 
     /**
@@ -67,7 +53,7 @@ public final class DeletedCertificate extends CertificateBase {
      *
      * @return the scheduledPurgeDate UTC time.
      */
-    public OffsetDateTime scheduledPurgeDate() {
+    public OffsetDateTime getScheduledPurgeDate() {
         return scheduledPurgeDate;
     }
 
@@ -76,18 +62,10 @@ public final class DeletedCertificate extends CertificateBase {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime deletedDate() {
+    public OffsetDateTime getDeletedDate() {
         return this.deletedDate;
     }
 
-    /**
-     * Get the certificate policy.
-     *
-     * @return the certificate policy.
-     */
-    public CertificatePolicy certificatePolicy() {
-        return this.certificatePolicy;
-    }
 
     /**
      * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to OffsetDateTime and updates the

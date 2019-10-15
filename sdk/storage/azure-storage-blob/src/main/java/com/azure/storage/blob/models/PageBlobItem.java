@@ -4,6 +4,12 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.storage.blob.implementation.models.PageBlobClearPagesHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobCreateHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobResizeHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumberHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
 
 import java.time.OffsetDateTime;
 

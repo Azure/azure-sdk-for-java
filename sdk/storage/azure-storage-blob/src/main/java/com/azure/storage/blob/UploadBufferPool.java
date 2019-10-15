@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 
@@ -41,12 +42,17 @@ final class UploadBufferPool {
     private final int maxBuffs;
 
     // The number of buffs we have allocated. We can query the queue for how many are available.
-    private int numBuffs = 0;
+    private int numBuffs;
 
     private final int buffSize;
 
     private ByteBuffer currentBuf;
 
+    /**
+     * Creates a new instance of UploadBufferPool
+     * @param numBuffs The number of buffers in the buffer pool.
+     * @param buffSize The size of the buffers
+     */
     UploadBufferPool(final int numBuffs, final int buffSize) {
         /*
         We require at least two buffers because it is possible that a given write will spill over into a second buffer.
@@ -72,7 +78,13 @@ final class UploadBufferPool {
     Note that the upload method will be calling write sequentially as there is only one worker reading from the source
     and calling write. This means operations like currentBuf.remaining() will not result in race conditions.
      */
-    Flux<ByteBuffer> write(ByteBuffer buf) {
+
+    /**
+     * Writes ByteBuffers to a {@code Flux<ByteBuffer>}
+     * @param buf The buffer to write
+     * @return The {@code Flux<ByteBuffer>}
+     */
+    public Flux<ByteBuffer> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
@@ -148,6 +160,10 @@ final class UploadBufferPool {
         return result;
     }
 
+    /**
+     * Flushes the current buffer
+     * @return the flushed buffer
+     */
     Flux<ByteBuffer> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
@@ -163,6 +179,10 @@ final class UploadBufferPool {
         return Flux.empty();
     }
 
+    /**
+     * Returns the ByteBuffer
+     * @param b The ByteBuffer to reset and return
+     */
     void returnBuffer(ByteBuffer b) {
         // Reset the buffer.
         b.position(0);

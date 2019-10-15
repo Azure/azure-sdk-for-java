@@ -40,7 +40,7 @@ class FileServiceAsyncAPITests extends APISpec {
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
 
         when:
-        def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl().toString()
+        def fileServiceURL = primaryFileServiceAsyncClient.getFileServiceUrl()
 
         then:
         expectURL.equals(fileServiceURL)
@@ -155,7 +155,7 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter")                           | 3      | false           | true
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResults(2)          | 3      | false           | true
+        new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true
     }
 
     @Unroll

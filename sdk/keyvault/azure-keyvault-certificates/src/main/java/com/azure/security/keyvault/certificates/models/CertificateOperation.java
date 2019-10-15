@@ -83,7 +83,7 @@ public final class CertificateOperation {
      *
      * @return the identifier.
      */
-    public String id() {
+    public String getId() {
         return this.id;
     }
 
@@ -92,7 +92,7 @@ public final class CertificateOperation {
      *
      * @return the issuer name
      */
-    public String issuerName() {
+    public String getIssuerName() {
         return this.issuerName;
     }
 
@@ -101,7 +101,7 @@ public final class CertificateOperation {
      *
      * @return the certificateType
      */
-    public String certificateType() {
+    public String getCertificateType() {
         return this.certificateType;
     }
 
@@ -110,7 +110,7 @@ public final class CertificateOperation {
      *
      * @return the certificateTransparency status.
      */
-    public Boolean certificateTransparency() {
+    public Boolean getCertificateTransparency() {
         return this.certificateTransparency;
     }
 
@@ -119,7 +119,7 @@ public final class CertificateOperation {
      *
      * @return the csr.
      */
-    public byte[] csr() {
+    public byte[] getCsr() {
         return ImplUtils.clone(this.csr);
     }
 
@@ -128,7 +128,7 @@ public final class CertificateOperation {
      *
      * @return the cancellationRequested status.
      */
-    public Boolean cancellationRequested() {
+    public Boolean getCancellationRequested() {
         return this.cancellationRequested;
     }
 
@@ -137,7 +137,7 @@ public final class CertificateOperation {
      *
      * @return the status
      */
-    public String status() {
+    public String getStatus() {
         return this.status;
     }
 
@@ -146,7 +146,7 @@ public final class CertificateOperation {
      *
      * @return the status details
      */
-    public String statusDetails() {
+    public String getStatusDetails() {
         return this.statusDetails;
     }
 
@@ -155,7 +155,7 @@ public final class CertificateOperation {
      *
      * @return the error
      */
-    public Error error() {
+    public Error getError() {
         return this.error;
     }
 
@@ -164,7 +164,7 @@ public final class CertificateOperation {
      *
      * @return the target
      */
-    public String target() {
+    public String getTarget() {
         return this.target;
     }
 
@@ -173,7 +173,7 @@ public final class CertificateOperation {
      *
      * @return the requestId
      */
-    public String requestId() {
+    public String getRequestId() {
         return this.requestId;
     }
 

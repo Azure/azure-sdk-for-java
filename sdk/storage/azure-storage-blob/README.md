@@ -17,36 +17,50 @@ definition, such as text or binary data.
 
 ### Adding the package to your product
 
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.0.0-preview.3</version>
+  <version>12.0.0-preview.4</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Default HTTP Client
-All client libraries support a pluggable HTTP transport layer. Users can specify an HTTP client specific for their needs by including the following dependency in the Maven pom.xml file:
+All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
+Storage Blob to use Netty HTTP client. 
 
+### Alternate HTTP client
+If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
+Netty and include OkHTTP client in your pom.xml.
+
+[//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
+<!-- Add Storage Blob dependency without Netty HTTP client -->
 <dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-netty</artifactId>
-  <version>1.0.0-preview.4</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob</artifactId>
+    <version>12.0.0-preview.4</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
 </dependency>
 ```
-
-This will automatically configure all client libraries on the same classpath to make use of Netty for the HTTP client. Netty is the recommended HTTP client for most applications. OkHttp is recommended only when the application being built is deployed to Android devices.
-
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Simply include the following dependency instead:
-
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
 ```xml
+<!-- Add OkHTTP client to use with Storage Blob -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Configuring HTTP Clients
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-blobserviceclient), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
@@ -150,24 +164,24 @@ Create a BlobServiceClient using the [`sasToken`](#get-credentials) generated ab
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
         .endpoint("<your-storage-blob-url>")
-        .credential("<your-sasToken>")
+        .sasToken("<your-sasToken>")
         .buildClient();
 ```
 
-### Create ContainerClient
+### Create BlobContainerClient
 
-Create a ContainerClient if a BlobServiceClient exists.
+Create a BlobContainerClient if a BlobServiceClient exists.
 ```java
-ContainerClient containerClient = blobServiceClient.getContainerClient("mycontainer");
+BlobContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
 ```
 
 or
 
-Create the ContainerClient from the builder [`sasToken`](#get-credentials) generated above.
+Create the BlobContainerClient from the builder [`sasToken`](#get-credentials) generated above.
 ```java
-ContainerClient containerClient = new ContainerClientBuilder()
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
          .endpoint("<your-storage-blob-url>")
-         .credential("<your-sasToken>")
+         .sasToken("<your-sasToken>")
          .containerName("mycontainer")
          .buildClient();
 ```
@@ -176,7 +190,7 @@ ContainerClient containerClient = new ContainerClientBuilder()
 
 Create a BlobClient if container client exists.
 ```java
-BlobClient blobClient = containerClient.getBlobClient("myblob");
+BlobClient blobClient = blobContainerClient.getBlobClient("myblob").getBlockBlobClient();
 ```
 
 or
@@ -185,7 +199,7 @@ Create the BlobClient from the builder [`sasToken`](#get-credentials) generated 
 ```java
 BlobClient blobClient = new BlobClientBuilder()
          .endpoint("<your-storage-blob-url>")
-         .credential("<your-sasToken>")
+         .sasToken("<your-sasToken>")
          .containerName("mycontainer")
          .blobName("myblob")
          .buildBlobClient();
@@ -200,17 +214,17 @@ blobServiceClient.createContainer("mycontainer");
 
 or
 
-Create a container using ContainerClient.
+Create a container using BlobContainerClient.
 ```java
-containerClient.create();
+blobContainerClient.create();
 ```
 
 ### Uploading a blob from a stream
 
-Upload data stream to a blob using BlockBlobClient generated from a ContainerClient.
+Upload data stream to a blob using BlockBlobClient generated from a BlobContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("myblockblob");
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
@@ -219,10 +233,11 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 ### Uploading a blob from `File`
 
-Upload a file to a blob using BlockBlobClient generated from ContainerClient.
+Upload a file to a blob using BlockBlobClient generated from BlobContainerClient.
 
 ```java
-BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("myblockblob");
+
+BlockBlobClient blockBlobClient = containerClient.getBlobClient("myblockblob").getBlockBlobClient();
 blockBlobClient.uploadFromFile("local-file.jpg");
 ```
 
@@ -245,9 +260,9 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 ### Enumerating blobs
 
-Enumerating all blobs using ContainerClient
+Enumerating all blobs using BlobContainerClient
 ```java
-containerClient.listBlobsFlat()
+blobContainerClient.listBlobsFlat()
         .forEach(
             blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
         );
@@ -266,7 +281,7 @@ BlobServiceClient storageClient = new BlobServiceClientBuilder()
 
 ## Troubleshooting
 
-When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP
+When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 

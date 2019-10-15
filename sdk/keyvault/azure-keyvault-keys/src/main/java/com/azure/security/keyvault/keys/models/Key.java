@@ -5,13 +5,20 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+
 import java.util.Map;
 
-public class Key extends KeyBase {
+public class Key {
 
+    /**
+     * The Json Web Key
+     */
     @JsonProperty(value = "key")
     private JsonWebKey keyMaterial;
+
+    Key() {
+        properties = new KeyProperties();
+    }
 
     /**
      * Get the key value.
@@ -23,38 +30,34 @@ public class Key extends KeyBase {
     }
 
     /**
-     * Set the {@link OffsetDateTime notBefore} UTC time.
-     *
-     * @param notBefore The notBefore UTC time to set
-     * @return the Key object itself.
+     * The key properties
      */
-    @Override
-    public Key setNotBefore(OffsetDateTime notBefore) {
-        super.setNotBefore(notBefore);
-        return this;
+    final KeyProperties properties;
+
+    /**
+     * Get the key identifier.
+     *
+     * @return the key identifier.
+     */
+    public String getId() {
+        return properties.getId();
     }
 
     /**
-     * Set the {@link OffsetDateTime expires} UTC time.
+     * Get the key name.
      *
-     * @param expires The expiry time to set for the key.
-     * @return the Key object itself.
+     * @return the key name.
      */
-    @Override
-    public Key setExpires(OffsetDateTime expires) {
-        super.setExpires(expires);
-        return this;
+    public String getName() {
+        return properties.getName();
     }
 
     /**
-     * Set the tags to be associated with the key.
-     *
-     * @param tags The tags to set
-     * @return the Key object itself.
+     * Get the key properties
+     * @return the Key properties
      */
-    public Key setTags(Map<String, String> tags) {
-        super.setTags(tags);
-        return this;
+    public KeyProperties getProperties() {
+        return this.properties;
     }
 
     /**
@@ -63,6 +66,17 @@ public class Key extends KeyBase {
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
-        keyMaterial = createKeyMaterialFromJson(key);
+        keyMaterial = properties.createKeyMaterialFromJson(key);
+    }
+
+    @JsonProperty(value = "kid")
+    private void unpackKid(String kid) {
+        properties.unpackId(kid);
+    }
+
+    @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
+    private void unpackAttributes(Map<String, Object> attributes) {
+        properties.unpackAttributes(attributes);
     }
 }

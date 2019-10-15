@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 /**

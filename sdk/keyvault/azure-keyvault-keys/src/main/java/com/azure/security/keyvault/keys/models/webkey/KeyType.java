@@ -3,57 +3,57 @@
 
 package com.azure.security.keyvault.keys.models.webkey;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
+
 
 /**
  * Defines values for KeyType.
  */
-public enum KeyType {
-     EC("EC"),
-
-     EC_HSM("EC-HSM"),
-
-     RSA("RSA"),
-
-     RSA_HSM("RSA-HSM"),
-
-     OCT("oct");
-
-    private String value;
+public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /**
-     * Creates a custom value for KeyType.
-     * @param value The custom value
+     * Static value Encrypt for KeyType.
      */
-    KeyType(String value) {
-        this.value = value;
-    }
+    public static final KeyType EC = fromString("EC");
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
+    /**
+     * Static value Decrypt for KeyType.
+     */
+    public static final KeyType EC_HSM = fromString("EC-HSM");
+
+    /**
+     * Static value Sign for KeyType.
+     */
+    public static final KeyType RSA = fromString("RSA");
+
+    /**
+     * Static value Verify for KeyType.
+     */
+    public static final KeyType RSA_HSM = fromString("RSA-HSM");
+
+    /**
+     * Static value Wrap Key for KeyType.
+     */
+    public static final KeyType OCT = fromString("oct");
+
+    /**
+     * Creates or finds a KeyType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding KeyType.
+     */
+    @JsonCreator
+    public static KeyType fromString(String name) {
+        return fromString(name, KeyType.class);
     }
 
     /**
-     * Calculates the hashcode of this {@link KeyType} value
-     * @return the hashcode for {@link KeyType} value
+     * @return known KeyType values.
      */
-    public int hashValue() {
-        return value.hashCode();
-    }
-
-    /**
-     * Return the KeyType which maps to {@code value}
-     * @param value The value whose equivalent KeyType is needed.
-     * @return the KeyType.
-     */
-    public static KeyType fromString(String value) {
-        for (KeyType keyType : values()) {
-            if (keyType.value.equalsIgnoreCase(value)) {
-                return keyType;
-            }
-        }
-        return null;
+    public static Collection<KeyType> values() {
+        return values(KeyType.class);
     }
 }

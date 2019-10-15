@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.util.Base64Url;
+import com.azure.core.implementation.Base64Url;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,7 +21,7 @@ class CertificateBackup {
      *
      * @return the backup blob
      */
-    byte[] value() {
+    byte[] getValue() {
         if (this.value == null) {
             return new byte[0];
         }

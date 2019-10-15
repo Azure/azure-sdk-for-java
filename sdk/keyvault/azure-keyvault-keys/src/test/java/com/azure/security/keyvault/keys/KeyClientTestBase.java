@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -78,7 +78,7 @@ public abstract class KeyClientTestBase extends TestBase {
         policies.add(new BearerTokenAuthenticationPolicy(credential, KeyAsyncClient.KEY_VAULT_SCOPE));
         policies.addAll(policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
+        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
@@ -329,10 +329,10 @@ public abstract class KeyClientTestBase extends TestBase {
      * @param actual ConfigurationSetting contained in the RestResponse body
      */
     static void assertKeyEquals(KeyCreateOptions expected, Key actual) {
-        assertEquals(expected.name(), actual.name());
-        assertEquals(expected.keyType(), actual.getKeyMaterial().getKty());
-        assertEquals(expected.expires(), actual.expires());
-        assertEquals(expected.notBefore(), actual.notBefore());
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getKeyType(), actual.getKeyMaterial().getKty());
+        assertEquals(expected.getExpires(), actual.getProperties().getExpires());
+        assertEquals(expected.getNotBefore(), actual.getProperties().getNotBefore());
     }
 
     public String getEndpoint() {

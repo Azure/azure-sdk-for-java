@@ -7,12 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 final class JavaDocCodeSnippetsHelpers {
-    static ContainerAsyncClient getContainerAsyncClient() {
-        return new ContainerClientBuilder().buildAsyncClient();
+    static BlobContainerAsyncClient getContainerAsyncClient() {
+        return new BlobContainerClientBuilder().buildAsyncClient();
     }
 
-    static ContainerClient getContainerClient() {
-        return new ContainerClientBuilder().buildClient();
+    static BlobContainerClient getContainerClient() {
+        return new BlobContainerClientBuilder().buildClient();
     }
 
     static BlobAsyncClient getBlobAsyncClient(String blobName) {
@@ -21,20 +21,6 @@ final class JavaDocCodeSnippetsHelpers {
 
     static BlobClient getBlobClient(String blobName) {
         return new BlobClient(getBlobAsyncClient(blobName));
-    }
-
-    static PageBlobClient getPageBlobClient(String blobName, String containerName) {
-        return new BlobClientBuilder()
-            .blobName(blobName)
-            .containerName(containerName)
-            .buildPageBlobClient();
-    }
-
-    static PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String containerName) {
-        return new BlobClientBuilder()
-            .blobName(blobName)
-            .containerName(containerName)
-            .buildPageBlobAsyncClient();
     }
 
     static BlobServiceAsyncClient getBlobServiceAsyncClient() {

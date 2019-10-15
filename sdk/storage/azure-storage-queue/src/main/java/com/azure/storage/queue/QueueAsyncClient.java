@@ -2,48 +2,39 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.models.MessageIdUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessageIdsUpdateResponse;
+import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
-import com.azure.storage.queue.models.MessageIdUpdateHeaders;
-import com.azure.storage.queue.models.MessageIdsUpdateResponse;
 import com.azure.storage.queue.models.PeekedMessage;
-import com.azure.storage.queue.models.QueueGetPropertiesHeaders;
-import com.azure.storage.queue.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.models.QueueProperties;
-import com.azure.storage.queue.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.UpdatedMessage;
-import reactor.core.publisher.Mono;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.queue.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -59,13 +50,12 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
  * @see QueueClientBuilder
  * @see QueueClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueAsyncClient {
-    private final ClientLogger logger = new ClientLogger(QueueAsyncClient.class);
     private final AzureQueueStorageImpl client;
     private final String queueName;
+    private final String accountName;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -74,23 +64,18 @@ public final class QueueAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
      */
-    QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
-        Objects.requireNonNull(queueName);
+    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
+        this.accountName = accountName;
     }
 
     /**
      * @return the URL of the storage queue
-     * @throws RuntimeException If the queue is using a malformed URL.
      */
-    public URL getQueueUrl() {
-        try {
-            return new URL(client.getUrl());
-        } catch (MalformedURLException ex) {
-            logger.error("Queue URL is malformed");
-            throw logger.logExceptionAsError(new RuntimeException("Queue URL is malformed"));
-        }
+    public String getQueueUrl() {
+        return String.format("%s/%s", client.getUrl(), queueName);
     }
 
     /**
@@ -134,8 +119,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
-        return postProcessResponse(client.queues()
-            .createWithRestResponseAsync(queueName, null, metadata, null, context))
+        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -178,7 +162,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return postProcessResponse(client.queues().deleteWithRestResponseAsync(queueName, context))
+        return client.queues().deleteWithRestResponseAsync(queueName, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -223,7 +207,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
-        return postProcessResponse(client.queues().getPropertiesWithRestResponseAsync(queueName, context))
+        return client.queues().getPropertiesWithRestResponseAsync(queueName, context)
             .map(this::getQueuePropertiesResponse);
     }
 
@@ -280,8 +264,8 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return postProcessResponse(client.queues()
-            .setMetadataWithRestResponseAsync(queueName, null, metadata, null, context))
+        return client.queues()
+            .setMetadataWithRestResponseAsync(queueName, null, metadata, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -302,8 +286,8 @@ public final class QueueAsyncClient {
      */
     public PagedFlux<SignedIdentifier> getAccessPolicy() {
         Function<String, Mono<PagedResponse<SignedIdentifier>>> retriever =
-            marker -> postProcessResponse(this.client.queues()
-                .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE))
+            marker -> this.client.queues()
+                .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -376,8 +360,8 @@ public final class QueueAsyncClient {
             }
         }
 
-        return postProcessResponse(client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissions, null, null, context))
+        return client.queues()
+            .setAccessPolicyWithRestResponseAsync(queueName, permissions, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -420,7 +404,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
-        return postProcessResponse(client.messages().clearWithRestResponseAsync(queueName, context))
+        return client.messages().clearWithRestResponseAsync(queueName, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -485,9 +469,9 @@ public final class QueueAsyncClient {
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
         QueueMessage message = new QueueMessage().setMessageText(messageText);
 
-        return postProcessResponse(client.messages()
+        return client.messages()
             .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
-                null, null, context))
+                null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
     }
 
@@ -569,7 +553,7 @@ public final class QueueAsyncClient {
         Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Function<String, Mono<PagedResponse<DequeuedMessage>>> retriever =
-            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
+            marker -> Utility.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -577,7 +561,7 @@ public final class QueueAsyncClient {
                     response.getHeaders(),
                     response.getValue(),
                     null,
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -631,14 +615,14 @@ public final class QueueAsyncClient {
 
     PagedFlux<PeekedMessage> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<PeekedMessage>>> retriever =
-            marker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.messages()
+            marker -> Utility.applyOptionalTimeout(this.client.messages()
                 .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue(),
                     null,
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
@@ -702,9 +686,8 @@ public final class QueueAsyncClient {
     Mono<Response<UpdatedMessage>> updateMessageWithResponse(String messageText, String messageId, String popReceipt,
         Duration visibilityTimeout, Context context) {
         QueueMessage message = new QueueMessage().setMessageText(messageText);
-        return postProcessResponse(client.messageIds()
-            .updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
-                (int) visibilityTimeout.getSeconds(), context))
+        return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
+                (int) visibilityTimeout.getSeconds(), context)
             .map(this::getUpdatedMessageResponse);
     }
 
@@ -751,73 +734,8 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
-        return postProcessResponse(client.messageIds()
-            .deleteWithRestResponseAsync(queueName, messageId, popReceipt, context))
+        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt, context)
             .map(response -> new SimpleResponse<>(response, null));
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param permissions The {@code QueueSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(QueueSASPermission permissions, OffsetDateTime expiryTime) {
-        return this.generateSAS(null, permissions, expiryTime, null /* startTime */,   /* identifier */ null /*
-        version */, null /* sasProtocol */, null /* ipRange */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier) {
-        return this.generateSAS(identifier, null  /* permissions */, null /* expiryTime */, null /* startTime */,
-            null /* version */, null /* sasProtocol */, null /* ipRange */);
-    }
-
-    /**
-     * Generates a SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.generateSAS#String-QueueSASPermission-OffsetDateTime-OffsetDateTime-String-SASProtocol-IPRange}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-service-sas">Azure Docs</a>.</p>
-     *
-     * @param identifier The {@code String} name of the access policy on the queue this SAS references if any
-     * @param permissions The {@code QueueSASPermission} permission for the SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
-     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
-     * @param version An optional {@code String} version for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateSAS(String identifier, QueueSASPermission permissions, OffsetDateTime expiryTime,
-        OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
-
-        QueueServiceSASSignatureValues queueServiceSASSignatureValues = new QueueServiceSASSignatureValues(version,
-            sasProtocol, startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange,
-            identifier);
-
-        SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.client.getHttpPipeline());
-
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        // Set canonical name
-        QueueServiceSASSignatureValues values = queueServiceSASSignatureValues
-            .setCanonicalName(this.queueName, sharedKeyCredential.getAccountName());
-
-        QueueServiceSASQueryParameters queueServiceSasQueryParameters = values
-            .generateSASQueryParameters(sharedKeyCredential);
-
-        return queueServiceSasQueryParameters.encode();
     }
 
     /**
@@ -831,6 +749,16 @@ public final class QueueAsyncClient {
      */
     public String getQueueName() {
         return queueName;
+    }
+
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.accountName;
     }
 
     /*

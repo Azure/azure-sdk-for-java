@@ -35,6 +35,11 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.EC;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.EC_HSM;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.RSA;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.RSA_HSM;
+import static com.azure.security.keyvault.keys.models.webkey.KeyType.OCT;
 
 /**
  * The CryptographyAsyncClient provides asynchronous methods to perform cryptographic operations using asymmetric and
@@ -47,9 +52,9 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
-public final class CryptographyAsyncClient {
+public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    private JsonWebKey key;
+    JsonWebKey key;
     private final CryptographyService service;
     private final CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
@@ -101,21 +106,15 @@ public final class CryptographyAsyncClient {
         if (localKeyCryptographyClient != null) {
             return;
         }
-        switch (key.getKty()) {
-            case RSA:
-            case RSA_HSM:
-                localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
-                break;
-            case EC:
-            case EC_HSM:
-                localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
-                break;
-            case OCT:
-                localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "The Json Web Key Type: %s is not supported.", key.getKty().toString())));
+        if (key.getKty().equals(RSA) || key.getKty().equals(RSA_HSM)) {
+            localKeyCryptographyClient = new RsaKeyCryptographyClient(key, cryptographyServiceClient);
+        } else if (key.getKty().equals(EC) || key.getKty().equals(EC_HSM)) {
+            localKeyCryptographyClient = new EcKeyCryptographyClient(key, cryptographyServiceClient);
+        } else if (key.getKty().equals(OCT)) {
+            localKeyCryptographyClient = new SymmetricKeyCryptographyClient(key, cryptographyServiceClient);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The Json Web Key Type: %s is not supported.", key.getKty().toString())));
         }
     }
 

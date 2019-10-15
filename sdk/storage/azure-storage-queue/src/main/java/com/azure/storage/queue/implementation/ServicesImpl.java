@@ -4,8 +4,6 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.implementation.CollectionFormat;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -18,14 +16,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.CollectionFormat;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
-import com.azure.storage.queue.models.ListQueuesIncludeType;
-import com.azure.storage.queue.models.ServicesGetPropertiesResponse;
-import com.azure.storage.queue.models.ServicesGetStatisticsResponse;
-import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
-import com.azure.storage.queue.models.ServicesSetPropertiesResponse;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
+import com.azure.storage.queue.implementation.models.ServicesGetPropertiesResponse;
+import com.azure.storage.queue.implementation.models.ServicesGetStatisticsResponse;
+import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentResponse;
+import com.azure.storage.queue.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -64,22 +64,22 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") StorageServiceProperties storageServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<ServicesListQueuesSegmentResponse> listQueuesSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 

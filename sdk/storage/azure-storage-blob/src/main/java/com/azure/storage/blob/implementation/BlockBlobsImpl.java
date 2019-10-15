@@ -4,8 +4,6 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.implementation.DateTimeRfc1123;
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -19,15 +17,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AccessTierOptional;
+import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsGetBlockListResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse;
+import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobsGetBlockListResponse;
-import com.azure.storage.blob.models.BlockBlobsStageBlockFromURLResponse;
-import com.azure.storage.blob.models.BlockBlobsStageBlockResponse;
-import com.azure.storage.blob.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
@@ -35,7 +35,7 @@ import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.StorageException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -77,27 +77,27 @@ public final class BlockBlobsImpl {
     private interface BlockBlobsService {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        @UnexpectedResponseExceptionType(StorageException.class)
+        Mono<BlockBlobsUploadResponse> upload(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlockBlobsStageBlockResponse> stageBlock(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTierOptional tier, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        @UnexpectedResponseExceptionType(StorageException.class)
+        Mono<BlockBlobsCommitBlockListResponse> commitBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @BodyParam("application/xml; charset=utf-8") BlockLookupList blocks, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlockBlobsGetBlockListResponse> getBlockList(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("blocklisttype") BlockListType listType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
     }
 
@@ -116,7 +116,7 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final AccessTierOptional tier = null;
+        final AccessTier tier = null;
         final String requestId = null;
         final String blobType = "BlockBlob";
         final String blobContentType = null;
@@ -156,7 +156,7 @@ public final class BlockBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, Map<String, String> metadata, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsUploadResponse> uploadWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Integer timeout, Map<String, String> metadata, AccessTier tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String blobType = "BlockBlob";
         String blobContentType = null;
         if (blobHTTPHeaders != null) {
@@ -395,7 +395,7 @@ public final class BlockBlobsImpl {
     public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        final AccessTierOptional tier = null;
+        final AccessTier tier = null;
         final String requestId = null;
         final String comp = "blocklist";
         final String blobCacheControl = null;
@@ -438,7 +438,7 @@ public final class BlockBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, AccessTierOptional tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithRestResponseAsync(String containerName, String blob, BlockLookupList blocks, Integer timeout, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Map<String, String> metadata, AccessTier tier, String requestId, BlobHTTPHeaders blobHTTPHeaders, LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String comp = "blocklist";
         String blobCacheControl = null;
         if (blobHTTPHeaders != null) {

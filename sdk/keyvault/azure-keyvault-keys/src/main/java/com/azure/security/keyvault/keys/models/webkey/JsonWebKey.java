@@ -37,7 +37,6 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -983,7 +982,7 @@ public class JsonWebKey {
 
         if (keyOps != null) {
             final Set<KeyOperation> set =
-                new HashSet<KeyOperation>(Collections.unmodifiableList(Arrays.asList(KeyOperation.values())));
+                new HashSet<KeyOperation>(KeyOperation.values());
             for (int i = 0; i < keyOps.size(); i++) {
                 if (!set.contains(keyOps.get(i))) {
                     return false;

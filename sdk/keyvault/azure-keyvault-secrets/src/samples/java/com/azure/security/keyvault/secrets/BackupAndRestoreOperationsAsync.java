@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +39,8 @@ public class BackupAndRestoreOperationsAsync {
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
-            .setExpires(OffsetDateTime.now().plusYears(1)))
+            .setProperties(new SecretProperties()
+            .setExpires(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s %n", secretResponse.getName(), secretResponse.getValue()));
 

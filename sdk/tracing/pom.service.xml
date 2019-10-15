@@ -10,6 +10,14 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>../core/azure-core</module>
-    <module>tracing-opentelemetry</module>
+    <module>../core/azure-core-amqp</module>
+    <module>../core/azure-core-test</module>
+    <module>../core/azure-core-http-netty</module>
+    <module>../identity/azure-identity</module>
+    <module>../storage/azure-storage-queue</module>
+    <module>../storage/azure-storage-common</module>
+    <module>../eventhubs/azure-messaging-eventhubs</module>
+    <module>../keyvault/azure-keyvault-secrets</module>
+    <module>azure-core-tracing-opencensus</module>
   </modules>
 </project>

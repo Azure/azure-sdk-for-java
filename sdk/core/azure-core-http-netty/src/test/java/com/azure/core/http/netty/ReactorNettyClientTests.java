@@ -80,11 +80,14 @@ public class ReactorNettyClientTests {
         HttpResponse response = getResponse("/short");
         // Subscription:1
         response.getBodyAsByteArray().block();
+
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
-                .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
-                .verifyError(IllegalStateException.class);
-
+                .expectNextCount(0)
+                // Reactor netty 0.9.0.RELEASE behavior changed - second subscription returns onComplete() instead
+                // of throwing an error
+                //.verifyError(IllegalStateException.class);
+                .verifyComplete();
     }
 
     @Test

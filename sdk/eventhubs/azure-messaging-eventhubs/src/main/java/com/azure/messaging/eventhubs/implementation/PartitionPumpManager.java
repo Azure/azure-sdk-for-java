@@ -3,14 +3,14 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT;
-
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.implementation.tracing.ProcessKind;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
@@ -126,8 +126,8 @@ public class PartitionPumpManager {
         eventHubConsumer.receive().subscribe(eventData -> {
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
-                if (processSpanContext.getData(SPAN_CONTEXT).isPresent()) {
-                    eventData.addContext(SPAN_CONTEXT, processSpanContext);
+                if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                    eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
                 }
                 partitionProcessor.processEvent(partitionContext, eventData).doOnEach(signal ->
                     endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
@@ -198,13 +198,13 @@ public class PartitionPumpManager {
      * Ends the process tracing span and the scope of that span.
      */
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
-        Optional<Object> spanScope = processSpanContext.getData("scope");
+        Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
         // Disposes of the scope when the trace span closes.
         if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
             return;
         }
         if (spanScope.get() instanceof Closeable) {
-            Closeable close = (Closeable) processSpanContext.getData("scope").get();
+            Closeable close = (Closeable) processSpanContext.getData(SCOPE_KEY).get();
             try {
                 close.close();
                 tracerProvider.endSpan(processSpanContext, signal);

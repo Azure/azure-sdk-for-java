@@ -3,9 +3,10 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -38,8 +39,8 @@ public class UsernamePasswordCredential implements TokenCredential {
      */
     UsernamePasswordCredential(String clientId, String tenantId, String username, String password,
                                IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(username);
-        Objects.requireNonNull(password);
+        Objects.requireNonNull(username, "'username' cannot be null.");
+        Objects.requireNonNull(password, "'password' cannot be null.");
         this.username = username;
         this.password = password;
         if (tenantId == null) {
@@ -55,15 +56,15 @@ public class UsernamePasswordCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(String... scopes) {
+    public Mono<AccessToken> getToken(TokenRequest request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(scopes, cachedToken.get())
+                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(scopes, username, password)))
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

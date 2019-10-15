@@ -33,6 +33,9 @@ generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
+models-subpackage: implementation.models
+custom-types: AccessPolicy,AccessTier,AccountKind,AppendPositionAccessConditions,ArchiveStatus,BlobDownloadHeaders,BlobHTTPHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,CorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseAccessConditions,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,Logging,Metrics,ModifiedAccessConditions,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,RetentionPolicy,SequenceNumberAccessConditions,SequenceNumberActionType,SignedIdentifier,SkuName,SourceModifiedAccessConditions,StaticWebsite,StorageError,StorageErrorCode,StorageErrorException,StorageServiceStats,SyncCopyStatusType,UserDelegationKey
+custom-types-subpackage: models
 ```
 
 ### /{containerName}?restype=container
@@ -723,19 +726,6 @@ directive:
     }
 ```
 
-### ListContainersSegmentResponse
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ListContainersSegmentResponse
-  transform: >
-    if (!$.required.includes("Prefix")) {
-      $.required.push("Prefix");
-      $.required.push("MaxResults");
-      $.required.push("NextMarker");
-    }
-```
-
 ### SignedIdentifier
 ``` yaml
 directive:
@@ -760,20 +750,6 @@ directive:
     if ($["x-ms-parameter-location"]) {
       delete $["x-ms-parameter-location"];
     }
-```
-
-### Make AccessTier Unique
-autorest.python complains that the same enum has different values
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.AccessTierRequired
-  transform: >
-    $["x-ms-enum"].name = "AccessTierRequired";
-- from: swagger-document
-  where: $.parameters.AccessTierOptional
-  transform: >
-    $["x-ms-enum"].name = "AccessTierOptional";
 ```
 
 ### Extra parameters
@@ -932,4 +908,195 @@ directive:
         "description": "The SHA-256 hash of the encryption key used to encrypt the pages. This header is only returned when the pages were encrypted with a customer-provided key."
       };
     }
+```
+
+### Batch returns a 202
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=batch"].post.responses
+  transform: >
+    const response = $["200"];
+    if (response) {
+        delete $["200"];
+        $["202"] = response;
+    }
+```
+
+### Rename ListContainersIncludeType to ListBlobContainersIncludeType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.ListContainersInclude
+  transform: >
+    $["x-ms-enum"].name = "ListBlobContainersIncludeType";
+```
+
+### /?restype=service&comp=properties
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobServiceProperties) {
+        $.BlobServiceProperties = $.StorageServiceProperties;
+        delete $.StorageServiceProperties;
+        $.BlobServiceProperties.xml = { "name": "StorageServiceProperties" };
+    }
+    if (!$.BlobContainerItemProperties) {
+        $.BlobContainerItemProperties = $.ContainerProperties;
+        delete $.ContainerProperties;
+        //
+        const etag = $.BlobContainerItemProperties.properties.Etag;
+        if (etag && !etag["x-ms-client-name"]) {
+            etag["x-ms-client-name"] = "eTag";
+            $.BlobContainerItemProperties.properties.Etag = etag;
+        }
+    }
+    if (!$.BlobContainerItem) {
+        $.BlobContainerItem = $.ContainerItem;
+        const path = $.BlobContainerItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobContainerItemProperties");
+        $.BlobContainerItem.properties.Properties.$ref = path;
+        delete $.ContainerItem;
+    }
+    if (!$.BlobItemProperties) {
+        $.BlobItemProperties = $.BlobProperties;
+        delete $.BlobProperties;
+        //
+        const etag = $.BlobItemProperties.properties.Etag;
+        if (etag && !etag["x-ms-client-name"]) {
+            etag["x-ms-client-name"] = "eTag";
+            $.BlobItemProperties.properties.Etag = etag;
+        }
+    }
+    if (!$.BlobItem) {
+        const path = $.BlobItem.properties.Properties.$ref.replace(/[#].*$/, "#/definitions/BlobItemProperties");
+        $.BlobItem.properties.Properties.$ref = path;
+    }
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    if (!$.BlobServiceProperties) {
+        const props = $.BlobServiceProperties = $.StorageServiceProperties;
+        props.name = "BlobServiceProperties";
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/BlobServiceProperties") };
+        delete $.StorageServiceProperties;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
+  transform: >
+    const param = $.put.parameters[0];
+    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/BlobServiceProperties");
+        $.put.parameters[0] = { "$ref": path };
+    }
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/BlobServiceProperties");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+```
+
+### /?comp=list
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.BlobContainersSegment) {
+        $.BlobContainersSegment = $.ListContainersSegmentResponse;
+        delete $.ListContainersSegmentResponse;
+        $.BlobContainersSegment["x-az-public"] = false;
+        $.BlobContainersSegment.required.push("NextMarker");
+        $.BlobContainersSegment.properties.BlobContainerItems = $.BlobContainersSegment.properties.ContainerItems;
+        delete $.BlobContainersSegment.properties.ContainerItems;
+        const path = $.BlobContainersSegment.properties.BlobContainerItems.items.$ref.replace(/[#].*$/, "#/definitions/BlobContainerItem");
+        $.BlobContainersSegment.properties.BlobContainerItems.items.$ref = path;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"]
+  transform: >
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && !def["$ref"].endsWith("BlobContainersSegment")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/BlobContainersSegment");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+    $.get.operationId = "Service_ListBlobContainersSegment";
+```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: ContainersImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: BlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: AppendBlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: BlockBlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: PageBlobsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.blob.models.StorageErrorException",
+        "com.azure.storage.blob.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
 ```

@@ -5,10 +5,10 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.EcKeyOptions;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.webkey.KeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.webkey.CertificateKeyType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,19 +38,19 @@ public class HelloWorldAsync {
         // Let's create a self signed certificate valid for 1 year. if the certificate
         //   already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-            .subjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
-            .keyOptions(new EcKeyOptions()
-                .reuseKey(true)
-                .curve(KeyCurveName.P_256));
+            .setSubjectAlternativeNames(SubjectAlternativeNames.fromEmails(Arrays.asList("wow@gmail.com")))
+            .setReuseKey(true)
+            .setKeyType(CertificateKeyType.EC)
+            .setKeyCurveName(CertificateKeyCurveName.P_256);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.createCertificate("certificateName", policy, tags)
+        certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
-                System.out.println(pollResponse.getValue().status());
-                System.out.println(pollResponse.getValue().statusDetails());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
             });
 
         Thread.sleep(22000);
@@ -58,8 +58,8 @@ public class HelloWorldAsync {
         // Let's Get the latest version of the certificate from the key vault.
         certificateAsyncClient.getCertificateWithPolicy("certificateName")
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.name(),
-                    certificateResponse.secretId()));
+                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
+                    certificateResponse.getSecretId()));
 
         // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
         // The update method can be used to update the enabled status of the certificate.
@@ -67,40 +67,40 @@ public class HelloWorldAsync {
             .subscribe(certificateResponseValue -> {
                 Certificate certificate = certificateResponseValue;
                 //Update enabled status of the certificate
-                certificate.enabled(false);
-                certificateAsyncClient.updateCertificate(certificate)
+                certificate.getProperties().setEnabled(false);
+                certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
                     .subscribe(certificateResponse ->
                         System.out.printf("Certificate's enabled status %s %n",
-                            certificateResponse.enabled().toString()));
+                            certificateResponse.getProperties().isEnabled().toString()));
             });
 
         Thread.sleep(3000);
 
 
         //Let's create a certificate issuer.
-        certificateAsyncClient.createCertificateIssuer("myIssuer", "Test")
+        certificateAsyncClient.createIssuer("myIssuer", "Test")
             .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.name(), issuer.provider());
+                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
             });
 
         Thread.sleep(2000);
 
 
         // Let's fetch the issuer we just created from the key vault.
-        certificateAsyncClient.getCertificateIssuer("myIssuer")
+        certificateAsyncClient.getIssuer("myIssuer")
             .subscribe(issuer -> {
-                System.out.printf("Issuer returned with %s and %s", issuer.name(), issuer.provider());
+                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProperties().getProvider());
             });
 
         Thread.sleep(2000);
 
         //Let's create a certificate signed by our issuer.
-        certificateAsyncClient.createCertificate("myCertificate", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), tags)
+        certificateAsyncClient.beginCreateCertificate("myCertificate", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
             .getObserver().subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
-                System.out.println(pollResponse.getValue().status());
-                System.out.println(pollResponse.getValue().statusDetails());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
             });
 
         Thread.sleep(22000);
@@ -108,24 +108,24 @@ public class HelloWorldAsync {
         // Let's Get the latest version of our certificate from the key vault.
         certificateAsyncClient.getCertificateWithPolicy("myCertificate")
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.name(),
-                    certificateResponse.secretId()));
+                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
+                    certificateResponse.getSecretId()));
 
         Thread.sleep(2000);
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
         certificateAsyncClient.deleteCertificate("certificateName")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
 
         certificateAsyncClient.deleteCertificate("myCertificate")
             .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.recoveryId()));
+                System.out.printf("Deleted Certificate's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
 
 
-        certificateAsyncClient.deleteCertificateIssuerWithResponse("myIssuer")
+        certificateAsyncClient.deleteIssuerWithResponse("myIssuer")
             .subscribe(deletedIssuerResponse ->
-                System.out.printf("Deleted issuer with name %s %n", deletedIssuerResponse.getValue().name()));
+                System.out.printf("Deleted issuer with name %s %n", deletedIssuerResponse.getValue().getName()));
 
         // To ensure certificate is deleted on server side.
         Thread.sleep(50000);
@@ -140,6 +140,5 @@ public class HelloWorldAsync {
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
         Thread.sleep(4000);
-
     }
 }

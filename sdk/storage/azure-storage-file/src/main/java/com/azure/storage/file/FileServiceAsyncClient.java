@@ -3,46 +3,34 @@
 
 package com.azure.storage.file;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.AccountSASSignatureValues;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.models.CorsRule;
-import com.azure.storage.file.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.StorageException;
-import reactor.core.publisher.Mono;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.file.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -58,36 +46,30 @@ import static com.azure.storage.file.PostProcessor.postProcessResponse;
  * @see FileServiceClientBuilder
  * @see FileServiceClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileServiceClientBuilder.class, isAsync = true)
 public final class FileServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(FileServiceAsyncClient.class);
     private final AzureFileStorageImpl azureFileStorageClient;
+    private final String accountName;
 
     /**
      * Creates a FileServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
      *
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
-    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage) {
+    FileServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName) {
         this.azureFileStorageClient = azureFileStorage;
+        this.accountName = accountName;
     }
 
     /**
      * Get the url of the storage file service client.
      *
      * @return the url of the Storage File service.
-     * @throws RuntimeException If the file service is using a malformed URL.
      */
-    public URL getFileServiceUrl() {
-        try {
-            return new URL(azureFileStorageClient.getUrl());
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                azureFileStorageClient.getUrl()), e));
-        }
+    public String getFileServiceUrl() {
+        return azureFileStorageClient.getUrl();
     }
 
     /**
@@ -116,7 +98,7 @@ public final class FileServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot);
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName);
     }
 
     /**
@@ -183,29 +165,29 @@ public final class FileServiceAsyncClient {
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout,
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
             if (options.isIncludeMetadata()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.METADATA.toString()));
+                include.add(ListSharesIncludeType.METADATA);
             }
 
             if (options.isIncludeSnapshots()) {
-                include.add(ListSharesIncludeType.fromString(ListSharesIncludeType.SNAPSHOTS.toString()));
+                include.add(ListSharesIncludeType.SNAPSHOTS);
             }
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include, null, context),
+            nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
                 timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().getShareItems(),
                     response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
@@ -250,7 +232,7 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
-        return postProcessResponse(azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context))
+        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -333,8 +315,7 @@ public final class FileServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
-        return postProcessResponse(azureFileStorageClient.services()
-            .setPropertiesWithRestResponseAsync(properties, context))
+        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -391,10 +372,10 @@ public final class FileServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB, Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null);
+        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null, accountName);
 
-        return postProcessResponse(shareAsyncClient.createWithResponse(metadata, quotaInGB, context))
-            .map(response -> new SimpleResponse<>(response, shareAsyncClient));
+        return shareAsyncClient.createWithResponse(metadata, quotaInGB, context).map(response ->
+            new SimpleResponse<>(response, shareAsyncClient));
     }
 
     /**
@@ -442,58 +423,19 @@ public final class FileServiceAsyncClient {
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
         DeleteSnapshotsOptionType deleteSnapshots = null;
         if (ImplUtils.isNullOrEmpty(snapshot)) {
-            deleteSnapshots = DeleteSnapshotsOptionType.fromString(DeleteSnapshotsOptionType.INCLUDE.toString());
+            deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
-        return postProcessResponse(azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context))
+        return azureFileStorageClient.shares()
+            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
-     * Generates an account SAS token with the specified parameters
+     * Get associated account name.
      *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
+     * @return account name associated with this storage resource.
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
-            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
-    }
-
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.FileServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
-     *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        IPRange ipRange, SASProtocol sasProtocol) {
-
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureFileStorageClient
-            .getHttpPipeline());
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
-            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
-
+    public String getAccountName() {
+        return this.accountName;
     }
 }

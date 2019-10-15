@@ -4,7 +4,6 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.implementation.RestProxy;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -20,25 +19,27 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.Base64Util;
 import com.azure.core.util.Context;
+import com.azure.storage.file.implementation.models.FileRangeWriteType;
+import com.azure.storage.file.implementation.models.FilesAbortCopyResponse;
+import com.azure.storage.file.implementation.models.FilesCreateResponse;
+import com.azure.storage.file.implementation.models.FilesDeleteResponse;
+import com.azure.storage.file.implementation.models.FilesDownloadResponse;
+import com.azure.storage.file.implementation.models.FilesForceCloseHandlesResponse;
+import com.azure.storage.file.implementation.models.FilesGetPropertiesResponse;
+import com.azure.storage.file.implementation.models.FilesGetRangeListResponse;
+import com.azure.storage.file.implementation.models.FilesListHandlesResponse;
+import com.azure.storage.file.implementation.models.FilesSetHTTPHeadersResponse;
+import com.azure.storage.file.implementation.models.FilesSetMetadataResponse;
+import com.azure.storage.file.implementation.models.FilesStartCopyResponse;
+import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLResponse;
+import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.FileHTTPHeaders;
-import com.azure.storage.file.models.FileRangeWriteType;
-import com.azure.storage.file.models.FilesAbortCopyResponse;
-import com.azure.storage.file.models.FilesCreateResponse;
-import com.azure.storage.file.models.FilesDeleteResponse;
-import com.azure.storage.file.models.FilesDownloadResponse;
-import com.azure.storage.file.models.FilesForceCloseHandlesResponse;
-import com.azure.storage.file.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.models.FilesGetRangeListResponse;
-import com.azure.storage.file.models.FilesListHandlesResponse;
-import com.azure.storage.file.models.FilesSetHTTPHeadersResponse;
-import com.azure.storage.file.models.FilesSetMetadataResponse;
-import com.azure.storage.file.models.FilesStartCopyResponse;
-import com.azure.storage.file.models.FilesUploadRangeFromURLResponse;
-import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.models.StorageErrorException;
+import com.azure.storage.file.models.StorageException;
+
 import java.nio.ByteBuffer;
 import java.util.Map;
 import reactor.core.publisher.Flux;
@@ -78,12 +79,12 @@ public final class FilesImpl {
     private interface FilesService {
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesCreateResponse> create(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength, @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesDownloadResponse> download(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, Context context);
 
         @Head("{shareName}/{filePath}")
@@ -92,52 +93,52 @@ public final class FilesImpl {
 
         @Delete("{shareName}/{filePath}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesDeleteResponse> delete(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") Long fileContentLength, @HeaderParam("x-ms-file-permission") String filePermission, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @HeaderParam("x-ms-file-attributes") String fileAttributes, @HeaderParam("x-ms-file-creation-time") String fileCreationTime, @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime, @QueryParam("comp") String comp, @HeaderParam("x-ms-content-type") String fileContentType, @HeaderParam("x-ms-content-encoding") String fileContentEncoding, @HeaderParam("x-ms-content-language") String fileContentLanguage, @HeaderParam("x-ms-cache-control") String fileCacheControl, @HeaderParam("x-ms-content-md5") String fileContentMD5, @HeaderParam("x-ms-content-disposition") String fileContentDisposition, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesUploadRangeResponse> uploadRange(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") FileRangeWriteType fileRangeWrite, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String contentMD5, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-source-content-crc64") String sourceContentCrc64, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, @HeaderParam("x-ms-source-if-match-crc64") String sourceIfMatchCrc64, @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64, Context context);
 
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesStartCopyResponse> startCopy(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-copy-source") String copySource, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesAbortCopyResponse> abortCopy(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesListHandlesResponse> listHandles(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<FilesForceCloseHandlesResponse> forceCloseHandles(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
     }
 

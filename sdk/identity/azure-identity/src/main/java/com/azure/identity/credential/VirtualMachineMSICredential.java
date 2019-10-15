@@ -3,8 +3,9 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credentials.AccessToken;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.credential.TokenRequest;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
 
@@ -36,10 +37,10 @@ class VirtualMachineMSICredential {
 
     /**
      * Gets the token for a list of scopes.
-     * @param scopes the scopes to get token for
+     * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.authenticateToIMDSEndpoint(scopes);
+    public Mono<AccessToken> authenticate(TokenRequest request) {
+        return identityClient.authenticateToIMDSEndpoint(request);
     }
 }

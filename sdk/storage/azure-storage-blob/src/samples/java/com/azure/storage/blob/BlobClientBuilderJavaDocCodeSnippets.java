@@ -31,48 +31,48 @@ public class BlobClientBuilderJavaDocCodeSnippets {
         .build();
 
     /**
-     * Code snippet for {@link BlobClientBuilder#buildBlobClient()} using connection string
+     * Code snippet for {@link BlobClientBuilder#buildClient()} using connection string
      */
     public void blobClientConnectionString() {
-        // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildBlobClient
+        // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildClient
         BlobClient client = new BlobClientBuilder()
             .connectionString(connectionString)
-            .buildBlobClient();
-        // END: com.azure.storage.blob.BlobClientBuilder.buildBlobClient
+            .buildClient();
+        // END: com.azure.storage.blob.BlobClientBuilder.buildClient
     }
 
     /**
-     * Code snippet for {@link BlobClientBuilder#buildBlobAsyncClient()} using connection string
+     * Code snippet for {@link BlobClientBuilder#buildAsyncClient()} using connection string
      */
     public void blobAsyncClientConnectionString() {
-        // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildBlobAsyncClient
+        // BEGIN: com.azure.storage.blob.BlobClientBuilder.buildAsyncClient
         BlobAsyncClient client = new BlobClientBuilder()
             .connectionString(connectionString)
-            .buildBlobAsyncClient();
-        // END: com.azure.storage.blob.BlobClientBuilder.buildBlobAsyncClient
+            .buildAsyncClient();
+        // END: com.azure.storage.blob.BlobClientBuilder.buildAsyncClient
     }
 
     /**
      * Code snippet for {@link BlobClientBuilder#endpoint(String)} using credential and endpoint
      */
     public void blobClientCredentialAndEndpoint() {
-        // BEGIN: com.azure.storage.blob.BlobClientBuilder.endpoint#String
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.Builder.endpoint#String
         BlobClient client = new BlobClientBuilder()
             .endpoint(endpoint)
             .credential(sharedKeyCredential)
-            .buildBlobClient();
-        // END: com.azure.storage.blob.BlobClientBuilder.endpoint#String
+            .buildClient();
+        // END: com.azure.storage.blob.specialized.BlobClientBase.Builder.endpoint#String
     }
 
     /**
      * Code snippet for {@link BlobClientBuilder#containerName(String)} using HttpPipeline
      */
     public void blobClientHttpPipeline() {
-        // BEGIN: com.azure.storage.blob.BlobClientBuilder.containerName#String
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String
         BlobClient client = new BlobClientBuilder()
             .endpoint(endpoint)
             .containerName(containerName)
-            .buildBlobClient();
-        // END: com.azure.storage.blob.BlobClientBuilder.containerName#String
+            .buildClient();
+        // END: com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String
     }
 }

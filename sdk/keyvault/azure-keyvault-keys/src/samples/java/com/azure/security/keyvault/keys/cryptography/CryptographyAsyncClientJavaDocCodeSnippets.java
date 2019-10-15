@@ -3,11 +3,12 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
@@ -40,7 +41,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<Your-Key-ID>")
             .credential(new DefaultAzureCredentialBuilder().build())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(new RecordNetworkCallPolicy(networkData))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
@@ -89,7 +90,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         cryptographyAsyncClient.getKeyWithResponse()
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->  System.out.printf("Key is returned with name %s and id %s \n",
-                keyResponse.getValue().name(), keyResponse.getValue().id()));
+                keyResponse.getValue().getName(), keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse
     }
 
@@ -101,7 +102,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKey
         cryptographyAsyncClient.getKey()
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
-            .subscribe(key ->  System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id()));
+            .subscribe(key ->  System.out.printf("Key is returned with name %s and id %s \n", key.getName(), key.getId()));
         // END: com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKey
     }
 

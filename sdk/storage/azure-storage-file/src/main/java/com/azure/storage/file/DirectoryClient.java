@@ -3,25 +3,23 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
-import com.azure.storage.file.models.FileRef;
+import com.azure.storage.file.models.StorageFileItem;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageException;
 import reactor.core.publisher.Mono;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
@@ -39,7 +37,6 @@ import java.util.Map;
  * @see FileClientBuilder
  * @see DirectoryClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = FileClientBuilder.class)
 public class DirectoryClient {
@@ -59,9 +56,8 @@ public class DirectoryClient {
      * Get the url of the storage directory client.
      *
      * @return the URL of the storage directory client.
-     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getDirectoryUrl() {
+    public String getDirectoryUrl() {
         return directoryAsyncClient.getDirectoryUrl();
     }
 
@@ -333,7 +329,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Lists all sub-directories and files in this directory without their prefix or maxResult.
+     * Lists all sub-directories and files in this directory without their prefix or maxResult in single page.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -345,9 +341,9 @@ public class DirectoryClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure
      * Docs</a>.</p>
      *
-     * @return {@link FileRef File info} in the storage directory
+     * @return {@link StorageFileItem File info} in the storage directory
      */
-    public PagedIterable<FileRef> listFilesAndDirectories() {
+    public PagedIterable<StorageFileItem> listFilesAndDirectories() {
         return listFilesAndDirectories(null, null, null, Context.NONE);
     }
 
@@ -367,18 +363,19 @@ public class DirectoryClient {
      *
      * @param prefix Optional prefix which filters the results to return only files and directories whose name begins
      * with.
-     * @param maxResults Optional maximum number of files and/or directories to return per page. If the request does not
-     * specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     * @param maxResultsPerPage Optional maximum number of files and/or directories to return per page.
+     * If the request does not specify maxResultsPerPage or specifies a value greater than 5,000,
+     * the server will return up to 5,000 items.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link FileRef File info} in this directory with prefix and max number of return results.
+     * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults, Duration timeout,
-        Context context) {
+    public PagedIterable<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage,
+                                                                  Duration timeout, Context context) {
         return new PagedIterable<>(directoryAsyncClient
-            .listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResults, timeout, context));
+            .listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, timeout, context));
     }
 
     /**
@@ -393,7 +390,7 @@ public class DirectoryClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
-     * @param maxResult Optional maximum number of results will return per page
+     * @param maxResultsPerPage Optional maximum number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its
      * subdirectories and their files.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -402,10 +399,10 @@ public class DirectoryClient {
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public PagedIterable<HandleItem> listHandles(Integer maxResult, boolean recursive, Duration timeout,
+    public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, boolean recursive, Duration timeout,
         Context context) {
         return new PagedIterable<>(directoryAsyncClient
-            .listHandlesWithOptionalTimeout(maxResult, recursive, timeout, context));
+            .listHandlesWithOptionalTimeout(maxResultsPerPage, recursive, timeout, context));
     }
 
     /**
@@ -684,5 +681,14 @@ public class DirectoryClient {
      */
     public String getDirectoryPath() {
         return directoryAsyncClient.getDirectoryPath();
+    }
+
+    /**
+     * Get associated account name.
+     *
+     * @return account name associated with this storage resource.
+     */
+    public String getAccountName() {
+        return this.directoryAsyncClient.getAccountName();
     }
 }

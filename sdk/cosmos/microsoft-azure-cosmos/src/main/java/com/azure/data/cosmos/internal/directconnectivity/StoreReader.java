@@ -158,13 +158,13 @@ public class StoreReader {
                                 return Flux.error(e);
                             }
                         }
-                ).onErrorResume(t -> {
-
+                ).onErrorResume(throwable -> {
+                    Throwable unwrappedException = Exceptions.unwrap(throwable);
                     try {
-                        logger.debug("Exception {} is thrown while doing readMany", t);
-                        Exception storeException = Utils.as(t, Exception.class);
+                        logger.debug("Exception {} is thrown while doing readMany", unwrappedException);
+                        Exception storeException = Utils.as(unwrappedException, Exception.class);
                         if (storeException == null) {
-                            return Flux.error(t);
+                            return Flux.error(unwrappedException);
                         }
 
 //                    Exception storeException = readTask.Exception != null ? readTask.Exception.InnerException : null;
@@ -534,12 +534,13 @@ public class StoreReader {
                     }
 
                 }
-        ).onErrorResume(t -> {
-            logger.debug("Exception {} is thrown while doing READ Primary", t);
+        ).onErrorResume(throwable -> {
+            Throwable unwrappedException = Exceptions.unwrap(throwable);
+            logger.debug("Exception {} is thrown while doing READ Primary", unwrappedException);
 
-            Exception storeTaskException = Utils.as(t, Exception.class);
+            Exception storeTaskException = Utils.as(unwrappedException, Exception.class);
             if (storeTaskException == null) {
-                return Mono.error(t);
+                return Mono.error(unwrappedException);
             }
 
             try {
@@ -721,7 +722,8 @@ public class StoreReader {
                     /* itemLSN: */ itemLSN,
                     /* sessionToken: */ sessionToken);
         } else {
-            CosmosClientException cosmosClientException = Utils.as(responseException, CosmosClientException.class);
+            Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
+            CosmosClientException cosmosClientException = Utils.as(unwrappedResponseExceptions, CosmosClientException.class);
             if (cosmosClientException != null) {
                 StoreReader.verifyCanContinueOnException(cosmosClientException);
                 long quorumAckedLSN = -1;

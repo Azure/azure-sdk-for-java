@@ -68,8 +68,8 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever,
                          Function<String, Mono<P>> nextPageRetriever) {
-        Objects.requireNonNull(firstPageRetriever, "First page supplier cannot be null");
-        Objects.requireNonNull(nextPageRetriever, "Next page retriever function cannot be null");
+        Objects.requireNonNull(firstPageRetriever, "'firstPageRetriever' cannot be null.");
+        Objects.requireNonNull(nextPageRetriever, "'nextPageRetriever' function cannot be null.");
         this.firstPageRetriever = firstPageRetriever;
         this.nextPageRetriever = nextPageRetriever;
     }
@@ -135,7 +135,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * @return A {@link Flux} of items
      */
     private Publisher<T> extractAndFetchT(PagedResponse<T> page) {
-        String nextPageLink = page.getNextLink();
+        String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getItems());
         }
@@ -149,10 +149,10 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends Flux<T> {
      * @return A {@link Flux} of {@link PagedResponse}
      */
     private Publisher<? extends P> extractAndFetchPage(P page) {
-        String nextPageLink = page.getNextLink();
+        String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.just(page);
         }
-        return Flux.just(page).concatWith(byPage(page.getNextLink()));
+        return Flux.just(page).concatWith(byPage(page.getContinuationToken()));
     }
 }

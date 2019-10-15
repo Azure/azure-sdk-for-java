@@ -7,7 +7,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
+import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class SecretClientTest extends SecretClientTestBase {
         updateSecretRunner((original, updated) -> {
             assertSecretEquals(original, client.setSecret(original));
             Secret secretToUpdate = client.getSecret(original.getName());
-            client.updateSecret(secretToUpdate.setExpires(updated.getExpires()));
+            client.updateSecretProperties(secretToUpdate.getProperties().setExpires(updated.getProperties().getExpires()));
             assertSecretEquals(updated, client.getSecret(original.getName()));
         });
     }
@@ -108,8 +108,8 @@ public class SecretClientTest extends SecretClientTestBase {
         getSecretSpecificVersionRunner((secret, secretWithNewVal) -> {
             Secret secretVersionOne = client.setSecret(secret);
             Secret secretVersionTwo = client.setSecret(secretWithNewVal);
-            assertSecretEquals(secret, client.getSecret(secretVersionOne.getName(), secretVersionOne.getVersion()));
-            assertSecretEquals(secretWithNewVal, client.getSecret(secretVersionTwo.getName(), secretVersionTwo.getVersion()));
+            assertSecretEquals(secret, client.getSecret(secretVersionOne.getName(), secretVersionOne.getProperties().getVersion()));
+            assertSecretEquals(secretWithNewVal, client.getSecret(secretVersionTwo.getName(), secretVersionTwo.getProperties().getVersion()));
         });
     }
 
@@ -179,8 +179,8 @@ public class SecretClientTest extends SecretClientTestBase {
             pollOnSecretDeletion(secretToDeleteAndRecover.getName());
             Secret recoveredSecret = client.recoverDeletedSecret(secretToDeleteAndRecover.getName());
             assertEquals(secretToDeleteAndRecover.getName(), recoveredSecret.getName());
-            assertEquals(secretToDeleteAndRecover.getNotBefore(), recoveredSecret.getNotBefore());
-            assertEquals(secretToDeleteAndRecover.getExpires(), recoveredSecret.getExpires());
+            assertEquals(secretToDeleteAndRecover.getProperties().getNotBefore(), recoveredSecret.getProperties().getNotBefore());
+            assertEquals(secretToDeleteAndRecover.getProperties().getExpires(), recoveredSecret.getProperties().getExpires());
         });
     }
 
@@ -226,7 +226,7 @@ public class SecretClientTest extends SecretClientTestBase {
             sleepInRecordMode(60000);
             Secret restoredSecret = client.restoreSecret(backupBytes);
             assertEquals(secretToBackupAndRestore.getName(), restoredSecret.getName());
-            assertEquals(secretToBackupAndRestore.getExpires(), restoredSecret.getExpires());
+            assertEquals(secretToBackupAndRestore.getProperties().getExpires(), restoredSecret.getProperties().getExpires());
         });
     }
 
@@ -247,11 +247,11 @@ public class SecretClientTest extends SecretClientTestBase {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
-            for (SecretBase actualSecret : client.listSecrets()) {
+            for (SecretProperties actualSecret : client.listSecrets()) {
                 if (secrets.containsKey(actualSecret.getName())) {
                     Secret expectedSecret = secrets.get(actualSecret.getName());
-                    assertEquals(expectedSecret.getExpires(), actualSecret.getExpires());
-                    assertEquals(expectedSecret.getNotBefore(), actualSecret.getNotBefore());
+                    assertEquals(expectedSecret.getProperties().getExpires(), actualSecret.getExpires());
+                    assertEquals(expectedSecret.getProperties().getNotBefore(), actualSecret.getNotBefore());
                     secrets.remove(actualSecret.getName());
                 }
             }
@@ -308,8 +308,8 @@ public class SecretClientTest extends SecretClientTestBase {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
-            Iterable<SecretBase> secretVersionsOutput =  client.listSecretVersions(secretName);
-            List<SecretBase> secretVersionsList = new ArrayList<>();
+            Iterable<SecretProperties> secretVersionsOutput =  client.listSecretVersions(secretName);
+            List<SecretProperties> secretVersionsList = new ArrayList<>();
             secretVersionsOutput.forEach(secretVersionsList::add);
             assertEquals(secretVersions.size(), secretVersionsList.size());
 

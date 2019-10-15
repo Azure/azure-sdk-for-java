@@ -2,46 +2,34 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.AccountSASPermission;
-import com.azure.storage.common.AccountSASResourceType;
-import com.azure.storage.common.AccountSASService;
-import com.azure.storage.common.AccountSASSignatureValues;
-import com.azure.storage.common.IPRange;
-import com.azure.storage.common.SASProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.CorsRule;
-import com.azure.storage.queue.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.StorageException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
-import reactor.core.publisher.Mono;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-import static com.azure.storage.queue.PostProcessor.postProcessResponse;
+import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -57,33 +45,28 @@ import static com.azure.storage.queue.PostProcessor.postProcessResponse;
  * @see QueueServiceClientBuilder
  * @see QueueServiceClient
  * @see SharedKeyCredential
- * @see SASTokenCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class, isAsync = true)
 public final class QueueServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
+    private final String accountName;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
      *
      * @param azureQueueStorage Client that interacts with the service interfaces.
      */
-    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage) {
+    QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName) {
         this.client = azureQueueStorage;
+        this.accountName = accountName;
     }
 
     /**
      * @return the URL of the storage queue
-     * @throws RuntimeException If the queue service is using a malformed URL.
      */
-    public URL getQueueServiceUrl() {
-        try {
-            return new URL(client.getUrl());
-        } catch (MalformedURLException ex) {
-            logger.error("Queue Service URL is malformed");
-            throw logger.logExceptionAsError(new RuntimeException("Storage account URL is malformed"));
-        }
+    public String getQueueServiceUrl() {
+        return client.getUrl();
     }
 
     /**
@@ -95,7 +78,7 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        return new QueueAsyncClient(client, queueName);
+        return new QueueAsyncClient(client, queueName, accountName);
     }
 
     /**
@@ -132,15 +115,15 @@ public final class QueueServiceAsyncClient {
      * @throws StorageException If a queue with the same name and different metadata already exists
      */
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
-        Objects.requireNonNull(queueName);
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         return withContext(context -> createQueueWithResponse(queueName, metadata, context));
     }
 
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName);
+        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName);
 
-        return postProcessResponse(queueAsyncClient.createWithResponse(metadata, context))
+        return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
@@ -179,7 +162,7 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        return new QueueAsyncClient(client, queueName).deleteWithResponse(context);
+        return new QueueAsyncClient(client, queueName, accountName).deleteWithResponse(context);
     }
 
     /**
@@ -238,7 +221,7 @@ public final class QueueServiceAsyncClient {
     PagedFlux<QueueItem> listQueuesWithOptionalTimeout(String marker, QueuesSegmentOptions options, Duration timeout,
         Context context) {
         final String prefix = (options != null) ? options.getPrefix() : null;
-        final Integer maxResults = (options != null) ? options.getMaxResults() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
         final List<ListQueuesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
@@ -248,15 +231,15 @@ public final class QueueServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> postProcessResponse(Utility.applyOptionalTimeout(this.client.services()
-                .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResults, include,
+            nextMarker -> Utility.applyOptionalTimeout(this.client.services()
+                .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     response.getValue().getQueueItems(),
                     response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders())));
+                    response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
@@ -302,7 +285,7 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<StorageServiceProperties>> getPropertiesWithResponse(Context context) {
-        return postProcessResponse(client.services().getPropertiesWithRestResponseAsync(context))
+        return client.services().getPropertiesWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -389,7 +372,7 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(StorageServiceProperties properties, Context context) {
-        return postProcessResponse(client.services().setPropertiesWithRestResponseAsync(properties, context))
+        return client.services().setPropertiesWithRestResponseAsync(properties, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -430,54 +413,17 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
-        return postProcessResponse(client.services().getStatisticsWithRestResponseAsync(context))
+        return client.services().getStatisticsWithRestResponseAsync(context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
-    /**
-     * Generates an account SAS token with the specified parameters
-     *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @return A string that represents the SAS token
-     */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
-            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
-    }
 
     /**
-     * Generates an account SAS token with the specified parameters
+     * Get associated account name.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.generateAccountSAS#AccountSASService-AccountSASResourceType-AccountSASPermission-OffsetDateTime-OffsetDateTime-String-IPRange-SASProtocol}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-account-sas">Azure Docs</a>.</p>
-     *
-     * @param accountSASService The {@code AccountSASService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSASResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSASPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param ipRange An optional {@code IPRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
+     * @return account name associated with this storage resource.
      */
-    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
-        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-        IPRange ipRange, SASProtocol sasProtocol) {
-
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.client.getHttpPipeline());
-        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
-
-        return AccountSASSignatureValues.generateAccountSAS(sharedKeyCredential, accountSASService,
-            accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
-
+    public String getAccountName() {
+        return this.accountName;
     }
 }

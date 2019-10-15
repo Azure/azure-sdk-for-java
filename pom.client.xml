@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.4.0</version>
+  <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -402,12 +402,20 @@
                 <packages>com.azure.storage.blob*</packages>
               </group>
               <group>
+                <title>Azure Storage Blob - Batch</title>
+                <packages>com.azure.storage.blob.batch*</packages>
+              </group>
+              <group>
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
               <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Files - Data Lake</title>
+                <packages>com.azure.storage.file.datalake*</packages>
               </group>
               <group>
                 <title>Azure Storage - Queues</title>
@@ -419,7 +427,8 @@
               </group>
               <group>
                 <title>Azure Telemetry</title>
-                <packages>com.azure.tracing.opentelemetry*</packages>
+                <title>Azure Telemetry - OpenCensus</title>
+                <packages>com.azure.core.tracing*</packages>
               </group>
             </groups>
             <links>
@@ -577,6 +586,9 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
@@ -706,16 +718,24 @@
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
               <argLine>
-                <!-- KeyVault tests fail without these exports -->
+                <!-- KeyVault tests fail without these exports. -->
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+
+                <!-- Mockito uses reflection to create PollResponses in tests. -->
+                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
+
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+
+                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
+                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
               </argLine>
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>
@@ -857,11 +877,13 @@
     <module>sdk/keyvault/azure-keyvault-keys</module>
     <module>sdk/keyvault/azure-keyvault-secrets</module>
     <module>sdk/storage/azure-storage-blob</module>
+    <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file</module>
+    <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
-    <module>sdk/tracing/tracing-opentelemetry</module>
+    <module>sdk/tracing/azure-core-tracing-opencensus</module>
   </modules>
 </project>

@@ -39,7 +39,7 @@ class FileServiceAPITests extends APISpec {
         def accountName = SharedKeyCredential.fromConnectionString(connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
-        def fileServiceURL = primaryFileServiceClient.getFileServiceUrl().toString()
+        def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()
 
         then:
         expectURL.equals(fileServiceURL)
@@ -132,7 +132,7 @@ class FileServiceAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter")                           | 3      | false           | true
         new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
         new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResults(2)          | 3      | false           | true
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true
     }
 
     @Unroll

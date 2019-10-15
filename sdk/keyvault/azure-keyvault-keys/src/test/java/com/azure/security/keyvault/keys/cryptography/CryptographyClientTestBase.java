@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -81,7 +81,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
         policies.addAll(policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
+        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
