@@ -53,7 +53,7 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     QueueServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
-                                   OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String permissions, String signature) {
+        OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String permissions, String signature) {
         super(version, protocol, startTime, expiryTime, sasIpRange, permissions, signature);
 
         this.identifier = identifier;

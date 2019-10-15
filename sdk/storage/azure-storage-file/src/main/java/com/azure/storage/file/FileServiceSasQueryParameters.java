@@ -76,9 +76,9 @@ public final class FileServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     FileServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
-                                  OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String resource, String permissions,
-                                  String signature, String cacheControl, String contentDisposition, String contentEncoding,
-                                  String contentLanguage, String contentType) {
+        OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String resource, String permissions,
+        String signature, String cacheControl, String contentDisposition, String contentEncoding,
+        String contentLanguage, String contentType) {
         super(version, protocol, startTime, expiryTime, sasIpRange, permissions, signature);
 
         this.identifier = identifier;

@@ -105,7 +105,7 @@ public abstract class BaseSasQueryParameters {
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     public BaseSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
-                                  OffsetDateTime expiryTime, SasIpRange sasIpRange, String permissions, String signature) {
+        OffsetDateTime expiryTime, SasIpRange sasIpRange, String permissions, String signature) {
         this.version = version;
         this.protocol = protocol;
         this.startTime = startTime;
