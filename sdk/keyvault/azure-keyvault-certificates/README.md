@@ -9,13 +9,15 @@ Azure Key Vault allows you to create and store certificates in the Key Vault. Az
 ### Adding the package to your project
 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
+[//]: # ({x-version-update-start;com.azure:azure-keyvault-certificates;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.4</version>
+    <version>4.0.0-preview.5</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Default HTTP Client
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
@@ -25,12 +27,13 @@ KeyVault Certificates to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
+[//]: # ({x-version-update-start;com.azure:azure-keyvault-certificates;current})
 ```xml
 <!-- Add KeyVault Certificates dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.4</version>
+    <version>4.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -38,14 +41,18 @@ Netty and include OkHTTP client in your pom.xml.
       </exclusion>
     </exclusions>
 </dependency>
-
+```
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
+```xml
 <!-- Add OkHTTP client to use with KeyVault Certificates -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Configuring HTTP Clients
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-certificate-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
