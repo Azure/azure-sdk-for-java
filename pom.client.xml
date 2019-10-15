@@ -718,9 +718,6 @@
             <version>${maven-surefire-plugin.version}</version>
             <configuration>
               <argLine>
-                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-
                 <!-- KeyVault tests fail without these exports. -->
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
@@ -736,6 +733,9 @@
 
                 <!-- Checkpoint store tests fail without this -->
                 --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
+
+                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
+                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
               </argLine>
               <useSystemClassLoader>false</useSystemClassLoader>
               <forkCount>1</forkCount>
