@@ -86,7 +86,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
             pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
             pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-            pagedResponse.getNextLink(),
+            pagedResponse.getContinuationToken(),
             null);
     }
 }
