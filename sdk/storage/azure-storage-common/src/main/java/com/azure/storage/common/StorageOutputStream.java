@@ -148,7 +148,7 @@ public abstract class StorageOutputStream extends OutputStream {
             this.flush();
         } finally {
             // if close() is called again, an exception will be thrown
-            this.lastError = new IOException(SR.STREAM_CLOSED);
+            this.lastError = new IOException(Constants.STREAM_CLOSED);
         }
     }
 

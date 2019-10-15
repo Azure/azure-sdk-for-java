@@ -57,7 +57,7 @@ public final class AccountSasService {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services",
+                            String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services",
                                     servicesString, c));
             }
         }

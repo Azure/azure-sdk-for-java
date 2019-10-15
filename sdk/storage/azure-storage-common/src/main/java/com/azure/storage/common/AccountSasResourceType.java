@@ -51,7 +51,7 @@ public final class AccountSasResourceType {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
                             "Resource Types", resourceTypesString, c));
             }
         }

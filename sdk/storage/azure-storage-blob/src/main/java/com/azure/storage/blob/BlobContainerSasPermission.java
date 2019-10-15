@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 
-import com.azure.storage.common.SR;
+import com.azure.storage.common.Constants;
 
 import java.util.Locale;
 
@@ -67,7 +67,7 @@ public final class BlobContainerSasPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
                             "Permissions", permString, c));
             }
         }

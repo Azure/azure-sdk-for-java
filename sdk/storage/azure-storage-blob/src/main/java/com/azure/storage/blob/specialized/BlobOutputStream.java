@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.common.SR;
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.StorageOutputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -71,11 +71,14 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             }
         } finally {
             // if close() is called again, an exception will be thrown
-            this.lastError = new IOException(SR.STREAM_CLOSED);
+            this.lastError = new IOException(Constants.STREAM_CLOSED);
         }
     }
 
     private static final class AppendBlobOutputStream extends BlobOutputStream {
+        private static final String INVALID_BLOCK_SIZE =
+            "Block data should not exceed BlockBlobURL.MAX_STAGE_BLOCK_BYTES";
+
         private final AppendBlobAccessConditions appendBlobAccessConditions;
         private final AppendPositionAccessConditions appendPositionAccessConditions;
         private final long initialBlobOffset;
@@ -126,7 +129,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             if (this.appendPositionAccessConditions != null
                 && this.appendPositionAccessConditions.getMaxSize() != null
                 && this.initialBlobOffset > this.appendPositionAccessConditions.getMaxSize()) {
-                this.lastError = new IOException(SR.INVALID_BLOCK_SIZE);
+                this.lastError = new IOException(INVALID_BLOCK_SIZE);
                 return Mono.error(this.lastError);
             }
 
@@ -204,6 +207,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class PageBlobOutputStream extends BlobOutputStream {
+        private static final String INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER =
+            "Page data must be a multiple of 512 bytes. Buffer currently contains %d bytes.";
+
         private final ClientLogger logger = new ClientLogger(PageBlobOutputStream.class);
         private final PageBlobAsyncClient client;
         private final PageBlobAccessConditions pageBlobAccessConditions;
@@ -241,7 +247,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             }
 
             if (writeLength % PageBlobAsyncClient.PAGE_BYTES != 0) {
-                return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER,
+                return Mono.error(new IOException(String.format(INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER,
                     writeLength)));
             }
 

@@ -29,6 +29,17 @@ public final class Constants {
     static final String HTTPS = "https";
     static final String HTTPS_HTTP = "https,http";
 
+    /**
+     * Exception message when the underlying stream has already been closed.
+     */
+    public static final String STREAM_CLOSED = "Stream is already closed.";
+
+    /**
+     * Exception message when the value could not be parsed into an enum.
+     */
+    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
+        "%s could not be parsed from '%s' due to invalid value %s.";
+
     private Constants() {
     }
 
