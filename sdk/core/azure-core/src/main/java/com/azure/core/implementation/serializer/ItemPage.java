@@ -27,7 +27,7 @@ class ItemPage<T> implements Page<T> {
     private List<T> items;
 
     @JsonAlias({"nextLink", "nextPageLink"})
-    private String nextLink;
+    private String continuationToken;
 
     @Override
     public List<T> getItems() {
@@ -36,6 +36,6 @@ class ItemPage<T> implements Page<T> {
 
     @Override
     public String getContinuationToken() {
-        return nextLink;
+        return continuationToken;
     }
 }

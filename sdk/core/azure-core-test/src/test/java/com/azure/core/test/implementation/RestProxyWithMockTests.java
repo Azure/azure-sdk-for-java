@@ -457,14 +457,14 @@ public class RestProxyWithMockTests extends RestProxyTests {
         private List<KeyValue> items;
 
         @JsonProperty("nextLink")
-        private String nextLink;
+        private String continuationToken;
 
         KeyValuePage() {
         }
 
-        KeyValuePage(List<KeyValue> items, String nextLink) {
+        KeyValuePage(List<KeyValue> items, String continuationToken) {
             this.items = items;
-            this.nextLink = nextLink;
+            this.continuationToken = continuationToken;
         }
 
         @Override
@@ -474,17 +474,17 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @Override
         public String getContinuationToken() {
-            return nextLink;
+            return continuationToken;
         }
     }
 
     static class ConformingPage<T> implements Page<T> {
         private List<T> items;
-        private String nextLink;
+        private String continuationToken;
 
-        ConformingPage(List<T> items, String nextLink) {
+        ConformingPage(List<T> items, String continuationToken) {
             this.items = items;
-            this.nextLink = nextLink;
+            this.continuationToken = continuationToken;
         }
 
         @Override
@@ -494,7 +494,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @Override
         public String getContinuationToken() {
-            return nextLink;
+            return continuationToken;
         }
     }
 
@@ -504,11 +504,11 @@ public class RestProxyWithMockTests extends RestProxyTests {
      */
     static class NonComformingPage<T> {
         private List<T> badItems;
-        private String nextLink;
+        private String continuationToken;
 
-        NonComformingPage(List<T> items, String nextLink) {
+        NonComformingPage(List<T> items, String continuationToken) {
             this.badItems = items;
-            this.nextLink = nextLink;
+            this.continuationToken = continuationToken;
         }
 
         @JsonGetter()
@@ -516,8 +516,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
             return badItems;
         }
 
-        public String nextLink() {
-            return nextLink;
+        public String getContinuationToken() {
+            return continuationToken;
         }
     }
 
@@ -579,7 +579,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsync(page))
             .assertNext(r -> {
-                assertEquals(page.nextLink, r.getContinuationToken());
+                assertEquals(page.continuationToken, r.getContinuationToken());
 
                 assertEquals(r.getItems().size(), 3);
                 for (KeyValue keyValue : r.getValue()) {
@@ -610,7 +610,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
-                assertEquals(page.nextLink(), response.getContinuationToken());
+                assertEquals(page.getContinuationToken(), response.getContinuationToken());
                 assertNull(response.getItems());
             })
             .verifyComplete();

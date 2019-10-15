@@ -19,7 +19,7 @@ public final class CertificatePropertiesPage implements Page<CertificateProperti
      * The link to the next page.
      */
     @JsonProperty("nextLink")
-    private String nextLink;
+    private String continuationToken;
 
     /**
      * The list of items.
@@ -34,7 +34,7 @@ public final class CertificatePropertiesPage implements Page<CertificateProperti
      */
     @Override
     public String getContinuationToken() {
-        return this.nextLink;
+        return this.continuationToken;
     }
 
     /**

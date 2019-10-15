@@ -50,7 +50,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} the scope of code where the given Span is in the current Context.
      */
-    String SCOPE = "scope";
+    String SCOPE_KEY = "scope";
 
     /**
      * Creates a new tracing span.

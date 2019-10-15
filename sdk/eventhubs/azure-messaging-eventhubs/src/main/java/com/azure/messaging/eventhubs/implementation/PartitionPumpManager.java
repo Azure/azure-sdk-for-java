@@ -9,7 +9,7 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
@@ -198,13 +198,13 @@ public class PartitionPumpManager {
      * Ends the process tracing span and the scope of that span.
      */
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
-        Optional<Object> spanScope = processSpanContext.getData(SCOPE);
+        Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
         // Disposes of the scope when the trace span closes.
         if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
             return;
         }
         if (spanScope.get() instanceof Closeable) {
-            Closeable close = (Closeable) processSpanContext.getData(SCOPE).get();
+            Closeable close = (Closeable) processSpanContext.getData(SCOPE_KEY).get();
             try {
                 close.close();
                 tracerProvider.endSpan(processSpanContext, signal);
