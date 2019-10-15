@@ -6,7 +6,6 @@ package com.azure.storage.queue.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.storage.queue.QueueServiceVersion;
 
 /**
  * Initializes a new instance of the AzureQueueStorage type.

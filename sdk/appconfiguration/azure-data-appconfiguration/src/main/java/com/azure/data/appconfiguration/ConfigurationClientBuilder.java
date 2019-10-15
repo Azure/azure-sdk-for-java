@@ -140,8 +140,8 @@ public final class ConfigurationClientBuilder {
         String buildEndpoint = getBuildEndpoint(configurationCredentials);
 
         Objects.requireNonNull(buildEndpoint);
-        ConfigurationServiceVersion serviceVersion = version != null ?
-            version : ConfigurationServiceVersion.getLatest();
+        ConfigurationServiceVersion serviceVersion = version != null
+            ? version : ConfigurationServiceVersion.getLatest();
 
         if (pipeline != null) {
             return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion);

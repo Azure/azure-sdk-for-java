@@ -7,7 +7,6 @@ package com.azure.storage.file.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.storage.file.FileServiceVersion;
 
 /**
  * A builder for creating a new instance of the AzureFileStorage type.
