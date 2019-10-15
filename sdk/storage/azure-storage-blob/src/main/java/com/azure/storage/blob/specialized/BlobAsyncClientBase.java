@@ -358,9 +358,8 @@ public class BlobAsyncClientBase {
                     operationStatus = OperationStatus.IN_PROGRESS;
                     break;
                 default:
-                    // The OperationStatuses we created end the polling loop. This should not happen.
                     throw Exceptions.propagate(logger.logExceptionAsError(new IllegalArgumentException(
-                        "Status is not supported. Status: " + status)));
+                        "CopyStatusType is not supported. Status: " + status)));
             }
 
             return new PollResponse<>(operationStatus, result);
