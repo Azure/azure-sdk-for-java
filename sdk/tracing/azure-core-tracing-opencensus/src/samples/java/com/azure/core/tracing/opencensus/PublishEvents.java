@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
-import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -62,7 +62,7 @@ public class PublishEvents {
             .connectionString(CONNECTION_STRING)
             .buildAsyncClient();
 
-        Context context = new Context(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
+        Context context = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
         final int count = 2;
         final byte[] body = "Hello World!".getBytes(UTF_8);
         final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {

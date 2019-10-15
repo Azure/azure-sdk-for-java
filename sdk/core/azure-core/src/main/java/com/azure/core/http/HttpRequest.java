@@ -39,6 +39,7 @@ public class HttpRequest {
      *
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
+     * @throws IllegalArgumentException if {@code url} is null or it cannot be parsed into a valid URL.
      */
     public HttpRequest(HttpMethod httpMethod, String url) {
         this.httpMethod = httpMethod;
@@ -110,6 +111,7 @@ public class HttpRequest {
      *
      * @param url target address as a String
      * @return this HttpRequest
+     * @throws IllegalArgumentException if {@code url} is null or it cannot be parsed into a valid URL.
      */
     public HttpRequest setUrl(String url) {
         try {

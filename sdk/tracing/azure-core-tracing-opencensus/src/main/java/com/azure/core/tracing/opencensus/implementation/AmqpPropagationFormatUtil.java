@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opencensus.implementation;
 
-import static com.azure.core.tracing.opencensus.OpenCensusTracer.SPAN_CONTEXT;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 import com.azure.core.util.Context;
 import io.opencensus.trace.SpanContext;
@@ -24,7 +24,7 @@ public class AmqpPropagationFormatUtil {
      * @return {@link Context} which contains the trace context propagation data
      */
     public static Context extractContext(String diagnosticId, Context context) {
-        return context.addData(SPAN_CONTEXT, fromDiagnosticId(diagnosticId));
+        return context.addData(SPAN_CONTEXT_KEY, fromDiagnosticId(diagnosticId));
     }
 
     /**

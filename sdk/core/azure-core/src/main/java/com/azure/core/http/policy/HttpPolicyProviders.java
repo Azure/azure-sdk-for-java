@@ -54,7 +54,7 @@ public final class HttpPolicyProviders {
     }
 
     private static Iterator<? extends HttpPolicyProvider> getPolicyProviders(boolean reload,
-                                                                             Class<? extends HttpPolicyProvider> cls) {
+        Class<? extends HttpPolicyProvider> cls) {
         ServiceLoader<? extends HttpPolicyProvider> serviceLoader = SERVICE_LOADERS
             .computeIfAbsent(cls, ServiceLoader::load);
 

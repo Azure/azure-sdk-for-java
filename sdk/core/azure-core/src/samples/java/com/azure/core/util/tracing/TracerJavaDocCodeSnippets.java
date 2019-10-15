@@ -4,6 +4,9 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link Tracer}.
@@ -16,27 +19,24 @@ public class TracerJavaDocCodeSnippets {
      */
     public void startTracingSpan() {
         // BEGIN: com.azure.core.util.tracing.start#string-context
-        String openCensusSpanKey = "opencensus-span";
         // pass the current tracing span context to the calling method
-        Context traceContext = new Context(openCensusSpanKey, "<user-current-span>");
+        Context traceContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
         // start a new tracing span with the given method name and explicit parent span
         Context updatedContext = tracer.start("azure.keyvault.secrets/setsecret", traceContext);
         System.out.printf("Span returned in the context object: %s%n",
-            updatedContext.getData(openCensusSpanKey).get());
+            updatedContext.getData(PARENT_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-SEND
-        String hostNameKey = "hostname";
-        String entityPathKey = "entity-path";
         // pass the current tracing span and request metadata to the calling method
-        Context sendContext = new Context(openCensusSpanKey, "<user-current-span>")
-            .addData(entityPathKey, "entity-path").addData(hostNameKey, "hostname");
+        Context sendContext = new Context(PARENT_SPAN_KEY, "<user-current-span>")
+            .addData(ENTITY_PATH_KEY, "entity-path").addData(HOST_NAME_KEY, "hostname");
 
         // start a new tracing span with explicit parent, sets the request attributes on the span and sets the span
         // kind to client when process kind SEND
         Context updatedSendContext = tracer.start("azure.eventhubs.send", sendContext, ProcessKind.SEND);
         System.out.printf("Span returned in the context object: %s%n",
-            updatedSendContext.getData(openCensusSpanKey).get());
+            updatedSendContext.getData(PARENT_SPAN_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-SEND
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-RECEIVE
@@ -52,7 +52,7 @@ public class TracerJavaDocCodeSnippets {
         String spanImplContext = "span-context";
         // start a new tracing span with remote parent and uses the span in the current context to return a scope
         // when process kind PROCESS
-        Context processContext = new Context(openCensusSpanKey, "<user-current-span>")
+        Context processContext = new Context(PARENT_SPAN_KEY, "<user-current-span>")
             .addData(spanImplContext, "<user-current-span-context>");
         Context updatedProcessContext = tracer.start("azure.eventhubs.process", processContext,
             ProcessKind.PROCESS);
@@ -67,7 +67,7 @@ public class TracerJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.tracing.end#int-throwable-context
         // context containing the current tracing span to end
         String openCensusSpanKey = "opencensus-span";
-        Context traceContext = new Context(openCensusSpanKey, "<user-current-span>");
+        Context traceContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
 
         // completes the tracing span with the passed response status code
         tracer.end(200, null, traceContext);
@@ -88,7 +88,7 @@ public class TracerJavaDocCodeSnippets {
         // Sets the span name of the returned span on the context object, with key OPENCENSUS_SPAN_NAME_KEY
         String openCensusSpanKey = "opencensus-span-name";
         Context context = tracer.setSpanName("test-span-method", Context.NONE);
-        System.out.printf("Span name: %s%n", context.getData(openCensusSpanKey).get().toString());
+        System.out.printf("Span name: %s%n", context.getData(PARENT_SPAN_KEY).get().toString());
         // END: com.azure.core.util.tracing.setSpanName#string-context
     }
 
@@ -98,8 +98,7 @@ public class TracerJavaDocCodeSnippets {
     public void addLink() {
         // BEGIN: com.azure.core.util.tracing.addLink#context
         // use the parent context containing the current tracing span to start a child span
-        String openCensusSpanKey = "opencensus-span";
-        Context parentContext = new Context(openCensusSpanKey, "<user-current-span>");
+        Context parentContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
         // use the returned span context information of the current tracing span to link
         Context spanContext = tracer.start("test.method", parentContext, ProcessKind.RECEIVE);
 

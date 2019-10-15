@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -48,11 +51,6 @@ import reactor.test.StepVerifier;
  * Unit tests for {@link EventProcessor}.
  */
 public class EventProcessorTest {
-
-    private static final String DIAGNOSTIC_ID_KEY = "diagnostic-id";
-    private static final String SPAN_CONTEXT = "span-context";
-    private static final String OPENCENSUS_SPAN_KEY = "opencensus-span";
-
     @Mock
     private EventHubAsyncClient eventHubAsyncClient;
 
@@ -209,16 +207,16 @@ public class EventProcessorTest {
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value");
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
         when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value1")
+                return passed.addData(SPAN_CONTEXT_KEY, "value1")
                     .addData("scope", (Closeable) () -> {
                     })
-                    .addData(OPENCENSUS_SPAN_KEY, "value2");
+                    .addData(PARENT_SPAN_KEY, "value2");
             }
         );
 
@@ -267,15 +265,15 @@ public class EventProcessorTest {
         when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value");
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
             }
         );
         when(tracer1.start(eq("Azure.eventhubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_CONTEXT, "value1").addData("scope", (Closeable) () -> {
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (Closeable) () -> {
                     return;
-                }).addData(OPENCENSUS_SPAN_KEY, "value2");
+                }).addData(PARENT_SPAN_KEY, "value2");
             }
         );
 

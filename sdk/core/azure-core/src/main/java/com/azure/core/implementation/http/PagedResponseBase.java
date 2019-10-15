@@ -30,8 +30,8 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
         this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
 
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, String continuationToken,
-                             H deserializedHeaders) {
+    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
+                             String continuationToken, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;

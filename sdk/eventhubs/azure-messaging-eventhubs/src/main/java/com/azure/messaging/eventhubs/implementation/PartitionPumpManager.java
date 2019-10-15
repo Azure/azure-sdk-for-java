@@ -8,6 +8,9 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.CloseReason;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
@@ -49,8 +52,6 @@ public class PartitionPumpManager {
     private final EventPosition initialEventPosition;
     private final EventHubAsyncClient eventHubAsyncClient;
     private final TracerProvider tracerProvider;
-    private final String diagnosticIdKey = "diagnostic-id";
-    private final String spanContextKey = "span-context";
 
     /**
      * Creates an instance of partition pump manager.
@@ -125,8 +126,8 @@ public class PartitionPumpManager {
         eventHubConsumer.receive().subscribe(eventData -> {
             try {
                 Context processSpanContext = startProcessTracingSpan(eventData);
-                if (processSpanContext.getData(spanContextKey).isPresent()) {
-                    eventData.addContext(spanContextKey, processSpanContext);
+                if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                    eventData.addContext(SPAN_CONTEXT_KEY, processSpanContext);
                 }
                 partitionProcessor.processEvent(partitionContext, eventData).doOnEach(signal ->
                     endProcessTracingSpan(processSpanContext, signal)).subscribe(unused -> {
@@ -185,7 +186,7 @@ public class PartitionPumpManager {
      * Starts a new process tracing span and attached context the EventData object for users.
      */
     private Context startProcessTracingSpan(EventData eventData) {
-        Object diagnosticId = eventData.getProperties().get(diagnosticIdKey);
+        Object diagnosticId = eventData.getProperties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
@@ -197,13 +198,13 @@ public class PartitionPumpManager {
      * Ends the process tracing span and the scope of that span.
      */
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
-        Optional<Object> spanScope = processSpanContext.getData("scope");
+        Optional<Object> spanScope = processSpanContext.getData(SCOPE);
         // Disposes of the scope when the trace span closes.
         if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
             return;
         }
         if (spanScope.get() instanceof Closeable) {
-            Closeable close = (Closeable) processSpanContext.getData("scope").get();
+            Closeable close = (Closeable) processSpanContext.getData(SCOPE).get();
             try {
                 close.close();
                 tracerProvider.endSpan(processSpanContext, signal);

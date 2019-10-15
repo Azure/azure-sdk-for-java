@@ -16,7 +16,7 @@ import reactor.util.context.Context;
 
 import java.util.concurrent.Semaphore;
 
-import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /*
  *  This example shows tracing support in azure-storage-queue SDK using azure-core-tracing plugin package.
@@ -55,7 +55,7 @@ public class HelloWorldAsync {
         queueAsyncClient.create()
             .doOnSuccess(response -> queueAsyncClient.enqueueMessage("This is message 1"))
             .then(queueAsyncClient.enqueueMessage("This is message 2"))
-            .subscriberContext(Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan()))
+            .subscriberContext(Context.of(PARENT_SPAN_KEY, tracer.getCurrentSpan()))
             .subscribe(
                 response -> System.out.printf("Message successfully enqueued by queueAsyncClient. Message id: %s%n",
                     response.getMessageId()),

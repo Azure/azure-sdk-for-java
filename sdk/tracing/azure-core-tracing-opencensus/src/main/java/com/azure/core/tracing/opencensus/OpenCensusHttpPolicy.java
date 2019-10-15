@@ -28,7 +28,7 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
-import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
  * Pipeline policy that creates an OpenCensus span which traces the service request.
@@ -58,7 +58,7 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.

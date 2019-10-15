@@ -12,6 +12,9 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.BatchOptions;
 import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
@@ -48,11 +51,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventHubAsyncProducerTest {
-
-    private static final String DIAGNOSTIC_ID_KEY = "diagnostic-id";
-    private static final String SPAN_CONTEXT = "span-context";
-    private static final String OPENCENSUS_SPAN_KEY = "opencensus-span";
-
     @Mock
     private AmqpSendLink sendLink;
     private MessageSerializer messageSerializer = new EventHubMessageSerializer();
@@ -198,14 +196,14 @@ public class EventHubAsyncProducerTest {
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENCENSUS_SPAN_KEY, "value");
+                return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
 
         when(tracer1.start(eq("Azure.eventhubs.message"), any(), eq(ProcessKind.RECEIVE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENCENSUS_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
 
@@ -230,8 +228,8 @@ public class EventHubAsyncProducerTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         final Flux<EventData> testData = Flux.just(
-            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE)),
-            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT, Context.NONE)));
+            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE)),
+            new EventData(TEST_CONTENTS.getBytes(UTF_8), new Context(SPAN_CONTEXT_KEY, Context.NONE)));
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -245,7 +243,7 @@ public class EventHubAsyncProducerTest {
         when(tracer1.start(eq("Azure.eventhubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(OPENCENSUS_SPAN_KEY, "value");
+                return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
 

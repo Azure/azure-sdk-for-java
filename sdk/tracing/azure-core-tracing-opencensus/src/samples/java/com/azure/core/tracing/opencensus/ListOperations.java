@@ -17,7 +17,7 @@ import io.opencensus.trace.config.TraceConfig;
 import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
 
-import static com.azure.core.tracing.opencensus.OpenCensusTracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
  * Sample demonstrates how to list secrets and versions of a given secret in the key vault with tracing enabled.
@@ -53,7 +53,7 @@ public class ListOperations {
         Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan();
         try {
 
-            Context traceContext = new Context(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
+            Context traceContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
             // Let's create secrets holding storage and bank accounts credentials. if the secret
             // already exists in the key vault, then a new version of the secret is created.
             client.setSecretWithResponse(new Secret("StorageAccountPassword", "password"), traceContext);
