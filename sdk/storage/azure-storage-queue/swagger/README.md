@@ -176,3 +176,56 @@ directive:
   transform: >
     $.description = "The message ID name.";
 ```
+
+### Change StorageErrorException to StorageException
+``` yaml
+directive:
+- from: ServicesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: QueuesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: MessagesImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+- from: MessageIdsImpl.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "com.azure.storage.queue.models.StorageErrorException",
+        "com.azure.storage.queue.models.StorageException"
+      ).
+      replace(
+        /StorageErrorException.class/g,
+        "StorageException.class"
+      );
+```

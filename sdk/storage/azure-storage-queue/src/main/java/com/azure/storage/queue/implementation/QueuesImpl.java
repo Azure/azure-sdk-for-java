@@ -27,7 +27,7 @@ import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse
 import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyResponse;
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
-import com.azure.storage.queue.models.StorageErrorException;
+import com.azure.storage.queue.models.StorageException;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -66,32 +66,32 @@ public final class QueuesImpl {
     private interface QueuesService {
         @Put("{queueName}")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<QueuesCreateResponse> create(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Delete("{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<QueuesDeleteResponse> delete(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Get("{queueName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<QueuesGetPropertiesResponse> getProperties(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Put("{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<QueuesSetMetadataResponse> setMetadata(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Get("{queueName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<QueuesGetAccessPolicyResponse> getAccessPolicy(@PathParam("queueName") String queueName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Put("{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<QueuesSetAccessPolicyResponse> setAccessPolicy(@PathParam("queueName") String queueName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper queueAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 
