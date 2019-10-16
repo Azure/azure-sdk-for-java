@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 import com.azure.core.http.HttpPipeline;
@@ -297,12 +298,22 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedCondition.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
-        return new Poller<>(
-            Duration.ofSeconds(1),
-            this::onPoll,
+        return new Poller<>(Duration.ofSeconds(1),
+            response -> {
+                try {
+                    return onPoll(response);
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
             Mono::empty,
-            () -> onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions),
-            poller -> {
+            () -> {
+                try {
+                    return onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions);
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            }, poller -> {
                 final PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
 
                 if (response == null || response.getValue() == null) {
