@@ -288,7 +288,7 @@ public class BlobAsyncClientBase {
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         final ModifiedAccessConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
-            ? new ModifiedAccessConditions()
+            ? new ModifiedAccessConditions()StorageErrorCode
             : sourceModifiedAccessConditions;
         final BlobAccessConditions destinationAccessConditions = destAccessConditions == null
             ? new BlobAccessConditions()

@@ -674,7 +674,7 @@ class ContainerAPITest extends APISpec {
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
-        copyBlob.copyFromURL(new URL(normal.getBlobUrl()))
+        copyBlob.beginCopyFromUrl(new URL(normal.getBlobUrl()), Duration.ofSeconds(2))
         def start = OffsetDateTime.now()
         def status = CopyStatusType.PENDING
         while (status != CopyStatusType.SUCCESS) {

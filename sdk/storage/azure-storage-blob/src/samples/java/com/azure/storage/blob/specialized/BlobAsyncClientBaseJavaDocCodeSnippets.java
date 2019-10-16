@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -49,11 +50,11 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL)}
+     * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL, Duration)}
      */
     public void beginCopyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL
-        client.beginCopyFromUrl(url).getObserver()
+        client.beginCopyFromUrl(url, Duration.ofSeconds(3)).getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL
     }
@@ -226,7 +227,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL, Map, AccessTier,
-     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
+     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
@@ -238,7 +239,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         client.beginCopyFromUrl(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-            modifiedAccessConditions, blobAccessConditions)
+            modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2))
             .getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
