@@ -9,6 +9,7 @@ import com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+@SuppressWarnings("unchecked")
 public class JsonWrapper {
 
     private static final ServiceLoader<JsonPlugin> PLUGIN_LOADER = ServiceLoader.load(JsonPlugin.class);
