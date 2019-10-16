@@ -34,11 +34,14 @@ public class Foo {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         final Foo foo = (Foo) o;
-        return intValue == foo.intValue &&
-            Objects.equals(stringValue, foo.stringValue);
+        return (intValue == foo.intValue) && Objects.equals(stringValue, foo.stringValue);
     }
 
     @Override

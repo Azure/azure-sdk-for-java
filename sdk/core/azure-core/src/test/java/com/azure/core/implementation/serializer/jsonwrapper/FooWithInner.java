@@ -3,11 +3,27 @@
 package com.azure.core.implementation.serializer.jsonwrapper;
 
 public class FooWithInner {
-    public int intValue;
-    public String stringValue;
-    public InnerFoo innerFoo;
+    private int intValue;
+    private String stringValue;
+    private InnerFoo innerFoo;
 
     public class InnerFoo {
-        public String name;
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    public int getIntValue() {
+        return intValue;
+    }
+
+    public String getStringValue() {
+        return stringValue;
+    }
+
+    public InnerFoo getInnerFoo() {
+        return innerFoo;
     }
 }

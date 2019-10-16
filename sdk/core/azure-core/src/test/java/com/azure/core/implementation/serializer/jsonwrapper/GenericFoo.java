@@ -3,5 +3,9 @@
 package com.azure.core.implementation.serializer.jsonwrapper;
 
 public class GenericFoo<T> {
-    public T theValue;
+    private T theValue;
+
+    public T getTheValue() {
+        return theValue;
+    }
 }

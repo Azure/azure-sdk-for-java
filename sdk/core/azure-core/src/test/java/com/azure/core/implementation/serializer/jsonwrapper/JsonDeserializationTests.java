@@ -58,7 +58,7 @@ public abstract class JsonDeserializationTests {
 
         GenericFoo<Integer> targetObject = jsonApi.readString(json, new Type<GenericFoo<Integer>>() { });
 
-        Assert.assertEquals(targetObject.theValue, new Integer(1));
+        Assert.assertEquals(targetObject.getTheValue(), new Integer(1));
     }
 
     @Test
@@ -138,8 +138,8 @@ public abstract class JsonDeserializationTests {
 
         FooWithInner targetObject = jsonApi.readString(json, FooWithInner.class);
 
-        Assert.assertEquals(targetObject.intValue, 1);
-        Assert.assertEquals(targetObject.stringValue, "one");
-        Assert.assertEquals(targetObject.innerFoo.name, "inner");
+        Assert.assertEquals(targetObject.getIntValue(), 1);
+        Assert.assertEquals(targetObject.getStringValue(), "one");
+        Assert.assertEquals(targetObject.getInnerFoo().getName(), "inner");
     }
 }
