@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 public class PagedIterableJavaDocCodeSnippets {
 
-    class CustomPagedFlux<String> extends PagedFluxBase<String, PagedResponse<String>> {
+    static class CustomPagedFlux<String> extends PagedFluxBase<String, PagedResponse<String>> {
 
         CustomPagedFlux(Supplier<Mono<PagedResponse<String>>> firstPageRetriever) {
             super(firstPageRetriever);
