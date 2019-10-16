@@ -233,7 +233,7 @@ class SASTest extends APISpec {
         def sasWithId = new BlobServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setCanonicalName(cc.getBlobContainerUrl(), primaryCredential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)
+            .setResource(BlobServiceSasSignatureValues.SAS_CONTAINER_CONSTANT)
             .generateSasQueryParameters(primaryCredential)
             .encode()
 

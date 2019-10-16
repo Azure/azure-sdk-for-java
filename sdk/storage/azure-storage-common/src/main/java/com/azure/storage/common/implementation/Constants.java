@@ -235,21 +235,6 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
-         * The SAS blob constant.
-         */
-        public static final String SAS_BLOB_CONSTANT = "b";
-
-        /**
-         * The SAS blob snapshot constant.
-         */
-        public static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
-
-        /**
-         * The SAS blob snapshot constant.
-         */
-        public static final String SAS_CONTAINER_CONSTANT = "c";
-
-        /**
          * The SAS file constant.
          */
         public static final String SAS_FILE_CONSTANT = "f";
