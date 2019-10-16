@@ -5,6 +5,7 @@ package com.azure.storage.common;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import java.time.OffsetDateTime;
 
@@ -276,13 +277,12 @@ public final class AccountSasSignatureValues {
             AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
             this.services,
             resourceTypes,
-            this.startTime == null ? Constants.EMPTY_STRING
-                : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.sasIpRange == null ? Constants.EMPTY_STRING : this.sasIpRange.toString(),
-            this.protocol == null ? Constants.EMPTY_STRING : this.protocol.toString(),
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.protocol == null ? "" : this.protocol.toString(),
             this.version,
-            Constants.EMPTY_STRING // Account SAS requires an additional newline character
+            "" // Account SAS requires an additional newline character
         );
     }
 }

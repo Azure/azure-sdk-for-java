@@ -34,7 +34,7 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

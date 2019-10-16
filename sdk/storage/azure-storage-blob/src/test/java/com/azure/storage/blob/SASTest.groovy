@@ -15,7 +15,7 @@ import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -234,7 +234,7 @@ class SASTest extends APISpec {
         def sasWithId = new BlobServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setCanonicalName(cc.getBlobContainerUrl(), primaryCredential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)
+            .setResource(BlobServiceSasSignatureValues.SAS_CONTAINER_CONSTANT)
             .generateSasQueryParameters(primaryCredential)
             .encode()
 

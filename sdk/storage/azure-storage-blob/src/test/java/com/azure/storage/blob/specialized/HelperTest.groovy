@@ -13,7 +13,7 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -95,9 +95,9 @@ class HelperTest extends APISpec {
         }
 
         if (snapId != null) {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
         } else {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_CONSTANT)
         }
 
         v.setStartTime(startTime)
@@ -181,9 +181,9 @@ class HelperTest extends APISpec {
         }
 
         if (snapId != null) {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
         } else {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_CONSTANT)
         }
 
         if (ipRange != null) {
@@ -638,7 +638,7 @@ class HelperTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
-            .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            .setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
 
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 

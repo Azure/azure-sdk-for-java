@@ -20,7 +20,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

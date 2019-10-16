@@ -24,7 +24,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -603,7 +603,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         UrlBuilder builder = UrlBuilder.parse(source);
-        builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
+        builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, snapshot);
         try {
             source = builder.toURL();
         } catch (MalformedURLException e) {

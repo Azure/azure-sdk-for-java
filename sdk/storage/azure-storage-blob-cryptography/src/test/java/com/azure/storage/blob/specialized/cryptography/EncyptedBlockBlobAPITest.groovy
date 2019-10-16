@@ -12,7 +12,7 @@ import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions

@@ -10,7 +10,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 
 import java.time.OffsetDateTime
 
