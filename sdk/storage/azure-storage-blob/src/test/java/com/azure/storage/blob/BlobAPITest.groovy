@@ -26,6 +26,8 @@ import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -736,6 +738,37 @@ class BlobAPITest extends APISpec {
     def "Copy min"() {
         expect:
         bc.copyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null, null, null, null).getStatusCode() == 202
+    }
+
+    @Ignore
+    def "Copy poller"() {
+        setup:
+        def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def poller = copyDestBlob.beginCopyFromUrl(new URL(bc.getBlobUrl()), null, null, null, null, null);
+
+        when:
+        def verifier = StepVerifier.create(poller.getObserver())
+
+        then:
+        verifier.assertNext({
+            assert it.getValue() != null
+            assert it.getValue().getCopyId() != null
+            assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
+        }).verifyComplete()
+
+        expect:
+        def properties = copyDestBlob.getProperties()
+
+        properties.getCopyStatus() == CopyStatusType.SUCCESS
+        properties.getCopyCompletionTime() != null
+        properties.getCopyProgress() != null
+        properties.getCopySource() != null
+        headers.getValue("x-ms-copy-id") != null
+
+        def lastResponse = poller.getLastPollResponse()
+        lastResponse != null
+        lastResponse.getValue() != null
+        lastResponse.getValue().getCopyId() == headers.getValue("x-ms-copy-id")
     }
 
     @Unroll

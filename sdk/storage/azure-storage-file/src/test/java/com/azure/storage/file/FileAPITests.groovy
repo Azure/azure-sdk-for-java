@@ -5,7 +5,6 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.polling.Poller
 import com.azure.storage.common.Constants
@@ -414,7 +413,7 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null)
+        Poller<FileCopyInfo, Void> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null)
         def verifier = StepVerifier.create(copyInfoResponse.getObserver())
 
         then:
@@ -428,7 +427,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        Poller<FileCopyInfo> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata)
+        Poller<FileCopyInfo, Void> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata)
         def verifier = StepVerifier.create(copyInfoPoller.getObserver())
 
         then:
