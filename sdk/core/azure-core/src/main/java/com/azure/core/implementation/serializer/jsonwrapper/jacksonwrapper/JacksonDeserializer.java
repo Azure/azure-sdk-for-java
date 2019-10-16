@@ -64,6 +64,7 @@ public class JacksonDeserializer implements JsonApi {
         objectMapper.setDateFormat(df);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public <T> void registerCustomDeserializer(final Deserializer<T> deserializer) {
         SimpleModule module = new SimpleModule("deserializer", new Version(1, 0, 0, null, null, null));

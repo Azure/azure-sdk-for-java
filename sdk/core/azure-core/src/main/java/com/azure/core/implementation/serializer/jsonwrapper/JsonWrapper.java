@@ -18,6 +18,7 @@ public class JsonWrapper {
      *
      * @return JsonApi
      */
+    @SuppressWarnings("unchecked")
     public static JsonApi newInstance() {
 
         JsonApi jsonApi = newInstance((Class) null);

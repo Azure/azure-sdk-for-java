@@ -8,10 +8,6 @@ import com.azure.core.implementation.serializer.jsonwrapper.api.Deserializer;
 import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.implementation.serializer.jsonwrapper.api.Node;
 import com.azure.core.implementation.serializer.jsonwrapper.api.Type;
-import com.azure.core.implementation.serializer.jsonwrapper.models.Car;
-import com.azure.core.implementation.serializer.jsonwrapper.models.Foo;
-import com.azure.core.implementation.serializer.jsonwrapper.models.FooWithInner;
-import com.azure.core.implementation.serializer.jsonwrapper.models.GenericFoo;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -123,6 +119,7 @@ public abstract class JsonDeserializationTests {
     }
 
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void givenJsonArrayOfFoosWhenDeserializingCollectionThenCorrect() {
         String json =

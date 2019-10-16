@@ -5,22 +5,14 @@ package com.azure.core.implementation.serializer.jsonwrapper;
 
 import com.azure.core.implementation.serializer.jsonwrapper.api.Config;
 import com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer;
-import com.azure.core.implementation.serializer.jsonwrapper.models.Entry;
 
-import com.azure.core.implementation.serializer.jsonwrapper.models.Foo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
