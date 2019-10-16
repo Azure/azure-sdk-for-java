@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;

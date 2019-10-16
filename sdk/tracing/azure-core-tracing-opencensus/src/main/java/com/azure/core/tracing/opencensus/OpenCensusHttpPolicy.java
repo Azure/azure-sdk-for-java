@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.tracing.opencensus.implementation.HttpTraceUtil;
 import io.opencensus.trace.AttributeValue;
@@ -27,7 +28,7 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
  * Pipeline policy that creates an OpenCensus span which traces the service request.
@@ -57,11 +58,12 @@ public class OpenCensusHttpPolicy implements AfterRetryPolicyProvider, HttpPipel
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Span parentSpan = (Span) context.getData(OPENCENSUS_SPAN_KEY).orElse(TRACER.getCurrentSpan());
+        Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(TRACER.getCurrentSpan());
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.
-        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(request.getUrl().getPath(), parentSpan);
+        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        SpanBuilder spanBuilder = TRACER.spanBuilderWithExplicitParent(urlBuilder.getPath(), parentSpan);
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request); useful for Gantt chart
         spanBuilder.setSpanKind(Kind.CLIENT);

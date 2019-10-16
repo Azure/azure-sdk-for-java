@@ -14,7 +14,7 @@ import io.opencensus.trace.config.TraceConfig;
 import io.opencensus.trace.config.TraceParams;
 import io.opencensus.trace.samplers.Samplers;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /*
  * This example shows tracing support in azure-storage-queue SDK using azure-core-tracing plugin package.
@@ -49,7 +49,7 @@ public class HelloWorld {
                 .buildClient();
 
             // Create a queue, enqueue two messages.
-            Context tracingContext = new Context(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
+            Context tracingContext = new Context(PARENT_SPAN_KEY, tracer.getCurrentSpan());
             queueClient.createWithResponse(null, null, tracingContext);
             queueClient.enqueueMessageWithResponse("This is message 1", null, null, null, tracingContext);
             queueClient.enqueueMessageWithResponse("This is message 2", null, null, null, tracingContext);

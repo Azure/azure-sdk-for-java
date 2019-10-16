@@ -13,6 +13,7 @@ documentation][api_documentation] | [Samples][samples]
 - [Maven][maven]
 
 ### Adding the package to your product
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
@@ -20,15 +21,17 @@ documentation][api_documentation] | [Samples][samples]
   <version>1.0.0-preview.3</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Default HTTP Client
 All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
 Tracing OpenCensus to use Netty HTTP client. 
 
-### Alternate HTTP client
+### Alternate HTTP Client
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
 ```xml
 <!-- Add Tracing OpenCensus without Netty HTTP client -->
 <dependency>
@@ -42,14 +45,18 @@ Netty and include OkHTTP client in your pom.xml.
       </exclusion>
     </exclusions>
 </dependency>
-
+```
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
+```xml
 <!-- Add OkHTTP client to use with Tracing OpenCensus package -->
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0-preview.4</version>
+  <version>1.0.0-preview.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Configuring HTTP Clients
 When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders][create-eventhubs-builders], unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
