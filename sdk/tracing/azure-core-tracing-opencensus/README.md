@@ -79,7 +79,7 @@ A span represents a single operation in a trace. A span could be representative 
 ## Examples
 The following sections provides examples of using the azure-core-tracing-opencensus plugin with some of the Azure Java SDK libraries:
 ### Using the plugin package with HTTP client libraries
-- Sync create a secret using [azure-keyvault-secrets][azure-keyvault-secrets] with tracing enabled.
+- Sync create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
     Users can additionally pass the value of the current tracing span to the SDKs using key **"opencensus-span"** on the [Context][context] parameter of the calling method:
     ```java
@@ -111,7 +111,7 @@ The following sections provides examples of using the azure-core-tracing-opencen
         System.out.printf("Secret is created with name %s and value %s %n", secret.getName(), secret.getValue());
     }
     ```
-- Async create a secret using [azure-keyvault-secrets][azure-keyvault-secrets] with tracing enabled.
+- Async create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
     
     To enabled tracing in async clients, users can additionally pass the value of the current tracing span to the SDKs using key **"opencensus-span"** on the subscriberContext of the calling method:
     ```java
@@ -208,7 +208,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- Links -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
-[azure-keyvault-secrets]: ../keyvault/azure-keyvault-secrets
+[azure-security-keyvault-secrets]: ../keyvault/azure-security-keyvault-secrets
 [azure-messaging-eventhubs]: ../eventhubs/azure-messaging-eventhubs
 [azure-storage-queue]: ../storage/azure-storage-queue
 [context]: ../core/azure-core/src/main/java/com/azure/core/util/Context.java

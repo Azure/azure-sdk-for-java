@@ -48,7 +48,7 @@ mvn -f pom.client.xml -Dgpg.skip -DskipTests clean install
 ```
 mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 
-//example: mvn -f sdk/keyvault/azure-keyvault-keys/pom.xml clean install
+//example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
 ```
 
 ## Versions and versioning
