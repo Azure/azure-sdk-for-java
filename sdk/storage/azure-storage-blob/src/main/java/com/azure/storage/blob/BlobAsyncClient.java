@@ -243,12 +243,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             // Validation done in the constructor.
             UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
 
-        /*
-        Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
-        as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
-        filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
-        ordering of the buffers, but we don't really care if one is split before another.
-         */
+            /*
+            Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
+            as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
+            filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
+            ordering of the buffers, but we don't really care if one is split before another.
+             */
             Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
                 if (buffer.remaining() <= blockSize) {
                     return Flux.just(buffer);
@@ -263,9 +263,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     });
             });
 
-        /*
-         Write to the pool and upload the output.
-         */
+            /*
+             Write to the pool and upload the output.
+             */
             return chunkedSource.concatMap(pool::write)
                 .concatWith(Flux.defer(pool::flush))
                 .flatMapSequential(buffer -> {
