@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -133,7 +134,7 @@ public final class BlobBatchAsyncClient {
         try {
             return new PagedFlux<>(() -> withContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -165,7 +166,7 @@ public final class BlobBatchAsyncClient {
         try {
             return new PagedFlux<>(() -> withContext(context -> submitSetTierBatch(blobUrls, accessTier, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
         //return batchingHelper(blobUrls, (batch, blobUrl) -> batch.setTier(blobUrl, accessTier));
     }

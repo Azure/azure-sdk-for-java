@@ -4,6 +4,7 @@
 package com.azure.storage.file;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 import com.azure.core.annotation.ServiceClient;
@@ -507,7 +508,7 @@ public class ShareAsyncClient {
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 

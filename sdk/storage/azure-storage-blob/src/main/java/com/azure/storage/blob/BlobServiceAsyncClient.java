@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -228,7 +229,7 @@ public final class BlobServiceAsyncClient {
         try {
             return this.listBlobContainers(new ListBlobContainersOptions());
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -247,7 +248,7 @@ public final class BlobServiceAsyncClient {
         try {
             return listBlobContainersWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 

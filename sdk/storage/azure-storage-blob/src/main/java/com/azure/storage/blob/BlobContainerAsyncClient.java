@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -606,7 +607,7 @@ public final class BlobContainerAsyncClient {
         try {
             return this.listBlobsFlat(new ListBlobsOptions());
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -639,7 +640,7 @@ public final class BlobContainerAsyncClient {
         try {
             return listBlobsFlatWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -733,7 +734,7 @@ public final class BlobContainerAsyncClient {
         try {
             return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -773,7 +774,7 @@ public final class BlobContainerAsyncClient {
         try {
             return listBlobsHierarchyWithOptionalTimeout(delimiter, options, null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 

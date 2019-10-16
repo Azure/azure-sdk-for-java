@@ -68,6 +68,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -1004,7 +1005,7 @@ public class FileAsyncClient {
         try {
             return listRanges(null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -1027,7 +1028,7 @@ public class FileAsyncClient {
         try {
             return listRangesWithOptionalTimeout(range, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -1064,7 +1065,7 @@ public class FileAsyncClient {
         try {
             return listHandles(null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -1087,7 +1088,7 @@ public class FileAsyncClient {
         try {
             return listHandlesWithOptionalTimeout(maxResultsPerPage, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -1127,7 +1128,7 @@ public class FileAsyncClient {
         try {
             return forceCloseHandlesWithOptionalTimeout(handleId, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 

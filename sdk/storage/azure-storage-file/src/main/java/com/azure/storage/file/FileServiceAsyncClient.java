@@ -4,6 +4,7 @@
 package com.azure.storage.file;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 import com.azure.core.annotation.ServiceClient;
@@ -123,7 +124,7 @@ public final class FileServiceAsyncClient {
         try {
             return listShares(null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -161,7 +162,7 @@ public final class FileServiceAsyncClient {
         try {
             return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -203,7 +204,7 @@ public final class FileServiceAsyncClient {
                         response.getDeserializedHeaders()));
             return new PagedFlux<>(() -> retriever.apply(marker), retriever);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 

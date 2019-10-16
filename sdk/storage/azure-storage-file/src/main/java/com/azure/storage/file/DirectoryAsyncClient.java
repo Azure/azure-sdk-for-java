@@ -45,6 +45,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -469,7 +470,7 @@ public class DirectoryAsyncClient {
         try {
             return listFilesAndDirectories(null, null);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -497,7 +498,7 @@ public class DirectoryAsyncClient {
         try {
             return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -538,7 +539,7 @@ public class DirectoryAsyncClient {
         try {
             return listHandlesWithOptionalTimeout(maxResultPerPage, recursive, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
@@ -581,7 +582,7 @@ public class DirectoryAsyncClient {
         try {
             return forceCloseHandlesWithOptionalTimeout(handleId, recursive, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
