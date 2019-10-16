@@ -740,7 +740,6 @@ class BlobAPITest extends APISpec {
         bc.copyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null, null, null, null).getStatusCode() == 202
     }
 
-    @Ignore
     def "Copy poller"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -763,12 +762,12 @@ class BlobAPITest extends APISpec {
         properties.getCopyCompletionTime() != null
         properties.getCopyProgress() != null
         properties.getCopySource() != null
-        headers.getValue("x-ms-copy-id") != null
+        properties.getCopyId() != null
 
         def lastResponse = poller.getLastPollResponse()
         lastResponse != null
         lastResponse.getValue() != null
-        lastResponse.getValue().getCopyId() == headers.getValue("x-ms-copy-id")
+        lastResponse.getValue().getCopyId() == properties.getCopyId()
     }
 
     @Unroll
