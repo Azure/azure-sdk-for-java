@@ -148,7 +148,7 @@ public class FileJavaDocCodeSamples {
      */
     public void beginCopy() {
         FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map
+        // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map-duration
         Poller<FileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
@@ -157,7 +157,7 @@ public class FileJavaDocCodeSamples {
                 final FileCopyInfo value = response.getValue();
                 System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
             });
-        // END: com.azure.storage.file.fileClient.beginCopy#string-map
+        // END: com.azure.storage.file.fileClient.beginCopy#string-map-duration
     }
 
     /**

@@ -182,7 +182,7 @@ public class FileClient {
      *
      * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.beginCopy#string-map}
+     * {@codesnippet com.azure.storage.file.fileClient.beginCopy#string-map-duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>

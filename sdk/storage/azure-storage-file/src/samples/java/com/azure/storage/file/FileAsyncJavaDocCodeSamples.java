@@ -42,7 +42,6 @@ public class FileAsyncJavaDocCodeSamples {
         // END: com.azure.storage.file.fileAsyncClient.instantiation
     }
 
-
     /**
      * Generates code sample for creating a {@link FileAsyncClient} with SAS token.
      * @return An instance of {@link FileAsyncClient}
@@ -90,7 +89,6 @@ public class FileAsyncJavaDocCodeSamples {
         return fileAsyncClient;
     }
 
-
     /**
      * Generates a code sample for using {@link FileAsyncClient#create(long)}
      */
@@ -136,7 +134,7 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void beginCopy() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.beginCopy#string-map
+        // BEGIN: com.azure.storage.file.fileAsyncClient.beginCopy#string-map-duration
         Poller<FileCopyInfo, Void> poller = fileAsyncClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
@@ -146,7 +144,7 @@ public class FileAsyncJavaDocCodeSamples {
                 System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
             }, error -> System.err.println("Error: " + error),
             () -> System.out.println("Complete copying the file."));
-        // END: com.azure.storage.file.fileAsyncClient.beginCopy#string-map
+        // END: com.azure.storage.file.fileAsyncClient.beginCopy#string-map-duration
     }
 
     /**
