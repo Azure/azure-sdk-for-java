@@ -574,7 +574,7 @@ public class FileAsyncJavaDocCodeSamples {
      */
     public void forceCloseHandle() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithConnectionString();
-        // BEGIN com.azure.storage.file.FileAsyncClient.forceCloseHandle#String
+        // BEGIN: com.azure.storage.file.FileAsyncClient.forceCloseHandle#String
         fileAsyncClient.listHandles().subscribe(handleItem ->
             fileAsyncClient.forceCloseHandle(handleItem.getHandleId()).subscribe(ignored ->
                 System.out.printf("Closed handle %s on resource %s%n",

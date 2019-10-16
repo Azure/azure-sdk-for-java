@@ -35,10 +35,10 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.FileStorageException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,7 +66,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.core.implementation.util.FluxUtil.fluxContext;
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -1001,7 +1001,11 @@ public class FileAsyncClient {
      * @return An empty response.
      */
     public Mono<Void> forceCloseHandle(String handleId) {
-        return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+        try {
+            return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1020,7 +1024,11 @@ public class FileAsyncClient {
      * @return A response that only contains headers and response status code.
      */
     public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
-        return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+        try {
+            return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
@@ -1044,7 +1052,12 @@ public class FileAsyncClient {
      * @return The number of handles closed.
      */
     public Mono<Integer> forceCloseAllHandles() {
-        return fluxContext(context -> forceCloseAllHandlesWithOptionalTimeout(null, context)).reduce(0, Integer::sum);
+        try {
+            return withContext(context -> forceCloseAllHandlesWithOptionalTimeout(null, context)
+                .reduce(0, Integer::sum));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     PagedFlux<Integer> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {

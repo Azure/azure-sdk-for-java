@@ -407,7 +407,7 @@ public class DirectoryAsyncJavaDocCodeSamples {
      */
     public void forceCloseHandle() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithConnectionString();
-        // BEGIN com.azure.storage.file.DirectoryAsyncClient.forceCloseHandle#String
+        // BEGIN: com.azure.storage.file.DirectoryAsyncClient.forceCloseHandle#String
         directoryAsyncClient.listHandles(null, true).subscribe(handleItem ->
             directoryAsyncClient.forceCloseHandle(handleItem.getHandleId()).subscribe(ignored ->
                 System.out.printf("Closed handle %s on resource %s%n",

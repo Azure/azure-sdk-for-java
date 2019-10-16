@@ -26,8 +26,8 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
-import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.FileStorageException;
+import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
@@ -44,7 +44,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.fluxContext;
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -522,7 +522,11 @@ public class DirectoryAsyncClient {
      * @return An empty response.
      */
     public Mono<Void> forceCloseHandle(String handleId) {
-        return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+        try {
+            return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -541,7 +545,11 @@ public class DirectoryAsyncClient {
      * @return A response that only contains headers and response status code.
      */
     public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
-        return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+        try {
+            return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
@@ -567,8 +575,12 @@ public class DirectoryAsyncClient {
      * @return The number of handles closed.
      */
     public Mono<Integer> forceCloseAllHandles(boolean recursive) {
-        return fluxContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context))
-            .reduce(0, Integer::sum);
+        try {
+            return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context)
+                .reduce(0, Integer::sum));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
