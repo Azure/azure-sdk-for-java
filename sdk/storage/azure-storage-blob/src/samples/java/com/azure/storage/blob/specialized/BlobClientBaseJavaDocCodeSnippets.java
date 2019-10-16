@@ -221,7 +221,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void beginCopyFromUrl() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Duration-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -232,7 +232,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         PollResponse<BlobCopyInfo> response = poller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
         System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Duration-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
     }
 
     /**
