@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.UUID;
 
 /**
@@ -71,8 +72,8 @@ public class FileSample {
         String clientURL = srcFileClient.getFileUrl();
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
-
-        Poller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null);
+        Duration pollInterval = Duration.ofSeconds(2);
+        Poller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
 
         poller.getObserver().subscribe(pollResponse -> {
             final FileCopyInfo copyInfo = pollResponse.getValue();
