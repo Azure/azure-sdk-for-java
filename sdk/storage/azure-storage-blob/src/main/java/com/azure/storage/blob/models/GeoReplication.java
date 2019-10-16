@@ -21,7 +21,7 @@ public final class GeoReplication {
      * 'bootstrap', 'unavailable'
      */
     @JsonProperty(value = "Status", required = true)
-    private GeoReplicationStatusType status;
+    private GeoReplicationStatus status;
 
     /*
      * A GMT date/time value, to the second. All primary writes preceding this
@@ -38,7 +38,7 @@ public final class GeoReplication {
      *
      * @return the status value.
      */
-    public GeoReplicationStatusType getStatus() {
+    public GeoReplicationStatus getStatus() {
         return this.status;
     }
 
@@ -49,7 +49,7 @@ public final class GeoReplication {
      * @param status the status value to set.
      * @return the GeoReplication object itself.
      */
-    public GeoReplication setStatus(GeoReplicationStatusType status) {
+    public GeoReplication setStatus(GeoReplicationStatus status) {
         this.status = status;
         return this;
     }
