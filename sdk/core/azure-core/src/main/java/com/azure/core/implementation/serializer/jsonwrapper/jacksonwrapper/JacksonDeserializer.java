@@ -130,22 +130,6 @@ public class JacksonDeserializer implements JsonApi {
         return null;
     }
 
-    @Override
-    public <T> List<T> readJsonFileToList(String fileName, Type<List<T>> type) {
-        assert type.isParameterizedType();
-
-        try {
-            Reader reader = new InputStreamReader(
-                getClass().getClassLoader().getResourceAsStream(fileName));
-
-            return objectMapper.readValue(reader, listTypeReference(type));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     private <T> CollectionType listTypeReference(Type<T> type) {
         return typeFactory.constructCollectionType(List.class, typeFactory.constructType(type.getListType()));
     }

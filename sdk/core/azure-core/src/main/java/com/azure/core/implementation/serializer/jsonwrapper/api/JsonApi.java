@@ -53,16 +53,6 @@ public interface JsonApi {
     <T> List<T> readStringToList(String json, Type<List<T>> type);
 
     /**
-     * Reads a json from file in the project's resources folder, and converts it to a list of objects.
-     * The json file must include a list of jsons (objects), that correspond to the type's class structure.
-     * @param fileName The json file name in resources folder
-     * @param type type to deserialize to
-     * @param <T> type to deserialize to
-     * @return list of objects of type T
-     */
-    <T> List<T> readJsonFileToList(String fileName, Type<List<T>> type);
-
-    /**
      * Convert an Object to instance of class T
      * @param source source Object
      * @param cls class type to convert to
