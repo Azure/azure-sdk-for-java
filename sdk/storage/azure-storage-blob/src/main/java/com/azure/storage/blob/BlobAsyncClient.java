@@ -46,6 +46,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -173,7 +174,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-        return this.uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -219,69 +224,75 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHTTPHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
-        // TODO: Parallelism parameter? Or let Reactor handle it?
-        // TODO: Sample/api reference
-        Objects.requireNonNull(data, "'data' must not be null");
-        BlobAccessConditions accessConditionsFinal = accessConditions == null
-            ? new BlobAccessConditions() : accessConditions;
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions() : parallelTransferOptions;
-        int blockSize = finalParallelTransferOptions.getBlockSize();
-        int numBuffers = finalParallelTransferOptions.getNumBuffers();
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        try {
+            // TODO: Parallelism parameter? Or let Reactor handle it?
+            // TODO: Sample/api reference
+            Objects.requireNonNull(data, "'data' must not be null");
+            BlobAccessConditions accessConditionsFinal = accessConditions == null
+                ? new BlobAccessConditions() : accessConditions;
+            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+                ? new ParallelTransferOptions() : parallelTransferOptions;
+            int blockSize = finalParallelTransferOptions.getBlockSize();
+            int numBuffers = finalParallelTransferOptions.getNumBuffers();
+            ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong(0);
-        Lock progressLock = new ReentrantLock();
+            // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+            AtomicLong totalProgress = new AtomicLong(0);
+            Lock progressLock = new ReentrantLock();
 
-        // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
+            // Validation done in the constructor.
+            UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
 
-        /*
-        Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
-        as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
-        filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
-        ordering of the buffers, but we don't really care if one is split before another.
-         */
-        Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
-            if (buffer.remaining() <= blockSize) {
-                return Flux.just(buffer);
-            }
-            int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
-            return Flux.range(0, numSplits)
-                .map(i -> {
-                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                    duplicate.position(i * blockSize);
-                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
-                    return duplicate;
-                });
-        });
+            /*
+            Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
+            as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool
+            buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
+            preserve the ordering of the buffers, but we don't really care if one is split before another.
+             */
+            Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
+                if (buffer.remaining() <= blockSize) {
+                    return Flux.just(buffer);
+                }
+                int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+                return Flux.range(0, numSplits)
+                    .map(i -> {
+                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                        duplicate.position(i * blockSize);
+                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                        return duplicate;
+                    });
+            });
 
-        /*
-         Write to the pool and upload the output.
-         */
-        return chunkedSource.concatMap(pool::write)
-            .concatWith(Flux.defer(pool::flush))
-            .flatMapSequential(buffer -> {
-                // Report progress as necessary.
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
+            /*
+             Write to the pool and upload the output.
+             */
+            return chunkedSource.concatMap(pool::write)
+                .concatWith(Flux.defer(pool::flush))
+                .flatMapSequential(buffer -> {
+                    // Report progress as necessary.
+                    Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
                         progressReceiver, progressLock, totalProgress);
 
 
-                final String blockId = Base64.getEncoder().encodeToString(
-                    UUID.randomUUID().toString().getBytes(UTF_8));
+                    final String blockId = Base64.getEncoder().encodeToString(
+                        UUID.randomUUID().toString().getBytes(UTF_8));
 
-                return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
-                    accessConditionsFinal.getLeaseAccessConditions())
-                    // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
-                    .map(x -> blockId)
-                    .doFinally(x -> pool.returnBuffer(buffer))
-                    .flux();
+                    return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
+                        accessConditionsFinal.getLeaseAccessConditions())
+                        // We only care about the stageBlock insofar as it was successful,
+                        // but we need to collect the ids.
+                        .map(x -> blockId)
+                        .doFinally(x -> pool.returnBuffer(buffer))
+                        .flux();
 
-            }) // TODO: parallelism?
-            .collect(Collectors.toList())
-            .flatMap(ids ->
-                getBlockBlobAsyncClient().commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
+                }) // TODO: parallelism?
+                .collect(Collectors.toList())
+                .flatMap(ids ->
+                    getBlockBlobAsyncClient()
+                        .commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
 
     }
 
@@ -297,7 +308,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      */
     public Mono<Void> uploadFromFile(String filePath) {
-        return uploadFromFile(filePath, null, null, null, null, null);
+        try {
+            return uploadFromFile(filePath, null, null, null, null, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -322,41 +337,45 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        try {
+            final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
+                ? new ParallelTransferOptions()
+                : parallelTransferOptions;
+            ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
 
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong(0);
-        Lock progressLock = new ReentrantLock();
+            // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
+            AtomicLong totalProgress = new AtomicLong(0);
+            Lock progressLock = new ReentrantLock();
 
-        return Mono.using(() -> uploadFileResourceSupplier(filePath),
-            channel -> {
-                final SortedMap<Long, String> blockIds = new TreeMap<>();
-                return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
-                    .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
-                    .flatMap(chunk -> {
-                        String blockId = blockIds.get(chunk.getOffset());
+            return Mono.using(() -> uploadFileResourceSupplier(filePath),
+                channel -> {
+                    final SortedMap<Long, String> blockIds = new TreeMap<>();
+                    return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
+                        .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
+                        .flatMap(chunk -> {
+                            String blockId = blockIds.get(chunk.getOffset());
 
-                        Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                            FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                            progressReceiver, progressLock, totalProgress);
+                            Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
+                                FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
+                                progressReceiver, progressLock, totalProgress);
 
-                        return getBlockBlobAsyncClient()
-                            .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
-                    })
-                    .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
-                        new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
-                    .then()
-                    .doOnTerminate(() -> {
-                        try {
-                            channel.close();
-                        } catch (IOException e) {
-                            throw logger.logExceptionAsError(new UncheckedIOException(e));
-                        }
-                    });
-            }, this::uploadFileCleanup);
+                            return getBlockBlobAsyncClient()
+                                .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
+                        })
+                        .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
+                            new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
+                        .then()
+                        .doOnTerminate(() -> {
+                            try {
+                                channel.close();
+                            } catch (IOException e) {
+                                throw logger.logExceptionAsError(new UncheckedIOException(e));
+                            }
+                        });
+                }, this::uploadFileCleanup);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

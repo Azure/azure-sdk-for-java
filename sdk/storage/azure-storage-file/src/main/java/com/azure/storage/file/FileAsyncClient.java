@@ -66,7 +66,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -148,7 +150,11 @@ public class FileAsyncClient {
      * is an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
-        return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -174,8 +180,12 @@ public class FileAsyncClient {
      */
     public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
-        return withContext(context ->
-            createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+        try {
+            return withContext(context ->
+                createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
@@ -218,7 +228,11 @@ public class FileAsyncClient {
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public Mono<FileCopyInfo> startCopy(String sourceUrl, Map<String, String> metadata) {
-        return startCopyWithResponse(sourceUrl, metadata).flatMap(FluxUtil::toMono);
+        try {
+            return startCopyWithResponse(sourceUrl, metadata).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -240,7 +254,11 @@ public class FileAsyncClient {
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public Mono<Response<FileCopyInfo>> startCopyWithResponse(String sourceUrl, Map<String, String> metadata) {
-        return withContext(context -> startCopyWithResponse(sourceUrl, metadata, context));
+        try {
+            return withContext(context -> startCopyWithResponse(sourceUrl, metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileCopyInfo>> startCopyWithResponse(String sourceUrl, Map<String, String> metadata,
@@ -266,7 +284,11 @@ public class FileAsyncClient {
      * @return An empty response.
      */
     public Mono<Void> abortCopy(String copyId) {
-        return abortCopyWithResponse(copyId).flatMap(FluxUtil::toMono);
+        try {
+            return abortCopyWithResponse(copyId).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -285,7 +307,11 @@ public class FileAsyncClient {
      * @return A response containing the status of aborting copy the file.
      */
     public Mono<Response<Void>> abortCopyWithResponse(String copyId) {
-        return withContext(context -> abortCopyWithResponse(copyId, context));
+        try {
+            return withContext(context -> abortCopyWithResponse(copyId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> abortCopyWithResponse(String copyId, Context context) {
@@ -312,7 +338,11 @@ public class FileAsyncClient {
      * @return An empty response.
      */
     public Mono<FileProperties> downloadToFile(String downloadFilePath) {
-        return downloadToFileWithResponse(downloadFilePath, null).flatMap(FluxUtil::toMono);
+        try {
+            return downloadToFileWithResponse(downloadFilePath, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -335,7 +365,11 @@ public class FileAsyncClient {
      * @return An empty response.
      */
     public Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range) {
-        return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
+        try {
+            return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileProperties>> downloadToFileWithResponse(String downloadFilePath, FileRange range,
@@ -404,7 +438,11 @@ public class FileAsyncClient {
      * @return A reactive response containing the file data.
      */
     public Flux<ByteBuffer> download() {
-        return downloadWithResponse(null, null).flatMapMany(Response::getValue);
+        try {
+            return downloadWithResponse(null, null).flatMapMany(Response::getValue);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
     }
 
     /**
@@ -425,7 +463,11 @@ public class FileAsyncClient {
      * @return A reactive response containing response data and the file data.
      */
     public Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5) {
-        return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context));
+        try {
+            return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(FileRange range, Boolean rangeGetContentMD5,
@@ -453,7 +495,11 @@ public class FileAsyncClient {
      * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<Void> delete() {
-        return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -472,7 +518,11 @@ public class FileAsyncClient {
      * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(this::deleteWithResponse);
+        try {
+            return withContext(this::deleteWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -496,7 +546,11 @@ public class FileAsyncClient {
      * @return {@link FileProperties Storage file properties}
      */
     public Mono<FileProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -515,7 +569,11 @@ public class FileAsyncClient {
      * @return A response containing the {@link FileProperties storage file properties} and response status code
      */
     public Mono<Response<FileProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileProperties>> getPropertiesWithResponse(Context context) {
@@ -554,8 +612,12 @@ public class FileAsyncClient {
      */
     public Mono<FileInfo> setProperties(long newFileSize, FileHttpHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
-        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -587,8 +649,12 @@ public class FileAsyncClient {
      */
     public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission) {
-        return withContext(context ->
-            setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
+        try {
+            return withContext(context ->
+                setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
@@ -635,7 +701,11 @@ public class FileAsyncClient {
      * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public Mono<FileMetadataInfo> setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+        try {
+            return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -661,13 +731,21 @@ public class FileAsyncClient {
      * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public Mono<Response<FileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
-        return withContext(context -> setMetadataWithResponse(metadata, context));
+        try {
+            return withContext(context -> setMetadataWithResponse(metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.files()
-            .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context)
-            .map(this::setMetadataResponse);
+        try {
+            return azureFileStorageClient.files()
+                .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata, context)
+                .map(this::setMetadataResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -688,7 +766,11 @@ public class FileAsyncClient {
      * @return A response that only contains headers and response status code
      */
     public Mono<FileUploadInfo> upload(Flux<ByteBuffer> data, long length) {
-        return uploadWithResponse(data, length, 0L).flatMap(FluxUtil::toMono);
+        try {
+            return uploadWithResponse(data, length, 0L).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -714,7 +796,11 @@ public class FileAsyncClient {
      * status code 413 (Request Entity Too Large)
      */
     public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset) {
-        return withContext(context -> uploadWithResponse(data, length, offset, context));
+        try {
+            return withContext(context -> uploadWithResponse(data, length, offset, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
@@ -748,8 +834,12 @@ public class FileAsyncClient {
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<FileUploadRangeFromUrlInfo> uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
                                                                URI sourceURI) {
-        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -774,8 +864,12 @@ public class FileAsyncClient {
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
             long destinationOffset, long sourceOffset, URI sourceURI) {
-        return withContext(context ->
-            uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
+        try {
+            return withContext(context ->
+                uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
@@ -806,7 +900,11 @@ public class FileAsyncClient {
      * @return The {@link FileUploadInfo file upload info}
      */
     public Mono<FileUploadInfo> clearRange(long length) {
-        return clearRangeWithResponse(length, 0).flatMap(FluxUtil::toMono);
+        try {
+            return clearRangeWithResponse(length, 0).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -828,7 +926,11 @@ public class FileAsyncClient {
      * @return A response of {@link FileUploadInfo file upload info} that only contains headers and response status code
      */
     public Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset) {
-        return withContext(context -> clearRangeWithResponse(length, offset, context));
+        try {
+            return withContext(context -> clearRangeWithResponse(length, offset, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileUploadInfo>> clearRangeWithResponse(long length, long offset, Context context) {
@@ -858,13 +960,18 @@ public class FileAsyncClient {
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Void> uploadFromFile(String uploadFilePath) {
-        return Mono.using(() -> channelSetup(uploadFilePath, StandardOpenOption.READ),
-            channel -> Flux.fromIterable(sliceFile(uploadFilePath))
-                .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
-                    chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1, chunk.getStart())
-                .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
-                .then(), this::channelCleanUp);
+        try {
+            return Mono.using(() -> channelSetup(uploadFilePath, StandardOpenOption.READ),
+                channel -> Flux.fromIterable(sliceFile(uploadFilePath))
+                    .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
+                        chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1, chunk.getStart())
+                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
+                        .retry(3,
+                            throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
+                    .then(), this::channelCleanUp);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     private List<FileRange> sliceFile(String path) {
@@ -896,7 +1003,11 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files.
      */
     public PagedFlux<FileRange> listRanges() {
-        return listRanges(null);
+        try {
+            return listRanges(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -915,7 +1026,11 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
     public PagedFlux<FileRange> listRanges(FileRange range) {
-        return listRangesWithOptionalTimeout(range, null, Context.NONE);
+        try {
+            return listRangesWithOptionalTimeout(range, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<FileRange> listRangesWithOptionalTimeout(FileRange range, Duration timeout, Context context) {
@@ -948,7 +1063,11 @@ public class FileAsyncClient {
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
     public PagedFlux<HandleItem> listHandles() {
-        return listHandles(null);
+        try {
+            return listHandles(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -967,7 +1086,11 @@ public class FileAsyncClient {
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
     public PagedFlux<HandleItem> listHandles(Integer maxResultsPerPage) {
-        return listHandlesWithOptionalTimeout(maxResultsPerPage, null, Context.NONE);
+        try {
+            return listHandlesWithOptionalTimeout(maxResultsPerPage, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultsPerPage, Duration timeout, Context context) {

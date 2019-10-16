@@ -59,7 +59,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Create null"() {
         when:
-        primaryQueueServiceAsyncClient.createQueue(null)
+        primaryQueueServiceAsyncClient.createQueue(null).block()
         then:
         thrown(NullPointerException)
     }
