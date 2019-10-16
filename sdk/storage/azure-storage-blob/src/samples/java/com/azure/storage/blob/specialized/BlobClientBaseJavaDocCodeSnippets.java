@@ -62,11 +62,11 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#beginCopyFromUrl(URL)}
+     * Code snippets for {@link BlobClientBase#beginCopyFromUrl(URL, Duration)}
      */
     public void startCopyFromURL() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL
-        final Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url);
+        final Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, Duration.ofSeconds(2));
         poller.getObserver().subscribe(response -> {
             System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
         });
@@ -218,7 +218,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobClientBase#beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority,
-     * ModifiedAccessConditions, BlobAccessConditions)}
+     * ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void beginCopyFromUrl() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
@@ -227,8 +227,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
-        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-            modifiedAccessConditions, blobAccessConditions);
+        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
+            RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2));
 
         PollResponse<BlobCopyInfo> response = poller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
         System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());

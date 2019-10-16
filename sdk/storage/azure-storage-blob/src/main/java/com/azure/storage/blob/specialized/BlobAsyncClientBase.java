@@ -249,12 +249,13 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     *
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
-    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceUrl) {
-        return beginCopyFromUrl(sourceUrl, null, null, null, null, null);
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceUrl, Duration pollInterval) {
+        return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
     /**
@@ -268,6 +269,8 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
@@ -282,8 +285,9 @@ public class BlobAsyncClientBase {
      */
     public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-            BlobAccessConditions destAccessConditions) {
+            BlobAccessConditions destAccessConditions, Duration pollInterval) {
 
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         final ModifiedAccessConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions()
             : sourceModifiedAccessConditions;
@@ -298,7 +302,7 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedCondition.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
-        return new Poller<>(Duration.ofSeconds(1),
+        return new Poller<>(interval,
             response -> {
                 try {
                     return onPoll(response);

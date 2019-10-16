@@ -215,11 +215,13 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceURL) {
-        return beginCopyFromUrl(sourceURL, null, null, null, null, null);
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceURL, Duration pollInterval) {
+        return beginCopyFromUrl(sourceURL, null, null, null, null, null, pollInterval);
     }
 
     /**
@@ -241,16 +243,17 @@ public class BlobClientBase {
      * related to when the blob was changed relative to the given request. The request will fail if the specified
      * condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
-     *
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
     public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceURL, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-            BlobAccessConditions destAccessConditions) {
+            BlobAccessConditions destAccessConditions, Duration pollInterval) {
 
         return client.beginCopyFromUrl(sourceURL, metadata, tier, priority, sourceModifiedAccessConditions,
-                destAccessConditions);
+                destAccessConditions, pollInterval);
     }
 
     /**

@@ -58,11 +58,11 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL)}
+     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL, Duration)}
      */
     public void beginCopyFromUrl() {
         // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
-        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url);
+        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, Duration.ofSeconds(2));
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
         poller.block();
@@ -215,7 +215,7 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
+     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void beginCopyFromUrlCodeSnippets() {
 
@@ -227,7 +227,7 @@ public class BlobClientJavaDocCodeSnippets {
             new LeaseAccessConditions().setLeaseId(leaseId));
 
         Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
-            RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions);
+            RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2));
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
         poller.block();

@@ -743,7 +743,7 @@ class BlobAPITest extends APISpec {
     def "Copy poller"() {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def poller = copyDestBlob.beginCopyFromUrl(new URL(bc.getBlobUrl()), null, null, null, null, null);
+        def poller = copyDestBlob.beginCopyFromUrl(new URL(bc.getBlobUrl()), null, null, null, null, null, null);
 
         when:
         def verifier = StepVerifier.create(poller.getObserver())

@@ -227,15 +227,18 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
      * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata) {
+    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
         final AtomicReference<String> copyId = new AtomicReference<>();
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
 
-        return new Poller<>(Duration.ofSeconds(1),
+        return new Poller<>(interval,
             response -> {
                 try {
                     return onPoll(response);

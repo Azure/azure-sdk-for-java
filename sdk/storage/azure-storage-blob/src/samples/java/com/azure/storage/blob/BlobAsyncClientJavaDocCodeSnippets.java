@@ -20,6 +20,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
@@ -52,11 +53,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#beginCopyFromUrl(URL)}
+     * Code snippets for {@link BlobAsyncClient#beginCopyFromUrl(URL, java.time.Duration)}
      */
     public void beginCopyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.beginCopyFromUrl#URL
-        client.beginCopyFromUrl(url).getObserver()
+        client.beginCopyFromUrl(url, Duration.ofSeconds(2)).getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.beginCopyFromUrl#URL
     }
@@ -228,7 +229,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#beginCopyFromUrl(URL, Map, AccessTier,
-     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
+     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void beginCopyFromUrlCodeSnippets() {
 
@@ -238,9 +239,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+        Duration pollInterval = Duration.ofSeconds(2);
 
         client.beginCopyFromUrl(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD, modifiedAccessConditions,
-            blobAccessConditions)
+            blobAccessConditions, pollInterval)
             .getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
         // END: com.azure.storage.blob.BlobAsyncClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
