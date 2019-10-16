@@ -28,15 +28,9 @@ public class AsyncSamples {
             .doOnSuccess(response -> queueAsyncClient.enqueueMessage("This is message 1"))
             .then(queueAsyncClient.enqueueMessage("This is message 2"))
             .subscribe(
-                response -> {
-                    System.out.println("Message successfully equeueed by queueAsyncClient. Message id:" + response.getMessageId());
-                },
-                err -> {
-                    System.out.println("Error thrown when enqueue the message. Error message: " + err.getMessage());
-                },
-                () -> {
-                    System.out.println("The enqueue has been completed.");
-                }
-            );
+                response -> System.out.println(
+                    "Message successfully equeueed by queueAsyncClient. Message id:" + response.getMessageId()),
+                err -> System.out.println("Error thrown when enqueue the message. Error message: " + err.getMessage()),
+                () -> System.out.println("The enqueue has been completed."));
     }
 }

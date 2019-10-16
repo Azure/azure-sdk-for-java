@@ -7,12 +7,12 @@ package com.azure.storage.queue.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.queue.models.StorageServiceProperties;
+import com.azure.storage.queue.models.QueueServiceProperties;
 
 /**
  * Contains all response data for the getProperties operation.
  */
-public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGetPropertiesHeaders, StorageServiceProperties> {
+public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGetPropertiesHeaders, QueueServiceProperties> {
     /**
      * Creates an instance of ServicesGetPropertiesResponse.
      *
@@ -22,7 +22,7 @@ public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGet
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, StorageServiceProperties value, ServiceGetPropertiesHeaders headers) {
+    public ServicesGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, QueueServiceProperties value, ServiceGetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -30,7 +30,7 @@ public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGet
      * @return the deserialized response body.
      */
     @Override
-    public StorageServiceProperties getValue() {
+    public QueueServiceProperties getValue() {
         return super.getValue();
     }
 }
