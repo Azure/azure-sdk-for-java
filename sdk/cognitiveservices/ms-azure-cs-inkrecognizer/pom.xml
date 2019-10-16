@@ -10,8 +10,6 @@
 
     <name>Microsoft Azure SDK for Cognitive Service Ink Recognizer</name>
     <description>This package contains Microsoft Cognitive Service InkRecognizer SDK.</description>
-    <name>Microsoft Azure SDK for InkRecognizer</name>
-    <description>This package contains Microsoft Azure InkRecognizer SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <parent>
