@@ -421,8 +421,8 @@ class QueueAPITests extends APISpec {
 
         def dequeueMsg = queueClient.receiveMessage().iterator().next()
         when:
-        def updateMsgResponse = queueClient.updateMessageWithResponse(updateMsg,
-            dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), Duration.ofSeconds(1), null,  null)
+        def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null,  null)
         QueueTestHelper.sleepInRecord(Duration.ofSeconds(2))
         def peekMsgIter = queueClient.peekMessage().iterator().next()
         then:
