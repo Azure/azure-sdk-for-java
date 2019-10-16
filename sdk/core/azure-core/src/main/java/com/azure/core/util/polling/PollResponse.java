@@ -80,7 +80,7 @@ public final class PollResponse<T> {
          * Creates or finds a {@link OperationStatus} from its string representation.
          * @param name a name to look for
          * @param isComplete a status to indicate if the operation is complete or not.
-         * @throws IllegalArgumentException  if {@code name} matches a pre-configured {@link OperationStatus} but
+         * @throws IllegalArgumentException if {@code name} matches a pre-configured {@link OperationStatus} but
          * {@code isComplete} doesn't match its pre-configured complete status.
          * @return the corresponding {@link OperationStatus}
          */
