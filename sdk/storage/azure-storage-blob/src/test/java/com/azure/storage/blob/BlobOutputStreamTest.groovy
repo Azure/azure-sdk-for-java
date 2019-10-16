@@ -1,7 +1,7 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.PageRange
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 
 class BlobOutputStreamTest extends APISpec {

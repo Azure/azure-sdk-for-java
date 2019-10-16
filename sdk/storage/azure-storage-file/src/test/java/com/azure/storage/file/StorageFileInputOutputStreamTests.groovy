@@ -3,11 +3,7 @@
 
 package com.azure.storage.file
 
-import com.azure.storage.common.Constants
-import com.azure.storage.file.APISpec
-import com.azure.storage.file.FileTestHelper
-import com.azure.storage.file.StorageFileInputStream
-import com.azure.storage.file.StorageFileOutputStream
+import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 
 class StorageFileInputOutputStreamTests extends APISpec {
