@@ -126,7 +126,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
-            return this.uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+            return this.uploadWithResponse(data, parallelTransferOptions, null, null, null, null)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

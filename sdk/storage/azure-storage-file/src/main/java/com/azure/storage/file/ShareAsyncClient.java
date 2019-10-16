@@ -42,8 +42,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a share in Azure
  * Storage Share. Operations allowed by the azureFileStorageClient are creating and deleting the share, creating
@@ -771,7 +769,8 @@ public class ShareAsyncClient {
         Map<String, String> metadata) {
         try {
             return withContext(context ->
-                createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+                createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

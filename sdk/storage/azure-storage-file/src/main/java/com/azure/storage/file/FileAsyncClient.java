@@ -966,7 +966,8 @@ public class FileAsyncClient {
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1, chunk.getStart())
                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
+                        .retry(3,
+                            throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
                     .then(), this::channelCleanUp);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

@@ -653,8 +653,9 @@ public class DirectoryAsyncClient {
     public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
-            return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
-                metadata, context));
+            return withContext(
+                context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
+                    metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -777,7 +778,8 @@ public class DirectoryAsyncClient {
         Map<String, String> metadata) {
         try {
             return withContext(context ->
-                createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+                createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

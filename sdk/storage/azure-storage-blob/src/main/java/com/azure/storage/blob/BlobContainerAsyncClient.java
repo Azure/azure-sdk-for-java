@@ -537,7 +537,8 @@ public final class BlobContainerAsyncClient {
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<SignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions) {
         try {
-            return withContext(context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
+            return withContext(
+                context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

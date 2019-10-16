@@ -149,7 +149,8 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+            return withContext(
+                context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

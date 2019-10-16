@@ -245,9 +245,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             /*
             Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
-            as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool buffer
-            filling up with more data to write). We use flatMapSequential because we need to guarantee we preserve the
-            ordering of the buffers, but we don't really care if one is split before another.
+            as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool
+            buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
+            preserve the ordering of the buffers, but we don't really care if one is split before another.
              */
             Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
                 if (buffer.remaining() <= blockSize) {
@@ -279,7 +279,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                     return getBlockBlobAsyncClient().stageBlockWithResponse(blockId, progressData, buffer.remaining(),
                         accessConditionsFinal.getLeaseAccessConditions())
-                        // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
+                        // We only care about the stageBlock insofar as it was successful,
+                        // but we need to collect the ids.
                         .map(x -> blockId)
                         .doFinally(x -> pool.returnBuffer(buffer))
                         .flux();
@@ -287,7 +288,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 }) // TODO: parallelism?
                 .collect(Collectors.toList())
                 .flatMap(ids ->
-                    getBlockBlobAsyncClient().commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
+                    getBlockBlobAsyncClient()
+                        .commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

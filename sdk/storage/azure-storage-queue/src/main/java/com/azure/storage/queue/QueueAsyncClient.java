@@ -40,8 +40,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
  * Operations allowed by the client are creating and deleting the queue, retrieving and updating metadata and access
@@ -525,7 +523,8 @@ public final class QueueAsyncClient {
     public Mono<Response<EnqueuedMessage>> enqueueMessageWithResponse(String messageText, Duration visibilityTimeout,
         Duration timeToLive) {
         try {
-            return withContext(context -> enqueueMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+            return withContext(
+                context -> enqueueMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

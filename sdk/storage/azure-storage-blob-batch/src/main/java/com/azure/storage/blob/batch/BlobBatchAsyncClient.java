@@ -132,7 +132,8 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
         try {
-            return new PagedFlux<>(() -> withContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions, context)));
+            return new PagedFlux<>(
+                () -> withContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }

@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
  * Azure Storage. Operations allowed by the azureFileStorageClient are creating, listing, and deleting shares and
@@ -177,35 +175,31 @@ public final class FileServiceAsyncClient {
      */
     PagedFlux<ShareItem> listSharesWithOptionalTimeout(String marker, ListSharesOptions options, Duration timeout,
         Context context) {
-        try {
-            final String prefix = (options != null) ? options.getPrefix() : null;
-            final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
-            List<ListSharesIncludeType> include = new ArrayList<>();
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
+        List<ListSharesIncludeType> include = new ArrayList<>();
 
-            if (options != null) {
-                if (options.isIncludeMetadata()) {
-                    include.add(ListSharesIncludeType.METADATA);
-                }
-
-                if (options.isIncludeSnapshots()) {
-                    include.add(ListSharesIncludeType.SNAPSHOTS);
-                }
+        if (options != null) {
+            if (options.isIncludeMetadata()) {
+                include.add(ListSharesIncludeType.METADATA);
             }
 
-            Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-                nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                        .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
-                    timeout)
-                    .map(response -> new PagedResponseBase<>(response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        response.getValue().getShareItems(),
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders()));
-            return new PagedFlux<>(() -> retriever.apply(marker), retriever);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            if (options.isIncludeSnapshots()) {
+                include.add(ListSharesIncludeType.SNAPSHOTS);
+            }
         }
+
+        Function<String, Mono<PagedResponse<ShareItem>>> retriever =
+            nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+                    .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
+                timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getShareItems(),
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders()));
+        return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
     /**

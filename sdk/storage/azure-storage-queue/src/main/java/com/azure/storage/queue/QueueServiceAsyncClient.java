@@ -34,8 +34,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
  * Operations allowed by the client are creating, listing, and deleting queues, retrieving and updating properties of
