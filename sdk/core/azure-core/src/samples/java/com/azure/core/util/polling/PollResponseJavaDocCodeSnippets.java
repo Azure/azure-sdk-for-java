@@ -26,7 +26,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // BEGIN: com.azure.core.util.polling.pollresponse.custom.status
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(OperationStatus.fromString("CUSTOM_OTHER_STATUS"),
+            = new PollResponse<>(OperationStatus.fromString("CUSTOM_OTHER_STATUS", false),
             "my custom response");
         // END: com.azure.core.util.polling.pollresponse.custom.status
     }
@@ -41,7 +41,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // BEGIN: com.azure.core.util.polling.pollresponse.custom.status.retryAfter
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(OperationStatus.fromString("CUSTOM_OTHER_STATUS"),
+            = new PollResponse<>(OperationStatus.fromString("CUSTOM_OTHER_STATUS", false),
             "my custom response", Duration.ofMillis(5000));
         // END: com.azure.core.util.polling.pollresponse.custom.status.retryAfter
     }
@@ -64,7 +64,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // Lets say we want to crete poll response with custom status as OTHER_CUSTOM_STATUS
 
         PollResponse<String> pollResponseWithCustomStatus
-            = new PollResponse<>(OperationStatus.fromString("OTHER_CUSTOM_STATUS"), "my custom status response");
+            = new PollResponse<>(OperationStatus.fromString("OTHER_CUSTOM_STATUS", false), "my custom status response");
         // END: com.azure.core.util.polling.pollresponse.custom.status.value
     }
 
