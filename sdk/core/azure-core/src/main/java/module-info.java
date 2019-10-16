@@ -132,6 +132,7 @@ module com.azure.core {
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
+    uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
 
 
     // indicate JacksonPlugin provides a service implementation for JsonPlugin
