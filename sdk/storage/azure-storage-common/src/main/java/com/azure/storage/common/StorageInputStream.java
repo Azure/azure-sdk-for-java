@@ -14,7 +14,8 @@ import java.nio.ByteBuffer;
  */
 public abstract class StorageInputStream extends InputStream {
     private static final String MARK_EXPIRED = "Stream mark expired.";
-    private static final String UNEXPECTED_STREAM_READ_ERROR = "Unexpected error. Stream returned unexpected number of bytes.";
+    private static final String UNEXPECTED_STREAM_READ_ERROR =
+        "Unexpected error. Stream returned unexpected number of bytes.";
 
     private final ClientLogger logger = new ClientLogger(StorageInputStream.class);
 
