@@ -138,7 +138,7 @@ class QueueSASTests extends APISpec {
         "sastest" == dequeueMsgIterPermissions.next().getMessageText()
 
         when:
-        clientPermissions.updateMessage("testing", resp.getMessageId(), resp.getPopReceipt(), Duration.ofHours(1))
+        clientPermissions.updateMessage(resp.getMessageId(), resp.getPopReceipt(), "testing", Duration.ofHours(1))
 
         then:
         thrown(QueueStorageException)
@@ -179,7 +179,7 @@ class QueueSASTests extends APISpec {
             .queueName(queueClient.getQueueName())
             .sasToken(sasPermissions)
             .buildClient()
-        clientPermissions.updateMessage("testing", resp.getMessageId(), resp.getPopReceipt(), Duration.ZERO)
+        clientPermissions.updateMessage(resp.getMessageId(), resp.getPopReceipt(), "testing", Duration.ZERO)
         def dequeueMsgIterPermissions = clientPermissions.receiveMessages(1).iterator()
 
         then:
