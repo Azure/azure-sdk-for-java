@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -122,7 +123,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         Poller<CertificateOperation, Certificate> certPoller = certificateClient
             .beginCreateCertificate("certificateName", certificatePolicyPkcsSelf);
         certPoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
-        Certificate cert = certPoller.result().block();
+        Certificate cert = certPoller.getResult().block();
         System.out.printf("Certificate created with name %s", cert.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy-Map
 
@@ -132,7 +133,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         Poller<CertificateOperation, Certificate> certificatePoller = certificateClient
             .beginCreateCertificate("certificateName", certificatePolicy);
         certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
-        Certificate certificate = certificatePoller.result().block();
+        Certificate certificate = certificatePoller.getResult().block();
         System.out.printf("Certificate created with name %s", certificate.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.createCertificate#String-CertificatePolicy
     }
