@@ -76,16 +76,16 @@ public class SearchIndexClientExample {
             new SearchParameters().setMinimumCoverage(73.5),
             new SearchRequestOptions())
             .byPage()
-            .map( page -> ((SearchPagedResponse) page).count())
+            .map( page -> ((SearchPagedResponse) page).coverage())
             .toStream();;
 
         //Getting just the Coverage property
-        Flux<Long> coverage = searchClient.search("search text",
+        Flux<Double> coverage = searchClient.search("search text",
             new SearchParameters().setMinimumCoverage(73.5),
             new SearchRequestOptions())
             .byPage()
             .take(1)
-            .map(page -> ((SearchPagedResponse) page).count());
+            .map(page -> ((SearchPagedResponse) page).coverage());
 
         //Accessing Facets property when iterating by page
         searchClient.search("search text",
@@ -94,18 +94,18 @@ public class SearchIndexClientExample {
                 "LastRenovationDate,values:2000-01-01T00:00:00Z")),
             new SearchRequestOptions())
             .byPage()
-            .map( page -> ((SearchPagedResponse) page).count())
+            .map( page -> ((SearchPagedResponse) page).facets())
             .toStream();;
 
         //Getting just the Facets property
-        Flux<Long> facets = searchClient.search("search text",
+        Flux<Map<String, List<FacetResult>>>  facets = searchClient.search("search text",
             new SearchParameters().setFacets(Arrays.asList(
                 "Rooms/BaseRate,values:5|8|10",
                 "LastRenovationDate,values:2000-01-01T00:00:00Z")),
             new SearchRequestOptions())
             .byPage()
             .take(1)
-            .map(page -> ((SearchPagedResponse) page).count());
+            .map(page -> ((SearchPagedResponse) page).facets());
 
 
         System.out.println("Oh Yeah");
