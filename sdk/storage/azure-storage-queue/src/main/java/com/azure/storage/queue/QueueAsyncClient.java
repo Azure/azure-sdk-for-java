@@ -771,17 +771,17 @@ public final class QueueAsyncClient {
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
-         String messageText, Duration visibilityTimeout) {
+        String messageText, Duration visibilityTimeout) {
         try {
             return withContext(context ->
-                updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context));
+                updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt, String messageText,
-                                                                  Duration visibilityTimeout, Context context) {
+    Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
+        String messageText, Duration visibilityTimeout, Context context) {
         QueueMessage message = new QueueMessage().setMessageText(messageText);
         return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
                 (int) visibilityTimeout.getSeconds(), context)

@@ -602,10 +602,10 @@ public final class QueueClient {
      * or the {@code visibilityTimeout} is outside the allowed bounds.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<UpdateMessageResult> updateMessageWithResponse(String messageId, String popReceipt, String messageText,
-                                                                   Duration visibilityTimeout, Duration timeout, Context context) {
-        Mono<Response<UpdateMessageResult>> response = client.updateMessageWithResponse(messageText, messageId,
-            popReceipt, visibilityTimeout, context);
+    public Response<UpdateMessageResult> updateMessageWithResponse(String messageId, String popReceipt,
+        String messageText, Duration visibilityTimeout, Duration timeout, Context context) {
+        Mono<Response<UpdateMessageResult>> response = client.updateMessageWithResponse(messageId,
+            popReceipt, messageText, visibilityTimeout, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
