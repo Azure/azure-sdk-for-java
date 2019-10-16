@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
 import com.azure.storage.common.Constants
-import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.NtfsFileAttributes

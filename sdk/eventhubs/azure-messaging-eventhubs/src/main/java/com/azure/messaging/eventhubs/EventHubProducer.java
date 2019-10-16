@@ -86,11 +86,11 @@ public class EventHubProducer implements Closeable {
     /**
      * Creates a new instance of {@link EventHubProducer} that sends messages to an Azure Event Hub.
      *
-     * @throws NullPointerException if {@code producer} or {@code getTryTimeout} is null.
+     * @throws NullPointerException if {@code producer} or {@code tryTimeout} is null.
      */
     EventHubProducer(EventHubAsyncProducer producer, Duration tryTimeout) {
         this.producer = Objects.requireNonNull(producer, "'producer' cannot be null.");
-        this.tryTimeout = Objects.requireNonNull(tryTimeout, "'getTryTimeout' cannot be null.");
+        this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
     }
 
     /**

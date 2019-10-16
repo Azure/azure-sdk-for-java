@@ -5,7 +5,6 @@ package com.azure.storage.file
 
 
 import com.azure.storage.common.Constants
-import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileHTTPHeaders
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.StorageErrorCode
