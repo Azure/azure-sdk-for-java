@@ -149,7 +149,7 @@ public class FileJavaDocCodeSamples {
     public void beginCopy() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map
-        Poller<FileCopyInfo> poller = fileClient.beginCopy(
+        Poller<FileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"));
 

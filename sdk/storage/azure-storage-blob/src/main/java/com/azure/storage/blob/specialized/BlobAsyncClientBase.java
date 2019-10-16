@@ -313,7 +313,7 @@ public class BlobAsyncClientBase {
                 final String copyIdentifier = response.getValue().getCopyId();
 
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
-                    logger.info("Cancelling copy operation for copy: {}", copyIdentifier);
+                    logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
                     return abortCopyFromURL(copyIdentifier).thenReturn(response.getValue());
                 }

@@ -193,7 +193,7 @@ public class FileClient {
      * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Poller<FileCopyInfo> beginCopy(String sourceUrl, Map<String, String> metadata) {
+    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata) {
         return fileAsyncClient.beginCopy(sourceUrl, metadata);
     }
 

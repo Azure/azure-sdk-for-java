@@ -72,7 +72,7 @@ public class FileSample {
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
-        Poller<FileCopyInfo> poller = destFileClient.beginCopy(sourceURL, null);
+        Poller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null);
 
         poller.getObserver().subscribe(pollResponse -> {
             final FileCopyInfo copyInfo = pollResponse.getValue();

@@ -136,7 +136,7 @@ public class FileAsyncJavaDocCodeSamples {
     public void beginCopy() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.beginCopy#string-map
-        Poller<FileCopyInfo> poller = fileAsyncClient.beginCopy(
+        Poller<FileCopyInfo, Void> poller = fileAsyncClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
             Collections.singletonMap("file", "metadata"));
 

@@ -232,7 +232,7 @@ public class FileAsyncClient {
      * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Poller<FileCopyInfo> beginCopy(String sourceUrl, Map<String, String> metadata) {
+    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata) {
         final AtomicReference<String> copyId = new AtomicReference<>();
 
         return new Poller<>(Duration.ofSeconds(1),
@@ -242,7 +242,9 @@ public class FileAsyncClient {
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
-            }, () -> {
+            },
+            Mono::empty,
+            () -> {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
                     .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, context))
@@ -257,14 +259,23 @@ public class FileAsyncClient {
                     return monoError(logger, ex);
                 }
             },
-            unused -> {
-                final String copyIdentifier = copyId.get();
+            poller -> {
+                final PollResponse<FileCopyInfo> response = poller.getLastPollResponse();
+
+                if (response == null || response.getValue() == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                }
+
+                final String copyIdentifier = response.getValue().getCopyId();
 
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
-                    logger.info("Cancelling copy operation for copy: {}", copyIdentifier);
+                    logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
-                    Utility.blockWithOptionalTimeout(abortCopy(copyIdentifier), null);
+                    return abortCopy(copyIdentifier).thenReturn(response.getValue());
                 }
+
+                return Mono.empty();
             });
     }
 
@@ -277,7 +288,7 @@ public class FileAsyncClient {
         final FileCopyInfo lastInfo = pollResponse.getValue();
         if (lastInfo == null) {
             logger.warning("FileCopyInfo does not exist. Activation operation failed.");
-            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED"), null));
+            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED", true), null));
         }
 
         return getProperties()
@@ -306,7 +317,7 @@ public class FileAsyncClient {
                 }
 
                 return new PollResponse<>(operationStatus, result);
-            }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED"), lastInfo));
+            }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED", true), lastInfo));
     }
 
     /**

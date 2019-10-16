@@ -66,7 +66,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
      */
     public void startCopyFromURL() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL
-        final Poller<BlobCopyInfo> poller = client.beginCopyFromUrl(url);
+        final Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url);
         poller.getObserver().subscribe(response -> {
             System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
         });
@@ -227,7 +227,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
-        Poller<BlobCopyInfo> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
+        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions);
 
         PollResponse<BlobCopyInfo> response = poller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);

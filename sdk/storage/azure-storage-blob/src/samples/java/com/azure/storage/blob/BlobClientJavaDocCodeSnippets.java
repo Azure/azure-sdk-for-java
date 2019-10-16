@@ -62,12 +62,13 @@ public class BlobClientJavaDocCodeSnippets {
      */
     public void beginCopyFromUrl() {
         // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
-        Poller<BlobCopyInfo> poller = client.beginCopyFromUrl(url);
+        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url);
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
-        PollResponse<BlobCopyInfo> response = poller.block();
+        poller.block();
+        PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
         BlobCopyInfo operation = response.getValue();
-        System.out.printf("Copy identifier: %s%n", operation.getCopyId());
+        System.out.printf("Status: %s, Copy identifier: %s%n", poller.getStatus(), operation.getCopyId());
         // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL
     }
 
@@ -225,13 +226,14 @@ public class BlobClientJavaDocCodeSnippets {
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
-        Poller<BlobCopyInfo> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
+        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
             RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions);
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
-        PollResponse<BlobCopyInfo> response = poller.block();
+        poller.block();
+        PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
         BlobCopyInfo operation = response.getValue();
-        System.out.printf("Copy identifier: %s%n", operation.getCopyId());
+        System.out.printf("Status: %s, Copy identifier: %s%n", poller.getStatus(), operation.getCopyId());
         // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
