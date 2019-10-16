@@ -8,14 +8,15 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 
 import java.net.URL;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
  * The status of a long running Azure Blob copy operation.
  *
- * @see BlobAsyncClient#beginCopyFromUrl(URL)
- * @see BlobClient#beginCopyFromUrl(URL)
+ * @see BlobAsyncClient#beginCopyFromUrl(URL, Duration)
+ * @see BlobClient#beginCopyFromUrl(URL, Duration)
  */
 @Immutable
 public class BlobCopyInfo {

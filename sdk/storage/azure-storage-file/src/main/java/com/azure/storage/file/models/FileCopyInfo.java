@@ -6,13 +6,14 @@ package com.azure.storage.file.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.FileAsyncClient;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
  * Contains copy information about a File in the storage File service.
  *
- * @see FileAsyncClient#beginCopy(String, Map)
+ * @see FileAsyncClient#beginCopy(String, Map, Duration)
  */
 @Immutable
 public final class FileCopyInfo {
