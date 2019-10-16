@@ -3,6 +3,9 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.http.PagedResponseBase;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -62,5 +65,28 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
                      Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
         super(firstPageRetriever, nextPageRetriever);
+    }
+
+    /**
+     * Maps this PagedFlux instance of T to a PagedFlux instance of type S as per the provided mapper function.
+     *
+     * @param mapper The mapper function to convert from type T to type S.
+     * @param <S> The mapped type.
+     * @return A PagedFlux of type S.
+     */
+    public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
+        return new PagedFlux<S>(() -> getFirstPageRetriever().get()
+            .map(mapPagedResponse(mapper)),
+            continuationToken -> getNextPageRetriever().apply(continuationToken)
+                .map(mapPagedResponse(mapper)));
+    }
+
+    private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
     }
 }

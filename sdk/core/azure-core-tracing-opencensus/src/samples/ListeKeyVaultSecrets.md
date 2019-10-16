@@ -1,24 +1,66 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+# List Key Vault Secrets with Azure Core Tracing OpenCensus 
+ 
+Following documentation describes instructions to run a sample program for listing secrets in a Key Vault with tracing instrumentation for Java SDK libraries.
 
-package com.azure.core.tracing.opencensus;
+## Getting Started
 
-import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretProperties;
-import io.opencensus.common.Scope;
-import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
-import io.opencensus.trace.Tracer;
-import io.opencensus.trace.Tracing;
-import io.opencensus.trace.config.TraceConfig;
-import io.opencensus.trace.config.TraceParams;
-import io.opencensus.trace.samplers.Samplers;
+### Adding the Azure client library for Key Vault secrets package to your project:
+[//]: # ({x-version-update-start;com.azure:azure-keyvault-secrets;current})
+```xml
+<!-- Add KeyVault Secrets dependency without Netty HTTP client -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-keyvault-secrets</artifactId>
+    <version>4.0.0-preview.5</version>
+    <exclusions>
+      <exclusion>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-http-netty</artifactId>
+      </exclusion>
+    </exclusions>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
+```
+<!-- Add OkHTTP client to use with KeyVault Secrets -->
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-http-okhttp</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+### Adding the Azure core tracing OpenCensus plugin package to your project:
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-tracing-opencensus</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+Azure Core Tracing OpenCensus library uses the **opencensus-api** which exposes the means for recording stats or traces and propagating context. Besides recording tracing events the application would also need to link the implementation and setup exporters to gather the tracing information.
+In our example we will focus on using the  **opencensus-impl** as implementation package and  **Zipkin** exporter.
 
+### Add the dependencies to your project:
+
+```xml
+<dependency>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-exporter-trace-zipkin</artifactId>
+  <version>0.20.0</version>
+</dependency>
+<dependency>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-impl</artifactId>
+  <version>0.20.0</version>
+</dependency>
+```
+Program to demonstrate publishing multiple events with tracing support:
+
+```java
 /**
  * Sample demonstrates how to list secrets and versions of a given secret in the key vault with tracing enabled.
  */
@@ -42,9 +84,9 @@ public class ListOperations {
 
         Tracer tracer = Tracing.getTracer();
 
-        // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        // Notice that the client is using default Azure credentials. Ensure that environment variables 
+        // 'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' credentials to work
+        // with the service principal credentials.
         SecretClient client = new SecretClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -66,19 +108,10 @@ public class ListOperations {
                 Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).getValue();
                 System.out.printf("Received secret with name %s and value %s%n", secretWithValue.getName(), secretWithValue.getValue());
             }
-
-            // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
-            // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
-            client.setSecret("BankAccountPassword", "newPassword");
-
-            // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
-            for (SecretProperties secret : client.listSecretVersions("BankAccountPassword", traceContext)) {
-                Secret secretWithValue = client.getSecretWithResponse(secret, traceContext).getValue();
-                System.out.printf("Received secret's version with name %s and value %s%n", secretWithValue.getName(), secretWithValue.getValue());
-            }
         } finally {
             scope.close();
             Tracing.getExportComponent().shutdown();
         }
     }
 }
+```

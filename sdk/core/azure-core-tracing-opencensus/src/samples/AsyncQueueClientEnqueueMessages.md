@@ -1,23 +1,53 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+# Enqueue and Dequeue messages asynchronously with Azure Storage Queues and Azure Core Tracing OpenCensus
+ 
+Following documentation describes instructions to run a sample program for basic operations of enqueueing and dequeueing 
+messages asynchronously on queue client with tracing instrumentation for Java SDK libraries.
 
-package com.azure.core.tracing.opencensus;
+## Getting Started
 
-import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.QueueClientBuilder;
-import io.opencensus.common.Scope;
-import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
-import io.opencensus.trace.Tracer;
-import io.opencensus.trace.Tracing;
-import io.opencensus.trace.config.TraceConfig;
-import io.opencensus.trace.config.TraceParams;
-import io.opencensus.trace.samplers.Samplers;
-import reactor.util.context.Context;
+### Adding the Azure client library for Azure storage queue package to your project:
+[//]: # ({x-version-update-start;com.azure:azure-storage-queue;current})
+```xml
+<!-- Add Storage Queue dependency -->
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-storage-queue</artifactId>
+  <version>12.0.0-preview.4</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
-import java.util.concurrent.Semaphore;
+### Adding the Azure core tracing OpenCensus plugin package to your project:
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-tracing-opencensus</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+Azure Core Tracing OpenCensus library uses the **opencensus-api** which exposes the means for recording stats or traces and propagating context. Besides recording tracing events the application would also need to link the implementation and setup exporters to gather the tracing information.
+In our example we will focus on using the  **opencensus-impl** as implementation package and  **Zipkin** exporter.
 
+### Add the dependencies to your project:
+
+```xml
+<dependency>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-exporter-trace-zipkin</artifactId>
+  <version>0.20.0</version>
+</dependency>
+<dependency>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-impl</artifactId>
+  <version>0.20.0</version>
+</dependency>
+```
+
+Program to demonstrate publishing multiple events with tracing support:
+```java
 /*
  *  This example shows tracing support in azure-storage-queue SDK using azure-core-tracing plugin package.
  */
@@ -73,3 +103,4 @@ public class HelloWorldAsync {
                 });
     }
 }
+```

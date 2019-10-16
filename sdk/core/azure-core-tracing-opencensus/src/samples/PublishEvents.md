@@ -1,28 +1,52 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+# Publishing Events with Azure Core Tracing OpenCensus 
 
-package com.azure.core.tracing.opencensus;
+Publishing events is one of the common use-cases for event publishers. 
+Following documentation describes instructions to run a sample program for publishing events with tracing instrumentation for Java SDK libraries.
 
-import com.azure.core.util.Context;
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubAsyncProducer;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import io.opencensus.common.Scope;
-import io.opencensus.exporter.trace.zipkin.ZipkinTraceExporter;
-import io.opencensus.trace.Tracer;
-import io.opencensus.trace.Tracing;
-import io.opencensus.trace.config.TraceConfig;
-import io.opencensus.trace.config.TraceParams;
-import io.opencensus.trace.samplers.Samplers;
-import reactor.core.publisher.Flux;
+## Getting Started
 
-import java.io.IOException;
-import java.util.concurrent.Semaphore;
+### Adding the Azure client library for Event Hubs package to your project:
+[//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
+```XML
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-messaging-eventhubs</artifactId>
+  <version>5.0.0-preview.5</version>
+</dependency>
+ ```
+[//]: # ({x-version-update-end})
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static java.nio.charset.StandardCharsets.UTF_8;
+### Adding the Azure core tracing opencensus plugin package to your project:
+[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opencensus;current})
+```xml
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-tracing-opencensus</artifactId>
+  <version>1.0.0-preview.4</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
+Azure Core Tracing OpenCensus library uses the **opencensus-api** which exposes the means for recording stats or traces and propagating context. Besides recording tracing events the application would also need to link the implementation and setup exporters to gather the tracing information.
+In our example we will focus on using the  **opencensus-impl** as implementation package and  **Zipkin** exporter.
+
+### Add the dependencies to your project:
+
+```xml
+<dependency>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-exporter-trace-zipkin</artifactId>
+  <version>0.20.0</version>
+</dependency>
+<dependency>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-impl</artifactId>
+  <version>0.20.0</version>
+</dependency>
+```
+
+Program to demonstrate publishing multiple events with tracing support:
+```java
 /**
  * Sample demonstrates how to send a message to an Azure Event Hub with tracing support.
  */
@@ -101,3 +125,4 @@ public class PublishEvents {
         Tracing.getExportComponent().shutdown();
     }
 }
+```
