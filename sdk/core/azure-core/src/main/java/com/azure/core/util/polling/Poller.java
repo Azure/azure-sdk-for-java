@@ -232,7 +232,6 @@ public class Poller<T, R> {
      * <p>
      * It will call cancelOperation if status is {@link OperationStatus#IN_PROGRESS} otherwise it does nothing.
      *
-     * @throws UnsupportedOperationException when the cancel operation is not supported by the Azure service.
      * @return A {@link Mono} containing the poller response.
      */
     public Mono<T> cancelOperation() {
