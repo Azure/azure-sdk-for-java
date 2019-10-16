@@ -884,6 +884,6 @@
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
-    <module>sdk/tracing/azure-core-tracing-opencensus</module>
+    <module>sdk/core/azure-core-tracing-opencensus</module>
   </modules>
 </project>
