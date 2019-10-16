@@ -73,7 +73,7 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create key encryption key async client"));
         }
-        CryptographyServiceVersion serviceVersion = this.getVersion() != null ? this.getVersion() : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = this.getServiceVersion() != null ? this.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
         if (this.getPipeline() != null) {
             return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, this.getPipeline(), serviceVersion)));

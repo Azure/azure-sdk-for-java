@@ -182,7 +182,7 @@ public class CryptographyClientBuilder {
         return pipeline;
     }
 
-    CryptographyServiceVersion getVersion() {
+    CryptographyServiceVersion getServiceVersion() {
         return version;
     }
 

@@ -117,7 +117,7 @@ public final class BlobContainerClientBuilder {
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline)
-            .version(serviceVersion.getVersionString())
+            .version(serviceVersion.getVersion())
             .build(), customerProvidedKey, accountName);
     }
 

@@ -13,5 +13,5 @@ public interface ServiceVersion {
      *
      * @return the string representation of the {@link ServiceVersion}
      */
-    String getVersionString();
+    String getVersion();
 }

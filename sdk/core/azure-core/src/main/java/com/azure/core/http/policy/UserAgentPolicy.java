@@ -68,10 +68,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
             this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
-                version.getVersionString());
+                version.getVersion());
         } else {
             this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
-                version.getVersionString());
+                version.getVersion());
         }
     }
 

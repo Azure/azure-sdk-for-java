@@ -21,7 +21,7 @@ public enum BlobServiceVersion implements ServiceVersion {
      * {@inheritDoc}
      */
     @Override
-    public String getVersionString() {
+    public String getVersion() {
         return this.version;
     }
 

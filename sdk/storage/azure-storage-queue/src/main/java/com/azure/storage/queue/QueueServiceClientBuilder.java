@@ -111,7 +111,7 @@ public final class QueueServiceClientBuilder {
         return new AzureQueueStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion.getVersionString())
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -337,7 +337,7 @@ public final class QueueServiceClientBuilder {
      * @param version {@link QueueServiceVersion} of the service to be used when making requests.
      * @return the updated QueueServiceClientBuilder object
      */
-    public QueueServiceClientBuilder version(QueueServiceVersion version) {
+    public QueueServiceClientBuilder serviceVersion(QueueServiceVersion version) {
         this.version = version;
         return this;
     }

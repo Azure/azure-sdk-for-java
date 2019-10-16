@@ -52,7 +52,7 @@ public final class BlobBatchAsyncClient {
         this.client = new AzureBlobStorageBuilder()
             .url(accountUrl)
             .pipeline(pipeline)
-            .version(version.getVersionString())
+            .version(version.getVersion())
             .build();
     }
 

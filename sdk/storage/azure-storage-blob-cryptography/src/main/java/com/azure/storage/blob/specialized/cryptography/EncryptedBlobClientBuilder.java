@@ -119,7 +119,7 @@ public final class EncryptedBlobClientBuilder {
             return new AzureBlobStorageBuilder()
                 .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
                 .pipeline(httpPipeline)
-                .version(serviceVersion.getVersionString())
+                .version(serviceVersion.getVersion())
                 .build();
         }
 
@@ -167,7 +167,7 @@ public final class EncryptedBlobClientBuilder {
         return new AzureBlobStorageBuilder()
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline)
-            .version(serviceVersion.getVersionString())
+            .version(serviceVersion.getVersion())
             .build();
     }
 
