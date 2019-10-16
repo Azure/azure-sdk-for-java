@@ -16,11 +16,11 @@ public class PagedIterableJavaDocCodeSnippets {
 
     class CustomPagedFlux<String> extends PagedFluxBase<String, PagedResponse<String>> {
 
-        public CustomPagedFlux(Supplier<Mono<PagedResponse<String>>> firstPageRetriever) {
+        CustomPagedFlux(Supplier<Mono<PagedResponse<String>>> firstPageRetriever) {
             super(firstPageRetriever);
         }
 
-        public CustomPagedFlux(Supplier<Mono<PagedResponse<String>>> firstPageRetriever,
+        CustomPagedFlux(Supplier<Mono<PagedResponse<String>>> firstPageRetriever,
                          Function<java.lang.String, Mono<PagedResponse<String>>> nextPageRetriever) {
             super(firstPageRetriever, nextPageRetriever);
         }
