@@ -45,6 +45,7 @@ import java.util.TreeSet;
 import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -152,7 +153,11 @@ public class DirectoryAsyncClient {
      * directory name is an invalid resource name.
      */
     public Mono<DirectoryInfo> create() {
-        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -176,7 +181,11 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
+        try {
+            return withContext(context -> createWithResponse(smbProperties, filePermission, metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
@@ -216,7 +225,11 @@ public class DirectoryAsyncClient {
      * @throws FileStorageException If the share doesn't exist
      */
     public Mono<Void> delete() {
-        return deleteWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return deleteWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -235,7 +248,11 @@ public class DirectoryAsyncClient {
      * @throws FileStorageException If the share doesn't exist
      */
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(this::deleteWithResponse);
+        try {
+            return withContext(this::deleteWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -259,7 +276,11 @@ public class DirectoryAsyncClient {
      * @return Storage directory properties
      */
     public Mono<DirectoryProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -278,7 +299,11 @@ public class DirectoryAsyncClient {
      * @return A response containing the storage directory properties with headers and response status code
      */
     public Mono<Response<DirectoryProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DirectoryProperties>> getPropertiesWithResponse(Context context) {
@@ -304,7 +329,11 @@ public class DirectoryAsyncClient {
      * @return The storage directory SMB properties
      */
     public Mono<DirectoryInfo> setProperties(FileSmbProperties smbProperties, String filePermission) {
-        return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(smbProperties, filePermission).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -325,7 +354,11 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<DirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
         String filePermission) {
-        return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, Context.NONE));
+        try {
+            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, Context.NONE));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
@@ -374,7 +407,11 @@ public class DirectoryAsyncClient {
      * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public Mono<DirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+        try {
+            return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -401,7 +438,11 @@ public class DirectoryAsyncClient {
      * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
-        return withContext(context -> setMetadataWithResponse(metadata, context));
+        try {
+            return withContext(context -> setMetadataWithResponse(metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
@@ -426,7 +467,11 @@ public class DirectoryAsyncClient {
      * @return {@link StorageFileItem File info} in the storage directory
      */
     public PagedFlux<StorageFileItem> listFilesAndDirectories() {
-        return listFilesAndDirectories(null, null);
+        try {
+            return listFilesAndDirectories(null, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -450,7 +495,11 @@ public class DirectoryAsyncClient {
      * @return {@link StorageFileItem File info} in this directory with prefix and max number of return results.
      */
     public PagedFlux<StorageFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage) {
-        return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, null, Context.NONE);
+        try {
+            return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
@@ -487,7 +536,11 @@ public class DirectoryAsyncClient {
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
     public PagedFlux<HandleItem> listHandles(Integer maxResultPerPage, boolean recursive) {
-        return listHandlesWithOptionalTimeout(maxResultPerPage, recursive, null, Context.NONE);
+        try {
+            return listHandlesWithOptionalTimeout(maxResultPerPage, recursive, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive, Duration timeout,
@@ -617,8 +670,12 @@ public class DirectoryAsyncClient {
      * directory is an invalid resource name.
      */
     public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
-        return createSubDirectoryWithResponse(subDirectoryName, null, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return createSubDirectoryWithResponse(subDirectoryName, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -644,8 +701,13 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
-        return withContext(context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
-            metadata, context));
+        try {
+            return withContext(
+                context -> createSubDirectoryWithResponse(subDirectoryName, smbProperties, filePermission,
+                    metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
@@ -673,7 +735,11 @@ public class DirectoryAsyncClient {
      * subdirectory name is an invalid resource name.
      */
     public Mono<Void> deleteSubDirectory(String subDirectoryName) {
-        return deleteSubDirectoryWithResponse(subDirectoryName).flatMap(FluxUtil::toMono);
+        try {
+            return deleteSubDirectoryWithResponse(subDirectoryName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -694,7 +760,11 @@ public class DirectoryAsyncClient {
      * subdirectory name is an invalid resource name.
      */
     public Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName) {
-        return withContext(context -> deleteSubDirectoryWithResponse(subDirectoryName, context));
+        try {
+            return withContext(context -> deleteSubDirectoryWithResponse(subDirectoryName, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName, Context context) {
@@ -722,8 +792,12 @@ public class DirectoryAsyncClient {
      * is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
-        return createFileWithResponse(fileName, maxSize, null, null, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return createFileWithResponse(fileName, maxSize, null, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -751,8 +825,13 @@ public class DirectoryAsyncClient {
     public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
         FileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
-        return withContext(context ->
-            createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
+        try {
+            return withContext(context ->
+                createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+                    context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHttpHeaders httpHeaders,
@@ -781,7 +860,11 @@ public class DirectoryAsyncClient {
      * resource name.
      */
     public Mono<Void> deleteFile(String fileName) {
-        return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
+        try {
+            return deleteFileWithResponse(fileName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -802,7 +885,11 @@ public class DirectoryAsyncClient {
      * resource name.
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName) {
-        return withContext(context -> deleteFileWithResponse(fileName, context));
+        try {
+            return withContext(context -> deleteFileWithResponse(fileName, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteFileWithResponse(String fileName, Context context) {

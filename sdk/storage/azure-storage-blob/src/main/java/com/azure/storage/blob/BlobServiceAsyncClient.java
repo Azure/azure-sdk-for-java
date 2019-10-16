@@ -34,6 +34,8 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -121,7 +123,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the container created.
      */
     public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName) {
-        return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createBlobContainerWithResponse(containerName, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -142,7 +148,12 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
-        return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+        try {
+            return withContext(
+                context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
@@ -165,7 +176,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Void> deleteBlobContainer(String containerName) {
-        return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
+        try {
+            return deleteBlobContainerWithResponse(containerName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -181,7 +196,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
-        return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
+        try {
+            return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName, Context context) {
@@ -208,7 +227,11 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of containers.
      */
     public PagedFlux<BlobContainerItem> listBlobContainers() {
-        return this.listBlobContainers(new ListBlobContainersOptions());
+        try {
+            return this.listBlobContainers(new ListBlobContainersOptions());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -223,7 +246,11 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of containers.
      */
     public PagedFlux<BlobContainerItem> listBlobContainers(ListBlobContainersOptions options) {
-        return listBlobContainersWithOptionalTimeout(options, null);
+        try {
+            return listBlobContainersWithOptionalTimeout(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<BlobContainerItem> listBlobContainersWithOptionalTimeout(ListBlobContainersOptions options,
@@ -262,7 +289,11 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response containing the storage account properties.
      */
     public Mono<BlobServiceProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -277,7 +308,11 @@ public final class BlobServiceAsyncClient {
      * account properties.
      */
     public Mono<Response<BlobServiceProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
@@ -299,7 +334,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing the storage account properties.
      */
     public Mono<Void> setProperties(BlobServiceProperties properties) {
-        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -315,7 +354,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing the storage account properties.
      */
     public Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties) {
-        return withContext(context -> setPropertiesWithResponse(properties, context));
+        try {
+            return withContext(context -> setPropertiesWithResponse(properties, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties, Context context) {
@@ -338,8 +381,12 @@ public final class BlobServiceAsyncClient {
      * @throws NullPointerException If {@code expiry} is null.
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
-            .flatMap(FluxUtil::toMono);
+        try {
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -359,7 +406,11 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
-        return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+        try {
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
@@ -390,7 +441,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing the storage account statistics.
      */
     public Mono<BlobServiceStatistics> getStatistics() {
-        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -407,7 +462,11 @@ public final class BlobServiceAsyncClient {
      * storage account statistics.
      */
     public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
-        return withContext(this::getStatisticsWithResponse);
+        try {
+            return withContext(this::getStatisticsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
@@ -425,7 +484,11 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing containing the storage account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo() {
-        return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -440,7 +503,11 @@ public final class BlobServiceAsyncClient {
      * info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
-        return withContext(this::getAccountInfoWithResponse);
+        try {
+            return withContext(this::getAccountInfoWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {

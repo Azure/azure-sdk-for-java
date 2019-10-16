@@ -41,6 +41,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -186,7 +188,11 @@ public final class BlobContainerAsyncClient {
      * @return true if the container exists, false if it doesn't
      */
     public Mono<Boolean> exists() {
-        return existsWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return existsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -199,7 +205,11 @@ public final class BlobContainerAsyncClient {
      * @return true if the container exists, false if it doesn't
      */
     public Mono<Response<Boolean>> existsWithResponse() {
-        return withContext(this::existsWithResponse);
+        try {
+            return withContext(this::existsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -230,7 +240,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> create() {
-        return createWithResponse(null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -248,7 +262,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
-        return withContext(context -> createWithResponse(metadata, accessType, context));
+        try {
+            return withContext(context -> createWithResponse(metadata, accessType, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
@@ -270,7 +288,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> delete() {
-        return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -288,7 +310,11 @@ public final class BlobContainerAsyncClient {
      * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
     public Mono<Response<Void>> deleteWithResponse(BlobContainerAccessConditions accessConditions) {
-        return withContext(context -> deleteWithResponse(accessConditions, context));
+        try {
+            return withContext(context -> deleteWithResponse(accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteWithResponse(BlobContainerAccessConditions accessConditions, Context context) {
@@ -318,7 +344,11 @@ public final class BlobContainerAsyncClient {
      * container properties.
      */
     public Mono<BlobContainerProperties> getProperties() {
-        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -335,7 +365,11 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(
         LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> getPropertiesWithResponse(leaseAccessConditions, context));
+        try {
+            return withContext(context -> getPropertiesWithResponse(leaseAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions,
@@ -358,7 +392,11 @@ public final class BlobContainerAsyncClient {
      * completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
+        try {
+            return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -377,7 +415,11 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobContainerAccessConditions accessConditions) {
-        return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
+        try {
+            return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
@@ -408,7 +450,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response containing the container access policy.
      */
     public Mono<BlobContainerAccessPolicies> getAccessPolicy() {
-        return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return getAccessPolicyWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -426,7 +472,11 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(
         LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> getAccessPolicyWithResponse(leaseAccessConditions, context));
+        try {
+            return withContext(context -> getAccessPolicyWithResponse(leaseAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(LeaseAccessConditions leaseAccessConditions,
@@ -455,9 +505,12 @@ public final class BlobContainerAsyncClient {
      * for more information. Passing null will clear all access policies.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-        List<BlobSignedIdentifier> identifiers) {
-        return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setAccessPolicy(PublicAccessType accessType, List<BlobSignedIdentifier> identifiers) {
+        try {
+            return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -483,7 +536,12 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<BlobSignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions) {
-        return withContext(context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
+        try {
+            return withContext(
+                context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
@@ -547,7 +605,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response emitting the flattened blobs.
      */
     public PagedFlux<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions());
+        try {
+            return this.listBlobsFlat(new ListBlobsOptions());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -576,7 +638,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response emitting the listed blobs, flattened.
      */
     public PagedFlux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
-        return listBlobsFlatWithOptionalTimeout(options, null);
+        try {
+            return listBlobsFlatWithOptionalTimeout(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /*
@@ -666,7 +732,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response emitting the prefixes and blobs.
      */
     public PagedFlux<BlobItem> listBlobsHierarchy(String directory) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory));
+        try {
+            return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -702,7 +772,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response emitting the prefixes and blobs.
      */
     public PagedFlux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
-        return listBlobsHierarchyWithOptionalTimeout(delimiter, options, null);
+        try {
+            return listBlobsHierarchyWithOptionalTimeout(delimiter, options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /*
@@ -766,7 +840,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response containing the account info.
      */
     public Mono<StorageAccountInfo> getAccountInfo() {
-        return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -780,7 +858,11 @@ public final class BlobContainerAsyncClient {
      * @return A reactive response containing the account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
-        return withContext(this::getAccountInfoWithResponse);
+        try {
+            return withContext(this::getAccountInfoWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
