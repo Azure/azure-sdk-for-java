@@ -71,9 +71,6 @@ public class SearchIndexAsyncClient {
      */
     private final String indexName;
 
-    //TODO: remove this from the client instance level
-    private Integer skip;
-
     private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
@@ -111,7 +108,6 @@ public class SearchIndexAsyncClient {
         this.searchDnsSuffix = searchDnsSuffix;
         this.indexName = indexName;
         this.apiVersion = apiVersion;
-        this.skip = 0;
 
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(searchServiceName)
@@ -315,9 +311,9 @@ public class SearchIndexAsyncClient {
             SearchParameters searchParameters,
             SearchRequestOptions searchRequestOptions) {
         SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
-        return new PagedFlux<>(
+        return new PagedFlux<SearchResult>(
             () -> withContext(context -> searchFirstPage(searchRequest, searchRequestOptions, context)),
-            nextLink -> withContext(context -> searchNextPage(searchRequest, searchRequestOptions, nextLink, context)));
+            skip -> withContext(context -> searchNextPage(searchRequest, searchRequestOptions, skip, context)));
     }
 
     PagedFlux<SearchResult> search(
@@ -328,7 +324,7 @@ public class SearchIndexAsyncClient {
         SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
         return new PagedFlux<>(
             () -> searchFirstPage(searchRequest, searchRequestOptions, context),
-            nextLink -> searchNextPage(searchRequest, searchRequestOptions, nextLink, context));
+            skip -> searchNextPage(searchRequest, searchRequestOptions, skip, context));
     }
 
     /**
@@ -537,19 +533,15 @@ public class SearchIndexAsyncClient {
         Context context) {
         return restClient.documents()
             .searchPostWithRestResponseAsync(searchRequest, searchRequestOptions, context)
-            .map(res -> {
-                if (res.getValue().getNextPageParameters() != null) {
-                    skip = res.getValue().getNextPageParameters().getSkip();
-                }
-                return new SearchPagedResponse(res);
-            });
+            .map(res -> new SearchPagedResponse(res));
     }
 
     /**
      * Retrieve the next page of a document search
      *
      * @param searchRequest the search request
-     * @param nextLink next page link
+     * @param skip number of documents to skip. Due to a limitation in PageFlux, this value is stored as String and
+     *             converted to its Integer value before making the next request
      * @param context The context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
@@ -557,25 +549,17 @@ public class SearchIndexAsyncClient {
     private Mono<PagedResponse<SearchResult>> searchNextPage(
             SearchRequest searchRequest,
             SearchRequestOptions searchRequestOptions,
-            String nextLink,
+            String skip,
             Context context) {
-        if (nextLink == null || nextLink.isEmpty()) {
+        if (skip == null || skip.isEmpty()) {
             return Mono.empty();
         }
-        if (skip == null) {
-            return Mono.empty();
-        }
+
+        Integer skipValue = Integer.valueOf(skip);
+
         return restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest.setSkip(skip), searchRequestOptions, context)
-            .map(res -> {
-                if (res.getValue().getNextPageParameters() == null
-                    || res.getValue().getNextPageParameters().getSkip() == null) {
-                    skip = null;
-                } else {
-                    skip = res.getValue().getNextPageParameters().getSkip();
-                }
-                return new SearchPagedResponse(res);
-            });
+            .searchPostWithRestResponseAsync(searchRequest.setSkip(skipValue), searchRequestOptions, context)
+            .map(res -> new SearchPagedResponse(res));
     }
 
     private Mono<PagedResponse<AutocompleteItem>> autocompleteFirst(
