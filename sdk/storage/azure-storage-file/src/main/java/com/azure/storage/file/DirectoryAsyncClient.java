@@ -507,14 +507,13 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Closes a handle on a directory or a file at the service. This is intended to be used alongside
-     * {@link #listHandles(Integer, boolean) listHanldes}.
+     * Closes a handle on the directory. This is intended to be used alongside {@link #listHandles(Integer, boolean)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     * <p>Force close handles returned by list handles.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.forceCloseHandle#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -527,14 +526,13 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Closes a handle on a directory or a file at the service. This is intended to be used alongside
-     * {@link #listHandles(Integer, boolean) listHanldes}.
+     * Closes a handle on the directory. This is intended to be used alongside {@link #listHandles(Integer, boolean)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     * <p>Force close handles returned by list handles.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.forceCloseHandleWithResponse#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -557,9 +555,9 @@ public class DirectoryAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     * <p>Force close all handles recursively.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.forceCloseAllHandles#boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -568,54 +566,15 @@ public class DirectoryAsyncClient {
      * directory.
      * @return The number of handles closed.
      */
-    public Mono<Integer> forceCloseAllHandles(Boolean recursive) {
+    public Mono<Integer> forceCloseAllHandles(boolean recursive) {
         return fluxContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context))
             .reduce(0, Integer::sum);
     }
 
-    PagedFlux<Integer> forceCloseAllHandlesWithTimeout(Boolean recursive, Duration timeout, Context context) {
+    PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
-                    recursive, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    Collections.singletonList(response.getDeserializedHeaders().getNumberOfHandlesClosed()),
-                    response.getDeserializedHeaders().getMarker(),
-                    response.getDeserializedHeaders()));
-
-        return new PagedFlux<>(() -> retriever.apply(null), retriever);
-    }
-
-    /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside
-     * {@link DirectoryAsyncClient#listHandles(Integer, boolean)} .
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Force close handles with handles returned by get handles in recursive.</p>
-     *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
-     *
-     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all
-     * handles.
-     * @param recursive A boolean value that specifies if the operation should also apply to the files and
-     * subdirectories of the directory specified in the URI.
-     * @return The counts of number of handles closed
-     */
-    public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive) {
-        return forceCloseHandlesWithOptionalTimeout(handleId, recursive, null, Context.NONE);
-    }
-
-    PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, boolean recursive, Duration timeout,
-        Context context) {
-        Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

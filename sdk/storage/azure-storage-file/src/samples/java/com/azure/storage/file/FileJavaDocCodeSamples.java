@@ -581,18 +581,42 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#forceCloseHandles(String, Duration, Context)}
+     * Code snippet for {@link FileClient#forceCloseHandle(String)}.
      */
-    public void forceCloseHandles() {
-        FileClient fileClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context
-        fileClient.listHandles(10, Duration.ofSeconds(1), new Context(key1, value1))
-            .forEach(result ->
-                fileClient.forceCloseHandles(result.getHandleId(), Duration.ofSeconds(1),
-                    new Context(key1, value1)).forEach(numOfClosedHandles ->
-                    System.out.printf("Close %d handles.", numOfClosedHandles)
-                ));
-        // END: com.azure.storage.file.fileClient.forceCloseHandles#string-duration-context
+    public void forceCloseHandle() {
+        FileClient fileClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.FileClient.forceCloseHandle#String
+        fileClient.listHandles().forEach(handleItem -> {
+            fileClient.forceCloseHandle(handleItem.getHandleId());
+            System.out.printf("Closed handle %s on resource %s%n", handleItem.getHandleId(), handleItem.getPath());
+        });
+        // END: com.azure.storage.file.FileClient.forceCloseHandle#String
+    }
+
+    /**
+     * Code snippet for {@link FileClient#forceCloseHandleWithResponse(String, Duration, Context)}.
+     */
+    public void forceCloseHandleWithResponse() {
+        FileClient fileClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.FileClient.forceCloseHandleWithResponse#String
+        fileClient.listHandles().forEach(handleItem -> {
+            Response<Void> closeResponse = fileClient
+                .forceCloseHandleWithResponse(handleItem.getHandleId(), Duration.ofSeconds(30), Context.NONE);
+            System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
+                handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
+        });
+        // END: com.azure.storage.file.FileClient.forceCloseHandleWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link FileClient#forceCloseAllHandles(Duration, Context)}.
+     */
+    public void forceCloseAllHandles() {
+        FileClient fileClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.FileClient.forceCloseAllHandles#Duration-Context
+        int closedHandleCount = fileClient.forceCloseAllHandles(Duration.ofSeconds(30), Context.NONE);
+        System.out.printf("Closed %d open handles on the file%n", closedHandleCount);
+        // END: com.azure.storage.file.FileClient.forceCloseAllHandles#Duration-Context
     }
 
     /**

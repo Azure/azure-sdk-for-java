@@ -406,8 +406,8 @@ public class DirectoryClient {
     }
 
     /**
-     * Closes a handle on a directory or a file at the service. This is intended to be used alongside {@link
-     * #listHandles(Integer, boolean, Duration, Context) listHandles}.
+     * Closes a handle on the directory at the service. This is intended to be used alongside {@link
+     * #listHandles(Integer, boolean, Duration, Context)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -425,8 +425,8 @@ public class DirectoryClient {
     }
 
     /**
-     * Closes a handle on a directory or a file at the service. This is intended to be used alongside {@link
-     * #listHandles(Integer, boolean, Duration, Context) listHandles}.
+     * Closes a handle on the directory at the service. This is intended to be used alongside {@link
+     * #listHandles(Integer, boolean, Duration, Context)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -455,7 +455,7 @@ public class DirectoryClient {
      *
      * <p>Force close all handles recursively.</p>
      *
-     * {@codesnippet com.azure.storage.file.DirectoryClient.forceCloseAllHandles#Boolean-Duration-Context}
+     * {@codesnippet com.azure.storage.file.DirectoryClient.forceCloseAllHandles#boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -467,7 +467,7 @@ public class DirectoryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The number of handles closed.
      */
-    public int forceCloseAllHandles(Boolean recursive, Duration timeout, Context context) {
+    public int forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
         return new PagedIterable<>(directoryAsyncClient.forceCloseAllHandlesWithTimeout(recursive, timeout, context))
             .stream().reduce(0, Integer::sum);
     }

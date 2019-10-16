@@ -66,6 +66,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.core.implementation.util.FluxUtil.fluxContext;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -985,30 +986,71 @@ public class FileAsyncClient {
     }
 
     /**
-     * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link
-     * FileAsyncClient#listHandles()} (Integer)} .
+     * Closes a handle on the file. This is intended to be used alongside {@link #listHandles()}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Force close handles with handles returned by list handles in recursive.</p>
+     * <p>Force close handles returned by list handles.</p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.forceCloseHandles#string}
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.forceCloseHandle#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all
-     * handles.
-     * @return The counts of number of handles closed
+     * @param handleId Handle ID to be closed.
+     * @return An empty response.
      */
-    public PagedFlux<Integer> forceCloseHandles(String handleId) {
-        return forceCloseHandlesWithOptionalTimeout(handleId, null, Context.NONE);
+    public Mono<Void> forceCloseHandle(String handleId) {
+        return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
     }
 
-    PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, Duration timeout, Context context) {
+    /**
+     * Closes a handle on the file. This is intended to be used alongside {@link #listHandles()}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close handles returned by list handles.</p>
+     *
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.forceCloseHandleWithResponse#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param handleId Handle ID to be closed.
+     * @return A response that only contains headers and response status code.
+     */
+    public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
+        return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+    }
+
+    Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
+        return azureFileStorageClient.files()
+            .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot, context)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Closes all handles opened on the file at the service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close all handles.</p>
+     *
+     * {@codesnippet com.azure.storage.file.FileAsyncClient.forceCloseAllHandles}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @return The number of handles closed.
+     */
+    public Mono<Integer> forceCloseAllHandles() {
+        return fluxContext(context -> forceCloseAllHandlesWithOptionalTimeout(null, context)).reduce(0, Integer::sum);
+    }
+
+    PagedFlux<Integer> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, marker,
+                .forceCloseHandlesWithRestResponseAsync(shareName, filePath, "*", null, marker,
                     snapshot, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
