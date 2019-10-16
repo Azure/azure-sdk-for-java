@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +18,30 @@ public class HttpLogOptions {
 
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
-        allowedHeaderNames = new HashSet<>();
+        allowedHeaderNames = new HashSet<>(Arrays.asList(
+            "x-ms-client-request-id",
+            "x-ms-return-client-request-id",
+            "traceparent",
+            "Accept",
+            "Cache-Control",
+            "Connection",
+            "Content-Length",
+            "Content-Type",
+            "Date",
+            "ETag",
+            "Expires",
+            "If-Match",
+            "If-Modified-Since",
+            "If-None-Match",
+            "If-Unmodified-Since",
+            "Last-Modified",
+            "Pragma",
+            "Request-Id",
+            "Retry-After",
+            "Server",
+            "Transfer-Encoding",
+            "User-Agent"
+        ));
         allowedQueryParamNames = new HashSet<>();
     }
 
@@ -54,18 +78,23 @@ public class HttpLogOptions {
 
     /**
      * Sets the given whitelisted headers that should be logged.
+     * <p>
+     * If a set of allowedHeaderNames is provided it will override the default set of header names to be whitelisted.
+     * Additionally, use {@link HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()}
+     * to add more headers names to the existing set of default allowed header names.
+     * <p>
+     * If a set of allowedHeaderNames is not provided, the default header names will be used to be whitelisted.
      *
      * @param allowedHeaderNames The list of whitelisted header names from the user.
      * @return The updated HttpLogOptions object.
-     * @throws NullPointerException If {@code allowedHeaderNames} is {@code null}.
      */
     public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames;
+        this.allowedHeaderNames = allowedHeaderNames == null ?  this.allowedHeaderNames : allowedHeaderNames;
         return this;
     }
 
     /**
-     * Sets the given whitelisted header that should be logged.
+     * Sets the given whitelisted header to the default header set that should be logged.
      *
      * @param allowedHeaderName The whitelisted header name from the user.
      * @return The updated HttpLogOptions object.
