@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.util.FluxUtil.fluxContext;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -500,6 +501,88 @@ public class DirectoryAsyncClient {
                     response.getHeaders(),
                     response.getValue().getHandleList(),
                     response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders()));
+
+        return new PagedFlux<>(() -> retriever.apply(null), retriever);
+    }
+
+    /**
+     * Closes a handle on a directory or a file at the service. This is intended to be used alongside
+     * {@link #listHandles(Integer, boolean) listHanldes}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param handleId Handle ID to be closed.
+     * @return An empty response.
+     */
+    public Mono<Void> forceCloseHandle(String handleId) {
+        return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Closes a handle on a directory or a file at the service. This is intended to be used alongside
+     * {@link #listHandles(Integer, boolean) listHanldes}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param handleId Handle ID to be closed.
+     * @return A response that only contains headers and response status code.
+     */
+    public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
+        return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+    }
+
+    Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
+        return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
+            handleId, null, null, snapshot, false, context)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Closes all handles opened on the directory at the service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param recursive Flag indicating if the operation should apply to all subdirectories and files contained in the
+     * directory.
+     * @return The number of handles closed.
+     */
+    public Mono<Integer> forceCloseAllHandles(Boolean recursive) {
+        return fluxContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context))
+            .reduce(0, Integer::sum);
+    }
+
+    PagedFlux<Integer> forceCloseAllHandlesWithTimeout(Boolean recursive, Duration timeout, Context context) {
+        Function<String, Mono<PagedResponse<Integer>>> retriever =
+            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
+                    recursive, context), timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    Collections.singletonList(response.getDeserializedHeaders().getNumberOfHandlesClosed()),
+                    response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);

@@ -393,18 +393,42 @@ public class DirectoryJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryClient#forceCloseHandles(String, boolean, Duration, Context)}
+     * Code snippet for {@link DirectoryClient#forceCloseHandle(String)}
      */
-    public void forceCloseHandles() {
-        DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.forceCloseHandles
-        Iterable<HandleItem> result = directoryClient.listHandles(10, true, Duration.ofSeconds(1),
-            new Context(key1, value1));
-        result.forEach(handleItem -> directoryClient
-            .forceCloseHandles(handleItem.getHandleId(), true, Duration.ofSeconds(1), new Context(key1, value1))
-            .forEach(numOfClosedHandles ->
-                System.out.printf("Get handles completed with handle id %s", handleItem.getHandleId())));
-        // END: com.azure.storage.file.directoryClient.forceCloseHandles
+    public void forceCloseHandle() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseHandle#String
+        directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
+            directoryClient.forceCloseHandle(handleItem.getHandleId());
+            System.out.printf("Closed handle %s on resource %s%n", handleItem.getHandleId(), handleItem.getPath());
+        });
+        // END: com.azure.storage.file.DirectoryClient.forceCloseHandle#String
+    }
+
+    /**
+     * Code snippet for {@link DirectoryClient#forceCloseHandleWithResponse(String, Duration, Context)}.
+     */
+    public void forceCloseHandleWithResponse() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
+        directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE).forEach(handleItem -> {
+            Response<Void> closeResponse = directoryClient.forceCloseHandleWithResponse(handleItem.getHandleId(),
+                Duration.ofSeconds(30), Context.NONE);
+            System.out.printf("Closed handle %s on resource %s completed with status code %d%n",
+                handleItem.getHandleId(), handleItem.getPath(), closeResponse.getStatusCode());
+        });
+        // END: com.azure.storage.file.DirectoryClient.forceCloseHandleWithResponse#String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DirectoryClient#forceCloseAllHandles(Boolean, Duration, Context)}.
+     */
+    public void forceCloseAllHandles() {
+        DirectoryClient directoryClient = createClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryClient.forceCloseAllHandles#Boolean-Duration-Context
+        int closedHandleCount = directoryClient.forceCloseAllHandles(true, Duration.ofSeconds(30), Context.NONE);
+        System.out.printf("Closed %d open handles on the directory%n", closedHandleCount);
+        // END: com.azure.storage.file.DirectoryClient.forceCloseAllHandles#Boolean-Duration-Context
     }
 
     /**
