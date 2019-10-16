@@ -215,29 +215,6 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
-     */
-    public void beginCopyFromUrlCodeSnippets() {
-
-        // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
-        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
-            new LeaseAccessConditions().setLeaseId(leaseId));
-
-        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
-            RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2));
-
-        // This blocks until either the copy operation has completed, failed, or been cancelled.
-        poller.block();
-        PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
-        BlobCopyInfo operation = response.getValue();
-        System.out.printf("Status: %s, Copy identifier: %s%n", poller.getStatus(), operation.getCopyId());
-        // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
-    }
-
-    /**
      * Code snippets for {@link BlobClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions, Duration, Context)}
      */
     public void abortCopyFromURLWithResponseCodeSnippets() {
