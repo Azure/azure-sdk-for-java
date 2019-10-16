@@ -65,12 +65,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobClientBase#beginCopyFromUrl(URL, Duration)}
      */
     public void startCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Duration
         final Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, Duration.ofSeconds(2));
         poller.getObserver().subscribe(response -> {
             System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
         });
-        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL
+        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Duration
     }
 
     /**
@@ -221,7 +221,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void beginCopyFromUrl() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Duration-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -232,7 +232,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
 
         PollResponse<BlobCopyInfo> response = poller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
         System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopyFromUrl#URL-Duration-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
     }
 
     /**
