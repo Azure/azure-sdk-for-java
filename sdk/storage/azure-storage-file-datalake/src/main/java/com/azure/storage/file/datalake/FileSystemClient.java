@@ -7,15 +7,15 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerProperties;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
-import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
@@ -38,12 +38,14 @@ import java.util.Map;
 @ServiceClient(builder = FileSystemClientBuilder.class)
 public class FileSystemClient {
     private final FileSystemAsyncClient fileSystemAsyncClient;
+    final BlobContainerClient blobContainerClient;
 
     /**
      * Package-private constructor for use by {@link FileSystemClientBuilder}.
      */
-    FileSystemClient(FileSystemAsyncClient fileSystemAsyncClient) {
+    FileSystemClient(BlobContainerClient blobContainerClient, FileSystemAsyncClient fileSystemAsyncClient) {
         this.fileSystemAsyncClient = fileSystemAsyncClient;
+        this.blobContainerClient = blobContainerClient;
     }
 
     /**
@@ -79,6 +81,10 @@ public class FileSystemClient {
     public DirectoryClient getDirectoryClient(String directoryName) {
         return null;
 //        return new DirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName));
+    }
+
+    BlobContainerClient getBlobContainerClient() {
+        return blobContainerClient;
     }
 
     /**
@@ -154,9 +160,8 @@ public class FileSystemClient {
      */
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = null;
-            //fileSystemAsyncClient.createWithResponse(metadata, accessType, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
+            context);
     }
 
     /**
@@ -188,10 +193,8 @@ public class FileSystemClient {
      */
     public Response<Void> deleteWithResponse(FileSystemAccessConditions accessConditions, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = null;
-//            fileSystemAsyncClient.deleteWithResponse(accessConditions, context);
-
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return blobContainerClient.deleteWithResponse(Transforms.toBlobContainerAccessConditions(accessConditions),
+             timeout, context);
     }
 
     /**
@@ -224,10 +227,13 @@ public class FileSystemClient {
      */
     public Response<FileSystemProperties> getPropertiesWithResponse(LeaseAccessConditions leaseAccessConditions,
         Duration timeout, Context context) {
-        Mono<Response<FileSystemProperties>> response = null;
-//            fileSystemAsyncClient
-//            .getPropertiesWithResponse(leaseAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        Response<BlobContainerProperties> blobContainerPropertiesResponse = blobContainerClient
+            .getPropertiesWithResponse(Transforms.toBlobLeaseAccessConditions(leaseAccessConditions), timeout, context);
+        return new SimpleResponse<>(
+            blobContainerPropertiesResponse.getRequest(),
+            blobContainerPropertiesResponse.getStatusCode(),
+            blobContainerPropertiesResponse.getHeaders(),
+            Transforms.toFileSystemProperties(blobContainerPropertiesResponse.getValue()));
     }
 
     /**
@@ -259,10 +265,8 @@ public class FileSystemClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         FileSystemAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = null;
-//            fileSystemAsyncClient.setMetadataWithResponse(metadata, accessConditions,
-//            context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return blobContainerClient.setMetadataWithResponse(metadata,
+            Transforms.toBlobContainerAccessConditions(accessConditions), timeout, context);
     }
 
     /**

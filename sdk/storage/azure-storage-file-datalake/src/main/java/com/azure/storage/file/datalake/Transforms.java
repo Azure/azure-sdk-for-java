@@ -2,20 +2,18 @@ package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
-import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
-import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
-import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 class Transforms {
 
@@ -57,39 +55,46 @@ class Transforms {
 
     static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
         fileSystemPublicAccessType) {
+        if (fileSystemPublicAccessType == null) {
+            return null;
+        }
         return com.azure.storage.blob.models.PublicAccessType.fromString(fileSystemPublicAccessType.toString());
     }
 
     static LeaseDurationType toDataLakeLeaseDurationType(com.azure.storage.blob.models.LeaseDurationType
         blobLeaseDurationType) {
+        if (blobLeaseDurationType == null) {
+            return null;
+        }
         return LeaseDurationType.fromString(blobLeaseDurationType.toString());
     }
 
     static LeaseStateType toDataLakeLeaseStateType(com.azure.storage.blob.models.LeaseStateType
         blobLeaseStateType) {
+        if (blobLeaseStateType == null) {
+            return null;
+        }
         return LeaseStateType.fromString(blobLeaseStateType.toString());
     }
 
     static LeaseStatusType toDataLakeLeaseStatusType(com.azure.storage.blob.models.LeaseStatusType
         blobLeaseStatusType) {
+        if (blobLeaseStatusType == null) {
+            return null;
+        }
         return LeaseStatusType.fromString(blobLeaseStatusType.toString());
     }
 
     static PublicAccessType toDataLakePublicAccessType(com.azure.storage.blob.models.PublicAccessType
         blobPublicAccessType) {
+        if (blobPublicAccessType == null) {
+            return null;
+        }
         return PublicAccessType.fromString(blobPublicAccessType.toString());
     }
 
     static FileSystemProperties toFileSystemProperties(BlobContainerProperties blobContainerProperties) {
-        return new FileSystemProperties()
-            .setEtag(blobContainerProperties.getETag())
-            .setHasImmutabilityPolicy(blobContainerProperties.hasImmutabilityPolicy())
-            .setHasLegalHold(blobContainerProperties.hasLegalHold())
-            .setLastModified(blobContainerProperties.getLastModified())
-            .setLeaseDuration(toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()))
-            .setLeaseState(toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()))
-            .setLeaseStatus(toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()))
-            .setPublicAccess(toDataLakePublicAccessType(blobContainerProperties.getBlobPublicAccess()));
+        return new FileSystemProperties(blobContainerProperties);
     }
 
     static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
@@ -100,27 +105,28 @@ class Transforms {
     static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
         return new ListBlobContainersOptions()
             .setDetails(toBlobContainerListDetails(listFileSystemsOptions.getDetails()))
-            .setMaxResults(listFileSystemsOptions.getMaxResults())
+            .setMaxResultsPerPage(listFileSystemsOptions.getMaxResultsPerPage())
             .setPrefix(listFileSystemsOptions.getPrefix());
     }
 
-    static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
-        return new FileSystemItem()
-            .setMetadata(blobContainerItem.getMetadata())
-            .setName(blobContainerItem.getName())
-            .setProperties(toFileSystemProperties(blobContainerItem.getProperties()));
+    static UserDelegationKey toDataLakeUserDelegationKey(com.azure.storage.blob.models.UserDelegationKey blobUserDelegationKey) {
+        return new UserDelegationKey()
+            .setSignedExpiry(blobUserDelegationKey.getSignedExpiry())
+            .setSignedOid(blobUserDelegationKey.getSignedOid())
+            .setSignedTid(blobUserDelegationKey.getSignedTid())
+            .setSignedService(blobUserDelegationKey.getSignedService())
+            .setSignedStart(blobUserDelegationKey.getSignedStart())
+            .setSignedVersion(blobUserDelegationKey.getSignedVersion())
+            .setValue(blobUserDelegationKey.getValue());
     }
 
-    static FileSystemProperties toFileSystemProperties(com.azure.storage.blob.models.BlobContainerProperties
-        blobContainerProperties) {
-        return new FileSystemProperties()
-            .setEtag(blobContainerProperties.getEtag())
-            .setHasImmutabilityPolicy(blobContainerProperties.isHasImmutabilityPolicy())
-            .setHasLegalHold(blobContainerProperties.isHasLegalHold())
-            .setLastModified(blobContainerProperties.getLastModified())
-            .setLeaseDuration(toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration()))
-            .setLeaseState(toDataLakeLeaseStateType(blobContainerProperties.getLeaseState()))
-            .setLeaseStatus(toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus()))
-            .setPublicAccess(toDataLakePublicAccessType(blobContainerProperties.getPublicAccess()));
+    static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
+        String desiredRegex = "." + desiredEndpoint + ".";
+        String currentRegex = "." + currentEndpoint + ".";
+        if (endpoint.contains(desiredRegex)) {
+            return endpoint;
+        } else {
+            return endpoint.replaceFirst(currentRegex, desiredRegex);
+        }
     }
 }

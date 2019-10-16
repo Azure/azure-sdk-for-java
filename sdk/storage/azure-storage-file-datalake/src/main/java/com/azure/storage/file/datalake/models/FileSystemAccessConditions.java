@@ -19,10 +19,7 @@ public class FileSystemAccessConditions {
     /**
      * Creates an instance which has fields set to non-null, empty values.
      */
-    public FileSystemAccessConditions(ModifiedAccessConditions modifiedAccessConditions,
-        LeaseAccessConditions leaseAccessConditions) {
-        this.modifiedAccessConditions = modifiedAccessConditions;
-        this.leaseAccessConditions = leaseAccessConditions;
+    public FileSystemAccessConditions() {
     }
 
     /**

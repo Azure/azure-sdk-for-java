@@ -21,11 +21,8 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
-import com.azure.storage.file.datalake.models.CpkInfo;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
-import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
-import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 
@@ -252,11 +249,9 @@ public class FileSystemAsyncClient {
             Transforms.toBlobContainerAccessConditions(accessConditions));
     }
 
-    public BlobContainerAsyncClient getBlobContainerAsyncClient() {
+    BlobContainerAsyncClient getBlobContainerAsyncClient() {
         return blobContainerAsyncClient;
     }
-
-    // TODO (gapra) : DFS endpoint GetPaths
 
     /**
      * Returns the file system's metadata and system properties. For more information, see the

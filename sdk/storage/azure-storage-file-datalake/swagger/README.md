@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2018-11-09/DataLakeStorage.json
+input-file: C:\azure-rest-api-specs\specification\storage\data-plane\Microsoft.StorageDataLake\stable\2018-11-09\DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -37,4 +37,3 @@ models-subpackage: implementation.models
 custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathAccessConditions, PathInfo, PathItem, PathProperties, ListFileSystemsOptions
 custom-types-subpackage: models
 ```
-

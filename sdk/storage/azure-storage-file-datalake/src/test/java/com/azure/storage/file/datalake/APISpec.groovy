@@ -1,0 +1,380 @@
+package com.azure.storage.file.datalake
+
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.ProxyOptions
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.implementation.util.FluxUtil
+import com.azure.core.test.InterceptorManager
+import com.azure.core.test.TestMode
+import com.azure.core.test.utils.TestResourceNamer
+import com.azure.core.util.Configuration
+import com.azure.core.util.logging.ClientLogger
+import com.azure.identity.credential.EnvironmentCredentialBuilder
+import com.azure.storage.blob.models.BlobContainerItem
+import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import spock.lang.Requires
+import spock.lang.Shared
+import spock.lang.Specification
+
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
+import java.time.Duration
+import java.time.OffsetDateTime
+import java.util.function.Supplier
+
+
+class APISpec extends Specification {
+    @Shared
+    ClientLogger logger = new ClientLogger(APISpec.class)
+
+    Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
+
+    // both sync and async clients point to same container
+    @Shared
+    FileSystemClient fsc
+
+    @Shared
+    FileSystemClient fscPremium
+
+    @Shared
+    FileSystemAsyncClient fscAsync
+
+    // Fields used for conveniently creating blobs with data.
+    static final String defaultText = "default"
+
+    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
+
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+        @Override
+        InputStream get() {
+            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
+        }
+    }
+
+    static int defaultDataSize = defaultData.remaining()
+
+    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+
+    // Prefixes for blobs and containers
+    String fileSystemPrefix = "jtfs" // java test file system
+
+    String pathPrefix = "javapath"
+
+    /*
+    The values below are used to create data-driven tests for access conditions.
+     */
+    static final OffsetDateTime oldDate = OffsetDateTime.now().minusDays(1)
+
+    static final OffsetDateTime newDate = OffsetDateTime.now().plusDays(1)
+
+    /*
+    Note that this value is only used to check if we are depending on the received etag. This value will not actually
+    be used.
+     */
+    static final String receivedEtag = "received"
+
+    static final String garbageEtag = "garbage"
+
+    /*
+    Note that this value is only used to check if we are depending on the received etag. This value will not actually
+    be used.
+     */
+    static final String receivedLeaseID = "received"
+
+    static final String garbageLeaseID = UUID.randomUUID().toString()
+
+    public static final String defaultEndpointTemplate = "http://%s.dfs.core.windows.net/"
+
+    static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
+    static def DATA_LAKE_STORAGE = "DATA_LAKE_STORAGE_"
+
+    protected static SharedKeyCredential primaryCredential
+    static SharedKeyCredential alternateCredential
+    static SharedKeyCredential pathCredential
+    static SharedKeyCredential premiumCredential
+    static TestMode testMode
+
+    DataLakeServiceClient primaryDataLakeServiceClient
+    DataLakeServiceAsyncClient primaryDataLakeServiceAsyncClient
+    DataLakeServiceClient alternateDataLakeServiceClient
+    DataLakeServiceClient dataLakeServiceClient
+    DataLakeServiceClient premiumDataLakeServiceClient
+
+    InterceptorManager interceptorManager
+    boolean recordLiveMode
+    private TestResourceNamer resourceNamer
+    protected String testName
+    def fileSystemName
+
+    def setupSpec() {
+        testMode = setupTestMode()
+        primaryCredential = getCredential(DATA_LAKE_STORAGE)
+    }
+
+    def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+        int iterationIndex = fullTestName.lastIndexOf("[")
+        int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
+        this.testName = fullTestName.substring(0, substringIndex)
+        this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
+        this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // If the test doesn't have the Requires tag record it in live mode.
+        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+
+        primaryDataLakeServiceClient = setClient(primaryCredential)
+        primaryDataLakeServiceAsyncClient = getServiceAsyncClient(primaryCredential)
+        alternateDataLakeServiceClient = setClient(alternateCredential)
+        dataLakeServiceClient = setClient(pathCredential)
+        premiumDataLakeServiceClient = setClient(premiumCredential)
+
+        fileSystemName = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName)
+        fscAsync = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName)
+        fsc.create()
+    }
+
+    def cleanup() {
+        def options = new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName)
+        for (BlobContainerItem container : primaryDataLakeServiceClient.listFileSystems(options, Duration.ofSeconds(120))) {
+            FileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(container.getName())
+
+            if (container.getProperties().getLeaseState() == com.azure.storage.blob.models.LeaseStateType.LEASED) {
+                createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
+            }
+
+            fileSystemClient.delete()
+        }
+
+        interceptorManager.close()
+    }
+
+    //TODO: Should this go in core.
+    static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
+        return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
+    }
+
+    static TestMode setupTestMode() {
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US))
+            } catch (IllegalArgumentException ignore) {
+                return TestMode.PLAYBACK
+            }
+        }
+
+        return TestMode.PLAYBACK
+    }
+
+    static boolean liveMode() {
+        return setupTestMode() == TestMode.RECORD
+    }
+
+    private SharedKeyCredential getCredential(String accountType) {
+        String accountName
+        String accountKey
+
+        if (testMode == TestMode.RECORD) {
+            accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
+            accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
+        } else {
+            accountName = "storageaccount"
+            accountKey = "astorageaccountkey"
+        }
+
+        if (accountName == null || accountKey == null) {
+            logger.warning("Account name or key for the {} account was null. Test's requiring these credentials will fail.", accountType)
+            return null
+        }
+
+        return new SharedKeyCredential(accountName, accountKey)
+    }
+
+    DataLakeServiceClient setClient(SharedKeyCredential credential) {
+        try {
+            return getServiceClient(credential)
+        } catch (Exception ignore) {
+            return null
+        }
+    }
+
+    def getOAuthServiceClient() {
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        if (testMode == TestMode.RECORD) {
+            if (recordLiveMode) {
+                builder.addPolicy(interceptorManager.getRecordPolicy())
+            }
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            return builder.credential(primaryCredential).buildClient()
+        }
+    }
+
+    DataLakeServiceClient getServiceClient(String endpoint) {
+        return getServiceClient(null, endpoint, null)
+    }
+
+    DataLakeServiceClient getServiceClient(SharedKeyCredential credential) {
+        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    }
+
+    DataLakeServiceClient getServiceClient(SharedKeyCredential credential, String endpoint) {
+        return getServiceClient(credential, endpoint, null)
+    }
+
+    DataLakeServiceClient getServiceClient(SharedKeyCredential credential, String endpoint,
+                                           HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient()
+    }
+
+    DataLakeServiceClient getServiceClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
+    }
+
+    DataLakeServiceAsyncClient getServiceAsyncClient(SharedKeyCredential credential) {
+        return getServiceClientBuilder(credential, String.format(defaultEndpointTemplate, credential.getAccountName()))
+            .buildAsyncClient()
+    }
+
+    DataLakeServiceClientBuilder getServiceClientBuilder(SharedKeyCredential credential, String endpoint,
+                                                     HttpPipelinePolicy... policies) {
+        DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD && recordLiveMode) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder
+    }
+
+    HttpClient getHttpClient() {
+        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
+        if (testMode == TestMode.RECORD) {
+            builder.wiretap(true)
+
+            if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
+                builder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+            }
+
+            return builder.build()
+        } else {
+            return interceptorManager.getPlaybackClient()
+        }
+    }
+
+    static LeaseClient createLeaseClient(PathClient pathClient) {
+        return createLeaseClient(pathClient, null)
+    }
+
+    static LeaseClient createLeaseClient(PathClient pathClient, String leaseId) {
+        return new LeaseClientBuilder()
+            .pathClient(pathClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static LeaseClient createLeaseClient(FileSystemClient fileSystemClient) {
+        return createLeaseClient(fileSystemClient, null)
+    }
+
+    static LeaseClient createLeaseClient(FileSystemClient fileSystemClient, String leaseId) {
+        return new LeaseClientBuilder()
+            .fileSystemClient(fileSystemClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    def generateFileSystemName() {
+        generateResourceName(fileSystemPrefix, entityNo++)
+    }
+
+    def generatePathName() {
+        generateResourceName(pathPrefix, entityNo++)
+    }
+
+    private String generateResourceName(String prefix, int entityNo) {
+        return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    }
+
+    String getRandomUUID() {
+        return resourceNamer.randomUuid()
+    }
+
+    String getBlockID() {
+        return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+    }
+
+    OffsetDateTime getUTCNow() {
+        return resourceNamer.now()
+    }
+
+    byte[] getRandomByteArray(int size) {
+        long seed = UUID.fromString(resourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE
+        Random rand = new Random(seed)
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
+    }
+
+    /*
+    Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
+     */
+
+    ByteBuffer getRandomData(int size) {
+        return ByteBuffer.wrap(getRandomByteArray(size))
+    }
+
+    /**
+     * Validates the presence of headers that are present on a large number of responses. These headers are generally
+     * random and can really only be checked as not null.
+     * @param headers
+     *      The object (may be headers object or response object) that has properties which expose these common headers.
+     * @return
+     * Whether or not the header values are appropriate.
+     */
+    def validateBasicHeaders(HttpHeaders headers) {
+        return headers.getValue("etag") != null &&
+            // Quotes should be scrubbed from etag header values
+            !headers.getValue("etag").contains("\"") &&
+            headers.getValue("last-modified") != null &&
+            headers.getValue("x-ms-request-id") != null &&
+            headers.getValue("x-ms-version") != null &&
+            headers.getValue("date") != null
+    }
+
+    def setupFileSystemLeaseCondition(FileSystemClient fsc, String leaseID) {
+        if (leaseID == receivedLeaseID) {
+            return createLeaseClient(fsc).acquireLease(-1)
+        } else {
+            return leaseID
+        }
+    }
+
+}

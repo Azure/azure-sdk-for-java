@@ -17,8 +17,11 @@ import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuild
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
+import com.azure.core.credentials.TokenCredential;
 
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 
@@ -76,9 +79,9 @@ public class DataLakeServiceAsyncClient {
 
         return new FileSystemAsyncClient(blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName),
             new DataLakeStorageClientBuilder()
-            .url(Utility.appendToURLPath(getAccountUrl(), fileSystemName).toString())
-            .pipeline(dataLakeImpl.getHttpPipeline())
-            .build(), accountName, fileSystemName);
+                .url(Utility.appendToURLPath(getAccountUrl(), fileSystemName).toString())
+                .pipeline(dataLakeImpl.getHttpPipeline())
+                .build(), accountName, fileSystemName);
     }
 
     /**
@@ -188,6 +191,46 @@ public class DataLakeServiceAsyncClient {
      */
     public PagedFlux<BlobContainerItem> listFileSystems(ListFileSystemsOptions options) {
         return blobServiceAsyncClient.listBlobContainers(Transforms.toListBlobContainersOptions(options));
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
+     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @return A {@link Mono} containing the user delegation key.
+     * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
+     * @throws NullPointerException If {@code expiry} is null.
+     */
+    public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return blobServiceAsyncClient.getUserDelegationKey(start, expiry).map(Transforms::toDataLakeUserDelegationKey);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
+     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime}
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * delegation key.
+     * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
+     * @throws NullPointerException If {@code expiry} is null.
+     */
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
+        OffsetDateTime expiry) {
+        return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry).map(response ->
+            new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                Transforms.toDataLakeUserDelegationKey(response.getValue())));
     }
 
     /**

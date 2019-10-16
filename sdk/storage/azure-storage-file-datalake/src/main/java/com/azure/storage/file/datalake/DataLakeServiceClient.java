@@ -4,16 +4,20 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -30,12 +34,14 @@ import java.util.Map;
 @ServiceClient(builder = DataLakeServiceClientBuilder.class)
 public class DataLakeServiceClient {
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
+    private final BlobServiceClient blobServiceClient;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      */
-    DataLakeServiceClient(DataLakeServiceAsyncClient dataLakeServiceAsyncClient) {
+    DataLakeServiceClient(DataLakeServiceAsyncClient dataLakeServiceAsyncClient, BlobServiceClient blobServiceClient) {
         this.dataLakeServiceAsyncClient = dataLakeServiceAsyncClient;
+        this.blobServiceClient = blobServiceClient;
     }
 
     /**
@@ -51,7 +57,8 @@ public class DataLakeServiceClient {
      * @return A {@link FileSystemClient} object pointing to the specified file system
      */
     public FileSystemClient getFileSystemClient(String fileSystemName) {
-        return new FileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName));
+        return new FileSystemClient(blobServiceClient.getBlobContainerClient(fileSystemName),
+            dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName));
     }
 
     /**
@@ -127,8 +134,7 @@ public class DataLakeServiceClient {
      * @return A response containing status code and HTTP headers
      */
     public Response<Void> deleteFileSystemWithResponse(String fileSystemName, Context context) {
-        return null;
-//        return dataLakeServiceAsyncClient.deleteFileSystemWithResponse(fileSystemName, context);
+        return blobServiceClient.deleteBlobContainerWithResponse(fileSystemName, context);
     }
 
     /**
@@ -170,8 +176,48 @@ public class DataLakeServiceClient {
      * @return The list of containers.
      */
     public PagedIterable<BlobContainerItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
-        return null;
-//        return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystems(options, timeout));
+        return blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout);
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
+     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @return The user delegation key.
+     */
+    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
+     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context}
+     *
+     * @param start Start time for the key's validity. Null indicates immediate start.
+     * @param expiry Expiration of the key's validity.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
+     */
+    public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
+        Duration timeout, Context context) {
+        Response<com.azure.storage.blob.models.UserDelegationKey> userDelegationKeyResponse = blobServiceClient
+            .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
+        return new SimpleResponse<>(
+            userDelegationKeyResponse.getRequest(),
+            userDelegationKeyResponse.getStatusCode(),
+            userDelegationKeyResponse.getHeaders(),
+            Transforms.toDataLakeUserDelegationKey(userDelegationKeyResponse.getValue()));
     }
 
     /**
