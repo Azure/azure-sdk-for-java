@@ -3,16 +3,12 @@
 
 package com.azure.search;
 
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.Context;
-import com.azure.search.common.SearchApiKeyPipelinePolicy;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.Azure;
@@ -21,8 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.search.SearchService;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Arrays;
 
 public class CreateSearchServiceAndIndexExample {
@@ -77,11 +71,6 @@ public class CreateSearchServiceAndIndexExample {
         SearchServiceRestClientImpl searchServiceClient = searchServiceClient = new SearchServiceRestClientBuilder()
             .apiVersion("2019-05-06")
             .searchServiceName(searchServiceName)
-            .pipeline(
-                new HttpPipelineBuilder()
-                    .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                    .policies(new SearchApiKeyPipelinePolicy(new ApiKeyCredentials(adminKey)))
-                    .build())
             .build();
         Index index = new Index()
             .setName(indexName)

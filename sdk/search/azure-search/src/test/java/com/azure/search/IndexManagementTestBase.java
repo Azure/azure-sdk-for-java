@@ -22,7 +22,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
         if (!interceptorManager.isPlaybackMode()) {
             return new SearchServiceClientBuilder()
                 .serviceName(searchServiceName)
-                .searchDnsSuffix("search.windows.net")
+                .searchDnsSuffix(searchDnsSuffix)
                 .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                 .credential(apiKeyCredentials)
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -32,7 +32,7 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
         } else {
             return new SearchServiceClientBuilder()
                 .serviceName("searchServiceName")
-                .searchDnsSuffix("search.windows.net")
+                .searchDnsSuffix(searchDnsSuffix)
                 .httpClient(interceptorManager.getPlaybackClient());
         }
     }

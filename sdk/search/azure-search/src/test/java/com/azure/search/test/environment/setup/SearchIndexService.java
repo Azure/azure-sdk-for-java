@@ -21,6 +21,7 @@ import java.io.Reader;
 public class SearchIndexService {
 
     private String searchServiceName;
+    private String searchDnsSuffix;
     private String apiAdminKey;
     private String indexName;
     private String indexDataFileName;
@@ -31,19 +32,22 @@ public class SearchIndexService {
      * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Search,
      * to be used in tests.
      *
+     * @param indexDataFileName the name of a file that contains a JSON index definition.
      * @param searchServiceName the name of Search Service in Azure.
+     * @param searchServiceName the DNS suffix for the Search Service.
      * @param apiAdminKey       the Admin Key of Search Service
      */
-    public SearchIndexService(String indexDataFileName, String searchServiceName, String apiAdminKey) {
+    public SearchIndexService(String indexDataFileName, String searchServiceName, String searchDnsSuffix, String apiAdminKey) {
         this.indexDataFileName = indexDataFileName;
         this.searchServiceName = searchServiceName;
+        this.searchDnsSuffix = searchDnsSuffix;
         this.apiAdminKey = apiAdminKey;
     }
 
     /**
      * Creates a new sample Index in Azure Search with configuration retrieved from INDEX_DATA_JSON
      *
-     * @throws IOException If the file in INDEX_DATA_JSON is not existing or invalid.
+     * @throws IOException thrown when indexDataFileName does not exist or has invalid contents.
      */
     public void initialize() throws IOException {
         validate();
@@ -52,12 +56,13 @@ public class SearchIndexService {
             searchServiceClient = new SearchServiceRestClientBuilder()
                 .apiVersion("2019-05-06")
                 .searchServiceName(searchServiceName)
+                .searchDnsSuffix(searchDnsSuffix)
                 .pipeline(
                     new HttpPipelineBuilder()
                         .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
                         .policies(new SearchApiKeyPipelinePolicy(new ApiKeyCredentials(apiAdminKey)))
-                        .build())
-                .build();
+                        .build()
+                ).build();
         }
         addIndexes();
     }

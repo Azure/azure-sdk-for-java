@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelComparer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

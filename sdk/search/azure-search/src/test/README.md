@@ -48,6 +48,7 @@ Before running the tests on PLAYBACK mode, you need to run them on RECORD mode t
     * AZURE_TENANT_ID: *Tenant ID in Azure Active Directory*
     * AZURE_SUBSCRIPTION_ID: *Azure subscription ID*
     * AZURE_TEST_MODE: **RECORD** *for recording* (**PLAYBACK** *for playback mode*)
+    * AZURE_TEST_ENVIRONMENT (optional): **DOGFOOD** if performing internal testing. Defaults to public Azure if omitted or set to any other value  
 
 2. Run the tests.
 
