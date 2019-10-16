@@ -741,7 +741,7 @@ public final class QueueAsyncClient {
     public Mono<UpdateMessageResult> updateMessage(String messageId, String popReceipt, String messageText,
         Duration visibilityTimeout) {
         try {
-            return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout)
+            return updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

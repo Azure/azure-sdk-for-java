@@ -571,7 +571,7 @@ public final class QueueClient {
      */
     public UpdateMessageResult updateMessage(String messageId, String popReceipt, String messageText,
                                              Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, null, Context.NONE)
+        return updateMessageWithResponse(messageId, messageText, popReceipt, visibilityTimeout, null, Context.NONE)
             .getValue();
     }
 
