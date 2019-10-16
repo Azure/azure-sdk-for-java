@@ -87,6 +87,7 @@ public final class BuilderHelper {
      * @param httpClient HttpClient to use in the builder.
      * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
      * @param configuration Configuration store contain environment settings.
+     * @param serviceVersion {@link BlobServiceVersion} of the service to be used when making requests.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
@@ -127,6 +128,7 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return The default {@link UserAgentPolicy} for the module.
      */
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, BlobServiceVersion serviceVersion) {

@@ -219,4 +219,3 @@ public final class AzureBlobStorageImpl {
         this.blockBlobs = new BlockBlobsImpl(this);
     }
 }
-
