@@ -288,7 +288,7 @@ public class BlobAsyncClientBase {
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         final ModifiedAccessConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
-            ? new ModifiedAccessConditions()StorageErrorCode
+            ? new ModifiedAccessConditions()
             : sourceModifiedAccessConditions;
         final BlobAccessConditions destinationAccessConditions = destAccessConditions == null
             ? new BlobAccessConditions()
@@ -405,8 +405,9 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @see #copyFromURL(URL)
-     * @see #beginCopyFromUrl(URL)
-     * @see #beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)
+     * @see #beginCopyFromUrl(URL, Duration)
+     * @see #beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions,
+     * Duration)
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
@@ -425,8 +426,9 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @see #copyFromURL(URL)
-     * @see #beginCopyFromUrl(URL)
-     * @see #beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)
+     * @see #beginCopyFromUrl(URL, Duration)
+     * @see #beginCopyFromUrl(URL, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions,
+     * Duration)
      * @param copyId The id of the copy operation to abort.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
