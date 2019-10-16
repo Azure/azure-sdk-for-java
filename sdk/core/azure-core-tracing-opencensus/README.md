@@ -184,11 +184,11 @@ Several Java SDK samples are available to you in the SDKs GitHub repository.
 These following samples provide example code for additional scenarios commonly encountered while working with Tracing:
 
 #### Enqueue and dequeue messages using Storage Queue client
-* [HelloWorld.java][sample_helloWorld] and [HelloWorldAsync.java][sample_helloWorldAsync] - Contains samples for following scenarios with tracing support:
+* [QueueClientEnqueueMessages][sample_helloWorld] and [AsyncQueueClientEnqueueMessages][sample_helloWorldAsync] - Contains samples for following scenarios with tracing support:
     * Create a Queue client using [azure-storage-queue][azure-storage-queue] Java SDK.
     * Enqueue and dequeue messages using the created Queue client.
 #### List Operations for secrets in a Key Vault
-* [ListOperations.java][sample_list] and [ListOperationsAsync.java][sample_list_async] - Contains samples for following scenarios with tracing support:
+* [ListKeyVaultSecrets][sample_list] and [AsyncListKeyVaultSecrets][sample_list_async] - Contains samples for following scenarios with tracing support:
     * Create a secret.
     * List secrets.
     * Create new version of an existing secret.
@@ -216,12 +216,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [maven]: https://maven.apache.org/
 [source_code]:  src
 [api_documentation]: https://aka.ms/java-docs
-[sample_helloWorld]: ./src/samples/java/com/azure/core/tracing//HelloWorld.java
-[sample_helloWorldAsync]: ./src/samples/java/com/azure/core/tracing/HelloWorldAsync.java
-[sample_list]: ./src/samples/java/com/azure/core/tracing//ListOperationsTracing.java
-[sample_list_async]: ./src/samples/java/com/azure/core/tracing//ListOperationsAsync.java
-[sample_publish_events]: ./src/samples/java/com/azure/core/tracing/PublishEvents.java
-[samples]: ./src/samples/java/com/azure/core/tracing/
+[sample_helloWorld]: ./src/samples/QueueClientEnqueueMessages.md
+[sample_helloWorldAsync]: ./src/samples/AsyncQueueClientEnqueueMessages.md
+[sample_list]: ./src/samples/ListeKeyVaultSecrets.md
+[sample_list_async]: ./src/samples/AsyncListKeyVaultSecrets.md
+[sample_publish_events]: ./src/samples/PublishEvents.md
+[samples]: ./src/samples/
 [opencensus]: https://opencensus.io/quickstart/java/tracing/
 [opencensus-quickstart]: https://opencensus.io/quickstart/java/tracing/
 [zipkin-quickstart]: https://zipkin.io/pages/quickstart
