@@ -619,9 +619,38 @@ class FileAPITests extends APISpec {
         primaryFileClient.listHandles(2, null, null).size() == 0
     }
 
-    @Ignore
-    def "Force close handles"() {
-        // TODO: Need to find a way of mocking handles.
+    def "Force close handle min"() {
+        given:
+        primaryFileClient.create(512)
+
+        when:
+        primaryFileClient.forceCloseHandle("1")
+
+        then:
+        notThrown(FileStorageException)
+    }
+
+    def "Force close handle invalid handle ID"() {
+        given:
+        primaryFileClient.create(512)
+
+        when:
+        primaryFileClient.forceCloseHandle("invalidHandleId")
+
+        then:
+        thrown(FileStorageException)
+    }
+
+    def "Force close all handles min"() {
+        given:
+        primaryFileClient.create(512)
+
+        when:
+        def numberOfHandlesClosed = primaryFileClient.forceCloseAllHandles(null, null)
+
+        then:
+        notThrown(FileStorageException)
+        numberOfHandlesClosed == 0
     }
 
     def "Get snapshot id"() {

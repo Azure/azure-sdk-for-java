@@ -403,15 +403,40 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#forceCloseHandles(String, boolean)}
+     * Code snippet for {@link DirectoryAsyncClient#forceCloseHandle(String)}.
      */
-    public void forceCloseHandlesAsync() {
-        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
-        directoryAsyncClient.listHandles(10, true)
-            .subscribe(handleItem -> directoryAsyncClient.forceCloseHandles(handleItem.getHandleId(), true)
-                .subscribe(numOfClosedHandles -> System.out.printf("Closed %d handles.", numOfClosedHandles)));
-        // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
+    public void forceCloseHandle() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryAsyncClient.forceCloseHandle#String
+        directoryAsyncClient.listHandles(null, true).subscribe(handleItem ->
+            directoryAsyncClient.forceCloseHandle(handleItem.getHandleId()).subscribe(ignored ->
+                System.out.printf("Closed handle %s on resource %s%n",
+                    handleItem.getHandleId(), handleItem.getPath())));
+        // END: com.azure.storage.file.DirectoryAsyncClient.forceCloseHandle#String
+    }
+
+    /**
+     * Code snippet for {@link DirectoryAsyncClient#forceCloseHandleWithResponse(String)}.
+     */
+    public void forceCloseHandleWithResponse() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryAsyncClient.forceCloseHandleWithResponse#String
+        directoryAsyncClient.listHandles(null, true).subscribe(handleItem ->
+            directoryAsyncClient.forceCloseHandleWithResponse(handleItem.getHandleId()).subscribe(response ->
+                System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
+                    handleItem.getHandleId(), handleItem.getPath(), response.getStatusCode())));
+        // END: com.azure.storage.file.DirectoryAsyncClient.forceCloseHandleWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link DirectoryAsyncClient#forceCloseAllHandles(boolean)}.
+     */
+    public void forceCloseAllHandles() {
+        DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.DirectoryAsyncClient.forceCloseAllHandles#boolean
+        directoryAsyncClient.forceCloseAllHandles(true).subscribe(numberOfHandlesClosed ->
+            System.out.printf("Closed %d open handles on the directory%n", numberOfHandlesClosed));
+        // END: com.azure.storage.file.DirectoryAsyncClient.forceCloseAllHandles#boolean
     }
 
     /**
