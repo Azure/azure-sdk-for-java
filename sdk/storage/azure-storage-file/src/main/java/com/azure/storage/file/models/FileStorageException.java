@@ -6,7 +6,7 @@ package com.azure.storage.file.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-import static com.azure.storage.common.Constants.HeaderConstants.ERROR_CODE;
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.

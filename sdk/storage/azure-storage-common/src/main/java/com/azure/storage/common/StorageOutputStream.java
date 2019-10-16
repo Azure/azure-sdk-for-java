@@ -4,6 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -148,7 +149,7 @@ public abstract class StorageOutputStream extends OutputStream {
             this.flush();
         } finally {
             // if close() is called again, an exception will be thrown
-            this.lastError = new IOException(SR.STREAM_CLOSED);
+            this.lastError = new IOException(Constants.STREAM_CLOSED);
         }
     }
 

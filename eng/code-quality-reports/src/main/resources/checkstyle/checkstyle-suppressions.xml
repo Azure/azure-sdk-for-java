@@ -202,7 +202,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.identity.implementation.msalextensions.CacheLock"/>
 
   <!--  -->
-  <suppress checks="LineLength" files="com.azure.storage.common.SR.java"/>
   <suppress checks="LineLength" files=".*[/\\]storage[/\\].*(implementation|models)[/\\].*"/>
 
   <!-- Suppress CRUD operation names as they won't feel fluent -->

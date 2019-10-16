@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.core.util.polling.Poller
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileCopyInfo
 import com.azure.storage.file.models.FileErrorCode

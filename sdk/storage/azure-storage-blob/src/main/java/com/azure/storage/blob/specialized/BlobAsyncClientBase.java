@@ -41,7 +41,7 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import java.io.IOException;
 import java.io.OutputStream;
