@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -11,6 +15,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -35,8 +40,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
  * Operations allowed by the client are creating and deleting the queue, retrieving and updating metadata and access
@@ -54,6 +57,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueAsyncClient {
+
+    private final ClientLogger logger = new ClientLogger(QueueAsyncClient.class);
     private final AzureQueueStorageImpl client;
     private final String queueName;
     private final String accountName;
@@ -95,7 +100,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If a queue with the same name already exists in the queue service.
      */
     public Mono<Void> create() {
-        return createWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -116,7 +125,11 @@ public final class QueueAsyncClient {
      * service.
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata) {
-        return withContext(context -> createWithResponse(metadata, context));
+        try {
+            return withContext(context -> createWithResponse(metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
@@ -140,7 +153,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Void> delete() {
-        return deleteWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return deleteWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -159,7 +176,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(this::deleteWithResponse);
+        try {
+            return withContext(this::deleteWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -184,7 +205,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<QueueProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -204,7 +229,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
@@ -235,7 +264,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+        try {
+            return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -261,7 +294,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
-        return withContext(context -> setMetadataWithResponse(metadata, context));
+        try {
+            return withContext(context -> setMetadataWithResponse(metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
@@ -286,17 +323,21 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
-        Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever =
-            marker -> this.client.queues()
-                .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue(),
-                    null,
-                    response.getDeserializedHeaders()));
+        try {
+            Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever =
+                marker -> this.client.queues()
+                    .getAccessPolicyWithRestResponseAsync(queueName, Context.NONE)
+                    .map(response -> new PagedResponseBase<>(response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        response.getValue(),
+                        null,
+                        response.getDeserializedHeaders()));
 
-        return new PagedFlux<>(() -> retriever.apply(null), retriever);
+            return new PagedFlux<>(() -> retriever.apply(null), retriever);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -317,7 +358,11 @@ public final class QueueAsyncClient {
      * out, or the queue will have more than five policies.
      */
     public Mono<Void> setAccessPolicy(List<QueueSignedIdentifier> permissions) {
-        return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
+        try {
+            return setAccessPolicyWithResponse(permissions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -338,7 +383,11 @@ public final class QueueAsyncClient {
      * out, or the queue will have more than five policies.
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions) {
-        return withContext(context -> setAccessPolicyWithResponse(permissions, context));
+        try {
+            return withContext(context -> setAccessPolicyWithResponse(permissions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Context context) {
@@ -382,7 +431,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Void> clearMessages() {
-        return clearMessagesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return clearMessagesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -401,7 +454,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<Response<Void>> clearMessagesWithResponse() {
-        return withContext(this::clearMessagesWithResponse);
+        try {
+            return withContext(this::clearMessagesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
@@ -428,7 +485,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public Mono<SendMessageResult> sendMessage(String messageText) {
-        return sendMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return enqueueMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -461,7 +522,12 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
-        return withContext(context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+        try {
+            return withContext(
+                context -> enqueueMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
@@ -494,7 +560,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist
      */
     public PagedFlux<QueueMessageItem> receiveMessage() {
-        return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE);
+        try {
+            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -520,7 +590,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages) {
-        return receiveMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
+        try {
+            return getMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -549,7 +623,11 @@ public final class QueueAsyncClient {
      * outside of the allowed bounds
      */
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout) {
-        return receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
+        try {
+            return getMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<QueueMessageItem> receiveMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
@@ -587,7 +665,11 @@ public final class QueueAsyncClient {
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
     public PagedFlux<PeekedMessageItem> peekMessage() {
-        return peekMessages(null);
+        try {
+            return peekMessages(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -613,7 +695,11 @@ public final class QueueAsyncClient {
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
     public PagedFlux<PeekedMessageItem> peekMessages(Integer maxMessages) {
-        return peekMessagesWithOptionalTimeout(maxMessages, null, Context.NONE);
+        try {
+            return peekMessagesWithOptionalTimeout(maxMessages, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout, Context context) {
@@ -654,8 +740,12 @@ public final class QueueAsyncClient {
      */
     public Mono<UpdateMessageResult> updateMessage(String messageId, String popReceipt, String messageText,
         Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -682,8 +772,12 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
          String messageText, Duration visibilityTimeout) {
-        return withContext(context ->
-            updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context));
+        try {
+            return withContext(context ->
+                updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt, String messageText,
@@ -713,7 +807,11 @@ public final class QueueAsyncClient {
      * message.
      */
     public Mono<Void> deleteMessage(String messageId, String popReceipt) {
-        return deleteMessageWithResponse(messageId, popReceipt).flatMap(FluxUtil::toMono);
+        try {
+            return deleteMessageWithResponse(messageId, popReceipt).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -735,7 +833,11 @@ public final class QueueAsyncClient {
      * message.
      */
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
-        return withContext(context -> deleteMessageWithResponse(messageId, popReceipt, context));
+        try {
+            return withContext(context -> deleteMessageWithResponse(messageId, popReceipt, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {

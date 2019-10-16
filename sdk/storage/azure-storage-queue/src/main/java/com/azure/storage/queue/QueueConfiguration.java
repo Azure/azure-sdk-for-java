@@ -9,5 +9,5 @@ package com.azure.storage.queue;
 class QueueConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "azure-storage-queue";
-    static final String VERSION = "12.0.0-preview.4";
+    static final String VERSION = "12.0.0-preview.5";
 }

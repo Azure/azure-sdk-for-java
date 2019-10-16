@@ -57,9 +57,9 @@ public final class AccountSasSignatureValues {
      * Shared method between service clients to generate an account SAS.
      *
      * @param sharedKeyCredential The {@code SharedKeyCredential} shared key credential for the account SAS
-     * @param accountSASService The {@code AccountSasService} services for the account SAS
-     * @param accountSASResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSASPermission The {@code AccountSasPermission} permission for the account SAS
+     * @param accountSasService The {@code AccountSasService} services for the account SAS
+     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
+     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
      * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
      * @param startTime The {@code OffsetDateTime} start time for the account SAS
      * @param version The {@code String} version for the account SAS
@@ -69,16 +69,16 @@ public final class AccountSasSignatureValues {
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public static String generateAccountSas(SharedKeyCredential sharedKeyCredential, AccountSasService
-        accountSASService, AccountSasResourceType accountSASResourceType, AccountSasPermission accountSASPermission,
-                                            OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
-                                            SasIpRange sasIpRange, SasProtocol sasProtocol) {
+    public static String generateAccountSas(SharedKeyCredential sharedKeyCredential,
+            AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
+            AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
+            String version, SasIpRange sasIpRange, SasProtocol sasProtocol) {
 
         AccountSasSignatureValues values = new AccountSasSignatureValues();
 
-        values.setServices(accountSASService == null ? null : accountSASService.toString());
-        values.setResourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
-        values.setPermissions(accountSASPermission == null ? null : accountSASPermission.toString());
+        values.setServices(accountSasService == null ? null : accountSasService.toString());
+        values.setResourceTypes(accountSasResourceType == null ? null : accountSasResourceType.toString());
+        values.setPermissions(accountSasPermission == null ? null : accountSasPermission.toString());
         values.setExpiryTime(expiryTime);
         values.setStartTime(startTime);
 
@@ -256,7 +256,7 @@ public final class AccountSasSignatureValues {
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
     public AccountSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
+        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
         Utility.assertNotNull("expiryTime", this.expiryTime);

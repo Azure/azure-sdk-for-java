@@ -3,6 +3,10 @@
 
 package com.azure.storage.file;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
+
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -30,8 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -117,7 +119,11 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
     public PagedFlux<ShareItem> listShares() {
-        return listShares(null);
+        try {
+            return listShares(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -151,7 +157,11 @@ public final class FileServiceAsyncClient {
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
     public PagedFlux<ShareItem> listShares(ListSharesOptions options) {
-        return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
+        try {
+            return listSharesWithOptionalTimeout(null, options, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -181,8 +191,8 @@ public final class FileServiceAsyncClient {
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
             nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
-                .listSharesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include, null, context),
-                timeout)
+                    .listSharesSegmentWithRestResponseAsync(
+                        prefix, nextMarker, maxResultsPerPage, include, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -209,7 +219,11 @@ public final class FileServiceAsyncClient {
      * @return Storage account {@link FileServiceProperties File service properties}
      */
     public Mono<FileServiceProperties> getProperties() {
-        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -229,7 +243,11 @@ public final class FileServiceAsyncClient {
      * @return A response containing the Storage account {@link FileServiceProperties File service properties}
      */
     public Mono<Response<FileServiceProperties>> getPropertiesWithResponse() {
-        return withContext(this::getPropertiesWithResponse);
+        try {
+            return withContext(this::getPropertiesWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<FileServiceProperties>> getPropertiesWithResponse(Context context) {
@@ -271,7 +289,11 @@ public final class FileServiceAsyncClient {
      * </ul>
      */
     public Mono<Void> setProperties(FileServiceProperties properties) {
-        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        try {
+            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -312,7 +334,11 @@ public final class FileServiceAsyncClient {
      * </ul>
      */
     public Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties) {
-        return withContext(context -> setPropertiesWithResponse(properties, context));
+        try {
+            return withContext(context -> setPropertiesWithResponse(properties, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(FileServiceProperties properties, Context context) {
@@ -338,7 +364,11 @@ public final class FileServiceAsyncClient {
      * @throws FileStorageException If a share with the same name already exists
      */
     public Mono<ShareAsyncClient> createShare(String shareName) {
-        return createShareWithResponse(shareName, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createShareWithResponse(shareName, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -368,7 +398,11 @@ public final class FileServiceAsyncClient {
      */
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB) {
-        return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB, context));
+        try {
+            return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
@@ -396,7 +430,11 @@ public final class FileServiceAsyncClient {
      * @throws FileStorageException If the share doesn't exist
      */
     public Mono<Void> deleteShare(String shareName) {
-        return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteShareWithResponse(shareName, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -418,7 +456,11 @@ public final class FileServiceAsyncClient {
      * @throws FileStorageException If the share doesn't exist or the snapshot doesn't exist
      */
     public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
-        return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
+        try {
+            return withContext(context -> deleteShareWithResponse(shareName, snapshot, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot, Context context) {
