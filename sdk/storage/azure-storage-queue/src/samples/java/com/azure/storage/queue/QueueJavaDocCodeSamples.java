@@ -8,8 +8,6 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.azure.storage.queue.models.ReceiveMessageItem;
-import com.azure.storage.queue.models.SendMessageItem;
 import com.azure.storage.queue.models.UpdatedMessageItem;
 
 import java.time.Duration;

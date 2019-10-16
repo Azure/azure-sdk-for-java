@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageItem,ReceiveMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
+custom-types: QueueErrorCode,QueueSignedIdentifier,SentMessageItem,ReceivedMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
 custom-types-subpackage: models
 ```
 
@@ -156,15 +156,15 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.ReceiveMessageItem) {
-        $.ReceiveMessageItem = $.DequeuedMessageItem;
+    if (!$.ReceivedMessageItem) {
+        $.ReceivedMessageItem = $.DequeuedMessageItem;
         delete $.DequeuedMessageItem;
-        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "ReceiveMessageItem");
+        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "ReceivedMessageItem");
     }
-    if (!$.SendMessageItem) {
-        $.SendMessageItem = $.EnqueuedMessage;
+    if (!$.SentMessageItem) {
+        $.SentMessageItem = $.EnqueuedMessage;
         delete $.EnqueuedMessage;
-        $.EnqueuedMessageList.items.$ref = $.EnqueuedMessageList.items.$ref.replace("EnqueuedMessage", "SendMessageItem");
+        $.EnqueuedMessageList.items.$ref = $.EnqueuedMessageList.items.$ref.replace("EnqueuedMessage", "SentMessageItem");
     }
 ```
 

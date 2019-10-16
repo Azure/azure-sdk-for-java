@@ -8,11 +8,11 @@ import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
-import com.azure.storage.queue.models.EnqueuedMessage
 
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
+
 import org.junit.Test
 import spock.lang.Unroll
 
@@ -97,7 +97,7 @@ class QueueSASTests extends APISpec {
     def "Test QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
-        EnqueuedMessage resp = queueClient.sendMessage("test")
+        SendMessageItem resp = queueClient.sendMessage("test")
 
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
@@ -146,7 +146,7 @@ class QueueSASTests extends APISpec {
     def "Test QueueSAS update delete with permissions"() {
         setup:
         queueClient.create()
-        EnqueuedMessage resp = queueClient.sendMessage("test")
+        SendMessageItem resp = queueClient.sendMessage("test")
 
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
