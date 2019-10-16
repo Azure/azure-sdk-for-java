@@ -303,7 +303,7 @@ public class FileAsyncClient {
                         operationStatus = OperationStatus.SUCCESSFULLY_COMPLETED;
                         break;
                     case FAILED:
-                        operationStatus = OperationStatus.NOT_STARTED;
+                        operationStatus = OperationStatus.FAILED;
                         break;
                     case ABORTED:
                         operationStatus = OperationStatus.USER_CANCELLED;
