@@ -95,15 +95,16 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         // 1. CUSTOM with valid sprocLink
         // 2. CUSTOM with null sprocLink, should default to empty string
         // 3. CUSTOM with empty sprocLink, should default to empty string
-        testConflictResolutionPolicyRequiringPath(ConflictResolutionMode.CUSTOM,
-                new String[] { "randomSprocName", null, "" }, new String[] { "randomSprocName", "", "" });
+        testConflictResolutionPolicyRequiringPath(ConflictResolutionMode.CUSTOM, new String[] { "dbs/mydb/colls" +
+            "/mycoll/sprocs/randomSprocName", null, "" }, new String[] { "dbs/mydb/colls/mycoll/sprocs" +
+            "/randomSprocName", "", "" });
     }
 
     private void testConflictResolutionPolicyRequiringPath(ConflictResolutionMode conflictResolutionMode,
             String[] paths, String[] expectedPaths) {
-        for (int i = 0; i < paths.length; i++) {            
+        for (int i = 0; i < paths.length; i++) {
             CosmosContainerProperties collectionSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-            
+
             if (conflictResolutionMode == ConflictResolutionMode.LAST_WRITER_WINS) {
                 collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy(paths[i]));
             } else {
@@ -111,7 +112,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             }
             collectionSettings = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getProperties();
             assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(conflictResolutionMode);
-            
+
             if (conflictResolutionMode == ConflictResolutionMode.LAST_WRITER_WINS) {
                 assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo(expectedPaths[i]);
             } else {
@@ -119,7 +120,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             }
         }
     }
-    
+
     @Test(groups = "multi-master", timeOut = TIMEOUT)
     public void invalidConflictResolutionPolicy_LastWriterWinsWithStoredProc() throws Exception {
         CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);

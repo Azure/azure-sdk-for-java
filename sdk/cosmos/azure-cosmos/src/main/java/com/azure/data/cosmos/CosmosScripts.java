@@ -249,7 +249,11 @@ public class CosmosScripts {
      * @return the cosmos sync stored procedure response
      */
     CosmosStoredProcedureResponse convertResponse(CosmosAsyncStoredProcedureResponse response) {
-        return new CosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().id()));
+        if (response.getStoredProcedure() != null) {
+            return new CosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().id()));
+        } else {
+            return new CosmosStoredProcedureResponse(response, null);
+        }
     }
 
     /**
@@ -282,8 +286,12 @@ public class CosmosScripts {
      * @return the cosmos sync user defined function response
      */
     CosmosUserDefinedFunctionResponse convertResponse(CosmosAsyncUserDefinedFunctionResponse response) {
-        return new CosmosUserDefinedFunctionResponse(response,
+        if (response.getUserDefinedFunction() != null) {
+            return new CosmosUserDefinedFunctionResponse(response,
                 getUserDefinedFunction(response.getUserDefinedFunction().getId()));
+        } else {
+            return new CosmosUserDefinedFunctionResponse(response, null);
+        }
     }
 
     //Trigger
@@ -318,8 +326,12 @@ public class CosmosScripts {
      * @return the cosmos sync trigger response
      */
     CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
-        return new CosmosTriggerResponse(response,
+        if (response.getTrigger() != null) {
+            return new CosmosTriggerResponse(response,
                 getTrigger(response.getTrigger().getId()));
+        } else {
+            return new CosmosTriggerResponse(response, null);
+        }
     }
 
     private <T> Iterator<FeedResponse<T>> getFeedIterator(Flux<FeedResponse<T>> itemFlux) {
