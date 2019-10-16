@@ -13,7 +13,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;

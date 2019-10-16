@@ -48,6 +48,12 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String DESERIALIZED_HEADERS = "deserializedHeaders";
     private static final String ETAG = "eTag";
+    private static final String UTF8_CHARSET = "UTF-8";
+    private static final String ARGUMENT_NULL_OR_EMPTY =
+        "The argument must not be null or an empty string. Argument name: %s.";
+    private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
+    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
+    private static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
 
     public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
@@ -152,7 +158,7 @@ public final class Utility {
      */
     private static String decode(final String stringToDecode) {
         try {
-            return URLDecoder.decode(stringToDecode, Constants.UTF8_CHARSET);
+            return URLDecoder.decode(stringToDecode, UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -172,7 +178,7 @@ public final class Utility {
         }
 
         if (stringToEncode.length() == 0) {
-            return Constants.EMPTY_STRING;
+            return "";
         }
 
         if (stringToEncode.contains(" ")) {
@@ -205,7 +211,7 @@ public final class Utility {
      */
     private static String encode(final String stringToEncode) {
         try {
-            return URLEncoder.encode(stringToEncode, Constants.UTF8_CHARSET);
+            return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -282,8 +288,7 @@ public final class Utility {
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new NullPointerException(String.format(Locale.ROOT,
-                Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new NullPointerException(String.format(Locale.ROOT, ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -300,7 +305,7 @@ public final class Utility {
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max)));
+                PARAMETER_NOT_IN_RANGE, param, min, max)));
         }
     }
 
@@ -337,8 +342,7 @@ public final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT,
-                    Constants.MessageConstants.INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -490,8 +494,7 @@ public final class Utility {
         UrlBuilder builder = UrlBuilder.parse(baseUrl);
 
         if (builder.getPath() == null || !builder.getPath().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.NO_PATH_SEGMENTS, baseUrl));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, NO_PATH_SEGMENTS, baseUrl));
         }
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));

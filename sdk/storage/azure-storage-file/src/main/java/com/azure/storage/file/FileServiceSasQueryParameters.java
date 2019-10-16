@@ -4,7 +4,7 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.BaseSasQueryParameters;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.SasProtocol;
 

@@ -25,16 +25,16 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.credential.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobContainerItem
+import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.models.RetentionPolicy
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -133,7 +133,7 @@ class APISpec extends Specification {
     boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
-    def containerName
+    String containerName
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -652,14 +652,14 @@ class APISpec extends Specification {
 
     def enableSoftDelete() {
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(true).setDays(2)))
+            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2)))
 
         sleepIfRecord(30000)
     }
 
     def disableSoftDelete() {
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
-            .setDeleteRetentionPolicy(new RetentionPolicy().setEnabled(false)))
+            .setDeleteRetentionPolicy(new BlobRetentionPolicy().setEnabled(false)))
 
         sleepIfRecord(30000)
     }

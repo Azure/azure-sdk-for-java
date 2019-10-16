@@ -9,15 +9,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -72,7 +72,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * it will be overwritten.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @throws StorageException If a storage service error occurred.
+     * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
         return getBlobOutputStream(null);
@@ -85,7 +85,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param accessConditions A {@link BlobAccessConditions} object that represents the access conditions for the
      * blob.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @throws StorageException If a storage service error occurred.
+     * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(AppendBlobAccessConditions accessConditions) {
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, accessConditions);
@@ -109,16 +109,16 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context}
      *
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(BlobHTTPHeaders headers, Map<String, String> metadata,
+    public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions, Duration timeout, Context context) {
         return Utility.blockWithOptionalTimeout(appendBlobAsyncClient.
             createWithResponse(headers, metadata, accessConditions, context), timeout);

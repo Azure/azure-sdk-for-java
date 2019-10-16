@@ -25,7 +25,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
@@ -126,6 +126,7 @@ public final class EncryptedBlobClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
         policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());

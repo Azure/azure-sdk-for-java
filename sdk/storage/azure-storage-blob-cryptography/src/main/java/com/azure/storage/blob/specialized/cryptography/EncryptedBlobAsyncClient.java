@@ -3,8 +3,6 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.rest.Response;
@@ -14,11 +12,11 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -40,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -157,20 +157,20 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions, BlobHTTPHeaders headers, Map<String, String> metadata,
+        ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobAccessConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
@@ -207,11 +207,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
@@ -220,7 +220,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null

@@ -10,17 +10,17 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -89,20 +89,20 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHTTPHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions}
      *
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
-    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Map<String, String> metadata,
+    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions) {
         return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<AppendBlobItem>> createWithResponse(BlobHTTPHeaders headers, Map<String, String> metadata,
+    Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions, Context context) {
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
