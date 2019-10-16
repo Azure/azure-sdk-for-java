@@ -11,9 +11,9 @@ com.azure:azure-core-management;1.0.0-preview.6;1.0.0-preview.6
 com.azure:azure-core-test;1.0.0-preview.6;1.0.0-preview.6
 com.azure:azure-data-appconfiguration;1.0.0-preview.5;1.0.0-preview.5
 com.azure:azure-identity;1.0.0-preview.5;1.0.0-preview.5
-com.azure:azure-keyvault-certificates;4.0.0-preview.5;4.0.0-preview.5
-com.azure:azure-keyvault-keys;4.0.0-preview.5;4.0.0-preview.5
-com.azure:azure-keyvault-secrets;4.0.0-preview.5;4.0.0-preview.5
+com.azure:azure-security-keyvault-certificates;4.0.0-preview.5;4.0.0-preview.5
+com.azure:azure-security-keyvault-keys;4.0.0-preview.5;4.0.0-preview.5
+com.azure:azure-security-keyvault-secrets;4.0.0-preview.5;4.0.0-preview.5
 com.azure:azure-messaging-eventhubs;5.0.0-preview.4;5.0.0-preview.4
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.0.0-preview.2;1.0.0-preview.2
 com.azure:azure-sdk-template;1.0.2;1.0.2

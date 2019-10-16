@@ -187,13 +187,13 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-keyvault-keys</artifactId>
-          <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-keyvault-keys;current} -->
+          <artifactId>azure-security-keyvault-keys</artifactId>
+          <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-keyvault-secrets</artifactId>
-          <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-keyvault-secrets;current} -->
+          <artifactId>azure-security-keyvault-secrets</artifactId>
+          <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

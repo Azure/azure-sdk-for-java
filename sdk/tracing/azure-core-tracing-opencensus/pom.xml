@@ -61,7 +61,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-keyvault-secrets</artifactId>
+      <artifactId>azure-security-keyvault-secrets</artifactId>
       <version>4.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-keyvault-secrets;dependency} -->
       <scope>test</scope>
     </dependency>
