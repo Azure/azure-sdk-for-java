@@ -218,7 +218,7 @@ public class BlobClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceURL) {
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceURL) {
         return beginCopyFromUrl(sourceURL, null, null, null, null, null);
     }
 
@@ -245,7 +245,7 @@ public class BlobClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceURL, Map<String, String> metadata, AccessTier tier,
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceURL, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
             BlobAccessConditions destAccessConditions) {
 

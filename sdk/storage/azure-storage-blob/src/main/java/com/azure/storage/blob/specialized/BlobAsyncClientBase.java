@@ -56,7 +56,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -253,7 +252,7 @@ public class BlobAsyncClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
-    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceUrl) {
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceUrl) {
         return beginCopyFromUrl(sourceUrl, null, null, null, null, null);
     }
 
@@ -280,7 +279,7 @@ public class BlobAsyncClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
-    public Poller<BlobCopyInfo> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
             BlobAccessConditions destAccessConditions) {
 
@@ -298,30 +297,44 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedCondition.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
-        final AtomicReference<String> copyId = new AtomicReference<>();
+        return new Poller<>(
+            Duration.ofSeconds(1),
+            this::onPoll,
+            Mono::empty,
+            () -> onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions),
+            poller -> {
+                final PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
 
-        return new Poller<>(Duration.ofSeconds(1),
-            response -> onPoll(response),
-            () -> withContext(
-                context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
-                    sourceUrl, null, metadata, tier, priority, null, sourceConditions,
-                    destinationAccessConditions.getModifiedAccessConditions(),
-                    destinationAccessConditions.getLeaseAccessConditions(), context))
-                .map(response -> {
-                    final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
-                    copyId.set(headers.getCopyId());
+                if (response == null || response.getValue() == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                }
 
-                    return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(), headers.getCopyStatus(),
-                        headers.getETag(), headers.getLastModified(), headers.getErrorCode());
-                }),
-            unused -> {
-                final String copyIdentifier = copyId.get();
+                final String copyIdentifier = response.getValue().getCopyId();
 
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy: {}", copyIdentifier);
 
-                    Utility.blockWithOptionalTimeout(abortCopyFromURL(copyIdentifier), null);
+                    return abortCopyFromURL(copyIdentifier).thenReturn(response.getValue());
                 }
+
+                return Mono.empty();
+            });
+    }
+
+    private Mono<BlobCopyInfo> onStart(URL sourceUrl, Map<String, String> metadata, AccessTier tier,
+            RehydratePriority priority, SourceModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destinationAccessConditions) {
+        return withContext(
+            context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null,
+                sourceUrl, null, metadata, tier, priority, null, sourceModifiedAccessConditions,
+                destinationAccessConditions.getModifiedAccessConditions(),
+                destinationAccessConditions.getLeaseAccessConditions(), context))
+            .map(response -> {
+                final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+
+                return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(), headers.getCopyStatus(),
+                    headers.getETag(), headers.getLastModified(), headers.getErrorCode());
             });
     }
 
@@ -334,7 +347,8 @@ public class BlobAsyncClientBase {
         final BlobCopyInfo lastInfo = pollResponse.getValue();
         if (lastInfo == null) {
             logger.warning("BlobCopyInfo does not exist. Activation operation failed.");
-            return Mono.just(new PollResponse<>(OperationStatus.fromString("COPY_START_FAILED"), null));
+            return Mono.just(new PollResponse<>(
+                OperationStatus.fromString("COPY_START_FAILED", true), null));
         }
 
         return getProperties().map(response -> {
@@ -362,7 +376,8 @@ public class BlobAsyncClientBase {
             }
 
             return new PollResponse<>(operationStatus, result);
-        }).onErrorReturn(new PollResponse<>(OperationStatus.fromString("POLLING_FAILED"), lastInfo));
+        }).onErrorReturn(
+            new PollResponse<>(OperationStatus.fromString("POLLING_FAILED", true), lastInfo));
     }
 
     /**
