@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Storage Queue supported by this client library.
  */
 public enum QueueServiceVersion implements ServiceVersion {
-    V2018_03_28("2018-03-28");
+    V2019_02_02("2019-02-02");
 
     private final String version;
 
@@ -31,6 +31,6 @@ public enum QueueServiceVersion implements ServiceVersion {
      * @return the latest {@link QueueServiceVersion}
      */
     public static QueueServiceVersion getLatest() {
-        return V2018_03_28;
+        return V2019_02_02;
     }
 }
