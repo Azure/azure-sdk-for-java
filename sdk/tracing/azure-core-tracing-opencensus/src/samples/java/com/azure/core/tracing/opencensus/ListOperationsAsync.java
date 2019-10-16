@@ -18,7 +18,7 @@ import reactor.util.context.Context;
 
 import java.util.concurrent.Semaphore;
 
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
  * Sample demonstrates how to list secrets and versions of a given secret in the key vault with tracing enabled.
@@ -56,7 +56,7 @@ public class ListOperationsAsync {
         Scope scope = tracer.spanBuilder("user-parent-span").startScopedSpan();
 
         semaphore.acquire();
-        Context traceContext = Context.of(OPENCENSUS_SPAN_KEY, tracer.getCurrentSpan());
+        Context traceContext = Context.of(PARENT_SPAN_KEY, tracer.getCurrentSpan());
         // Let's create secrets holding storage and bank accounts credentials. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         client.setSecret(new Secret("StorageAccountPassword", "password"))

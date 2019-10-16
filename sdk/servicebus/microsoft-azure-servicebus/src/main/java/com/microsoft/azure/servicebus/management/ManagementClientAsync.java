@@ -1134,8 +1134,8 @@ public class ManagementClientAsync {
             return null;
         }
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
+            DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document dom = db.parse(new ByteArrayInputStream(content.getBytes("utf-8")));
             Element doc = dom.getDocumentElement();

@@ -3,8 +3,9 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.NtfsFileAttributes;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -151,12 +152,12 @@ public class DirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHTTPHeaders, FileSmbProperties, String, Map)}
+     * Generates a code sample for using {@link DirectoryAsyncClient#createFileWithResponse(String, long, FileHttpHeaders, FileSmbProperties, String, Map)}
      */
     public void createFileWithResponse() {
         DirectoryAsyncClient directoryAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.directoryAsyncClient.createFileWithResponse#string-long-filehttpheaders-filesmbproperties-string-map
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
             .setFileContentType("text/html")
             .setFileContentEncoding("gzip")
             .setFileContentLanguage("en")

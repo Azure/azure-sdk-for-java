@@ -4,9 +4,9 @@
 package com.azure.identity.credential;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.credentials.AccessToken;
-import com.azure.core.credentials.TokenCredential;
-import com.azure.core.credentials.TokenRequest;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequest;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;

@@ -4,24 +4,25 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -191,7 +192,7 @@ public final class BlobServiceClient {
      *
      * @return The storage account properties.
      */
-    public StorageServiceProperties getProperties() {
+    public BlobServiceProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
 
@@ -207,9 +208,9 @@ public final class BlobServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the storage account properties.
      */
-    public Response<StorageServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+    public Response<BlobServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
 
-        Mono<Response<StorageServiceProperties>> response = blobServiceAsyncClient.getPropertiesWithResponse(context);
+        Mono<Response<BlobServiceProperties>> response = blobServiceAsyncClient.getPropertiesWithResponse(context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -222,11 +223,11 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setProperties#StorageServiceProperties}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties}
      *
      * @param properties Configures the service.
      */
-    public void setProperties(StorageServiceProperties properties) {
+    public void setProperties(BlobServiceProperties properties) {
         setPropertiesWithResponse(properties, null, Context.NONE);
     }
 
@@ -238,14 +239,14 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#StorageServiceProperties-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context}
      *
      * @param properties Configures the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The storage account properties.
      */
-    public Response<Void> setPropertiesWithResponse(StorageServiceProperties properties, Duration timeout,
+    public Response<Void> setPropertiesWithResponse(BlobServiceProperties properties, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
 

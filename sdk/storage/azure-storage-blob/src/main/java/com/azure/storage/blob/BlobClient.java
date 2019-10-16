@@ -17,7 +17,6 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
@@ -46,11 +45,10 @@ public class BlobClient extends BlobClientBase {
     private final BlobAsyncClient client;
 
     /**
-     * Package-private constructor for use by {@link BlobClientBuilder}.
-     *
+     * Protected constructor for use by {@link BlobClientBuilder}.
      * @param client the async blob client
      */
-    BlobClient(BlobAsyncClient client) {
+    protected BlobClient(BlobAsyncClient client) {
         super(client);
         this.client = client;
     }
@@ -107,9 +105,9 @@ public class BlobClient extends BlobClientBase {
      * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String}
      *
      * @param filePath Path of the file to upload
-     * @throws IOException If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath) throws IOException {
+    public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
 

@@ -7,9 +7,14 @@ import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.ConflictException;
 import com.azure.data.cosmos.ForbiddenException;
 import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.InternalServerErrorException;
+import com.azure.data.cosmos.InvalidPartitionException;
 import com.azure.data.cosmos.LockedException;
 import com.azure.data.cosmos.MethodNotAllowedException;
+import com.azure.data.cosmos.NotFoundException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
 import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.PreconditionFailedException;
 import com.azure.data.cosmos.RequestEntityTooLargeException;
 import com.azure.data.cosmos.RequestRateTooLargeException;
@@ -17,26 +22,17 @@ import com.azure.data.cosmos.RequestTimeoutException;
 import com.azure.data.cosmos.RetryWithException;
 import com.azure.data.cosmos.ServiceUnavailableException;
 import com.azure.data.cosmos.UnauthorizedException;
-import com.azure.data.cosmos.internal.directconnectivity.HttpTransportClient;
-import com.azure.data.cosmos.internal.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.FailureValidator;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.InternalServerErrorException;
-import com.azure.data.cosmos.InvalidPartitionException;
-import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.PartitionIsMigratingException;
-import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.UserAgentContainer;
-import com.azure.data.cosmos.internal.directconnectivity.HttpTransportClient;
-import com.azure.data.cosmos.internal.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.internal.http.HttpResponse;
-import com.azure.data.cosmos.internal.FailureValidator;
 import io.netty.channel.ConnectTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
@@ -67,7 +63,7 @@ public class HttpTransportClientTest {
 
     private final long lsn = 5;
     private final String partitionKeyRangeId = "3";
-    
+
     @Test(groups = "unit")
     public void getResourceFeedUri_Document() throws Exception {
         RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(
