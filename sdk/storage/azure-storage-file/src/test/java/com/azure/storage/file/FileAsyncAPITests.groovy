@@ -6,11 +6,12 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
 import com.azure.storage.file.models.FileRange
+import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -668,9 +669,32 @@ class FileAsyncAPITests extends APISpec {
             .verifyComplete()
     }
 
-    @Ignore
-    def "Force close handles"() {
-        // TODO: Need to find a way of mocking handles.
+    def "Force close handle min"() {
+        given:
+        primaryFileAsyncClient.create(512).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1"))
+            .verifyComplete()
+    }
+
+    def "Force close handle invalid handle ID"() {
+        given:
+        primaryFileAsyncClient.create(512).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("invalidHandleId"))
+            .verifyErrorSatisfies({ it instanceof  FileStorageException })
+    }
+
+    def "Force close all handles min"() {
+        given:
+        primaryFileAsyncClient.create(512).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles())
+            .assertNext({ it == 0 })
+            .verifyComplete()
     }
 
     def "Get snapshot id"() {

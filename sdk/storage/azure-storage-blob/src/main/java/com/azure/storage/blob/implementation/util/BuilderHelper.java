@@ -16,7 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;

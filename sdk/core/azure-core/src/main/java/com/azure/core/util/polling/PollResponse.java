@@ -6,6 +6,8 @@ package com.azure.core.util.polling;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,35 +39,69 @@ public final class PollResponse<T> {
      * {@code USER_CANCELLED} or {@code FAILED}.
      */
     public static final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
+
+        private boolean completed;
+
         /** Represents that polling has not yet started for this long-running operation. */
-        public static final OperationStatus NOT_STARTED = fromString("NOT_STARTED");
+        public static final OperationStatus NOT_STARTED = fromString("NOT_STARTED", false);
 
         /** Represents that this long-running operation is in progress and not yet complete. */
-        public static final OperationStatus IN_PROGRESS = fromString("IN_PROGRESS");
+        public static final OperationStatus IN_PROGRESS = fromString("IN_PROGRESS", false);
 
         /** Represent that this long-running operation is completed successfully. */
-        public static final OperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED");
+        public static final OperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED",
+            true);
 
         /**
          * Represents that this long-running operation has failed to successfully complete, however this is still
          * considered as complete long-running operation, meaning that the {@link Poller} instance will report that it
          * is complete.
          */
-        public static final OperationStatus FAILED = fromString("FAILED");
+        public static final OperationStatus FAILED = fromString("FAILED", true);
 
         /**
          * Represents that this long-running operation is cancelled by user, however this is still
          * considered as complete long-running operation.
          */
-        public static final OperationStatus USER_CANCELLED = fromString("USER_CANCELLED");
+        public static final OperationStatus USER_CANCELLED = fromString("USER_CANCELLED", true);
+
+        private static Map<String, OperationStatus> operationStatusMap;
+        static {
+            Map<String, OperationStatus> opStatusMap = new HashMap<>();
+            opStatusMap.put(NOT_STARTED.toString(), NOT_STARTED);
+            opStatusMap.put(IN_PROGRESS.toString(), IN_PROGRESS);
+            opStatusMap.put(SUCCESSFULLY_COMPLETED.toString(), SUCCESSFULLY_COMPLETED);
+            opStatusMap.put(FAILED.toString(), FAILED);
+            opStatusMap.put(USER_CANCELLED.toString(), USER_CANCELLED);
+            operationStatusMap = Collections.unmodifiableMap(opStatusMap);
+        }
 
         /**
          * Creates or finds a {@link OperationStatus} from its string representation.
          * @param name a name to look for
+         * @param isComplete a status to indicate if the operation is complete or not.
+         * @throws IllegalArgumentException if {@code name} matches a pre-configured {@link OperationStatus} but
+         * {@code isComplete} doesn't match its pre-configured complete status.
          * @return the corresponding {@link OperationStatus}
          */
-        public static OperationStatus fromString(String name) {
-            return fromString(name, OperationStatus.class);
+        public static OperationStatus fromString(String name, boolean isComplete) {
+            OperationStatus status = fromString(name, OperationStatus.class);
+
+            if (status != null) {
+                if (operationStatusMap != null && operationStatusMap.containsKey(name)) {
+                    OperationStatus operationStatus = operationStatusMap.get(name);
+                    if (operationStatus.isComplete() != isComplete) {
+                        throw new IllegalArgumentException(String.format("Cannot set complete status %s for operation"
+                            + "status %s", isComplete, name));
+                    }
+                }
+                status.completed = isComplete;
+            }
+            return status;
+        }
+
+        public boolean isComplete() {
+            return completed;
         }
     }
 

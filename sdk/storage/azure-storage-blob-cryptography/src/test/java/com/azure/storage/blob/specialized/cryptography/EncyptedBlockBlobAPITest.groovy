@@ -13,7 +13,7 @@ import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.StorageException
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions

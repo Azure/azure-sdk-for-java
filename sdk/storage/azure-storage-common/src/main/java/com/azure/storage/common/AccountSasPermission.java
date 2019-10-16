@@ -3,6 +3,8 @@
 
 package com.azure.storage.common;
 
+import com.azure.storage.common.implementation.Constants;
+
 import java.util.Locale;
 
 /**
@@ -37,11 +39,11 @@ public final class AccountSasPermission {
     }
 
     /**
-     * Creates an {@code AccountSasPermission} from the specified permissions string. This method will throw an
-     * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
+     * Creates an {@link AccountSasPermission} from the specified permissions string. This method will throw an
+     * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code SharedAccessAccountPermissions}.
-     * @return An {@code AccountSasPermission} object generated from the given {@code String}.
+     * @param permString A {@code String} which represents the {@link AccountSasPermission}.
+     * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or
      * p.
      */
@@ -77,7 +79,7 @@ public final class AccountSasPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
                             "Permissions", permString, c));
             }
         }

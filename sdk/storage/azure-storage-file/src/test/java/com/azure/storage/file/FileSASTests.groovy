@@ -5,7 +5,7 @@ import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.credentials.SharedKeyCredential

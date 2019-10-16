@@ -1,39 +1,54 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.implementation;
 
+import com.azure.storage.common.SasProtocol;
+
+/**
+ * Defines general constants.
+ *
+ * RESERVED FOR INTERNAL USE.
+ */
 public final class Constants {
+    /**
+     * Represents a non-SI kilobyte.
+     */
     public static final int KB = 1024;
 
     /**
-     * Constant representing a megabyte (Non-SI version).
+     * Represents a non-SI megabyte.
      */
     public static final int MB = 1024 * KB;
 
     /**
-     * An empty {@code String} to use for comparison.
+     * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
      */
-    public static final String EMPTY_STRING = "";
+    public static final String HTTPS = "https";
 
     /**
-     * The default type for content-type and accept.
+     * Represents the value for {@link SasProtocol#HTTPS_HTTP}.
      */
-    static final String UTF8_CHARSET = "UTF-8";
+    public static final String HTTPS_HTTP = "https,http";
 
     /**
-     * The query parameter for snapshots.
+     * Exception message when the underlying stream has already been closed.
      */
-    public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
+    public static final String STREAM_CLOSED = "Stream is already closed.";
 
-    static final String HTTPS = "https";
-    static final String HTTPS_HTTP = "https,http";
+    /**
+     * Exception message when the value could not be parsed into an enum.
+     */
+    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
+        "%s could not be parsed from '%s' due to invalid value %s.";
 
     private Constants() {
     }
 
     /**
      * Defines constants for use with connection strings.
+     *
+     * RESERVED FOR INTERNAL USE.
      */
     public static final class ConnectionStringConstants {
         /**
@@ -62,6 +77,8 @@ public final class Constants {
 
     /**
      * Defines constants for use with HTTP headers.
+     *
+     * RESERVED FOR INTERNAL USE.
      */
     public static final class HeaderConstants {
 
@@ -95,7 +112,17 @@ public final class Constants {
         }
     }
 
+    /**
+     * Defines constants for use with URLs.
+     *
+     * RESERVED FOR INTERNAL USE.
+     */
     public static final class UrlConstants {
+
+        /**
+         * The snapshot parameters.
+         */
+        public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
 
         /**
          * The SAS service version parameter.
@@ -208,21 +235,6 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
-         * The SAS blob constant.
-         */
-        public static final String SAS_BLOB_CONSTANT = "b";
-
-        /**
-         * The SAS blob snapshot constant.
-         */
-        public static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
-
-        /**
-         * The SAS blob snapshot constant.
-         */
-        public static final String SAS_CONTAINER_CONSTANT = "c";
-
-        /**
          * The SAS file constant.
          */
         public static final String SAS_FILE_CONSTANT = "f";
@@ -239,17 +251,6 @@ public final class Constants {
 
         private UrlConstants() {
             // Private to prevent construction.
-        }
-    }
-
-    static final class MessageConstants {
-        static final String ARGUMENT_NULL_OR_EMPTY =
-            "The argument must not be null or an empty string. Argument name: %s.";
-        static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
-        static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
-        static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
-
-        private MessageConstants() {
         }
     }
 }

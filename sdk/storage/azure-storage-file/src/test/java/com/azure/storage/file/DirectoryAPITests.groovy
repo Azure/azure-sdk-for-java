@@ -3,14 +3,13 @@
 
 package com.azure.storage.file
 
-import com.azure.storage.common.Constants
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.file.models.FileErrorCode
 import com.azure.storage.file.models.FileHttpHeaders
+import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
-import com.azure.storage.file.models.FileStorageException
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -378,21 +377,38 @@ class DirectoryAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, FileErrorCode.RESOURCE_NOT_FOUND)
     }
 
-    @Ignore
-    def "Force close handles"() {
-        // TODO: Need to find a way of mocking handles.
-    }
-
-    def "Force close handles error"() {
+    def "Force close handle min"() {
         given:
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.forceCloseHandles("handleId", true, null, null).iterator().hasNext()
+        primaryDirectoryClient.forceCloseHandle("1")
 
         then:
-        def e = thrown(FileStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        notThrown(FileStorageException)
+    }
+
+    def "Force close handle invalid handle ID"() {
+        given:
+        primaryDirectoryClient.create()
+
+        when:
+        primaryDirectoryClient.forceCloseHandle("invalidHandleId")
+
+        then:
+        thrown(FileStorageException)
+    }
+
+    def "Force close all handles min"() {
+        given:
+        primaryDirectoryClient.create()
+
+        when:
+        def numberOfHandlesClosed = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
+
+        then:
+        notThrown(FileStorageException)
+        numberOfHandlesClosed == 0
     }
 
     def "Create sub directory"() {

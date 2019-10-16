@@ -6,7 +6,7 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -138,52 +138,52 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+          <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
-          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+          <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-okhttp</artifactId>
-          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+          <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+          <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+          <version>1.0.0-preview.7</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs</artifactId>
-          <version>5.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+          <version>5.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-          <version>1.0.0-preview.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+          <version>1.0.0-preview.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+          <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -198,42 +198,42 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-common</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-batch</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-cryptography</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-file</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-file;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-file;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-file-datalake</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue-cryptography</artifactId>
-          <version>12.0.0-preview.4</version> <!-- {x-version-update;com.azure:azure-storage-queue-cryptography;current} -->
+          <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-queue-cryptography;current} -->
         </dependency>
         <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
