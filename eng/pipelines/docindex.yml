@@ -1,0 +1,112 @@
+jobs:
+  - job: CreateDocIndex
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      vmImage: windows-2019
+    steps:
+      - pwsh: |
+          Invoke-WebRequest -Uri "https://github.com/dotnet/docfx/releases/download/v2.43.2/docfx.zip" `
+          -OutFile "docfx.zip" | Wait-Process; Expand-Archive -Path "docfx.zip" -DestinationPath "./docfx/"
+        workingDirectory: $(Build.BinariesDirectory)
+        displayName: Download and Extract DocFX
+      - task: CmdLine@2
+        displayName: Provision DocFX Directory
+        inputs:
+          script: $(Build.BinariesDirectory)/docfx/docfx.exe init -q
+          workingDirectory: $(Build.SourcesDirectory)
+          failOnStderr: true
+      - pwsh: New-Item -Path . -Name "templates" -ItemType "directory"
+        displayName: Create Template Directory
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/
+      - task: CopyFiles@2
+        displayName: Copy Template to templates folder
+        inputs:
+          sourceFolder: $(Build.SourcesDirectory)/eng/docgeneration/templates
+          content: '**\*'
+          targetFolder: $(Build.SourcesDirectory)/docfx_project/templates
+          overWrite: true
+      - pwsh: ls
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/
+      - pwsh: ls
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/templates
+      - pwsh: |
+          Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/docfx.json" -Destination "$(Build.SourcesDirectory)/docfx_project/" -Force
+        displayName: Copy over docfx.json
+      - pwsh: |
+          $ServiceListMgmt = Get-ChildItem "$(Build.SourcesDirectory)" -Directory -Exclude .azure-pipelines, .github, eng, sdk, template
+          $ServiceListData = Get-ChildItem "$(Build.SourcesDirectory)/sdk" -Directory
+          $YmlPath = "$(Build.SourcesDirectory)/docfx_project/api"
+          New-Item -Path $YmlPath -Name "toc.yml" -Force
+          foreach ($Dir in $ServiceListData)
+          {   
+              New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
+              #Write-Host "$($Dir.Name) to Toc.yml"
+              Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"
+              #Write-Host "Write Client Header"
+              Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# CLIENT"
+              $PkgList = Get-ChildItem $Dir.FullName -Directory -Exclude changelog, faq, .github, build
+              if (($PkgList | Measure-Object).count -eq 0)
+              {
+                  continue
+              }
+              foreach ($Pkg in $PkgList)
+              {
+                  $PkgName = $Pkg.BaseName
+                  $IndexofAzure = $PkgName.IndexOf('azure')
+                  $PkgName = $PkgName.Substring($IndexofAzure)
+                  if ($Dir.BaseName -eq 'cognitiveservices')
+                  {
+                      $PkgName = $PkgName.Replace('-cs-', '-cognitiveservices-')
+                  }
+                  Write-Host "Write $($PkgName) to $($Dir.Name).md"
+                  Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+              }
+          }
+          foreach ($Dir in $ServiceListMgmt)
+          {    
+              if(Test-Path "$($YmlPath)\$($Dir.Name).md")
+              { 
+                  #Write-Host "$($Dir.Name) to Toc.yml"
+                  Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"      
+              }
+              else
+              {
+                  New-Item -Path $YmlPath -Name "$($Dir.Name).md" -Force
+                  
+                  #Write-Host "$($Dir.Name) to Toc.yml"
+                  Add-Content -Path "$($YmlPath)/toc.yml" -Value "- name: $($Dir.Name.ToUpper())`r`n  href: $($Dir.Name).md"
+              }
+              #Write-Host "Write Mgmt Header"
+              Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "# MANAGEMENT"
+              $PkgName = "azure-mgmt-$($Dir.Name)"
+              Write-Host "Write $($PkgName) to $($Dir.Name).md"
+              Add-Content -Path "$($YmlPath)/$($Dir.Name).md" -Value "#### $PkgName"
+          }
+          New-Item -Path "$(Build.SourcesDirectory)/docfx_project" -Name "toc.yml" -Force
+          Add-Content -Path "$(Build.SourcesDirectory)/docfx_project/toc.yml" -Value "- name: Azure SDK for Net Apis`r`n  href: api/`r`n  homepage: api/index.md"
+          Copy-Item "$(Build.SourcesDirectory)/README.md" -Destination "$(Build.SourcesDirectory)/docfx_project/api/index.md" -Force
+        displayName: Create main index and navigation toc.yml, copy over readme.
+      - pwsh: ls
+        workingDirectory: $(Build.SourcesDirectory)/docfx_project/api
+      - task: CmdLine@2
+        displayName: Build Doc Content
+        inputs:
+          script: $(Build.BinariesDirectory)/docfx/docfx.exe build
+          workingDirectory: $(Build.SourcesDirectory)/docfx_project/
+          failOnStderr: true
+      - pwsh: |
+          Copy-Item "$(Build.SourcesDirectory)/eng/docgeneration/assets/*" -Destination "$(Build.SourcesDirectory)/docfx_project/_site/" -Force
+        displayName: Replace site assets
+      - task: CopyFiles@2
+        displayName: Copy HTML to Artifacts Directory
+        inputs:
+          sourceFolder: $(Build.SourcesDirectory)/docfx_project/
+          content: '**\*'
+          targetFolder: $(Build.ArtifactStagingDirectory)/docfx_project
+          overWrite: true
+      - task: PublishPipelineArtifact@0
+        condition: succeeded()
+        inputs:
+          artifactName: "Doc.Index"
+          targetPath: $(Build.ArtifactStagingDirectory)/docfx_project/_site
