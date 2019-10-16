@@ -42,39 +42,10 @@
       <artifactId>opencensus-api</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>io.opencensus</groupId>
-      <artifactId>opencensus-exporter-trace-zipkin</artifactId>
-      <version>0.20.0</version>
-      <scope>test</scope>
-    </dependency>
+    <!-- test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-queue</artifactId>
-      <version>12.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-keyvault-secrets</artifactId>
-      <version>4.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-keyvault-secrets;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.0.0-preview.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
