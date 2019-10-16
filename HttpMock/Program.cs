@@ -35,9 +35,6 @@ namespace HttpMock
 
             [Option('s', "service")]
             public Service? Service { get; set; }
-
-            [Option("upstreamHost", HelpText = "Hostname of upstream server.  If not set, uses hostname and port of incoming request (HTTP_PROXY mode).")]
-            public string UpstreamHost { get; set; }
         }
 
         public static HttpMockOptions Options { get; private set; }
