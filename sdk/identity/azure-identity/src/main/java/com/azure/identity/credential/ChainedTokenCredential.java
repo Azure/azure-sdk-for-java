@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequest;
-import com.azure.core.exception.ClientAuthenticationException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,9 +45,9 @@ public class ChainedTokenCredential implements TokenCredential {
                 return Mono.empty();
             }))
             .next()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(new ClientAuthenticationException("Tried "
+            .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("Tried "
                 + credentials.stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(", "))
                 + " but failed to acquire a token for any of them. Please verify the environment for either of them"
-                + " and see more details in the causes below.", null, cause.get()))));
+                + " and see more details in the causes below.", cause.get()))));
     }
 }

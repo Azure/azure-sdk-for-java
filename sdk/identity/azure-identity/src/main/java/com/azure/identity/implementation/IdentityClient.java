@@ -381,65 +381,92 @@ public class IdentityClient {
             return Mono.error(exception);
         }
 
-        int retry = 1;
-        while (retry <= options.getMaxRetry()) {
-            URL url = null;
-            HttpURLConnection connection = null;
-            try {
-                url =
-                    new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
-                        payload.toString()));
+        return checkImdsAvailable().flatMap(available -> Mono.fromCallable(() -> {
+            int retry = 1;
+            while (retry <= options.getMaxRetry()) {
+                URL url = null;
+                HttpURLConnection connection = null;
+                try {
+                    url =
+                            new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
+                                    payload.toString()));
 
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setRequestProperty("Metadata", "true");
+                    connection.connect();
+
+                    Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                            .useDelimiter("\\A");
+                    String result = s.hasNext() ? s.next() : "";
+
+                    return SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                } catch (IOException exception) {
+                    if (connection == null) {
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Could not connect to the url: %s.", url),
+                                exception));
+                    }
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == 410
+                            || responseCode == 429
+                            || responseCode == 404
+                            || (responseCode >= 500 && responseCode <= 599)) {
+                        int retryTimeoutInMs = options.getRetryTimeout()
+                                .apply(Duration.ofSeconds(RANDOM.nextInt(retry))).getNano() / 1000;
+                        // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
+                        //
+                        retryTimeoutInMs =
+                                (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs
+                                        : retryTimeoutInMs;
+                        retry++;
+                        if (retry > options.getMaxRetry()) {
+                            break;
+                        } else {
+                            sleep(retryTimeoutInMs);
+                        }
+                    } else {
+                        throw logger.logExceptionAsError(new RuntimeException(
+                                "Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId",
+                                exception));
+                    }
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+            }
+            throw logger.logExceptionAsError(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times",
+                    options.getMaxRetry())));
+        }));
+    }
+
+    private Mono<Boolean> checkImdsAvailable() {
+        StringBuilder payload = new StringBuilder();
+
+        try {
+            payload.append("api-version=");
+            payload.append(URLEncoder.encode("2018-02-01", "UTF-8"));
+        } catch (IOException exception) {
+            return Mono.error(exception);
+        }
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = null;
+            URL url = new URL(String.format("http://169.254.169.254/metadata/identity/oauth2/token?%s",
+                            payload.toString()));
+
+            try {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setRequestProperty("Metadata", "true");
+                connection.setConnectTimeout(500);
                 connection.connect();
-
-                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-                String result = s.hasNext() ? s.next() : "";
-
-                return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
-            } catch (IOException exception) {
-                if (connection == null) {
-                    return Mono.error(new RuntimeException(String.format("Could not connect to the url: %s.", url),
-                        exception));
-                }
-                int responseCode = 0;
-                try {
-                    responseCode = connection.getResponseCode();
-                } catch (IOException e) {
-                    return Mono.error(e);
-                }
-                if (responseCode == 410
-                    || responseCode == 429
-                    || responseCode == 404
-                    || (responseCode >= 500 && responseCode <= 599)) {
-                    int retryTimeoutInMs = options.getRetryTimeout().apply(Duration.ofSeconds(RANDOM.nextInt(retry))).
-                        getNano() / 1000;
-                    // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
-                    //
-                    retryTimeoutInMs =
-                        (responseCode == 410 && retryTimeoutInMs < imdsUpgradeTimeInMs) ? imdsUpgradeTimeInMs
-                            : retryTimeoutInMs;
-                    retry++;
-                    if (retry > options.getMaxRetry()) {
-                        break;
-                    } else {
-                        sleep(retryTimeoutInMs);
-                    }
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId",
-                        exception));
-                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
                 }
             }
-        }
-        return Mono.error(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times",
-            options.getMaxRetry())));
+
+            return true;
+        });
     }
 
     private static void sleep(int millis) {
