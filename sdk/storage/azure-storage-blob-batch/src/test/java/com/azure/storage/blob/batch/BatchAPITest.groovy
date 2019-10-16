@@ -96,7 +96,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(StorageBlobBatchException)
         response1.getStatusCode() == 200
 
         when:
@@ -147,7 +147,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(StorageBlobBatchException)
 
         when:
         response1.getStatusCode()
@@ -159,7 +159,7 @@ class BatchAPITest extends APISpec {
         response2.getStatusCode()
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(StorageException)
     }
 
     def "Set tier none succeed do not throw on any error"() {
@@ -230,7 +230,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(StorageBlobBatchException)
         response1.getStatusCode() == 202
 
         when:
@@ -281,7 +281,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(StorageBlobBatchException)
 
         when:
         response1.getStatusCode()
@@ -293,7 +293,7 @@ class BatchAPITest extends APISpec {
         response2.getStatusCode()
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(StorageException)
     }
 
     def "Delete blob none succeed do not throw on any error"() {

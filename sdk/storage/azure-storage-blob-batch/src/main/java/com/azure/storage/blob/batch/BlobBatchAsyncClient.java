@@ -74,7 +74,8 @@ public final class BlobBatchAsyncClient {
      *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
-     * @throws StorageException If any request in the {@link BlobBatch} failed or the batch request is malformed.
+     * @throws StorageException If the batch request is malformed.
+     * @throws StorageBlobBatchException If any request in the {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> submitBatch(BlobBatch batch) {
@@ -99,8 +100,9 @@ public final class BlobBatchAsyncClient {
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
      * @return A response only containing header and status code information, used to indicate that the batch operation
      * has completed.
-     * @throws StorageException If {@code throwOnAnyFailure} is {@code true} and any request in the {@link BlobBatch}
-     * failed or the batch request is malformed.
+     * @throws StorageException If the batch request is malformed.
+     * @throws StorageBlobBatchException If {@code throwOnAnyFailure} is {@code true} and any request in the
+     * {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
@@ -127,7 +129,8 @@ public final class BlobBatchAsyncClient {
      * @param blobUrls Urls of the blobs to delete.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
-     * @throws StorageException If any of the delete operations fail or the request is malformed.
+     * @throws StorageException If the batch request is malformed.
+     * @throws StorageBlobBatchException If any of the delete operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
@@ -145,7 +148,7 @@ public final class BlobBatchAsyncClient {
             Utility.applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
     }
 
-    Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
+    private Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
         DeleteSnapshotsOptionType deleteOptions, Context context) {
         return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.deleteBlob(blobUrl, deleteOptions, null), context);
     }
@@ -160,7 +163,8 @@ public final class BlobBatchAsyncClient {
      * @param blobUrls Urls of the blobs to set their access tier.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
-     * @throws StorageException If any of the set tier operations fail or the request is malformed.
+     * @throws StorageException If the batch request is malformed.
+     * @throws StorageBlobBatchException If any of the set tier operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
@@ -178,7 +182,7 @@ public final class BlobBatchAsyncClient {
             Utility.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
     }
 
-    Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,
+    private Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,
         Context context) {
         return submitBatchHelper(blobUrls, (batch, blobUrl) -> batch.setBlobAccessTier(blobUrl, accessTier), context);
     }

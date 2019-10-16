@@ -4,15 +4,22 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.StorageException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,6 +71,7 @@ class BlobBatchHelper {
         return FluxUtil.collectBytesInByteBufferStream(batchResponse.getValue())
             .flatMap(byteArrayBody -> Mono.fromRunnable(() -> {
                 String body = new String(byteArrayBody, StandardCharsets.UTF_8);
+                List<StorageException> exceptions = new ArrayList<>();
 
                 // Split the batch response body into batch operation responses.
                 for (String subResponse : body.split("--" + boundary)) {
@@ -85,9 +93,13 @@ class BlobBatchHelper {
                     // The third section will contain the body.
                     if (subResponseSections.length > 2) {
                         // The body is optional and may not exist.
-                        setBodyOrPotentiallyThrow(batchOperationResponse, subResponseSections[2], throwOnAnyFailure,
-                            logger);
+                        setBodyOrAddException(batchOperationResponse, subResponseSections[2], exceptions);
                     }
+                }
+
+                if (throwOnAnyFailure && exceptions.size() != 0) {
+                    throw logger.logExceptionAsError(new StorageBlobBatchException("Batch had operation failures.",
+                        createHttpResponse(batchResponse), exceptions));
                 }
 
                 new SimpleResponse<>(batchResponse, null);
@@ -135,8 +147,8 @@ class BlobBatchHelper {
         batchOperationResponse.setHeaders(headers);
     }
 
-    private static void setBodyOrPotentiallyThrow(BlobBatchOperationResponse<?> batchOperationResponse,
-        String responseBody, boolean throwOnError, ClientLogger logger) {
+    private static void setBodyOrAddException(BlobBatchOperationResponse<?> batchOperationResponse,
+        String responseBody, List<StorageException> exceptions) {
         /*
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
@@ -144,9 +156,84 @@ class BlobBatchHelper {
         StorageException exception = new StorageException(responseBody,
             batchOperationResponse.asHttpResponse(responseBody), responseBody);
         batchOperationResponse.setException(exception);
+        exceptions.add(exception);
+    }
 
-        if (throwOnError) {
-            throw logger.logExceptionAsError(exception);
-        }
+    static HttpResponse createHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
+        return new HttpResponse(request) {
+            @Override
+            public int getStatusCode() {
+                return statusCode;
+            }
+
+            @Override
+            public String getHeaderValue(String name) {
+                return headers.getValue(name);
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return headers;
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return Flux.just(ByteBuffer.wrap(body.getBytes(StandardCharsets.UTF_8)));
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(body.getBytes(StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return Mono.just(body);
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return getBodyAsByteArray().map(body -> new String(body, charset));
+            }
+        };
+    }
+
+    private static HttpResponse createHttpResponse(ServicesSubmitBatchResponse response) {
+        return new HttpResponse(response.getRequest()) {
+            @Override
+            public int getStatusCode() {
+                return response.getStatusCode();
+            }
+
+            @Override
+            public String getHeaderValue(String name) {
+                return response.getHeaders().getValue(name);
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return response.getHeaders();
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return response.getValue();
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return FluxUtil.collectBytesInByteBufferStream(getBody());
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return getBodyAsByteArray().map(body -> new String(body, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return getBodyAsByteArray().map(body -> new String(body, charset));
+            }
+        };
     }
 }
