@@ -486,7 +486,7 @@ public final class QueueAsyncClient {
      */
     public Mono<SendMessageResult> sendMessage(String messageText) {
         try {
-            return enqueueMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
+            return sendMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -524,7 +524,7 @@ public final class QueueAsyncClient {
                                                                    Duration timeToLive) {
         try {
             return withContext(
-                context -> enqueueMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+                context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -591,7 +591,7 @@ public final class QueueAsyncClient {
      */
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages) {
         try {
-            return getMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
+            return receiveMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -624,7 +624,7 @@ public final class QueueAsyncClient {
      */
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout) {
         try {
-            return getMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
+            return receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
