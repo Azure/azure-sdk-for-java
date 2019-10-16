@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * {@codesnippet com.azure.storage.blob.batch.BlobBatch.illegalBatchOperation}
  *
- * <p>Please refer to the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/blob-batch">Azure Docs</a>
+ * <p>Please refer to the <a href="https://docs.microsoft.com/rest/api/storageservices/blob-batch">Azure Docs</a>
  * for more information.</p>
  */
 public final class BlobBatch {
@@ -66,6 +66,7 @@ public final class BlobBatch {
     private static final String HTTP_VERSION = "HTTP/1.1";
     private static final String OPERATION_TEMPLATE = "%s %s %s";
     private static final String HEADER_TEMPLATE = "%s: %s";
+    private static final String PATH_TEMPLATE = "%s/%s";
 
     /*
      * Track the status codes expected for the batching operations here as the batch body does not get parsed in
@@ -89,7 +90,7 @@ public final class BlobBatch {
     private BlobBatchType batchType;
 
     BlobBatch(String accountUrl, HttpPipeline pipeline) {
-        this.contentId = new AtomicInteger(0);
+        this.contentId = new AtomicInteger();
         this.batchBoundary = String.format(BATCH_BOUNDARY_TEMPLATE, UUID.randomUUID());
         this.contentType = String.format(REQUEST_CONTENT_TYPE_TEMPLATE, batchBoundary);
 
@@ -104,7 +105,7 @@ public final class BlobBatch {
                 batchPipelineBuilder.policies(this::cleanseHeaders, this::setRequestUrl);
             }
 
-            batchPipelineBuilder.policies(pipeline.getPolicy(i));
+            batchPipelineBuilder.policies(policy);
         }
 
         if (!batchHeadersPolicySet) {
@@ -136,7 +137,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(String.format("%s/%s", containerName, blobName), null, null);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName), null, null);
     }
 
     /**
@@ -156,7 +157,7 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
-        return deleteBlobHelper(String.format("%s/%s", containerName, blobName), deleteOptions, blobAccessConditions);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName), deleteOptions, blobAccessConditions);
     }
 
     /**
@@ -166,7 +167,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String}
      *
-     * @param blobUrl URI of the blob.
+     * @param blobUrl URL of the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
@@ -182,7 +183,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions}
      *
-     * @param blobUrl URI of the blob.
+     * @param blobUrl URL of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
      * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -216,7 +217,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(String.format("%s/%s", containerName, blobName), accessTier, null);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, blobName), accessTier, null);
     }
 
     /**
@@ -236,7 +237,7 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        return setBlobAccessTierHelper(String.format("%s/%s", containerName, blobName), accessTier,
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, blobName), accessTier,
             leaseAccessConditions);
     }
 
@@ -247,7 +248,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier}
      *
-     * @param blobUrl URI of the blob.
+     * @param blobUrl URL of the blob.
      * @param accessTier The tier to set on the blob.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
@@ -264,7 +265,7 @@ public final class BlobBatch {
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-LeaseAccessConditions}
      *
-     * @param blobUrl URI of the blob.
+     * @param blobUrl URL of the blob.
      * @param accessTier The tier to set on the blob.
      * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -391,34 +392,34 @@ public final class BlobBatch {
      * batch operation into the overall request and then returns nothing as the response.
      */
     private Mono<HttpResponse> setupBatchOperation(HttpRequest request) {
-        int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
+        return Mono.fromRunnable(() -> {
+            int contentId = Integer.parseInt(request.getHeaders().remove(CONTENT_ID).getValue());
 
-        StringBuilder batchRequestBuilder = new StringBuilder();
-        appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
-        appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TYPE);
-        appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TRANSFER_ENCODING);
-        appendWithNewline(batchRequestBuilder, String.format(BATCH_OPERATION_CONTENT_ID_TEMPLATE, contentId));
-        batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
+            StringBuilder batchRequestBuilder = new StringBuilder();
+            appendWithNewline(batchRequestBuilder, "--" + batchBoundary);
+            appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TYPE);
+            appendWithNewline(batchRequestBuilder, BATCH_OPERATION_CONTENT_TRANSFER_ENCODING);
+            appendWithNewline(batchRequestBuilder, String.format(BATCH_OPERATION_CONTENT_ID_TEMPLATE, contentId));
+            batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
-        String method = request.getHttpMethod().toString();
-        String urlPath = request.getUrl().getPath();
-        String urlQuery = request.getUrl().getQuery();
-        if (!ImplUtils.isNullOrEmpty(urlQuery)) {
-            urlPath = urlPath + "?" + urlQuery;
-        }
-        appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
+            String method = request.getHttpMethod().toString();
+            String urlPath = request.getUrl().getPath();
+            String urlQuery = request.getUrl().getQuery();
+            if (!ImplUtils.isNullOrEmpty(urlQuery)) {
+                urlPath = urlPath + "?" + urlQuery;
+            }
+            appendWithNewline(batchRequestBuilder, String.format(OPERATION_TEMPLATE, method, urlPath, HTTP_VERSION));
 
-        request.getHeaders().stream()
-            .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
-            .forEach(header -> appendWithNewline(batchRequestBuilder,
-                String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
+            request.getHeaders().stream()
+                .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
+                .forEach(header -> appendWithNewline(batchRequestBuilder,
+                    String.format(HEADER_TEMPLATE, header.getName(), header.getValue())));
 
-        batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
+            batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
-        batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
-        batchMapping.get(contentId).setRequest(request);
-
-        return Mono.empty();
+            batchRequest.add(ByteBuffer.wrap(batchRequestBuilder.toString().getBytes(StandardCharsets.UTF_8)));
+            batchMapping.get(contentId).setRequest(request);
+        });
     }
 
     private void appendWithNewline(StringBuilder stringBuilder, String value) {

@@ -37,6 +37,12 @@ class BlobBatchHelper {
     private static final Pattern STATUS_CODE_PATTERN = Pattern
         .compile("HTTP\\/\\d\\.\\d\\s?(\\d+)\\s?\\w+", Pattern.CASE_INSENSITIVE);
 
+    /*
+     * This pattern matches finding the 'application/http' portion of the body.
+     */
+    private static final Pattern APPLICATION_HTTP_PATTERN = Pattern
+        .compile("application\\/http", Pattern.CASE_INSENSITIVE);
+
     // This method connects the batch response values to the individual batch operations based on their Content-Id
     static Mono<SimpleResponse<Void>> mapBatchResponse(BlobBatch batch, ServicesSubmitBatchResponse batchResponse,
         boolean throwOnAnyFailure, ClientLogger logger) {
@@ -47,16 +53,22 @@ class BlobBatchHelper {
         String contentType = batchResponse.getDeserializedHeaders().getContentType();
 
         // Split on the boundary [ "multipart/mixed; boundary", "batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"]
-        String boundary = contentType.split("=", 2)[1];
+        String[] boundaryPieces = contentType.split("=", 2);
+        if (boundaryPieces.length == 1) {
+            return Mono.error(logger
+                .logExceptionAsError(new IllegalStateException("Response doesn't contain a boundary.")));
+        }
+
+        String boundary = boundaryPieces[1];
 
         return FluxUtil.collectBytesInByteBufferStream(batchResponse.getValue())
-            .flatMap(byteArrayBody -> {
+            .flatMap(byteArrayBody -> Mono.fromRunnable(() -> {
                 String body = new String(byteArrayBody, StandardCharsets.UTF_8);
 
                 // Split the batch response body into batch operation responses.
                 for (String subResponse : body.split("--" + boundary)) {
                     // This is a split value that isn't a response.
-                    if (!subResponse.contains("application/http")) {
+                    if (!APPLICATION_HTTP_PATTERN.matcher(subResponse).find()) {
                         continue;
                     }
 
@@ -78,8 +90,8 @@ class BlobBatchHelper {
                     }
                 }
 
-                return Mono.just(new SimpleResponse<>(batchResponse, null));
-            });
+                new SimpleResponse<>(batchResponse, null);
+            }));
     }
 
     private static BlobBatchOperationResponse<?> getBatchOperation(BlobBatch batch, String responseBatchInfo,
@@ -87,7 +99,7 @@ class BlobBatchHelper {
         Matcher contentIdMatcher = CONTENT_ID_PATTERN.matcher(responseBatchInfo);
 
         int contentId;
-        if (contentIdMatcher.find()) {
+        if (contentIdMatcher.find() && contentIdMatcher.groupCount() >= 1) {
             contentId = Integer.parseInt(contentIdMatcher.group(1));
         } else {
             throw logger.logExceptionAsError(
@@ -112,7 +124,11 @@ class BlobBatchHelper {
                 }
             } else {
                 String[] headerPieces = line.split(":\\s*", 2);
-                headers.put(headerPieces[0], headerPieces[1]);
+                if (headerPieces.length == 1) {
+                    headers.put(headerPieces[0], null);
+                } else {
+                    headers.put(headerPieces[0], headerPieces[1]);
+                }
             }
         }
 
