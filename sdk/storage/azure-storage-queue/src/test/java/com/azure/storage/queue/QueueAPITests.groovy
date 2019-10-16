@@ -236,7 +236,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = "test message"
         when:
-        def enqueueMsgResponse = queueClient.enqueueMessageWithResponse(expectMsg, null, null, null, null)
+        def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
         def peekMsgIter = queueClient.peekMessages().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
@@ -249,7 +249,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = ""
         when:
-        def enqueueMsgResponse = queueClient.enqueueMessageWithResponse(expectMsg, null, null, null, null)
+        def enqueueMsgResponse = queueClient.sendMessageWithResponse(expectMsg, null, null, null, null)
         def peekMsgIter = queueClient.peekMessages().iterator()
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
@@ -261,7 +261,7 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         when:
-        def enqueueMsgResponse = queueClient.enqueueMessageWithResponse("test message",
+        def enqueueMsgResponse = queueClient.sendMessageWithResponse("test message",
             Duration.ofSeconds(0), Duration.ofSeconds(2), Duration.ofSeconds(5), null)
         then:
         QueueTestHelper.assertResponseStatusCode(enqueueMsgResponse, 201)
@@ -271,9 +271,9 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         def expectMsg = "test message"
-        queueClient.enqueueMessage(expectMsg)
+        queueClient.sendMessage(expectMsg)
         when:
-        def dequeueMsgResponse = queueClient.getMessages().iterator().next()
+        def dequeueMsgResponse = queueClient.receiveMessages().iterator().next()
         then:
         expectMsg == dequeueMsgResponse.getMessageText()
     }
@@ -283,10 +283,10 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg1 = "test message 1"
         def expectMsg2 = "test message 2"
-        queueClient.enqueueMessage(expectMsg1)
-        queueClient.enqueueMessage(expectMsg2)
+        queueClient.sendMessage(expectMsg1)
+        queueClient.sendMessage(expectMsg2)
         when:
-        def dequeueMsgIter = queueClient.getMessages(2).iterator()
+        def dequeueMsgIter = queueClient.receiveMessages(2).iterator()
         then:
         expectMsg1 == dequeueMsgIter.next().getMessageText()
         expectMsg2 == dequeueMsgIter.next().getMessageText()
@@ -296,7 +296,7 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         when:
-        queueClient.getMessages(33).iterator().next()
+        queueClient.receiveMessages(33).iterator().next()
         then:
         def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
@@ -306,7 +306,7 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         def expectMsg = "test message"
-        queueClient.enqueueMessage(expectMsg)
+        queueClient.sendMessage(expectMsg)
         when:
         def peekMsgIter = queueClient.peekMessages().iterator().next()
         then:
@@ -318,8 +318,8 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg1 = "test message 1"
         def expectMsg2 = "test message 2"
-        queueClient.enqueueMessage(expectMsg1)
-        queueClient.enqueueMessage(expectMsg2)
+        queueClient.sendMessage(expectMsg1)
+        queueClient.sendMessage(expectMsg2)
         when:
         def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
         then:
@@ -349,9 +349,9 @@ class QueueAPITests extends APISpec {
     def "Clear messages"() {
         given:
         queueClient.create()
-        queueClient.enqueueMessage("test message 1")
-        queueClient.enqueueMessage("test message 2")
-        queueClient.enqueueMessage("test message 3")
+        queueClient.sendMessage("test message 1")
+        queueClient.sendMessage("test message 2")
+        queueClient.sendMessage("test message 3")
         when:
         def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
         def clearMsgResponse = queueClient.clearMessagesWithResponse(null, null)
@@ -375,10 +375,10 @@ class QueueAPITests extends APISpec {
     def "Delete message"() {
         given:
         queueClient.create()
-        queueClient.enqueueMessage("test message 1")
-        queueClient.enqueueMessage("test message 2")
-        queueClient.enqueueMessage("test message 3")
-        def dequeueMsg = queueClient.getMessages().iterator().next()
+        queueClient.sendMessage("test message 1")
+        queueClient.sendMessage("test message 2")
+        queueClient.sendMessage("test message 3")
+        def dequeueMsg = queueClient.receiveMessages().iterator().next()
         when:
         def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
         def deleteMsgResponse = queueClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
@@ -397,8 +397,8 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         def expectMsg = "test message"
-        queueClient.enqueueMessage(expectMsg)
-        def dequeueMessageIter = queueClient.getMessages().iterator().next()
+        queueClient.sendMessage(expectMsg)
+        def dequeueMessageIter = queueClient.receiveMessages().iterator().next()
         when:
         def deleteMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
         def deletePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
@@ -417,9 +417,9 @@ class QueueAPITests extends APISpec {
         given:
         def updateMsg = "Updated test message"
         queueClient.create()
-        queueClient.enqueueMessage("test message before update")
+        queueClient.sendMessage("test message before update")
 
-        def dequeueMsg = queueClient.getMessages().iterator().next()
+        def dequeueMsg = queueClient.receiveMessages().iterator().next()
         when:
         def updateMsgResponse = queueClient.updateMessageWithResponse(updateMsg,
             dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), Duration.ofSeconds(1), null,  null)
@@ -435,8 +435,8 @@ class QueueAPITests extends APISpec {
         given:
         queueClient.create()
         def updateMsg = "Updated test message"
-        queueClient.enqueueMessage("test message before update")
-        def dequeueMessageIter = queueClient.getMessages().iterator().next()
+        queueClient.sendMessage("test message before update")
+        def dequeueMessageIter = queueClient.receiveMessages().iterator().next()
         when:
         def updateMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
         def updatePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"

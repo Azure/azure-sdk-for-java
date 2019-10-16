@@ -5,12 +5,12 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.queue.models.DequeuedMessage;
-import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.azure.storage.queue.models.UpdatedMessage;
+import com.azure.storage.queue.models.ReceiveMessageItem;
+import com.azure.storage.queue.models.SendMessageItem;
+import com.azure.storage.queue.models.UpdatedMessageItem;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -111,48 +111,48 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#enqueueMessage(String)}
+     * Generates a code sample for using {@link QueueClient#sendMessage(String)}
      */
-    public void enqueueMessage() {
+    public void sendMessage() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.enqueueMessage#string
-        EnqueuedMessage response = client.enqueueMessage("hello msg");
+        // BEGIN: com.azure.storage.queue.queueClient.sendMessage#string
+        SendMessageItem response = client.sendMessage("hello msg");
         System.out.println("Complete enqueuing the message with message Id" + response.getMessageId());
-        // END: com.azure.storage.queue.queueClient.enqueueMessage#string
+        // END: com.azure.storage.queue.queueClient.sendMessage#string
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#enqueueMessageWithResponse(String, Duration, Duration,
+     * Generates a code sample for using {@link QueueClient#sendMessageWithResponse(String, Duration, Duration,
      * Duration, Context)}
      */
     public void enqueueMessageWithTimeoutOverload() {
 
-        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context1
-        EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Hello, Azure",
+        // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context1
+        SendMessageItem enqueuedMessage = client.sendMessageWithResponse("Hello, Azure",
             Duration.ofSeconds(5), null, Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Message %s expires at %s", enqueuedMessage.getMessageId(), enqueuedMessage.getExpirationTime());
-        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context1
+        // END: com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context1
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#enqueueMessageWithResponse(String, Duration, Duration,
+     * Generates a code sample for using {@link QueueClient#sendMessageWithResponse(String, Duration, Duration,
      * Duration, Context)}
      */
     public void enqueueMessageWithLiveTimeOverload() {
-        // BEGIN: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context2
-        EnqueuedMessage enqueuedMessage = client.enqueueMessageWithResponse("Goodbye, Azure",
+        // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2
+        SendMessageItem enqueuedMessage = client.sendMessageWithResponse("Goodbye, Azure",
             null, Duration.ofSeconds(5), Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Message %s expires at %s", enqueuedMessage.getMessageId(), enqueuedMessage.getExpirationTime());
-        // END: com.azure.storage.queue.QueueClient.enqueueMessageWithResponse#String-Duration-Duration-Duration-Context2
+        // END: com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#getMessages()}
+     * Generates a code sample for using {@link QueueClient#receiveMessages()}
      */
     public void getMessage() {
 
         // BEGIN: com.azure.storage.queue.queueClient.getMessages
-        client.getMessages().forEach(
+        client.receiveMessages().forEach(
             message -> {
                 System.out.println("Complete receiving the message: " + message.getMessageId());
             }
@@ -161,30 +161,30 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#getMessages(Integer)}
+     * Generates a code sample for using {@link QueueClient#receiveMessages(Integer)}
      */
     public void getMessageWithOverload() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.getMessages#integer
-        for (DequeuedMessage message : client.getMessages(5)) {
+        // BEGIN: com.azure.storage.queue.queueClient.receiveMessages#integer
+        for (ReceiveMessageItem message : client.receiveMessages(5)) {
             System.out.printf("Received %s and it becomes visible at %s",
                 message.getMessageId(), message.getTimeNextVisible());
         }
-        // END: com.azure.storage.queue.queueClient.getMessages#integer
+        // END: com.azure.storage.queue.queueClient.receiveMessages#integer
     }
 
     /**
-     * Generates a code sample for using {@link QueueClient#getMessages(Integer, Duration, Duration, Context)}
+     * Generates a code sample for using {@link QueueClient#receiveMessages(Integer, Duration, Duration, Context)}
      */
     public void getMessageMaxOverload() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.getMessages#integer-duration-duration-context
-        for (DequeuedMessage message : client.getMessages(5, Duration.ofSeconds(60),
+        // BEGIN: com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context
+        for (ReceiveMessageItem message : client.receiveMessages(5, Duration.ofSeconds(60),
             Duration.ofSeconds(1), new Context(key1, value1))) {
             System.out.printf("Received %s and it becomes visible at %s",
                 message.getMessageId(), message.getTimeNextVisible());
         }
-        // END: com.azure.storage.queue.queueClient.getMessages#integer-duration-duration-context
+        // END: com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context
     }
 
     /**
@@ -219,10 +219,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void updateMessage() {
         // BEGIN: com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration
-        client.getMessages().forEach(
+        client.receiveMessages().forEach(
 
             message -> {
-                UpdatedMessage response = client.updateMessage("newText",
+                UpdatedMessageItem response = client.updateMessage("newText",
                     message.getMessageId(), message.getPopReceipt(), null);
 
                 System.out.println("Complete updating the message.");
@@ -237,9 +237,9 @@ public class QueueJavaDocCodeSamples {
      */
     public void updateMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context
-        client.getMessages().forEach(
+        client.receiveMessages().forEach(
             message -> {
-                Response<UpdatedMessage> response = client.updateMessageWithResponse("newText",
+                Response<UpdatedMessageItem> response = client.updateMessageWithResponse("newText",
                     message.getMessageId(), message.getPopReceipt(), null,
                     Duration.ofSeconds(1), new Context(key1, value1));
 
@@ -254,7 +254,7 @@ public class QueueJavaDocCodeSamples {
      */
     public void deleteMessage() {
         // BEGIN: com.azure.storage.queue.QueueClient.deleteMessage#String-String
-        client.getMessages().forEach(
+        client.receiveMessages().forEach(
             message -> {
                 client.deleteMessage(message.getMessageId(), message.getPopReceipt());
                 System.out.println("Complete deleting the message.");
@@ -269,7 +269,7 @@ public class QueueJavaDocCodeSamples {
      */
     public void deleteMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context
-        client.getMessages().forEach(
+        client.receiveMessages().forEach(
             message -> {
                 Response<Void> response = client.deleteMessageWithResponse(message.getMessageId(),
                     message.getPopReceipt(), Duration.ofSeconds(1), new Context(key1, value1));

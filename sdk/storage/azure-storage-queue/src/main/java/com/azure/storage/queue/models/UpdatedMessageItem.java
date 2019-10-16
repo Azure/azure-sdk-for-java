@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
  * Response from the service when updating a message. Contains the information needed to continue working with
  * the specific message.
  */
-public final class UpdatedMessage {
+public final class UpdatedMessageItem {
     private final String popReceipt;
     private final OffsetDateTime timeNextVisible;
 
@@ -18,7 +18,7 @@ public final class UpdatedMessage {
      * @param popReceipt Unique identifier that verifies the operation on a message is valid
      * @param timeNextVisible The next time the message will be visible to other operations in the queue
      */
-    public UpdatedMessage(String popReceipt, OffsetDateTime timeNextVisible) {
+    public UpdatedMessageItem(String popReceipt, OffsetDateTime timeNextVisible) {
         this.popReceipt = popReceipt;
         this.timeNextVisible = timeNextVisible;
     }

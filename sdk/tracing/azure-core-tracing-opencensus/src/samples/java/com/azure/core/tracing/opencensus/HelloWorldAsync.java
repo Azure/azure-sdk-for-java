@@ -53,8 +53,8 @@ public class HelloWorldAsync {
 
         // Create a queue, enqueue two messages.
         queueAsyncClient.create()
-            .doOnSuccess(response -> queueAsyncClient.enqueueMessage("This is message 1"))
-            .then(queueAsyncClient.enqueueMessage("This is message 2"))
+            .doOnSuccess(response -> queueAsyncClient.sendMessages("This is message 1"))
+            .then(queueAsyncClient.sendMessages("This is message 2"))
             .subscriberContext(Context.of(PARENT_SPAN_KEY, tracer.getCurrentSpan()))
             .subscribe(
                 response -> System.out.printf("Message successfully enqueued by queueAsyncClient. Message id: %s%n",

@@ -39,12 +39,12 @@ public class QueueExceptionSamples {
             throw new RuntimeException(e);
         }
         QueueClient queueClient = queueClientResponse.getValue();
-        queueClient.enqueueMessage("Hello, message 1!");
-        queueClient.enqueueMessage("Hello, message 2!");
+        queueClient.sendMessage("Hello, message 1!");
+        queueClient.sendMessage("Hello, message 2!");
 
         // Delete message with wrong message id.
         try {
-            queueClientResponse.getValue().getMessages().forEach(
+            queueClientResponse.getValue().receiveMessages().forEach(
                 msg -> {
                     queueClient.deleteMessage("wrong id", msg.getPopReceipt());
                 }
@@ -59,7 +59,7 @@ public class QueueExceptionSamples {
 
         // Delete message with wrong pop receipt.
         try {
-            queueClient.getMessages().forEach(
+            queueClient.receiveMessages().forEach(
                 msg -> {
                     queueClient.deleteMessage(msg.getMessageId(), "Wrong Pop Receipt");
                 }
