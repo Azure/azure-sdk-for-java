@@ -381,7 +381,7 @@ public class IdentityClient {
             return Mono.error(exception);
         }
 
-        return checkImdsAvailable().flatMap(available -> Mono.fromCallable(() -> {
+        return checkIMDSAvailable().flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
             while (retry <= options.getMaxRetry()) {
                 URL url = null;
@@ -403,8 +403,8 @@ public class IdentityClient {
                     return SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
                 } catch (IOException exception) {
                     if (connection == null) {
-                        throw logger.logExceptionAsError(new RuntimeException(String.format("Could not connect to the url: %s.", url),
-                                exception));
+                        throw logger.logExceptionAsError(new RuntimeException(
+                                String.format("Could not connect to the url: %s.", url), exception));
                     }
                     int responseCode = connection.getResponseCode();
                     if (responseCode == 410
@@ -426,8 +426,8 @@ public class IdentityClient {
                         }
                     } else {
                         throw logger.logExceptionAsError(new RuntimeException(
-                                "Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId",
-                                exception));
+                                "Couldn't acquire access token from IMDS, verify your objectId, "
+                                        + "clientId or msiResourceId", exception));
                     }
                 } finally {
                     if (connection != null) {
@@ -435,12 +435,13 @@ public class IdentityClient {
                     }
                 }
             }
-            throw logger.logExceptionAsError(new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times",
+            throw logger.logExceptionAsError(new RuntimeException(
+                    String.format("MSI: Failed to acquire tokens after retrying %s times",
                     options.getMaxRetry())));
         }));
     }
 
-    private Mono<Boolean> checkImdsAvailable() {
+    private Mono<Boolean> checkIMDSAvailable() {
         StringBuilder payload = new StringBuilder();
 
         try {
