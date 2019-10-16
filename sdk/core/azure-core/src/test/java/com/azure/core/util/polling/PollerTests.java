@@ -44,9 +44,6 @@ public class PollerTests {
     @Mock
     private Supplier<Mono<Void>> voidResultOperation;
 
-    @Mock
-    private Supplier<Mono<Response>> activationOperation;
-
     @Before
     public void beforeTest() {
         MockitoAnnotations.initMocks(this);
