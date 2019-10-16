@@ -418,7 +418,7 @@ class FileAPITests extends APISpec {
 
         then:
         verifier.assertNext({
-                it.getValue().getCopyId() != null
+                assert it.getValue().getCopyId() != null
             }).thenCancel().verify()
     }
 

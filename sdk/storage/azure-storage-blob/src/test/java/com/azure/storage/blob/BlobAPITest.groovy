@@ -718,7 +718,7 @@ class BlobAPITest extends APISpec {
         setup:
         def copyDestBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def headers =
-            copyDestBlob.copyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null , null, null, null).getHeaders()
+            copyDestBlob.copyFromURLWithResponse(new URL(bc.getBlobUrl()), null, null, null, null, null, null).getHeaders()
 
         when:
         while (copyDestBlob.getProperties().getCopyStatus() == CopyStatusType.PENDING) {
