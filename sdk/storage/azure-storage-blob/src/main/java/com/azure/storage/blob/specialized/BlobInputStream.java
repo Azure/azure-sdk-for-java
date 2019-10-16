@@ -8,7 +8,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.StorageException;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 
 import com.azure.storage.common.StorageInputStream;
 import java.io.IOException;

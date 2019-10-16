@@ -570,17 +570,40 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#forceCloseHandles(String)}
+     * Code snippet for {@link FileAsyncClient#forceCloseHandle(String)}.
      */
-    public void forceCloseHandlesAsync() {
-        FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
-        fileAsyncClient.listHandles(10)
-            .subscribe(result -> {
-                fileAsyncClient.forceCloseHandles(result.getHandleId()).subscribe(
-                    numOfClosedHandles -> System.out.printf("Close %d handles.", numOfClosedHandles));
-            });
-        // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
+    public void forceCloseHandle() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.FileAsyncClient.forceCloseHandle#String
+        fileAsyncClient.listHandles().subscribe(handleItem ->
+            fileAsyncClient.forceCloseHandle(handleItem.getHandleId()).subscribe(ignored ->
+                System.out.printf("Closed handle %s on resource %s%n",
+                    handleItem.getHandleId(), handleItem.getPath())));
+        // END: com.azure.storage.file.FileAsyncClient.forceCloseHandle#String
+    }
+
+    /**
+     * Code snippet for {@link FileAsyncClient#forceCloseHandleWithResponse(String)}.
+     */
+    public void forceCloseHandleWithResponse() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.FileAsyncClient.forceCloseHandleWithResponse#String
+        fileAsyncClient.listHandles().subscribe(handleItem ->
+            fileAsyncClient.forceCloseHandleWithResponse(handleItem.getHandleId()).subscribe(response ->
+                System.out.printf("Closing handle %s on resource %s completed with status code %d%n",
+                    handleItem.getHandleId(), handleItem.getPath(), response.getStatusCode())));
+        // END: com.azure.storage.file.FileAsyncClient.forceCloseHandleWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link FileAsyncClient#forceCloseAllHandles()}.
+     */
+    public void forceCloseAllHandles() {
+        FileAsyncClient fileAsyncClient = createAsyncClientWithConnectionString();
+        // BEGIN: com.azure.storage.file.FileAsyncClient.forceCloseAllHandles
+        fileAsyncClient.forceCloseAllHandles().subscribe(numberOfHandlesClosed ->
+            System.out.printf("Closed %d open handles on the file%n", numberOfHandlesClosed));
+        // END: com.azure.storage.file.FileAsyncClient.forceCloseAllHandles
     }
 
     /**

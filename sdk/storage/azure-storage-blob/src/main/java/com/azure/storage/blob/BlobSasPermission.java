@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob;
 
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 
 import java.util.Locale;
 

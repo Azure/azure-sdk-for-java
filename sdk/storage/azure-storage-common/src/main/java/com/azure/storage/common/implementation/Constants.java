@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.implementation;
+
+import com.azure.storage.common.SasProtocol;
 
 /**
  * Defines general constants.
@@ -9,20 +11,25 @@ package com.azure.storage.common;
  * RESERVED FOR INTERNAL USE.
  */
 public final class Constants {
+    /**
+     * Represents a non-SI kilobyte.
+     */
     public static final int KB = 1024;
 
     /**
-     * Constant representing a megabyte (Non-SI version).
+     * Represents a non-SI megabyte.
      */
     public static final int MB = 1024 * KB;
 
     /**
-     * The query parameter for snapshots.
+     * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
      */
-    public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
+    public static final String HTTPS = "https";
 
-    static final String HTTPS = "https";
-    static final String HTTPS_HTTP = "https,http";
+    /**
+     * Represents the value for {@link SasProtocol#HTTPS_HTTP}.
+     */
+    public static final String HTTPS_HTTP = "https,http";
 
     /**
      * Exception message when the underlying stream has already been closed.
@@ -111,6 +118,11 @@ public final class Constants {
      * RESERVED FOR INTERNAL USE.
      */
     public static final class UrlConstants {
+
+        /**
+         * The snapshot parameters.
+         */
+        public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
 
         /**
          * The SAS service version parameter.

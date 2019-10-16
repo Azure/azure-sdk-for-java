@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
@@ -198,8 +198,8 @@ public final class BlobServiceSasSignatureValues {
      * Sets the Blob permissions allowed by the SAS.
      *
      * <p>this will set the {@link #resource} to
-     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}
-     * or {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of
+     * {@link Constants.UrlConstants#SAS_BLOB_CONSTANT}
+     * or {@link Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} based on the value of
      * {@link #getSnapshotId()}.</p>
      *
      * @param permissions {@link BlobSasPermission}
@@ -215,7 +215,7 @@ public final class BlobServiceSasSignatureValues {
      * Sets the Container permissions allowed by the SAS.
      *
      * <p>this will set the {@link #resource} to
-     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
+     * {@link Constants.UrlConstants#SAS_CONTAINER_CONSTANT}.</p>
      *
      * @param permissions {@link BlobContainerSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
@@ -312,9 +312,9 @@ public final class BlobServiceSasSignatureValues {
      * Sets the specific snapshot the SAS user may access.
      *
      * <p>{@link #resource} will be set to
-     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} if the passed
+     * {@link Constants.UrlConstants#SAS_BLOB_SNAPSHOT_CONSTANT} if the passed
      * {@code snapshotId} isn't {@code null} and {@link #resource} is set to
-     * {@link com.azure.storage.common.Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
+     * {@link Constants.UrlConstants#SAS_BLOB_CONSTANT}.</p>
      *
      * @param snapshotId Identifier of the snapshot
      * @return the updated BlobServiceSASSignatureValues object

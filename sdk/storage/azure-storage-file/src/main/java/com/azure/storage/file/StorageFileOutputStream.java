@@ -3,7 +3,7 @@
 
 package com.azure.storage.file;
 
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.file.models.FileStorageException;
 import java.io.IOException;

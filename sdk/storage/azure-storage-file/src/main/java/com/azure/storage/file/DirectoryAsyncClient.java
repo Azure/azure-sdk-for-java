@@ -13,7 +13,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -26,8 +26,8 @@ import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
-import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.FileStorageException;
+import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -506,33 +507,86 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside
-     * {@link DirectoryAsyncClient#listHandles(Integer, boolean)} .
+     * Closes a handle on the directory. This is intended to be used alongside {@link #listHandles(Integer, boolean)}.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Force close handles with handles returned by get handles in recursive.</p>
+     * <p>Force close handles returned by list handles.</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.forceCloseHandle#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all
-     * handles.
-     * @param recursive A boolean value that specifies if the operation should also apply to the files and
-     * subdirectories of the directory specified in the URI.
-     * @return The counts of number of handles closed
+     * @param handleId Handle ID to be closed.
+     * @return An empty response.
      */
-    public PagedFlux<Integer> forceCloseHandles(String handleId, boolean recursive) {
-        return forceCloseHandlesWithOptionalTimeout(handleId, recursive, null, Context.NONE);
+    public Mono<Void> forceCloseHandle(String handleId) {
+        try {
+            return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    PagedFlux<Integer> forceCloseHandlesWithOptionalTimeout(String handleId, boolean recursive, Duration timeout,
-        Context context) {
+    /**
+     * Closes a handle on the directory. This is intended to be used alongside {@link #listHandles(Integer, boolean)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close handles returned by list handles.</p>
+     *
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.forceCloseHandleWithResponse#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param handleId Handle ID to be closed.
+     * @return A response that only contains headers and response status code.
+     */
+    public Mono<Response<Void>> forceCloseHandleWithResponse(String handleId) {
+        try {
+            return withContext(context -> forceCloseHandleWithResponse(handleId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> forceCloseHandleWithResponse(String handleId, Context context) {
+        return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
+            handleId, null, null, snapshot, false, context)
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Closes all handles opened on the directory at the service.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Force close all handles recursively.</p>
+     *
+     * {@codesnippet com.azure.storage.file.DirectoryAsyncClient.forceCloseAllHandles#boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
+     *
+     * @param recursive Flag indicating if the operation should apply to all subdirectories and files contained in the
+     * directory.
+     * @return The number of handles closed.
+     */
+    public Mono<Integer> forceCloseAllHandles(boolean recursive) {
+        try {
+            return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context)
+                .reduce(0, Integer::sum));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
             marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
-                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, handleId, null, marker, snapshot,
+                .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),

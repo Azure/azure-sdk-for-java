@@ -4,6 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
