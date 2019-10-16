@@ -11,7 +11,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
-import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.blob.models.BlobStorageException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +71,7 @@ class BlobBatchHelper {
         return FluxUtil.collectBytesInByteBufferStream(batchResponse.getValue())
             .flatMap(byteArrayBody -> Mono.fromRunnable(() -> {
                 String body = new String(byteArrayBody, StandardCharsets.UTF_8);
-                List<StorageException> exceptions = new ArrayList<>();
+                List<BlobStorageException> exceptions = new ArrayList<>();
 
                 // Split the batch response body into batch operation responses.
                 for (String subResponse : body.split("--" + boundary)) {
@@ -148,12 +148,12 @@ class BlobBatchHelper {
     }
 
     private static void setBodyOrAddException(BlobBatchOperationResponse<?> batchOperationResponse,
-        String responseBody, List<StorageException> exceptions) {
+        String responseBody, List<BlobStorageException> exceptions) {
         /*
          * Currently no batching operations will return a success body, they will only return a body on an exception.
          * For now this will only construct the exception and throw if it should throw on an error.
          */
-        StorageException exception = new StorageException(responseBody,
+        BlobStorageException exception = new BlobStorageException(responseBody,
             batchOperationResponse.asHttpResponse(responseBody), responseBody);
         batchOperationResponse.setException(exception);
         exceptions.add(exception);

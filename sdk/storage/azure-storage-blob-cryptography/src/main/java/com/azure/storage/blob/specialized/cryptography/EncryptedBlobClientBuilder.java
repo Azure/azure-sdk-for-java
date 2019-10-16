@@ -126,6 +126,7 @@ public final class EncryptedBlobClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
         policies.add(new UserAgentPolicy(userAgentName, userAgentVersion, userAgentConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());

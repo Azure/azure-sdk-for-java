@@ -12,7 +12,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.blob.models.BlobStorageException;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class BlobBatchClientJavaDocCodeSnippets {
             System.out.println("Batch submission completed successfully.");
             System.out.printf("Delete operation 1 completed with status code: %d%n", deleteResponse1.getStatusCode());
             System.out.printf("Delete operation 2 completed with status code: %d%n", deleteResponse2.getStatusCode());
-        } catch (StorageException error) {
+        } catch (BlobStorageException error) {
             System.err.printf("Batch submission failed. Error message: %s%n", error.getMessage());
         }
         // END: com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch
@@ -64,7 +64,7 @@ public class BlobBatchClientJavaDocCodeSnippets {
                 batchClient.submitBatchWithResponse(batch, true, timeout, Context.NONE).getStatusCode());
             System.out.printf("Delete operation 1 completed with status code: %d%n", deleteResponse1.getStatusCode());
             System.out.printf("Delete operation 2 completed with status code: %d%n", deleteResponse2.getStatusCode());
-        } catch (StorageException error) {
+        } catch (BlobStorageException error) {
             System.err.printf("Batch submission failed. Error message: %s%n", error.getMessage());
         }
         // END: com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch-boolean-Duration-Context

@@ -5,16 +5,16 @@ package com.azure.storage.blob.batch;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.blob.models.BlobStorageException;
 
 /**
- * This exception class is an aggregate for {@link StorageException StorageExceptions}. This will contain all exceptions
- * from a single batch operation.
+ * This exception class is an aggregate for {@link BlobStorageException BlobStorageExceptions}. This will contain all
+ * exceptions from a single batch operation.
  */
 public final class StorageBlobBatchException extends HttpResponseException {
-    private final Iterable<StorageException> causes;
+    private final Iterable<BlobStorageException> causes;
 
-    StorageBlobBatchException(String message, HttpResponse response, Iterable<StorageException> causes) {
+    StorageBlobBatchException(String message, HttpResponse response, Iterable<BlobStorageException> causes) {
         super(message, response);
 
         this.causes = causes;
@@ -25,7 +25,7 @@ public final class StorageBlobBatchException extends HttpResponseException {
      *
      * @return All the exceptions thrown in a single batch request.
      */
-    public Iterable<StorageException> getCauses() {
+    public Iterable<BlobStorageException> getCauses() {
         return causes;
     }
 }

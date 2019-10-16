@@ -18,8 +18,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
@@ -66,7 +66,7 @@ public final class BlobBatchAsyncClient {
     /**
      * Submits a batch operation.
      *
-     * <p>If any request in a batch fails this will throw a {@link StorageException}.</p>
+     * <p>If any request in a batch fails this will throw a {@link BlobStorageException}.</p>
      *
      * <p><strong>Code samples</strong></p>
      *
@@ -74,7 +74,7 @@ public final class BlobBatchAsyncClient {
      *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
-     * @throws StorageException If the batch request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
      * @throws StorageBlobBatchException If any request in the {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -89,7 +89,7 @@ public final class BlobBatchAsyncClient {
     /**
      * Submits a batch operation.
      *
-     * <p>If {@code throwOnAnyFailure} is {@code true} a {@link StorageException} will be thrown if any request
+     * <p>If {@code throwOnAnyFailure} is {@code true} a {@link BlobStorageException} will be thrown if any request
      * fails.</p>
      *
      * <p><strong>Code samples</strong></p>
@@ -100,7 +100,7 @@ public final class BlobBatchAsyncClient {
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
      * @return A response only containing header and status code information, used to indicate that the batch operation
      * has completed.
-     * @throws StorageException If the batch request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
      * @throws StorageBlobBatchException If {@code throwOnAnyFailure} is {@code true} and any request in the
      * {@link BlobBatch} failed.
      */
@@ -129,7 +129,7 @@ public final class BlobBatchAsyncClient {
      * @param blobUrls Urls of the blobs to delete.
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
-     * @throws StorageException If the batch request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
      * @throws StorageBlobBatchException If any of the delete operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -163,7 +163,7 @@ public final class BlobBatchAsyncClient {
      * @param blobUrls Urls of the blobs to set their access tier.
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
-     * @throws StorageException If the batch request is malformed.
+     * @throws BlobStorageException If the batch request is malformed.
      * @throws StorageBlobBatchException If any of the set tier operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
