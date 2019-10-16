@@ -9,6 +9,7 @@ import java.net.InetSocketAddress;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.perfstress.PerfStressHttpClient;
 import com.azure.perfstress.PerfStressOptions;
 import com.azure.perfstress.PerfStressTest;
 
@@ -27,21 +28,9 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             System.exit(1);
         }
 
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().connectionString(connectionString);
-
-        String httpProxyHost = System.getProperty("http.proxyHost");
-
-        if (httpProxyHost != null && httpProxyHost.length() > 0) {
-            String httpProxyPort = System.getProperty("http.proxyPort");
-            if (httpProxyPort == null || httpProxyHost.length() == 0) { 
-                httpProxyPort = "80";
-            }
-
-            HttpClient httpClient = new NettyAsyncHttpClientBuilder().setProxy(new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress(httpProxyHost, Integer.parseInt(httpProxyPort)))).build();
-
-            builder = builder.httpClient(httpClient);
-        }
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .connectionString(connectionString)
+            .httpClient(PerfStressHttpClient.create(options));
 
         BlobServiceClient = builder.buildClient();
         BlobServiceAsyncClient = builder.buildAsyncClient();

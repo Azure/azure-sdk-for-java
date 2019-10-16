@@ -3,7 +3,7 @@ package com.azure.storage.blob.perfstress;
 import java.util.UUID;
 
 import com.azure.perfstress.CountOptions;
-
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.perfstress.core.ContainerTest;
 
 import reactor.core.publisher.Flux;
@@ -18,17 +18,17 @@ public class GetBlobsTest extends ContainerTest<CountOptions> {
         return super.GlobalSetupAsync().then(
             Flux.range(0, Options.Count)
                 .map(i -> "getblobstest-" + UUID.randomUUID())
-                .flatMap(b -> ContainerAsyncClient.getBlockBlobAsyncClient(b).upload(Flux.empty(), 0))
+                .flatMap(b -> BlobContainerAsyncClient.getBlobAsyncClient(b).upload(Flux.empty(), new ParallelTransferOptions()))
                 .then());
     }
 
     @Override
     public void Run() {
-        ContainerClient.listBlobsFlat().forEach(b -> {});
+        BlobContainerClient.listBlobsFlat().forEach(b -> {});
     }
 
     @Override
     public Mono<Void> RunAsync() {
-        return ContainerAsyncClient.listBlobsFlat().then();
+        return BlobContainerAsyncClient.listBlobsFlat().then();
     }
 }
