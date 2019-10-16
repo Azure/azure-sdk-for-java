@@ -20,12 +20,12 @@ import com.azure.storage.queue.implementation.models.QueueGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesResponse;
 import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
-import com.azure.storage.queue.models.ReceivedMessageItem;
-import com.azure.storage.queue.models.SentMessageItem;
-import com.azure.storage.queue.models.UpdatedMessageItem;
+import com.azure.storage.queue.models.SendMessageResult;
+import com.azure.storage.queue.models.UpdateMessageResult;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -416,18 +416,18 @@ public final class QueueAsyncClient {
      *
      * <p>Enqueue a message of "Hello, Azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessages#string}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessage#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
-     * @return A {@link SentMessageItem} value that contains the {@link SentMessageItem#getMessageId() messageId} and
-     * {@link SentMessageItem#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
-     * about the enqueued message.
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
      * @throws QueueStorageException If the queue doesn't exist
      */
-    public Mono<SentMessageItem> sendMessages(String messageText) {
+    public Mono<SendMessageResult> sendMessage(String messageText) {
         return sendMessageWithResponse(messageText, null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -438,11 +438,11 @@ public final class QueueAsyncClient {
      *
      * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessagesWithResponse#string-duration-duration}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessageWithResponse#string-duration-duration}
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.sendMessagesWithResponse-liveTime#String-Duration-Duration}
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#String-Duration-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
@@ -453,19 +453,19 @@ public final class QueueAsyncClient {
      * seconds and 7 days.
      * @param timeToLive Optional. How long the message will stay alive in the queue. If unset the value will default to
      * 7 days, if -1 is passed the message will not expire. The time to live must be -1 or any positive number.
-     * @return A {@link SentMessageItem} value that contains the {@link SentMessageItem#getMessageId() messageId} and
-     * {@link SentMessageItem#getPopReceipt() popReceipt} that are used to interact with the message and other metadata
-     * about the enqueued message.
+     * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
+     * and {@link SendMessageResult#getPopReceipt() popReceipt} that are used to interact with the message
+     * and other metadata about the enqueued message.
      * @throws QueueStorageException If the queue doesn't exist or the {@code visibilityTimeout} or {@code timeToLive}
      * are outside of the allowed limits.
      */
-    public Mono<Response<SentMessageItem>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
+    public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         return withContext(context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
     }
 
-    Mono<Response<SentMessageItem>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
-                                                            Duration timeToLive, Context context) {
+    Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
+                                                              Duration timeToLive, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
         QueueMessage message = new QueueMessage().setMessageText(messageText);
@@ -483,17 +483,17 @@ public final class QueueAsyncClient {
      *
      * <p>Dequeue a message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessages}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessage}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
-     * @return The first {@link SentMessageItem} in the queue, it contains {@link SentMessageItem#getMessageId()
-     * messageId} and {@link SentMessageItem#getPopReceipt() popReceipt} used to interact with the message, additionally
-     * it contains other metadata about the message.
+     * @return The first {@link QueueMessageItem} in the queue, it contains {@link QueueMessageItem#getMessageId()
+     * messageId} and {@link QueueMessageItem#getPopReceipt() popReceipt} used to interact with the message,
+     * additionally it contains other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist
      */
-    public PagedFlux<ReceivedMessageItem> receiveMessages() {
+    public PagedFlux<QueueMessageItem> receiveMessage() {
         return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE);
     }
 
@@ -513,13 +513,13 @@ public final class QueueAsyncClient {
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
      * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
      * range is 1 to 32 messages.
-     * @return Up to {@code maxMessages} {@link ReceivedMessageItem ReceiveMessageItem} from the queue.
-     * Each DequeuedMessage contains {@link ReceivedMessageItem#getMessageId() messageId} and
-     * {@link ReceivedMessageItem#getPopReceipt() popReceipt} used to interact with the message and
+     * @return Up to {@code maxMessages} {@link QueueMessageItem ReceiveMessageItem} from the queue.
+     * Each DequeuedMessage contains {@link QueueMessageItem#getMessageId() messageId} and
+     * {@link QueueMessageItem#getPopReceipt() popReceipt} used to interact with the message and
      * other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
-    public PagedFlux<ReceivedMessageItem> receiveMessages(Integer maxMessages) {
+    public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages) {
         return receiveMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
     }
 
@@ -541,21 +541,21 @@ public final class QueueAsyncClient {
      * range is 1 to 32 messages.
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If left
      * empty the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
-     * @return Up to {@code maxMessages} {@link ReceivedMessageItem DequeuedMessages} from the queue. Each DeqeuedMessage
-     * contains {@link ReceivedMessageItem#getMessageId() messageId} and
-     * {@link ReceivedMessageItem#getPopReceipt() popReceipt}
+     * @return Up to {@code maxMessages} {@link QueueMessageItem DequeuedMessages} from the queue. Each DeqeuedMessage
+     * contains {@link QueueMessageItem#getMessageId() messageId} and
+     * {@link QueueMessageItem#getPopReceipt() popReceipt}
      * used to interact with the message and other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} or {@code visibilityTimeout} is
      * outside of the allowed bounds
      */
-    public PagedFlux<ReceivedMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout) {
+    public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout) {
         return receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, null, Context.NONE);
     }
 
-    PagedFlux<ReceivedMessageItem> receiveMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
-                                                                  Duration timeout, Context context) {
+    PagedFlux<QueueMessageItem> receiveMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
+        Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
-        Function<String, Mono<PagedResponse<ReceivedMessageItem>>> retriever =
+        Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever =
             marker -> Utility.applyOptionalTimeout(this.client.messages()
                 .dequeueWithRestResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
                     null, null, context), timeout)
@@ -579,14 +579,14 @@ public final class QueueAsyncClient {
      *
      * <p>Peek the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessages}
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessage}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
-    public PagedFlux<PeekedMessageItem> peekMessages() {
+    public PagedFlux<PeekedMessageItem> peekMessage() {
         return peekMessages(null);
     }
 
@@ -647,13 +647,13 @@ public final class QueueAsyncClient {
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessageItem} that contains the new {@link UpdatedMessageItem#getPopReceipt() popReceipt} to
+     * @return A {@link UpdateMessageResult} that contains the new {@link UpdateMessageResult#getPopReceipt() popReceipt} to
      * interact with the message, additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
-    public Mono<UpdatedMessageItem> updateMessage(String messageId, String popReceipt, String messageText,
-                                                  Duration visibilityTimeout) {
+    public Mono<UpdateMessageResult> updateMessage(String messageId, String popReceipt, String messageText,
+        Duration visibilityTimeout) {
         return updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout)
             .flatMap(FluxUtil::toMono);
     }
@@ -675,19 +675,19 @@ public final class QueueAsyncClient {
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdatedMessageItem} that contains the new {@link UpdatedMessageItem#getPopReceipt() popReceipt} to
+     * @return A {@link UpdateMessageResult} that contains the new {@link UpdateMessageResult#getPopReceipt() popReceipt} to
      * interact with the message, additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
-    public Mono<Response<UpdatedMessageItem>> updateMessageWithResponse(String messageId, String popReceipt,
-                                                                        String messageText, Duration visibilityTimeout) {
+    public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
+         String messageText, Duration visibilityTimeout) {
         return withContext(context ->
             updateMessageWithResponse(messageText, messageId, popReceipt, visibilityTimeout, context));
     }
 
-    Mono<Response<UpdatedMessageItem>> updateMessageWithResponse(String messageId, String popReceipt, String messageText,
-                                                                 Duration visibilityTimeout, Context context) {
+    Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt, String messageText,
+                                                                  Duration visibilityTimeout, Context context) {
         QueueMessage message = new QueueMessage().setMessageText(messageText);
         return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
                 (int) visibilityTimeout.getSeconds(), context)
@@ -783,9 +783,9 @@ public final class QueueAsyncClient {
      * @param response Service response
      * @return Mapped response
      */
-    private Response<UpdatedMessageItem> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
+    private Response<UpdateMessageResult> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
         MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdatedMessageItem updatedMessageItem = new UpdatedMessageItem(headers.getPopReceipt(), headers.getTimeNextVisible());
-        return new SimpleResponse<>(response, updatedMessageItem);
+        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getPopReceipt(), headers.getTimeNextVisible());
+        return new SimpleResponse<>(response, updateMessageResult);
     }
 }

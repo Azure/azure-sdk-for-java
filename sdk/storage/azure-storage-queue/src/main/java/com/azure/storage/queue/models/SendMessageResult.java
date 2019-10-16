@@ -11,12 +11,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /**
- * The object returned in the QueueMessageList array when calling Get Messages
+ * The object returned in the QueueMessageList array when calling Put Message
  * on a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class ReceivedMessageItem {
+public final class SendMessageResult {
     /*
      * The Id of the Message.
      */
@@ -48,18 +48,6 @@ public final class ReceivedMessageItem {
     @JsonProperty(value = "TimeNextVisible", required = true)
     private DateTimeRfc1123 timeNextVisible;
 
-    /*
-     * The number of times the message has been dequeued.
-     */
-    @JsonProperty(value = "DequeueCount", required = true)
-    private long dequeueCount;
-
-    /*
-     * The content of the Message.
-     */
-    @JsonProperty(value = "MessageText", required = true)
-    private String messageText;
-
     /**
      * Get the messageId property: The Id of the Message.
      *
@@ -73,9 +61,9 @@ public final class ReceivedMessageItem {
      * Set the messageId property: The Id of the Message.
      *
      * @param messageId the messageId value to set.
-     * @return the ReceivedMessageItem object itself.
+     * @return the SendMessageResult object itself.
      */
-    public ReceivedMessageItem setMessageId(String messageId) {
+    public SendMessageResult setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -98,9 +86,9 @@ public final class ReceivedMessageItem {
      * the Queue.
      *
      * @param insertionTime the insertionTime value to set.
-     * @return the ReceivedMessageItem object itself.
+     * @return the SendMessageResult object itself.
      */
-    public ReceivedMessageItem setInsertionTime(OffsetDateTime insertionTime) {
+    public SendMessageResult setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -127,9 +115,9 @@ public final class ReceivedMessageItem {
      * and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
-     * @return the ReceivedMessageItem object itself.
+     * @return the SendMessageResult object itself.
      */
-    public ReceivedMessageItem setExpirationTime(OffsetDateTime expirationTime) {
+    public SendMessageResult setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -155,9 +143,9 @@ public final class ReceivedMessageItem {
      * been dequeued by another client.
      *
      * @param popReceipt the popReceipt value to set.
-     * @return the ReceivedMessageItem object itself.
+     * @return the SendMessageResult object itself.
      */
-    public ReceivedMessageItem setPopReceipt(String popReceipt) {
+    public SendMessageResult setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
     }
@@ -180,56 +168,14 @@ public final class ReceivedMessageItem {
      * become visible in the Queue.
      *
      * @param timeNextVisible the timeNextVisible value to set.
-     * @return the ReceivedMessageItem object itself.
+     * @return the SendMessageResult object itself.
      */
-    public ReceivedMessageItem setTimeNextVisible(OffsetDateTime timeNextVisible) {
+    public SendMessageResult setTimeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
         } else {
             this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
         }
-        return this;
-    }
-
-    /**
-     * Get the dequeueCount property: The number of times the message has been
-     * dequeued.
-     *
-     * @return the dequeueCount value.
-     */
-    public long getDequeueCount() {
-        return this.dequeueCount;
-    }
-
-    /**
-     * Set the dequeueCount property: The number of times the message has been
-     * dequeued.
-     *
-     * @param dequeueCount the dequeueCount value to set.
-     * @return the ReceivedMessageItem object itself.
-     */
-    public ReceivedMessageItem setDequeueCount(long dequeueCount) {
-        this.dequeueCount = dequeueCount;
-        return this;
-    }
-
-    /**
-     * Get the messageText property: The content of the Message.
-     *
-     * @return the messageText value.
-     */
-    public String getMessageText() {
-        return this.messageText;
-    }
-
-    /**
-     * Set the messageText property: The content of the Message.
-     *
-     * @param messageText the messageText value to set.
-     * @return the ReceivedMessageItem object itself.
-     */
-    public ReceivedMessageItem setMessageText(String messageText) {
-        this.messageText = messageText;
         return this;
     }
 }

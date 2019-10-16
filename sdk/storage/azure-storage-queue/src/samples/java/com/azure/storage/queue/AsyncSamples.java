@@ -25,8 +25,8 @@ public class AsyncSamples {
 
         // Create a queue, enqueue two messages.
         queueAsyncClient.create()
-            .doOnSuccess(response -> queueAsyncClient.sendMessages("This is message 1"))
-            .then(queueAsyncClient.sendMessages("This is message 2"))
+            .doOnSuccess(response -> queueAsyncClient.sendMessage("This is message 1"))
+            .then(queueAsyncClient.sendMessage("This is message 2"))
             .subscribe(
                 response -> System.out.println(
                     "Message successfully equeueed by queueAsyncClient. Message id:" + response.getMessageId()),

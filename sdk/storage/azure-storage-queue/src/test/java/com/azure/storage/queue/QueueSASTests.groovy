@@ -1,5 +1,7 @@
-package com.azure.storage.queue
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.storage.queue
 
 import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
@@ -12,7 +14,7 @@ import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
-
+import com.azure.storage.queue.models.SendMessageResult
 import org.junit.Test
 import spock.lang.Unroll
 
@@ -97,7 +99,7 @@ class QueueSASTests extends APISpec {
     def "Test QueueSAS enqueue dequeue with permissions"() {
         setup:
         queueClient.create()
-        SendMessageItem resp = queueClient.sendMessage("test")
+        SendMessageResult resp = queueClient.sendMessage("test")
 
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
@@ -146,7 +148,7 @@ class QueueSASTests extends APISpec {
     def "Test QueueSAS update delete with permissions"() {
         setup:
         queueClient.create()
-        SendMessageItem resp = queueClient.sendMessage("test")
+        SendMessageResult resp = queueClient.sendMessage("test")
 
         def permissions = new QueueSasPermission()
             .setReadPermission(true)
