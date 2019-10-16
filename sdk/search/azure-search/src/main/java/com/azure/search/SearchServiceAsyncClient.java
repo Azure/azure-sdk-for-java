@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
@@ -23,11 +24,15 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
+import com.azure.search.models.SearchRequestOptions;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Function;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class, isAsync = true)
 public class SearchServiceAsyncClient {
@@ -325,19 +330,32 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search index.
+     * @param index definition of the index to create.
      * @return the created Index.
      */
-    public Mono<Index> createIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Index> createIndex(Index index) {
+        return this.createIndexWithResponse(index, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search index.
+     * @param index definition of the index to create.
+     * @param searchRequestOptions Search Request Options.
      * @return a response containing the created Index.
      */
-    public Mono<Response<Index>> createIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Response<Index>> createIndexWithResponse(Index index, SearchRequestOptions searchRequestOptions) {
+        return withContext(context -> createIndexWithResponse(index, searchRequestOptions, context));
+    }
+
+    Mono<Response<Index>> createIndexWithResponse(Index index,
+                                                  SearchRequestOptions searchRequestOptions,
+                                                  Context context) {
+        return restClient
+            .indexes()
+            .createWithRestResponseAsync(index, searchRequestOptions, context)
+            .map(Function.identity());
     }
 
     /**

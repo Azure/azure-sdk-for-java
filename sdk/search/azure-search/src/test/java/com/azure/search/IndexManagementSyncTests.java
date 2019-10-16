@@ -12,13 +12,17 @@ import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.CorsOptions;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
-import reactor.test.StepVerifier;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
+
 import java.util.Collections;
 
-public class IndexManagementAsyncTests extends IndexManagementTestBase {
-    private SearchServiceAsyncClient client;
+public class IndexManagementSyncTests extends IndexManagementTestBase {
+    private SearchServiceClient client;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Override
     public void createIndexReturnsCorrectDefinition() {
@@ -27,7 +31,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void createIndexReturnsCorrectDefaultValues() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
+        client = getSearchServiceClientBuilder().buildClient();
 
         Index index = createTestIndex();
         index.setCorsOptions(new CorsOptions().setAllowedOrigins(Collections.singletonList("*")));
@@ -42,21 +46,17 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             )
         ));
 
-        StepVerifier
-            .create(client.createIndex(index))
-            .assertNext(indexResponse -> {
-                ScoringProfile scoringProfile = indexResponse.getScoringProfiles().get(0);
-                Assert.assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
-                Assert.assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
-                Assert.assertNotNull(scoringProfile.getFunctions().get(0));
-                Assert.assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
-            })
-            .verifyComplete();
+        Index indexResponse = client.createIndex(index);
+        ScoringProfile scoringProfile = indexResponse.getScoringProfiles().get(0);
+        Assert.assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
+        Assert.assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
+        Assert.assertNotNull(scoringProfile.getFunctions().get(0));
+        Assert.assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
     }
 
     @Override
     public void createIndexFailsWithUsefulMessageOnUserError() {
-        client = getSearchServiceClientBuilder().buildAsyncClient();
+        client = getSearchServiceClientBuilder().buildClient();
 
         String indexName = "hotels";
         Index index = new Index()
@@ -67,17 +67,12 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
                     .setType(DataType.EDM_STRING)
                     .setKey(false)
             ));
-
         String expectedMessage = String.format("The request is invalid. Details: index : Found 0 key fields in index '%s'. "
             + "Each index must have exactly one key field.", indexName);
 
-        StepVerifier
-            .create(client.createIndex(index))
-            .verifyErrorSatisfies(error -> {
-                Assert.assertEquals(HttpResponseException.class, error.getClass());
-                Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) error).getResponse().getStatusCode());
-                Assert.assertTrue(error.getMessage().contains(expectedMessage));
-            });
+        thrown.expect(HttpResponseException.class);
+        thrown.expectMessage(expectedMessage);
+        client.createIndex(index);
     }
 
     @Override
