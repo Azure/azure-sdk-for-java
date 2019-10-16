@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  */
 final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5"; // {x-version-update;com.azure:azure-storage-queue;current}
 
     /**
      * Parses the passed {@code connectionString} for values to configure on the builder.

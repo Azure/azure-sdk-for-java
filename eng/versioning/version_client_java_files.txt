@@ -1,0 +1,16 @@
+# This is necessary because there are java files with a hard coded version in them that need to
+# get updated when versions get updated. Once https://github.com/Azure/azure-sdk-for-java/issues/3141
+# has been fixed this file and the update logic in update_versions.py should no longer be necessary.
+
+# The file format here should be the relative path from the root of the azure-sdk-for-java
+sdk/appconfiguration/azure-data-appconfiguration/src/main/java/com/azure/data/appconfiguration/AzureConfiguration.java
+sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/implementation/ClientConstants.java
+sdk/keyvault/azure-keyvault-certificates/src/main/java/com/azure/security/keyvault/certificates/AzureKeyVaultConfiguration.java
+sdk/keyvault/azure-keyvault-keys/src/main/java/com/azure/security/keyvault/keys/implementation/AzureKeyVaultConfiguration.java
+sdk/keyvault/azure-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/AzureKeyVaultConfiguration.java
+sdk/storage/azure-storage-blob/src/main/java/com/azure/storage/blob/implementation/util/BuilderHelper.java
+sdk/storage/azure-storage-blob-cryptography/src/main/java/com/azure/storage/blob/specialized/cryptography/BlobCryptographyConfiguration.java
+sdk/storage/azure-storage-file/src/main/java/com/azure/storage/file/BuilderHelper.java
+sdk/storage/azure-storage-file/src/main/java/com/azure/storage/file/FileConfiguration.java
+sdk/storage/azure-storage-queue/src/main/java/com/azure/storage/queue/BuilderHelper.java
+sdk/storage/azure-storage-queue/src/main/java/com/azure/storage/queue/QueueConfiguration.java

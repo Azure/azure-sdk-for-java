@@ -6,5 +6,5 @@ package com.azure.security.keyvault.keys.implementation;
 public final class AzureKeyVaultConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     public static final String SDK_NAME = "Azure-Keyvault";
-    public static final String SDK_VERSION = "4.0.0-preview.6";
+    public static final String SDK_VERSION = "4.0.0-preview.6"; // {x-version-update;com.azure:azure-keyvault-keys;current}
 }
