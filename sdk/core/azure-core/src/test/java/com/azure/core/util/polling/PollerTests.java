@@ -358,8 +358,6 @@ public class PollerTests {
             .thenCancel() // cancel this actual subscriber, this does not affect the parent operation.
             .verify();
 
-        StepVerifier.create(poller.getResult())
-            .verifyErrorSatisfies(ex -> assertException(ex, IllegalAccessException.class));
         Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.getStatus());
         Assert.assertTrue(poller.isAutoPollingEnabled());
 
@@ -383,11 +381,6 @@ public class PollerTests {
             activationOperation, voidCancelOperation);
 
         Assert.assertEquals(OperationStatus.FAILED, poller.getStatus());
-    }
-
-
-    private <T> void assertException(Throwable exception, Class<T> expectedExceptionType) {
-        assertEquals(expectedExceptionType, exception.getClass());
     }
 
     public static class Response {
