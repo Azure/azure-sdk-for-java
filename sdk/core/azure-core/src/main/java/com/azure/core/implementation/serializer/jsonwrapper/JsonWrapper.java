@@ -36,6 +36,7 @@ public class JsonWrapper {
      * @return JsonAPI instance
      * @throws ClassNotFoundException if the class type is invalid
      */
+    @SuppressWarnings("unchecked")
     public static JsonApi newInstance(String type) throws ClassNotFoundException {
         Class<? extends JsonApi> cls = (Class<? extends JsonApi>) Class.forName(type);
         return newInstance(cls);
@@ -47,6 +48,7 @@ public class JsonWrapper {
      * @param type type of JsonApi
      * @return JsonApi instance
      */
+    @SuppressWarnings("unchecked")
     public static JsonApi newInstance(Class<? extends JsonApi> type) {
         Iterator<JsonPlugin> it = PLUGIN_LOADER.iterator();
         while (it.hasNext()) {
