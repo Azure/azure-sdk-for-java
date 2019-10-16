@@ -9,12 +9,12 @@ Azure Key Vault allows you to create and store certificates in the Key Vault. Az
 ### Adding the package to your project
 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-certificates;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.6</version>
+    <artifactId>azure-security-keyvault-certificates</artifactId>
+    <version>4.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -27,13 +27,13 @@ KeyVault Certificates to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-certificates;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
 ```xml
 <!-- Add KeyVault Certificates dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.6</version>
+    <artifactId>azure-security-keyvault-certificates</artifactId>
+    <version>4.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -378,4 +378,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_ManageDeleted]: src/samples/java/com/azure/security/keyvault/certificates/ManagingDeletedCertificates.java
 [sample_ManageDeletedAsync]: src/samples/java/com/azure/security/keyvault/certificates/ManagingDeletedCertificatesAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-keyvault-certificates/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-certificates/README.png)

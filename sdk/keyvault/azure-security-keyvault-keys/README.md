@@ -10,12 +10,12 @@ Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key 
 ### Adding the package to your project
 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-keys;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-keys</artifactId>
-    <version>4.0.0-preview.6</version>
+    <artifactId>azure-security-keyvault-keys</artifactId>
+    <version>4.0.0-preview.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -28,13 +28,13 @@ KeyVault Keys to use Netty HTTP client.
 If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
 Netty and include OkHTTP client in your pom.xml.
 
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-keys;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
 ```xml
 <!-- Add KeyVault Keys dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-keys</artifactId>
-    <version>4.0.0-preview.6</version>
+    <artifactId>azure-security-keyvault-keys</artifactId>
+    <version>4.0.0-preview.5</version>
     <exclusions>
       <exclusion>
         <groupId>com.azure</groupId>
@@ -496,4 +496,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_wrapUnwrap]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperations.java
 [sample_wrapUnwrapAsync]: src/samples/java/com/azure/security/keyvault/keys/cryptography/KeyWrapUnwrapOperationsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-keyvault-keys/README.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/keyvault/azure-security-keyvault-keys/README.png)

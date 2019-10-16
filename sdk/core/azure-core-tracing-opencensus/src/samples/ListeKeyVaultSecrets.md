@@ -5,12 +5,12 @@ Following documentation describes instructions to run a sample program for listi
 ## Getting Started
 
 ### Adding the Azure client library for Key Vault secrets package to your project:
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-secrets;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
 <!-- Add KeyVault Secrets dependency without Netty HTTP client -->
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-secrets</artifactId>
+    <artifactId>azure-security-keyvault-secrets</artifactId>
     <version>4.0.0-preview.5</version>
     <exclusions>
       <exclusion>
