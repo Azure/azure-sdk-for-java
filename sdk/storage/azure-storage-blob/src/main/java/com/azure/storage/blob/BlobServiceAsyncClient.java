@@ -96,7 +96,7 @@ public final class BlobServiceAsyncClient {
         }
 
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
+            .url(Utility.appendToUrlPath(getAccountUrl(), containerName).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), customerProvidedKey, accountName);
     }

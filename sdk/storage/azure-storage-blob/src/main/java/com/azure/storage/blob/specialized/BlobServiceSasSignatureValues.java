@@ -8,7 +8,7 @@ import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
+import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -47,7 +47,7 @@ public final class BlobServiceSasSignatureValues {
 
     private String permissions;
 
-    private IpRange ipRange;
+    private SasIpRange sasIpRange;
 
     private String canonicalName;
 
@@ -94,8 +94,8 @@ public final class BlobServiceSasSignatureValues {
     }
 
     public BlobServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
-            OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
-            String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
             this.version = version;
         }
@@ -103,7 +103,7 @@ public final class BlobServiceSasSignatureValues {
         this.startTime = startTime;
         this.expiryTime = expiryTime;
         this.permissions = permission;
-        this.ipRange = ipRange;
+        this.sasIpRange = sasIpRange;
         this.identifier = identifier;
         this.cacheControl = cacheControl;
         this.contentDisposition = contentDisposition;
@@ -227,20 +227,20 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IpRange getIpRange() {
-        return ipRange;
+    public SasIpRange getSasIpRange() {
+        return sasIpRange;
     }
 
     /**
-     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
-     * @param ipRange Allowed IP range to set
+     * @param sasIpRange Allowed IP range to set
      * @return the updated BlobServiceSASSignatureValues object
      */
-    public BlobServiceSasSignatureValues setIpRange(IpRange ipRange) {
-        this.ipRange = ipRange;
+    public BlobServiceSasSignatureValues setSasIpRange(SasIpRange sasIpRange) {
+        this.sasIpRange = sasIpRange;
         return this;
     }
 
@@ -458,7 +458,7 @@ public final class BlobServiceSasSignatureValues {
         String signature = sharedKeyCredentials.computeHmac256(stringToSign());
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
-            this.ipRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
+            this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, null /* delegate */);
     }
 
@@ -480,7 +480,7 @@ public final class BlobServiceSasSignatureValues {
         String signature = Utility.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey));
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
-            this.ipRange, null /* identifier */, this.resource, this.permissions, signature, this.cacheControl,
+            this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, delegationKey);
     }
 
@@ -514,7 +514,7 @@ public final class BlobServiceSasSignatureValues {
             this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
             this.identifier == null ? "" : this.identifier,
-            this.ipRange == null ? "" : this.ipRange.toString(),
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
             this.version == null ? "" : this.version,
             this.resource == null ? "" : this.resource,
@@ -539,7 +539,7 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            this.ipRange == null ? "" : this.ipRange.toString(),
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             this.version == null ? "" : this.version,
             this.resource == null ? "" : this.resource,
