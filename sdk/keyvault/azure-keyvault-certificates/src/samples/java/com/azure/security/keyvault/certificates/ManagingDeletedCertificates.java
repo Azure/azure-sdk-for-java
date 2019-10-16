@@ -54,7 +54,7 @@ public class ManagingDeletedCertificates {
         Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, tags);
         certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.result().block();
+        Certificate cert = certificatePoller.getResult().block();
 
         // The certificate is no longer needed, need to delete it from the key vault.
         DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");

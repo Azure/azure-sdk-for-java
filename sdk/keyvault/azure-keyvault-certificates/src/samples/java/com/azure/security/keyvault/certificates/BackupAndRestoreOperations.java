@@ -57,7 +57,7 @@ public class BackupAndRestoreOperations {
         Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, tags);
         certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.result().block();
+        Certificate cert = certificatePoller.getResult().block();
 
         // Backups are good to have, if in case certificates get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.

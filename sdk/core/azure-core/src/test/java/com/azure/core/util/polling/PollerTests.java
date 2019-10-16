@@ -358,7 +358,7 @@ public class PollerTests {
             .thenCancel() // cancel this actual subscriber, this does not affect the parent operation.
             .verify();
 
-        StepVerifier.create(poller.result())
+        StepVerifier.create(poller.getResult())
             .verifyErrorSatisfies(ex -> assertException(ex, IllegalAccessException.class));
         Assert.assertEquals(OperationStatus.USER_CANCELLED, poller.getStatus());
         Assert.assertTrue(poller.isAutoPollingEnabled());

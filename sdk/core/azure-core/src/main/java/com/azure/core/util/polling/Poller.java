@@ -254,12 +254,13 @@ public class Poller<T, R> {
     }
 
     /**
-     * Returns the final result if the polling operation has been completed.
+     * Returns the final result if the polling operation has been completed. An empty {@link Mono} will be returned if
+     * the polling operation has not completed.
      * @return A {@link Mono} containing the final output.
      */
-    public Mono<R> result() {
-        if (getStatus() == null || !getStatus().equals(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED)) {
-            return Mono.error(new IllegalAccessException("The poll operation has not successfully completed."));
+    public Mono<R> getResult() {
+        if (getStatus() == null || !isComplete()) {
+            return Mono.empty();
         }
         return fetchResultOperation.get();
     }
@@ -299,14 +300,14 @@ public class Poller<T, R> {
      *
      * <p>It will enable auto-polling if it was disabled by the user.
      *
-     * @return The final output once Polling completes.
+     * @return The final output once polling completes.
      */
     public R block() {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
         this.fluxHandle.blockLast();
-        return result().block();
+        return getResult().block();
     }
 
     /**
@@ -315,14 +316,14 @@ public class Poller<T, R> {
      * <p>It will enable auto-polling if it was disable by user.
      *
      * @param timeout The duration for which execution is blocked and waits for polling to complete.
-     * @return The final output once Polling completes.
+     * @return The final output once polling completes.
      */
     public R block(Duration timeout) {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
         this.fluxHandle.blockLast(timeout);
-        return result().block();
+        return getResult().block();
     }
 
     /**

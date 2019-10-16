@@ -55,7 +55,7 @@ public class HelloWorld {
         Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certificateName92", policy, tags);
         certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.result().block();
+        Certificate cert = certificatePoller.getResult().block();
 
         // Let's Get the latest version of the certificate from the key vault.
         Certificate certificate = certificateClient.getCertificateWithPolicy("certificateName");

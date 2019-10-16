@@ -47,7 +47,7 @@ public class ListOperations {
         Poller<CertificateOperation, Certificate> certificatePoller = certificateClient.beginCreateCertificate("certName", policy, tags);
         certificatePoller.blockUntil(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Certificate cert = certificatePoller.result().block();
+        Certificate cert = certificatePoller.getResult().block();
 
         //Let's create a certificate issuer.
         Issuer issuer = new Issuer("myIssuer", "Test");
