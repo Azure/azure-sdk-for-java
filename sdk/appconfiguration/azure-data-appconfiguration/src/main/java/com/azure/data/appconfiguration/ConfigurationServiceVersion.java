@@ -3,7 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.ServiceVersion;
+import com.azure.core.util.ServiceVersion;
 
 /**
  * The versions of Azure App Configuration supported by this client library.

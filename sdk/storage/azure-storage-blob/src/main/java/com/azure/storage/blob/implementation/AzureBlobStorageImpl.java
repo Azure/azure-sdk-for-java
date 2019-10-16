@@ -6,7 +6,6 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.PathRenameMode;
 
 /**
@@ -52,16 +51,11 @@ public final class AzureBlobStorageImpl {
     }
 
     /**
-     * Sets the {@link BlobServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * Sets Specifies the version of the operation to use for this request.
      *
-     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
-     * @return The version value.
+     * @param version the version value.
      */
-    public AzureBlobStorageImpl setVersion(String version) {
+    AzureBlobStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -225,3 +219,4 @@ public final class AzureBlobStorageImpl {
         this.blockBlobs = new BlockBlobsImpl(this);
     }
 }
+

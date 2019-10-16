@@ -493,7 +493,7 @@ public final class EncryptedBlobClientBuilder {
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated EncryptedBlobClientBuilder object
      */
-    public EncryptedBlobClientBuilder version(BlobServiceVersion version) {
+    public EncryptedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
     }

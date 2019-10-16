@@ -145,8 +145,8 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
      * {@inheritDoc}
      */
     @Override
-    public KeyEncryptionKeyClientBuilder version(CryptographyServiceVersion version) {
-        super.version(version);
+    public KeyEncryptionKeyClientBuilder serviceVersion(CryptographyServiceVersion version) {
+        super.serviceVersion(version);
         return this;
     }
 }

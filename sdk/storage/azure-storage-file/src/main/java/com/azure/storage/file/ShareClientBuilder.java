@@ -354,7 +354,7 @@ public class ShareClientBuilder {
      * @param version {@link FileServiceVersion} of the service to be used when making requests.
      * @return the updated ShareClientBuilder object
      */
-    public ShareClientBuilder version(FileServiceVersion version) {
+    public ShareClientBuilder serviceVersion(FileServiceVersion version) {
         this.version = version;
         return this;
     }

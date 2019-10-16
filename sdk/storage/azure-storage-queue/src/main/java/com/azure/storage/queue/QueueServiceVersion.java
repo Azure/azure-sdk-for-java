@@ -3,10 +3,10 @@
 
 package com.azure.storage.queue;
 
-import com.azure.core.http.ServiceVersion;
+import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure App Configuration supported by this client library.
+ * The versions of Azure Storage Queue supported by this client library.
  */
 public enum QueueServiceVersion implements ServiceVersion {
     V2018_03_28("2018-03-28");

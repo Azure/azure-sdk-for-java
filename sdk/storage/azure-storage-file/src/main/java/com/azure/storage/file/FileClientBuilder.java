@@ -415,7 +415,7 @@ public class FileClientBuilder {
      * @param version {@link FileServiceVersion} of the service to be used when making requests.
      * @return the updated FileClientBuilder object
      */
-    public FileClientBuilder version(FileServiceVersion version) {
+    public FileClientBuilder serviceVersion(FileServiceVersion version) {
         this.version = version;
         return this;
     }

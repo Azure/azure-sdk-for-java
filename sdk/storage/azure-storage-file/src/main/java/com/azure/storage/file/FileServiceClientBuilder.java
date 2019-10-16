@@ -311,7 +311,7 @@ public final class FileServiceClientBuilder {
      * @param version {@link FileServiceVersion} of the service to be used when making requests.
      * @return the updated FileServiceClientBuilder object
      */
-    public FileServiceClientBuilder version(FileServiceVersion version) {
+    public FileServiceClientBuilder serviceVersion(FileServiceVersion version) {
         this.version = version;
         return this;
     }

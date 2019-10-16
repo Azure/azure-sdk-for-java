@@ -3,7 +3,7 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.ServiceVersion;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;

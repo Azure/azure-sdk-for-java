@@ -3,10 +3,10 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.http.ServiceVersion;
+import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Key Vault supported by this client library.
+ * The versions of Azure Key Vault Cryptography supported by this client library.
  */
 public enum CryptographyServiceVersion implements ServiceVersion {
     V7_0("7.0");

@@ -342,7 +342,7 @@ public final class BlobContainerClientBuilder {
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated BlobContainerClientBuilder object
      */
-    public BlobContainerClientBuilder version(BlobServiceVersion version) {
+    public BlobContainerClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
     }

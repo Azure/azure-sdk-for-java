@@ -498,7 +498,7 @@ public final class SpecializedBlobClientBuilder {
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated SpecializedBlobClientBuilder object
      */
-    public SpecializedBlobClientBuilder version(BlobServiceVersion version) {
+    public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
     }

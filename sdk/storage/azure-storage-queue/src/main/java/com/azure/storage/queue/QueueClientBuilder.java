@@ -362,7 +362,7 @@ public final class QueueClientBuilder {
      * @param version {@link QueueServiceVersion} of the service to be used when making requests.
      * @return the updated QueueClientBuilder object
      */
-    public QueueClientBuilder version(QueueServiceVersion version) {
+    public QueueClientBuilder serviceVersion(QueueServiceVersion version) {
         this.version = version;
         return this;
     }

@@ -3,10 +3,10 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.ServiceVersion;
+import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure App Configuration supported by this client library.
+ * The versions of Azure Storage Blob supported by this client library.
  */
 public enum BlobServiceVersion implements ServiceVersion {
     V2019_02_02("2019-02-02");

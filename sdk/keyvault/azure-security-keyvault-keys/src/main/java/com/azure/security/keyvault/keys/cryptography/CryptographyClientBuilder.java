@@ -305,7 +305,7 @@ public class CryptographyClientBuilder {
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      * @return The updated CryptographyClientBuilder object.
      */
-    public CryptographyClientBuilder version(CryptographyServiceVersion version) {
+    public CryptographyClientBuilder serviceVersion(CryptographyServiceVersion version) {
         this.version = version;
         return this;
     }
