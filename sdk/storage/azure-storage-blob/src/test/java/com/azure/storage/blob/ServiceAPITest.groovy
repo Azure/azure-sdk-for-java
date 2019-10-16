@@ -113,14 +113,18 @@ class ServiceAPITest extends APISpec {
         setup:
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3
+        def containerName = generateContainerName()
+        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(generateContainerName())
+            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
         }
 
         expect:
-        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setMaxResultsPerPage(PAGE_RESULTS), null)
+        primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerPrefix)
+            .setMaxResultsPerPage(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
