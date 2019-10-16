@@ -39,9 +39,9 @@ class APISpec extends Specification {
 
 
     // Test name for test method name.
-    def methodName
+    String methodName
 
-    static def testMode = getTestMode()
+    static TestMode testMode = getTestMode()
     String connectionString
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.

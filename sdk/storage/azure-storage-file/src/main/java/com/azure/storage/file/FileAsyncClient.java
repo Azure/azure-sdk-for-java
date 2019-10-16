@@ -30,7 +30,7 @@ import com.azure.storage.file.implementation.models.FilesUploadRangeFromURLRespo
 import com.azure.storage.file.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -38,7 +38,7 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -143,8 +143,8 @@ public class FileAsyncClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing the file info and the status of creating the file.
-     * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an
-     * invalid resource name.
+     * @throws FileStorageException If the file has already existed, the parent directory does not exist or fileName
+     * is an invalid resource name.
      */
     public Mono<FileInfo> create(long maxSize) {
         return createWithResponse(maxSize, null, null, null, null).flatMap(FluxUtil::toMono);
@@ -168,16 +168,16 @@ public class FileAsyncClient {
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory
-     * is an invalid resource name.
+     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * directory is an invalid resource name.
      */
-    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+    public Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         return withContext(context ->
             createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+    Mono<Response<FileInfo>> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -449,7 +449,7 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @return An empty response
-     * @throws StorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<Void> delete() {
         return deleteWithResponse(null).flatMap(FluxUtil::toMono);
@@ -468,7 +468,7 @@ public class FileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public Mono<Response<Void>> deleteWithResponse() {
         return withContext(this::deleteWithResponse);
@@ -551,7 +551,7 @@ public class FileAsyncClient {
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<FileInfo> setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+    public Mono<FileInfo> setProperties(long newFileSize, FileHttpHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
         return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
             .flatMap(FluxUtil::toMono);
@@ -584,13 +584,13 @@ public class FileAsyncClient {
      * @return Response containing the {@link FileInfo file info} and response status code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    public Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission) {
         return withContext(context ->
             setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context));
     }
 
-    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    Mono<Response<FileInfo>> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Context context) {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -631,7 +631,7 @@ public class FileAsyncClient {
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @return {@link FileMetadataInfo file meta info}
-     * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public Mono<FileMetadataInfo> setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
@@ -657,7 +657,7 @@ public class FileAsyncClient {
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @return A response containing the {@link FileMetadataInfo file meta info} and status code
-     * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public Mono<Response<FileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         return withContext(context -> setMetadataWithResponse(metadata, context));
@@ -709,8 +709,8 @@ public class FileAsyncClient {
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is
      * {@code null}.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
-     * code 413 (Request Entity Too Large)
+     * @throws FileStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
      */
     public Mono<Response<FileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset) {
         return withContext(context -> uploadWithResponse(data, length, offset, context));

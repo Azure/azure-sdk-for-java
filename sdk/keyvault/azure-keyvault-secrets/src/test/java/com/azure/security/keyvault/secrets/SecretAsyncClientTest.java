@@ -80,7 +80,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      * Verifies that an exception is thrown when null secret object is passed for creation.
      */
     public void setSecretNull() {
-        assertRunnableThrowsException(() -> client.setSecret(null).block(), NullPointerException.class);
+        StepVerifier.create(client.setSecret(null))
+            .verifyError(NullPointerException.class);
     }
 
     /**

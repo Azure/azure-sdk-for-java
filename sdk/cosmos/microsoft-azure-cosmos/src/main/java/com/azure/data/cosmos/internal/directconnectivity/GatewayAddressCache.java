@@ -220,28 +220,27 @@ public class GatewayAddressCache implements IAddressCache {
 
                     return addresses;
                 }).onErrorResume(throwable -> {
-            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-            CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(unwrappedException, CosmosClientException.class);
-            if (dce == null) {
-                logger.error("unexpected failure", ex);
-                if (forceRefreshPartitionAddressesModified) {
-                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                }
-                return Mono.error(unwrappedException);
-            } else {
-                logger.debug("tryGetAddresses dce", dce);
-                if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
-                        Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
-                        Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
-                    //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
-                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+                    CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(unwrappedException, CosmosClientException.class);
+                    if (dce == null) {
+                        logger.error("unexpected failure", throwable);
+                        if (forceRefreshPartitionAddressesModified) {
+                            this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                        }
+                        return Mono.error(unwrappedException);
+                    } else {
+                        logger.debug("tryGetAddresses dce", dce);
+                        if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
+                                Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
+                                Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
+                            //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
+                            this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
 
-                    logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
-                    return Mono.empty();
-                }
-                return Mono.error(unwrappedException);
-            }
-
+                            logger.debug("tryGetAddresses: inner onErrorResumeNext return empty", dce);
+                            return Mono.empty();
+                        }
+                        return Mono.error(unwrappedException);
+                    }
         });
     }
 

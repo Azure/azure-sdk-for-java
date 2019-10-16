@@ -25,9 +25,9 @@ import com.azure.storage.file.implementation.models.DirectorysSetPropertiesRespo
 import com.azure.storage.file.models.DirectoryInfo;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.StorageFileItem;
 import reactor.core.publisher.Mono;
 
@@ -147,8 +147,8 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return The {@link DirectoryInfo directory info}.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory
-     * name is an invalid resource name.
+     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * directory name is an invalid resource name.
      */
     public Mono<DirectoryInfo> create() {
         return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
@@ -170,8 +170,8 @@ public class DirectoryAsyncClient {
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory
-     * name is an invalid resource name.
+     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * directory name is an invalid resource name.
      */
     public Mono<Response<DirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
@@ -212,7 +212,7 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @return An empty response.
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
     public Mono<Void> delete() {
         return deleteWithResponse().flatMap(FluxUtil::toMono);
@@ -231,7 +231,7 @@ public class DirectoryAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
     public Mono<Response<Void>> deleteWithResponse() {
         return withContext(this::deleteWithResponse);
@@ -370,7 +370,7 @@ public class DirectoryAsyncClient {
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is
      * cleared
      * @return information about the directory
-     * @throws StorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public Mono<DirectorySetMetadataInfo> setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata).flatMap(FluxUtil::toMono);
@@ -397,7 +397,7 @@ public class DirectoryAsyncClient {
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is
      * cleared
      * @return A response containing the information about the directory with headers and response status code
-     * @throws StorageException If the directory doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the directory doesn't exist or the metadata contains invalid keys
      */
     public Mono<Response<DirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         return withContext(context -> setMetadataWithResponse(metadata, context));
@@ -559,7 +559,7 @@ public class DirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A subdirectory client.
-     * @throws StorageException If the subdirectory has already existed, the parent directory does not exist or
+     * @throws FileStorageException If the subdirectory has already existed, the parent directory does not exist or
      * directory is an invalid resource name.
      */
     public Mono<DirectoryAsyncClient> createSubDirectory(String subDirectoryName) {
@@ -585,7 +585,7 @@ public class DirectoryAsyncClient {
      * @param filePermission The file permission of the directory.
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or
+     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
      * subdirectory is an invalid resource name.
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectoryWithResponse(String subDirectoryName,
@@ -615,8 +615,8 @@ public class DirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return An empty response.
-     * @throws StorageException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory
-     * name is an invalid resource name.
+     * @throws FileStorageException If the subdirectory doesn't exist, the parent directory does not exist or
+     * subdirectory name is an invalid resource name.
      */
     public Mono<Void> deleteSubDirectory(String subDirectoryName) {
         return deleteSubDirectoryWithResponse(subDirectoryName).flatMap(FluxUtil::toMono);
@@ -636,8 +636,8 @@ public class DirectoryAsyncClient {
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory
-     * name is an invalid resource name.
+     * @throws FileStorageException If the subdirectory doesn't exist, the parent directory does not exist or
+     * subdirectory name is an invalid resource name.
      */
     public Mono<Response<Void>> deleteSubDirectoryWithResponse(String subDirectoryName) {
         return withContext(context -> deleteSubDirectoryWithResponse(subDirectoryName, context));
@@ -664,8 +664,8 @@ public class DirectoryAsyncClient {
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return The FileAsyncClient.
-     * @throws StorageException If the file has already existed, the parent directory does not exist or file name is an
-     * invalid resource name.
+     * @throws FileStorageException If the file has already existed, the parent directory does not exist or file name
+     * is an invalid resource name.
      */
     public Mono<FileAsyncClient> createFile(String fileName, long maxSize) {
         return createFileWithResponse(fileName, maxSize, null, null, null, null)
@@ -691,17 +691,17 @@ public class DirectoryAsyncClient {
      * @param filePermission The file permission of the file.
      * @param metadata Optional name-value pairs associated with the file as metadata.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or file name
-     * is an invalid resource name.
+     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or file
+     * name is an invalid resource name.
      */
     public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
-        FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        FileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
         return withContext(context ->
             createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, context));
     }
 
-    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+    Mono<Response<FileAsyncClient>> createFileWithResponse(String fileName, long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         FileAsyncClient fileAsyncClient = getFileClient(fileName);
         return fileAsyncClient
@@ -723,7 +723,7 @@ public class DirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return An empty response.
-     * @throws StorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      */
     public Mono<Void> deleteFile(String fileName) {
@@ -744,7 +744,7 @@ public class DirectoryAsyncClient {
      *
      * @param fileName Name of the file
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
      * resource name.
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName) {

@@ -6,7 +6,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -117,13 +117,13 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHTTPHeaders, FileSmbProperties,
+     * Generates a code sample for using {@link FileClient#createWithResponse(long, FileHttpHeaders, FileSmbProperties,
      * String, Map, Duration, Context)}
      */
     public void createWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.createWithResponse#long-filehttpheaders-filesmbproperties-string-map-duration-context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
             .setFileContentType("text/html")
             .setFileContentEncoding("gzip")
             .setFileContentLanguage("en")
@@ -456,13 +456,13 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setProperties(long, FileHTTPHeaders, FileSmbProperties,
+     * Generates a code sample for using {@link FileClient#setProperties(long, FileHttpHeaders, FileSmbProperties,
      * String)}
      */
     public void setHTTPHeaders() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setProperties#long-filehttpheaders-filesmbproperties-string
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
             .setFileContentType("text/html")
             .setFileContentEncoding("gzip")
             .setFileContentLanguage("en")
@@ -481,7 +481,7 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setProperties(long, FileHTTPHeaders, FileSmbProperties,
+     * Generates a code sample for using {@link FileClient#setProperties(long, FileHttpHeaders, FileSmbProperties,
      * String)} to clear httpHeaders and preserve SMB properties.
      */
     public void clearSyncHTTPHeaders() {
@@ -493,13 +493,13 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileHTTPHeaders,
+     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileHttpHeaders,
      * FileSmbProperties, String, Duration, Context)}
      */
     public void setHttpHeadersWithResponse() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.setPropertiesWithResponse#long-filehttpheaders-filesmbproperties-string-duration-Context
-        FileHTTPHeaders httpHeaders = new FileHTTPHeaders()
+        FileHttpHeaders httpHeaders = new FileHttpHeaders()
             .setFileContentType("text/html")
             .setFileContentEncoding("gzip")
             .setFileContentLanguage("en")
@@ -519,7 +519,7 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileHTTPHeaders,
+     * Generates a code sample for using {@link FileClient#setPropertiesWithResponse(long, FileHttpHeaders,
      * FileSmbProperties, String, Duration, Context)} (long, FileHTTPHeaders)} to clear httpHeaders.
      */
     public void clearHTTPHeaders() {

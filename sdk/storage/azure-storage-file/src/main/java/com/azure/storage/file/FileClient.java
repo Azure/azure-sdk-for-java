@@ -13,7 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -21,7 +21,7 @@ import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -78,7 +78,7 @@ public class FileClient {
      * <p>
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
-     * @throws StorageException If a storage service error occurred.
+     * @throws FileStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream() {
         return openInputStream(new FileRange(0));
@@ -90,7 +90,7 @@ public class FileClient {
      *
      * @param range {@link FileRange}
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
-     * @throws StorageException If a storage service error occurred.
+     * @throws FileStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream(FileRange range) {
         return new StorageFileInputStream(fileAsyncClient, range.getStart(), range.getEnd());
@@ -101,7 +101,7 @@ public class FileClient {
      * be overwritten.
      *
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
-     * @throws StorageException If a storage service error occurred.
+     * @throws FileStorageException If a storage service error occurred.
      */
     public final StorageFileOutputStream getFileOutputStream() {
         return getFileOutputStream(0);
@@ -113,7 +113,7 @@ public class FileClient {
      *
      * @param offset Starting point of the upload range, if {@code null} it will start from the beginning.
      * @return A {@link StorageFileOutputStream} object used to write data to the file.
-     * @throws StorageException If a storage service error occurred.
+     * @throws FileStorageException If a storage service error occurred.
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
         return new StorageFileOutputStream(fileAsyncClient, offset);
@@ -133,8 +133,8 @@ public class FileClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return The {@link FileInfo file info}
-     * @throws StorageException If the file has already existed, the parent directory does not exist or fileName is an
-     * invalid resource name.
+     * @throws FileStorageException If the file has already existed, the parent directory does not exist or fileName
+     * is an invalid resource name.
      */
     public FileInfo create(long maxSize) {
         return createWithResponse(maxSize, null, null, null, null, null, Context.NONE).getValue();
@@ -161,12 +161,12 @@ public class FileClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileInfo file info} and the status of creating the file.
-     * @throws StorageException If the directory has already existed, the parent directory does not exist or directory
-     * is an invalid resource name.
+     * @throws FileStorageException If the directory has already existed, the parent directory does not exist or
+     * directory is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Response<FileInfo> createWithResponse(long maxSize, FileHTTPHeaders httpHeaders,
+    public Response<FileInfo> createWithResponse(long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient
@@ -388,7 +388,7 @@ public class FileClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
-     * @throws StorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
      */
     public void delete() {
         deleteWithResponse(null, Context.NONE);
@@ -411,7 +411,7 @@ public class FileClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the directory doesn't exist or the file doesn't exist.
+     * @throws FileStorageException If the directory doesn't exist or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
@@ -487,7 +487,7 @@ public class FileClient {
      * @return The {@link FileInfo file info}
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    public FileInfo setProperties(long newFileSize, FileHTTPHeaders httpHeaders, FileSmbProperties smbProperties,
+    public FileInfo setProperties(long newFileSize, FileHttpHeaders httpHeaders, FileSmbProperties smbProperties,
         String filePermission) {
         return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, Context.NONE)
             .getValue();
@@ -522,7 +522,7 @@ public class FileClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHTTPHeaders httpHeaders,
+    public Response<FileInfo> setPropertiesWithResponse(long newFileSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Duration timeout, Context context) {
         Mono<Response<FileInfo>> response = fileAsyncClient
             .setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, context);
@@ -549,7 +549,7 @@ public class FileClient {
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @return The {@link FileMetadataInfo file meta info}
-     * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
      */
     public FileMetadataInfo setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
@@ -578,7 +578,7 @@ public class FileClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Response containing the {@link FileMetadataInfo file meta info} with headers and status code
-     * @throws StorageException If the file doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the file doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
@@ -604,8 +604,8 @@ public class FileClient {
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is
      * set to clear, the value of this header must be set to zero..
      * @return The {@link FileUploadInfo file upload info}
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
-     * code 413 (Request Entity Too Large)
+     * @throws FileStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
      */
     public FileUploadInfo upload(InputStream data, long length) {
         return uploadWithResponse(data, length, 0L, null, Context.NONE).getValue();
@@ -631,8 +631,8 @@ public class FileClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link FileUploadInfo file upload info} with headers and response status code
-     * @throws StorageException If you attempt to upload a range that is larger than 4 MB, the service returns status
-     * code 413 (Request Entity Too Large)
+     * @throws FileStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
+     * status code 413 (Request Entity Too Large)
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<FileUploadInfo> uploadWithResponse(InputStream data, long length, Long offset, Duration timeout,
