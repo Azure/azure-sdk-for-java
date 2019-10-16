@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  */
 final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-file";
-    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5"; // {x-version-update;com.azure:azure-storage-file;current}
 
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
