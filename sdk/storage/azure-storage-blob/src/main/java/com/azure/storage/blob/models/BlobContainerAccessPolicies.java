@@ -25,7 +25,7 @@ public class BlobContainerAccessPolicies {
     }
 
     /**
-     * @return the {@link BlobSignedIdentifier SignedIdentifiers} associates with the container.
+     * @return the {@link BlobSignedIdentifier BlobSignedIdentifiers} associates with the container.
      */
     public List<BlobSignedIdentifier> getIdentifiers() {
         return this.identifiers;

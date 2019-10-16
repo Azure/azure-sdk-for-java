@@ -110,7 +110,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
                     this.lastError = new IOException(e);
-                    return null;
+                    return Mono.empty();
                 });
         }
 
@@ -175,7 +175,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
-                    return null;
+                    return Mono.empty();
                 });
         }
 
@@ -230,7 +230,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
-                    return null;
+                    return Mono.empty();
                 });
         }
 
