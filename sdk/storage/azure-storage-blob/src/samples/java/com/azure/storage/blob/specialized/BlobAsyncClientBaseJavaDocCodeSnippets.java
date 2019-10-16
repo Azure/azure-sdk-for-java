@@ -3,8 +3,10 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -229,7 +231,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL, Map, AccessTier,
      * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
-    public void startCopyFromURLWithResponseCodeSnippets() {
+    public void beginCopyFromUrlCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
@@ -241,8 +243,33 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         client.beginCopyFromUrl(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2))
             .getObserver()
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
+            .subscribe(response -> {
+                BlobCopyInfo info = response.getValue();
+                System.out.printf("CopyId: %s. Status: %s%n", info.getCopyId(), info.getCopyStatus());
+            });
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+    }
+
+
+    /**
+     * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL, Map, AccessTier,
+     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
+     */
+    public void beginCopyFromUrlCancelCodeSnippets() {
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
+            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+
+        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, metadata, AccessTier.HOT,
+            RehydratePriority.STANDARD, modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2));
+
+        // Cancel a poll operation.
+        poller.cancelOperation().block();
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**

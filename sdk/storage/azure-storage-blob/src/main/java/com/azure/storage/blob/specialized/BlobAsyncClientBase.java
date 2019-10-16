@@ -261,9 +261,14 @@ public class BlobAsyncClientBase {
     /**
      * Copies the data at the source URL to a blob.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Starting a copy operation</strong></p>
+     * Starting a copy operation and polling on the responses.
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
+     *
+     * <p><strong>Cancelling a copy operation</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
