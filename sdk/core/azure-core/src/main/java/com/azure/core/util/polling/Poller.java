@@ -181,12 +181,12 @@ public class Poller<T, R> {
         // leverage this value.
         final Mono<T> onActivation = activationOperation == null
             ? Mono.empty()
-            : activationOperation.get().map(response -> {
+            : activationOperation.get().doOnError(ex -> this.pollResponse = new PollResponse<>(FAILED, null))
+            .onErrorStop()
+            .map(response -> {
                 this.pollResponse = new PollResponse<>(OperationStatus.NOT_STARTED, response);
                 return response;
-            })
-            .doOnError(ex -> this.pollResponse = new PollResponse<>(FAILED, null))
-            .onErrorReturn(null);
+            });
 
 
         this.fluxHandle = asyncPollRequestWithDelay()

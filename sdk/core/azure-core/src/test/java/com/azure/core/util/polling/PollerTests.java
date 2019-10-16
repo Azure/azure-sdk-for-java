@@ -44,6 +44,9 @@ public class PollerTests {
     @Mock
     private Supplier<Mono<Void>> voidResultOperation;
 
+    @Mock
+    private Supplier<Mono<Response>> activationOperation;
+
     @Before
     public void beforeTest() {
         MockitoAnnotations.initMocks(this);
@@ -364,6 +367,25 @@ public class PollerTests {
         Assert.assertTrue(poller.isAutoPollingEnabled());
 
         verify(voidCancelOperation, Mockito.times(1)).apply(poller);
+    }
+
+    /**
+     * Test polling stops when activation operation throws error.
+     */
+    @Test
+    public void testActivationOperationFailure() {
+        Duration pollInterval = Duration.ofMillis(500);
+
+        Supplier<Mono<Response>> activationOperation = () -> Mono.defer(() -> {
+            // This will throw InvalidFormat Exception
+            System.out.printf("wow %d", "wow");
+            return Mono.just(new Response("Foo"));
+        });
+
+        Poller<Response, Void> poller = new Poller<Response, Void>(pollInterval, pollOperation, voidResultOperation,
+            activationOperation, voidCancelOperation);
+
+        Assert.assertEquals(OperationStatus.FAILED, poller.getStatus());
     }
 
 

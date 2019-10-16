@@ -6,6 +6,8 @@ package com.azure.core.util.polling;
 import com.azure.core.util.ExpandableStringEnum;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -63,6 +65,17 @@ public final class PollResponse<T> {
          */
         public static final OperationStatus USER_CANCELLED = fromString("USER_CANCELLED", true);
 
+        private static Map<String, OperationStatus> operationStatusMap;
+        static {
+            Map<String, OperationStatus> opStatusMap = new HashMap<>();
+            opStatusMap.put(NOT_STARTED.toString(), NOT_STARTED);
+            opStatusMap.put(IN_PROGRESS.toString(), IN_PROGRESS);
+            opStatusMap.put(SUCCESSFULLY_COMPLETED.toString(), SUCCESSFULLY_COMPLETED);
+            opStatusMap.put(FAILED.toString(), FAILED);
+            opStatusMap.put(USER_CANCELLED.toString(), USER_CANCELLED);
+            operationStatusMap = Collections.unmodifiableMap(opStatusMap);
+        }
+
         /**
          * Creates or finds a {@link OperationStatus} from its string representation.
          * @param name a name to look for
@@ -75,12 +88,11 @@ public final class PollResponse<T> {
             OperationStatus status = fromString(name, OperationStatus.class);
 
             if (status != null) {
-                for (OperationStatus opStatus : values(OperationStatus.class)) {
-                    if (opStatus.toString().equals(name)) {
-                        if (!(opStatus.isComplete() == isComplete)) {
-                            throw new IllegalArgumentException(String.format("Cannot set complete status %s for"
-                                + " operation status %s", isComplete, name));
-                        }
+                if (operationStatusMap != null && operationStatusMap.containsKey(name)) {
+                    OperationStatus operationStatus = operationStatusMap.get(name);
+                    if (operationStatus.isComplete() != isComplete) {
+                        throw new IllegalArgumentException(String.format("Cannot set complete status %s for operation"
+                            + "status %s", isComplete, name));
                     }
                 }
                 status.completed = isComplete;
