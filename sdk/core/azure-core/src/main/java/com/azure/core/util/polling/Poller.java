@@ -235,7 +235,7 @@ public class Poller<T, R> {
      * @throws UnsupportedOperationException when the cancel operation is not supported by the Azure service.
      * @return A {@link Mono} containing the poller response.
      */
-    public Mono<T> cancelOperation() throws UnsupportedOperationException {
+    public Mono<T> cancelOperation() {
         if (this.cancelOperation == null) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(
                 "Cancel operation is not supported on this service/resource.")));
