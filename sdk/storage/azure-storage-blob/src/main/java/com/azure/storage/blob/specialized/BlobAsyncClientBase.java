@@ -269,8 +269,6 @@ public class BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
-     * is used.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
@@ -279,7 +277,8 @@ public class BlobAsyncClientBase {
      * conditions related to when the blob was changed relative to the given request. The request will fail if the
      * specified condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
-     *
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */

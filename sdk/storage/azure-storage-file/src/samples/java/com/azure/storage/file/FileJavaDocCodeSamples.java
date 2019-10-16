@@ -144,14 +144,14 @@ public class FileJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileClient#beginCopy(String, Map)}
+     * Generates a code sample for using {@link FileClient#beginCopy(String, Map, Duration)}
      */
     public void beginCopy() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.beginCopy#string-map
         Poller<FileCopyInfo, Void> poller = fileClient.beginCopy(
             "https://{accountName}.file.core.windows.net?{SASToken}",
-            Collections.singletonMap("file", "metadata"));
+            Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
         poller.getObserver().subscribe(response -> {
                 final FileCopyInfo value = response.getValue();

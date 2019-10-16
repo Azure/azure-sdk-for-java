@@ -24,6 +24,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -442,7 +443,7 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null)
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, Duration.ofSeconds(2))
         def copyInfoVerifier = StepVerifier.create(poller.getObserver())
 
         then:
@@ -456,7 +457,7 @@ class FileAsyncAPITests extends APISpec {
         primaryFileAsyncClient.create(1024).block()
 
         when:
-        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata)
+        Poller<FileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy("some url", testMetadata, Duration.ofSeconds(2))
         def startCopyErrorVerifier = StepVerifier.create(poller.getObserver())
 
         then:

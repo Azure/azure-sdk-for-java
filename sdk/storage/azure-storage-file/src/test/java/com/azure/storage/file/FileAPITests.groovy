@@ -413,7 +413,7 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Poller<FileCopyInfo, Void> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null)
+        Poller<FileCopyInfo, Void> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null, null)
         def verifier = StepVerifier.create(copyInfoResponse.getObserver())
 
         then:
@@ -427,7 +427,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        Poller<FileCopyInfo, Void> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata)
+        Poller<FileCopyInfo, Void> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata, null)
         def verifier = StepVerifier.create(copyInfoPoller.getObserver())
 
         then:

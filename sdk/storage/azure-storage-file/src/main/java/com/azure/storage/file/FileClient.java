@@ -190,11 +190,13 @@ public class FileClient {
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the
      * naming rules.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
      * @return A {@link Poller} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata) {
-        return fileAsyncClient.beginCopy(sourceUrl, metadata);
+    public Poller<FileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, Duration pollInterval) {
+        return fileAsyncClient.beginCopy(sourceUrl, metadata, pollInterval);
     }
 
     /**
