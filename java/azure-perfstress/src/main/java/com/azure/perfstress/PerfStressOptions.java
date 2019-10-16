@@ -8,6 +8,12 @@ public class PerfStressOptions {
     @Parameter(names = { "-d", "--duration" }, description = "Duration of test in seconds")
     public int Duration = 10;
 
+    @Parameter(names = { "--host" }, description = "Host to redirect HTTP requests")
+    public String Host;
+
+    @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
+    public boolean Insecure = false;
+
     @Parameter(names = { "-i", "--iterations" }, description = "Number of iterations of main test loop")
     public int Iterations = 1;
 
@@ -16,6 +22,9 @@ public class PerfStressOptions {
 
     @Parameter(names = { "-p", "--parallel" }, description = "Number of operations to execute in parallel")
     public int Parallel = 1;
+
+    @Parameter(names = { "--port" }, description = "Port to redirect HTTP requests")
+    public int Port = -1;
 
     @Parameter(names = { "-w", "--warmup" }, description = "Duration of warmup in seconds")
     public int Warmup = 10;
