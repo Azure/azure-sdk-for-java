@@ -65,6 +65,7 @@ public final class BlobContainerClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private BlobServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -99,6 +100,7 @@ public final class BlobContainerClientBuilder {
         if (Objects.isNull(containerName) || containerName.isEmpty()) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
@@ -110,11 +112,12 @@ public final class BlobContainerClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
             .build(), customerProvidedKey, accountName);
     }
 
@@ -326,6 +329,21 @@ public final class BlobContainerClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated BlobContainerClientBuilder object
+     */
+    public BlobContainerClientBuilder serviceVersion(BlobServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

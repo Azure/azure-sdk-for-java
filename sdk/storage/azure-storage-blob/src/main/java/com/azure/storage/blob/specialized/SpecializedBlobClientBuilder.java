@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -76,6 +77,7 @@ public final class SpecializedBlobClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private BlobServiceVersion version;
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -165,6 +167,7 @@ public final class SpecializedBlobClientBuilder {
         if (Objects.isNull(containerName) || containerName.isEmpty()) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
@@ -176,11 +179,12 @@ public final class SpecializedBlobClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -481,6 +485,21 @@ public final class SpecializedBlobClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
+        this.version = version;
         return this;
     }
 }
