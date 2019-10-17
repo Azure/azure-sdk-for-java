@@ -392,7 +392,7 @@ class FileAPITests extends APISpec {
             .buildFileClient()
 
         client.create(1024)
-        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, (primaryFileClient.getFileUrl() +"?" + sasToken).toURI())
+        client.uploadRangeFromUrl(length, destinationOffset, sourceOffset, primaryFileClient.getFileUrl() +"?" + sasToken)
 
         then:
         def stream = new ByteArrayOutputStream()

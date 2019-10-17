@@ -40,6 +40,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -244,16 +245,16 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> startCopyFromURL(URL sourceURL) {
-        return startCopyFromURLWithResponse(sourceURL, null, null, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<String> startCopyFromURL(String sourceUrl) {
+        return startCopyFromURLWithResponse(sourceUrl, null, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -261,12 +262,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
@@ -277,14 +278,14 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata,
+    public Mono<Response<String>> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata,
         AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions) {
-        return withContext(context -> startCopyFromURLWithResponse(sourceURL, metadata, tier, priority,
+        return withContext(context -> startCopyFromURLWithResponse(sourceUrl, metadata, tier, priority,
             sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> startCopyFromURLWithResponse(URL sourceURL, Map<String, String> metadata, AccessTier tier,
+    Mono<Response<String>> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Context context) {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
@@ -298,8 +299,15 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
+        URL url;
+        try {
+            url = new URL(sourceUrl);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+        }
+
         return this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, sourceURL, null, metadata, tier, priority, null, sourceConditions,
+            null, null, url, null, metadata, tier, priority, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
@@ -353,7 +361,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -361,7 +369,7 @@ public class BlobAsyncClientBase {
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(URL copySource) {
+    public Mono<String> copyFromURL(String copySource) {
         return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
@@ -370,7 +378,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -385,13 +393,14 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromURLWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
-        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
+    public Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata,
+        AccessTier tier, ModifiedAccessConditions sourceModifiedAccessConditions,
+        BlobAccessConditions destAccessConditions) {
         return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
             sourceModifiedAccessConditions, destAccessConditions, context));
     }
 
-    Mono<Response<String>> copyFromURLWithResponse(URL copySource, Map<String, String> metadata, AccessTier tier,
+    Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Context context) {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
@@ -405,8 +414,15 @@ public class BlobAsyncClientBase {
             .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
             .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
 
+        URL url;
+        try {
+            url = new URL(copySource);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
+        }
+
         return this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
-            null, null, copySource, null, metadata, tier, null, sourceConditions,
+            null, null, url, null, metadata, tier, null, sourceConditions,
             destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
             context).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }

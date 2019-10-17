@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -24,6 +25,7 @@ import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -52,6 +54,8 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
+    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
+
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -173,17 +177,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange}
      *
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange The source {@link BlobRange} to copy.
      * @return {@link Mono} containing the information of the append blob operation.
      */
-    public Mono<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlockFromUrlWithResponse(sourceURL, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
+    public Mono<AppendBlobItem> appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
+        return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -191,9 +195,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
      *
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
@@ -205,21 +209,28 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
      * blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
+    public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
-        return withContext(context -> appendBlockFromUrlWithResponse(sourceURL, sourceRange, sourceContentMD5,
+        return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
             destAccessConditions, sourceAccessConditions, context));
     }
 
-    Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
+    Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
         destAccessConditions = destAccessConditions == null
             ? new AppendBlobAccessConditions() : destAccessConditions;
 
-        return this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, sourceURL, 0,
+        URL url;
+        try {
+            url = new URL(sourceUrl);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+        }
+
+        return this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, url, 0,
                 sourceRange.toString(), sourceContentMD5, null, null, null, null, getCustomerProvidedKey(),
                 destAccessConditions.getLeaseAccessConditions(),
                 destAccessConditions.getAppendPositionAccessConditions(),
