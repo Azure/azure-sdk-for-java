@@ -2,7 +2,6 @@
 package javaupdownasync;
 
 import java.nio.ByteBuffer;
-import java.sql.SQLSyntaxErrorException;
 import java.util.Random;
 import java.util.UUID;
 
