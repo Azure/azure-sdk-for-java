@@ -21,14 +21,14 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchyS
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
@@ -169,8 +169,8 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
-     * Gets the {@link CpkInfo} associated with this client that will be passed to
-     * {@link BlobAsyncClient BlobAsyncClients} when {@link #getBlobAsyncClient(String) getBlobAsyncClient} is called.
+     * Gets the {@link CpkInfo} associated with this client that will be passed to {@link BlobAsyncClient
+     * BlobAsyncClients} when {@link #getBlobAsyncClient(String) getBlobAsyncClient} is called.
      *
      * @return the customer provided key used for encryption.
      */
@@ -220,11 +220,12 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).getStatusCode() == 404, t -> {
-                HttpResponse response = ((StorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), false));
-            });
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
@@ -498,14 +499,13 @@ public final class BlobContainerAsyncClient {
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * @param identifiers A list of {@link BlobSignedIdentifier} objects that specify the permissions for the container.
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-        List<SignedIdentifier> identifiers) {
+    public Mono<Void> setAccessPolicy(PublicAccessType accessType, List<BlobSignedIdentifier> identifiers) {
         try {
             return setAccessPolicyWithResponse(accessType, identifiers, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -525,7 +525,7 @@ public final class BlobContainerAsyncClient {
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * @param identifiers A list of {@link BlobSignedIdentifier} objects that specify the permissions for the container.
      * Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information. Passing null will clear all access policies.
@@ -535,7 +535,7 @@ public final class BlobContainerAsyncClient {
      * either {@link ModifiedAccessConditions#getIfMatch()} or {@link ModifiedAccessConditions#getIfNoneMatch()} set.
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
-        List<SignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions) {
+        List<BlobSignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions) {
         try {
             return withContext(
                 context -> setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context));
@@ -544,8 +544,8 @@ public final class BlobContainerAsyncClient {
         }
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType, List<SignedIdentifier> identifiers,
-        BlobContainerAccessConditions accessConditions, Context context) {
+    Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
+        List<BlobSignedIdentifier> identifiers, BlobContainerAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobContainerAccessConditions() : accessConditions;
 
         if (!validateNoETag(accessConditions.getModifiedAccessConditions())) {
@@ -562,14 +562,14 @@ public final class BlobContainerAsyncClient {
         signed identifiers is not really necessary.
          */
         if (identifiers != null) {
-            for (SignedIdentifier identifier : identifiers) {
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStart() != null) {
-                    identifier.getAccessPolicy().setStart(
-                        identifier.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
+            for (BlobSignedIdentifier identifier : identifiers) {
+                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStartsOn() != null) {
+                    identifier.getAccessPolicy().setStartsOn(
+                        identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                 }
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiry() != null) {
-                    identifier.getAccessPolicy().setExpiry(
-                        identifier.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
+                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiresOn() != null) {
+                    identifier.getAccessPolicy().setExpiresOn(
+                        identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         }
@@ -696,8 +696,8 @@ public final class BlobContainerAsyncClient {
 
         return Utility.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
-            marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
-            null, null, Context.NONE), timeout);
+                marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
+                null, null, Context.NONE), timeout);
     }
 
     /**

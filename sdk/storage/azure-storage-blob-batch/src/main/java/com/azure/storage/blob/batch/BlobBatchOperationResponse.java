@@ -8,7 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.StorageException;
+import com.azure.storage.blob.models.BlobStorageException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +32,7 @@ final class BlobBatchOperationResponse<T> implements Response<T> {
     private HttpHeaders headers;
     private HttpRequest request;
     private T value;
-    private StorageException exception;
+    private BlobStorageException exception;
 
     private boolean responseReceived = false;
 
@@ -92,7 +92,7 @@ final class BlobBatchOperationResponse<T> implements Response<T> {
         return this;
     }
 
-    BlobBatchOperationResponse<T> setException(StorageException exception) {
+    BlobBatchOperationResponse<T> setException(BlobStorageException exception) {
         this.exception = exception;
         return this;
     }
