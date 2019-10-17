@@ -64,12 +64,12 @@ public class SearchAsyncTests extends SearchTestBase {
             .assertNext(firstPage -> {
                 Assert.assertEquals(50, firstPage.getValue().size());
                 assertListEqualHotelIds(expectedId.subList(0, 50), firstPage.getValue());
-                Assert.assertNotNull(firstPage.getNextLink());
+                Assert.assertNotNull(firstPage.getContinuationToken());
             })
             .assertNext(nextPage -> {
                 Assert.assertEquals(50, nextPage.getValue().size());
                 assertListEqualHotelIds(expectedId.subList(50, 100), nextPage.getValue());
-                Assert.assertNull(nextPage.getNextLink());
+                Assert.assertNull(nextPage.getContinuationToken());
             }).verifyComplete();
     }
 
@@ -96,12 +96,12 @@ public class SearchAsyncTests extends SearchTestBase {
             .assertNext(firstPage -> {
                 Assert.assertEquals(1000, firstPage.getValue().size());
                 assertListEqualHotelIds(expectedId.subList(0, 1000), firstPage.getValue());
-                Assert.assertNotNull(firstPage.getNextLink());
+                Assert.assertNotNull(firstPage.getContinuationToken());
             })
             .assertNext(nextPage -> {
                 Assert.assertEquals(1000, nextPage.getValue().size());
                 assertListEqualHotelIds(expectedId.subList(1000, 2000), nextPage.getValue());
-                Assert.assertNull(nextPage.getNextLink());
+                Assert.assertNull(nextPage.getContinuationToken());
             }).verifyComplete();
     }
 
