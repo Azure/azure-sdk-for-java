@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.credentials;
+package com.azure.storage.common;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.common.Utility;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * SharedKey credential policy that is put into a header to authorize requests.
  */
-public final class SharedKeyCredential {
+public final class StorageSharedKeyCredential {
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
 
     // Pieces of the connection string that are needed.
@@ -31,13 +30,13 @@ public final class SharedKeyCredential {
     private final String accountKey;
 
     /**
-     * Initializes a new instance of SharedKeyCredential contains an account's name and its primary or secondary
+     * Initializes a new instance of StorageSharedKeyCredential contains an account's name and its primary or secondary
      * accountKey.
      *
      * @param accountName The account name associated with the request.
      * @param accountKey The account access key used to authenticate the request.
      */
-    public SharedKeyCredential(String accountName, String accountKey) {
+    public StorageSharedKeyCredential(String accountName, String accountKey) {
         Objects.requireNonNull(accountName, "'accountName' cannot be null.");
         Objects.requireNonNull(accountKey, "'accountKey' cannot be null.");
         this.accountName = accountName;
@@ -49,13 +48,13 @@ public final class SharedKeyCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.credentials.SharedKeyCredential.fromConnectionString#String}
+     * {@codesnippet com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String}
      *
      * @param connectionString Connection string used to build the SharedKey credential.
      * @return a SharedKey credential if the connection string contains AccountName and AccountKey
      * @throws IllegalArgumentException If {@code connectionString} doesn't have AccountName or AccountKey.
      */
-    public static SharedKeyCredential fromConnectionString(String connectionString) {
+    public static StorageSharedKeyCredential fromConnectionString(String connectionString) {
         HashMap<String, String> connectionStringPieces = new HashMap<>();
         for (String connectionStringPiece : connectionString.split(";")) {
             String[] kvp = connectionStringPiece.split("=", 2);
@@ -69,7 +68,7 @@ public final class SharedKeyCredential {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
-        return new SharedKeyCredential(accountName, accountKey);
+        return new StorageSharedKeyCredential(accountName, accountKey);
     }
 
     /**

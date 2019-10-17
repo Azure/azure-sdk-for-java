@@ -8,10 +8,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 /**
  * Code snippets for {@link BlobContainerClientBuilder}
@@ -21,12 +21,12 @@ public class BlobContainerClientBuilderJavaDocCodeSnippets {
     private String connectionString = "AccountName=name;AccountKey=key;DefaultEndpointProtocol=protocol;EndpointSuffix=suffix";
     private String endpoint = "endpointURL";
     private String containerName = "container Name";
-    private SharedKeyCredential sharedKeyCredential = new SharedKeyCredential("accountName", "accountKey");
+    private StorageSharedKeyCredential storageSharedKeyCredential = new StorageSharedKeyCredential("accountName", "accountKey");
     private HttpPipeline httpPipeline = new HttpPipelineBuilder()
         .httpClient(HttpClient.createDefault())
         .policies(new AddDatePolicy())
         .policies(new RequestIdPolicy())
-        .policies(new SharedKeyCredentialPolicy(sharedKeyCredential))
+        .policies(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential))
         .policies(new RequestRetryPolicy(new RequestRetryOptions()))
         .build();
 
@@ -59,7 +59,7 @@ public class BlobContainerClientBuilderJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobContainerClientBuilder.endpoint#String
         BlobContainerClient client = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .credential(sharedKeyCredential)
+            .credential(storageSharedKeyCredential)
             .buildClient();
         // END: com.azure.storage.blob.BlobContainerClientBuilder.endpoint#String
     }

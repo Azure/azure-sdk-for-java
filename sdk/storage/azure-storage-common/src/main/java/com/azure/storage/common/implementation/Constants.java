@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.storage.common.SasProtocol;
+import com.azure.storage.common.sas.SasProtocol;
 
 /**
  * Defines general constants.
