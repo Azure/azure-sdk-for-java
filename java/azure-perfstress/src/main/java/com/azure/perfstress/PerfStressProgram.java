@@ -133,7 +133,9 @@ public class PerfStressProgram {
             }
         }
 
-        cleanupStatus.dispose();
+        if (cleanupStatus != null) {
+            cleanupStatus.dispose();
+        }
     }
 
     public static void RunTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
