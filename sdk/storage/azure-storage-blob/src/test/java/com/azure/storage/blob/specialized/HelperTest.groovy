@@ -7,6 +7,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobContainerSasPermission
 import com.azure.storage.blob.BlobSasPermission
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
@@ -253,9 +254,9 @@ class HelperTest extends APISpec {
 
         where:
         containerName | blobName | snapId | expiryTime           || expectedResource | expectedStringToSign
-        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nid\n\n\n\n\n"
-        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
+        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nbs\nid\n\n\n\n\n"
+        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nb\n\n\n\n\n\n"
+        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + BlobServiceVersion.getLatest().getVersion() + "\nc\n\n\n\n\n\n"
     }
 
     def "serviceSasSignatureValues IA"() {
