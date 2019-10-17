@@ -54,7 +54,7 @@ public final class BlobBatchClient {
      *
      * @param batch Batch to submit.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws StorageBlobBatchException If any request in the {@link BlobBatch} failed.
+     * @throws BlobBatchStorageException If any request in the {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void submitBatch(BlobBatch batch) {
@@ -79,7 +79,7 @@ public final class BlobBatchClient {
      * has completed.
      * @throws RuntimeException If the {@code timeout} duration completes before a response is returned.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws StorageBlobBatchException If {@code throwOnAnyFailure} is {@code true} and any request in the
+     * @throws BlobBatchStorageException If {@code throwOnAnyFailure} is {@code true} and any request in the
      * {@link BlobBatch} failed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -100,7 +100,7 @@ public final class BlobBatchClient {
      * @param deleteOptions The deletion option for all blobs.
      * @return The status of each delete operation.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws StorageBlobBatchException If any of the delete operations fail.
+     * @throws BlobBatchStorageException If any of the delete operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
@@ -121,7 +121,7 @@ public final class BlobBatchClient {
      * @return The status of each delete operation.
      * @throws RuntimeException If the {@code timeout} duration completes before a response is returned.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws StorageBlobBatchException If any of the delete operations fail.
+     * @throws BlobBatchStorageException If any of the delete operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions,
@@ -140,7 +140,7 @@ public final class BlobBatchClient {
      * @param accessTier {@link AccessTier} to set on each blob.
      * @return The status of each set tier operation.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws StorageBlobBatchException If any of the set tier operations fail.
+     * @throws BlobBatchStorageException If any of the set tier operations fail.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
@@ -161,7 +161,7 @@ public final class BlobBatchClient {
      * @return The status of each set tier operation.
      * @throws RuntimeException If the {@code timeout} duration completes before a response is returned.
      * @throws BlobStorageException If the batch request is malformed.
-     * @throws StorageBlobBatchException If any of the set tier operations fail.
+     * @throws BlobBatchStorageException If any of the set tier operations fail.
      */
     public PagedIterable<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier,
         Duration timeout, Context context) {

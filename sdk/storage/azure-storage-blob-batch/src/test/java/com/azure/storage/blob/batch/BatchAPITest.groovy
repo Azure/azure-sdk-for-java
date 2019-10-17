@@ -96,7 +96,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageBlobBatchException)
+        thrown(BlobBatchStorageException)
         response1.getStatusCode() == 200
 
         when:
@@ -147,8 +147,8 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        def ex = thrown(StorageBlobBatchException)
-        ex.getCauses().size() == 2
+        def ex = thrown(BlobBatchStorageException)
+        ex.getBatchExceptions().size() == 2
 
         when:
         response1.getStatusCode()
@@ -231,7 +231,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageBlobBatchException)
+        thrown(BlobBatchStorageException)
         response1.getStatusCode() == 202
 
         when:
@@ -282,8 +282,8 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        def ex = thrown(StorageBlobBatchException)
-        ex.getCauses().size() == 2
+        def ex = thrown(BlobBatchStorageException)
+        ex.getBatchExceptions().size() == 2
 
         when:
         response1.getStatusCode()
@@ -374,5 +374,21 @@ class BatchAPITest extends APISpec {
         for (def response : responses) {
             assert response.getStatusCode() == 200
         }
+    }
+
+    def "Too many operations fails"() {
+        setup:
+        def blobUrls = new ArrayList<String>()
+        for (def i = 0; i < 257; i++) {
+            def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            pageBlobClient.create(512)
+            blobUrls.add(pageBlobClient.getBlobUrl())
+        }
+
+        when:
+        batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)
+
+        then:
+        def e = thrown(BlobStorageException)
     }
 }

@@ -98,7 +98,7 @@ class BlobBatchHelper {
                 }
 
                 if (throwOnAnyFailure && exceptions.size() != 0) {
-                    throw logger.logExceptionAsError(new StorageBlobBatchException("Batch had operation failures.",
+                    throw logger.logExceptionAsError(new BlobBatchStorageException("Batch had operation failures.",
                         createHttpResponse(batchResponse), exceptions));
                 }
 

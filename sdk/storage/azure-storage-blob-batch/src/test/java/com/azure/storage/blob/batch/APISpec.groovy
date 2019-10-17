@@ -26,7 +26,6 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.LeaseClient
 import com.azure.storage.blob.specialized.LeaseClientBuilder
 import com.azure.storage.common.credentials.SharedKeyCredential
-import reactor.core.publisher.Flux
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -62,8 +61,6 @@ class APISpec extends Specification {
     }
 
     static int defaultDataSize = defaultData.remaining()
-
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
