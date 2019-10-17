@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -23,8 +19,8 @@ import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
-import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -33,6 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -70,6 +70,15 @@ public final class QueueServiceAsyncClient {
      */
     public String getQueueServiceUrl() {
         return client.getUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return client.getVersion();
     }
 
     /**

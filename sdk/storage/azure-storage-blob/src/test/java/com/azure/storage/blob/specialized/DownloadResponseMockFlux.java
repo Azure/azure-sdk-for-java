@@ -9,7 +9,7 @@ import com.azure.storage.blob.APISpec;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.BlobStorageException;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -163,7 +163,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                          This validates that we don't retry in the getter even if it's a retryable error from the
                          service.
                          */
-                        throw new StorageErrorException("Message", new HttpResponse(null) {
+                        throw new BlobStorageException("Message", new HttpResponse(null) {
                             @Override
                             public int getStatusCode() {
                                 return 500;
@@ -198,7 +198,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                             public Mono<String> getBodyAsString(Charset charset) {
                                 return null;
                             }
-                        });
+                        }, null);
                     default:
                         throw new IllegalArgumentException("Retried after error in getter");
                 }

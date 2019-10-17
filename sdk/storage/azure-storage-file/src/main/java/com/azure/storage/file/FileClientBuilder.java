@@ -93,6 +93,7 @@ public class FileClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private FileServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileClient FileClients} and {@link
@@ -104,6 +105,7 @@ public class FileClientBuilder {
     private AzureFileStorageImpl constructImpl() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
+        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
@@ -114,11 +116,12 @@ public class FileClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -399,6 +402,21 @@ public class FileClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link FileServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link FileServiceVersion} of the service to be used when making requests.
+     * @return the updated FileClientBuilder object
+     */
+    public FileClientBuilder serviceVersion(FileServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

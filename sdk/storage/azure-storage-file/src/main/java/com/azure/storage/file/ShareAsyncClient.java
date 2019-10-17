@@ -3,10 +3,6 @@
 
 package com.azure.storage.file;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -28,11 +24,11 @@ import com.azure.storage.file.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileSignedIdentifier;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
-import com.azure.storage.file.models.FileStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -41,6 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a share in Azure
@@ -96,6 +96,14 @@ public class ShareAsyncClient {
         return shareUrlString.toString();
     }
 
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return azureFileStorageClient.getVersion();
+    }
 
     /**
      * Constructs a {@link DirectoryAsyncClient} that interacts with the root directory in the share.
