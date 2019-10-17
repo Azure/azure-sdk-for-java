@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 

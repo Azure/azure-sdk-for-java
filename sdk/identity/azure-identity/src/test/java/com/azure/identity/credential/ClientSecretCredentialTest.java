@@ -4,6 +4,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credential.TokenRequest;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;

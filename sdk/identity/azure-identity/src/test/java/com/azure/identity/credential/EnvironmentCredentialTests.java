@@ -6,6 +6,8 @@ package com.azure.identity.credential;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequest;
 import com.azure.core.util.Configuration;
+import com.azure.identity.EnvironmentCredential;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;

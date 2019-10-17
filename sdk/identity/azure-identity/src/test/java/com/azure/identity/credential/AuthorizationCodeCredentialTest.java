@@ -4,6 +4,8 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credential.TokenRequest;
+import com.azure.identity.AuthorizationCodeCredential;
+import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;

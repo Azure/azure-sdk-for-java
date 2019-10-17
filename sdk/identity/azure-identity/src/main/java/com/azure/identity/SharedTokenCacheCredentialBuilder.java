@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.

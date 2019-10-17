@@ -4,7 +4,9 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credential.TokenRequest;
-import com.azure.identity.DeviceCodeChallenge;
+import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.DeviceCodeCredential;
+import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;
@@ -37,7 +39,7 @@ public class DeviceCodeCredentialTest {
     @Test
     public void testValidDeviceCode() throws Exception {
         // setup
-        Consumer<DeviceCodeChallenge> consumer = deviceCodeChallenge -> { /* do nothing */ };
+        Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
         String token1 = "token1";
         String token2 = "token2";
         TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
@@ -62,7 +64,7 @@ public class DeviceCodeCredentialTest {
 
         // test
         DeviceCodeCredential credential =
-            new DeviceCodeCredentialBuilder().deviceCodeChallengeConsumer(consumer).clientId(clientId).build();
+            new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())

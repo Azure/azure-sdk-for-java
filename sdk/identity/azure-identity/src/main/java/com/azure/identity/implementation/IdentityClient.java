@@ -11,7 +11,7 @@ import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.ScopeUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.DeviceCodeChallenge;
+import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -239,10 +239,10 @@ public class IdentityClient {
      *     code expires
      */
     public Mono<MsalToken> authenticateWithDeviceCode(TokenRequest request,
-                                                      Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
+                                                      Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         return Mono.fromFuture(() -> {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
-                dc -> deviceCodeConsumer.accept(new DeviceCodeChallenge(dc.userCode(), dc.deviceCode(),
+                dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), Duration.ofSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
         }).map(MsalToken::new);

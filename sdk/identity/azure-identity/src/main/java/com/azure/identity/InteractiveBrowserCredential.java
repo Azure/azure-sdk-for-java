@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
@@ -13,31 +13,35 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An AAD credential that acquires a token with an Oauth 2.0 authorization code grant
- * for an AAD application.
+ * An AAD credential that acquires a token for an AAD application by prompting the login in the default browser. When
+ * authenticated, the oauth2 flow will notify the credential of the authentication code through the reply URL.
+ *
+ * <p>
+ * The application to authenticate to must have delegated user login permissions and have {@code
+ * http://localhost:{port}}
+ * listed as a valid reply URL.
  */
 @Immutable
-public class AuthorizationCodeCredential implements TokenCredential {
-    private final String authCode;
-    private final URI redirectUri;
+public class InteractiveBrowserCredential implements TokenCredential {
+    private final int port;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
-     * Creates an AuthorizationCodeCredential with the given identity client options.
+     * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
+     * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
-     * @param authCode the Oauth 2.0 authorization code grant
-     * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
+     * @param port the port on which the credential will listen for the browser authentication result
      * @param identityClientOptions the options for configuring the identity client
      */
-    AuthorizationCodeCredential(String clientId, String tenantId, String authCode, URI redirectUri,
-                                IdentityClientOptions identityClientOptions) {
+    InteractiveBrowserCredential(String clientId, String tenantId, int port,
+                                 IdentityClientOptions identityClientOptions) {
+        this.port = port;
         if (tenantId == null) {
             tenantId = "common";
         }
@@ -46,9 +50,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.cachedToken = new AtomicReference<>();
-        this.authCode = authCode;
-        this.redirectUri = redirectUri;
+        cachedToken = new AtomicReference<>();
     }
 
     @Override
@@ -60,8 +62,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(request, authCode, redirectUri)))
+        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
@@ -14,34 +14,28 @@ import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 /**
- * An AAD credential that acquires a token for an AAD application by prompting the login in the default browser. When
- * authenticated, the oauth2 flow will notify the credential of the authentication code through the reply URL.
- *
- * <p>
- * The application to authenticate to must have delegated user login permissions and have {@code
- * http://localhost:{port}}
- * listed as a valid reply URL.
+ * An AAD credential that acquires a token with a device code for an AAD application.
  */
 @Immutable
-public class InteractiveBrowserCredential implements TokenCredential {
-    private final int port;
+public class DeviceCodeCredential implements TokenCredential {
+    private final Consumer<DeviceCodeInfo> challengeConsumer;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
-     * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
-     * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
+     * Creates a DeviceCodeCredential with the given identity client options.
      *
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
-     * @param port the port on which the credential will listen for the browser authentication result
+     * @param challengeConsumer a method allowing the user to meet the device code challenge
      * @param identityClientOptions the options for configuring the identity client
      */
-    InteractiveBrowserCredential(String clientId, String tenantId, int port,
-                                 IdentityClientOptions identityClientOptions) {
-        this.port = port;
+    DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeInfo> challengeConsumer,
+                         IdentityClientOptions identityClientOptions) {
+        this.challengeConsumer = challengeConsumer;
         if (tenantId == null) {
             tenantId = "common";
         }
@@ -50,7 +44,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        cachedToken = new AtomicReference<>();
+        this.cachedToken = new AtomicReference<>();
     }
 
     @Override
@@ -62,7 +56,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port)))
+        }).switchIfEmpty(
+            Mono.defer(() -> identityClient.authenticateWithDeviceCode(request, challengeConsumer)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

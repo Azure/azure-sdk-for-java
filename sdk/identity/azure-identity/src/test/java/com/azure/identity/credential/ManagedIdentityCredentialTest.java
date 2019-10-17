@@ -5,6 +5,8 @@ package com.azure.identity.credential;
 
 import com.azure.core.credential.TokenRequest;
 import com.azure.core.util.Configuration;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;

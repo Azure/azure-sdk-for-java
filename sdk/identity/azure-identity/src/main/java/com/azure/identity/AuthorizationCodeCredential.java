@@ -1,42 +1,43 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequest;
-import com.azure.identity.DeviceCodeChallenge;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 
 /**
- * An AAD credential that acquires a token with a device code for an AAD application.
+ * An AAD credential that acquires a token with an Oauth 2.0 authorization code grant
+ * for an AAD application.
  */
 @Immutable
-public class DeviceCodeCredential implements TokenCredential {
-    private final Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer;
+public class AuthorizationCodeCredential implements TokenCredential {
+    private final String authCode;
+    private final URI redirectUri;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
 
     /**
-     * Creates a DeviceCodeCredential with the given identity client options.
+     * Creates an AuthorizationCodeCredential with the given identity client options.
      *
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
-     * @param deviceCodeChallengeConsumer a method allowing the user to meet the device code challenge
+     * @param authCode the Oauth 2.0 authorization code grant
+     * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
      * @param identityClientOptions the options for configuring the identity client
      */
-    DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeChallenge> deviceCodeChallengeConsumer,
-                         IdentityClientOptions identityClientOptions) {
-        this.deviceCodeChallengeConsumer = deviceCodeChallengeConsumer;
+    AuthorizationCodeCredential(String clientId, String tenantId, String authCode, URI redirectUri,
+                                IdentityClientOptions identityClientOptions) {
         if (tenantId == null) {
             tenantId = "common";
         }
@@ -46,6 +47,8 @@ public class DeviceCodeCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         this.cachedToken = new AtomicReference<>();
+        this.authCode = authCode;
+        this.redirectUri = redirectUri;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class DeviceCodeCredential implements TokenCredential {
                 return Mono.empty();
             }
         }).switchIfEmpty(
-            Mono.defer(() -> identityClient.authenticateWithDeviceCode(request, deviceCodeChallengeConsumer)))
+            Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(request, authCode, redirectUri)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
                 return msalToken;

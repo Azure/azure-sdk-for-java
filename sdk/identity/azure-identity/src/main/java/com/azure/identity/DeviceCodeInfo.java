@@ -12,9 +12,9 @@ import java.time.Duration;
  * device code flow.
  */
 @Immutable
-public class DeviceCodeChallenge {
+public class DeviceCodeInfo {
     /**
-     * Creates an instance of a device code challenge.
+     * Creates an instance of a device code info.
      *
      * @param userCode code which user needs to provide when authenticating at the verification URL
      * @param deviceCode code which should be included in the request for the access token
@@ -22,8 +22,8 @@ public class DeviceCodeChallenge {
      * @param expiresIn expiration time of device code in seconds
      * @param message message which should be displayed to the user
      */
-    public DeviceCodeChallenge(String userCode, String deviceCode, String verificationUrl, Duration expiresIn,
-                               String message) {
+    public DeviceCodeInfo(String userCode, String deviceCode, String verificationUrl, Duration expiresIn,
+                          String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUrl = verificationUrl;

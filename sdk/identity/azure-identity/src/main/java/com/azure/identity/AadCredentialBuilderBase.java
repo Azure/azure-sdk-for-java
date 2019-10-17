@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 /**
  * The base class for credential builders that allow specifying a client id and tenant ID for an Azure Active Directory.
