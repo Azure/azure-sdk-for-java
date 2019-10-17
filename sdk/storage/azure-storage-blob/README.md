@@ -183,7 +183,7 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
 Create a `BlobContainerClient` using a `BlobServiceClient`.
 
 ```java
-BlobContainerClient blobContainerClient = blobServiceClient.getContainerClient("mycontainer");
+BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("mycontainer");
 ```
 
 or
@@ -203,7 +203,7 @@ BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
 Create a `BlobClient` using a `BlobContainerClient`.
 
 ```java
-BlobClient blobClient = blobContainerClient.getBlobClient("myblob").getBlockBlobClient();
+BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
 ```
 
 or
@@ -216,7 +216,7 @@ BlobClient blobClient = new BlobClientBuilder()
         .sasToken("<your-sasToken>")
         .containerName("mycontainer")
         .blobName("myblob")
-        .buildBlobClient();
+        .buildClient();
 ```
 
 ### Create a container
@@ -224,7 +224,7 @@ BlobClient blobClient = new BlobClientBuilder()
 Create a container using a `BlobServiceClient`.
 
 ```java
-blobServiceClient.createContainer("mycontainer");
+blobServiceClient.createBlobContainer("mycontainer");
 ```
 
 or
@@ -249,11 +249,11 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 ### Upload a blob from local path
 
-Upload a file to a blob using a `BlockBlobClient` generated from a `BlobContainerClient`.
+Upload a file to a blob using a `BlobClient` generated from a `BlobContainerClient`.
 
 ```java
-BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("myblockblob").getBlockBlobClient();
-blockBlobClient.uploadFromFile("local-file.jpg");
+BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
+blobClient.uploadFromFile("local-file.jpg");
 ```
 
 ### Download a blob to a stream
