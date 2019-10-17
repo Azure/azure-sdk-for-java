@@ -48,7 +48,7 @@ public class QueueExceptionSamples {
             QueueMessageItem queueMessageItem = queueClientResponse.getValue().receiveMessage();
             queueClient.deleteMessage("wrong id", queueMessageItem.getPopReceipt());
         } catch (QueueStorageException e) {
-            if (QueueErrorCode.MESSAGE_NOT_FOUND.equals(e.getMessage())) {
+            if (QueueErrorCode.MESSAGE_NOT_FOUND.equals(e.getErrorCode())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");
