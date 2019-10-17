@@ -12,14 +12,14 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageException;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -80,7 +80,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @throws StorageException If a storage service error occurred.
+     * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
         return getBlobOutputStream(null);
@@ -93,7 +93,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param accessConditions A {@link BlobAccessConditions} object that represents the access conditions for the
      * blob.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @throws StorageException If a storage service error occurred.
+     * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
         return BlobOutputStream.blockBlobOutputStream(blockBlobAsyncClient, accessConditions);
@@ -129,12 +129,12 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
@@ -145,7 +145,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input data is null.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHTTPHeaders headers,
+    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
         Context context) {
         Objects.requireNonNull(data);
@@ -337,10 +337,10 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHTTPHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
@@ -349,7 +349,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
             base64BlockIDs, headers, metadata, tier, accessConditions, context);

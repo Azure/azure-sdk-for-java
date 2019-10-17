@@ -13,7 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
@@ -97,26 +97,26 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHTTPHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
-     * @param headers {@link BlobHTTPHeaders}
+     * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the created page blob.
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
      */
-    public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+    public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobAccessConditions accessConditions) {
         return withContext(context ->
             createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+    Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 

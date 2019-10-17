@@ -23,8 +23,8 @@ import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
-import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

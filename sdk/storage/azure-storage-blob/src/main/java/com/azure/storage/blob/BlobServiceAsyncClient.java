@@ -19,12 +19,12 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
@@ -440,7 +440,7 @@ public final class BlobServiceAsyncClient {
      *
      * @return A {@link Mono} containing the storage account statistics.
      */
-    public Mono<StorageServiceStats> getStatistics() {
+    public Mono<BlobServiceStatistics> getStatistics() {
         try {
             return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -461,7 +461,7 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the
      * storage account statistics.
      */
-    public Mono<Response<StorageServiceStats>> getStatisticsWithResponse() {
+    public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
         try {
             return withContext(this::getStatisticsWithResponse);
         } catch (RuntimeException ex) {
@@ -469,7 +469,7 @@ public final class BlobServiceAsyncClient {
         }
     }
 
-    Mono<Response<StorageServiceStats>> getStatisticsWithResponse(Context context) {
+    Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
         return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }

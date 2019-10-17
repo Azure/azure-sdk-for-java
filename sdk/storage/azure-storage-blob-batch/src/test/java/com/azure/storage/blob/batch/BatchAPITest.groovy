@@ -6,7 +6,7 @@ import com.azure.core.util.Context
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
-import com.azure.storage.blob.models.StorageException
+import com.azure.storage.blob.models.BlobStorageException
 
 class BatchAPITest extends APISpec {
     static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
@@ -75,7 +75,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
         response1.getStatusCode() == 200
         response2.getStatusCode() == 200
     }
@@ -96,14 +96,14 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
         response1.getStatusCode() == 200
 
         when:
         response2.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set tier some succeed do not throw on any error"() {
@@ -122,14 +122,14 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
         response1.getStatusCode() == 200
 
         when:
         response2.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Set tier none succeed throw on any error"() {
@@ -147,13 +147,13 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         when:
         response1.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         when:
         response2.getStatusCode()
@@ -177,19 +177,19 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
         when:
         response1.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         when:
         response2.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Delete blob all succeed"() {
@@ -209,7 +209,7 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
         response1.getStatusCode() == 202
         response2.getStatusCode() == 202
     }
@@ -230,14 +230,14 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
         response1.getStatusCode() == 202
 
         when:
         response2.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Delete blob some succeed do not throw on any error"() {
@@ -256,14 +256,14 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
         response1.getStatusCode() == 202
 
         when:
         response2.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Delete blob none succeed throw on any error"() {
@@ -281,13 +281,13 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         when:
         response1.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         when:
         response2.getStatusCode()
@@ -311,19 +311,19 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
-        notThrown(StorageException)
+        notThrown(BlobStorageException)
 
         when:
         response1.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
 
         when:
         response2.getStatusCode()
 
         then:
-        thrown(StorageException)
+        thrown(BlobStorageException)
     }
 
     def "Accessing batch request before submission throws"() {

@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.Configuration;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -60,14 +61,17 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      *
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
+     * @param version {@link ServiceVersion} of the service to be used when making requests.
      * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
      */
-    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration) {
+    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
         boolean telemetryDisabled = configuration.get(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, false);
         if (telemetryDisabled) {
-            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion);
+            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion,
+                version.getVersion());
         } else {
-            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo(),
+                version.getVersion());
         }
     }
 
