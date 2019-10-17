@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -330,6 +331,13 @@ public final class ConfigurationAsyncClient {
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
+            .flatMap(r -> {
+                if (r.getStatusCode() == 304) {
+                    return Mono.just(new SimpleResponse<>(r, setting));
+                } else {
+                    return Mono.just(r);
+                }
+            })
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));

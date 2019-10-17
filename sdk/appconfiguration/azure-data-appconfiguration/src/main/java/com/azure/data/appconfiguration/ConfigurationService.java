@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
 @ServiceInterface(name = "AppConfig")
 interface ConfigurationService {
     @Get("kv/{key}")
-    @ExpectedResponses({200})
+    @ExpectedResponses({200, 304})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> getKeyValue(
