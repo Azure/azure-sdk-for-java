@@ -37,10 +37,10 @@ public class HttpHeadersTests {
 
     @Test
     public void testToString() {
-        Map<String, HttpHeader> testHeadersMap = new HashMap<>();
-        HttpHeader header = new HttpHeader("Content-Length", "7");
-        testHeadersMap.put("content-length", header);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("Content-Length", "7");
+        httpHeaders.put("Content-Encoding", "gzip");
 
-        assertEquals("Content-Length=7", testHeadersMap.toString());
+        assertEquals("Content-Length=7,Content-Encoding=gzip", httpHeaders.toString());
     }
 }
