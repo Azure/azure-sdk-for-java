@@ -23,16 +23,19 @@ import java.util.Objects;
  * which can actually be applied to blob urls. Note: that both this class and {@link BlobServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
  * actual REST requests.
- * <p>
- * Please see <a href=https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
- * for more conceptual information on SAS.
- * <p>
- * Please see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>here </a> for
- * more details on each value, including which are required.
  *
- * <p>Please see
- * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
- * for additional samples.</p>
+ * <p><strong>Generating SAS query parameters with {@link SharedKeyCredential}</strong></p>
+ * The following code generates SAS query parameters for an Azure storage blob.
+ * <p>
+ * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#SharedKeyCredential}
+ *
+ * <p><strong>Generating SAS query parameters with {@link UserDelegationKey}</strong></p>
+ * The following sample generates SAS query parameters for an Azure storage container.
+ * <p>
+ * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String}
+ *
+ * {@see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>}
+ * {@see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a SAS</a>}
  */
 public final class BlobServiceSasSignatureValues {
     /**
@@ -437,6 +440,7 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
+     *
      * <p>
      * If {@link #getVersion()} is not set, then the latest service version is used.
      * </p>
@@ -448,6 +452,8 @@ public final class BlobServiceSasSignatureValues {
      *     are returned.</li>
      *     <li>If only {@link #getBlobName()} is set, <b>blob SAS</b> query parameters are returned.</li>
      * </ol>
+     *
+     *  See class level JavaDocs for code snippets.
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
@@ -484,12 +490,16 @@ public final class BlobServiceSasSignatureValues {
      *     <li>If only {@link #getBlobName()} is set, <b>blob SAS</b> query parameters are returned.</li>
      * </ol>
      *
+     *  See class level JavaDocs for code snippets.
+     *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException if {@code delegationKey} or {@code account} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">Create a user
+     * delegation SAS</a>
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey, String accountName) {
         Utility.assertNotNull("delegationKey", delegationKey);
