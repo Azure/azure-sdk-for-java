@@ -95,6 +95,11 @@ namespace HttpMock
 
                         if (Options.Debug && request.Path.Value == "/debug")
                         {
+                            if (Options.Dots)
+                            {
+                                Console.Write("#");
+                            }
+
                             var buffer = Encoding.UTF8.GetBytes("debug");
                             await response.Body.WriteAsync(buffer, 0, buffer.Length);
                             return;
