@@ -55,8 +55,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*")).forEach(configurationSetting -> {
-            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-            if (configurationSetting.isLocked()) {
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+            if (configurationSetting.isReadOnly()) {
                 client.clearReadOnlyWithResponse(configurationSetting, Context.NONE);
             }
             client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
@@ -110,7 +110,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     /**
      * Tests that a configuration is able to be added or updated with set.
-     * When the configuration is locked updates cannot happen, this will result in a 409.
+     * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
     public void setSetting() {
         setSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setSettingWithResponse(expected, false, Context.NONE).getValue()));
@@ -161,7 +161,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be retrieved when it exists, whether or not it is locked.
+     * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
     public void getSetting() {
         getSettingRunner((expected) -> {
@@ -240,12 +240,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after lock the setting.
+     * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
     public void setReadOnly() {
 
         lockUnlockRunner((expected) -> {
-            // lock setting
+            // read-only setting
             client.addSettingWithResponse(expected, Context.NONE);
             client.setReadOnly(expected.getKey(), expected.getLabel());
 
@@ -257,11 +257,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can be deleted after unlock the setting.
+     * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     public void clearReadOnly() {
         lockUnlockRunner((expected) -> {
-            // lock setting
+            // read-only setting
             client.addSettingWithResponse(expected, Context.NONE);
             client.setReadOnlyWithResponse(expected, Context.NONE).getValue();
 
@@ -270,7 +270,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 client.deleteSettingWithResponse(expected, false, Context.NONE),
                 ResourceModifiedException.class, 409);
 
-            // unlock setting and delete
+            // clear read-only setting and delete
             client.clearReadOnly(expected.getKey(), expected.getLabel());
 
             // successfully deleted
@@ -625,7 +625,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void deleteAllSettings() {
 
         client.listSettings(new SettingSelector().setKeys("*")).forEach(configurationSetting -> {
-            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
             client.deleteSettingWithResponse(configurationSetting, false, Context.NONE).getValue();
         });
     }

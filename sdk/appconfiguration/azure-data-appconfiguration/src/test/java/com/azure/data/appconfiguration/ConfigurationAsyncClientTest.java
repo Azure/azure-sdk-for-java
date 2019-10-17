@@ -58,8 +58,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().setKeys(keyPrefix + "*"))
                 .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
-                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isLocked() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
+                    logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.clearReadOnlyWithResponse(configurationSetting) : Mono.empty();
                     return unlock.then(client.deleteSettingWithResponse(configurationSetting, false));
                 })
                 .blockLast();
@@ -124,7 +124,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     /**
      * Tests that a configuration is able to be added or updated with set.
-     * When the configuration is locked updates cannot happen, this will result in a 409.
+     * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
     public void setSetting() {
         setSettingRunner((expected, update) ->
@@ -195,7 +195,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be retrieved when it exists, whether or not it is locked.
+     * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
     public void getSetting() {
         getSettingRunner((expected) ->
@@ -304,7 +304,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after lock the setting.
+     * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
     public void setReadOnly() {
 
@@ -313,7 +313,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            // lock setting
+            // read-only setting
             StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
@@ -325,7 +325,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can be deleted after unlock the setting.
+     * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     public void clearReadOnly() {
 
@@ -334,7 +334,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            // lock setting
+            // read-only setting
             StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
@@ -343,7 +343,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.deleteSettingWithResponse(expected, false))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
 
-            // unlock setting and delete
+            // clear read-only of setting and delete
             StepVerifier.create(client.clearReadOnly(expected.getKey(), expected.getLabel()))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
@@ -356,7 +356,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can not be deleted after lock the setting.
+     * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
     public void setReadOnlyWithConfigurationSetting() {
         lockUnlockRunner((expected) -> {
@@ -364,7 +364,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            // lock setting
+            // read-only setting
             StepVerifier.create(client.setReadOnlyWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
@@ -376,7 +376,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests assert that the setting can be deleted after unlock the setting.
+     * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     public void clearReadOnlyWithConfigurationSetting() {
         lockUnlockRunner((expected) -> {
@@ -384,7 +384,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
-            // lock setting
+            // read-only setting
             StepVerifier.create(client.setReadOnly(expected.getKey(), expected.getLabel()))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
@@ -393,7 +393,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.deleteSettingWithResponse(expected, false))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
 
-            // unlock setting and delete
+            // clear read-only setting and delete
             StepVerifier.create(client.clearReadOnlyWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
@@ -856,7 +856,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteAllSettings() {
         client.listSettings(new SettingSelector().setKeys("*"))
             .flatMap(configurationSetting -> {
-                logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isLocked());
+                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
                 return client.deleteSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }

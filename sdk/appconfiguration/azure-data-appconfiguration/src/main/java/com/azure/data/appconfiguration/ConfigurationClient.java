@@ -20,8 +20,9 @@ import java.time.OffsetDateTime;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
- * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, lock and unlock
- * ConfigurationSettings, and listing settings or revision of a setting based on a {@link SettingSelector filter}.
+ * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, set read-only
+ * and clear read-only ConfigurationSettings, and listing settings or revision of a setting based on a
+ * {@link SettingSelector filter}.
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
@@ -113,7 +114,7 @@ public final class ConfigurationClient {
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null} if the key is an invalid
      * value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws ResourceModifiedException If the setting exists and is locked.
+     * @throws ResourceModifiedException If the setting exists and is read-only.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -148,7 +149,7 @@ public final class ConfigurationClient {
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws ResourceModifiedException If the {@link ConfigurationSetting#getETag() etag} was specified, is not the
      * wildcard character, and the current configuration value's etag does not match, or the setting exists and is
-     * locked.
+     * read-only.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -255,7 +256,7 @@ public final class ConfigurationClient {
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if the
      * {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
-     * @throws ResourceModifiedException If {@code setting} is locked.
+     * @throws ResourceModifiedException If {@code setting} is read-only.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -288,7 +289,7 @@ public final class ConfigurationClient {
      * (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws NullPointerException When {@code setting} is {@code null}.
-     * @throws ResourceModifiedException If {@code setting} is locked.
+     * @throws ResourceModifiedException If {@code setting} is read-only.
      * @throws ResourceNotFoundException If {@link ConfigurationSetting#getETag() etag} is specified, not the wildcard
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
@@ -300,17 +301,18 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Lock the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label} combination.
+     * Set the {@link ConfigurationSetting} to read-only with a matching {@code key}, optional {@code label} combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string}
      *
-     * @param key The key of configuration setting to lock.
-     * @param label The label of configuration setting to lock, or optionally, null if a setting with label is desired.
-     * @return The {@link ConfigurationSetting} that was locked, or {@code null} is also returned if a key collision
+     * @param key The key of configuration setting to set to read-only.
+     * @param label The label of configuration setting to set to read-only, or optionally, null if a setting with label
+     * is desired.
+     * @return The {@link ConfigurationSetting} that is read-only, or {@code null} is also returned if a key collision
      * occurs or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
@@ -321,20 +323,20 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Lock the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
-     * {@link ConfigurationSetting#getLabel() label} combination.
+     * Set the {@link ConfigurationSetting} to read-only with a matching {@link ConfigurationSetting#getKey() key}, and
+     * optional {@link ConfigurationSetting#getLabel() label} combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Lock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Context}
      *
-     * @param setting The setting to lock based on its key and optional label combination.
+     * @param setting The setting to set to read-only based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the locked ConfigurationSetting or {@code null} if didn't exist. {@code null}
-     * is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will also throw
-     * HttpResponseException described below).
+     * @return A REST response containing the read-only ConfigurationSetting or {@code null} if didn't exist.
+     * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
+     * also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
      * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
      */
@@ -344,19 +346,20 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Unlock the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label} combination.
+     * Clear read-only of the {@link ConfigurationSetting} with a matching {@code key}, optional {@code label}
+     * combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnly#string-string}
      *
-     * @param key The key of configuration setting to unlock.
-     * @param label The label of configuration setting to unlock, or optionally, null if a setting with
+     * @param key The key of configuration setting to clear read-only.
+     * @param label The label of configuration setting to clear read-only, or optionally, null if a setting with
      * label is desired.
-     * @return The {@link ConfigurationSetting} that was unlocked, or {@code null} is also returned if a key collision
-     * occurs or the key is an invalid value (which will also throw HttpResponseException described below).
+     * @return The {@link ConfigurationSetting} that read-only is cleared, or {@code null} is also returned if a key
+     * collision occurs or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
@@ -367,18 +370,18 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Unlock the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
-     * {@link ConfigurationSetting#getLabel() label} combination.
+     * Clear read-only of the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key},
+     * and optional {@link ConfigurationSetting#getLabel() label} combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Unlock the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.clearReadOnlyWithResponse#ConfigurationSetting-Context}
      *
-     * @param setting The setting to unlock based on its key and optional label combination.
+     * @param setting The setting to clear read-only based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the unlocked ConfigurationSetting, or {@code null} if didn't exist.
+     * @return A REST response containing the cleared read-only ConfigurationSetting, or {@code null} if didn't exist.
      * {@code null} is also returned if the {@link ConfigurationSetting#getKey() key} is an invalid value. (which will
      * also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
