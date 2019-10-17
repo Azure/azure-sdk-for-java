@@ -98,34 +98,6 @@ public final class ConfigurationAsyncClient {
     }
 
     /**
-     * Adds a configuration value in the service if that key and label does not exist.The label value of the
-     * ConfigurationSetting is optional.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#ConfigurationSetting}
-     *
-     * @param setting The setting to add based on its key and optional label combination.
-     * @return The {@link ConfigurationSetting} that was created, or an empty Mono if a key collision occurs or the key
-     * is an invalid value (which will also throw HttpResponseException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
-     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        try {
-            return withContext(context -> addSetting(setting, context))
-                .flatMap(response -> Mono.justOrEmpty(response.getValue()));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
