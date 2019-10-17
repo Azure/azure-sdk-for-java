@@ -437,13 +437,24 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
+     * <p>
+     * If {@link #getVersion()} is not set, then the latest service version is used.
+     * </p>
+     * <p>
+     * The type of SAS query parameters returned depends on the following:
+     * <ol>
+     *     <li>If {@link #getBlobName()} is not set, <b>container SAS</b> query parameters are returned.</li>
+     *     <li>If {@link #getBlobName()} and {@link #getSnapshotId()} are set, <b>blob snapshot</b> SAS query parameters
+     *     are returned.</li>
+     *     <li>If only {@link #getBlobName()} is set, <b>blob SAS</b> query parameters are returned.</li>
+     * </ol>
      *
      * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException if {@code sharedKeyCredentials} is null. Or if any of {@code version},
-     * {@code canonicalName}, {@code resource} or {@code identifier} are null.
+     * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
+     * @throws NullPointerException if {@code sharedKeyCredentials} is null.
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
@@ -461,13 +472,24 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
+     * <p>
+     * If {@link #getVersion()} is not set, then the latest service version is used.
+     * </p>
+     * <p>
+     * The type of SAS query parameters returned depends on the following:
+     * <ol>
+     *     <li>If {@link #getBlobName()} is not set, <b>container SAS</b> query parameters are returned.</li>
+     *     <li>If {@link #getBlobName()} and {@link #getSnapshotId()} are set, <b>blob snapshot</b> SAS query parameters
+     *     are returned.</li>
+     *     <li>If only {@link #getBlobName()} is set, <b>blob SAS</b> query parameters are returned.</li>
+     * </ol>
      *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException if {@code delegationKey} is null. Or if any of {@code version},
-     * {@code canonicalName}, {@code resource}, {@code expiryTime} or {@code permissions} are null.
+     * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
+     * @throws NullPointerException if {@code delegationKey} or {@code account} is null.
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey, String accountName) {
         Utility.assertNotNull("delegationKey", delegationKey);
