@@ -284,7 +284,8 @@ public final class LeaseAsyncClient {
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions) {
         try {
-            return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
+            return withContext(
+                context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

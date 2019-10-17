@@ -283,8 +283,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
         try {
-            return withContext(context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
-                destAccessConditions, sourceAccessConditions, context));
+            return withContext(
+                context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
+                    destAccessConditions, sourceAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -674,7 +675,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions) {
         try {
-            return withContext(context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
+            return withContext(
+                context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
