@@ -74,6 +74,15 @@ public class FileClient {
     }
 
     /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return fileAsyncClient.getServiceVersion();
+    }
+
+    /**
      * Opens a file input stream to download the file.
      * <p>
      *

@@ -101,6 +101,7 @@ public class BlobAsyncClientBase {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
             .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
+            .version(getServiceVersion())
             .build(), snapshot, customerProvidedKey, accountName);
     }
 
@@ -172,6 +173,15 @@ public class BlobAsyncClientBase {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return this.azureBlobStorage.getVersion();
     }
 
     /**

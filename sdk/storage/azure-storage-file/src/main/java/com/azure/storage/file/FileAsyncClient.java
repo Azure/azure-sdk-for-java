@@ -133,6 +133,15 @@ public class FileAsyncClient {
     }
 
     /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return azureFileStorageClient.getVersion();
+    }
+
+    /**
      * Creates a file in the storage account and returns a response of {@link FileInfo} to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
