@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.InteractiveBrowserCredential;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
+import com.azure.identity.DeviceCodeInfo;
+import com.azure.identity.DeviceCodeCredential;
+import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;
@@ -20,8 +21,8 @@ import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Random;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -30,26 +31,24 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-public class InteractiveBrowserCredentialTest {
+public class DeviceCodeCredentialTest {
 
     private final String tenantId = "contoso.com";
     private final String clientId = UUID.randomUUID().toString();
 
     @Test
-    public void testValidInteractive() throws Exception {
-        Random random = new Random();
-
+    public void testValidDeviceCode() throws Exception {
         // setup
+        Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
         String token1 = "token1";
         String token2 = "token2";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        int port = random.nextInt(10000) + 10000;
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
@@ -64,8 +63,8 @@ public class InteractiveBrowserCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        InteractiveBrowserCredential credential =
-            new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())

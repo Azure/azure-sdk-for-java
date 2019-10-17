@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ManagedIdentityCredential;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
@@ -31,23 +29,6 @@ public class ManagedIdentityCredentialTest {
 
     private final String tenantId = "contoso.com";
     private final String clientId = UUID.randomUUID().toString();
-
-    @Test
-    public void testAppServiceMSICredentialConfigurations() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        try {
-            configuration
-                .put(Configuration.PROPERTY_MSI_ENDPOINT, "http://foo")
-                .put(Configuration.PROPERTY_MSI_SECRET, "bar");
-            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().build();
-            Assert.assertEquals("http://foo", credential.getMsiEndpoint());
-            Assert.assertEquals("bar", credential.getMsiSecret());
-        } finally {
-            configuration.remove(Configuration.PROPERTY_MSI_ENDPOINT);
-            configuration.remove(Configuration.PROPERTY_MSI_SECRET);
-        }
-    }
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {

@@ -50,19 +50,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
             : this.virtualMachineMSICredential.getClientId();
     }
 
-    /**
-     * @return the endpoint from which token needs to be retrieved.
-     */
-    public String getMsiEndpoint() {
-        return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.getMsiEndpoint();
-    }
-    /**
-     * @return the secret to use to retrieve the token.
-     */
-    public String getMsiSecret() {
-        return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.getMsiSecret();
-    }
-
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return (appServiceMSICredential != null

@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.credential;
+package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.DeviceCodeCredential;
-import com.azure.identity.DeviceCodeCredentialBuilder;
+import com.azure.identity.AuthorizationCodeCredential;
+import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;
@@ -19,10 +18,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -31,24 +30,25 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-public class DeviceCodeCredentialTest {
+public class AuthorizationCodeCredentialTest {
 
-    private final String tenantId = "contoso.com";
     private final String clientId = UUID.randomUUID().toString();
 
     @Test
-    public void testValidDeviceCode() throws Exception {
+    public void testValidAuthorizationCode() throws Exception {
         // setup
-        Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
         String token1 = "token1";
         String token2 = "token2";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
+        String authCode1 = "authCode1";
+        URI redirectUri = new URI("http://foo.com/bar");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        when(identityClient.authenticateWithAuthorizationCode(eq(request1), eq(authCode1), eq(redirectUri)))
+            .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
@@ -63,8 +63,8 @@ public class DeviceCodeCredentialTest {
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test
-        DeviceCodeCredential credential =
-            new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
+        AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder()
+                .clientId(clientId).authorizationCode(authCode1).redirectUrl(redirectUri.toString()).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
