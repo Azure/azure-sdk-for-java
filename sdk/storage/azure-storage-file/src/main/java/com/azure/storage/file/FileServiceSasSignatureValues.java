@@ -3,11 +3,11 @@
 
 package com.azure.storage.file;
 
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.time.OffsetDateTime;
 
@@ -394,21 +394,21 @@ public final class FileServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
+     * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link FileServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException If {@code sharedKeyCredentials} is null. Or when any of {@code version},
+     * @throws NullPointerException If {@code storageSharedKeyCredentials} is null. Or when any of {@code version},
      * {@code canonicalName} or {@code resource} is null. Or if {@code identifier} is not set and any of
      * {@code expiryTime} or {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} are not set
      * and {@code identifier} is null
      */
-    public FileServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+    public FileServiceSasQueryParameters generateSASQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK();
 
         // Signature is generated on the un-url-encoded values.
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign());
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign());
 
         return new FileServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,

@@ -6,7 +6,7 @@ import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasService
 import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.SasProtocol
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.queue.models.EnqueuedMessage
 import com.azure.storage.queue.models.QueueAccessPolicy
@@ -110,7 +110,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
             .setPermissions(permissions.toString())
             .setExpiryTime(expiryTime)
@@ -160,7 +160,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
             .setPermissions(permissions.toString())
             .setExpiryTime(expiryTime)
@@ -212,7 +212,7 @@ class QueueSASTests extends APISpec {
         queueClient.setAccessPolicy(Arrays.asList(identifier))
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
@@ -249,7 +249,7 @@ class QueueSASTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)
@@ -281,7 +281,7 @@ class QueueSASTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = queueServiceBuilderHelper(interceptorManager)

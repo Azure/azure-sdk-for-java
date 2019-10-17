@@ -99,16 +99,14 @@ public final class AccountSasResourceType {
     }
 
     /**
-     * @return the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages,
-     * Files.
+     * @return the access status for object level APIs, this grants access to Blobs, Queue Messages, Files.
      */
     public boolean isObject() {
         return object;
     }
 
     /**
-     * Sets the access status for object level APIs, this grants access to Blobs, Table Entities, Queue Messages,
-     * Files.
+     * Sets the access status for object level APIs, this grants access to Blobs, Queue Messages, Files.
      *
      * @param object Access status to set
      * @return the updated AccountSasResourceType object.

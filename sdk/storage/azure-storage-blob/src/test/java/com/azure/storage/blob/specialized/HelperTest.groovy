@@ -16,7 +16,7 @@ import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Unroll
 
@@ -282,7 +282,7 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((SharedKeyCredential) creds)
+        v.generateSasQueryParameters((StorageSharedKeyCredential) creds)
 
         then:
         def e = thrown(NullPointerException)

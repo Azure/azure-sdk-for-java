@@ -17,9 +17,9 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -46,14 +46,14 @@ public final class BuilderHelper {
      *
      * @param connectionString Connection string from the service account.
      * @param accountNameSetter Callback to set the account name on the builder.
-     * @param credentialSetter Callback to set the {@link SharedKeyCredential} of the builder.
+     * @param credentialSetter Callback to set the {@link StorageSharedKeyCredential} of the builder.
      * @param endpointSetter Callback to set the endpoint of the builder.
      * @param logger {@link ClientLogger} used to log any exceptions.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain 'AccountName' or 'AccountKey'.
      */
     public static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
-        Consumer<SharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
+                                                 Consumer<StorageSharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
@@ -75,7 +75,7 @@ public final class BuilderHelper {
         }
 
         accountNameSetter.accept(accountName);
-        credentialSetter.accept(new SharedKeyCredential(accountName, accountKey));
+        credentialSetter.accept(new StorageSharedKeyCredential(accountName, accountKey));
     }
 
     /**

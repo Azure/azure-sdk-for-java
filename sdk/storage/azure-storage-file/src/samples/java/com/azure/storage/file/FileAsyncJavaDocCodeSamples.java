@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
@@ -73,7 +73,7 @@ public class FileAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link FileAsyncClient} with {@code connectionString}
-     * which turns into {@link SharedKeyCredential}
+     * which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithConnectionString() {

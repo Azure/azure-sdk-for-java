@@ -18,7 +18,7 @@ import com.azure.storage.common.AccountSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -737,7 +737,7 @@ class SASTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((SharedKeyCredential) creds)
+        v.generateSasQueryParameters((StorageSharedKeyCredential) creds)
 
         then:
         def e = thrown(NullPointerException)
@@ -923,7 +923,7 @@ class SASTest extends APISpec {
         if (usingUserDelegation) {
             serviceSASSignatureValues.generateSasQueryParameters(new UserDelegationKey())
         } else {
-            serviceSASSignatureValues.generateSasQueryParameters(new SharedKeyCredential("", ""))
+            serviceSASSignatureValues.generateSasQueryParameters(new StorageSharedKeyCredential("", ""))
         }
 
         then:

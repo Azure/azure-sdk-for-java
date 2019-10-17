@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.StaticWebsite
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 
@@ -382,7 +382,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        def serviceURL = getServiceClient((SharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl())
+        def serviceURL = getServiceClient((StorageSharedKeyCredential) null, primaryBlobServiceClient.getAccountUrl())
         serviceURL.getAccountInfo()
 
         then:
