@@ -4,7 +4,6 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credential.TokenRequest;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
@@ -101,7 +100,7 @@ public class DefaultAzureCredentialTest {
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof ClientAuthenticationException && t.getMessage().contains("Tried EnvironmentCredential, ManagedIdentityCredential, SharedTokenCacheCredential"))
+            .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage().contains("Tried EnvironmentCredential, ManagedIdentityCredential, SharedTokenCacheCredential"))
             .verify();
     }
 }
