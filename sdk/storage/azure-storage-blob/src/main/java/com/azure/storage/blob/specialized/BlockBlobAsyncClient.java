@@ -265,7 +265,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             url = new URL(sourceUrl);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
 
         return this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
