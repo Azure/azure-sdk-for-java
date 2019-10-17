@@ -4,6 +4,8 @@
 package com.azure.storage.blob.specialized;
 
 import static com.azure.core.implementation.util.FluxUtil.withContext;
+import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -561,10 +563,8 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
+        finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -574,7 +574,8 @@ public class BlobAsyncClientBase {
             channel -> getPropertiesWithResponse(accessConditions)
                 .flatMap(response -> processInRange(channel, response,
                 range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMD5,
-                context, totalProgress, progressLock, progressReceiver)), this::downloadToFileCleanup);
+                context, totalProgress, progressLock, finalParallelTransferOptions.getProgressReceiver())),
+            this::downloadToFileCleanup);
 
     }
 

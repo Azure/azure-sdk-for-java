@@ -46,6 +46,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static java.lang.StrictMath.toIntExact;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -70,6 +71,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class BlobAsyncClient extends BlobAsyncClientBase {
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
+    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
+    /**
+     * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
+     * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
+     * value will be used.
+     */
+    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
@@ -224,18 +232,16 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Objects.requireNonNull(data, "'data' must not be null");
         BlobAccessConditions accessConditionsFinal = accessConditions == null
             ? new BlobAccessConditions() : accessConditions;
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions() : parallelTransferOptions;
-        int blockSize = finalParallelTransferOptions.getBlockSize();
-        int numBuffers = finalParallelTransferOptions.getNumBuffers();
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        final ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
+        finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(numBuffers, blockSize);
+        UploadBufferPool pool = new UploadBufferPool(finalParallelTransferOptions.getNumBuffers(),
+            finalParallelTransferOptions.getBlockSize());
 
         /*
         Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
@@ -244,15 +250,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         ordering of the buffers, but we don't really care if one is split before another.
          */
         Flux<ByteBuffer> chunkedSource = data.flatMapSequential(buffer -> {
-            if (buffer.remaining() <= blockSize) {
+            if (buffer.remaining() <= finalParallelTransferOptions.getBlockSize()) {
                 return Flux.just(buffer);
             }
-            int numSplits = (int) Math.ceil(buffer.remaining() / (double) blockSize);
+            int numSplits = (int) Math.ceil(buffer.remaining() / (double) finalParallelTransferOptions.getBlockSize());
             return Flux.range(0, numSplits)
                 .map(i -> {
                     ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                    duplicate.position(i * blockSize);
-                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * blockSize));
+                    duplicate.position(i * finalParallelTransferOptions.getBlockSize());
+                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * finalParallelTransferOptions.getBlockSize()));
                     return duplicate;
                 });
         });
@@ -265,7 +271,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .flatMapSequential(buffer -> {
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
-                        progressReceiver, progressLock, totalProgress);
+                        finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
 
                 final String blockId = Base64.getEncoder().encodeToString(
@@ -297,7 +303,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      */
     public Mono<Void> uploadFromFile(String filePath) {
-        return uploadFromFile(filePath, null, null, null, null, null);
+        return uploadFromFile(filePath, null, null, null, null, null).then();
     }
 
     /**
@@ -322,10 +328,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHTTPHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
-        final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
-            ? new ParallelTransferOptions()
-            : parallelTransferOptions;
-        ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
+        ParallelTransferOptions finalParallelTransferOptions = new ParallelTransferOptions();
+        finalParallelTransferOptions.populateAndApplyDefaults(parallelTransferOptions);
 
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong(0);
@@ -334,14 +338,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return Mono.using(() -> uploadFileResourceSupplier(filePath),
             channel -> {
                 final SortedMap<Long, String> blockIds = new TreeMap<>();
-                return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
+                return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize(),
+                    parallelTransferOptions == null || parallelTransferOptions.getBlockSize() == null))
                     .doOnNext(chunk -> blockIds.put(chunk.getOffset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.getOffset());
 
                         Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                             FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                            progressReceiver, progressLock, totalProgress);
+                            finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
                         return getBlockBlobAsyncClient()
                             .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
@@ -385,9 +390,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private List<BlobRange> sliceFile(String path, int blockSize) {
+    private List<BlobRange> sliceFile(String path, int blockSize, boolean enableHtbbOptimizations) {
         File file = new File(path);
         assert file.exists();
+        if (file.length() > 100 * Constants.MB && enableHtbbOptimizations) {
+            blockSize = BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+        }
         List<BlobRange> ranges = new ArrayList<>();
         for (long pos = 0; pos < file.length(); pos += blockSize) {
             long count = blockSize;

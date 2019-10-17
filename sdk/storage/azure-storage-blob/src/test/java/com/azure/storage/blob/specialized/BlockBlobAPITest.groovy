@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.implementation.util.FluxUtil
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
@@ -23,7 +24,6 @@ import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.LeaseAccessConditions
-
 import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
@@ -38,7 +38,10 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 
 class BlockBlobAPITest extends APISpec {
@@ -90,11 +93,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(exceptionType)
 
         where:
-        getBlockId   | data                       | dataSize                    | exceptionType
-        false        | defaultInputStream | defaultDataSize     | StorageException
-        true         | null                       | defaultDataSize     | NullPointerException
-        true         | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
-        true         | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
+        getBlockId | data               | dataSize            | exceptionType
+        false      | defaultInputStream | defaultDataSize     | StorageException
+        true       | null               | defaultDataSize     | NullPointerException
+        true       | defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
+        true       | defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -338,7 +341,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
 
         when:
         def response = bc.commitBlockListWithResponse(ids, null, null, null, null, null, null)
@@ -355,7 +358,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
 
         expect:
         bc.commitBlockList(ids) != null
@@ -371,7 +374,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def blockID = getBlockID()
         bc.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
-        def ids = [ blockID ] as List
+        def ids = [blockID] as List
         def headers = new BlobHTTPHeaders().setBlobCacheControl(cacheControl)
             .setBlobContentDisposition(contentDisposition)
             .setBlobContentEncoding(contentEncoding)
@@ -601,17 +604,56 @@ class BlockBlobAPITest extends APISpec {
        for getBlockID that will change every time test is run
      */
     @Requires({ liveMode() })
+    @Unroll
     def "Upload from file"() {
-        given:
-        def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
-        def outStream = new ByteArrayOutputStream()
+        setup:
+        def file = getRandomFile(fileSize)
+        def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath())
+        // Block length will be ignored for single shot.
+        blobac.uploadFromFile(file.toPath().toString(), new ParallelTransferOptions().setBlockSize(blockSize),
+            null, null, null, null).block()
 
         then:
-        bc.download(outStream)
-        outStream.toByteArray() == new Scanner(file).useDelimiter("\\z").next().getBytes(StandardCharsets.UTF_8)
+        def outFile = file.getPath().toString() + "result"
+        def outChannel = AsynchronousFileChannel.open(Paths.get(outFile), StandardOpenOption.CREATE, StandardOpenOption.WRITE)
+        FluxUtil.writeFile(blobac.download(), outChannel).block() == null
+
+        compareFiles(file, new File(outFile))
+        blobac.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED).block().getCommittedBlocks().size() ==
+            commitedBlockCount
+
+        cleanup:
+        channel.close()
+
+        where:
+        fileSize                                       | blockSize       || commitedBlockCount
+        0                                              | null            || 0
+        10                                             | null            || 1
+        10 * 1024                                      | null            || 1
+        50 * 1024 * 1024                               | null            || Math.ceil((50 * 1024 * 1024) / BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+        BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null            || Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // HTBB optimizations should trigger when file size is >100MB and defaults are used.
+        101 * 1024 * 1024                              | 4 * 1024 * 1024 || 26 // Making the block size explicit should cancel the optimization
+    }
+
+    def compareFiles(File file1, File file2) {
+        FileInputStream fis1 = new FileInputStream(file1)
+        FileInputStream fis2 = new FileInputStream(file2)
+
+        byte b1 = fis1.read()
+        byte b2 = fis2.read()
+
+        while (b1 != -1 && b2 != -1) {
+            if (b1 != b2) {
+                return false
+            }
+            b1 = fis1.read()
+            b2 = fis2.read()
+        }
+        fis1.close()
+        fis2.close()
+        return b1 == b2
     }
 
     @Requires({ liveMode() })
@@ -733,7 +775,6 @@ class BlockBlobAPITest extends APISpec {
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch))
 
-
         expect:
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, bac, null, null).getStatusCode() == 201
 
@@ -846,12 +887,13 @@ class BlockBlobAPITest extends APISpec {
 
     /*      Reporter for testing Progress Receiver
     *        Will count the number of reports that are triggered         */
+
     class Reporter implements ProgressReceiver {
         private final long blockSize
         private long reportingCount
 
         Reporter(long blockSize) {
-            this.blockSize = blockSize;
+            this.blockSize = blockSize
         }
 
         @Override
@@ -884,10 +926,10 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         size        | blockSize | bufferCount
-        10          | 10        |           8
-        20          | 1         |           5
-        100         | 50        |           2
-        1024 * 1024 | 1024      |         100
+        10          | 10        | 8
+        20          | 1         | 5
+        100         | 50        | 2
+        1024 * 1024 | 1024      | 100
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
@@ -1064,7 +1106,7 @@ class BlockBlobAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({liveMode()})
+    @Requires({ liveMode() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         bac.upload(defaultFlux, defaultDataSize).block()
