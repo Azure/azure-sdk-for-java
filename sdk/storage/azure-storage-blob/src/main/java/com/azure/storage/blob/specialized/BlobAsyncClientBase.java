@@ -175,6 +175,15 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return this.azureBlobStorage.getVersion();
+    }
+
+    /**
      * Gets the snapshotId for a blob resource
      *
      * @return A string that represents the snapshotId of the snapshot blob

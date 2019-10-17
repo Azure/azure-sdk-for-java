@@ -97,7 +97,8 @@ public final class BlobServiceAsyncClient {
 
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToUrlPath(getAccountUrl(), containerName).toString())
-            .pipeline(azureBlobStorage.getHttpPipeline())
+            .pipeline(getHttpPipeline())
+            .version(getServiceVersion())
             .build(), customerProvidedKey, accountName);
     }
 
@@ -108,6 +109,15 @@ public final class BlobServiceAsyncClient {
      */
     public HttpPipeline getHttpPipeline() {
         return azureBlobStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return this.azureBlobStorage.getVersion();
     }
 
     /**
