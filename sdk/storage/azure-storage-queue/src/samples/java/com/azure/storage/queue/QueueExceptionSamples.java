@@ -48,7 +48,7 @@ public class QueueExceptionSamples {
             QueueMessageItem queueMessageItem = queueClientResponse.getValue().receiveMessage();
             queueClient.deleteMessage("wrong id", queueMessageItem.getPopReceipt());
         } catch (QueueStorageException e) {
-            if (e.getMessage().contains(QueueErrorCode.MESSAGE_NOT_FOUND.toString())) {
+            if (QueueErrorCode.MESSAGE_NOT_FOUND.equals(e.getMessage())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");
@@ -60,7 +60,7 @@ public class QueueExceptionSamples {
             QueueMessageItem queueMessageItem = queueClientResponse.getValue().receiveMessage();
             queueClient.deleteMessage(queueMessageItem.getMessageId(), "Wrong Pop Receipt");
         } catch (QueueStorageException e) {
-            if (QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE.toString().equals(e.getErrorCode())) {
+            if (QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE.equals(e.getErrorCode())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");
