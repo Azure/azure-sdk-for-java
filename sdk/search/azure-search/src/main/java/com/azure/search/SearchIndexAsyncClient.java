@@ -487,15 +487,15 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param searchRequestOptions search request options
      * @param autocompleteParameters auto complete parameters
+     * @param searchRequestOptions search request options
      * @return auto complete result
      */
     public PagedFlux<AutocompleteItem> autocomplete(
-            String searchText,
-            String suggesterName,
-            SearchRequestOptions searchRequestOptions,
-            AutocompleteParameters autocompleteParameters) {
+        String searchText,
+        String suggesterName,
+        AutocompleteParameters autocompleteParameters,
+        SearchRequestOptions searchRequestOptions) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,
             autocompleteParameters);
@@ -507,8 +507,8 @@ public class SearchIndexAsyncClient {
     PagedFlux<AutocompleteItem> autocomplete(
         String searchText,
         String suggesterName,
-        SearchRequestOptions searchRequestOptions,
         AutocompleteParameters autocompleteParameters,
+        SearchRequestOptions searchRequestOptions,
         Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,

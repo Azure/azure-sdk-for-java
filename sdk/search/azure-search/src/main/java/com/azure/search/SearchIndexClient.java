@@ -377,18 +377,18 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param searchRequestOptions search request options
      * @param autocompleteParameters auto complete parameters
+     * @param searchRequestOptions search request options
      * @return auto complete result
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
-                                                        SearchRequestOptions searchRequestOptions,
-                                                        AutocompleteParameters autocompleteParameters) {
+                                                        AutocompleteParameters autocompleteParameters,
+                                                        SearchRequestOptions searchRequestOptions) {
         return this.autocomplete(searchText,
             suggesterName,
-            searchRequestOptions,
             autocompleteParameters,
+            searchRequestOptions,
             Context.NONE);
     }
 
@@ -397,20 +397,20 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param searchRequestOptions search request options
      * @param autocompleteParameters auto complete parameters
+     * @param searchRequestOptions search request options
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return auto complete result
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
-                                                        SearchRequestOptions searchRequestOptions,
                                                         AutocompleteParameters autocompleteParameters,
+                                                        SearchRequestOptions searchRequestOptions,
                                                         Context context) {
         PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText,
             suggesterName,
-            searchRequestOptions,
             autocompleteParameters,
+            searchRequestOptions,
             context);
         return new PagedIterable<>(result);
     }
