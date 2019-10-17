@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -74,7 +74,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -97,7 +97,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://connieys.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -117,7 +117,7 @@
       "x-ms-version" : "2019-02-02",
       "x-ms-file-permission-key" : "9604464107523284943*3308177023012697921",
       "x-ms-copy-id" : "c9899b92-ecde-4769-832c-57bbd152dacc",
-      "x-ms-copy-source" : "https://connieys.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
+      "x-ms-copy-source" : "https://azstoragesdkaccount.file.core.windows.net/fileasyncapitestsstartcopy606390130d9fa0bfb42/fileasyncapitestsstartcopy248944bd49275d32246",
       "x-ms-copy-progress" : "1024/1024",
       "Date" : "Tue, 15 Oct 2019 21:38:27 GMT",
       "x-ms-copy-completion-time" : "Tue, 15 Oct 2019 21:38:27 GMT",

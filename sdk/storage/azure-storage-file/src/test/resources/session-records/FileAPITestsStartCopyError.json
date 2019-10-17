@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542/fileapitestsstartcopyerror35474d41de6300b9846",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542/fileapitestsstartcopyerror35474d41de6300b9846",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542/fileapitestsstartcopyerror35474d41de6300b9846",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542/fileapitestsstartcopyerror35474d41de6300b9846",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
@@ -73,7 +73,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://connieys.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542/fileapitestsstartcopyerror35474d41de6300b9846",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/fileapitestsstartcopyerror28458207491bbd96542/fileapitestsstartcopyerror35474d41de6300b9846",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 1.8.0_222; Windows 10 10.0",
