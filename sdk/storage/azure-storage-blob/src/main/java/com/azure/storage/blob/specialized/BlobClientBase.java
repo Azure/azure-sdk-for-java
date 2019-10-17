@@ -563,15 +563,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeaders#BlobHttpHeaders}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHttpHeaders}
      */
-    public void setHTTPHeaders(BlobHttpHeaders headers) {
-        setHTTPHeadersWithResponse(headers, null, null, Context.NONE);
+    public void setHttpHeaders(BlobHttpHeaders headers) {
+        setHttpHeadersWithResponse(headers, null, null, Context.NONE);
     }
 
     /**
@@ -580,7 +580,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -591,10 +591,10 @@ public class BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHTTPHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
+    public Response<Void> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client
-            .setHTTPHeadersWithResponse(headers, accessConditions, context);
+            .setHttpHeadersWithResponse(headers, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

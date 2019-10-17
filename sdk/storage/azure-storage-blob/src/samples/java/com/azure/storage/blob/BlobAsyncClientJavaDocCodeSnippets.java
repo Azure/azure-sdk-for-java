@@ -150,11 +150,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeaders(BlobHttpHeaders)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeaders(BlobHttpHeaders)}
      */
     public void setHTTPHeadersCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
-        client.setHTTPHeaders(new BlobHttpHeaders()
+        client.setHttpHeaders(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
         // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHttpHeaders
@@ -299,21 +299,21 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHTTPHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.setHTTPHeadersWithResponse(new BlobHttpHeaders()
+        client.setHttpHeadersWithResponse(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"), accessConditions).subscribe(
                 response ->
                     System.out.printf("Set HTTP headers completed with status %d%n",
                         response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
     }
 
     /**

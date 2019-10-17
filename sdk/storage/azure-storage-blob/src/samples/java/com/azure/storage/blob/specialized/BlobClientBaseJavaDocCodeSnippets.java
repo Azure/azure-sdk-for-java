@@ -137,15 +137,15 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#setHTTPHeaders(BlobHttpHeaders)}
+     * Code snippets for {@link BlobClientBase#setHttpHeaders(BlobHttpHeaders)}
      */
     public void setHTTPHeaders() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeaders#BlobHttpHeaders
-        client.setHTTPHeaders(new BlobHttpHeaders()
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders
+        client.setHttpHeaders(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
         System.out.println("Set HTTP headers completed");
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeaders#BlobHttpHeaders
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeaders#BlobHttpHeaders
     }
 
     /**
@@ -307,20 +307,20 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#setHTTPHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions, Duration,
+     * Code snippets for {@link BlobClientBase#setHttpHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions, Duration,
      * Context)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         System.out.printf("Set HTTP headers completed with status %d%n",
-            client.setHTTPHeadersWithResponse(new BlobHttpHeaders()
+            client.setHttpHeadersWithResponse(new BlobHttpHeaders()
                 .setBlobContentLanguage("en-US")
                 .setBlobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions-Duration-Context
     }
 
     /**

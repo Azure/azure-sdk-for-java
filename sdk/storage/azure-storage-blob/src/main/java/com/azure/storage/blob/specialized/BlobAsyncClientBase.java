@@ -62,6 +62,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
@@ -222,7 +223,11 @@ public class BlobAsyncClientBase {
      * @return true if the blob exists, false if it doesn't
      */
     public Mono<Boolean> exists() {
-        return existsWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return existsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -235,7 +240,11 @@ public class BlobAsyncClientBase {
      * @return true if the blob exists, false if it doesn't
      */
     public Mono<Response<Boolean>> existsWithResponse() {
-        return withContext(this::existsWithResponse);
+        try {
+            return withContext(this::existsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Boolean>> existsWithResponse(Context context) {
@@ -266,7 +275,11 @@ public class BlobAsyncClientBase {
      * cancelled.
      */
     public Poller<BlobCopyInfo, Void> beginCopyFromUrl(String sourceUrl, Duration pollInterval) {
-        return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
+        try {
+            return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -436,7 +449,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> abortCopyFromURL(String copyId) {
-        return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
+        try {
+            return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -460,7 +477,11 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId,
         LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
+        try {
+            return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
@@ -484,7 +505,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<String> copyFromURL(String copySource) {
-        return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -510,8 +535,12 @@ public class BlobAsyncClientBase {
     public Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata,
         AccessTier tier, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions) {
-        return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
-            sourceModifiedAccessConditions, destAccessConditions, context));
+        try {
+            return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
+                sourceModifiedAccessConditions, destAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
@@ -555,8 +584,12 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the blob data.
      */
     public Flux<ByteBuffer> download() {
-        return downloadWithResponse(null, null, null, false)
-            .flatMapMany(Response::getValue);
+        try {
+            return downloadWithResponse(null, null, null, false)
+                .flatMapMany(Response::getValue);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
     }
 
     /**
@@ -578,8 +611,12 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
-        return withContext(context -> downloadWithResponse(range, options, accessConditions, rangeGetContentMD5,
-            context));
+        try {
+            return withContext(context -> downloadWithResponse(range, options, accessConditions, rangeGetContentMD5,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadWithResponse(BlobRange range, ReliableDownloadOptions options,
@@ -657,8 +694,12 @@ public class BlobAsyncClientBase {
      * @return An empty response
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
-        return downloadToFileWithResponse(filePath, null, null,
-            null, null, false).flatMap(FluxUtil::toMono);
+        try {
+            return downloadToFileWithResponse(filePath, null, null,
+                null, null, false).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -694,8 +735,12 @@ public class BlobAsyncClientBase {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
-        return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-            accessConditions, rangeGetContentMD5, context));
+        try {
+            return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
+                accessConditions, rangeGetContentMD5, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
@@ -784,7 +829,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> delete() {
-        return deleteWithResponse(null, null).flatMap(FluxUtil::toMono);
+        try {
+            return deleteWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -805,7 +854,11 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context));
+        try {
+            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
@@ -831,7 +884,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> getProperties() {
-        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        try {
+            return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -848,7 +905,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobAccessConditions accessConditions) {
-        return withContext(context -> getPropertiesWithResponse(accessConditions, context));
+        try {
+            return withContext(context -> getPropertiesWithResponse(accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobAccessConditions accessConditions, Context context) {
@@ -866,7 +927,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeaders#BlobHttpHeaders}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -874,8 +935,12 @@ public class BlobAsyncClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> setHTTPHeaders(BlobHttpHeaders headers) {
-        return setHTTPHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> setHttpHeaders(BlobHttpHeaders headers) {
+        try {
+            return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -884,7 +949,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHTTPHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -893,12 +958,16 @@ public class BlobAsyncClientBase {
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHttpHeaders headers,
-                                                           BlobAccessConditions accessConditions) {
-        return withContext(context -> setHTTPHeadersWithResponse(headers, accessConditions, context));
+    public Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers,
+        BlobAccessConditions accessConditions) {
+        try {
+            return withContext(context -> setHttpHeadersWithResponse(headers, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
+    Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
         Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -923,7 +992,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
+        try {
+            return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -943,7 +1016,11 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
+        try {
+            return withContext(context -> setMetadataWithResponse(metadata, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobAccessConditions accessConditions,
@@ -970,7 +1047,11 @@ public class BlobAsyncClientBase {
      * use {@link #getSnapshotId()} to get the identifier for the snapshot.
      */
     public Mono<BlobAsyncClientBase> createSnapshot() {
-        return createSnapshotWithResponse(null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createSnapshotWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -990,7 +1071,11 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> createSnapshotWithResponse(metadata, accessConditions, context));
+        try {
+            return withContext(context -> createSnapshotWithResponse(metadata, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
@@ -1021,7 +1106,11 @@ public class BlobAsyncClientBase {
      * @throws NullPointerException if {@code tier} is null.
      */
     public Mono<Void> setAccessTier(AccessTier tier) {
-        return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return setAccessTierWithResponse(tier, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1046,7 +1135,11 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions) {
-        return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
+        try {
+            return withContext(context -> setTierWithResponse(tier, priority, leaseAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
@@ -1071,7 +1164,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Void> undelete() {
-        return undeleteWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return undeleteWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1087,7 +1184,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> undeleteWithResponse() {
-        return withContext(this::undeleteWithResponse);
+        try {
+            return withContext(this::undeleteWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> undeleteWithResponse(Context context) {
@@ -1108,7 +1209,11 @@ public class BlobAsyncClientBase {
      * @return a reactor response containing the sku name and account kind.
      */
     public Mono<StorageAccountInfo> getAccountInfo() {
-        return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        try {
+            return getAccountInfoWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1124,7 +1229,11 @@ public class BlobAsyncClientBase {
      * @return a reactor response containing the sku name and account kind.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
-        return withContext(this::getAccountInfoWithResponse);
+        try {
+            return withContext(this::getAccountInfoWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {

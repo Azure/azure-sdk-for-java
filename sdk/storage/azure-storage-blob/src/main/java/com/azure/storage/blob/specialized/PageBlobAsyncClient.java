@@ -33,6 +33,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -87,7 +88,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the created page blob.
      */
     public Mono<PageBlobItem> create(long size) {
-        return createWithResponse(size, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(size, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -112,8 +117,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobAccessConditions accessConditions) {
-        return withContext(context ->
-            createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context));
+        try {
+            return withContext(context ->
+                createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
@@ -159,7 +168,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
-        return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+        try {
+            return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -185,7 +198,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         PageBlobAccessConditions pageBlobAccessConditions) {
-        return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
+        try {
+            return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
@@ -230,8 +247,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null)
-            .flatMap(FluxUtil::toMono);
+        try {
+            return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -261,8 +282,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl,
         Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
-        return withContext(context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
-            destAccessConditions, sourceAccessConditions, context));
+        try {
+            return withContext(
+                context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
+                    destAccessConditions, sourceAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
@@ -314,7 +340,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the cleared pages.
      */
     public Mono<PageBlobItem> clearPages(PageRange pageRange) {
-        return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
+        try {
+            return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -334,7 +364,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobAccessConditions pageBlobAccessConditions) {
-        return withContext(context -> clearPagesWithResponse(pageRange, pageBlobAccessConditions, context));
+        try {
+            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
@@ -369,7 +403,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the cleared pages.
      */
     public Mono<PageList> getPageRanges(BlobRange blobRange) {
-        return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
+        try {
+            return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -386,7 +424,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> getPageRangesWithResponse(blobRange, accessConditions, context));
+        try {
+            return withContext(context -> getPageRangesWithResponse(blobRange, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
@@ -416,7 +458,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting all the different page ranges.
      */
     public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
+        try {
+            return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -438,8 +484,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobAccessConditions accessConditions) {
-        return withContext(context ->
-            getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
+        try {
+            return withContext(context ->
+                getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
@@ -471,7 +521,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting the resized page blob.
      */
     public Mono<PageBlobItem> resize(long size) {
-        return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
+        try {
+            return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -489,7 +543,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES}
      */
     public Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobAccessConditions accessConditions) {
-        return withContext(context -> resizeWithResponse(size, accessConditions, context));
+        try {
+            return withContext(context -> resizeWithResponse(size, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobAccessConditions accessConditions, Context context) {
@@ -521,7 +579,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting the updated page blob.
      */
     public Mono<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber) {
-        return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
+        try {
+            return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -541,8 +603,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobAccessConditions accessConditions) {
-        return withContext(context ->
-            updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
+        try {
+            return withContext(context ->
+                updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber,
@@ -579,7 +645,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting the copy status.
      */
     public Mono<CopyStatusType> copyIncremental(String source, String snapshot) {
-        return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
+        try {
+            return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -604,7 +674,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
+        try {
+            return withContext(
+                context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
