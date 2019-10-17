@@ -287,7 +287,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public ManagementChannel getManagementChannel() {
         synchronized (this.mgmtChannelCreateLock) {
             if (this.mgmtChannel == null) {
-                this.mgmtChannel = new ManagementChannel(this, this, this.getClientId());
+                this.mgmtChannel = new ManagementChannel(this, this, this.getClientId(), this.executor);
             }
         }
 

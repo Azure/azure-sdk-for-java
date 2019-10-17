@@ -554,7 +554,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 if (desiredCapabilities != null) {
                     receiver.setDesiredCapabilities(desiredCapabilities);
                 }
-                final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this, MessageReceiver.this.getClientId());
+                final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this, MessageReceiver.this.getClientId(),
+                    MessageReceiver.this.underlyingFactory.executor);
                 BaseHandler.setHandler(receiver, handler);
 
                 if (MessageReceiver.this.receiveLink != null) {

@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
@@ -12,19 +13,25 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.microsoft.azure.eventhubs.EventHubException;
 
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
     private final AmqpSender msgSender;
     private final String senderName;
+    private final ScheduledExecutorService executor;
     private AtomicBoolean isFirstFlow;
 
-    public SendLinkHandler(final AmqpSender sender, final String senderName) {
+    public SendLinkHandler(final AmqpSender sender, final String senderName, final ScheduledExecutorService executor) {
         super(sender, senderName);
 
         this.msgSender = sender;
         this.senderName = senderName;
+        this.executor = executor;
         this.isFirstFlow = new AtomicBoolean(true);
     }
 
@@ -49,7 +56,9 @@ public class SendLinkHandler extends BaseLinkHandler {
                             this.senderName, link.getName(), link.getRemoteTarget()));
                 }
 
+                TRACE_LOGGER.info("onLinkRemoteOpen starts with isFirstFlow = " + this.isFirstFlow.get());
                 if (this.isFirstFlow.compareAndSet(true, false)) {
+                    TRACE_LOGGER.info("onLinkRemoteOpen changes isFirstFlow to " + this.isFirstFlow.get());
                     this.msgSender.onOpenComplete(null);
                 }
             } else {
@@ -58,6 +67,26 @@ public class SendLinkHandler extends BaseLinkHandler {
                             this.senderName, link.getName()));
                 }
             }
+        }
+    }
+
+    @Override
+    public void onLinkFinal(Event event) {
+        if (this.isFirstFlow.get()) {
+            final Link link = event.getLink();
+            if (TRACE_LOGGER.isWarnEnabled()) {
+                TRACE_LOGGER.warn(String.format(Locale.US, "onLinkFinal senderName[%s], linkName[%s] - link never opened",
+                    this.senderName, link.getName()));
+            }
+            final ErrorCondition condition = event.getLink().getCondition();
+            final Exception finalOpenError = (condition != null) ? ExceptionUtil.toException(condition) :
+                new EventHubException(false, "Link open failed, cause not available");
+            this.executor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    SendLinkHandler.this.msgSender.onOpenComplete(finalOpenError);
+                }
+            }, AmqpConstants.LINK_ERROR_DELAY_MILLIS, TimeUnit.MILLISECONDS);
         }
     }
 
