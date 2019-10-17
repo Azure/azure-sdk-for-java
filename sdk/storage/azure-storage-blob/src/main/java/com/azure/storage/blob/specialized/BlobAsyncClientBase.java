@@ -25,8 +25,11 @@ import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -37,6 +40,7 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -864,7 +868,7 @@ public class BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> setHTTPHeadersWithResponse(BlobHttpHeaders headers,
-        BlobAccessConditions accessConditions) {
+                                                           BlobAccessConditions accessConditions) {
         return withContext(context -> setHTTPHeadersWithResponse(headers, accessConditions, context));
     }
 
