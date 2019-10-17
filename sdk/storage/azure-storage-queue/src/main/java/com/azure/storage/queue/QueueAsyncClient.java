@@ -35,9 +35,13 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Spliterators;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -408,9 +412,12 @@ public final class QueueAsyncClient {
                 }
             }
         }
+        List<QueueSignedIdentifier> permissionsList = StreamSupport.stream(
+            permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
+            .collect(Collectors.toList());
 
         return client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissions, null, null, context)
+            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
