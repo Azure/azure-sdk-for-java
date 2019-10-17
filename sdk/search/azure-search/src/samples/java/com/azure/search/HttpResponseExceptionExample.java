@@ -19,10 +19,14 @@ import com.azure.search.models.SearchParameters;
  */
 public class HttpResponseExceptionExample {
     public static void main(String[] args) {
-        search();
+        searchSync();
+        searchAsync();
     }
 
-    private static void search() {
+    /**
+     * Handling errors with a sync client
+     */
+    private static void searchSync() {
         SearchIndexClient searchClient = getSearchClient();
         try {
             SearchParameters searchParams = new SearchParameters()
@@ -54,12 +58,9 @@ public class HttpResponseExceptionExample {
     }
 
     /**
-     * Async example
-     * The commented block below demonstrates an Async example of handling Http
+     * Handling errors with an async client
      */
-
-    /*
-    private static void asyncSearch() {
+    private static void searchAsync() {
         SearchIndexAsyncClient client = getSearchAsyncClient();
         SearchParameters searchParams = new SearchParameters()
             .setFilter("Non_Existent_Field eq 'Luxury'");
@@ -87,5 +88,4 @@ public class HttpResponseExceptionExample {
             .credential(apiKeyCredentials)
             .buildAsyncClient();
     }
-    */
 }

@@ -19,8 +19,6 @@ import com.azure.search.models.SuggestParameters;
 import com.azure.search.models.SuggestResult;
 
 import reactor.core.publisher.Mono;
-import reactor.util.annotation.Nullable;
-import java.time.Duration;
 
 import java.util.List;
 
@@ -179,7 +177,7 @@ public class SearchIndexClient {
      */
     public Response<Long> getDocumentCountWithResponse(Context context) {
         Mono<Response<Long>> result = asyncClient.getDocumentCountWithResponse(context);
-        return blockWithOptionalTimeout(result, null);
+        return result.block();
     }
 
     /**
@@ -239,7 +237,7 @@ public class SearchIndexClient {
      */
     public Document getDocument(String key) {
         Mono<Document> results = asyncClient.getDocument(key);
-        return blockWithOptionalTimeout(results, null);
+        return results.block();
     }
 
     /**
@@ -276,7 +274,7 @@ public class SearchIndexClient {
             selectedFields,
             searchRequestOptions,
             context);
-        return blockWithOptionalTimeout(results, null);
+        return results.block();
     }
 
     /**
@@ -356,7 +354,7 @@ public class SearchIndexClient {
      */
     public Response<DocumentIndexResult> indexWithResponse(IndexBatch<?> batch, Context context) {
         Mono<Response<DocumentIndexResult>> results = asyncClient.indexWithResponse(batch, context);
-        return blockWithOptionalTimeout(results, null);
+        return results.block();
     }
 
     /**
@@ -415,13 +413,5 @@ public class SearchIndexClient {
             autocompleteParameters,
             context);
         return new PagedIterable<>(result);
-    }
-
-    private <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
     }
 }

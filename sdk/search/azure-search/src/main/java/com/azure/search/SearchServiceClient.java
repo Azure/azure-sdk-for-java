@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
@@ -18,6 +19,7 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
+import com.azure.search.models.SearchRequestOptions;
 import org.apache.commons.lang3.NotImplementedException;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class)
@@ -235,20 +237,27 @@ public class SearchServiceClient {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
 
+
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search index
+     * @param index definition of the index to create
      * @return the created Index.
      */
-    public Index createIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Index createIndex(Index index) {
+        return this.createIndexWithResponse(index, null, Context.NONE).getValue();
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Creates a new Azure Cognitive Search index
+     * @param index definition of the index to create
+     * @param searchRequestOptions Search Request Options
+     * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the created Index.
      */
-    public Response<Index> createIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Response<Index> createIndexWithResponse(Index index,
+                                                   SearchRequestOptions searchRequestOptions,
+                                                   Context context) {
+        return asyncClient.createIndexWithResponse(index, searchRequestOptions, context).block();
     }
 
     /**
@@ -258,7 +267,6 @@ public class SearchServiceClient {
     public Index getIndex() {
         throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
     }
-
     /**
      * @throws NotImplementedException not implemented
      * @return a response containing the Index.

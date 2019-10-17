@@ -36,6 +36,7 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
         return new SearchServiceRestClientBuilder()
             .apiVersion("2019-05-06")
             .searchServiceName(searchServiceName)
+            .searchDnsSuffix(searchDnsSuffix)
             .pipeline(
                 new HttpPipelineBuilder()
                     .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
