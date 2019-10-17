@@ -18,8 +18,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Mono;
 
@@ -47,10 +47,11 @@ public final class BlobBatchAsyncClient {
 
     private final AzureBlobStorageImpl client;
 
-    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline) {
+    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, String version) {
         this.client = new AzureBlobStorageBuilder()
             .url(accountUrl)
             .pipeline(pipeline)
+            .version(version)
             .build();
     }
 

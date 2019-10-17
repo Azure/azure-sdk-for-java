@@ -70,8 +70,9 @@ public final class KeyAsyncClient {
      *
      * @param endpoint URL for the Azure KeyVault service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param version {@link KeyServiceVersion} of the service to be used when making requests.
      */
-    KeyAsyncClient(URL endpoint, HttpPipeline pipeline) {
+    KeyAsyncClient(URL endpoint, HttpPipeline pipeline, KeyServiceVersion version) {
         Objects.requireNonNull(endpoint,
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();

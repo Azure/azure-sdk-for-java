@@ -204,21 +204,22 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-URL-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-String-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceOffset The source offset to copy from.  Pass null or 0 to copy from the beginning of source page
      * blob.
      * @return The information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public PageBlobItem uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null, null, Context.NONE)
+    public PageBlobItem uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
+        return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null, null, Context.NONE)
             .getValue();
     }
 
@@ -229,12 +230,12 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
      * ranges are 0-511, 512-1023, etc.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
@@ -246,12 +247,13 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
+    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceURL,
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceUrl,
             sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -463,13 +465,14 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#URL-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
      * @return The copy status.
+     * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
      */
-    public CopyStatusType copyIncremental(URL source, String snapshot) {
+    public CopyStatusType copyIncremental(String source, String snapshot) {
         return copyIncrementalWithResponse(source, snapshot, null, null, Context.NONE).getValue();
     }
 
@@ -483,7 +486,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-ModifiedAccessConditions-Duration-Context}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -493,8 +496,9 @@ public final class PageBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy status.
+     * @throws IllegalArgumentException If {@code source} is a malformed {@link URL}.
      */
-    public Response<CopyStatusType> copyIncrementalWithResponse(URL source, String snapshot,
+    public Response<CopyStatusType> copyIncrementalWithResponse(String source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<CopyStatusType>> response = pageBlobAsyncClient
             .copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context);

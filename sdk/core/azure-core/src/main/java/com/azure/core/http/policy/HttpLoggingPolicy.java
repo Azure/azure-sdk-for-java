@@ -122,11 +122,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
                                         ClientLogger logger) {
-        if (allowedHeaderNames != null && !allowedHeaderNames.isEmpty()) {
+        if (!allowedHeaderNames.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (HttpHeader header : requestResponseHeaders) {
                 sb.append(header.getName()).append(":");
-                if (allowedHeaderNames.contains(header.getName())) {
+                if (allowedHeaderNames.stream().anyMatch(header.getName()::equalsIgnoreCase)) {
                     sb.append(header.getValue());
                 } else {
                     sb.append(REDACTED_PLACEHOLDER);
@@ -145,7 +145,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             for (String queryParam : queryParams) {
                 String[] queryPair = queryParam.split("=", 2);
                 if (queryPair.length == 2) {
-                    if (allowedQueryParamNames.contains(queryPair[0])) {
+                    if (allowedQueryParamNames.stream().anyMatch(queryPair[0]::equalsIgnoreCase)) {
                         sb.append(queryParam);
                     } else {
                         sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);

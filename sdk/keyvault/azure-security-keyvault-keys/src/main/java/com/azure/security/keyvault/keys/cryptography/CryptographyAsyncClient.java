@@ -66,8 +66,9 @@ public class CryptographyAsyncClient {
      *
      * @param key the JsonWebKey to use for cryptography operations.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
-    CryptographyAsyncClient(JsonWebKey key, HttpPipeline pipeline) {
+    CryptographyAsyncClient(JsonWebKey key, HttpPipeline pipeline, CryptographyServiceVersion version) {
         Objects.requireNonNull(key);
         if (!key.isValid()) {
             throw new IllegalArgumentException("Json Web Key is not valid");
@@ -95,8 +96,9 @@ public class CryptographyAsyncClient {
      *
      * @param kid THe Azure Key vault key identifier to use for cryptography operations.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
-    CryptographyAsyncClient(String kid, HttpPipeline pipeline) {
+    CryptographyAsyncClient(String kid, HttpPipeline pipeline, CryptographyServiceVersion version) {
         unpackAndValidateId(kid);
         service = RestProxy.create(CryptographyService.class, pipeline);
         cryptographyServiceClient = new CryptographyServiceClient(kid, service);

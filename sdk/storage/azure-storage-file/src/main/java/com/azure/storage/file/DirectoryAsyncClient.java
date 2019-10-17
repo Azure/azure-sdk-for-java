@@ -109,6 +109,15 @@ public class DirectoryAsyncClient {
     }
 
     /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return azureFileStorageClient.getVersion();
+    }
+
+    /**
      * Constructs a FileAsyncClient that interacts with the specified file.
      *
      * <p>If the file doesn't exist in this directory {@link FileAsyncClient#create(long)} create} in the client will
