@@ -7,6 +7,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
@@ -18,7 +19,7 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
- * BlobServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
+ * BlobServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
  * which can actually be applied to blob urls. Note: that both this class and {@link BlobServiceSasQueryParameters}
  * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
@@ -533,7 +534,7 @@ public final class BlobServiceSasSignatureValues {
      */
     private void ensureState() {
         if (version == null) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+            version = BlobServiceVersion.getLatest().getVersion();
         }
 
         if (ImplUtils.isNullOrEmpty(blobName)) {
