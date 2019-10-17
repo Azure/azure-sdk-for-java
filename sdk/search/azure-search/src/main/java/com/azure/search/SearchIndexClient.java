@@ -5,9 +5,12 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.common.SearchPagedResponse;
+import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteParameters;
 import com.azure.search.models.DocumentIndexResult;
@@ -222,10 +225,11 @@ public class SearchIndexClient {
                                               SearchParameters searchParameters,
                                               SearchRequestOptions searchRequestOptions,
                                               Context context) {
-        PagedFlux<SearchResult> result = asyncClient.search(searchText,
+        PagedFluxBase<SearchResult, SearchPagedResponse> result = asyncClient.search(searchText,
             searchParameters,
             searchRequestOptions,
             context);
+
         return new PagedIterable<>(result);
     }
 
@@ -327,7 +331,7 @@ public class SearchIndexClient {
                                                 SuggestParameters suggestParameters,
                                                 SearchRequestOptions searchRequestOptions,
                                                 Context context) {
-        PagedFlux<SuggestResult> result = asyncClient.suggest(searchText,
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> result = asyncClient.suggest(searchText,
             suggesterName,
             suggestParameters,
             searchRequestOptions,

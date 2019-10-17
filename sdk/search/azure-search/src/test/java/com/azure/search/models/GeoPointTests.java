@@ -86,10 +86,11 @@ public class GeoPointTests extends SearchIndexClientTestBase {
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
-        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+        Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (iterator.hasNext()) {
-            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            SearchPagedResponse result = iterator.next();
             Assert.assertNotNull(result.getItems());
             result.getItems().forEach(item -> searchResults.add(item.getAdditionalProperties()));
         }

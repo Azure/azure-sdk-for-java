@@ -5,6 +5,8 @@ package com.azure.search;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.common.SearchPagedResponse;
+import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestParameters;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
@@ -38,7 +40,9 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setOrderBy(Collections.singletonList("HotelId"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         verifyDynamicDocumentSuggest(iterator.next());
         Assert.assertFalse(iterator.hasNext());
@@ -54,7 +58,9 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setSearchFields(Collections.singletonList("HotelName"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         verifyFieldsExcludesFieldsSuggest(iterator.next());
         Assert.assertFalse(iterator.hasNext());
@@ -73,7 +79,9 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setTop(1);
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         verifyHitHighlightingSuggest(iterator.next());
         Assert.assertFalse(iterator.hasNext());
@@ -89,7 +97,9 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setUseFuzzyMatching(true);
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         verifyFuzzySuggest(iterator.next());
         Assert.assertFalse(iterator.hasNext());
@@ -107,14 +117,16 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         //act
         PagedIterable<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         //assert
         verifyCanSuggestStaticallyTypedDocuments(iterator.next(), hotels);
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+    public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildClient();
 
@@ -135,7 +147,9 @@ public class SuggestSyncTests extends SuggestTestBase {
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
         PagedIterable<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         //assert
         verifyCanSuggestWithDateTimeInStaticModel(iterator.next());
@@ -149,7 +163,9 @@ public class SuggestSyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hitel", "sg", null, null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         verifyFuzzyIsOffByDefault(iterator.next());
     }
@@ -196,13 +212,13 @@ public class SuggestSyncTests extends SuggestTestBase {
             .setMinimumCoverage(50.0);
 
         //act
-        PagedResponse<SuggestResult> suggestResult = client
-            .suggest("luxury", "sg", suggestParams, null)
-            .iterableByPage()
-            .iterator()
-            .next();
+        PagedIterable<SuggestResult> suggestResult = client
+            .suggest("luxury", "sg", suggestParams, null);
 
-        verifyMinimumCoverage(suggestResult);
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        SuggestPagedResponse suggestPagedResponse = pagesIterable.iterator().next();
+
+        verifyMinimumCoverage(suggestPagedResponse);
 
     }
 
@@ -222,7 +238,9 @@ public class SuggestSyncTests extends SuggestTestBase {
             "sg",
             suggestParams,
             null);
-        Iterator<PagedResponse<SuggestResult>> iterator = suggestResult.iterableByPage().iterator();
+
+        Iterable<SuggestPagedResponse> pagesIterable = suggestResult.iterableByPage();
+        Iterator<SuggestPagedResponse> iterator = pagesIterable.iterator();
 
         //assert
         verifyTopDocumentSuggest(iterator.next());
@@ -237,7 +255,7 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         SuggestParameters suggestParams = new SuggestParameters()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy(Arrays.asList("HotelId"));
+            .setOrderBy(Collections.singletonList("HotelId"));
 
         PagedIterable<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();

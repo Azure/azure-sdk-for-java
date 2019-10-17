@@ -64,10 +64,12 @@ public class SearchSyncTests extends SearchTestBase {
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+        Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
+
         List<Map<String, Object>> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
-            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            SearchPagedResponse result = iterator.next();
             Assert.assertNull(result.count());
             Assert.assertNull(result.coverage());
             Assert.assertNull(result.facets());
@@ -161,10 +163,12 @@ public class SearchSyncTests extends SearchTestBase {
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+        Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
+
         List<Hotel> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
-            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+            SearchPagedResponse result = iterator.next();
             Assert.assertNull(result.count());
             Assert.assertNull(result.coverage());
             Assert.assertNull(result.facets());
@@ -370,8 +374,9 @@ public class SearchSyncTests extends SearchTestBase {
         PagedIterable<SearchResult> results = client.search("*", getSearchParametersForRangeFacets(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        for (PagedResponse<SearchResult> searchResultPagedResponse : results.iterableByPage()) {
-            SearchPagedResponse result = (SearchPagedResponse) searchResultPagedResponse;
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+
+        for (SearchPagedResponse result : pagesIterable) {
             assertContainHotelIds(hotels, result.getItems());
             Assert.assertNotNull(result.facets());
             List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.facets(), "Rooms/BaseRate", 4);
@@ -391,8 +396,9 @@ public class SearchSyncTests extends SearchTestBase {
         PagedIterable<SearchResult> results = client.search("*", getSearchParametersForValueFacets(), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        for (PagedResponse<SearchResult> searchResultPagedResponse : results.iterableByPage()) {
-            SearchPagedResponse result = (SearchPagedResponse) searchResultPagedResponse;
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+
+        for (SearchPagedResponse result : pagesIterable) {
             assertContainHotelIds(hotels, result.getItems());
             Map<String, List<FacetResult>> facets = result.facets();
             Assert.assertNotNull(facets);
@@ -528,10 +534,11 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedIterable<SearchResult> results = client.search("*", new SearchParameters().setIncludeTotalResultCount(true), new SearchRequestOptions());
         Assert.assertNotNull(results);
-        Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+        Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
 
-        Assert.assertEquals(hotels.size(), ((SearchPagedResponse) resultsIterator.next()).count().intValue());
-        Assert.assertFalse(resultsIterator.hasNext());
+        Assert.assertEquals(hotels.size(), iterator.next().count().intValue());
+        Assert.assertFalse(iterator.hasNext());
     }
 
     @Override
@@ -606,8 +613,10 @@ public class SearchSyncTests extends SearchTestBase {
             .search("*", new SearchParameters().setMinimumCoverage(50.0), new SearchRequestOptions());
         Assert.assertNotNull(results);
 
-        Iterator<PagedResponse<SearchResult>> resultsIterator = results.iterableByPage().iterator();
-        Assert.assertEquals(100.0, ((SearchPagedResponse) resultsIterator.next()).coverage(), 0);
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+        Iterator<SearchPagedResponse> resultsIterator = pagesIterable.iterator();
+
+        Assert.assertEquals(100.0, resultsIterator.next().coverage(), 0);
     }
 
     @Override
@@ -685,10 +694,12 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterable<SearchResult> results) {
-        Iterator<PagedResponse<SearchResult>> iterator = results.iterableByPage().iterator();
+        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
+        Iterator<SearchPagedResponse> resultsIterator = pagesIterable.iterator();
+
         List<Map<String, Object>> searchResults = new ArrayList<>();
-        while (iterator.hasNext()) {
-            SearchPagedResponse result = (SearchPagedResponse) iterator.next();
+        while (resultsIterator.hasNext()) {
+            SearchPagedResponse result = resultsIterator.next();
             Assert.assertNotNull(result.getItems());
             result.getItems().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getAdditionalProperties())));
         }

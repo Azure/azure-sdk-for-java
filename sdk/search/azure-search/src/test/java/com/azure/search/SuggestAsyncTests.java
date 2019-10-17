@@ -3,6 +3,8 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedFluxBase;
+import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.models.SuggestParameters;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
@@ -29,7 +31,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestParameters suggestParams = new SuggestParameters()
             .setOrderBy(Collections.singletonList("HotelId"));
-        PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -46,7 +48,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestParameters suggestParams = new SuggestParameters()
             .setSearchFields(new LinkedList<>(Collections.singletonList("HotelName")));
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -66,7 +68,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .setFilter("Category eq 'Luxury'")
             .setTop(1);
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -83,7 +85,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestParameters suggestParams = new SuggestParameters()
             .setUseFuzzyMatching(true);
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -102,7 +104,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .setOrderBy(new LinkedList<>(Collections.singletonList("HotelId")));
 
         //act
-        PagedFlux<SuggestResult> suggestResult = client.suggest("more", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("more", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -111,7 +113,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
     }
 
     @Override
-    public void canSuggestWithDateTimeInStaticModel() throws Exception {
+    public void canSuggestWithDateTimeInStaticModel() {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
         Author tolkien = new Author();
@@ -130,7 +132,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         SuggestParameters suggestParams = new SuggestParameters();
         suggestParams.setSelect(Arrays.asList("ISBN", "Title", "PublishDate"));
-        PagedFlux<SuggestResult> suggestResult = client.suggest("War", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("War", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -145,7 +147,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hitel", "sg", null, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hitel", "sg", null, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -158,7 +160,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("Hotel", "Suggester does not exist", null, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -174,7 +176,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         SuggestParameters suggestParams = new SuggestParameters()
             .setOrderBy(Collections.singletonList("This is not a valid orderby."));
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -194,7 +196,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
             .setMinimumCoverage(50.0);
 
         //act
-        PagedFlux<SuggestResult> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("luxury", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -215,7 +217,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
         suggestParams.setTop(3);
 
         //act
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
@@ -232,9 +234,9 @@ public class SuggestAsyncTests extends SuggestTestBase {
 
         SuggestParameters suggestParams = new SuggestParameters()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy(Arrays.asList("HotelId"));
+            .setOrderBy(Collections.singletonList("HotelId"));
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier.create(suggestResult.byPage())
             .assertNext(nextPage -> {
@@ -257,7 +259,7 @@ public class SuggestAsyncTests extends SuggestTestBase {
                 "LastRenovationDate asc",
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')"));
 
-        PagedFlux<SuggestResult> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
+        PagedFluxBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("hotel", "sg", suggestParams, null);
 
         StepVerifier
             .create(suggestResult.byPage())
