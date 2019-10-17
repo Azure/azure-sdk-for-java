@@ -258,28 +258,20 @@ class HelperTest extends APISpec {
         "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
     }
 
-    @Unroll
     def "serviceSasSignatureValues IA"() {
         setup:
         def v = new BlobServiceSasSignatureValues()
             .setPermissions(new BlobSasPermission())
             .setExpiryTime(OffsetDateTime.now())
-            .setBlobName(blobName)
+            .setBlobName("b")
             .setSnapshotId("2018-01-01T00:00:00.0000000Z")
-            .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((SharedKeyCredential) creds)
+        v.generateSasQueryParameters(null)
 
         then:
         def e = thrown(NullPointerException)
-        e.getMessage().contains(parameter)
-
-        where:
-        containerName | version | creds             | blobName || parameter
-        "c"           | null    | primaryCredential | "b"       | "version"
-        "c"           | "v"     | null              | "b"       | "sharedKeyCredentials"
-        "c"           | "v"     | primaryCredential | null      | "canonicalName"
+        e.getMessage().contains("sharedKeyCredentials")
     }
 
     @Unroll
