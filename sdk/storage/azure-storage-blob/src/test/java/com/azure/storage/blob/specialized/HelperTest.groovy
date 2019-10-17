@@ -94,14 +94,9 @@ class HelperTest extends APISpec {
             v.setPermissions(new BlobSasPermission())
         }
 
-        if (snapId != null) {
-            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
-        } else {
-            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_CONSTANT)
-        }
-
         v.setStartTime(startTime)
-            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.getAccountName()))
+            .setContainerName("containerName")
+            .setBlobName("blobName")
             .setSnapshotId(snapId)
 
         if (expiryTime == null) {
@@ -171,19 +166,14 @@ class HelperTest extends APISpec {
         }
 
         v.setStartTime(startTime)
-            .setCanonicalName(String.format("/blob/%s/containerName/blobName", primaryCredential.getAccountName()))
+            .setContainerName("containerName")
+            .setBlobName("blobName")
             .setSnapshotId(snapId)
 
         if (expiryTime == null) {
             v.setExpiryTime(OffsetDateTime.now())
         } else {
             v.setExpiryTime(expiryTime)
-        }
-
-        if (snapId != null) {
-            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
-        } else {
-            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_CONSTANT)
         }
 
         if (ipRange != null) {
@@ -206,7 +196,7 @@ class HelperTest extends APISpec {
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
 
-        BlobServiceSasQueryParameters token = v.generateSasQueryParameters(key)
+        BlobServiceSasQueryParameters token = v.generateSasQueryParameters(key, primaryCredential.getAccountName())
 
         expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(v.getExpiryTime()), primaryCredential.getAccountName())
 
@@ -243,12 +233,11 @@ class HelperTest extends APISpec {
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues()
             .setExpiryTime(expiryTime)
             .setPermissions(new BlobSasPermission())
-            .setResource(expectedResource)
-            .setCanonicalName(String.format("/blob/%s/%s", primaryCredential.getAccountName(), containerName))
+            .setContainerName(containerName)
             .setSnapshotId(snapId)
 
         if (blobName != null) {
-            v.setCanonicalName(v.getCanonicalName() + "/" + blobName)
+            v.setBlobName(blobName)
         }
 
         expectedStringToSign = String.format(expectedStringToSign,
@@ -267,7 +256,6 @@ class HelperTest extends APISpec {
         "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nid\n\n\n\n\n"
         "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
         "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
-
     }
 
     @Unroll
@@ -276,8 +264,7 @@ class HelperTest extends APISpec {
         def v = new BlobServiceSasSignatureValues()
             .setPermissions(new BlobSasPermission())
             .setExpiryTime(OffsetDateTime.now())
-            .setResource(containerName)
-            .setCanonicalName(blobName)
+            .setBlobName(blobName)
             .setSnapshotId("2018-01-01T00:00:00.0000000Z")
             .setVersion(version)
 
@@ -632,13 +619,13 @@ class HelperTest extends APISpec {
             .setHost("host")
             .setContainerName("container")
             .setBlobName("blob")
-            .setSnapshot "snapshot"
+            .setSnapshot("snapshot")
 
         BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
-            .setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
+            .setBlobName("blob")
+            .setContainerName("container")
 
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 

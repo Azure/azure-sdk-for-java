@@ -92,14 +92,16 @@ class CPKTest extends APISpec {
 
     def "Put block from URL with CPK"() {
         setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient().getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
@@ -143,7 +145,8 @@ class CPKTest extends APISpec {
 
     def "Put page from URL wih CPK"() {
         setup:
-        def sourceBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getPageBlobClient()
         sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
@@ -154,7 +157,8 @@ class CPKTest extends APISpec {
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
@@ -198,14 +202,16 @@ class CPKTest extends APISpec {
     def "Append block from URL with CPK"() {
         setup:
         cpkAppendBlob.create()
-        def sourceBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blobName = generateBlobName()
+        def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(sourceBlob.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
