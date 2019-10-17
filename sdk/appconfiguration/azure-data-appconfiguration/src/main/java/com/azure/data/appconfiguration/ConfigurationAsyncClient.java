@@ -256,7 +256,7 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Attempts to get a ConfigurationSetting that matches the {@code key}, the optional {@code label}, and the optional
-     * {@code asOfDateTime} combination.
+     * {@code acceptDateTime} combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -267,8 +267,8 @@ public final class ConfigurationAsyncClient {
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve, or optionally, null if a setting with
      * label is desired.
-     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code asOfDateTime}  is desired.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * {@code acceptDateTime} is desired.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -276,10 +276,10 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime asOfDateTime) {
+    public Mono<ConfigurationSetting> getSetting(String key, String label, OffsetDateTime acceptDateTime) {
         try {
             return withContext(
-                context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime,
+                context -> getSetting(new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime,
                     false, context))
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
@@ -289,7 +289,7 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
-     * {@link ConfigurationSetting#getLabel() label}, optional {@code asOfDateTime} and optional ETag combination.
+     * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -298,8 +298,8 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean}
      *
      * @param setting The setting to retrieve.
-     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code asOfDateTime} is desired.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * {@code acceptDateTime} is desired.
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @return A REST response containing the {@link ConfigurationSetting} stored in the service, or {@code null} if
@@ -312,23 +312,23 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting,
-                                                                       OffsetDateTime asOfDateTime,
+                                                                       OffsetDateTime acceptDateTime,
                                                                        boolean ifChanged) {
         try {
-            return withContext(context -> getSetting(setting, asOfDateTime, ifChanged, context));
+            return withContext(context -> getSetting(setting, acceptDateTime, ifChanged, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime asOfDateTime,
+    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, OffsetDateTime acceptDateTime,
                                                     boolean onlyIfChanged, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
-            asOfDateTime == null ? null : asOfDateTime.toString(), null, ifNoneMatchETag, context)
+            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
@@ -530,8 +530,6 @@ public final class ConfigurationAsyncClient {
             return monoError(logger, ex);
         }
     }
-
-
 
     Mono<Response<ConfigurationSetting>> clearReadOnly(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.

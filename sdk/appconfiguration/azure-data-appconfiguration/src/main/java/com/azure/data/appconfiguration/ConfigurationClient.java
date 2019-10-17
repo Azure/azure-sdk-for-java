@@ -182,7 +182,7 @@ public final class ConfigurationClient {
 
     /**
      * Attempts to get a ConfigurationSetting that matches the {@code key}, the optional {@code label}, and the optional
-     * {@code asOfDateTime} combination.
+     * {@code acceptDateTime} combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -193,8 +193,8 @@ public final class ConfigurationClient {
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to create or update, or optionally, null if a setting with
      * label is desired.
-     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code asOfDateTime} is desired.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * {@code acceptDateTime} is desired.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -202,15 +202,15 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime asOfDateTime) {
+    public ConfigurationSetting getSetting(String key, String label, OffsetDateTime acceptDateTime) {
         return client.getSetting(
-            new ConfigurationSetting().setKey(key).setLabel(label), asOfDateTime, false, Context.NONE)
+            new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE)
             .flatMap(FluxUtil::toMono).block();
     }
 
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
-     * {@link ConfigurationSetting#getLabel() label}, optional {@code asOfDateTime} and optional ETag combination.
+     * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -219,8 +219,8 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context}
      *
      * @param setting The setting to retrieve.
-     * @param asOfDateTime To access a past state of the configuration setting, or optionally, null if a setting with
-     * {@code asOfDateTime} is desired.
+     * @param acceptDateTime To access a past state of the configuration setting, or optionally, null if a setting with
+     * {@code acceptDateTime} is desired.
      * @param ifChanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
      * If-None-Match header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -234,10 +234,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting,
-                                                                 OffsetDateTime asOfDateTime,
+                                                                 OffsetDateTime acceptDateTime,
                                                                  boolean ifChanged,
                                                                  Context context) {
-        return client.getSetting(setting, asOfDateTime, ifChanged, context).block();
+        return client.getSetting(setting, acceptDateTime, ifChanged, context).block();
     }
 
     /**
