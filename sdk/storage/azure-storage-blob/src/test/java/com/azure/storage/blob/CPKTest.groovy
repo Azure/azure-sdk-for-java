@@ -93,7 +93,7 @@ class CPKTest extends APISpec {
     def "Put block from URL with CPK"() {
         setup:
         def blobName = generateBlobName()
-        def sourceBlob = cc.getBlobClient().getBlockBlobClient()
+        def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
