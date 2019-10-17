@@ -46,7 +46,7 @@ public final class DequeuedMessage {
      * The time that the message will again become visible in the Queue.
      */
     @JsonProperty(value = "TimeNextVisible", required = true)
-    private DateTimeRfc1123 timeNextVisible;
+    private DateTimeRfc1123 nextTimeVisible;
 
     /*
      * The number of times the message has been dequeued.
@@ -168,11 +168,11 @@ public final class DequeuedMessage {
      *
      * @return the timeNextVisible value.
      */
-    public OffsetDateTime getTimeNextVisible() {
-        if (this.timeNextVisible == null) {
+    public OffsetDateTime getNextTimeVisible() {
+        if (this.nextTimeVisible == null) {
             return null;
         }
-        return this.timeNextVisible.getDateTime();
+        return this.nextTimeVisible.getDateTime();
     }
 
     /**
@@ -182,11 +182,11 @@ public final class DequeuedMessage {
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the DequeuedMessage object itself.
      */
-    public DequeuedMessage setTimeNextVisible(OffsetDateTime timeNextVisible) {
+    public DequeuedMessage setNextTimeVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
-            this.timeNextVisible = null;
+            this.nextTimeVisible = null;
         } else {
-            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
+            this.nextTimeVisible = new DateTimeRfc1123(timeNextVisible);
         }
         return this;
     }

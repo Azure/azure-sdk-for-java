@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.credentials;
-
-import com.azure.storage.common.StorageSharedKeyCredential;
+package com.azure.storage.common;
 
 /**
  * Code snippets for {@link StorageSharedKeyCredential}.

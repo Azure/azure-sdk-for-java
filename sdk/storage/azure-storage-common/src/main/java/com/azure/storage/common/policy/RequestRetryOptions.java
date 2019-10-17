@@ -66,7 +66,7 @@ public final class RequestRetryOptions {
         }
 
         if (tryTimeout != null) {
-            Utility.assertInBounds("getTryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
+            Utility.assertInBounds("tryTimeout", tryTimeout, 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
             this.tryTimeout = Integer.MAX_VALUE;
@@ -79,8 +79,8 @@ public final class RequestRetryOptions {
         }
 
         if (retryDelayInMs != null) {
-            Utility.assertInBounds("getMaxRetryDelayInMs", maxRetryDelayInMs, 1, Long.MAX_VALUE);
-            Utility.assertInBounds("getRetryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
+            Utility.assertInBounds("maxRetryDelayInMs", maxRetryDelayInMs, 1, Long.MAX_VALUE);
+            Utility.assertInBounds("retryDelayInMs", retryDelayInMs, 1, maxRetryDelayInMs);
             this.maxRetryDelayInMs = maxRetryDelayInMs;
             this.retryDelayInMs = retryDelayInMs;
         } else {

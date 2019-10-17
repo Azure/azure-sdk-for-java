@@ -65,7 +65,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * @param primaryTry Number of attempts against the primary DC.
      * @param attempt This indicates the total number of attempts to send the request.
      * @return A single containing either the successful response or an error that was not retryable because either the
-     * getMaxTries was exceeded or retries will not mitigate the issue.
+     * {@code maxTries} was exceeded or retries will not mitigate the issue.
      */
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
