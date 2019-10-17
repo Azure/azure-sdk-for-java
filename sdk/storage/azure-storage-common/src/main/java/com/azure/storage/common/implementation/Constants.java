@@ -42,6 +42,12 @@ public final class Constants {
     public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
         "%s could not be parsed from '%s' due to invalid value %s.";
 
+    /**
+     * Exception message when trying to write to an existing blob without specifying overwrite.
+     */
+    public static final String BLOB_ALREADY_EXISTS =
+        "Blob already exists. Specify overwrite to true to force update the blob.";
+
     private Constants() {
     }
 
@@ -106,6 +112,8 @@ public final class Constants {
         public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
 
         public static final String REQUEST_SERVER_ENCRYPTED = "x-ms-request-server-encrypted";
+
+        public static final String ETAG_WILDCARD = "*";
 
         private HeaderConstants() {
             // Private to prevent construction.

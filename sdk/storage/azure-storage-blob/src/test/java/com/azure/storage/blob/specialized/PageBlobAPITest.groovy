@@ -40,7 +40,7 @@ class PageBlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
 
         when:
-        def response = bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null)
+        def response = bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -51,12 +51,12 @@ class PageBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, null, null, null).getStatusCode() == 201
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Create sequence number"() {
         when:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2, null, null, null, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, 2, null, null, null, null, null)
 
         then:
         bc.getProperties().getBlobSequenceNumber() == 2
@@ -73,7 +73,7 @@ class PageBlobAPITest extends APISpec {
             .setBlobContentType(contentType)
 
         when:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, headers, null, null, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, headers, null, null, null, null)
 
         def response = bc.getPropertiesWithResponse(null, null, null)
 
@@ -101,7 +101,7 @@ class PageBlobAPITest extends APISpec {
         }
 
         when:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, metadata, null, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, null, metadata, null, null, null)
 
         def response = bc.getPropertiesWithResponse(null, null, null)
 
@@ -128,7 +128,7 @@ class PageBlobAPITest extends APISpec {
 
         expect:
 
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null).getStatusCode() == 201
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -152,7 +152,7 @@ class PageBlobAPITest extends APISpec {
                 .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch)))
 
         when:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null, bac, null, null)
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, null, null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -168,7 +168,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Create error"() {
         when:
-        bc.createWithResponse(PageBlobClient.PAGE_BYTES, null, null, null,
+        bc.createWithResponse(PageBlobClient.PAGE_BYTES, false, null, null, null,
             new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId("id")), null, null)
 
         then:

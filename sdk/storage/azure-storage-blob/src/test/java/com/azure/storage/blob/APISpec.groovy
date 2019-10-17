@@ -188,6 +188,7 @@ class APISpec extends Specification {
     }
 
     static TestMode setupTestMode() {
+        return TestMode.RECORD
         String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE)
 
         if (testMode != null) {

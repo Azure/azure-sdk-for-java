@@ -101,7 +101,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return The information of the created appended blob.
      */
     public AppendBlobItem create() {
-        return createWithResponse(null, null, null, null, Context.NONE).getValue();
+        return createWithResponse(false, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -109,7 +109,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#boolean-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context}
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
@@ -118,10 +118,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobAccessConditions accessConditions, Duration timeout, Context context) {
+    public Response<AppendBlobItem> createWithResponse(boolean overwrite, BlobHttpHeaders headers,
+        Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         return Utility.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createWithResponse(headers, metadata, accessConditions, context), timeout);
+            createWithResponse(overwrite, headers, metadata, accessConditions, context), timeout);
     }
 
     /**

@@ -32,7 +32,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Create defaults"() {
         when:
-        def createResponse = bc.createWithResponse(null, null, null, null, null)
+        def createResponse = bc.createWithResponse(false, null, null, null, null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -43,12 +43,12 @@ class AppendBlobAPITest extends APISpec {
 
     def "Create min"() {
         expect:
-        bc.createWithResponse(null, null, null, null, null).getStatusCode() == 201
+        bc.createWithResponse(false, null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Create error"() {
         when:
-        bc.createWithResponse(null, null, new BlobAccessConditions()
+        bc.createWithResponse(false, null, null, new BlobAccessConditions()
             .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch("garbage")), null, Context.NONE)
 
         then:
@@ -66,7 +66,7 @@ class AppendBlobAPITest extends APISpec {
             .setBlobContentType(contentType)
 
         when:
-        bc.createWithResponse(headers, null, null, null, null)
+        bc.createWithResponse(false, headers, null, null, null, null)
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
@@ -93,7 +93,7 @@ class AppendBlobAPITest extends APISpec {
         }
 
         when:
-        bc.createWithResponse(null, metadata, null, null, Context.NONE)
+        bc.createWithResponse(false, null, metadata, null, null, Context.NONE)
         def response = bc.getProperties()
 
         then:
@@ -119,7 +119,7 @@ class AppendBlobAPITest extends APISpec {
 
 
         expect:
-        bc.createWithResponse(null, null, bac, null, null).getStatusCode() == 201
+        bc.createWithResponse(false, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -144,7 +144,7 @@ class AppendBlobAPITest extends APISpec {
                 .setIfNoneMatch(noneMatch))
 
         when:
-        bc.createWithResponse(null, null, bac, null, Context.NONE)
+        bc.createWithResponse(false, null, null, bac, null, Context.NONE)
 
         then:
         thrown(BlobStorageException)

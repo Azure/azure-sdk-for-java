@@ -422,12 +422,12 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link BlobClient#uploadFromFile(String, boolean, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-boolean-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -440,9 +440,10 @@ public class BlobClientJavaDocCodeSnippets {
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Integer blockSize = 100 * 1024 * 1024; // 100 MB;
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize);
+        boolean overwrite = false; // default behavior
 
         try {
-            client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata,
+            client.uploadFromFile(filePath, overwrite, parallelTransferOptions, headers, metadata,
                 AccessTier.HOT, accessConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {

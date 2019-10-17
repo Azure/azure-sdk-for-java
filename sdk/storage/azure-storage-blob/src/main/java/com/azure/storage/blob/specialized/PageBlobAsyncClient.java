@@ -87,7 +87,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the created page blob.
      */
     public Mono<PageBlobItem> create(long size) {
-        return createWithResponse(size, null, null, null, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(size, false, null, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-boolean-Long-BlobHttpHeaders-Map-BlobAccessConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -110,15 +110,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
      */
-    public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, BlobAccessConditions accessConditions) {
+    public Mono<Response<PageBlobItem>> createWithResponse(long size, boolean overwrite, Long sequenceNumber,
+        BlobHttpHeaders headers, Map<String, String> metadata, BlobAccessConditions accessConditions) {
         return withContext(context ->
-            createWithResponse(size, sequenceNumber, headers, metadata, accessConditions, context));
+            createWithResponse(size, overwrite, sequenceNumber, headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, BlobAccessConditions accessConditions, Context context) {
+    Mono<Response<PageBlobItem>> createWithResponse(long size, boolean overwrite, Long sequenceNumber,
+        BlobHttpHeaders headers, Map<String, String> metadata, BlobAccessConditions accessConditions, Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        if (!overwrite) {
+            accessConditions.getModifiedAccessConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
 
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until

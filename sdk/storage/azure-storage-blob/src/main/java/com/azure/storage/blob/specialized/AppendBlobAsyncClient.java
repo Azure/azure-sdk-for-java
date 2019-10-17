@@ -81,7 +81,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing the information of the created appended blob.
      */
     public Mono<AppendBlobItem> create() {
-        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        return createWithResponse(false, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -89,7 +89,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#boolean-BlobHttpHeaders-Map-BlobAccessConditions}
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
@@ -97,14 +97,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
      * appended blob.
      */
-    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobAccessConditions accessConditions) {
-        return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
+    public Mono<Response<AppendBlobItem>> createWithResponse(boolean overwrite, BlobHttpHeaders headers,
+        Map<String, String> metadata, BlobAccessConditions accessConditions) {
+        return withContext(context -> createWithResponse(overwrite, headers, metadata, accessConditions, context));
     }
 
-    Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobAccessConditions accessConditions, Context context) {
+    Mono<Response<AppendBlobItem>> createWithResponse(boolean overwrite, BlobHttpHeaders headers,
+        Map<String, String> metadata, BlobAccessConditions accessConditions, Context context) {
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
+        if (!overwrite) {
+            accessConditions.getModifiedAccessConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
 
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
             null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(),

@@ -688,7 +688,7 @@ class ContainerAPITest extends APISpec {
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
-        metadataBlob.createWithResponse(512, null, null, metadata, null, null, null)
+        metadataBlob.createWithResponse(512, false, null, null, metadata, null, null, null)
 
         def snapshotTime = normal.createSnapshot().getSnapshotId()
 
@@ -1171,10 +1171,10 @@ class ContainerAPITest extends APISpec {
         def bu5 = cc.getBlobClient(name).getBlockBlobClient()
 
         expect:
-        bu2.createWithResponse(null, null, null, null, null).getStatusCode() == 201
+        bu2.createWithResponse(false, null, null, null, null, null).getStatusCode() == 201
         bu5.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-        bu3.createWithResponse(512, null, null, null, null, null, null).getStatusCode() == 201
-        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null, null).getStatusCode() == 201
+        bu3.createWithResponse(512, false, null, null, null, null, null, null).getStatusCode() == 201
+        bu4.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, null, null, null, null, null, null).getStatusCode() == 201
 
         when:
         def blobs = cc.listBlobsFlat().iterator()
@@ -1205,7 +1205,7 @@ class ContainerAPITest extends APISpec {
         def bu = cc.getBlobClient("rootblob").getAppendBlobClient()
 
         expect:
-        bu.createWithResponse(null, null, null, null, null).getStatusCode() == 201
+        bu.createWithResponse(false, null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Root explicit in endpoint"() {
@@ -1219,7 +1219,7 @@ class ContainerAPITest extends APISpec {
         def bu = cc.getBlobClient("rootblob").getAppendBlobClient()
 
         when:
-        def createResponse = bu.createWithResponse(null, null, null, null, null)
+        def createResponse = bu.createWithResponse(false, null, null, null, null, null)
         def propsResponse = bu.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -1245,7 +1245,7 @@ class ContainerAPITest extends APISpec {
             .buildClient().getAppendBlobClient()
 
         when:
-        Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null)
+        Response<AppendBlobItem> createResponse = bc.createWithResponse(false, null, null, null, null, null)
 
         Response<BlobProperties> propsResponse = bc.getPropertiesWithResponse(null, null, null)
 

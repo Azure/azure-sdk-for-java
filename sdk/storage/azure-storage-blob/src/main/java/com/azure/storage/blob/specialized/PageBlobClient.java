@@ -109,7 +109,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the created page blob.
      */
     public PageBlobItem create(long size) {
-        return createWithResponse(size, null, null, null, null, null, Context.NONE).getValue();
+        return createWithResponse(size, false, null, null, null, null, null, Context.NONE).getValue();
     }
 
 
@@ -120,7 +120,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-boolean-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -133,10 +133,11 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
-    public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
-        Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
-            metadata, accessConditions, context);
+    public Response<PageBlobItem> createWithResponse(long size, boolean override, Long sequenceNumber,
+        BlobHttpHeaders headers, Map<String, String> metadata, BlobAccessConditions accessConditions, Duration timeout,
+        Context context) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, override, sequenceNumber,
+            headers, metadata, accessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

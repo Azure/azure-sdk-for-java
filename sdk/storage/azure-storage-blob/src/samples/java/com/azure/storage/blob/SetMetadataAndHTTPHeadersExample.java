@@ -80,7 +80,7 @@ public class SetMetadataAndHTTPHeadersExample {
          */
         String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null, null, null);
+        blobClient.uploadWithResponse(dataStream, data.length(), false, blobHTTPHeaders, blobMetadata, null, null, null, null);
 
         /*
          * Clean up the container and blob.
