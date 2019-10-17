@@ -21,8 +21,6 @@ import com.azure.storage.common.implementation.Constants;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -36,19 +34,13 @@ public class BlobClientBaseJavaDocCodeSnippets {
     private BlobClientBase client = new BlobClientBase(null);
     private String leaseId = "leaseId";
     private String copyId = "copyId";
-    private URL url = new URL("https://sample.com");
+    private String url = "https://sample.com";
     private String file = "file";
     private Duration timeout = Duration.ofSeconds(30);
     private String key1 = "key1";
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
-
-    /**
-     * @throws MalformedURLException Ignore
-     */
-    public BlobClientBaseJavaDocCodeSnippets() throws MalformedURLException {
-    }
 
     /**
      * Code snippets for {@link BlobClientBase#exists()}
@@ -60,12 +52,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#startCopyFromURL(URL)}
+     * Code snippets for {@link BlobClientBase#startCopyFromURL(String)}
      */
     public void startCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#URL
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#String
         System.out.printf("Copy identifier: %s%n", client.startCopyFromURL(url));
-        // END: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#URL
+        // END: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#String
     }
 
     /**
@@ -79,12 +71,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromURL(URL)}
+     * Code snippets for {@link BlobClientBase#copyFromURL(String)}
      */
     public void copyFromURL() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#URL
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String
         System.out.printf("Copy identifier: %s%n", client.copyFromURL(url));
-        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#URL
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String
     }
 
     /**
@@ -212,12 +204,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#startCopyFromURLWithResponse(URL, Map, AccessTier, RehydratePriority,
+     * Code snippets for {@link BlobClientBase#startCopyFromURLWithResponse(String, Map, AccessTier, RehydratePriority,
      * ModifiedAccessConditions, BlobAccessConditions, Duration, Context)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -228,7 +220,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
                 modifiedAccessConditions, blobAccessConditions, timeout,
                 new Context(key2, value2)));
-        // END: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
     /**
@@ -245,12 +237,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromURLWithResponse(URL, Map, AccessTier, ModifiedAccessConditions,
+     * Code snippets for {@link BlobClientBase#copyFromURLWithResponse(String, Map, AccessTier, ModifiedAccessConditions,
      * BlobAccessConditions, Duration, Context)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -261,7 +253,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
                 blobAccessConditions, timeout,
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#URL-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
     /**

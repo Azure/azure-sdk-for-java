@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -197,6 +198,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
         endpoint(blobClient.getBlobUrl());
+        serviceVersion(fromClientVersion(blobClient.getServiceVersion()));
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
@@ -211,6 +213,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
         endpoint(blobAsyncClient.getBlobUrl());
+        serviceVersion(fromClientVersion(blobAsyncClient.getServiceVersion()));
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
@@ -226,6 +229,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
         endpoint(blobContainerClient.getBlobContainerUrl());
+        serviceVersion(fromClientVersion(blobContainerClient.getServiceVersion()));
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
@@ -243,6 +247,7 @@ public final class SpecializedBlobClientBuilder {
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
         endpoint(blobContainerAsyncClient.getBlobContainerUrl());
+        serviceVersion(fromClientVersion(blobContainerAsyncClient.getServiceVersion()));
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;
@@ -501,5 +506,12 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    private static BlobServiceVersion fromClientVersion(String version) {
+        return Arrays.stream(BlobServiceVersion.values())
+            .filter(en -> Objects.equals(en.getVersion(), version))
+            .findFirst()
+            .orElseGet(BlobServiceVersion::getLatest);
     }
 }

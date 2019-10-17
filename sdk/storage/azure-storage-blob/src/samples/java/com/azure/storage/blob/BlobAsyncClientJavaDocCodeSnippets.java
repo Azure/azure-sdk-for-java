@@ -19,7 +19,6 @@ import reactor.core.publisher.Flux;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -37,7 +36,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes(StandardCharsets.UTF_8)));
     private String leaseId = "leaseId";
     private String copyId = "copyId";
-    private URL url = JavaDocCodeSnippetsHelpers.generateURL("https://sample.com");
+    private String url = "https://sample.com";
     private String file = "file";
     private int blockSize = 50;
     private int numBuffers = 2;
@@ -53,13 +52,13 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(URL)}
+     * Code snippets for {@link BlobAsyncClient#startCopyFromURL(String)}
      */
     public void startCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#String
         client.startCopyFromURL(url)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL
+        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#String
     }
 
     /**
@@ -72,12 +71,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURL(URL)}
+     * Code snippets for {@link BlobAsyncClient#copyFromURL(String)}
      */
     public void copyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
         client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL
+        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
     }
 
     /**
@@ -228,12 +227,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(URL, Map, AccessTier,
+     * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(String, Map, AccessTier,
      * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -243,7 +242,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
             modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#URL-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**
@@ -260,12 +259,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(URL, Map, AccessTier,
+     * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(String, Map, AccessTier,
      * ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -274,7 +273,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#URL-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
     }
 
     /**

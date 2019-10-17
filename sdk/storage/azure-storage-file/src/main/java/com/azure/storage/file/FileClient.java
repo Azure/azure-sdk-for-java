@@ -18,10 +18,10 @@ import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.FileUploadRangeFromUrlInfo;
 import com.azure.storage.file.models.HandleItem;
-import com.azure.storage.file.models.FileStorageException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
@@ -71,6 +70,15 @@ public class FileClient {
      */
     public String getFileUrl() {
         return fileAsyncClient.getFileUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return fileAsyncClient.getServiceVersion();
     }
 
     /**
@@ -649,7 +657,7 @@ public class FileClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromUrl#long-long-long-uri}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadRangeFromUrl#long-long-long-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -657,13 +665,13 @@ public class FileClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
-     * @param sourceURI Specifies the URL of the source file.
+     * @param sourceUrl Specifies the URL of the source file.
      * @return The {@link FileUploadRangeFromUrlInfo file upload range from url info}
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public FileUploadRangeFromUrlInfo uploadRangeFromUrl(long length, long destinationOffset, long sourceOffset,
-        URI sourceURI) {
-        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceURI, null, Context.NONE)
+        String sourceUrl) {
+        return uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl, null, Context.NONE)
             .getValue();
     }
 
@@ -674,7 +682,7 @@ public class FileClient {
      *
      * <p>Upload a number of bytes from a file at defined source and destination offsets </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadRangeFromUrlWithResponse#long-long-long-uri-duration-context}
+     * {@codesnippet com.azure.storage.file.FileClient.uploadRangeFromUrlWithResponse#long-long-long-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
@@ -682,7 +690,7 @@ public class FileClient {
      * @param length Specifies the number of bytes being transmitted in the request body.
      * @param destinationOffset Starting point of the upload range on the destination.
      * @param sourceOffset Starting point of the upload range on the source.
-     * @param sourceURI Specifies the URL of the source file.
+     * @param sourceUrl Specifies the URL of the source file.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -692,9 +700,9 @@ public class FileClient {
      */
     // TODO: (gapra) Fix put range from URL link. Service docs have not been updated to show this API
     public Response<FileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
-        long sourceOffset, URI sourceURI, Duration timeout, Context context) {
+        long sourceOffset, String sourceUrl, Duration timeout, Context context) {
         Mono<Response<FileUploadRangeFromUrlInfo>> response = fileAsyncClient.uploadRangeFromUrlWithResponse(length,
-            destinationOffset, sourceOffset, sourceURI, context);
+            destinationOffset, sourceOffset, sourceUrl, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

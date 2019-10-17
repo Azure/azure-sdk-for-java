@@ -11,12 +11,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /**
- * The object returned in the QueueMessageList array when calling Put Message
+ * The object returned in the QueueMessageList array when calling Get Messages
  * on a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class EnqueuedMessage {
+public final class QueueMessageItem {
     /*
      * The Id of the Message.
      */
@@ -46,7 +46,19 @@ public final class EnqueuedMessage {
      * The time that the message will again become visible in the Queue.
      */
     @JsonProperty(value = "TimeNextVisible", required = true)
-    private DateTimeRfc1123 timeNextVisible;
+    private DateTimeRfc1123 nextTimeVisible;
+
+    /*
+     * The number of times the message has been dequeued.
+     */
+    @JsonProperty(value = "DequeueCount", required = true)
+    private long dequeueCount;
+
+    /*
+     * The content of the Message.
+     */
+    @JsonProperty(value = "MessageText", required = true)
+    private String messageText;
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -61,9 +73,9 @@ public final class EnqueuedMessage {
      * Set the messageId property: The Id of the Message.
      *
      * @param messageId the messageId value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public EnqueuedMessage setMessageId(String messageId) {
+    public QueueMessageItem setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -86,9 +98,9 @@ public final class EnqueuedMessage {
      * the Queue.
      *
      * @param insertionTime the insertionTime value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public EnqueuedMessage setInsertionTime(OffsetDateTime insertionTime) {
+    public QueueMessageItem setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -115,9 +127,9 @@ public final class EnqueuedMessage {
      * and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public EnqueuedMessage setExpirationTime(OffsetDateTime expirationTime) {
+    public QueueMessageItem setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -143,9 +155,9 @@ public final class EnqueuedMessage {
      * been dequeued by another client.
      *
      * @param popReceipt the popReceipt value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public EnqueuedMessage setPopReceipt(String popReceipt) {
+    public QueueMessageItem setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
     }
@@ -156,11 +168,11 @@ public final class EnqueuedMessage {
      *
      * @return the timeNextVisible value.
      */
-    public OffsetDateTime getTimeNextVisible() {
-        if (this.timeNextVisible == null) {
+    public OffsetDateTime getNextTimeVisible() {
+        if (this.nextTimeVisible == null) {
             return null;
         }
-        return this.timeNextVisible.getDateTime();
+        return this.nextTimeVisible.getDateTime();
     }
 
     /**
@@ -168,14 +180,57 @@ public final class EnqueuedMessage {
      * become visible in the Queue.
      *
      * @param timeNextVisible the timeNextVisible value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public EnqueuedMessage setTimeNextVisible(OffsetDateTime timeNextVisible) {
+
+    public QueueMessageItem setNextTimeVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
-            this.timeNextVisible = null;
+            this.nextTimeVisible = null;
         } else {
-            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
+            this.nextTimeVisible = new DateTimeRfc1123(timeNextVisible);
         }
+        return this;
+    }
+
+    /**
+     * Get the dequeueCount property: The number of times the message has been
+     * dequeued.
+     *
+     * @return the dequeueCount value.
+     */
+    public long getDequeueCount() {
+        return this.dequeueCount;
+    }
+
+    /**
+     * Set the dequeueCount property: The number of times the message has been
+     * dequeued.
+     *
+     * @param dequeueCount the dequeueCount value to set.
+     * @return the QueueMessageItem object itself.
+     */
+    public QueueMessageItem setDequeueCount(long dequeueCount) {
+        this.dequeueCount = dequeueCount;
+        return this;
+    }
+
+    /**
+     * Get the messageText property: The content of the Message.
+     *
+     * @return the messageText value.
+     */
+    public String getMessageText() {
+        return this.messageText;
+    }
+
+    /**
+     * Set the messageText property: The content of the Message.
+     *
+     * @param messageText the messageText value to set.
+     * @return the QueueMessageItem object itself.
+     */
+    public QueueMessageItem setMessageText(String messageText) {
+        this.messageText = messageText;
         return this;
     }
 }
