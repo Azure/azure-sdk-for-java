@@ -244,8 +244,8 @@ public class BlobClientBase {
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<String> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-        RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+    public Response<String> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata,
+        AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
         BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = client
             .startCopyFromURLWithResponse(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
