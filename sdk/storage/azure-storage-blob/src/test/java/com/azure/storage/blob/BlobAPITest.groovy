@@ -386,7 +386,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers null"() {
         setup:
-        def response = bc.setHTTPHeadersWithResponse(null, null, null, null)
+        def response = bc.setHttpHeadersWithResponse(null, null, null, null)
 
         expect:
         response.getStatusCode() == 200
@@ -404,7 +404,7 @@ class BlobAPITest extends APISpec {
             .setBlobContentLanguage(properties.getContentLanguage())
             .setBlobContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
-        bc.setHTTPHeaders(headers)
+        bc.setHttpHeaders(headers)
 
         expect:
         bc.getProperties().getContentType() == "type"
@@ -420,7 +420,7 @@ class BlobAPITest extends APISpec {
             .setBlobContentMD5(contentMD5)
             .setBlobContentType(contentType)
 
-        bc.setHTTPHeaders(putHeaders)
+        bc.setHttpHeaders(putHeaders)
 
         expect:
         validateBlobProperties(
@@ -448,7 +448,7 @@ class BlobAPITest extends APISpec {
                 .setIfNoneMatch(noneMatch))
 
         expect:
-        bc.setHTTPHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
+        bc.setHttpHeadersWithResponse(null, bac, null, null).getStatusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -474,7 +474,7 @@ class BlobAPITest extends APISpec {
                 .setIfNoneMatch(noneMatch))
 
         when:
-        bc.setHTTPHeadersWithResponse(null, bac, null, null)
+        bc.setHttpHeadersWithResponse(null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
@@ -493,7 +493,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.setHTTPHeaders(null)
+        bc.setHttpHeaders(null)
 
         then:
         thrown(BlobStorageException)
