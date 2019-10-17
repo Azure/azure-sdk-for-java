@@ -9,7 +9,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
@@ -110,7 +110,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
     private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
         final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
 
-        return tokenProvider.getToken(new TokenRequest().addScopes(tokenAudience)).flatMap(accessToken -> {
+        return tokenProvider.getToken(new TokenRequestContext().addScopes(tokenAudience)).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
 
             final Message request = Proton.message();
