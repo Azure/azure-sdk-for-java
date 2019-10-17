@@ -4,6 +4,7 @@
 module com.azure.search {
     requires transitive com.azure.core;
     requires org.apache.commons.lang3;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     opens com.azure.search to com.fasterxml.jackson.databind;
     opens com.azure.search.models to com.fasterxml.jackson.databind;
