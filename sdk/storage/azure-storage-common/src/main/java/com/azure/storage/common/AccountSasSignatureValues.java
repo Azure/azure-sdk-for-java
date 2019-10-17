@@ -55,7 +55,8 @@ public final class AccountSasSignatureValues {
     /**
      * Shared method between service clients to generate an account SAS.
      *
-     * @param storageSharedKeyCredential The {@code StorageSharedKeyCredential} shared key credential for the account SAS
+     * @param storageSharedKeyCredential The {@code StorageSharedKeyCredential} shared key credential for the account
+     * SAS.
      * @param accountSasService The {@code AccountSasService} services for the account SAS
      * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
      * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
@@ -69,9 +70,9 @@ public final class AccountSasSignatureValues {
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
     public static String generateAccountSas(StorageSharedKeyCredential storageSharedKeyCredential,
-                                            AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
-                                            AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
-                                            String version, SasIpRange sasIpRange, SasProtocol sasProtocol) {
+        AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
+        AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
+        String version, SasIpRange sasIpRange, SasProtocol sasProtocol) {
 
         AccountSasSignatureValues values = new AccountSasSignatureValues();
 
@@ -248,13 +249,15 @@ public final class AccountSasSignatureValues {
      * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters needed to make an
      * actual REST request.
      *
-     * @param storageSharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
+     * @param storageSharedKeyCredentials Credentials for the storage account and corresponding primary or secondary
+     * key.
      * @return {@link AccountSasQueryParameters}
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code storageSharedKeyCredentials} fails to generate.
-     * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services}, {@code resourceTypes},
-     * {@code expiryTime}, {@code permissions} or {@code versions} is null
+     * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services},
+     * {@code resourceTypes}, {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public AccountSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public AccountSasQueryParameters generateSasQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
         Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);

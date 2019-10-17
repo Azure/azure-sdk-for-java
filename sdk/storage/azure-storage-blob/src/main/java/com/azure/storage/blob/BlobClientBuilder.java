@@ -214,9 +214,9 @@ public final class BlobClientBuilder {
     }
 
     /**
-     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
+     * Additionally, if the connection string contains `DefaultEndpointsProtocol` and
+     * `EndpointSuffix` it will set the {@link #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated BlobClientBuilder

@@ -514,7 +514,8 @@ public final class Utility {
         for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
             if (httpPipelinePolicy instanceof StorageSharedKeyCredentialPolicy) {
-                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy = (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
+                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy =
+                    (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
                 return storageSharedKeyCredentialPolicy.sharedKeyCredential();
             }
         }

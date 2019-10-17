@@ -460,7 +460,8 @@ public final class BlobServiceSasSignatureValues {
      * @throws NullPointerException if {@code storageSharedKeyCredentials} is null. Or if any of {@code version},
      * {@code canonicalName}, {@code resource} or {@code identifier} are null.
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public BlobServiceSasQueryParameters generateSasQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
         Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK(false);
 

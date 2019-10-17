@@ -262,7 +262,8 @@ public final class QueueServiceSasSignatureValues {
      * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
      * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
      */
-    public QueueServiceSasQueryParameters generateSASQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public QueueServiceSasQueryParameters generateSASQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
         Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK();
 
