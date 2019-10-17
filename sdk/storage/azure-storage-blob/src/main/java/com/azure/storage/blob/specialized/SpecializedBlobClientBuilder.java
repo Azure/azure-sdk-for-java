@@ -508,7 +508,7 @@ public final class SpecializedBlobClientBuilder {
         return this;
     }
 
-    private BlobServiceVersion fromClientVersion(String version) {
+    private static BlobServiceVersion fromClientVersion(String version) {
         return Arrays.stream(BlobServiceVersion.values())
             .filter(en -> Objects.equals(en.getVersion(), version))
             .findFirst()
