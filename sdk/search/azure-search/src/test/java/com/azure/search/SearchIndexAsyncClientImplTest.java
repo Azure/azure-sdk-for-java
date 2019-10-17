@@ -4,10 +4,8 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.search.common.jsonwrapper.JsonWrapper;
-import com.azure.search.common.jsonwrapper.api.JsonApi;
-import com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
+import com.azure.core.http.rest.PagedFluxBase;
+import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.SearchParameters;
 import com.azure.search.models.SearchRequestOptions;
@@ -46,18 +44,17 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void canGetDynamicDocument() {
-        JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
-        Map<String, Object> addressDoc = new HashMap<String, Object>();
+        Map<String, Object> addressDoc = new HashMap<>();
         addressDoc.put("StreetAddress", "677 5th Ave");
         addressDoc.put("City", "New York");
         addressDoc.put("StateProvince", "NY");
         addressDoc.put("Country", "USA");
         addressDoc.put("PostalCode", "10022");
 
-        ArrayList<String> room1Tags = new ArrayList<String>();
+        ArrayList<String> room1Tags = new ArrayList<>();
         room1Tags.add("vcr/dvd");
 
-        HashMap<String, Object> room1Doc = new HashMap<String, Object>();
+        HashMap<String, Object> room1Doc = new HashMap<>();
         room1Doc.put("Description", "Budget Room, 1 Queen Bed (Cityside)");
         room1Doc.put("Description_fr", "Chambre Économique, 1 grand lit (côté ville)");
         room1Doc.put("Type", "Budget Room");
@@ -67,11 +64,11 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         room1Doc.put("SmokingAllowed", true);
         room1Doc.put("Tags", room1Tags);
 
-        ArrayList<String> room2Tags = new ArrayList<String>();
+        ArrayList<String> room2Tags = new ArrayList<>();
         room2Tags.add("vcr/dvd");
         room2Tags.add("jacuzzi tub");
 
-        HashMap<String, Object> room2Doc = new HashMap<String, Object>();
+        HashMap<String, Object> room2Doc = new HashMap<>();
         room2Doc.put("Description", "Budget Room, 1 King Bed (Mountain View)");
         room2Doc.put("Description_fr", "Chambre Économique, 1 très grand lit (Mountain View)");
         room2Doc.put("Type", "Budget Room");
@@ -81,16 +78,16 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         room2Doc.put("SmokingAllowed", true);
         room2Doc.put("Tags", room2Tags);
 
-        ArrayList<HashMap<String, Object>> rooms = new ArrayList<HashMap<String, Object>>();
+        ArrayList<HashMap<String, Object>> rooms = new ArrayList<>();
         rooms.add(room1Doc);
         rooms.add(room2Doc);
 
-        ArrayList<String> tags = new ArrayList<String>();
+        ArrayList<String> tags = new ArrayList<>();
         tags.add("pool");
         tags.add("air conditioning");
         tags.add("concierge");
 
-        HashMap<String, Object> expectedDoc = new HashMap<String, Object>();
+        HashMap<String, Object> expectedDoc = new HashMap<>();
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("HotelName", "Secret Point Motel");
         expectedDoc.put(
@@ -135,11 +132,11 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
     @Test
     public void getDocumentThrowsWhenRequestIsMalformed() {
 
-        HashMap<String, Object> hotelDoc = new HashMap<String, Object>();
+        HashMap<String, Object> hotelDoc = new HashMap<>();
         hotelDoc.put("HotelId", "2");
         hotelDoc.put("Description", "Surprisingly expensive");
 
-        ArrayList<String> selectedFields = new ArrayList<String>();
+        ArrayList<String> selectedFields = new ArrayList<>();
         selectedFields.add("HotelId");
         selectedFields.add("ThisFieldDoesNotExist");
 
@@ -288,7 +285,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         }
     }
 
-    private void processResult(PagedFlux<SearchResult> result, Integer expectedCount) throws Exception {
+    private void processResult(PagedFluxBase<SearchResult, SearchPagedResponse> result, Integer expectedCount) throws Exception {
         if (result == null) {
             throw new Exception("Result is null");
         }

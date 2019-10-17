@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.search.common.SuggestPagedResponse;
 import com.azure.search.common.jsonwrapper.JsonWrapper;
 import com.azure.search.common.jsonwrapper.api.JsonApi;
