@@ -7,7 +7,6 @@ module com.azure.storage.common {
     exports com.azure.storage.common;
     exports com.azure.storage.common.sas;
     exports com.azure.storage.common.policy;
-    exports com.azure.storage.common.sas;
 
     exports com.azure.storage.common.implementation to // FIXME this should not be a long-term solution
         com.azure.storage.blob,
