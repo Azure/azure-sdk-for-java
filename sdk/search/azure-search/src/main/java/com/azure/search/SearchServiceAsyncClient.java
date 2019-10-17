@@ -24,6 +24,7 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.SearchRequestOptions;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -423,19 +424,61 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return a reactive response signalling completion.
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName The name of the index to delete.
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteIndex(String indexName) {
+        return this.deleteIndexWithResponse(indexName, null, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
-     * @return a reactive response signalling completion.
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName The name of the index to delete.
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
+     * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Void> deleteIndex(String indexName,
+                                  SearchRequestOptions searchRequestOptions,
+                                  AccessCondition accessCondition) {
+        return this.deleteIndexWithResponse(indexName,
+            searchRequestOptions,
+            accessCondition)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName The name of the index to delete.
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
+     * @return a response signalling completion.
+     */
+    public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
+                                                        SearchRequestOptions searchRequestOptions,
+                                                        AccessCondition accessCondition) {
+        return withContext(context -> deleteIndexWithResponse(indexName,
+            searchRequestOptions,
+            accessCondition,
+            context));
+    }
+
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName,
+                                                 SearchRequestOptions searchRequestOptions,
+                                                 AccessCondition accessCondition,
+                                                 Context context) {
+        return restClient
+            .indexes()
+            .deleteWithRestResponseAsync(indexName,
+                searchRequestOptions,
+                accessCondition,
+                context)
+            .map(Function.identity());
     }
 
     /**

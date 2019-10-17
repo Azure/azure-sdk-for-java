@@ -286,7 +286,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             ));
 
         if (!interceptorManager.isPlaybackMode()) {
-            getSearchServiceClient().indexes().createWithRestResponseAsync(indexWithReservedName, Context.NONE);
+            getSearchServiceClient().indexes().createWithRestResponseAsync(indexWithReservedName, Context.NONE).block();
         }
 
         client = getClientBuilder(indexName).buildClient();

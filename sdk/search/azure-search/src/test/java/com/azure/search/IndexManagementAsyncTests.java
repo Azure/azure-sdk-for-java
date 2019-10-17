@@ -112,7 +112,44 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIsIdempotent() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = new Index()
+            .setName("hotels")
+            .setFields(Collections.singletonList(
+                new Field()
+                    .setName("HotelId")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+            ));
+        StepVerifier
+            .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(404, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.createIndexWithResponse(index, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(201, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
+
+        // Delete the same index twice
+        StepVerifier
+            .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(204, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
+
+        StepVerifier
+            .create(client.deleteIndexWithResponse(index.getName(), null, null, null))
+            .assertNext(indexResponse -> {
+                Assert.assertEquals(404, indexResponse.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Override

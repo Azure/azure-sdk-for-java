@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeResult;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceListResult;
@@ -20,6 +21,7 @@ import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
 import com.azure.search.models.SearchRequestOptions;
+
 import org.apache.commons.lang3.NotImplementedException;
 
 @ServiceClient(builder = SearchServiceClientBuilder.class)
@@ -324,17 +326,44 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName The name of the index to delete.
      */
-    public void deleteIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteIndex(String indexName) {
+        this.deleteIndexWithResponse(indexName, null, null, Context.NONE);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName The name of the index to delete.
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
      */
-    public void deleteIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public void deleteIndex(String indexName,
+                            SearchRequestOptions searchRequestOptions,
+                            AccessCondition accessCondition) {
+        this.deleteIndexWithResponse(indexName, searchRequestOptions, accessCondition, Context.NONE);
+    }
+
+    /**
+     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     *
+     * @param indexName The name of the index to delete.
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @param accessCondition Additional parameters for the operation.
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @return a response signalling completion.
+     */
+    public Response<Void> deleteIndexWithResponse(String indexName,
+                                                  SearchRequestOptions searchRequestOptions,
+                                                  AccessCondition accessCondition,
+                                                  Context context) {
+        return asyncClient.deleteIndexWithResponse(indexName,
+            searchRequestOptions,
+            accessCondition,
+            context).block();
     }
 
     /**

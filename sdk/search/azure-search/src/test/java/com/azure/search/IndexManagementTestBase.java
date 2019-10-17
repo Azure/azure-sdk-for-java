@@ -25,14 +25,12 @@ import com.azure.search.models.CorsOptions;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.FreshnessScoringParameters;
 import com.azure.search.models.FreshnessScoringFunction;
-import com.azure.search.test.environment.models.ModelComparer;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Collections;
 
 public abstract class IndexManagementTestBase extends SearchServiceTestBase {
@@ -80,22 +78,10 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
     public abstract void deleteIndexIfExistsWorksOnlyWhenResourceExists();
 
+    @Test
     public abstract void deleteIndexIsIdempotent();
 
     public abstract void canCreateAndDeleteIndex();
-
-    protected static boolean assertIndexesEqual(Index expected, Index actual) {
-        return Objects.equals(expected.getName(), actual.getName())
-            && ModelComparer.collectionEquals(expected.getFields(), actual.getFields())
-            && ModelComparer.collectionEquals(expected.getScoringProfiles(), actual.getScoringProfiles())
-            && Objects.equals(expected.getDefaultScoringProfile(), actual.getDefaultScoringProfile())
-            && Objects.equals(expected.getCorsOptions(), actual.getCorsOptions())
-            && ModelComparer.collectionEquals(expected.getSuggesters(), actual.getSuggesters())
-            && ModelComparer.collectionEquals(expected.getAnalyzers(), actual.getAnalyzers())
-            && ModelComparer.collectionEquals(expected.getTokenizers(), actual.getTokenizers())
-            && ModelComparer.collectionEquals(expected.getTokenFilters(), actual.getTokenFilters())
-            && ModelComparer.collectionEquals(expected.getCharFilters(), actual.getCharFilters());
-    }
 
     protected Index createTestIndex() {
 

@@ -3,6 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.Index;
@@ -107,7 +108,28 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void deleteIndexIsIdempotent() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        Index index = new Index()
+            .setName("hotels")
+            .setFields(Collections.singletonList(
+                new Field()
+                    .setName("HotelId")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(true)
+            ));
+        Response deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        Assert.assertEquals(404, deleteResponse.getStatusCode());
+
+        Response createResponse = client.createIndexWithResponse(index, null, null);
+        Assert.assertEquals(201, createResponse.getStatusCode());
+
+        // Delete the same index twice
+        deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        Assert.assertEquals(204, deleteResponse.getStatusCode());
+
+        deleteResponse = client.deleteIndexWithResponse(index.getName(), null, null, null);
+        Assert.assertEquals(404, deleteResponse.getStatusCode());
     }
 
     @Override
