@@ -4,9 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.DeviceCodeCredential;
-import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;

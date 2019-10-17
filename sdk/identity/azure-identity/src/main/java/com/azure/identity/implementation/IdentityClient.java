@@ -199,7 +199,8 @@ public class IdentityClient {
      * @param password the password of the user
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request, String username, String password) {
+    public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request,
+                                                            String username, String password) {
         return Mono.fromFuture(publicClientApplication.acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))

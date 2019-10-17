@@ -4,8 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.InteractiveBrowserCredential;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Test;
