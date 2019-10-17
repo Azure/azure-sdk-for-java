@@ -6,11 +6,12 @@ import com.azure.core.util.Configuration;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class FileSample {
 
     /**
      * The main method shows how to do the base operation using file sync client.
+     *
      * @param args No args needed for the main method.
      * @throws RuntimeException If error occurs when make storage API call.
      */
@@ -41,27 +43,27 @@ public class FileSample {
         // Create a source file client
         String srcFileName = generateRandomName();
         FileClient srcFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                    .resourcePath(parentDirName + "/" + srcFileName).buildFileClient();
+            .resourcePath(parentDirName + "/" + srcFileName).buildFileClient();
 
         // Create a source file
         try {
             srcFileClient.create(1024);
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             System.out.println("Failed to create source client. Reasons: " + e.getMessage());
         }
 
         // Upload some data bytes to the src file.
-        String dataText = "Hello, file client sample!";
-        ByteBuffer uploadData = ByteBuffer.wrap(dataText.getBytes(StandardCharsets.UTF_8));
+        byte[] data = "Hello, file client sample!".getBytes(StandardCharsets.UTF_8);
+        InputStream uploadData = new ByteArrayInputStream(data);
         try {
-            srcFileClient.upload(uploadData, uploadData.remaining());
-        } catch (StorageException e) {
+            srcFileClient.upload(uploadData, data.length);
+        } catch (FileStorageException e) {
             System.out.println("Failed to upload the data. Reasons: " + e.getMessage());
         }
         // Create a destination file client.
         String destFileName = generateRandomName();
         FileClient destFileClient = new FileClientBuilder().endpoint(ENDPOINT).shareName(shareName)
-                                        .resourcePath(parentDirName + "/" + destFileName).buildFileClient();
+            .resourcePath(parentDirName + "/" + destFileName).buildFileClient();
         destFileClient.create(1024);
 
         // Copy the file from source file to destination file.
@@ -69,10 +71,10 @@ public class FileSample {
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
 
-        FileCopyInfo copyResponse = null;
+        FileCopyInfo copyResponse;
         try {
             copyResponse = destFileClient.startCopy(sourceURL, null);
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             throw new RuntimeException("Failed to start the copy of source file. Reasons: " + e.getMessage());
         }
 
@@ -80,7 +82,7 @@ public class FileSample {
         if (copyResponse.getCopyStatus() == CopyStatusType.PENDING) {
             try {
                 destFileClient.abortCopy(copyResponse.getCopyId());
-            } catch (StorageException e) {
+            } catch (FileStorageException e) {
                 System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
             }
         }
@@ -91,7 +93,7 @@ public class FileSample {
 
         try {
             srcFileClient.uploadFromFile(uploadPath);
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             System.out.println("Failed to upload file to storage. Reasons: " + e.getMessage());
         }
 
@@ -107,7 +109,7 @@ public class FileSample {
         }
         try {
             srcFileClient.downloadToFile(downloadPath);
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             System.out.println("Failed to download file from storage. Reasons: " + e.getMessage());
         }
 
@@ -119,14 +121,14 @@ public class FileSample {
         try {
             FileProperties propertiesResponse = srcFileClient.getProperties();
             System.out.printf("This is the eTag: %s of the file. File type is : %s.", propertiesResponse.getETag(), propertiesResponse.getFileType());
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             System.out.println("Failed to get file properties. Reasons: " + e.getMessage());
         }
 
         // Delete the source file.
         try {
             srcFileClient.delete();
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             System.out.println("Failed to delete the src file. Reasons: " + e.getMessage());
         }
 

@@ -108,12 +108,12 @@ public class SearchSyncTests extends SearchTestBase {
         PagedResponse<SearchResult> firstPage = iterator.next();
         Assert.assertEquals(50, firstPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(0, 50), firstPage.getValue());
-        Assert.assertNotNull(firstPage.getNextLink());
+        Assert.assertNotNull(firstPage.getContinuationToken());
 
         PagedResponse<SearchResult> secondPage = iterator.next();
         Assert.assertEquals(50, secondPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(50, 100), secondPage.getValue());
-        Assert.assertNull(secondPage.getNextLink());
+        Assert.assertNull(secondPage.getContinuationToken());
     }
 
     @Override
@@ -143,12 +143,12 @@ public class SearchSyncTests extends SearchTestBase {
         PagedResponse<SearchResult> firstPage = iterator.next();
         Assert.assertEquals(1000, firstPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(0, 1000), firstPage.getValue());
-        Assert.assertNotNull(firstPage.getNextLink());
+        Assert.assertNotNull(firstPage.getContinuationToken());
 
         PagedResponse<SearchResult> secondPage = iterator.next();
         Assert.assertEquals(1000, secondPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(1000, 2000), secondPage.getValue());
-        Assert.assertNull(secondPage.getNextLink());
+        Assert.assertNull(secondPage.getContinuationToken());
     }
 
     @Override

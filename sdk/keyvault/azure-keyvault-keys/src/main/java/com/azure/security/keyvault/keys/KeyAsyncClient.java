@@ -37,6 +37,7 @@ import java.util.function.Function;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -100,7 +101,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(String name, KeyType keyType) {
-        return withContext(context -> createKeyWithResponse(name, keyType, context)).flatMap(FluxUtil::toMono);
+        try {
+            return withContext(context -> createKeyWithResponse(name, keyType, context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -126,7 +131,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions) {
-        return withContext(context -> createKeyWithResponse(keyCreateOptions, context));
+        try {
+            return withContext(context -> createKeyWithResponse(keyCreateOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> createKeyWithResponse(String name, KeyType keyType, Context context) {
@@ -164,7 +173,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
-        return createKeyWithResponse(keyCreateOptions).flatMap(FluxUtil::toMono);
+        try {
+            return createKeyWithResponse(keyCreateOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
@@ -207,7 +220,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return createRsaKeyWithResponse(rsaKeyCreateOptions).flatMap(FluxUtil::toMono);
+        try {
+            return createRsaKeyWithResponse(rsaKeyCreateOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -234,7 +251,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return withContext(context -> createRsaKeyWithResponse(rsaKeyCreateOptions, context));
+        try {
+            return withContext(context -> createRsaKeyWithResponse(rsaKeyCreateOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
@@ -279,7 +300,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return createEcKeyWithResponse(ecKeyCreateOptions).flatMap(FluxUtil::toMono);
+        try {
+            return createEcKeyWithResponse(ecKeyCreateOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -311,7 +336,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions) {
-        return withContext(context -> createEcKeyWithResponse(ecKeyCreateOptions, context));
+        try {
+            return withContext(context -> createEcKeyWithResponse(ecKeyCreateOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
@@ -351,7 +380,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(String name, JsonWebKey keyMaterial) {
-        return withContext(context -> importKeyWithResponse(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
+        try {
+            return withContext(context -> importKeyWithResponse(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
@@ -394,7 +427,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
-        return importKeyWithResponse(keyImportOptions).flatMap(FluxUtil::toMono);
+        try {
+            return importKeyWithResponse(keyImportOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -431,7 +468,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions) {
-        return withContext(context -> importKeyWithResponse(keyImportOptions, context));
+        try {
+            return withContext(context -> importKeyWithResponse(keyImportOptions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions, Context context) {
@@ -467,7 +508,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name, String version) {
-        return getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
+        try {
+            return getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -491,7 +536,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(String name, String version) {
-        return withContext(context -> getKeyWithResponse(name, version == null ? "" : version, context));
+        try {
+            return withContext(context -> getKeyWithResponse(name, version == null ? "" : version, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> getKeyWithResponse(String name, String version, Context context) {
@@ -518,7 +567,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(String name) {
-        return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
+        try {
+            return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -540,7 +593,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> getKey(KeyProperties keyProperties) {
-        return getKeyWithResponse(keyProperties).flatMap(FluxUtil::toMono);
+        try {
+            return getKeyWithResponse(keyProperties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -563,9 +620,13 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(KeyProperties keyProperties) {
-        Objects.requireNonNull(keyProperties, "The Key Properties parameter cannot be null.");
-        return withContext(context -> getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? ""
-            : keyProperties.getVersion(), context));
+        try {
+            Objects.requireNonNull(keyProperties, "The Key Properties parameter cannot be null.");
+            return withContext(context -> getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? ""
+                : keyProperties.getVersion(), context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -593,7 +654,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, KeyOperation... keyOperations) {
-        return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context, keyOperations));
+        try {
+            return withContext(context -> updateKeyPropertiesWithResponse(keyProperties, context, keyOperations));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -620,7 +685,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
-        return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
+        try {
+            return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
@@ -659,7 +728,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> deleteKey(String name) {
-        return deleteKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        try {
+            return deleteKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -684,7 +757,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> deleteKeyWithResponse(String name) {
-        return withContext(context -> deleteKeyWithResponse(name, context));
+        try {
+            return withContext(context -> deleteKeyWithResponse(name, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
@@ -712,7 +789,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
-        return getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        try {
+            return getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -734,7 +815,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
-        return withContext(context -> getDeletedKeyWithResponse(name, context));
+        try {
+            return withContext(context -> getDeletedKeyWithResponse(name, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
@@ -762,7 +847,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedKey(String name) {
-        return purgeDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        try {
+            return purgeDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -783,7 +872,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
-        return withContext(context -> purgeDeletedKeyWithResponse(name, context));
+        try {
+            return withContext(context -> purgeDeletedKeyWithResponse(name, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Void>> purgeDeletedKeyWithResponse(String name, Context context) {
@@ -811,7 +904,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> recoverDeletedKey(String name) {
-        return recoverDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        try {
+            return recoverDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -833,7 +930,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> recoverDeletedKeyWithResponse(String name) {
-        return withContext(context -> recoverDeletedKeyWithResponse(name, context));
+        try {
+            return withContext(context -> recoverDeletedKeyWithResponse(name, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> recoverDeletedKeyWithResponse(String name, Context context) {
@@ -869,7 +970,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
-        return backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        try {
+            return backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -898,7 +1003,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
-        return withContext(context -> backupKeyWithResponse(name, context));
+        try {
+            return withContext(context -> backupKeyWithResponse(name, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<byte[]>> backupKeyWithResponse(String name, Context context) {
@@ -934,7 +1043,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> restoreKey(byte[] backup) {
-        return restoreKeyWithResponse(backup).flatMap(FluxUtil::toMono);
+        try {
+            return restoreKeyWithResponse(backup).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -962,7 +1075,11 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> restoreKeyWithResponse(byte[] backup) {
-        return withContext(context -> restoreKeyWithResponse(backup, context));
+        try {
+            return withContext(context -> restoreKeyWithResponse(backup, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<Key>> restoreKeyWithResponse(byte[] backup, Context context) {
@@ -991,9 +1108,13 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listKeys() {
-        return new PagedFlux<>(
-            () -> withContext(context -> listKeysFirstPage(context)),
-            continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> listKeysFirstPage(context)),
+                continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<KeyProperties> listKeys(Context context) {
@@ -1011,10 +1132,14 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} of {@link PagedResponse<KeyProperties>} from the next page of results.
      */
     private Mono<PagedResponse<KeyProperties>> listKeysNextPage(String continuationToken, Context context) {
-        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
-            .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationToken))
-            .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
+        try {
+            return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
+                .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationToken))
+                .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /*
@@ -1022,11 +1147,15 @@ public final class KeyAsyncClient {
      * DEFAULT_MAX_PAGE_RESULTS} values.
      */
     private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
-        return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Listing keys"))
-            .doOnSuccess(response -> logger.info("Listed keys"))
-            .doOnError(error -> logger.warning("Failed to list keys", error));
+        try {
+            return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing keys"))
+                .doOnSuccess(response -> logger.info("Listed keys"))
+                .doOnError(error -> logger.warning("Failed to list keys", error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1044,9 +1173,13 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        return new PagedFlux<>(
-            () -> withContext(context -> listDeletedKeysFirstPage(context)),
-            continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> listDeletedKeysFirstPage(context)),
+                continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<DeletedKey> listDeletedKeys(Context context) {
@@ -1064,11 +1197,15 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} of {@link PagedResponse<DeletedKey>} from the next page of results.
      */
     private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPage(String continuationToken, Context context) {
-        return service.getDeletedKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Listing next deleted keys page - Page {} ", continuationToken))
-            .doOnSuccess(response -> logger.info("Listed next deleted keys page - Page {} ", continuationToken))
-            .doOnError(error -> logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken,
-                error));
+        try {
+            return service.getDeletedKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing next deleted keys page - Page {} ", continuationToken))
+                .doOnSuccess(response -> logger.info("Listed next deleted keys page - Page {} ", continuationToken))
+                .doOnError(error -> logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken,
+                    error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /*
@@ -1076,11 +1213,15 @@ public final class KeyAsyncClient {
      * DEFAULT_MAX_PAGE_RESULTS} values.
      */
     private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
-        return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Listing deleted keys"))
-            .doOnSuccess(response -> logger.info("Listed deleted keys"))
-            .doOnError(error -> logger.warning("Failed to list deleted keys", error));
+        try {
+            return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing deleted keys"))
+                .doOnSuccess(response -> logger.info("Listed deleted keys"))
+                .doOnError(error -> logger.warning("Failed to list deleted keys", error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1102,9 +1243,13 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listKeyVersions(String name) {
-        return new PagedFlux<>(
-            () -> withContext(context -> listKeyVersionsFirstPage(name, context)),
-            continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> listKeyVersionsFirstPage(name, context)),
+                continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     PagedFlux<KeyProperties> listKeyVersions(String name, Context context) {
@@ -1114,11 +1259,15 @@ public final class KeyAsyncClient {
     }
 
     private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPage(String name, Context context) {
-        return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
-            CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
-            .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
-            .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error));
+        try {
+            return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
+                .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
+                .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /*
@@ -1130,11 +1279,15 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} of {@link PagedResponse<KeyProperties>} from the next page of results.
      */
     private Mono<PagedResponse<KeyProperties>> listKeyVersionsNextPage(String continuationToken, Context context) {
-        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.info("Listing next key versions page - Page {} ", continuationToken))
-            .doOnSuccess(response -> logger.info("Listed next key versions page - Page {} ", continuationToken))
-            .doOnError(error -> logger.warning("Failed to list next key versions page - Page {} ", continuationToken,
-                error));
+        try {
+            return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> logger.info("Listing next key versions page - Page {} ", continuationToken))
+                .doOnSuccess(response -> logger.info("Listed next key versions page - Page {} ", continuationToken))
+                .doOnError(error -> logger.warning("Failed to list next key versions page - Page {} ", continuationToken,
+                    error));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 }
 

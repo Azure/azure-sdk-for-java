@@ -3,9 +3,9 @@
 
 package com.azure.core.util;
 
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME;
-import static com.azure.core.util.tracing.Tracer.OPENCENSUS_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class ContextJavaDocCodeSnippets {
         final String userParentSpan = "user-parent-span";
 
         // Create a context using the provided key and user parent span
-        Context keyValueContext = new Context(OPENCENSUS_SPAN_KEY, userParentSpan);
+        Context keyValueContext = new Context(PARENT_SPAN_KEY, userParentSpan);
         // END: com.azure.core.util.context#object-object
     }
 
@@ -58,16 +58,15 @@ public class ContextJavaDocCodeSnippets {
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
         final String userParentSpan = "user-parent-span";
-
-        Context parentSpanContext = new Context(OPENCENSUS_SPAN_KEY, userParentSpan);
+        Context parentSpanContext = new Context(PARENT_SPAN_KEY, userParentSpan);
 
         // Add a new key value pair to the existing context object.
-        Context updatedContext = parentSpanContext.addData(HOST_NAME, hostNameValue)
-            .addData(ENTITY_PATH, entityPathValue);
+        Context updatedContext = parentSpanContext.addData(HOST_NAME_KEY, hostNameValue)
+            .addData(ENTITY_PATH_KEY, entityPathValue);
 
         // Both key values found on the same updated context object
-        System.out.printf("HOSTNAME value: %s%n", updatedContext.getData(HOST_NAME).get());
-        System.out.printf("ENTITY_PATH value: %s%n", updatedContext.getData(ENTITY_PATH).get());
+        System.out.printf("Hostname value: %s%n", updatedContext.getData(HOST_NAME_KEY).get());
+        System.out.printf("Entity Path value: %s%n", updatedContext.getData(ENTITY_PATH_KEY).get());
         // END: com.azure.core.util.context.addData#object-object
     }
 

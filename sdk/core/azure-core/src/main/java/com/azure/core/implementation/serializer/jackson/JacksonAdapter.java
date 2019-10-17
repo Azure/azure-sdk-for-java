@@ -3,16 +3,21 @@
 
 package com.azure.core.implementation.serializer.jackson;
 
+import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
+import com.azure.core.implementation.util.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -21,10 +26,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
@@ -43,6 +54,8 @@ public class JacksonAdapter implements SerializerAdapter {
     private final ObjectMapper simpleMapper;
 
     private final XmlMapper xmlMapper;
+
+    private final ObjectMapper headerMapper;
 
     /*
      * The lazily-created serializer for this ServiceClient.
@@ -70,7 +83,11 @@ public class JacksonAdapter implements SerializerAdapter {
                 .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
                 .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
                 .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));    }
+                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+        headerMapper = simpleMapper
+            .copy()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
@@ -163,6 +180,67 @@ public class JacksonAdapter implements SerializerAdapter {
         }
     }
 
+    @Override
+    public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
+        if (deserializedHeadersType == null) {
+            return null;
+        }
+
+        final String headersJsonString = headerMapper.writeValueAsString(headers);
+        T deserializedHeaders =
+            headerMapper.readValue(headersJsonString, createJavaType(deserializedHeadersType));
+
+        final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
+        final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
+        for (final Field declaredField : declaredFields) {
+            if (declaredField.isAnnotationPresent(HeaderCollection.class)) {
+                final Type declaredFieldType = declaredField.getGenericType();
+                if (TypeUtil.isTypeOrSubTypeOf(declaredField.getType(), Map.class)) {
+                    final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
+                    if (mapTypeArguments.length == 2
+                        && mapTypeArguments[0] == String.class
+                        && mapTypeArguments[1] == String.class) {
+                        final HeaderCollection headerCollectionAnnotation =
+                            declaredField.getAnnotation(HeaderCollection.class);
+                        final String headerCollectionPrefix =
+                            headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
+                        final int headerCollectionPrefixLength = headerCollectionPrefix.length();
+                        if (headerCollectionPrefixLength > 0) {
+                            final Map<String, String> headerCollection = new HashMap<>();
+                            for (final HttpHeader header : headers) {
+                                final String headerName = header.getName();
+                                if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
+                                    headerCollection.put(headerName.substring(headerCollectionPrefixLength),
+                                        header.getValue());
+                                }
+                            }
+
+                            final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
+                            try {
+                                if (!declaredFieldAccessibleBackup) {
+                                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                        declaredField.setAccessible(true);
+                                        return null;
+                                    });
+                                }
+                                declaredField.set(deserializedHeaders, headerCollection);
+                            } catch (IllegalAccessException ignored) {
+                            } finally {
+                                if (!declaredFieldAccessibleBackup) {
+                                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                        declaredField.setAccessible(declaredFieldAccessibleBackup);
+                                        return null;
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return deserializedHeaders;
+    }
+
     /**
      * Initializes an instance of JacksonMapperAdapter with default configurations
      * applied to the object mapper.
@@ -171,24 +249,24 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
-                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .registerModule(new JavaTimeModule())
-                .registerModule(ByteArraySerializer.getModule())
-                .registerModule(Base64UrlSerializer.getModule())
-                .registerModule(DateTimeSerializer.getModule())
-                .registerModule(DateTimeRfc1123Serializer.getModule())
-                .registerModule(DurationSerializer.getModule())
-                .registerModule(HttpHeadersSerializer.getModule());
+            .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
+            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+            .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .registerModule(new JavaTimeModule())
+            .registerModule(ByteArraySerializer.getModule())
+            .registerModule(Base64UrlSerializer.getModule())
+            .registerModule(DateTimeSerializer.getModule())
+            .registerModule(DateTimeRfc1123Serializer.getModule())
+            .registerModule(DurationSerializer.getModule())
+            .registerModule(HttpHeadersSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
+            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+            .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+            .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
         return mapper;
     }
 

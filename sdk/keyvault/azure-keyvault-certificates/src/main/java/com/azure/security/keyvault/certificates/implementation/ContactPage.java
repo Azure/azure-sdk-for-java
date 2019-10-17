@@ -32,7 +32,7 @@ public final class ContactPage implements Page<Contact> {
     }
 
     @Override
-    public String getNextLink() {
+    public String getContinuationToken() {
         return null;
     }
 }

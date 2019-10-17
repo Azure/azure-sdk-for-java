@@ -12,8 +12,8 @@ package com.azure.storage.file.models;
  *         that that begin with the prefix.
  *     </li>
  *     <li>
- *         Providing {@link ListSharesOptions#setMaxResults(Integer) maxResults} will limit the number of {@link ShareItem shares}
- *         returned in a single page.
+ *         Providing {@link ListSharesOptions#setMaxResultsPerPage(Integer) maxResultsPerPage} will limit the number of
+ *         {@link ShareItem shares} returned in a single page.
  *     </li>
  *     <li>
  *         Setting {@link ListSharesOptions#setIncludeMetadata(boolean) includeMetadata} to true will include the metadata
@@ -29,7 +29,7 @@ package com.azure.storage.file.models;
  */
 public final class ListSharesOptions {
     private String prefix;
-    private Integer maxResults;
+    private Integer maxResultsPerPage;
     private boolean includeMetadata;
     private boolean includeSnapshots;
 
@@ -54,19 +54,19 @@ public final class ListSharesOptions {
     /**
      * Sets the maximum number of shares to include in a single response.
      *
-     * @param maxResults Maximum number of shares to include in a single response. This value must be between 1 and 5000.
+     * @param maxResultsPerPage Maximum number of shares to include in a single response. This value must be between 1 and 5000.
      * @return An updated ListSharesOptions object
      */
-    public ListSharesOptions setMaxResults(Integer maxResults) {
-        this.maxResults = maxResults;
+    public ListSharesOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
+        this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
 
     /**
      * @return the maximum number of shares to inlcude in a single response
      */
-    public Integer getMaxResults() {
-        return maxResults;
+    public Integer getMaxResultsPerPage() {
+        return maxResultsPerPage;
     }
 
     /**

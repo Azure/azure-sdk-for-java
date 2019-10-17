@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.util.Base64Url;
+import com.azure.core.implementation.Base64Url;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

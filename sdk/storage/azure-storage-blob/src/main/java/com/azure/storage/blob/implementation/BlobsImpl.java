@@ -43,11 +43,11 @@ import com.azure.storage.blob.implementation.models.BlobsSetMetadataResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTierResponse;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
+import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.implementation.models.DataLakeStorageErrorException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -55,7 +55,7 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PathRenameMode;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.azure.storage.blob.models.StorageErrorException;
+import com.azure.storage.blob.models.StorageException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -95,17 +95,17 @@ public final class BlobsImpl {
     private interface BlobsService {
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsDownloadResponse> download(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5, @HeaderParam("x-ms-range-get-content-crc64") Boolean rangeGetContentCRC64, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Head("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsGetPropertiesResponse> getProperties(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Delete("{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsDeleteResponse> delete(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Patch("{filesystem}/{path}")
@@ -125,72 +125,72 @@ public final class BlobsImpl {
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsUndeleteResponse> undelete(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String blobCacheControl, @HeaderParam("x-ms-blob-content-type") String blobContentType, @HeaderParam("x-ms-blob-content-md5") String blobContentMD5, @HeaderParam("x-ms-blob-content-encoding") String blobContentEncoding, @HeaderParam("x-ms-blob-content-language") String blobContentLanguage, @HeaderParam("x-ms-blob-content-disposition") String blobContentDisposition, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsSetMetadataResponse> setMetadata(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsAcquireLeaseResponse> acquireLease(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsReleaseLeaseResponse> releaseLease(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsRenewLeaseResponse> renewLease(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsChangeLeaseResponse> changeLease(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsBreakLeaseResponse> breakLease(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsCreateSnapshotResponse> createSnapshot(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsCopyFromURLResponse> copyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-requires-sync") String xMsRequiresSync, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("copyid") String copyId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(StorageException.class)
         Mono<BlobsGetAccountInfoResponse> getAccountInfo(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
     }
 
