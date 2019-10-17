@@ -43,8 +43,8 @@ public class HttpLogOptions {
 
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
-        allowedHeaderNames = new HashSet<>();
-        allowedQueryParamNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
+        allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
+        allowedQueryParamNames = new HashSet<>();
     }
 
     /**

@@ -122,24 +122,22 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
                                         ClientLogger logger) {
-        if (!allowedHeaderNames.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (HttpHeader header : requestResponseHeaders) {
-                sb.append(header.getName()).append(":");
-                if (allowedHeaderNames.stream().anyMatch(header.getName()::equalsIgnoreCase)) {
-                    sb.append(header.getValue());
-                } else {
-                    sb.append(REDACTED_PLACEHOLDER);
-                }
-                sb.append(System.getProperty("line.separator"));
+        StringBuilder sb = new StringBuilder();
+        for (HttpHeader header : requestResponseHeaders) {
+            sb.append(header.getName()).append(":");
+            if (allowedHeaderNames.stream().anyMatch(header.getName()::equalsIgnoreCase)) {
+                sb.append(header.getValue());
+            } else {
+                sb.append(REDACTED_PLACEHOLDER);
             }
-            logger.info(sb.toString());
+            sb.append(System.getProperty("line.separator"));
         }
+        logger.info(sb.toString());
     }
 
     private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, String queryString,
                                             ClientLogger logger) {
-        if (allowedQueryParamNames != null && !allowedQueryParamNames.isEmpty() && queryString != null) {
+        if (allowedQueryParamNames != null && queryString != null) {
             StringBuilder sb = new StringBuilder();
             String[] queryParams = queryString.split("&");
             for (String queryParam : queryParams) {
