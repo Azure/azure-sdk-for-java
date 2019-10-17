@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime;
+using System.Text;
 using System.Text.Json;
 
 namespace HttpMock
@@ -26,6 +27,9 @@ namespace HttpMock
         {
             [Option("cachelast")]
             public bool CacheLast { get; set; }
+
+            [Option("debug", HelpText = "Exposes a /debug URL for debugging basic functionality")]
+            public bool Debug { get; set; }
 
             [Option("dots")]
             public bool Dots { get; set; }
@@ -88,6 +92,13 @@ namespace HttpMock
                     {
                         var request = context.Request;
                         var response = context.Response;
+
+                        if (Options.Debug && request.Path.Value == "/debug")
+                        {
+                            var buffer = Encoding.UTF8.GetBytes("debug");
+                            await response.Body.WriteAsync(buffer, 0, buffer.Length);
+                            return;
+                        }
 
                         var key = new RequestCacheKey(request, allHeaders);
 
