@@ -315,8 +315,8 @@ public class FileAsyncClient {
                         operationStatus = OperationStatus.IN_PROGRESS;
                         break;
                     default:
-                        throw Exceptions.propagate(logger.logExceptionAsError(new IllegalArgumentException(
-                            "CopyStatusType is not supported. Status: " + status)));
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "CopyStatusType is not supported. Status: " + status));
                 }
 
                 return new PollResponse<>(operationStatus, result);

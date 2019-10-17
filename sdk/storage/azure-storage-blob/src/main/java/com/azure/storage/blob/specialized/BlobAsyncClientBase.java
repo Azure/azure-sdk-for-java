@@ -322,7 +322,8 @@ public class BlobAsyncClientBase {
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
-            }, poller -> {
+            },
+            poller -> {
                 final PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
 
                 if (response == null || response.getValue() == null) {
@@ -391,8 +392,8 @@ public class BlobAsyncClientBase {
                     operationStatus = OperationStatus.IN_PROGRESS;
                     break;
                 default:
-                    throw Exceptions.propagate(logger.logExceptionAsError(new IllegalArgumentException(
-                        "CopyStatusType is not supported. Status: " + status)));
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "CopyStatusType is not supported. Status: " + status));
             }
 
             return new PollResponse<>(operationStatus, result);
