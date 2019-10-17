@@ -6,7 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,7 +35,7 @@ public class ChainedTokenCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(TokenRequest request) {
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
         AtomicReference<Throwable> cause = new AtomicReference<>();
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(request).onErrorResume(t -> {

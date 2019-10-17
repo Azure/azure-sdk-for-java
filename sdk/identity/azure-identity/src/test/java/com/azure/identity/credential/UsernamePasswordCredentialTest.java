@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
@@ -42,8 +42,8 @@ public class UsernamePasswordCredentialTest {
         String password = "P@ssw0rd";
         String token1 = "token1";
         String token2 = "token2";
-        TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
-        TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -51,7 +51,7 @@ public class UsernamePasswordCredentialTest {
         when(identityClient.authenticateWithUsernamePassword(request1, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
-                TokenRequest argument = (TokenRequest) invocation.getArguments()[0];
+                TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                     return TestUtils.getMockMsalToken(token2, expiresAt);
                 } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
@@ -80,7 +80,7 @@ public class UsernamePasswordCredentialTest {
         // setup
         String username = "testuser";
         String badPassword = "Password";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
@@ -103,7 +103,7 @@ public class UsernamePasswordCredentialTest {
         String username = "testuser";
         String password = "P@ssw0rd";
         String token1 = "token1";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock

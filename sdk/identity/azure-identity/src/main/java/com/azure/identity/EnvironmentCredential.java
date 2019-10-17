@@ -6,7 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,7 +33,7 @@ public class EnvironmentCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(TokenRequest request) {
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.fromSupplier(() -> {
             if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
                 && configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_SECRET)

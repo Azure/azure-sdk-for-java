@@ -6,7 +6,7 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -50,7 +50,7 @@ public class ClientSecretCredential implements TokenCredential {
     }
 
     @Override
-    public Mono<AccessToken> getToken(TokenRequest request) {
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithClientSecret(clientSecret, request);
     }
 }

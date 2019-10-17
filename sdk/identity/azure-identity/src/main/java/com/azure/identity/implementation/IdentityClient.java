@@ -4,7 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
@@ -107,7 +107,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequest request) {
+    public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
@@ -136,7 +136,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String pfxCertificatePath, String pfxCertificatePassword,
-                                                            TokenRequest request) {
+                                                            TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
@@ -169,7 +169,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, TokenRequest request) {
+    public Mono<AccessToken> authenticateWithPemCertificate(String pemCertificatePath, TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         try {
             byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
@@ -199,7 +199,7 @@ public class IdentityClient {
      * @param password the password of the user
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequest request, String username, String password) {
+    public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request, String username, String password) {
         return Mono.fromFuture(publicClientApplication.acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
@@ -212,7 +212,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequest request, MsalToken msalToken) {
+    public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequestContext request, MsalToken msalToken) {
         SilentParameters parameters;
         if (msalToken.getAccount() != null) {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount()).build();
@@ -238,7 +238,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device
      *     code expires
      */
-    public Mono<MsalToken> authenticateWithDeviceCode(TokenRequest request,
+    public Mono<MsalToken> authenticateWithDeviceCode(TokenRequestContext request,
                                                       Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         return Mono.fromFuture(() -> {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
@@ -256,7 +256,7 @@ public class IdentityClient {
      * @param redirectUrl the redirectUrl where the authorization code is sent to
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequest request, String authorizationCode,
+    public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
         return Mono.fromFuture(() -> publicClientApplication.acquireToken(
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
@@ -274,7 +274,7 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequest request, int port) {
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
@@ -315,7 +315,7 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
-                                                                   TokenRequest request) {
+                                                                   TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         HttpURLConnection connection = null;
         StringBuilder payload = new StringBuilder();
@@ -363,7 +363,7 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequest request) {
+    public Mono<AccessToken> authenticateToIMDSEndpoint(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes());
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;

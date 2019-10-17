@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredential;
@@ -42,7 +42,7 @@ public class DefaultAzureCredentialTest {
             // setup
             String secret = "secret";
             String token1 = "token1";
-            TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
+            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
             OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
             configuration.put("AZURE_CLIENT_ID", clientId);
             configuration.put("AZURE_CLIENT_SECRET", secret);
@@ -71,7 +71,7 @@ public class DefaultAzureCredentialTest {
     public void testUseManagedIdentityCredential() throws Exception {
         // setup
         String token1 = "token1";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -90,7 +90,7 @@ public class DefaultAzureCredentialTest {
     @Test
     public void testNoCredentialWorks() throws Exception {
         // setup
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);

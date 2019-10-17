@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
@@ -42,8 +42,8 @@ public class DeviceCodeCredentialTest {
         Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
         String token1 = "token1";
         String token2 = "token2";
-        TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
-        TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -51,7 +51,7 @@ public class DeviceCodeCredentialTest {
         when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
         when(identityClient.authenticateWithUserRefreshToken(any(), any()))
             .thenAnswer(invocation -> {
-                TokenRequest argument = (TokenRequest) invocation.getArguments()[0];
+                TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                     return TestUtils.getMockMsalToken(token2, expiresAt);
                 } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {

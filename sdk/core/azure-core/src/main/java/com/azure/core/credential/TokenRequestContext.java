@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Contains details of a request to Azure Active Directory to get a token.
+ * Contains details of a request to get a token.
  */
-public class TokenRequest {
+public class TokenRequestContext {
     private final List<String> scopes;
 
     /**
      * Creates a token request instance.
      */
-    public TokenRequest() {
+    public TokenRequestContext() {
         this.scopes = new ArrayList<>();
     }
 
@@ -32,9 +32,9 @@ public class TokenRequest {
     /**
      * Sets the scopes required for the token.
      * @param scopes the scopes required for the token
-     * @return the TokenRequest itself
+     * @return the TokenRequestContext itself
      */
-    public TokenRequest setScopes(List<String> scopes) {
+    public TokenRequestContext setScopes(List<String> scopes) {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
         this.scopes.clear();
         this.scopes.addAll(scopes);
@@ -44,9 +44,9 @@ public class TokenRequest {
     /**
      * Adds one or more scopes to the request scopes.
      * @param scopes one or more scopes to add
-     * @return the TokenRequest itself
+     * @return the TokenRequestContext itself
      */
-    public TokenRequest addScopes(String... scopes) {
+    public TokenRequestContext addScopes(String... scopes) {
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
     }

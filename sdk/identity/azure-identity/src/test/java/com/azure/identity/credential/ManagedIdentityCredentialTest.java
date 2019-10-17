@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
@@ -64,7 +64,7 @@ public class ManagedIdentityCredentialTest {
             String endpoint = "http://localhost";
             String secret = "secret";
             String token1 = "token1";
-            TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
+            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
             OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
             configuration.put("MSI_ENDPOINT", endpoint);
             configuration.put("MSI_SECRET", secret);
@@ -91,7 +91,7 @@ public class ManagedIdentityCredentialTest {
     public void testIMDS() throws Exception {
         // setup
         String token1 = "token1";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock

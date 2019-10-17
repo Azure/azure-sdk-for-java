@@ -5,7 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
@@ -57,7 +57,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * Gets token from shared token cache
      * */
     @Override
-    public Mono<AccessToken> getToken(TokenRequest request) {
+    public Mono<AccessToken> getToken(TokenRequestContext request) {
         // Initialize here so that the constructor doesn't throw
         if (pubClient == null) {
             try {

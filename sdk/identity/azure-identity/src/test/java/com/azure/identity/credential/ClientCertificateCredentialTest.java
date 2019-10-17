@@ -3,7 +3,7 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.implementation.IdentityClient;
@@ -42,8 +42,8 @@ public class ClientCertificateCredentialTest {
         String pfxPassword = "password";
         String token1 = "token1";
         String token2 = "token2";
-        TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
-        TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -73,8 +73,8 @@ public class ClientCertificateCredentialTest {
         String pemPath = "C:\\fakepath\\cert1.pem";
         String pfxPath = "C:\\fakepath\\cert2.pfx";
         String pfxPassword = "password";
-        TokenRequest request1 = new TokenRequest().addScopes("https://management.azure.com");
-        TokenRequest request2 = new TokenRequest().addScopes("https://vault.azure.net");
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
@@ -102,7 +102,7 @@ public class ClientCertificateCredentialTest {
         // setup
         String pemPath = "C:\\fakepath\\cert1.pem";
         String token1 = "token1";
-        TokenRequest request = new TokenRequest().addScopes("https://management.azure.com");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock

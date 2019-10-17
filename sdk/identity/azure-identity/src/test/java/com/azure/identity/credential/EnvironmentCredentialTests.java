@@ -4,7 +4,7 @@
 package com.azure.identity.credential;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.EnvironmentCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
@@ -28,7 +28,7 @@ public class EnvironmentCredentialTests {
         EnvironmentCredential credential = new EnvironmentCredentialBuilder().build();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
-        StepVerifier.create(credential.getToken(new TokenRequest().addScopes("qux/.default"))
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default"))
             .doOnSuccess(s -> fail())
             .onErrorResume(t -> {
                 String message = t.getMessage();
