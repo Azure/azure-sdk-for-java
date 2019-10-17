@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
@@ -104,7 +105,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         addExistingSettingRunner((expected) -> {
             client.addSettingWithResponse(expected, Context.NONE).getValue();
             assertRestException(() -> client.addSettingWithResponse(expected, Context.NONE).getValue(),
-                ResourceModifiedException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+                ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED);
         });
     }
 
@@ -124,12 +125,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void setSettingIfEtag() {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
-            assertRestException(() -> client.setSettingWithResponse(initial.setETag("badEtag"), true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setSettingWithResponse(initial.setETag("badEtag"), true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
 
             final String etag = client.addSettingWithResponse(initial, Context.NONE).getValue().getETag();
 
             assertConfigurationEquals(update, client.setSettingWithResponse(update.setETag(etag), true, Context.NONE));
-            assertRestException(() -> client.setSettingWithResponse(initial, true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.setSettingWithResponse(initial, true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.getSetting(update.getKey(), update.getLabel()));
         });
     }
@@ -225,7 +226,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting updatedConfig = client.setSettingWithResponse(update, false, Context.NONE).getValue();
 
             assertConfigurationEquals(update, client.getSetting(initial.getKey(), initial.getLabel()));
-            assertRestException(() -> client.deleteSettingWithResponse(initiallyAddedConfig, true, Context.NONE).getValue(), ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED);
+            assertRestException(() -> client.deleteSettingWithResponse(initiallyAddedConfig, true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
             assertConfigurationEquals(update, client.deleteSettingWithResponse(updatedConfig, true, Context.NONE).getValue());
             assertRestException(() -> client.getSetting(initial.getKey(), initial.getLabel()), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
         });
@@ -252,7 +253,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // unsuccessfully delete
             assertRestException(() ->
                 client.deleteSettingWithResponse(expected, false, Context.NONE),
-                ResourceModifiedException.class, 409);
+                HttpResponseException.class, 409);
         });
     }
 
@@ -268,7 +269,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // unsuccessfully delete
             assertRestException(() ->
                 client.deleteSettingWithResponse(expected, false, Context.NONE),
-                ResourceModifiedException.class, 409);
+                HttpResponseException.class, 409);
 
             // clear read-only setting and delete
             client.clearReadOnly(expected.getKey(), expected.getLabel());
@@ -291,7 +292,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // unsuccessfully delete
             assertRestException(() ->
                 client.deleteSettingWithResponse(expected, false, Context.NONE),
-                ResourceModifiedException.class, 409);
+                HttpResponseException.class, 409);
         });
     }
 
@@ -308,7 +309,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // unsuccessfully deleted
             assertRestException(() ->
                 client.deleteSettingWithResponse(expected, false, Context.NONE),
-                ResourceModifiedException.class, 409);
+                HttpResponseException.class, 409);
 
             // unlock setting and delete
             client.clearReadOnlyWithResponse(expected, Context.NONE);

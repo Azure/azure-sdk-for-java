@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -119,7 +120,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void addExistingSetting() {
         addExistingSettingRunner((expected) ->
             StepVerifier.create(client.addSettingWithResponse(expected).then(client.addSettingWithResponse(expected)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
@@ -142,7 +143,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setSettingWithResponse(initial.setETag("badEtag"), true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             final String etag = client.addSettingWithResponse(initial).block().getValue().getETag();
 
@@ -151,7 +152,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.setSettingWithResponse(initial, true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getSettingWithResponse(update, null, false))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -282,7 +283,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.deleteSettingWithResponse(initiallyAddedConfig, true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.deleteSettingWithResponse(updatedConfig, true))
                 .assertNext(response -> assertConfigurationEquals(update, response))
@@ -320,7 +321,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             StepVerifier.create(client.deleteSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
         });
     }
 
@@ -341,7 +342,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             StepVerifier.create(client.deleteSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
 
             // clear read-only of setting and delete
             StepVerifier.create(client.clearReadOnly(expected.getKey(), expected.getLabel()))
@@ -371,7 +372,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             StepVerifier.create(client.deleteSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
         });
     }
 
@@ -391,7 +392,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // unsuccessfully delete
             StepVerifier.create(client.deleteSettingWithResponse(expected, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, 409));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, 409));
 
             // clear read-only setting and delete
             StepVerifier.create(client.clearReadOnlyWithResponse(expected))

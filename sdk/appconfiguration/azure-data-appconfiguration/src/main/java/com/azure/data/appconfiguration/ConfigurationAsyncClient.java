@@ -6,7 +6,9 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -27,6 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
@@ -134,6 +137,17 @@ public final class ConfigurationAsyncClient {
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
             getETagValue(ETAG_ANY), context)
+            .onErrorResume((Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
+                if (throwable instanceof HttpResponseException) {
+                    final HttpResponseException e = (HttpResponseException) throwable;
+                    final HttpResponse httpResponse = e.getResponse();
+                    if (httpResponse.getStatusCode() == 412) {
+                        return Mono.error(new ResourceExistsException("Setting was already present.",
+                            httpResponse, throwable));
+                    }
+                }
+                return Mono.error(throwable);
+            })
             .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
@@ -331,12 +345,18 @@ public final class ConfigurationAsyncClient {
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
-            .flatMap(r -> {
-                if (r.getStatusCode() == 304) {
-                    return Mono.just(new SimpleResponse<>(r, setting));
-                } else {
-                    return Mono.just(r);
+            .onErrorResume((Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
+                if (throwable instanceof HttpResponseException) {
+                    final HttpResponseException e = (HttpResponseException) throwable;
+                    final HttpResponse httpResponse = e.getResponse();
+                    if (httpResponse.getStatusCode() == 304) {
+                        return Mono.just(new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), setting, null));
+                    } else if (httpResponse.getStatusCode() == 404) {
+                        return Mono.error(new ResourceNotFoundException("Setting not found.", httpResponse, throwable));
+                    }
                 }
+                return Mono.error(throwable);
             })
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
