@@ -494,13 +494,14 @@ public final class BlobServiceSasSignatureValues {
      *  See class level JavaDocs for code snippets.
      *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param accountName Azure Storage account name to generate SAS for.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException if {@code delegationKey} or {@code account} is null.
-     * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">Create a user
-     * delegation SAS</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">
+     *     Create a user delegation SAS</a>
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey, String accountName) {
         Utility.assertNotNull("delegationKey", delegationKey);
