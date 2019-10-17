@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -129,7 +130,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         for (HttpHeader header : requestResponseHeaders) {
             String headerName = header.getName();
             sb.append(headerName).append(":");
-            if (lowerCasedAllowedHeaderNames.contains(headerName.toLowerCase())) {
+            if (lowerCasedAllowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))) {
                 sb.append(header.getValue());
             } else {
                 sb.append(REDACTED_PLACEHOLDER);
@@ -150,7 +151,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 String[] queryPair = queryParam.split("=", 2);
                 if (queryPair.length == 2) {
                     String queryName = queryPair[0];
-                    if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase())) {
+                    if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase(Locale.ROOT))) {
                         sb.append(queryParam);
                     } else {
                         sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
