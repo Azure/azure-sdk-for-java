@@ -53,7 +53,8 @@ public final class BuilderHelper {
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain 'AccountName' or 'AccountKey'.
      */
     public static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
-                                                 Consumer<StorageSharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
+                                                 Consumer<StorageSharedKeyCredential> credentialSetter,
+                                                 Consumer<String> endpointSetter, ClientLogger logger) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);

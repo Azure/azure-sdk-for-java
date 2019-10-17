@@ -29,7 +29,7 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * @param removeSasParameters When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-     AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParameters) {
+    AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParameters) {
         super(queryParamsMap, removeSasParameters);
         this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
             removeSasParameters);

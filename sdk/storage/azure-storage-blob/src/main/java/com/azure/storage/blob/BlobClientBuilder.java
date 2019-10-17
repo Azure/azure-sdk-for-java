@@ -269,7 +269,7 @@ public final class BlobClientBuilder {
      * Sets the name of the container that contains the blob.
      *
      * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root}
-     * ,will be used.
+     * , will be used.
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder containerName(String containerName) {

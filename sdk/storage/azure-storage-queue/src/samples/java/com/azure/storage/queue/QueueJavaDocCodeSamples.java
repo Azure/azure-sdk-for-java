@@ -169,7 +169,7 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueClient.receiveMessages#integer
         for (QueueMessageItem message : client.receiveMessages(5)) {
             System.out.printf("Received %s and it becomes visible at %s",
-                message.getMessageId(), message.getNextTimeVisible());
+                message.getMessageId(), message.getTimeNextVisible());
         }
         // END: com.azure.storage.queue.queueClient.receiveMessages#integer
     }
@@ -183,7 +183,7 @@ public class QueueJavaDocCodeSamples {
         for (QueueMessageItem message : client.receiveMessages(5, Duration.ofSeconds(60),
             Duration.ofSeconds(1), new Context(key1, value1))) {
             System.out.printf("Received %s and it becomes visible at %s",
-                message.getMessageId(), message.getNextTimeVisible());
+                message.getMessageId(), message.getTimeNextVisible());
         }
         // END: com.azure.storage.queue.queueClient.receiveMessages#integer-duration-duration-context
     }
