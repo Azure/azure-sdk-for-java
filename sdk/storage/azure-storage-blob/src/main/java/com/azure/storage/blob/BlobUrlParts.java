@@ -280,7 +280,6 @@ public final class BlobUrlParts {
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
      */
     public static BlobUrlParts parse(URL url) {
-
         final String scheme = url.getProtocol();
         final String host = url.getHost();
 
@@ -340,6 +339,14 @@ public final class BlobUrlParts {
             .setAccountName(accountName)
             .setSasQueryParameters(blobServiceSasQueryParameters)
             .setUnparsedParameters(queryParamsMap);
+    }
+
+    private static void parseIpUrl() {
+
+    }
+
+    private static void parseNonIpUrl() {
+
     }
 
     /**

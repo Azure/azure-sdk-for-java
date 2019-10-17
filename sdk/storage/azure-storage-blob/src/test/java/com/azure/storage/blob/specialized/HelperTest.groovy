@@ -13,10 +13,10 @@ import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Unroll
 
@@ -679,5 +679,26 @@ class HelperTest extends APISpec {
         parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+    }
+
+    def "IP URLParser"() {
+        when:
+        BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint))
+
+        then:
+        parts.getScheme() == scheme
+        parts.getHost() == host
+        parts.getAccountName() == accountName
+        parts.getBlobContainerName() == blobContainerName
+        parts.getBlobName() == blobName
+
+        where:
+        endpoint                                                 | scheme | host              | accountName          | blobContainerName | blobName
+        "http://127.0.0.1:10000/devstoreaccount1"                | "http" | "127.0.0.1:10000" | "devstorageaccount1" | null              | null
+        "http://127.0.0.1:10000/devstoreaccount1/container"      | "http" | "127.0.0.1:10000" | "devstorageaccount1" | "container"       | null
+        "http://127.0.0.1:10000/devstoreaccount1/container/blob" | "http" | "127.0.0.1:10000" | "devstorageaccount1" | "container"       | "blob"
+        "http://localhost:10000/devstoreaccount1"                | "http" | "localhost:10000" | "devstorageaccount1" | null              | null
+        "http://localhost:10000/devstoreaccount1/container"      | "http" | "localhost:10000" | "devstorageaccount1" | "container"       | null
+        "http://localhost:10000/devstoreaccount1/container/blob" | "http" | "localhost:10000" | "devstorageaccount1" | "container"       | "blob"
     }
 }
