@@ -101,6 +101,7 @@ public class BlobAsyncClientBase {
         return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
             .url(getBlobUrl())
             .pipeline(azureBlobStorage.getHttpPipeline())
+            .version(getServiceVersion())
             .build(), snapshot, customerProvidedKey, accountName);
     }
 
