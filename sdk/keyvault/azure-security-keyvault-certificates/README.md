@@ -123,7 +123,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the CertificateClient:
 
 ```Java
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
 
 CertificateClient client = new CertificateClientBuilder()
@@ -157,7 +157,7 @@ The following sections provide several code snippets covering some of the most c
 Create a Certificate to be stored in the Azure Key Vault.
 - `createCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
 ```Java
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -235,7 +235,7 @@ The following sections provide several code snippets covering some of the most c
 Create a Certificate to be stored in the Azure Key Vault.
 - `createCertificate` creates a new key in the key vault. if the certificate with name already exists then a new version of the certificate is created.
 ```Java
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.Certificate;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;

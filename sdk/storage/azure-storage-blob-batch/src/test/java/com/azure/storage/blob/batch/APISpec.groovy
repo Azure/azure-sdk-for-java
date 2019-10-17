@@ -14,7 +14,7 @@ import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
-import com.azure.identity.credential.EnvironmentCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceAsyncClient

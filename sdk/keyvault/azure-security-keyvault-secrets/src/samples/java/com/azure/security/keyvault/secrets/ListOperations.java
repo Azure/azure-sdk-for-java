@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 

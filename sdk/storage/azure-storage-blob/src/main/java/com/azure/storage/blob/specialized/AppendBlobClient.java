@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
@@ -178,17 +177,17 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrl#URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrl#String-BlobRange}
      *
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange The source {@link BlobRange} to copy.
      * @return The information of the append blob operation.
      */
-    public AppendBlobItem appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return appendBlockFromUrlWithResponse(sourceURL, sourceRange, null, null, null, null, Context.NONE).getValue();
+    public AppendBlobItem appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
+        return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -196,9 +195,9 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#URL-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
@@ -211,10 +210,10 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the append blob operation.
      */
-    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(URL sourceURL, BlobRange sourceRange,
+    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceURL,
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(sourceUrl,
             sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

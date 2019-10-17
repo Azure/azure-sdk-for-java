@@ -33,6 +33,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -87,7 +88,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the created page blob.
      */
     public Mono<PageBlobItem> create(long size) {
-        return createWithResponse(size, false, null, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(size, false, null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -112,8 +117,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, boolean overwrite, Long sequenceNumber,
         BlobHttpHeaders headers, Map<String, String> metadata, BlobAccessConditions accessConditions) {
-        return withContext(context ->
-            createWithResponse(size, overwrite, sequenceNumber, headers, metadata, accessConditions, context));
+        try {
+            return withContext(context ->
+                createWithResponse(size, overwrite, sequenceNumber, headers, metadata, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> createWithResponse(long size, boolean overwrite, Long sequenceNumber,
@@ -162,7 +171,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded pages.
      */
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
-        return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+        try {
+            return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -188,7 +201,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         PageBlobAccessConditions pageBlobAccessConditions) {
-        return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
+        try {
+            return withContext(context -> uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
@@ -219,12 +236,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-URL-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-String-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
@@ -232,9 +249,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * blob.
      * @return A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, null, null, null)
-            .flatMap(FluxUtil::toMono);
+    public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
+        try {
+            return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -244,12 +265,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-URL-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
      * ranges are 0-511, 512-1023, etc.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
@@ -261,14 +282,19 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL,
+    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl,
         Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
-        return withContext(context -> uploadPagesFromURLWithResponse(range, sourceURL, sourceOffset, sourceContentMD5,
-            destAccessConditions, sourceAccessConditions, context));
+        try {
+            return withContext(
+                context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
+                    destAccessConditions, sourceAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, URL sourceURL, Long sourceOffset,
+    Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         if (range == null) {
@@ -289,8 +315,15 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
         destAccessConditions = destAccessConditions == null ? new PageBlobAccessConditions() : destAccessConditions;
 
+        URL url;
+        try {
+            url = new URL(sourceUrl);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+        }
+
         return this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(null, null,
-            sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, getCustomerProvidedKey(),
+            url, sourceRangeString, 0, rangeString, sourceContentMD5, null, null, null, getCustomerProvidedKey(),
             destAccessConditions.getLeaseAccessConditions(), destAccessConditions.getSequenceNumberAccessConditions(),
             destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.getDeserializedHeaders())));
@@ -310,7 +343,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the cleared pages.
      */
     public Mono<PageBlobItem> clearPages(PageRange pageRange) {
-        return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
+        try {
+            return clearPagesWithResponse(pageRange, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -330,7 +367,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobAccessConditions pageBlobAccessConditions) {
-        return withContext(context -> clearPagesWithResponse(pageRange, pageBlobAccessConditions, context));
+        try {
+            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
@@ -365,7 +406,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the cleared pages.
      */
     public Mono<PageList> getPageRanges(BlobRange blobRange) {
-        return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
+        try {
+            return getPageRangesWithResponse(blobRange, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -382,7 +427,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> getPageRangesWithResponse(blobRange, accessConditions, context));
+        try {
+            return withContext(context -> getPageRangesWithResponse(blobRange, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange, BlobAccessConditions accessConditions,
@@ -412,7 +461,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting all the different page ranges.
      */
     public Mono<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
+        try {
+            return getPageRangesDiffWithResponse(blobRange, prevSnapshot, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -434,8 +487,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
         BlobAccessConditions accessConditions) {
-        return withContext(context ->
-            getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
+        try {
+            return withContext(context ->
+                getPageRangesDiffWithResponse(blobRange, prevSnapshot, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageList>> getPageRangesDiffWithResponse(BlobRange blobRange, String prevSnapshot,
@@ -467,7 +524,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting the resized page blob.
      */
     public Mono<PageBlobItem> resize(long size) {
-        return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
+        try {
+            return resizeWithResponse(size, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -485,7 +546,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES}
      */
     public Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobAccessConditions accessConditions) {
-        return withContext(context -> resizeWithResponse(size, accessConditions, context));
+        try {
+            return withContext(context -> resizeWithResponse(size, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobAccessConditions accessConditions, Context context) {
@@ -517,7 +582,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting the updated page blob.
      */
     public Mono<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber) {
-        return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
+        try {
+            return updateSequenceNumberWithResponse(action, sequenceNumber, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -537,8 +606,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action,
         Long sequenceNumber, BlobAccessConditions accessConditions) {
-        return withContext(context ->
-            updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
+        try {
+            return withContext(context ->
+                updateSequenceNumberWithResponse(action, sequenceNumber, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<PageBlobItem>> updateSequenceNumberWithResponse(SequenceNumberActionType action, Long sequenceNumber,
@@ -568,14 +641,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#URL-String}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
      * @return A reactive response emitting the copy status.
      */
-    public Mono<CopyStatusType> copyIncremental(URL source, String snapshot) {
-        return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
+    public Mono<CopyStatusType> copyIncremental(String source, String snapshot) {
+        try {
+            return copyIncrementalWithResponse(source, snapshot, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -588,7 +665,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#URL-String-ModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#String-String-ModifiedAccessConditions}
      *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
@@ -598,23 +675,29 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response emitting the copy status.
      * @throws IllegalStateException If {@code source} and {@code snapshot} form a malformed URL.
      */
-    public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
+    public Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions) {
-        return withContext(context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
+        try {
+            return withContext(
+                context -> copyIncrementalWithResponse(source, snapshot, modifiedAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    Mono<Response<CopyStatusType>> copyIncrementalWithResponse(URL source, String snapshot,
+    Mono<Response<CopyStatusType>> copyIncrementalWithResponse(String source, String snapshot,
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, snapshot);
+        URL url;
         try {
-            source = builder.toURL();
+            url = builder.toURL();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
-            throw logger.logExceptionAsError(new IllegalStateException(e));
+            throw logger.logExceptionAsError(new IllegalArgumentException(e));
         }
         return this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(
-            null, null, source, null, null, modifiedAccessConditions, context)
+            null, null, url, null, null, modifiedAccessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyStatus()));
     }
 

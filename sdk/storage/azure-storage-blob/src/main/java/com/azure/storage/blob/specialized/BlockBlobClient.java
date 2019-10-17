@@ -222,18 +222,19 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-URL-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-String-BlobRange}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
      * @param sourceRange {@link BlobRange}
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public void stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
-        stageBlockFromURLWithResponse(base64BlockID, sourceURL, sourceRange, null, null, null, null, Context.NONE);
+    public void stageBlockFromURL(String base64BlockID, String sourceUrl, BlobRange sourceRange) {
+        stageBlockFromURLWithResponse(base64BlockID, sourceUrl, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
@@ -243,11 +244,11 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-URL-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
-     * @param sourceURL The url to the blob that will be the source of the copy.  A source blob in the same storage
+     * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      * must either be public or must be authenticated via a shared access signature. If the source blob is public, no
      * authentication is required to perform the operation.
@@ -260,11 +261,12 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
+     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<Void> stageBlockFromURLWithResponse(String base64BlockID, URL sourceURL, BlobRange sourceRange,
+    public Response<Void> stageBlockFromURLWithResponse(String base64BlockID, String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceURL,
+        Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceUrl,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

@@ -124,6 +124,14 @@ public final class BlobContainerClient {
         return this.blobContainerAsyncClient.getAccountName();
     }
 
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return this.blobContainerAsyncClient.getServiceVersion();
+    }
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
