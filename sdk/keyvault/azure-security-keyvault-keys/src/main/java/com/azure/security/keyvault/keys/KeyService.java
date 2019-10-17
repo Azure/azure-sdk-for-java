@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.security.keyvault.keys.implementation.KeyPropertiesPage;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import reactor.core.publisher.Mono;
 
@@ -45,37 +45,37 @@ interface KeyService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> createKey(@HostParam("url") String url,
-                                  @PathParam("key-name") String keyName,
-                                  @QueryParam("api-version") String apiVersion,
-                                  @HeaderParam("accept-language") String acceptLanguage,
-                                  @BodyParam("body") KeyRequestParameters parameters,
-                                  @HeaderParam("Content-Type") String type,
-                                  Context context);
+    Mono<Response<KeyVaultKey>> createKey(@HostParam("url") String url,
+                                          @PathParam("key-name") String keyName,
+                                          @QueryParam("api-version") String apiVersion,
+                                          @HeaderParam("accept-language") String acceptLanguage,
+                                          @BodyParam("body") KeyRequestParameters parameters,
+                                          @HeaderParam("Content-Type") String type,
+                                          Context context);
 
     @Get("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> getKey(@HostParam("url") String url,
-                                     @PathParam("key-name") String keyName,
-                                     @PathParam("key-version") String keyVersion,
-                                     @QueryParam("api-version") String apiVersion,
-                                     @HeaderParam("accept-language") String acceptLanguage,
-                                     @HeaderParam("Content-Type") String type,
-                                     Context context);
+    Mono<Response<KeyVaultKey>> getKey(@HostParam("url") String url,
+                                       @PathParam("key-name") String keyName,
+                                       @PathParam("key-version") String keyVersion,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
 
     @Put("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> importKey(@HostParam("url") String url,
-                                  @PathParam("key-name") String keyName,
-                                  @QueryParam("api-version") String apiVersion,
-                                  @HeaderParam("accept-language") String acceptLanguage,
-                                  @BodyParam("body") KeyImportRequestParameters parameters,
-                                  @HeaderParam("Content-Type") String type,
-                                  Context context);
+    Mono<Response<KeyVaultKey>> importKey(@HostParam("url") String url,
+                                          @PathParam("key-name") String keyName,
+                                          @QueryParam("api-version") String apiVersion,
+                                          @HeaderParam("accept-language") String acceptLanguage,
+                                          @BodyParam("body") KeyImportRequestParameters parameters,
+                                          @HeaderParam("Content-Type") String type,
+                                          Context context);
 
 
     @Delete("keys/{key-name}")
@@ -92,14 +92,14 @@ interface KeyService {
     @Patch("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> updateKey(@HostParam("url") String url,
-                                      @PathParam("key-name") String keyName,
-                                      @PathParam("key-version") String keyVersion,
-                                      @QueryParam("api-version") String apiVersion,
-                                      @HeaderParam("accept-language") String acceptLanguage,
-                                      @BodyParam("body") KeyRequestParameters parameters,
-                                      @HeaderParam("Content-Type") String type,
-                                      Context context);
+    Mono<Response<KeyVaultKey>> updateKey(@HostParam("url") String url,
+                                          @PathParam("key-name") String keyName,
+                                          @PathParam("key-version") String keyVersion,
+                                          @QueryParam("api-version") String apiVersion,
+                                          @HeaderParam("accept-language") String acceptLanguage,
+                                          @BodyParam("body") KeyRequestParameters parameters,
+                                          @HeaderParam("Content-Type") String type,
+                                          Context context);
 
     @Get("keys/{key-name}/versions")
     @ExpectedResponses({200})
@@ -129,12 +129,12 @@ interface KeyService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> restoreKey(@HostParam("url") String url,
-                                     @QueryParam("api-version") String apiVersion,
-                                     @BodyParam("body") KeyRestoreRequestParameters parameters,
-                                     @HeaderParam("accept-language") String acceptLanguage,
-                                     @HeaderParam("Content-Type") String type,
-                                     Context context);
+    Mono<Response<KeyVaultKey>> restoreKey(@HostParam("url") String url,
+                                           @QueryParam("api-version") String apiVersion,
+                                           @BodyParam("body") KeyRestoreRequestParameters parameters,
+                                           @HeaderParam("accept-language") String acceptLanguage,
+                                           @HeaderParam("Content-Type") String type,
+                                           Context context);
 
 
     @Get("keys")
@@ -208,10 +208,10 @@ interface KeyService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Key>> recoverDeletedKey(@HostParam("url") String url,
-                                          @PathParam("key-name") String keyName,
-                                          @QueryParam("api-version") String apiVersion,
-                                          @HeaderParam("accept-language") String acceptLanguage,
-                                          @HeaderParam("Content-Type") String type,
-                                          Context context);
+    Mono<Response<KeyVaultKey>> recoverDeletedKey(@HostParam("url") String url,
+                                                  @PathParam("key-name") String keyName,
+                                                  @QueryParam("api-version") String apiVersion,
+                                                  @HeaderParam("accept-language") String acceptLanguage,
+                                                  @HeaderParam("Content-Type") String type,
+                                                  Context context);
 }

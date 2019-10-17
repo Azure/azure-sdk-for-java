@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class KeyCreateOptions {
+public class CreateKeyOptions {
 
     /**
      * Determines whether the object is enabled.
@@ -26,7 +26,7 @@ public class KeyCreateOptions {
     /**
      * Expiry date in UTC.
      */
-    private OffsetDateTime expires;
+    private OffsetDateTime expiresOn;
 
     /**
      * Application specific metadata in the form of key-value pairs.
@@ -48,16 +48,14 @@ public class KeyCreateOptions {
      */
     String name;
 
-    KeyCreateOptions() {
-
-    }
+    CreateKeyOptions() { }
 
     /**
      * Creates instance of KeyCreateOptions with {@code name} as key name and {@code keyType} as type of the key.
      * @param name The name of the key to create.
      * @param keyType The type of the key to create.
      */
-    public KeyCreateOptions(String name, KeyType keyType) {
+    public CreateKeyOptions(String name, KeyType keyType) {
         this.name = name;
         this.keyType = keyType;
     }
@@ -77,7 +75,7 @@ public class KeyCreateOptions {
      * @param keyOperations The key operations value to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions setKeyOperations(KeyOperation... keyOperations) {
+    public CreateKeyOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
@@ -97,7 +95,7 @@ public class KeyCreateOptions {
      * @param notBefore The notBefore UTC time to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
+    public CreateKeyOptions setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore;
         return this;
     }
@@ -114,11 +112,11 @@ public class KeyCreateOptions {
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires The expiry time to set for the key.
+     * @param expiresOn The expiry time to set for the key.
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions setExpires(OffsetDateTime expires) {
-        this.expires = expires;
+    public CreateKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
         return this;
     }
 
@@ -127,8 +125,8 @@ public class KeyCreateOptions {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime getExpires() {
-        return this.expires;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -137,7 +135,7 @@ public class KeyCreateOptions {
      * @param tags The tags to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions setTags(Map<String, String> tags) {
+    public CreateKeyOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -157,7 +155,7 @@ public class KeyCreateOptions {
      * @param enabled The enabled value to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions setEnabled(Boolean enabled) {
+    public CreateKeyOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

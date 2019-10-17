@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
@@ -32,12 +32,12 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(pipeline -> new SecretClientBuilder()
                     .pipeline(pipeline)
-                    .endpoint(getEndpoint())
+                    .vaultEndpoint(getEndpoint())
                     .buildAsyncClient());
         } else {
             client = clientSetup(pipeline -> new SecretClientBuilder()
                     .pipeline(pipeline)
-                    .endpoint(getEndpoint())
+                    .vaultEndpoint(getEndpoint())
                     .buildAsyncClient());
         }
     }
@@ -92,9 +92,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             StepVerifier.create(client.setSecret(original))
                     .assertNext(response -> assertSecretEquals(original, response))
                     .verifyComplete();
-            Secret secretToUpdate = client.getSecret(original.getName()).block();
+            KeyVaultSecret secretToUpdate = client.getSecret(original.getName()).block();
 
-            StepVerifier.create(client.updateSecretProperties(secretToUpdate.getProperties().setExpires(updated.getProperties().getExpires())))
+            StepVerifier.create(client.updateSecretProperties(secretToUpdate.getProperties().setExpiresOn(updated.getProperties().getExpiresOn())))
                     .assertNext(response -> {
                         assertNotNull(response);
                         Assert.assertEquals(original.getName(), response.getName());
@@ -138,8 +138,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      */
     public void getSecretSpecificVersion() {
         getSecretSpecificVersionRunner((secret, secretWithNewVal) -> {
-            final Secret secretVersionOne = client.setSecret(secret).block();
-            final Secret secretVersionTwo = client.setSecret(secretWithNewVal).block();
+            final KeyVaultSecret secretVersionOne = client.setSecret(secret).block();
+            final KeyVaultSecret secretVersionTwo = client.setSecret(secretWithNewVal).block();
 
             StepVerifier.create(client.getSecret(secret.getName(), secretVersionOne.getProperties().getVersion()))
                     .assertNext(response -> assertSecretEquals(secret, response))
@@ -172,7 +172,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             StepVerifier.create(client.deleteSecret(secretToDelete.getName()))
                     .assertNext(deletedSecretResponse -> {
-                        assertNotNull(deletedSecretResponse.getDeletedDate());
+                        assertNotNull(deletedSecretResponse.getDeletedOn());
                         assertNotNull(deletedSecretResponse.getRecoveryId());
                         assertNotNull(deletedSecretResponse.getScheduledPurgeDate());
                         Assert.assertEquals(secretToDelete.getName(), deletedSecretResponse.getName());
@@ -211,7 +211,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             StepVerifier.create(client.getDeletedSecret(secretToDeleteAndGet.getName()))
                     .assertNext(deletedSecretResponse -> {
-                        assertNotNull(deletedSecretResponse.getDeletedDate());
+                        assertNotNull(deletedSecretResponse.getDeletedOn());
                         assertNotNull(deletedSecretResponse.getRecoveryId());
                         assertNotNull(deletedSecretResponse.getScheduledPurgeDate());
                         Assert.assertEquals(secretToDeleteAndGet.getName(), deletedSecretResponse.getName());
@@ -252,7 +252,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     .assertNext(secretResponse -> {
                         Assert.assertEquals(secretToDeleteAndRecover.getName(), secretResponse.getName());
                         Assert.assertEquals(secretToDeleteAndRecover.getProperties().getNotBefore(), secretResponse.getProperties().getNotBefore());
-                        Assert.assertEquals(secretToDeleteAndRecover.getProperties().getExpires(), secretResponse.getProperties().getExpires());
+                        Assert.assertEquals(secretToDeleteAndRecover.getProperties().getExpiresOn(), secretResponse.getProperties().getExpiresOn());
                     }).verifyComplete();
         });
     }
@@ -315,11 +315,11 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             sleepInRecordMode(60000);
 
-            StepVerifier.create(client.restoreSecret(backup))
+            StepVerifier.create(client.restoreSecretBackup(backup))
                     .assertNext(response -> {
                         Assert.assertEquals(secretToBackupAndRestore.getName(), response.getName());
                         Assert.assertEquals(secretToBackupAndRestore.getProperties().getNotBefore(), response.getProperties().getNotBefore());
-                        Assert.assertEquals(secretToBackupAndRestore.getProperties().getExpires(), response.getProperties().getExpires());
+                        Assert.assertEquals(secretToBackupAndRestore.getProperties().getExpiresOn(), response.getProperties().getExpiresOn());
                     }).verifyComplete();
         });
     }
@@ -329,7 +329,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      */
     public void restoreSecretFromMalformedBackup() {
         byte[] secretBackupBytes = "non-existing".getBytes();
-        StepVerifier.create(client.restoreSecret(secretBackupBytes))
+        StepVerifier.create(client.restoreSecretBackup(secretBackupBytes))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
@@ -341,7 +341,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         listDeletedSecretsRunner((secrets) -> {
             List<DeletedSecret> deletedSecrets = new ArrayList<>();
 
-            for (Secret secret : secrets.values()) {
+            for (KeyVaultSecret secret : secrets.values()) {
                 StepVerifier.create(client.setSecret(secret))
                         .assertNext(secretResponse -> {
                             assertSecretEquals(secret, secretResponse);
@@ -349,7 +349,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             }
             sleepInRecordMode(10000);
 
-            for (Secret secret : secrets.values()) {
+            for (KeyVaultSecret secret : secrets.values()) {
                 StepVerifier.create(client.deleteSecret(secret.getName()))
                         .assertNext(Assert::assertNotNull).verifyComplete();
                 pollOnSecretDeletion(secret.getName());
@@ -361,7 +361,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             for (DeletedSecret actualSecret : deletedSecrets) {
                 if (secrets.containsKey(actualSecret.getName())) {
-                    assertNotNull(actualSecret.getDeletedDate());
+                    assertNotNull(actualSecret.getDeletedOn());
                     assertNotNull(actualSecret.getRecoveryId());
                     secrets.remove(actualSecret.getName());
                 }
@@ -387,13 +387,13 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         listSecretVersionsRunner((secrets) -> {
             List<SecretProperties> output = new ArrayList<>();
             String secretName = null;
-            for (Secret secret : secrets) {
+            for (KeyVaultSecret secret : secrets) {
                 secretName = secret.getName();
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse));
                 sleepInRecordMode(1000);
             }
             sleepInRecordMode(30000);
-            client.listSecretVersions(secretName).subscribe(output::add);
+            client.listPropertiesOfSecretVersions(secretName).subscribe(output::add);
             sleepInRecordMode(30000);
 
             assertEquals(secrets.size(), output.size());
@@ -417,20 +417,20 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
-            HashMap<String, Secret> secretsToList = secrets;
+            HashMap<String, KeyVaultSecret> secretsToList = secrets;
             List<SecretProperties> output = new ArrayList<>();
-            for (Secret secret : secretsToList.values()) {
+            for (KeyVaultSecret secret : secretsToList.values()) {
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse));
                 sleepInRecordMode(1000);
             }
             sleepInRecordMode(30000);
-            client.listSecrets().subscribe(output::add);
+            client.listPropertiesOfSecrets().subscribe(output::add);
             sleepInRecordMode(30000);
 
             for (SecretProperties actualSecret : output) {
                 if (secretsToList.containsKey(actualSecret.getName())) {
-                    Secret expectedSecret = secrets.get(actualSecret.getName());
-                    assertEquals(expectedSecret.getProperties().getExpires(), actualSecret.getExpires());
+                    KeyVaultSecret expectedSecret = secrets.get(actualSecret.getName());
+                    assertEquals(expectedSecret.getProperties().getExpiresOn(), actualSecret.getExpiresOn());
                     assertEquals(expectedSecret.getProperties().getNotBefore(), actualSecret.getNotBefore());
                     secrets.remove(actualSecret.getName());
                 }

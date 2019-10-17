@@ -120,30 +120,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
     @Test
     public abstract void signVerifyRsa() throws Exception;
 
-    @Test
-    public abstract void wrapUnwrapSymmetricKeyAES128Kw();
-
-    @Test
-    public abstract void wrapUnwrapSymmetricKeyAES192Kw();
-
-    @Test
-    public abstract void wrapUnwrapSymmetricKeyAES256Kw();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha256();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha384();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyAes128CbcHmacSha512();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyaes128CbcOneBlock();
-
-    @Test
-    public abstract void encryptDecryptSymmetricKeyaes128CbcTwoBlock();
-
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
         BigInteger publicExponent = new BigInteger("65537");

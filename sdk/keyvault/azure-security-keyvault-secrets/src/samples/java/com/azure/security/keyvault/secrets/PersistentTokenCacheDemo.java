@@ -5,7 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.SharedTokenCacheCredential;
 import com.azure.identity.credential.SharedTokenCacheCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 
 /**
  * Sample showing how to authenticate to key vault with a shared token cache credential.
@@ -24,13 +24,13 @@ public class PersistentTokenCacheDemo {
             .build();
 
         SecretClient client = new SecretClientBuilder()
-            .endpoint("https://persistentcachedemo.vault.azure.net")
+            .vaultEndpoint("https://persistentcachedemo.vault.azure.net")
             .credential(defaultCredential)
             .buildClient();
 
         // Try to get a secret! Only works if you are logged in
         System.out.println("\nWhat is the super secret secret?\n\n");
-        Secret secret = client.getSecret("the-secret");
+        KeyVaultSecret secret = client.getSecret("the-secret");
         System.out.println("Secret was found: " + secret.getValue());
     }
 }

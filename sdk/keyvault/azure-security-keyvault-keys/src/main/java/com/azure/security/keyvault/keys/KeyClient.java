@@ -11,12 +11,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
-import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.KeyCreateOptions;
-import com.azure.security.keyvault.keys.models.KeyImportOptions;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The KeyClient provides synchronous methods to manage {@link Key keys} in the Azure Key Vault. The client supports
- * creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Key keys}. The client
+ * The KeyClient provides synchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client supports
+ * creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link KeyVaultKey keys}. The client
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the sync client</strong></p>
@@ -50,6 +50,14 @@ public final class KeyClient {
     }
 
     /**
+     * Get the vault endpoint
+     * @return the vault endpoint
+     */
+    public String getVaultEndpoint() {
+        return client.getVaultEndpoint();
+    }
+
+    /**
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
@@ -64,12 +72,12 @@ public final class KeyClient {
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
-     * @return The {@link Key created key}.
+     * @return The {@link KeyVaultKey created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
      * @throws HttpRequestException if {@code name} is empty string.
      */
-    public Key createKey(String name, KeyType keyType) {
-        return createKeyWithResponse(new KeyCreateOptions(name, keyType), Context.NONE).getValue();
+    public KeyVaultKey createKey(String name, KeyType keyType) {
+        return createKeyWithResponse(new CreateKeyOptions(name, keyType), Context.NONE).getValue();
     }
 
     /**
@@ -77,11 +85,11 @@ public final class KeyClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
-     * KeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link KeyCreateOptions#isEnabled()} enabled} field
+     * <p>The {@link CreateKeyOptions} is required. The {@link CreateKeyOptions#getExpiresOn() expires} and {@link
+     * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled()} enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
      * and {@link KeyType#OCT OCT}.</p>
      *
@@ -89,13 +97,13 @@ public final class KeyClient {
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the
      * created key.</p> {@codesnippet com.azure.keyvault.keys.keyclient.createKey#keyOptions}
      *
-     * @param keyCreateOptions The key options object containing information about the key being created.
-     * @return The {@link Key created key}.
+     * @param createKeyOptions The key options object containing information about the key being created.
+     * @return The {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
      */
-    public Key createKey(KeyCreateOptions keyCreateOptions) {
-        return createKeyWithResponse(keyCreateOptions, Context.NONE).getValue();
+    public KeyVaultKey createKey(CreateKeyOptions createKeyOptions) {
+        return createKeyWithResponse(createKeyOptions, Context.NONE).getValue();
     }
 
     /**
@@ -103,11 +111,11 @@ public final class KeyClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#getExpires() expires} and {@link
-     * KeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link KeyCreateOptions#isEnabled() enabled} field
+     * <p>The {@link CreateKeyOptions} is required. The {@link CreateKeyOptions#getExpiresOn() expires} and {@link
+     * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled() enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link KeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
      * and {@link KeyType#OCT OCT}.</p>
      *
@@ -115,14 +123,14 @@ public final class KeyClient {
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the
      * created key.</p> {@codesnippet com.azure.keyvault.keys.keyclient.createKeyWithResponse#keyCreateOptions-Context}
      *
-     * @param keyCreateOptions The key options object containing information about the key being created.
+     * @param createKeyOptions The key options object containing information about the key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key created key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
      */
-    public Response<Key> createKeyWithResponse(KeyCreateOptions keyCreateOptions, Context context) {
-        return client.createKeyWithResponse(keyCreateOptions, context).block();
+    public Response<KeyVaultKey> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
+        return client.createKeyWithResponse(createKeyOptions, context).block();
     }
 
     /**
@@ -130,12 +138,12 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
-     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and {@link
-     * RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#isEnabled() enabled}
+     * <p>The {@link CreateRsaKeyOptions} is required. The {@link CreateRsaKeyOptions#getKeySize() keySize} can be
+     * optionally specified. The {@link CreateRsaKeyOptions#getExpiresOn() expires} and {@link
+     * CreateRsaKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateRsaKeyOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link CreateRsaKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -143,14 +151,14 @@ public final class KeyClient {
      * details of the created key.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKey#keyOptions}
      *
-     * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
-     * @return The {@link Key created key}.
+     * @param createRsaKeyOptions The key options object containing information about the rsa key being created.
+     * @return The {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
      */
-    public Key createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return createRsaKeyWithResponse(rsaKeyCreateOptions, Context.NONE).getValue();
+    public KeyVaultKey createRsaKey(CreateRsaKeyOptions createRsaKeyOptions) {
+        return createRsaKeyWithResponse(createRsaKeyOptions, Context.NONE).getValue();
     }
 
     /**
@@ -158,12 +166,12 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#getKeySize() keySize} can be
-     * optionally specified. The {@link RsaKeyCreateOptions#getExpires() expires} and {@link
-     * RsaKeyCreateOptions#getNotBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#isEnabled() enabled}
+     * <p>The {@link CreateRsaKeyOptions} is required. The {@link CreateRsaKeyOptions#getKeySize() keySize} can be
+     * optionally specified. The {@link CreateRsaKeyOptions#getExpiresOn() expires} and {@link
+     * CreateRsaKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateRsaKeyOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link RsaKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link CreateRsaKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#RSA RSA} and {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -171,14 +179,14 @@ public final class KeyClient {
      * details of the created key.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context}
      *
-     * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
+     * @param createRsaKeyOptions The key options object containing information about the rsa key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key created key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
      */
-    public Response<Key> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
-        return client.createRsaKeyWithResponse(rsaKeyCreateOptions, context).block();
+    public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
+        return client.createRsaKeyWithResponse(createRsaKeyOptions, context).block();
     }
 
     /**
@@ -186,13 +194,13 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
+     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link CreateEcKeyOptions#getExpiresOn() expires} and {@link CreateEcKeyOptions#getNotBefore() notBefore}
+     * values are optional. The {@link CreateEcKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link CreateEcKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include: {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -200,13 +208,13 @@ public final class KeyClient {
      * out the details of the created key.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKey#keyOptions}
      *
-     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
-     * @return The {@link Key created key}.
+     * @param createEcKeyOptions The key options object containing information about the ec key being created.
+     * @return The {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
      */
-    public Key createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return createEcKeyWithResponse(ecKeyCreateOptions, Context.NONE).getValue();
+    public KeyVaultKey createEcKey(CreateEcKeyOptions createEcKeyOptions) {
+        return createEcKeyWithResponse(createEcKeyOptions, Context.NONE).getValue();
     }
 
     /**
@@ -214,13 +222,13 @@ public final class KeyClient {
      * key type in key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It
      * requires the {@code keys/create} permission.
      *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#getCurve() key curve} can be
+     * <p>The {@link CreateEcKeyOptions} parameter is required. The {@link CreateEcKeyOptions#getCurve() key curve} can be
      * optionally specified. If not specified, default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key
-     * Vault. The {@link EcKeyCreateOptions#getExpires() expires} and {@link EcKeyCreateOptions#getNotBefore() notBefore}
-     * values are optional. The {@link EcKeyCreateOptions#isEnabled()} enabled} field is set to true by Azure Key Vault, if
+     * Vault. The {@link CreateEcKeyOptions#getExpiresOn() expires} and {@link CreateEcKeyOptions#getNotBefore() notBefore}
+     * values are optional. The {@link CreateEcKeyOptions#isEnabled()} enabled} field is set to true by Azure Key Vault, if
      * not specified.</p>
      *
-     * <p>The {@link EcKeyCreateOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * <p>The {@link CreateEcKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
      * include:
      * {@link KeyType#EC EC} and {@link KeyType#EC_HSM EC-HSM}.</p>
      *
@@ -229,14 +237,14 @@ public final class KeyClient {
      * out the details of the created key.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context}
      *
-     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
+     * @param createEcKeyOptions The key options object containing information about the ec key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key created key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey created key}.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
      */
-    public Response<Key> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
-        return client.createEcKeyWithResponse(ecKeyCreateOptions, context).block();
+    public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
+        return client.createEcKeyWithResponse(createEcKeyOptions, context).block();
     }
 
     /**
@@ -253,11 +261,11 @@ public final class KeyClient {
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
-     * @return The {@link Key imported key}.
+     * @return The {@link KeyVaultKey imported key}.
      * @throws HttpRequestException if {@code name} is empty string.
      */
-    public Key importKey(String name, JsonWebKey keyMaterial) {
-        return importKeyWithResponse(new KeyImportOptions(name, keyMaterial), Context.NONE).getValue();
+    public KeyVaultKey importKey(String name, JsonWebKey keyMaterial) {
+        return importKeyWithResponse(new ImportKeyOptions(name, keyMaterial), Context.NONE).getValue();
     }
 
     /**
@@ -265,11 +273,11 @@ public final class KeyClient {
      * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
-     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
-     * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * <p>The {@code keyImportOptions} is required and its fields {@link ImportKeyOptions#getName() name} and {@link
+     * ImportKeyOptions#getKey() key material} cannot be null. The {@link ImportKeyOptions#getExpiresOn() expires} and
+     * {@link ImportKeyOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
+     * no values are set for the fields. The {@link ImportKeyOptions#isEnabled() enabled} field is set to true and the
+     * {@link ImportKeyOptions#isHardwareProtected() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
@@ -282,14 +290,14 @@ public final class KeyClient {
      * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
      * </pre>
      *
-     * @param keyImportOptions The key import configuration object containing information about the json web key
+     * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
-     * @return The {@link Key imported key}.
+     * @return The {@link KeyVaultKey imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
      * @throws HttpRequestException if {@code name} is empty string.
      */
-    public Key importKey(KeyImportOptions keyImportOptions) {
-        return importKeyWithResponse(keyImportOptions, Context.NONE).getValue();
+    public KeyVaultKey importKey(ImportKeyOptions importKeyOptions) {
+        return importKeyWithResponse(importKeyOptions, Context.NONE).getValue();
     }
 
     /**
@@ -297,11 +305,11 @@ public final class KeyClient {
      * key type into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the
      * key. This operation requires the {@code keys/import} permission.
      *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#getName() name} and {@link
-     * KeyImportOptions#getKeyMaterial() key material} cannot be null. The {@link KeyImportOptions#getExpires() expires} and
-     * {@link KeyImportOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
-     * no values are set for the fields. The {@link KeyImportOptions#isEnabled() enabled} field is set to true and the
-     * {@link KeyImportOptions#isHsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     * <p>The {@code keyImportOptions} is required and its fields {@link ImportKeyOptions#getName() name} and {@link
+     * ImportKeyOptions#getKey() key material} cannot be null. The {@link ImportKeyOptions#getExpiresOn() expires} and
+     * {@link ImportKeyOptions#getNotBefore() notBefore} values in {@code keyImportOptions} are optional. If not specified,
+     * no values are set for the fields. The {@link ImportKeyOptions#isEnabled() enabled} field is set to true and the
+     * {@link ImportKeyOptions#isHardwareProtected() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
@@ -314,15 +322,15 @@ public final class KeyClient {
      * System.out.printf("Key is imported with name %s and id %s \n", importedKey.getName(), importedKey.getId());
      * </pre>
      *
-     * @param keyImportOptions The key import configuration object containing information about the json web key
+     * @param importKeyOptions The key import configuration object containing information about the json web key
      *     being imported.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key imported key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey imported key}.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
      * @throws HttpRequestException if {@code name} is empty string.
      */
-    public Response<Key> importKeyWithResponse(KeyImportOptions keyImportOptions, Context context) {
-        return client.importKeyWithResponse(keyImportOptions, context).block();
+    public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
+        return client.importKeyWithResponse(importKeyOptions, context).block();
     }
 
     /**
@@ -336,12 +344,12 @@ public final class KeyClient {
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
-     * @return The requested {@link Key key}.
+     * @return The requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
      *     vault.
      * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      */
-    public Key getKey(String name, String version) {
+    public KeyVaultKey getKey(String name, String version) {
         return getKeyWithResponse(name, version, Context.NONE).getValue();
     }
 
@@ -357,12 +365,12 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
      *     vault.
      * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      */
-    public Response<Key> getKeyWithResponse(String name, String version, Context context) {
+    public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
         return client.getKeyWithResponse(name, version, context).block();
     }
 
@@ -375,11 +383,11 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
      *
      * @param name The name of the key.
-     * @return The requested {@link Key key}.
+     * @return The requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
      */
-    public Key getKey(String name) {
+    public KeyVaultKey getKey(String name) {
         return getKeyWithResponse(name, "", Context.NONE).getValue();
     }
 
@@ -387,19 +395,19 @@ public final class KeyClient {
      * Get public part of the key which represents {@link KeyProperties keyProperties} from the key vault. The get key operation is
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
-     * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
+     * <p>The list operations {@link KeyClient#listPropertiesOfKeys()} and {@link KeyClient#listPropertiesOfKeyVersions(String)} return
      * the {@link List} containing {@link KeyProperties key properties} as output excluding the key material of the key. This
      * operation can then be used to get the full key with its key material from {@code keyProperties}. </p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#KeyProperties}
      *
      * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
-     * @return The requested {@link Key key}.
+     * @return The requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName()}  name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Key getKey(KeyProperties keyProperties) {
+    public KeyVaultKey getKey(KeyProperties keyProperties) {
         return getKeyWithResponse(keyProperties, Context.NONE).getValue();
     }
 
@@ -407,20 +415,20 @@ public final class KeyClient {
      * Get public part of the key which represents {@link KeyProperties keyProperties} from the key vault. The get key operation is
      * applicable to all key types and it requires the {@code keys/get} permission.
      *
-     * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
+     * <p>The list operations {@link KeyClient#listPropertiesOfKeys()} and {@link KeyClient#listPropertiesOfKeyVersions(String)} return
      * the {@link List} containing {@link KeyProperties key properties} as output excluding the key material of the key. This
      * operation can then be used to get the full key with its key material from {@code keyProperties}. </p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context}
      *
      * @param keyProperties The {@link KeyProperties key properties} holding attributes of the key being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link Key key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Response<Key> getKeyWithResponse(KeyProperties keyProperties, Context context) {
+    public Response<KeyVaultKey> getKeyWithResponse(KeyProperties keyProperties, Context context) {
         Objects.requireNonNull(keyProperties, "The Key properties parameter cannot be null.");
         return client
             .getKeyWithResponse(keyProperties.getName(), keyProperties.getVersion() == null ? "" : keyProperties.getVersion(), context).block();
@@ -439,14 +447,14 @@ public final class KeyClient {
      *
      * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key updated key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Key updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
+    public KeyVaultKey updateKeyProperties(KeyProperties keyProperties, KeyOperation... keyOperations) {
         return updateKeyPropertiesWithResponse(keyProperties, Context.NONE, keyOperations).getValue();
     }
 
@@ -464,14 +472,14 @@ public final class KeyClient {
      * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param keyOperations The updated key operations to associate with the key.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key updated key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey updated key}.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
-    public Response<Key> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
+    public Response<KeyVaultKey> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
         return client.updateKeyPropertiesWithResponse(keyProperties, context, keyOperations).block();
     }
 
@@ -608,11 +616,11 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return The {@link Key recovered key}.
+     * @return The {@link KeyVaultKey recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public Key recoverDeletedKey(String name) {
+    public KeyVaultKey recoverDeletedKey(String name) {
         return recoverDeletedKeyWithResponse(name, Context.NONE).getValue();
     }
 
@@ -628,11 +636,11 @@ public final class KeyClient {
      *
      * @param name The name of the deleted key to be recovered.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key recovered key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public Response<Key> recoverDeletedKeyWithResponse(String name, Context context) {
+    public Response<KeyVaultKey> recoverDeletedKeyWithResponse(String name, Context context) {
         return client.recoverDeletedKeyWithResponse(name, context).block();
     }
 
@@ -707,11 +715,11 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.restoreKey#byte}
      *
      * @param backup The backup blob associated with the key.
-     * @return The {@link Key restored key}.
+     * @return The {@link KeyVaultKey restored key}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
-    public Key restoreKey(byte[] backup) {
-        return restoreKeyWithResponse(backup, Context.NONE).getValue();
+    public KeyVaultKey restoreKeyBackup(byte[] backup) {
+        return restoreKeyBackupWithResponse(backup, Context.NONE).getValue();
     }
 
     /**
@@ -733,11 +741,11 @@ public final class KeyClient {
      *
      * @param backup The backup blob associated with the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link Key restored key}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey restored key}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
-    public Response<Key> restoreKeyWithResponse(byte[] backup, Context context) {
-        return client.restoreKeyWithResponse(backup, context).block();
+    public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, Context context) {
+        return client.restoreKeyBackupWithResponse(backup, context).block();
     }
 
     /**
@@ -748,20 +756,20 @@ public final class KeyClient {
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyProperties key}
-     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key material
+     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key material
      * included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyProperties
-     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key
+     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key
      * material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the keys in the vault.
      */
-    public PagedIterable<KeyProperties> listKeys() {
-        return listKeys(Context.NONE);
+    public PagedIterable<KeyProperties> listPropertiesOfKeys() {
+        return listPropertiesOfKeys(Context.NONE);
     }
 
     /**
@@ -772,21 +780,21 @@ public final class KeyClient {
      * operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyProperties key}
-     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key material
+     * and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key material
      * included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get full keys with key material from this information. Iterate over all the {@link KeyProperties
-     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key key} with key
+     * key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey key} with key
      * material included of its latest version.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys.iterableByPage}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the keys in the vault.
      */
-    public PagedIterable<KeyProperties> listKeys(Context context) {
-        return new PagedIterable<>(client.listKeys(context));
+    public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
+        return new PagedIterable<>(client.listPropertiesOfKeys(context));
     }
 
     /**
@@ -836,14 +844,14 @@ public final class KeyClient {
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
-     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key keys}
+     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey keys}
      * with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get full keys with key material for each version from this information. Iterate over all
      * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link
-     * Key keys} with key material included of the specified versions.</p>
+     * KeyVaultKey keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
      *
      * @param name The name of the key.
@@ -852,8 +860,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public PagedIterable<KeyProperties> listKeyVersions(String name) {
-        return listKeyVersions(name, Context.NONE);
+    public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name) {
+        return listPropertiesOfKeyVersions(name, Context.NONE);
     }
 
     /**
@@ -862,14 +870,14 @@ public final class KeyClient {
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
      * <p>It is possible to get full keys with key material for each version from this information. Loop over the
-     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link Key keys}
+     * {@link KeyProperties key} and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the {@link KeyVaultKey keys}
      * with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get full keys with key material for each version from this information. Iterate over all
      * the {@link KeyProperties key} by page and call {@link KeyClient#getKey(KeyProperties key properties)}. This will return the
-     * {@link Key keys} with key material included of the specified versions.</p>
+     * {@link KeyVaultKey keys} with key material included of the specified versions.</p>
      *
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage}
      *
@@ -880,7 +888,7 @@ public final class KeyClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public PagedIterable<KeyProperties> listKeyVersions(String name, Context context) {
-        return new PagedIterable<>(client.listKeyVersions(name, context));
+    public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
+        return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));
     }
 }

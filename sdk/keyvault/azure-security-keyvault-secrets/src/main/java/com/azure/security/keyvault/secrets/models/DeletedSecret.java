@@ -12,13 +12,13 @@ import java.time.ZoneOffset;
 
 /**
  * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
- * inherited from {@link Secret}.
+ * inherited from {@link KeyVaultSecret}.
  * It is managed by Secret Service.
  *
  * @see SecretClient
  * @see SecretAsyncClient
  */
-public final class DeletedSecret extends Secret {
+public final class DeletedSecret extends KeyVaultSecret {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted secret.
@@ -34,7 +34,7 @@ public final class DeletedSecret extends Secret {
     /**
      * The time when the secret was deleted, in UTC.
      */
-    private OffsetDateTime deletedDate;
+    private OffsetDateTime deletedOn;
 
     /**
      * Get the recoveryId identifier.
@@ -59,8 +59,8 @@ public final class DeletedSecret extends Secret {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime getDeletedDate() {
-        return this.deletedDate;
+    public OffsetDateTime getDeletedOn() {
+        return this.deletedOn;
     }
 
     /**
@@ -78,8 +78,8 @@ public final class DeletedSecret extends Secret {
      * and updates the value of class variable deletedDate.
      */
     @JsonProperty("deletedDate")
-    private void setDeletedDate(Long deletedDate) {
-        this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
+    private void setDeletedOn(Long deletedOn) {
+        this.deletedOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedOn * 1000L), ZoneOffset.UTC);
     }
 
 }

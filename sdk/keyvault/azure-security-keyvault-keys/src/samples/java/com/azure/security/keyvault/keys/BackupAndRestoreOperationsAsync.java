@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,17 +31,17 @@ public class BackupAndRestoreOperationsAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                        System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
 
         Thread.sleep(2000);
 
@@ -71,7 +71,7 @@ public class BackupAndRestoreOperationsAsync {
 
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        keyAsyncClient.restoreKey(backupFromFile).subscribe(keyResponse ->
+        keyAsyncClient.restoreKeyBackup(backupFromFile).subscribe(keyResponse ->
             System.out.printf("Restored Key with name %s %n", keyResponse.getName()));
 
         //To ensure key is restored on server side.

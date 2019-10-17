@@ -27,11 +27,9 @@ abstract class LocalKeyCryptographyClient {
         this.serviceClient = serviceClient;
     }
 
-    abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
-                                              byte[] authenticationData, Context context, JsonWebKey jsonWebKey);
+    abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey jsonWebKey);
 
-    abstract Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv,
-                                              byte[] authenticationData, byte[] authenticationTag, Context context,
+    abstract Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
                                               JsonWebKey jsonWebKey);
 
     abstract Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key);

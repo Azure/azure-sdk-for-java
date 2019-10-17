@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Map;
 
-public class RsaKeyCreateOptions extends KeyCreateOptions {
+public class CreateRsaKeyOptions extends CreateKeyOptions {
 
     /**
      * The Rsa key size.
@@ -18,15 +18,15 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     private Integer keySize;
 
     /**
-     * The hsm indicator for the key.
+     * The hardware protected indicator for the key.
      */
-    private boolean hsm;
+    private boolean hardwareProtected;
 
     /**
      * Creates a RsaKeyCreateOptions with {@code name} as name of the Rsa key.
      * @param name The name of the key.
      */
-    public RsaKeyCreateOptions(String name) {
+    public CreateRsaKeyOptions(String name) {
         super.name = name;
         this.keyType = KeyType.RSA;
     }
@@ -46,7 +46,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @param keySize The keySize value to set
      * @return the RsaKeyCreateOptions object itself.
      */
-    public RsaKeyCreateOptions setKeySize(Integer keySize) {
+    public CreateRsaKeyOptions setKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -58,7 +58,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions setKeyOperations(KeyOperation... keyOperations) {
+    public CreateRsaKeyOptions setKeyOperations(KeyOperation... keyOperations) {
         this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
@@ -70,7 +70,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions setNotBefore(OffsetDateTime notBefore) {
+    public CreateRsaKeyOptions setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
         return this;
     }
@@ -78,12 +78,12 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires The expiry time to set for the key.
+     * @param expiresOn The expiry time to set for the key.
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions setExpires(OffsetDateTime expires) {
-        super.setExpires(expires);
+    public CreateRsaKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
+        super.setExpiresOn(expiresOn);
         return this;
     }
 
@@ -94,7 +94,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions setTags(Map<String, String> tags) {
+    public CreateRsaKeyOptions setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
@@ -105,19 +105,19 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @param enabled The enabled value to set
      * @return the RsaKeyCreateOptions object itself.
      */
-    public RsaKeyCreateOptions setEnabled(Boolean enabled) {
+    public CreateRsaKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
         return this;
     }
 
     /**
      * Set whether the key being created is of hsm type or not.
-     * @param hsm The hsm value to set.
+     * @param hardwareProtected The hsm value to set.
      * @return the RsaKeyCreateOptions object itself.
      */
-    public RsaKeyCreateOptions setHsm(Boolean hsm) {
-        this.hsm = hsm;
-        this.keyType = hsm ? KeyType.RSA_HSM : KeyType.RSA;
+    public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        this.keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
         return this;
     }
 
@@ -125,7 +125,7 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * Get the hsm value of the key being created.
      * @return the hsm value.
      */
-    public Boolean isHsm() {
-        return this.hsm;
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
     }
 }

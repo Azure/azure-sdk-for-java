@@ -16,7 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.Rule;
 import org.junit.Test;
@@ -95,14 +95,14 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void setSecret();
 
-    void setSecretRunner(Consumer<Secret> testRunner) {
+    void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("foo", "baz");
 
-        final Secret secret = new Secret(SECRET_NAME, SECRET_VALUE)
+        final KeyVaultSecret secret = new KeyVaultSecret(SECRET_NAME, SECRET_VALUE)
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
                 .setTags(tags)
                 .setContentType("text"));
@@ -116,8 +116,8 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void setSecretEmptyValue();
 
-    void setSecretEmptyValueRunner(Consumer<Secret> testRunner) {
-        Secret secret = new Secret(SECRET_NAME, "");
+    void setSecretEmptyValueRunner(Consumer<KeyVaultSecret> testRunner) {
+        KeyVaultSecret secret = new KeyVaultSecret(SECRET_NAME, "");
         testRunner.accept(secret);
     }
 
@@ -127,19 +127,19 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void updateSecret();
 
-    void updateSecretRunner(BiConsumer<Secret, Secret> testRunner) {
+    void updateSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
 
         final Map<String, String> tags = new HashMap<>();
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
-        final Secret originalSecret = new Secret("testSecretUpdate", "testSecretVal")
+        final KeyVaultSecret originalSecret = new KeyVaultSecret("testSecretUpdate", "testSecretVal")
                 .setProperties(new SecretProperties()
-                    .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                    .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                     .setTags(tags));
 
-        final Secret updatedSecret = new Secret("testSecretUpdate", "testSecretVal")
+        final KeyVaultSecret updatedSecret = new KeyVaultSecret("testSecretUpdate", "testSecretVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setTags(tags));
 
         testRunner.accept(originalSecret, updatedSecret);
@@ -149,17 +149,17 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void updateDisabledSecret();
 
-    void updateDisabledSecretRunner(BiConsumer<Secret, Secret> testRunner) {
+    void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
-        final Secret originalSecret = new Secret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
+        final KeyVaultSecret originalSecret = new KeyVaultSecret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setEnabled(false));
 
-        final Secret updatedSecret = new Secret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
+        final KeyVaultSecret updatedSecret = new KeyVaultSecret("testUpdateOfDisabledSecret", "testSecretUpdateDisabledVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setEnabled(false));
         testRunner.accept(originalSecret, updatedSecret);
     }
@@ -167,24 +167,24 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void getSecret();
 
-    void getSecretRunner(Consumer<Secret> testRunner) {
-        final Secret originalSecret = new Secret("testSecretGet", "testSecretGetVal")
+    void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+        final KeyVaultSecret originalSecret = new KeyVaultSecret("testSecretGet", "testSecretGetVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(originalSecret);
     }
 
     @Test
     public abstract void getSecretSpecificVersion();
 
-    void getSecretSpecificVersionRunner(BiConsumer<Secret, Secret> testRunner) {
-        final Secret secret = new Secret("testSecretGetVersion", "testSecretGetVersionVal")
+    void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
+        final KeyVaultSecret secret = new KeyVaultSecret("testSecretGetVersion", "testSecretGetVersionVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
-        final Secret secretWithNewVal = new Secret("testSecretGetVersion", "newVal")
+        final KeyVaultSecret secretWithNewVal = new KeyVaultSecret("testSecretGetVersion", "newVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secret, secretWithNewVal);
     }
 
@@ -194,10 +194,10 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void deleteSecret();
 
-    void deleteSecretRunner(Consumer<Secret> testRunner) {
-        final Secret secretToDelete = new Secret("testSecretDelete", "testSecretDeleteVal")
+    void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+        final KeyVaultSecret secretToDelete = new KeyVaultSecret("testSecretDelete", "testSecretDeleteVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToDelete);
     }
 
@@ -208,10 +208,10 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void getDeletedSecret();
 
-    void getDeletedSecretRunner(Consumer<Secret> testRunner) {
-        final Secret secretToDeleteAndGet = new Secret("testSecretGetDeleted", "testSecretGetDeleteVal")
+    void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+        final KeyVaultSecret secretToDeleteAndGet = new KeyVaultSecret("testSecretGetDeleted", "testSecretGetDeleteVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToDeleteAndGet);
     }
 
@@ -221,10 +221,10 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void recoverDeletedSecret();
 
-    void recoverDeletedSecretRunner(Consumer<Secret> testRunner) {
-        final Secret secretToDeleteAndRecover = new Secret("testSecretRecover", "testSecretRecoverVal")
+    void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+        final KeyVaultSecret secretToDeleteAndRecover = new KeyVaultSecret("testSecretRecover", "testSecretRecoverVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToDeleteAndRecover);
     }
 
@@ -234,10 +234,10 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void backupSecret();
 
-    void backupSecretRunner(Consumer<Secret> testRunner) {
-        final Secret secretToBackup = new Secret("testSecretBackup", "testSecretBackupVal")
+    void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+        final KeyVaultSecret secretToBackup = new KeyVaultSecret("testSecretBackup", "testSecretBackupVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2060, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToBackup);
     }
 
@@ -247,10 +247,10 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void restoreSecret();
 
-    void restoreSecretRunner(Consumer<Secret> testRunner) {
-        final Secret secretToBackupAndRestore = new Secret("testSecretRestore", "testSecretRestoreVal")
+    void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
+        final KeyVaultSecret secretToBackupAndRestore = new KeyVaultSecret("testSecretRestore", "testSecretRestoreVal")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                .setExpiresOn(OffsetDateTime.of(2080, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         testRunner.accept(secretToBackupAndRestore);
     }
 
@@ -260,16 +260,16 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listSecrets();
 
-    void listSecretsRunner(Consumer<HashMap<String, Secret>> testRunner) {
-        HashMap<String, Secret> secrets = new HashMap<>();
+    void listSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
+        HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
         for (int i = 0; i < 30; i++) {
             secretName = "listSecret" + i;
             secretVal = "listSecretVal" + i;
-            Secret secret =  new Secret(secretName, secretVal)
+            KeyVaultSecret secret =  new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
-                    .setExpires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+                    .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
             secrets.put(secretName, secret);
         }
         testRunner.accept(secrets);
@@ -278,16 +278,16 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listDeletedSecrets();
 
-    void listDeletedSecretsRunner(Consumer<HashMap<String, Secret>> testRunner) {
-        HashMap<String, Secret> secrets = new HashMap<>();
+    void listDeletedSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
+        HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
         for (int i = 0; i < 3; i++) {
             secretName = "listDeletedSecretsTest" + i;
             secretVal = "listDeletedSecretVal" + i;
-            secrets.put(secretName, new Secret(secretName, secretVal)
+            secrets.put(secretName, new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
-                    .setExpires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))));
+                    .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
         testRunner.accept(secrets);
     }
@@ -296,16 +296,16 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listSecretVersions();
 
-    void listSecretVersionsRunner(Consumer<List<Secret>> testRunner) {
-        List<Secret> secrets = new ArrayList<>();
+    void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
+        List<KeyVaultSecret> secrets = new ArrayList<>();
         String secretName;
         String secretVal;
         for (int i = 1; i < 5; i++) {
             secretName = "listSecretVersion";
             secretVal = "listSecretVersionVal" + i;
-            secrets.add(new Secret(secretName, secretVal)
+            secrets.add(new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
-                    .setExpires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
+                    .setExpiresOn(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
         testRunner.accept(secrets);
     }
@@ -316,7 +316,7 @@ public abstract class SecretClientTestBase extends TestBase {
      * @param expected Secret expected to be returned by the service
      * @param response Response returned by the service, the body should contain a Secret
      */
-    static void assertSecretEquals(Secret expected, Response<Secret> response) {
+    static void assertSecretEquals(KeyVaultSecret expected, Response<KeyVaultSecret> response) {
         assertSecretEquals(expected, response, 200);
     }
 
@@ -327,7 +327,7 @@ public abstract class SecretClientTestBase extends TestBase {
      * @param response RestResponse returned from the service, the body should contain a ConfigurationSetting
      * @param expectedStatusCode Expected HTTP status code returned by the service
      */
-    static void assertSecretEquals(Secret expected, Response<Secret> response, final int expectedStatusCode) {
+    static void assertSecretEquals(KeyVaultSecret expected, Response<KeyVaultSecret> response, final int expectedStatusCode) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
@@ -340,10 +340,10 @@ public abstract class SecretClientTestBase extends TestBase {
      * @param expected ConfigurationSetting expected to be returned by the service
      * @param actual ConfigurationSetting contained in the RestResponse body
      */
-    static void assertSecretEquals(Secret expected, Secret actual) {
+    static void assertSecretEquals(KeyVaultSecret expected, KeyVaultSecret actual) {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getValue(), actual.getValue());
-        assertEquals(expected.getProperties().getExpires(), actual.getProperties().getExpires());
+        assertEquals(expected.getProperties().getExpiresOn(), actual.getProperties().getExpiresOn());
         assertEquals(expected.getProperties().getNotBefore(), actual.getProperties().getNotBefore());
     }
 

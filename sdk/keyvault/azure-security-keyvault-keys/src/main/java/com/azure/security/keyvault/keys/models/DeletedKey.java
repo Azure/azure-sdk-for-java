@@ -14,13 +14,13 @@ import java.util.Map;
 
 /**
  * Deleted Key is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
- * inherited from {@link Key}.
+ * inherited from {@link KeyVaultKey}.
  * It is managed by Key Service.
  *
  * @see KeyClient
  * @see KeyAsyncClient
  */
-public final class DeletedKey extends Key {
+public final class DeletedKey extends KeyVaultKey {
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
@@ -43,7 +43,7 @@ public final class DeletedKey extends Key {
     /**
      * The time when the key was deleted, in UTC.
      */
-    private OffsetDateTime deletedDate;
+    private OffsetDateTime deletedOn;
 
     /**
      * Get the recoveryId identifier.
@@ -68,8 +68,8 @@ public final class DeletedKey extends Key {
      *
      * @return the deletedDate UTC time.
      */
-    public OffsetDateTime getDeletedDate() {
-        return this.deletedDate;
+    public OffsetDateTime getDeletedOn() {
+        return this.deletedOn;
     }
 
     /**
@@ -88,7 +88,7 @@ public final class DeletedKey extends Key {
      */
     @JsonProperty("deletedDate")
     private void unpackDeletedDate(Long deletedDate) {
-        this.deletedDate = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
+        this.deletedOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
     }
 
     /**
@@ -105,7 +105,7 @@ public final class DeletedKey extends Key {
      *
      * @return the key value
      */
-    public JsonWebKey getKeyMaterial() {
+    public JsonWebKey getKey() {
         return this.keyMaterial;
     }
 

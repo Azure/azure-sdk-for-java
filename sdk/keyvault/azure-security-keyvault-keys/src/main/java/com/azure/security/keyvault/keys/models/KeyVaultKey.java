@@ -4,19 +4,22 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
+import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
+import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Map;
 
-public class Key {
+public class KeyVaultKey {
 
     /**
      * The Json Web Key
      */
     @JsonProperty(value = "key")
-    private JsonWebKey keyMaterial;
+    private JsonWebKey key;
 
-    Key() {
+    KeyVaultKey() {
         properties = new KeyProperties();
     }
 
@@ -25,8 +28,8 @@ public class Key {
      *
      * @return the key value
      */
-    public JsonWebKey getKeyMaterial() {
-        return this.keyMaterial;
+    public JsonWebKey getKey() {
+        return this.key;
     }
 
     /**
@@ -61,12 +64,28 @@ public class Key {
     }
 
     /**
+     * Get the key type of the key
+     * @return the key type
+     */
+    public KeyType getKetyType() {
+        return key.getKeyType();
+    }
+
+    /**
+     * Get the key operations of the key
+     * @return the key operations
+     */
+    public List<KeyOperation> getKeyOperation() {
+        return key.getKeyOps();
+    }
+
+    /**
      * Unpacks the key material json response and updates the variables in the Key Base object.
      * @param key The key value mapping of the key material
      */
     @JsonProperty("key")
     private void unpackKeyMaterial(Map<String, Object> key) {
-        keyMaterial = properties.createKeyMaterialFromJson(key);
+        this.key = properties.createKeyMaterialFromJson(key);
     }
 
     @JsonProperty(value = "kid")

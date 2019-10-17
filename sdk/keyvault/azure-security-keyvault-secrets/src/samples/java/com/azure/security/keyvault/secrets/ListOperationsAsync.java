@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
@@ -26,23 +26,23 @@ public class ListOperationsAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
-        secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
+        secretAsyncClient.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1))))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
-        secretAsyncClient.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        secretAsyncClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1))))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))))
             .subscribe(secretResponse ->
                     System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
@@ -50,7 +50,7 @@ public class ListOperationsAsync {
 
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-        secretAsyncClient.listSecrets()
+        secretAsyncClient.listPropertiesOfSecrets()
             .subscribe(secretBase ->
                 secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->
                     System.out.printf("Received secret with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue())));
@@ -59,15 +59,15 @@ public class ListOperationsAsync {
 
         // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
         // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
-        secretAsyncClient.setSecret(new Secret("BankAccountPassword", "sskdjfsdasdjsd")
+        secretAsyncClient.setSecret(new KeyVaultSecret("BankAccountPassword", "sskdjfsdasdjsd")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1)))).subscribe(secretResponse ->
+                .setExpiresOn(OffsetDateTime.now().plusYears(1)))).subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue()));
 
         Thread.sleep(2000);
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
-        secretAsyncClient.listSecretVersions("BankAccountPassword").subscribe(secretBase ->
+        secretAsyncClient.listPropertiesOfSecretVersions("BankAccountPassword").subscribe(secretBase ->
             secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->
                 System.out.printf("Received secret's version with name %s and value %s \n", secretResponse.getName(), secretResponse.getValue())));
 

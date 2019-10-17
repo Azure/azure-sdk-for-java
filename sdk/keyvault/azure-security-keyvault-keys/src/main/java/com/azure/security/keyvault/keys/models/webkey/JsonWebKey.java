@@ -57,14 +57,14 @@ public class JsonWebKey {
      * Key Identifier.
      */
     @JsonProperty(value = "kid")
-    private String kid;
+    private String keyId;
 
     /**
      * JsonWebKey key type (kty). Possible values include: 'EC', 'EC-HSM', 'RSA',
      * 'RSA-HSM', 'oct'.
      */
     @JsonProperty(value = "kty")
-    private KeyType kty;
+    private KeyType keyType;
 
     /**
      * The keyOps property.
@@ -157,18 +157,18 @@ public class JsonWebKey {
      * @return the kid value
      */
     @JsonProperty("kid")
-    public String getKid() {
-        return this.kid;
+    public String getKeyId() {
+        return this.keyId;
     }
 
     /**
      * Set the key identifier value.
      *
-     * @param kid The kid value to set
+     * @param keyId The kid value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey setKid(String kid) {
-        this.kid = kid;
+    public JsonWebKey setKeyId(String keyId) {
+        this.keyId = keyId;
         return this;
     }
 
@@ -178,18 +178,18 @@ public class JsonWebKey {
      * @return the kty value
      */
     @JsonProperty("kty")
-    public KeyType getKty() {
-        return this.kty;
+    public KeyType getKeyType() {
+        return this.keyType;
     }
 
     /**
      * Set the key type value.
      *
-     * @param kty The key type
+     * @param keyType The key type
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey setKty(KeyType kty) {
-        this.kty = kty;
+    public JsonWebKey setKeyType(KeyType keyType) {
+        this.keyType = keyType;
         return this;
     }
 
@@ -611,7 +611,7 @@ public class JsonWebKey {
      * Verifies if the key is an RSA key.
      */
     private void checkRSACompatible() {
-        if (!KeyType.RSA.equals(kty) && !KeyType.RSA_HSM.equals(kty)) {
+        if (!KeyType.RSA.equals(keyType) && !KeyType.RSA_HSM.equals(keyType)) {
             throw logger.logExceptionAsError(new UnsupportedOperationException("Not an RSA key"));
         }
     }
@@ -651,7 +651,7 @@ public class JsonWebKey {
 
         if (privateKey != null) {
 
-            key = new JsonWebKey().setKty(KeyType.RSA).setN(toByteArray(privateKey.getModulus()))
+            key = new JsonWebKey().setKeyType(KeyType.RSA).setN(toByteArray(privateKey.getModulus()))
                 .setE(toByteArray(privateKey.getPublicExponent()))
                 .setD(toByteArray(privateKey.getPrivateExponent())).setP(toByteArray(privateKey.getPrimeP()))
                 .setQ(toByteArray(privateKey.getPrimeQ())).setDp(toByteArray(privateKey.getPrimeExponentP()))
@@ -661,7 +661,7 @@ public class JsonWebKey {
 
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
-            key = new JsonWebKey().setKty(KeyType.RSA).setN(toByteArray(publicKey.getModulus()))
+            key = new JsonWebKey().setKeyType(KeyType.RSA).setN(toByteArray(publicKey.getModulus()))
                 .setE(toByteArray(publicKey.getPublicExponent())).setD(null).setP(null).setQ(null).setDp(null)
                 .setDq(null).setQi(null);
         }
@@ -747,7 +747,7 @@ public class JsonWebKey {
             provider = Security.getProvider("SunEC");
         }
 
-        if (!KeyType.EC.equals(kty) && !KeyType.EC_HSM.equals(kty)) {
+        if (!KeyType.EC.equals(keyType) && !KeyType.EC_HSM.equals(keyType)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Not an EC key."));
         }
 
@@ -793,13 +793,13 @@ public class JsonWebKey {
         ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
 
         if (apriv != null) {
-            return new JsonWebKey().setKty(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
+            return new JsonWebKey().setKeyType(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
                 .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
-                .setD(apriv.getS().toByteArray()).setKty(KeyType.EC);
+                .setD(apriv.getS().toByteArray()).setKeyType(KeyType.EC);
         } else {
-            return new JsonWebKey().setKty(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
+            return new JsonWebKey().setKeyType(KeyType.EC).setCrv(getCurveFromKeyPair(keyPair, provider))
                 .setX(point.getAffineX().toByteArray()).setY(point.getAffineY().toByteArray())
-                .setKty(KeyType.EC);
+                .setKeyType(KeyType.EC);
         }
     }
 
@@ -849,7 +849,7 @@ public class JsonWebKey {
             return null;
         }
 
-        return new JsonWebKey().setK(secretKey.getEncoded()).setKty(KeyType.OCT);
+        return new JsonWebKey().setK(secretKey.getEncoded()).setKeyType(KeyType.OCT);
     }
 
     /**
@@ -889,11 +889,11 @@ public class JsonWebKey {
             return false;
         }
 
-        if (!objectEquals(kid, jwk.kid)) {
+        if (!objectEquals(keyId, jwk.keyId)) {
             return false;
         }
 
-        if (!objectEquals(kty, jwk.kty)) {
+        if (!objectEquals(keyType, jwk.keyType)) {
             return false;
         }
 
@@ -958,11 +958,11 @@ public class JsonWebKey {
      */
     public boolean hasPrivateKey() {
 
-        if (KeyType.OCT.equals(kty)) {
+        if (KeyType.OCT.equals(keyType)) {
             return k != null;
-        } else if (KeyType.RSA.equals(kty) || KeyType.RSA_HSM.equals(kty)) {
+        } else if (KeyType.RSA.equals(keyType) || KeyType.RSA_HSM.equals(keyType)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
-        } else if (KeyType.EC.equals(kty) || KeyType.EC_HSM.equals(kty)) {
+        } else if (KeyType.EC.equals(keyType) || KeyType.EC_HSM.equals(keyType)) {
             return (d != null);
         }
 
@@ -976,7 +976,7 @@ public class JsonWebKey {
      */
     @JsonIgnore
     public boolean isValid() {
-        if (kty == null) {
+        if (keyType == null) {
             return false;
         }
 
@@ -990,15 +990,15 @@ public class JsonWebKey {
             }
         }
 
-        if (KeyType.OCT.equals(kty)) {
+        if (KeyType.OCT.equals(keyType)) {
             return isValidOctet();
-        } else if (KeyType.RSA.equals(kty)) {
+        } else if (KeyType.RSA.equals(keyType)) {
             return isValidRsa();
-        } else if (KeyType.RSA_HSM.equals(kty)) {
+        } else if (KeyType.RSA_HSM.equals(keyType)) {
             return isValidRsaHsm();
-        } else if (KeyType.EC.equals(kty)) {
+        } else if (KeyType.EC.equals(keyType)) {
             return isValidEc();
-        } else if (KeyType.EC_HSM.equals(kty)) {
+        } else if (KeyType.EC_HSM.equals(keyType)) {
             return isValidEcHsm();
         }
 
@@ -1113,19 +1113,19 @@ public class JsonWebKey {
     @Override
     public int hashCode() {
         int hashCode = 48313; // setting it to a random prime number
-        if (kid != null) {
-            hashCode += kid.hashCode();
+        if (keyId != null) {
+            hashCode += keyId.hashCode();
         }
 
-        if (KeyType.OCT.equals(kty)) {
+        if (KeyType.OCT.equals(keyType)) {
             hashCode += hashCode(k);
-        } else if (KeyType.RSA.equals(kty)) {
+        } else if (KeyType.RSA.equals(keyType)) {
             hashCode += hashCode(n);
-        } else if (KeyType.EC.equals(kty)) {
+        } else if (KeyType.EC.equals(keyType)) {
             hashCode += hashCode(x);
             hashCode += hashCode(y);
             hashCode += crv.hashCode();
-        } else if (KeyType.RSA_HSM.equals(kty) || KeyType.EC_HSM.equals(kty)) {
+        } else if (KeyType.RSA_HSM.equals(keyType) || KeyType.EC_HSM.equals(keyType)) {
             hashCode += hashCode(t);
         }
 

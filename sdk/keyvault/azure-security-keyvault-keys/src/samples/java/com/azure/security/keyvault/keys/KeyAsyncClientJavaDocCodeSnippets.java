@@ -12,10 +12,10 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.KeyCreateOptions;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -41,7 +41,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation
         RecordedData networkData = new RecordedData();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .endpoint("https://myvault.azure.net/")
+            .vaultEndpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(new RecordNetworkCallPolicy(networkData))
@@ -58,7 +58,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClient() {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.instantiation
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .endpoint("https://myvault.azure.net/")
+            .vaultEndpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.instantiation
@@ -75,7 +75,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
-            .endpoint("https://myvault.azure.net/")
+            .vaultEndpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
@@ -97,10 +97,10 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.createKey#string-keyType
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createKey#keyCreateOptions
-        KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
+        CreateKeyOptions createKeyOptions = new CreateKeyOptions("keyName", KeyType.RSA)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        keyAsyncClient.createKey(keyCreateOptions)
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createKey(createKeyOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
@@ -108,11 +108,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.createKey#keyCreateOptions
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createRsaKey#RsaKeyCreateOptions
-        RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName")
+        CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions("keyName")
             .setKeySize(2048)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        keyAsyncClient.createRsaKey(rsaKeyCreateOptions)
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createRsaKey(createRsaKeyOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
@@ -120,11 +120,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.createRsaKey#RsaKeyCreateOptions
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createEcKey#EcKeyCreateOptions
-        EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName")
+        CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
             .setCurve(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        keyAsyncClient.createEcKey(ecKeyCreateOptions)
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createEcKey(createEcKeyOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
@@ -159,15 +159,15 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#createKeyWithResponse(KeyCreateOptions)}
+     * Generates a code sample for using {@link KeyAsyncClient#createKeyWithResponse(CreateKeyOptions)}
      */
     public void createKeyWithResponses() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createKeyWithResponse#keyCreateOptions
-        KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
+        CreateKeyOptions createKeyOptions = new CreateKeyOptions("keyName", KeyType.RSA)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        keyAsyncClient.createKeyWithResponse(keyCreateOptions)
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createKeyWithResponse(createKeyOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
@@ -175,11 +175,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.createKeyWithResponse#keyCreateOptions
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions
-        RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName")
+        CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions("keyName")
             .setKeySize(2048)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        keyAsyncClient.createRsaKeyWithResponse(rsaKeyCreateOptions)
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createRsaKeyWithResponse(createRsaKeyOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
@@ -187,11 +187,11 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions
-        EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName")
+        CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
             .setCurve(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        keyAsyncClient.createEcKeyWithResponse(ecKeyCreateOptions)
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createEcKeyWithResponse(createEcKeyOptions)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
@@ -214,7 +214,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string-string
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyProperties
-        keyAsyncClient.listKeys().subscribe(keyProperties ->
+        keyAsyncClient.listPropertiesOfKeys().subscribe(keyProperties ->
             keyAsyncClient.getKeyWithResponse(keyProperties)
                 .subscriberContext(Context.of(key1, value1, key2, value2))
                 .subscribe(keyResponse ->
@@ -246,7 +246,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.async.keyclient.getKey#string
 
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.getKey#KeyProperties
-        keyAsyncClient.listKeys().subscribe(keyProperties ->
+        keyAsyncClient.listPropertiesOfKeys().subscribe(keyProperties ->
             keyAsyncClient.getKey(keyProperties)
                 .subscriberContext(Context.of(key1, value1, key2, value2))
                 .subscribe(keyResponse ->
@@ -413,13 +413,13 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#restoreKey}
+     * Generates a code sample for using {@link KeyAsyncClient#restoreKeyBackup}
      */
     public void restoreKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.restoreKey#byte
         byte[] keyBackupByteArray = {};
-        keyAsyncClient.restoreKey(keyBackupByteArray)
+        keyAsyncClient.restoreKeyBackup(keyBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse  ->
                 System.out.printf("Restored Key with name %s and id %s %n", keyResponse.getName(),
@@ -428,13 +428,13 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#restoreKeyWithResponse(byte[])}
+     * Generates a code sample for using {@link KeyAsyncClient#restoreKeyBackupWithResponse(byte[])}
      */
     public void restoreKeyWithResponseSnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte
         byte[] keyBackupByteArray = {};
-        keyAsyncClient.restoreKeyWithResponse(keyBackupByteArray)
+        keyAsyncClient.restoreKeyBackupWithResponse(keyBackupByteArray)
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyResponse  ->
                 System.out.printf("Restored Key with name %s and id %s %n", keyResponse.getValue().getName(),
@@ -443,17 +443,17 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#listKeys}
+     * Generates a code sample for using {@link KeyAsyncClient#listPropertiesOfKeys}
      */
     public void listKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.listKeys
-        keyAsyncClient.listKeys()
+        keyAsyncClient.listPropertiesOfKeys()
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyProperties -> keyAsyncClient.getKey(keyProperties)
                 .subscribe(keyResponse -> System.out.printf("Received key with name %s and type %s",
                     keyResponse.getName(),
-                     keyResponse.getKeyMaterial().getKty())));
+                     keyResponse.getKey().getKeyType())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeys
     }
 
@@ -471,18 +471,18 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link KeyAsyncClient#listKeyVersions(String)}
+     * Generates code sample for using {@link KeyAsyncClient#listPropertiesOfKeyVersions(String)}
      */
     public void listKeyVersions() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
-        keyAsyncClient.listKeyVersions("keyName")
+        keyAsyncClient.listPropertiesOfKeyVersions("keyName")
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(keyProperties -> keyAsyncClient.getKey(keyProperties)
                 .subscribe(keyResponse ->
                     System.out.printf("Received key's version with name %s, type %s and version %s",
                         keyResponse.getName(),
-                        keyResponse.getKeyMaterial().getKty(), keyResponse.getProperties().getVersion())));
+                        keyResponse.getKey().getKeyType(), keyResponse.getProperties().getVersion())));
         // END: com.azure.security.keyvault.keys.async.keyclient.listKeyVersions
     }
 

@@ -49,17 +49,17 @@ public class SecretProperties {
     /**
      * Expiry date in UTC.
      */
-    OffsetDateTime expires;
+    OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.
      */
-    OffsetDateTime created;
+    OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    OffsetDateTime updated;
+    OffsetDateTime updatedOn;
 
     /**
      * The secret name.
@@ -176,21 +176,21 @@ public class SecretProperties {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime getExpires() {
-        if (this.expires == null) {
+    public OffsetDateTime getExpiresOn() {
+        if (this.expiresOn == null) {
             return null;
         }
-        return this.expires;
+        return this.expiresOn;
     }
 
     /**
      * Set the {@link OffsetDateTime expires} UTC time.
      *
-     * @param expires The expiry time to set for the secret.
+     * @param expiresOn The expiry time to set for the secret.
      * @return the SecretProperties object itself.
      */
-    public SecretProperties setExpires(OffsetDateTime expires) {
-        this.expires = expires;
+    public SecretProperties setExpiresOn(OffsetDateTime expiresOn) {
+        this.expiresOn = expiresOn;
         return this;
     }
 
@@ -199,8 +199,8 @@ public class SecretProperties {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
-        return created;
+    public OffsetDateTime getCreatedOn() {
+        return createdOn;
     }
 
     /**
@@ -208,8 +208,8 @@ public class SecretProperties {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
-        return updated;
+    public OffsetDateTime getUpdatedOn() {
+        return updatedOn;
     }
 
     /**
@@ -299,9 +299,9 @@ public class SecretProperties {
     void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
-        this.expires = epochToOffsetDateTime(attributes.get("exp"));
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
+        this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.contentType = (String) lazyValueSelection(attributes.get("contentType"), this.contentType);
         this.keyId = (String) lazyValueSelection(attributes.get("keyId"), this.keyId);

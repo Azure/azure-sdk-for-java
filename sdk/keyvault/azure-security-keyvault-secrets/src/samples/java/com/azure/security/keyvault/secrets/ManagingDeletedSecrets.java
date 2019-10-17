@@ -5,7 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
@@ -31,19 +31,19 @@ public class ManagingDeletedSecrets {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = new SecretClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
-        client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
+        client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1))));
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
-        client.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
+        client.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
             .setProperties(new SecretProperties()
-                .setExpires(OffsetDateTime.now().plusYears(1))));
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The storage account was closed, need to delete its credentials from the key vault.
         client.deleteSecret("BankAccountPassword");

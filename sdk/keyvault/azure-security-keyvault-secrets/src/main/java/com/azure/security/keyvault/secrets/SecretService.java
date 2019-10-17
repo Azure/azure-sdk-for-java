@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.secrets.implementation.DeletedSecretPage;
 import com.azure.security.keyvault.secrets.implementation.SecretPropertiesPage;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Mono;
 
@@ -45,26 +45,26 @@ interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Secret>> setSecret(@HostParam("url") String url,
-                                     @PathParam("secret-name") String secretName,
-                                     @QueryParam("api-version") String apiVersion,
-                                     @HeaderParam("accept-language") String acceptLanguage,
-                                     @BodyParam("body") SecretRequestParameters parameters,
-                                     @HeaderParam("Content-Type") String type,
-                                     Context context);
+    Mono<Response<KeyVaultSecret>> setSecret(@HostParam("url") String url,
+                                             @PathParam("secret-name") String secretName,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @BodyParam("body") SecretRequestParameters parameters,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 
     @Get("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Secret>> getSecret(@HostParam("url") String url,
-                                         @PathParam("secret-name") String secretName,
-                                         @PathParam("secret-version") String secretVersion,
-                                         @QueryParam("api-version") String apiVersion,
-                                         @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type,
-                                         Context context);
+    Mono<Response<KeyVaultSecret>> getSecret(@HostParam("url") String url,
+                                             @PathParam("secret-name") String secretName,
+                                             @PathParam("secret-version") String secretVersion,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 
 
     @Patch("secrets/{secret-name}/{secret-version}")
@@ -119,12 +119,12 @@ interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Secret>> recoverDeletedSecret(@HostParam("url") String url,
-                                                    @PathParam("secret-name") String secretName,
-                                                    @QueryParam("api-version") String apiVersion,
-                                                    @HeaderParam("accept-language") String acceptLanguage,
-                                                    @HeaderParam("Content-Type") String type,
-                                                    Context context);
+    Mono<Response<KeyVaultSecret>> recoverDeletedSecret(@HostParam("url") String url,
+                                                        @PathParam("secret-name") String secretName,
+                                                        @QueryParam("api-version") String apiVersion,
+                                                        @HeaderParam("accept-language") String acceptLanguage,
+                                                        @HeaderParam("Content-Type") String type,
+                                                        Context context);
 
 
     @Post("secrets/{secret-name}/backup")
@@ -144,12 +144,12 @@ interface SecretService {
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
-    Mono<Response<Secret>> restoreSecret(@HostParam("url") String url,
-                                             @QueryParam("api-version") String apiVersion,
-                                             @HeaderParam("accept-language") String acceptLanguage,
-                                             @BodyParam("application/json") SecretRestoreRequestParameters parameters,
-                                             @HeaderParam("Content-Type") String type,
-                                             Context context);
+    Mono<Response<KeyVaultSecret>> restoreSecret(@HostParam("url") String url,
+                                                 @QueryParam("api-version") String apiVersion,
+                                                 @HeaderParam("accept-language") String acceptLanguage,
+                                                 @BodyParam("application/json") SecretRestoreRequestParameters parameters,
+                                                 @HeaderParam("Content-Type") String type,
+                                                 Context context);
 
 
     @Get("secrets")

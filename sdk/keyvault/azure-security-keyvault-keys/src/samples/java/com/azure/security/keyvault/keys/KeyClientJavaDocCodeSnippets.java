@@ -7,15 +7,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
-import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.KeyCreateOptions;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.*;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 
 import java.time.OffsetDateTime;
 
@@ -36,7 +32,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public KeyClient createClient() {
         // BEGIN: com.azure.security.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = new KeyClientBuilder()
-            .endpoint("https://myvault.azure.net/")
+            .vaultEndpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.security.keyvault.keys.keyclient.instantiation
@@ -49,33 +45,33 @@ public final class KeyClientJavaDocCodeSnippets {
     public void createKey() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.createKey#string-keyType
-        Key key = keyClient.createKey("keyName", KeyType.EC);
+        KeyVaultKey key = keyClient.createKey("keyName", KeyType.EC);
         System.out.printf("Key is created with name %s and id %s %n", key.getName(), key.getId());
         // END: com.azure.keyvault.keys.keyclient.createKey#string-keyType
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createKey#keyOptions
-        KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
+        CreateKeyOptions createKeyOptions = new CreateKeyOptions("keyName", KeyType.RSA)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        Key optionsKey = keyClient.createKey(keyCreateOptions);
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey optionsKey = keyClient.createKey(createKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", optionsKey.getName(), optionsKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createKey#keyOptions
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createRsaKey#keyOptions
-        RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName")
+        CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions("keyName")
             .setKeySize(2048)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        Key rsaKey = keyClient.createRsaKey(rsaKeyCreateOptions);
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey rsaKey = keyClient.createRsaKey(createRsaKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", rsaKey.getName(), rsaKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createRsaKey#keyOptions
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
-        EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName")
+        CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
             .setCurve(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        Key ecKey = keyClient.createEcKey(ecKeyCreateOptions);
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey ecKey = keyClient.createEcKey(createEcKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
 
@@ -88,7 +84,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public void deleteKeySnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#string
-        Key key = keyClient.getKey("keyName");
+        KeyVaultKey key = keyClient.getKey("keyName");
         DeletedKey deletedKey = keyClient.deleteKey("keyName");
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
         // END: com.azure.keyvault.keys.keyclient.deleteKey#string
@@ -106,33 +102,33 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#createKeyWithResponse(KeyCreateOptions, Context)}
+     * Generates a code sample for using {@link KeyClient#createKeyWithResponse(CreateKeyOptions, Context)}
      */
     public void createKeyWithResponses() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.createKeyWithResponse#keyCreateOptions-Context
-        KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
+        CreateKeyOptions createKeyOptions = new CreateKeyOptions("keyName", KeyType.RSA)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        Key optionsKey = keyClient.createKeyWithResponse(keyCreateOptions, new Context(key1, value1)).getValue();
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey optionsKey = keyClient.createKeyWithResponse(createKeyOptions, new Context(key1, value1)).getValue();
         System.out.printf("Key is created with name %s and id %s %n", optionsKey.getName(), optionsKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createKeyWithResponse#keyCreateOptions-Context
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context
-        RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName")
+        CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions("keyName")
             .setKeySize(2048)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        Key rsaKey = keyClient.createRsaKeyWithResponse(rsaKeyCreateOptions, new Context(key1, value1)).getValue();
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey rsaKey = keyClient.createRsaKeyWithResponse(createRsaKeyOptions, new Context(key1, value1)).getValue();
         System.out.printf("Key is created with name %s and id %s %n", rsaKey.getName(), rsaKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions-Context
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
-        EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName")
+        CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions("keyName")
             .setCurve(KeyCurveName.P_384)
             .setNotBefore(OffsetDateTime.now().plusDays(1))
-            .setExpires(OffsetDateTime.now().plusYears(1));
-        Key ecKey = keyClient.createEcKeyWithResponse(ecKeyCreateOptions, new Context(key1, value1)).getValue();
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey ecKey = keyClient.createEcKeyWithResponse(createEcKeyOptions, new Context(key1, value1)).getValue();
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
     }
@@ -144,17 +140,17 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.getKeyWithResponse#string-string-Context
         String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-        Key keyWithVersion = keyClient.getKeyWithResponse("keyName", keyVersion,
+        KeyVaultKey keyWithVersion = keyClient.getKeyWithResponse("keyName", keyVersion,
             new Context(key1, value1)).getValue();
         System.out.printf("Key is returned with name %s and id %s %n", keyWithVersion.getName(),
             keyWithVersion.getId());
         // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#string-string-Context
 
         // BEGIN: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context
-        for (KeyProperties key : keyClient.listKeys()) {
-            Key keyResponse = keyClient.getKeyWithResponse(key, new Context(key1, value1)).getValue();
+        for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
+            KeyVaultKey keyResponse = keyClient.getKeyWithResponse(key, new Context(key1, value1)).getValue();
             System.out.printf("Received key with name %s and type %s", keyResponse.getName(),
-                keyResponse.getKeyMaterial().getKty());
+                keyResponse.getKey().getKeyType());
         }
         // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#KeyProperties-Context
     }
@@ -166,22 +162,22 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.getKey#string-string
         String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-        Key keyWithVersion = keyClient.getKey("keyName", keyVersion);
+        KeyVaultKey keyWithVersion = keyClient.getKey("keyName", keyVersion);
         System.out.printf("Key is returned with name %s and id %s %n", keyWithVersion.getName(),
             keyWithVersion.getId());
         // END: com.azure.keyvault.keys.keyclient.getKey#string-string
 
         // BEGIN: com.azure.keyvault.keys.keyclient.getKey#string
-        Key keyWithVersionValue = keyClient.getKey("keyName");
+        KeyVaultKey keyWithVersionValue = keyClient.getKey("keyName");
         System.out.printf("Key is returned with name %s and id %s %n", keyWithVersionValue.getName(),
             keyWithVersionValue.getId());
         // END: com.azure.keyvault.keys.keyclient.getKey#string
 
         // BEGIN: com.azure.keyvault.keys.keyclient.getKey#KeyProperties
-        for (KeyProperties key : keyClient.listKeys()) {
-            Key keyResponse = keyClient.getKey(key);
+        for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
+            KeyVaultKey keyResponse = keyClient.getKey(key);
             System.out.printf("Received key with name %s and type %s", keyResponse.getName(),
-                keyResponse.getKeyMaterial().getKty());
+                keyResponse.getKey().getKeyType());
         }
         // END: com.azure.keyvault.keys.keyclient.getKey#KeyProperties
     }
@@ -193,9 +189,9 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
 
         // BEGIN: com.azure.keyvault.keys.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations-Context
-        Key key = keyClient.getKey("keyName");
-        key.getProperties().setExpires(OffsetDateTime.now().plusDays(60));
-        Key updatedKey = keyClient.updateKeyPropertiesWithResponse(key.getProperties(),
+        KeyVaultKey key = keyClient.getKey("keyName");
+        key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(60));
+        KeyVaultKey updatedKey = keyClient.updateKeyPropertiesWithResponse(key.getProperties(),
             new Context(key1, value1), KeyOperation.ENCRYPT, KeyOperation.DECRYPT).getValue();
         System.out.printf("Key is updated with name %s and id %s %n", updatedKey.getName(), updatedKey.getId());
         // END: com.azure.keyvault.keys.keyclient.updateKeyPropertiesWithResponse#KeyProperties-keyOperations-Context
@@ -208,9 +204,9 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
 
         // BEGIN: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties-keyOperations
-        Key key = keyClient.getKey("keyName");
-        key.getProperties().setExpires(OffsetDateTime.now().plusDays(60));
-        Key updatedKey = keyClient.updateKeyProperties(key.getProperties(), KeyOperation.ENCRYPT, KeyOperation.DECRYPT);
+        KeyVaultKey key = keyClient.getKey("keyName");
+        key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(60));
+        KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties(), KeyOperation.ENCRYPT, KeyOperation.DECRYPT);
         System.out.printf("Key is updated with name %s and id %s %n", updatedKey.getName(), updatedKey.getId());
         // END: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties-keyOperations
     }
@@ -221,7 +217,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public void deleteKeyWithResponseSnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.deleteKeyWithResponse#string-Context
-        Key key = keyClient.getKey("keyName");
+        KeyVaultKey key = keyClient.getKey("keyName");
         DeletedKey deletedKey = keyClient.deleteKeyWithResponse("keyName", new Context(key1, value1))
             .getValue();
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
@@ -269,7 +265,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public void recoverDeletedKeyWithResponseSnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKeyWithResponse#string-Context
-        Key recoveredKey =  keyClient.recoverDeletedKeyWithResponse("deletedKeyName",
+        KeyVaultKey recoveredKey =  keyClient.recoverDeletedKeyWithResponse("deletedKeyName",
             new Context(key2, value2)).getValue();
         System.out.printf("Recovered key with name %s", recoveredKey.getName());
         // END: com.azure.keyvault.keys.keyclient.recoverDeletedKeyWithResponse#string-Context
@@ -281,7 +277,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public void recoverDeletedKeySnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
-        Key recoveredKey =  keyClient.recoverDeletedKey("deletedKeyName");
+        KeyVaultKey recoveredKey =  keyClient.recoverDeletedKey("deletedKeyName");
         System.out.printf("Recovered key with name %s", recoveredKey.getName());
         // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
     }
@@ -309,59 +305,59 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#restoreKey}
+     * Generates a code sample for using {@link KeyClient#restoreKeyBackup}
      */
     public void restoreKeySnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.restoreKey#byte
         byte[] keyBackupByteArray = {};
-        Key keyResponse = keyClient.restoreKey(keyBackupByteArray);
+        KeyVaultKey keyResponse = keyClient.restoreKeyBackup(keyBackupByteArray);
         System.out.printf("Restored Key with name %s and id %s %n", keyResponse.getName(), keyResponse.getId());
         // END: com.azure.keyvault.keys.keyclient.restoreKey#byte
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#restoreKeyWithResponse(byte[], Context)}
+     * Generates a code sample for using {@link KeyClient#restoreKeyBackupWithResponse(byte[], Context)}
      */
     public void restoreKeyWithResponseSnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context
         byte[] keyBackupByteArray = {};
-        Response<Key> keyResponse = keyClient.restoreKeyWithResponse(keyBackupByteArray, new Context(key1, value1));
+        Response<KeyVaultKey> keyResponse = keyClient.restoreKeyBackupWithResponse(keyBackupByteArray, new Context(key1, value1));
         System.out.printf("Restored Key with name %s and id %s %n",
             keyResponse.getValue().getName(), keyResponse.getValue().getId());
         // END: com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#listKeys}
+     * Generates a code sample for using {@link KeyClient#listPropertiesOfKeys}
      */
     public void listKeySnippets() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys
-        for (KeyProperties key : keyClient.listKeys()) {
-            Key keyWithMaterial = keyClient.getKey(key);
+        for (KeyProperties key : keyClient.listPropertiesOfKeys()) {
+            KeyVaultKey keyWithMaterial = keyClient.getKey(key);
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),
-                keyWithMaterial.getKeyMaterial().getKty());
+                keyWithMaterial.getKey().getKeyType());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeys
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys#Context
-        for (KeyProperties key : keyClient.listKeys(new Context(key2, value2))) {
-            Key keyWithMaterial = keyClient.getKey(key);
+        for (KeyProperties key : keyClient.listPropertiesOfKeys(new Context(key2, value2))) {
+            KeyVaultKey keyWithMaterial = keyClient.getKey(key);
             System.out.printf("Received key with name %s and type %s", keyWithMaterial.getName(),
-                keyWithMaterial.getKeyMaterial().getKty());
+                keyWithMaterial.getKey().getKeyType());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeys#Context
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
-        keyClient.listKeys().iterableByPage().forEach(resp -> {
+        keyClient.listPropertiesOfKeys().iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
-                Key keyWithMaterial = keyClient.getKey(value);
+                KeyVaultKey keyWithMaterial = keyClient.getKey(value);
                 System.out.printf("Received key with name %s and type %s %n", keyWithMaterial.getName(),
-                    keyWithMaterial.getKeyMaterial().getKty());
+                    keyWithMaterial.getKey().getKeyType());
             });
         });
         // END: com.azure.keyvault.keys.keyclient.listKeys.iterableByPage
@@ -396,30 +392,30 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link KeyClient#listKeyVersions(String)}
+     * Generates code sample for using {@link KeyClient#listPropertiesOfKeyVersions(String)}
      */
     public void listKeyVersions() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
-        for (KeyProperties key : keyClient.listKeyVersions("keyName")) {
-            Key keyWithMaterial  = keyClient.getKey(key);
+        for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("keyName")) {
+            KeyVaultKey keyWithMaterial  = keyClient.getKey(key);
             System.out.printf("Received key's version with name %s, type %s and version %s",
                 keyWithMaterial.getName(),
-                    keyWithMaterial.getKeyMaterial().getKty(), keyWithMaterial.getProperties().getVersion());
+                    keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
-        for (KeyProperties key : keyClient.listKeyVersions("keyName", new Context(key2, value2))) {
-            Key keyWithMaterial  = keyClient.getKey(key);
+        for (KeyProperties key : keyClient.listPropertiesOfKeyVersions("keyName", new Context(key2, value2))) {
+            KeyVaultKey keyWithMaterial  = keyClient.getKey(key);
             System.out.printf("Received key's version with name %s, type %s and version %s",
                 keyWithMaterial.getName(),
-                    keyWithMaterial.getKeyMaterial().getKty(), keyWithMaterial.getProperties().getVersion());
+                    keyWithMaterial.getKey().getKeyType(), keyWithMaterial.getProperties().getVersion());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions#Context
 
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions.iterableByPage
-        keyClient.listKeyVersions("keyName").iterableByPage().forEach(resp -> {
+        keyClient.listPropertiesOfKeyVersions("keyName").iterableByPage().forEach(resp -> {
             System.out.printf("Got response headers . Url: %s, Status code: %d %n",
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {

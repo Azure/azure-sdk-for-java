@@ -56,15 +56,13 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
-                                     byte[] authenticationData, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv,
-                                     byte[] authenticationData, byte[] authenticationTag, Context context,
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
                                      JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
@@ -104,7 +102,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
         try {
-            return Mono.just(new SignResult(signer.sign(digest), algorithm));
+            return Mono.just(new SignResult(signer.sign(digest), algorithm, key.getKeyId()));
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -146,7 +144,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
         try {
-            return Mono.just(new VerifyResult(signer.verify(digest, signature)));
+            return Mono.just(new VerifyResult(signer.verify(digest, signature), algorithm, key.getKeyId()));
         } catch (Exception e) {
             return Mono.error(e);
         }

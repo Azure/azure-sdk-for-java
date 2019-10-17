@@ -6,8 +6,8 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.time.OffsetDateTime;
 
@@ -29,34 +29,34 @@ public class HelloWorld {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = new KeyClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        Response<Key> createKeyResponse = keyClient.createRsaKeyWithResponse(new RsaKeyCreateOptions("CloudRsaKey")
-                                                                                 .setExpires(OffsetDateTime.now().plusYears(1))
+        Response<KeyVaultKey> createKeyResponse = keyClient.createRsaKeyWithResponse(new CreateRsaKeyOptions("CloudRsaKey")
+                                                                                 .setExpiresOn(OffsetDateTime.now().plusYears(1))
                                                                                  .setKeySize(2048), new Context("key1", "value1"));
 
         // Let's validate create key operation succeeded using the status code information in the response.
         System.out.printf("Create Key operation succeeded with status code %s \n", createKeyResponse.getStatusCode());
 
         // Let's Get the Cloud Rsa Key from the key vault.
-        Key cloudRsaKey = keyClient.getKey("CloudRsaKey");
+        KeyVaultKey cloudRsaKey = keyClient.getKey("CloudRsaKey");
         System.out.printf("Key is returned with name %s and type %s \n", cloudRsaKey.getName(),
-            cloudRsaKey.getKeyMaterial().getKty());
+            cloudRsaKey.getKey().getKeyType());
 
         // After one year, the Cloud Rsa Key is still required, we need to update the expiry time of the key.
         // The update method can be used to update the expiry attribute of the key.
-        cloudRsaKey.getProperties().setExpires(cloudRsaKey.getProperties().getExpires().plusYears(1));
-        Key updatedKey = keyClient.updateKeyProperties(cloudRsaKey.getProperties());
-        System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpires());
+        cloudRsaKey.getProperties().setExpiresOn(cloudRsaKey.getProperties().getExpiresOn().plusYears(1));
+        KeyVaultKey updatedKey = keyClient.updateKeyProperties(cloudRsaKey.getProperties());
+        System.out.printf("Key's updated expiry time %s \n", updatedKey.getProperties().getExpiresOn());
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
-        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1))
+        keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1))
                 .setKeySize(4096));
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.

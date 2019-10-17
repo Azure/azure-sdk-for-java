@@ -5,10 +5,10 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
 import java.net.HttpURLConnection;
@@ -30,12 +30,12 @@ public class KeyClientTest extends KeyClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(pipeline -> new KeyClientBuilder()
-                .endpoint(getEndpoint())
+                .vaultEndpoint(getEndpoint())
                 .pipeline(pipeline)
                 .buildClient());
         } else {
             client = clientSetup(pipeline -> new KeyClientBuilder()
-                .endpoint(getEndpoint())
+                .vaultEndpoint(getEndpoint())
                 .pipeline(pipeline)
                 .buildClient());
         }
@@ -77,8 +77,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void updateKey() {
         updateKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
-            Key keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpires(updated.getExpires()));
+            KeyVaultKey keyToUpdate = client.getKey(original.getName());
+            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
             assertKeyEquals(updated, client.getKey(original.getName()));
         });
     }
@@ -89,8 +89,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void updateDisabledKey() {
         updateDisabledKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
-            Key keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpires(updated.getExpires()));
+            KeyVaultKey keyToUpdate = client.getKey(original.getName());
+            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
             assertKeyEquals(updated, client.getKey(original.getName()));
         });
     }
@@ -110,8 +110,8 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void getKeySpecificVersion() {
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
-            Key keyVersionOne = client.createKey(key);
-            Key keyVersionTwo = client.createKey(keyWithNewVal);
+            KeyVaultKey keyVersionOne = client.createKey(key);
+            KeyVaultKey keyVersionTwo = client.createKey(keyWithNewVal);
             assertKeyEquals(key, client.getKey(keyVersionOne.getName(), keyVersionOne.getProperties().getVersion()));
             assertKeyEquals(keyWithNewVal, client.getKey(keyVersionTwo.getName(), keyVersionTwo.getProperties().getVersion()));
         });
@@ -132,7 +132,7 @@ public class KeyClientTest extends KeyClientTestBase {
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
             DeletedKey deletedKey = client.deleteKey(keyToDelete.getName());
             pollOnKeyDeletion(keyToDelete.getName());
-            assertNotNull(deletedKey.getDeletedDate());
+            assertNotNull(deletedKey.getDeletedOn());
             assertNotNull(deletedKey.getRecoveryId());
             assertNotNull(deletedKey.getScheduledPurgeDate());
             assertEquals(keyToDelete.getName(), deletedKey.getName());
@@ -162,10 +162,10 @@ public class KeyClientTest extends KeyClientTestBase {
             assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
             assertNotNull(client.deleteKey(keyToDeleteAndRecover.getName()));
             pollOnKeyDeletion(keyToDeleteAndRecover.getName());
-            Key recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.getName());
+            KeyVaultKey recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.getName());
             assertEquals(keyToDeleteAndRecover.getName(), recoveredKey.getName());
             assertEquals(keyToDeleteAndRecover.getNotBefore(), recoveredKey.getProperties().getNotBefore());
-            assertEquals(keyToDeleteAndRecover.getExpires(), recoveredKey.getProperties().getExpires());
+            assertEquals(keyToDeleteAndRecover.getExpiresOn(), recoveredKey.getProperties().getExpiresOn());
         });
     }
 
@@ -209,9 +209,9 @@ public class KeyClientTest extends KeyClientTestBase {
             client.purgeDeletedKey(keyToBackupAndRestore.getName());
             pollOnKeyPurge(keyToBackupAndRestore.getName());
             sleepInRecordMode(60000);
-            Key restoredKey = client.restoreKey(backupBytes);
+            KeyVaultKey restoredKey = client.restoreKeyBackup(backupBytes);
             assertEquals(keyToBackupAndRestore.getName(), restoredKey.getName());
-            assertEquals(keyToBackupAndRestore.getExpires(), restoredKey.getProperties().getExpires());
+            assertEquals(keyToBackupAndRestore.getExpiresOn(), restoredKey.getProperties().getExpiresOn());
         });
     }
 
@@ -220,7 +220,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void restoreKeyFromMalformedBackup() {
         byte[] keyBackupBytes = "non-existing".getBytes();
-        assertRestException(() -> client.restoreKey(keyBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
+        assertRestException(() -> client.restoreKeyBackup(keyBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
@@ -228,16 +228,16 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void listKeys() {
         listKeysRunner((keys) -> {
-            HashMap<String, KeyCreateOptions> keysToList = keys;
-            for (KeyCreateOptions key :  keysToList.values()) {
+            HashMap<String, CreateKeyOptions> keysToList = keys;
+            for (CreateKeyOptions key :  keysToList.values()) {
                 assertKeyEquals(key, client.createKey(key));
                 sleepInRecordMode(5000);
             }
 
-            for (KeyProperties actualKey : client.listKeys()) {
+            for (KeyProperties actualKey : client.listPropertiesOfKeys()) {
                 if (keys.containsKey(actualKey.getName())) {
-                    KeyCreateOptions expectedKey = keys.get(actualKey.getName());
-                    assertEquals(expectedKey.getExpires(), actualKey.getExpires());
+                    CreateKeyOptions expectedKey = keys.get(actualKey.getName());
+                    assertEquals(expectedKey.getExpiresOn(), actualKey.getExpiresOn());
                     assertEquals(expectedKey.getNotBefore(), actualKey.getNotBefore());
                     keys.remove(actualKey.getName());
                 }
@@ -256,7 +256,7 @@ public class KeyClientTest extends KeyClientTestBase {
             pollOnKeyDeletion(keyToDeleteAndGet.getName());
             sleepInRecordMode(30000);
             DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.getName());
-            assertNotNull(deletedKey.getDeletedDate());
+            assertNotNull(deletedKey.getDeletedOn());
             assertNotNull(deletedKey.getRecoveryId());
             assertNotNull(deletedKey.getScheduledPurgeDate());
             assertEquals(keyToDeleteAndGet.getName(), deletedKey.getName());
@@ -273,12 +273,12 @@ public class KeyClientTest extends KeyClientTestBase {
     @Override
     public void listDeletedKeys() {
         listDeletedKeysRunner((keys) -> {
-            HashMap<String, KeyCreateOptions> keysToDelete = keys;
-            for (KeyCreateOptions key : keysToDelete.values()) {
+            HashMap<String, CreateKeyOptions> keysToDelete = keys;
+            for (CreateKeyOptions key : keysToDelete.values()) {
                 assertKeyEquals(key, client.createKey(key));
             }
 
-            for (KeyCreateOptions key : keysToDelete.values()) {
+            for (CreateKeyOptions key : keysToDelete.values()) {
                 client.deleteKey(key.getName());
                 pollOnKeyDeletion(key.getName());
             }
@@ -286,7 +286,7 @@ public class KeyClientTest extends KeyClientTestBase {
             Iterable<DeletedKey> deletedKeys =  client.listDeletedKeys();
             for (DeletedKey actualKey : deletedKeys) {
                 if (keysToDelete.containsKey(actualKey.getName())) {
-                    assertNotNull(actualKey.getDeletedDate());
+                    assertNotNull(actualKey.getDeletedOn());
                     assertNotNull(actualKey.getRecoveryId());
                     keysToDelete.remove(actualKey.getName());
                 }
@@ -308,14 +308,14 @@ public class KeyClientTest extends KeyClientTestBase {
     @Override
     public void listKeyVersions() {
         listKeyVersionsRunner((keys) -> {
-            List<KeyCreateOptions> keyVersions = keys;
+            List<CreateKeyOptions> keyVersions = keys;
             String keyName = null;
-            for (KeyCreateOptions key : keyVersions) {
+            for (CreateKeyOptions key : keyVersions) {
                 keyName = key.getName();
                 assertKeyEquals(key, client.createKey(key));
             }
 
-            Iterable<KeyProperties> keyVersionsOutput =  client.listKeyVersions(keyName);
+            Iterable<KeyProperties> keyVersionsOutput =  client.listPropertiesOfKeyVersions(keyName);
             List<KeyProperties> keyVersionsList = new ArrayList<>();
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());

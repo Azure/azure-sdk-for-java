@@ -48,34 +48,6 @@ public class EncryptDecryptOperationsAsync {
             });
 
         Thread.sleep(5000);
-
-        // Let's do Encrypt and Decrypt operations with a symmetric key.
-        byte[] keyContent = { 0x06, (byte) 0xa9, 0x21, 0x40, 0x36, (byte) 0xb8, (byte) 0xa1, 0x5b, 0x51, 0x2e, 0x03, (byte) 0xd5, 0x34, 0x12, 0x00, 0x06 };
-        byte[] plaintext = "Single block msg".getBytes();
-        byte[] initializationVector = { 0x3d, (byte) 0xaf, (byte) 0xba, 0x42, (byte) 0x9d, (byte) 0x9e, (byte) 0xb4, 0x30, (byte) 0xb4, 0x22, (byte) 0xda, (byte) 0x80, 0x2c, (byte) 0x9f, (byte) 0xac, 0x41 };
-
-        // Convert the symmetric key encoded content to Json Web key.
-        JsonWebKey symmetricKey = JsonWebKey.fromAes(new SecretKeySpec(keyContent, "AES"))
-            .setKty(KeyType.OCT)
-            .setKeyOps(Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
-
-        // Configure the symmetric key in a new crypto client.
-        CryptographyAsyncClient symmetricKeyCryptoAsyncClient = new CryptographyClientBuilder()
-            .jsonWebKey(symmetricKey)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAsyncClient();
-
-        // Note the implementation of A128CBC in this library uses PKCS7 padding.
-        symmetricKeyCryptoAsyncClient.encrypt(EncryptionAlgorithm.A128CBC, plaintext, initializationVector, null)
-            .subscribe(encryptResult -> {
-                System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n", encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
-                //Let's decrypt the encrypted response.
-                symmetricKeyCryptoAsyncClient.decrypt(EncryptionAlgorithm.A128CBC, encryptResult.getCipherText(), initializationVector, null, null)
-                    .subscribe(decryptResult -> System.out.printf("Returned plainText size is %d bytes\n", decryptResult.getPlainText().length));
-            });
-
-        //Block main thread to let async operations finish
-        Thread.sleep(5000);
     }
 }
 

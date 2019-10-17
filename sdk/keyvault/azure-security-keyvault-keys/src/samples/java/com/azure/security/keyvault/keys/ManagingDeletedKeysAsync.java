@@ -4,8 +4,8 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
-import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 
 import java.time.OffsetDateTime;
 
@@ -30,23 +30,23 @@ public class ManagingDeletedKeysAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .vaultEndpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyAsyncClient.createEcKey(new EcKeyCreateOptions("CloudEcKey")
-                .setExpires(OffsetDateTime.now().plusYears(1)))
+        keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
 
         Thread.sleep(2000);
 
-        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-                .setExpires(OffsetDateTime.now().plusYears(1)))
+        keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+                .setExpiresOn(OffsetDateTime.now().plusYears(1)))
                 .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyMaterial().getKty()));
+                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKey().getKeyType()));
 
         Thread.sleep(2000);
 

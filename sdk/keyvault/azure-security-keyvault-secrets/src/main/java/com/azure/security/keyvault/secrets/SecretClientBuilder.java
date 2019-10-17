@@ -81,15 +81,15 @@ public final class SecretClientBuilder {
      * Every time {@code buildClient()} is called, a new instance of {@link SecretClient} is created.
      *
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link SecretClientBuilder#endpoint(String) serviceEndpoint} are used to create the
+     * {@link SecretClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link SecretClient
+     * {@link SecretClientBuilder#vaultEndpoint(String)} key vault endpoint are required to build the {@link SecretClient
      * client}.}</p>
      *
      * @return A SecretClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
-     *     {@link SecretClientBuilder#endpoint(String)} have not been set.
+     *     {@link SecretClientBuilder#vaultEndpoint(String)} have not been set.
      */
     public SecretClient buildClient() {
         return new SecretClient(buildAsyncClient());
@@ -100,15 +100,15 @@ public final class SecretClientBuilder {
      * Every time {@code buildAsyncClient()} is called, a new instance of {@link SecretAsyncClient} is created.
      *
      * <p>If {@link SecretClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link SecretClientBuilder#endpoint(String) serviceEndpoint} are used to create the
+     * {@link SecretClientBuilder#vaultEndpoint(String) serviceEndpoint} are used to create the
      * {@link SecretClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
      * then {@link SecretClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link SecretClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link
+     * {@link SecretClientBuilder#vaultEndpoint(String)} key vault endpoint are required to build the {@link
      * SecretAsyncClient client}.}</p>
      *
      * @return A SecretAsyncClient with the options set from the builder.
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
-     *     {@link SecretClientBuilder#endpoint(String)} have not been set.
+     *     {@link SecretClientBuilder#vaultEndpoint(String)} have not been set.
      */
     public SecretAsyncClient buildAsyncClient() {
 
@@ -158,7 +158,7 @@ public final class SecretClientBuilder {
      * @return the updated {@link SecretClientBuilder} object.
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SecretClientBuilder endpoint(String endpoint) {
+    public SecretClientBuilder vaultEndpoint(String endpoint) {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
@@ -225,7 +225,7 @@ public final class SecretClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link SecretClientBuilder#endpoint(String) endpoint} to build {@link SecretAsyncClient} or {@link SecretClient}.
+     * {@link SecretClientBuilder#vaultEndpoint(String) endpoint} to build {@link SecretAsyncClient} or {@link SecretClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return the updated {@link SecretClientBuilder} object.
