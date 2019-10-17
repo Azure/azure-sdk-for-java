@@ -173,14 +173,14 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#receiveMessage()}
      */
     public void getMessageAsync() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.receiveMessages
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.receiveMessage
         client.receiveMessage().subscribe(
             message -> System.out.println("The message got from getMessages operation: "
                 + message.getMessageText()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete receiving the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.receiveMessages
+        // END: com.azure.storage.queue.queueAsyncClient.receiveMessage
     }
 
     /**
@@ -217,13 +217,13 @@ public class QueueAsyncJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueAsyncClient#peekMessage()}
      */
     public void peekMessageAsync() {
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessages
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.peekMessage
         client.peekMessage().subscribe(
             peekMessages -> System.out.println("The message got from peek operation: " + peekMessages.getMessageText()),
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete peeking the message!")
         );
-        // END: com.azure.storage.queue.queueAsyncClient.peekMessages
+        // END: com.azure.storage.queue.queueAsyncClient.peekMessage
     }
 
     /**

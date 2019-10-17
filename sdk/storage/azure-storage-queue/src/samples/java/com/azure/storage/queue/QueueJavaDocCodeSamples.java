@@ -6,6 +6,7 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
@@ -154,13 +155,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void getMessage() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.receiveMessages
-        client.receiveMessage().forEach(
-            message -> {
-                System.out.println("Complete receiving the message: " + message.getMessageId());
-            }
-        );
-        // END: com.azure.storage.queue.queueClient.receiveMessages
+        // BEGIN: com.azure.storage.queue.queueClient.receiveMessage
+        QueueMessageItem queueMessageItem = client.receiveMessage();
+        System.out.println("Complete receiving the message: " + queueMessageItem.getMessageId());
+        // END: com.azure.storage.queue.queueClient.receiveMessage
     }
 
     /**
@@ -195,13 +193,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void peekMessage() {
 
-        // BEGIN: com.azure.storage.queue.queueClient.peekMessages
-        client.peekMessage().forEach(
-            peekedMessage -> {
-                System.out.println("Complete peeking the message: " + peekedMessage.getMessageText());
-            }
-        );
-        // END: com.azure.storage.queue.queueClient.peekMessages
+        // BEGIN: com.azure.storage.queue.queueClient.peekMessage
+        PeekedMessageItem peekedMessageItem = client.peekMessage();
+        System.out.println("Complete peeking the message: " + peekedMessageItem.getMessageText());
+        // END: com.azure.storage.queue.queueClient.peekMessage
     }
 
     /**
@@ -222,16 +217,11 @@ public class QueueJavaDocCodeSamples {
      */
     public void updateMessage() {
         // BEGIN: com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration
-        client.receiveMessage().forEach(
-
-            message -> {
-                UpdateMessageResult response = client.updateMessage("newText",
-                    message.getMessageId(), message.getPopReceipt(), null);
-
-                System.out.println("Complete updating the message.");
-            }
-        );
-        // END: com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration
+        QueueMessageItem queueMessageItem = client.receiveMessage();
+        UpdateMessageResult result = client.updateMessage(queueMessageItem.getMessageId(),
+            queueMessageItem.getPopReceipt(), "newText", null);
+        System.out.println("Complete updating the message with the receipt " + result.getPopReceipt());
+           // END: com.azure.storage.queue.QueueClient.updateMessage#String-String-String-Duration
     }
 
     /**
@@ -240,15 +230,11 @@ public class QueueJavaDocCodeSamples {
      */
     public void updateMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context
-        client.receiveMessage().forEach(
-            message -> {
-                Response<UpdateMessageResult> response = client.updateMessageWithResponse("newText",
-                    message.getMessageId(), message.getPopReceipt(), null,
-                    Duration.ofSeconds(1), new Context(key1, value1));
-
-                System.out.println("Complete updating the message with status code " + response.getStatusCode());
-            }
-        );
+        QueueMessageItem queueMessageItem = client.receiveMessage();
+        Response<UpdateMessageResult> response = client.updateMessageWithResponse(queueMessageItem.getMessageId(),
+            queueMessageItem.getPopReceipt(), "newText", null, Duration.ofSeconds(1),
+            new Context(key1, value1));
+        System.out.println("Complete updating the message with status code " + response.getStatusCode());
         // END: com.azure.storage.queue.QueueClient.updateMessageWithResponse#String-String-String-Duration-Duration-Context
     }
 
@@ -257,12 +243,9 @@ public class QueueJavaDocCodeSamples {
      */
     public void deleteMessage() {
         // BEGIN: com.azure.storage.queue.QueueClient.deleteMessage#String-String
-        client.receiveMessage().forEach(
-            message -> {
-                client.deleteMessage(message.getMessageId(), message.getPopReceipt());
-                System.out.println("Complete deleting the message.");
-            }
-        );
+        QueueMessageItem queueMessageItem = client.receiveMessage();
+        client.deleteMessage(queueMessageItem.getMessageId(), queueMessageItem.getPopReceipt());
+        System.out.println("Complete deleting the message.");
         // END: com.azure.storage.queue.QueueClient.deleteMessage#String-String
     }
 
@@ -272,13 +255,10 @@ public class QueueJavaDocCodeSamples {
      */
     public void deleteMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context
-        client.receiveMessage().forEach(
-            message -> {
-                Response<Void> response = client.deleteMessageWithResponse(message.getMessageId(),
-                    message.getPopReceipt(), Duration.ofSeconds(1), new Context(key1, value1));
-                System.out.println("Complete deleting the message with status code " + response.getStatusCode());
-            }
-        );
+        QueueMessageItem queueMessageItem = client.receiveMessage();
+        Response<Void> response = client.deleteMessageWithResponse(queueMessageItem.getMessageId(),
+            queueMessageItem.getPopReceipt(), Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Complete deleting the message with status code " + response.getStatusCode());
         // END: com.azure.storage.queue.QueueClient.deleteMessageWithResponse#String-String-Duration-Context
     }
 

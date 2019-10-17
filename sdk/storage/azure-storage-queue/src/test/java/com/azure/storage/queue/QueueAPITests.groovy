@@ -8,6 +8,7 @@ import com.azure.core.util.Context
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
+import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
 import spock.lang.Unroll
@@ -273,9 +274,9 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
         when:
-        def dequeueMsgResponse = queueClient.receiveMessage().iterator().next()
+        def messageItem = queueClient.receiveMessage()
         then:
-        expectMsg == dequeueMsgResponse.getMessageText()
+        expectMsg == messageItem.getMessageText()
     }
 
     def "Dequeue multiple messages"() {
@@ -308,7 +309,7 @@ class QueueAPITests extends APISpec {
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
         when:
-        def peekMsgIter = queueClient.peekMessage().iterator().next()
+        def peekMsgIter = queueClient.peekMessage()
         then:
         expectMsg == peekMsgIter.getMessageText()
     }
@@ -340,7 +341,7 @@ class QueueAPITests extends APISpec {
 
     def "Peek messages error"() {
         when:
-        queueClient.peekMessage().iterator().next()
+        queueClient.peekMessage()
         then:
         def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
@@ -378,7 +379,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage("test message 1")
         queueClient.sendMessage("test message 2")
         queueClient.sendMessage("test message 3")
-        def dequeueMsg = queueClient.receiveMessage().iterator().next()
+        def dequeueMsg = queueClient.receiveMessage()
         when:
         def getPropertiesResponse = queueClient.getPropertiesWithResponse(null, null)
         def deleteMsgResponse = queueClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(),
@@ -398,10 +399,10 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def expectMsg = "test message"
         queueClient.sendMessage(expectMsg)
-        def dequeueMessageIter = queueClient.receiveMessage().iterator().next()
+        QueueMessageItem queueMessageItem = queueClient.receiveMessage()
         when:
-        def deleteMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
-        def deletePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"
+        def deleteMessageId = messageId ? queueMessageItem.getMessageId() : queueMessageItem.getMessageId() + "Random"
+        def deletePopReceipt = popReceipt ? queueMessageItem.getPopReceipt() : queueMessageItem.getPopReceipt() + "Random"
         queueClient.deleteMessage(deleteMessageId, deletePopReceipt)
         then:
         def e = thrown(QueueStorageException)
@@ -419,12 +420,12 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         queueClient.sendMessage("test message before update")
 
-        def dequeueMsg = queueClient.receiveMessage().iterator().next()
+        def dequeueMsg = queueClient.receiveMessage()
         when:
         def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
             dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null,  null)
         QueueTestHelper.sleepInRecord(Duration.ofSeconds(2))
-        def peekMsgIter = queueClient.peekMessage().iterator().next()
+        def peekMsgIter = queueClient.peekMessage()
         then:
         QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
         updateMsg == peekMsgIter.getMessageText()
@@ -436,7 +437,7 @@ class QueueAPITests extends APISpec {
         queueClient.create()
         def updateMsg = "Updated test message"
         queueClient.sendMessage("test message before update")
-        def dequeueMessageIter = queueClient.receiveMessage().iterator().next()
+        def dequeueMessageIter = queueClient.receiveMessage()
         when:
         def updateMessageId = messageId ? dequeueMessageIter.getMessageId() : dequeueMessageIter.getMessageId() + "Random"
         def updatePopReceipt = popReceipt ? dequeueMessageIter.getPopReceipt() : dequeueMessageIter.getPopReceipt() + "Random"

@@ -559,11 +559,12 @@ public final class QueueAsyncClient {
      * additionally it contains other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist
      */
-    public PagedFlux<QueueMessageItem> receiveMessage() {
+    public Mono<QueueMessageItem> receiveMessage() {
         try {
-            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE);
+            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE)
+                .single();
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -664,11 +665,11 @@ public final class QueueAsyncClient {
      *
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
-    public PagedFlux<PeekedMessageItem> peekMessage() {
+    public Mono<PeekedMessageItem> peekMessage() {
         try {
-            return peekMessages(null);
+            return peekMessages(null).single();
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return monoError(logger, ex);
         }
     }
 
@@ -702,7 +703,8 @@ public final class QueueAsyncClient {
         }
     }
 
-    PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout, Context context) {
+    PagedFlux<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
+        Context context) {
         Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever =
             marker -> Utility.applyOptionalTimeout(this.client.messages()
                 .peekWithRestResponseAsync(queueName, maxMessages, null, null, context), timeout)
@@ -733,8 +735,9 @@ public final class QueueAsyncClient {
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdateMessageResult} that contains the new {@link UpdateMessageResult#getPopReceipt() popReceipt} to
-     * interact with the message, additionally contains the updated metadata about the message.
+     * @return A {@link UpdateMessageResult} that contains the new
+     * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
+     * additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
@@ -765,8 +768,9 @@ public final class QueueAsyncClient {
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdateMessageResult} that contains the new {@link UpdateMessageResult#getPopReceipt() popReceipt} to
-     * interact with the message, additionally contains the updated metadata about the message.
+     * @return A {@link UpdateMessageResult} that contains the new
+     * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
+     * additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds
      */
@@ -887,7 +891,8 @@ public final class QueueAsyncClient {
      */
     private Response<UpdateMessageResult> getUpdatedMessageResponse(MessageIdsUpdateResponse response) {
         MessageIdUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getPopReceipt(), headers.getTimeNextVisible());
+        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getPopReceipt(),
+            headers.getTimeNextVisible());
         return new SimpleResponse<>(response, updateMessageResult);
     }
 }

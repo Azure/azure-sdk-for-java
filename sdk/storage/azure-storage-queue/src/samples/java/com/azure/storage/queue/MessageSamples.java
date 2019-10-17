@@ -49,9 +49,9 @@ public class MessageSamples {
 
         // Delete the first available msg.
         // Since there is no invisible time for above receive, the following if condition should be true.
-        if (queueClient.receiveMessage().iterator().hasNext()) {
-            QueueMessageItem queueMessage = queueClient.receiveMessage().iterator().next();
-            queueClient.deleteMessage(queueMessage.getMessageId(), queueMessage.getPopReceipt());
+        QueueMessageItem queueMessageItem = queueClient.receiveMessage();
+        if (queueMessageItem != null) {
+            queueClient.deleteMessage(queueMessageItem.getMessageId(), queueMessageItem.getPopReceipt());
         } else {
             System.out.println("OOps, the messages disappear!");
         }

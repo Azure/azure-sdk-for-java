@@ -407,7 +407,7 @@ public final class QueueClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<SendMessageResult> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
-                                                               Duration timeToLive, Duration timeout, Context context) {
+        Duration timeToLive, Duration timeout, Context context) {
         Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(messageText,
             visibilityTimeout, timeToLive, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -420,7 +420,7 @@ public final class QueueClient {
      *
      * <p>Receive a message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessages}
+     * {@codesnippet com.azure.storage.queue.queueClient.receiveMessage}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
@@ -431,8 +431,8 @@ public final class QueueClient {
      * additionally it contains other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist
      */
-    public PagedIterable<QueueMessageItem> receiveMessage() {
-        return receiveMessages(1, Duration.ofSeconds(30), null, Context.NONE);
+    public QueueMessageItem receiveMessage() {
+        return client.receiveMessage().block();
     }
 
     /**
@@ -506,15 +506,15 @@ public final class QueueClient {
      *
      * <p>Peek the first message</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages}
+     * {@codesnippet com.azure.storage.queue.queueClient.peekMessage}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
-    public PagedIterable<PeekedMessageItem> peekMessage() {
-        return peekMessages(null, null, Context.NONE);
+    public PeekedMessageItem peekMessage() {
+        return client.peekMessage().block();
     }
 
     /**
@@ -564,14 +564,15 @@ public final class QueueClient {
      * @param messageText Updated value for the message
      * @param visibilityTimeout The timeout period for how long the message is invisible in the queue in seconds. The
      * timeout period must be between 1 second and 7 days.
-     * @return A {@link UpdateMessageResult} that contains the new {@link UpdateMessageResult#getPopReceipt() popReceipt}
-     * to interact with the message, additionally contains the updated metadata about the message.
+     * @return A {@link UpdateMessageResult} that contains the new
+     * {@link UpdateMessageResult#getPopReceipt() popReceipt} to interact with the message,
+     * additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds.
      */
     public UpdateMessageResult updateMessage(String messageId, String popReceipt, String messageText,
                                              Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageId, messageText, popReceipt, visibilityTimeout, null, Context.NONE)
+        return updateMessageWithResponse(messageId, popReceipt,  messageText, visibilityTimeout, null, Context.NONE)
             .getValue();
     }
 

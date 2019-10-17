@@ -6,6 +6,7 @@ package com.azure.storage.queue
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
+import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import reactor.test.StepVerifier
 import spock.lang.Ignore
@@ -436,7 +437,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.sendMessage("test message 1").block()
         queueAsyncClient.sendMessage("test message 2").block()
         queueAsyncClient.sendMessage("test message 3").block()
-        def dequeueMsg = queueAsyncClient.receiveMessage().blockFirst()
+        def dequeueMsg = queueAsyncClient.receiveMessage().block()
         when:
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getPropertiesWithResponse())
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt()))
@@ -462,10 +463,10 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def expectMsg = "test message"
         queueAsyncClient.sendMessage(expectMsg).block()
-        def dequeueMessage = queueAsyncClient.receiveMessage().blockFirst()
+        QueueMessageItem queueMessageItem = queueAsyncClient.receiveMessage().block()
         when:
-        def deleteMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
-        def deletePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
+        def deleteMessageId = messageId ? queueMessageItem.getMessageId() : queueMessageItem.getMessageId() + "Random"
+        def deletePopReceipt = popReceipt ? queueMessageItem.getPopReceipt() : queueMessageItem.getPopReceipt() + "Random"
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(deleteMessageId, deletePopReceipt))
         then:
         deleteMsgVerifier.verifyErrorSatisfies {
@@ -484,7 +485,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         queueAsyncClient.sendMessage("test message before update").block()
 
-        def dequeueMsg = queueAsyncClient.receiveMessage().blockFirst()
+        def dequeueMsg = queueAsyncClient.receiveMessage().block()
         when:
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(
             dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)))
@@ -504,7 +505,7 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def updateMsg = "Updated test message"
         queueAsyncClient.sendMessage("test message before update").block()
-        def dequeueMessage = queueAsyncClient.receiveMessage().blockFirst()
+        def dequeueMessage = queueAsyncClient.receiveMessage().block()
         when:
         def updateMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
         def updatePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
