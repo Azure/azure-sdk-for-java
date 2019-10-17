@@ -9,5 +9,7 @@ package com.azure.storage.file;
 class FileConfiguration {
     //TODO: Eventually remove these hardcoded strings with https://github.com/Azure/azure-sdk-for-java/issues/3141
     static final String NAME = "azure-storage-file";
-    static final String VERSION = "12.0.0-preview.5"; // {x-version-update;com.azure:azure-storage-file;current}
+    // {x-version-update-start;com.azure:azure-storage-file;current}
+    static final String VERSION = "12.0.0-preview.5";
+    // {x-version-update-end}
 }
