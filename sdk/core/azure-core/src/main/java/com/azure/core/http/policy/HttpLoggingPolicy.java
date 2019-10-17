@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * The Pipeline policy that handles logging of HTTP requests and responses.
@@ -122,10 +123,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void formatAllowableHeaders(Set<String> allowedHeaderNames, HttpHeaders requestResponseHeaders,
                                         ClientLogger logger) {
+        Set<String> lowerCasedAllowedHeaderNames = allowedHeaderNames.stream().map(String::toLowerCase)
+            .collect(Collectors.toSet());
         StringBuilder sb = new StringBuilder();
         for (HttpHeader header : requestResponseHeaders) {
-            sb.append(header.getName()).append(":");
-            if (allowedHeaderNames.stream().anyMatch(header.getName()::equalsIgnoreCase)) {
+            String headerName = header.getName();
+            sb.append(headerName).append(":");
+            if (lowerCasedAllowedHeaderNames.contains(headerName.toLowerCase())) {
                 sb.append(header.getValue());
             } else {
                 sb.append(REDACTED_PLACEHOLDER);
@@ -137,13 +141,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void formatAllowableQueryParams(Set<String> allowedQueryParamNames, String queryString,
                                             ClientLogger logger) {
-        if (allowedQueryParamNames != null && queryString != null) {
+        Set<String> lowerCasedAllowedQueryParams = allowedQueryParamNames.stream().map(String::toLowerCase)
+            .collect(Collectors.toSet());
+        if (queryString != null) {
             StringBuilder sb = new StringBuilder();
             String[] queryParams = queryString.split("&");
             for (String queryParam : queryParams) {
                 String[] queryPair = queryParam.split("=", 2);
                 if (queryPair.length == 2) {
-                    if (allowedQueryParamNames.stream().anyMatch(queryPair[0]::equalsIgnoreCase)) {
+                    String queryName = queryPair[0];
+                    if (lowerCasedAllowedQueryParams.contains(queryName.toLowerCase())) {
                         sb.append(queryParam);
                     } else {
                         sb.append(queryPair[0]).append("=").append(REDACTED_PLACEHOLDER);
