@@ -229,7 +229,7 @@ public class BlobClientBase {
      * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
      *     cancelled.
      */
-    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(URL sourceUrl, Duration pollInterval) {
+    public Poller<BlobCopyInfo, Void> beginCopyFromUrl(String sourceUrl, Duration pollInterval) {
         return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
