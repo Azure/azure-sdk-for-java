@@ -3,7 +3,9 @@
 
 package com.azure.core.http.policy;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,11 +16,35 @@ public class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
+    private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
+        "x-ms-client-request-id",
+        "x-ms-return-client-request-id",
+        "traceparent",
+        "Accept",
+        "Cache-Control",
+        "Connection",
+        "Content-Length",
+        "Content-Type",
+        "Date",
+        "ETag",
+        "Expires",
+        "If-Match",
+        "If-Modified-Since",
+        "If-None-Match",
+        "If-Unmodified-Since",
+        "Last-Modified",
+        "Pragma",
+        "Request-Id",
+        "Retry-After",
+        "Server",
+        "Transfer-Encoding",
+        "User-Agent"
+        );
 
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
         allowedHeaderNames = new HashSet<>();
-        allowedQueryParamNames = new HashSet<>();
+        allowedQueryParamNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
     }
 
     /**
@@ -54,18 +80,23 @@ public class HttpLogOptions {
 
     /**
      * Sets the given whitelisted headers that should be logged.
+     * <p>
+     * This method sets the provided header names to be the whitelisted header names which will be logged for all http
+     * requests and responses, overwriting any previously configured headers, including the default set.
+     * Additionally, user can use {@link HttpLogOptions#addAllowedHeaderName(String)}
+     * or {@link HttpLogOptions#getAllowedHeaderNames()} to add or remove more headers names to the existing set of
+     * allowed header names.
      *
      * @param allowedHeaderNames The list of whitelisted header names from the user.
      * @return The updated HttpLogOptions object.
-     * @throws NullPointerException If {@code allowedHeaderNames} is {@code null}.
      */
     public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames;
+        this.allowedHeaderNames = allowedHeaderNames == null ?  new HashSet<>() : allowedHeaderNames;
         return this;
     }
 
     /**
-     * Sets the given whitelisted header that should be logged.
+     * Sets the given whitelisted header to the default header set that should be logged.
      *
      * @param allowedHeaderName The whitelisted header name from the user.
      * @return The updated HttpLogOptions object.
