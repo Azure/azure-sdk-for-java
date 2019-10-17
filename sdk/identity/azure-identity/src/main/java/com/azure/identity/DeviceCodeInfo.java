@@ -5,7 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 
-import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Response returned from the STS device code endpoint containing information necessary for
@@ -19,15 +19,15 @@ public class DeviceCodeInfo {
      * @param userCode code which user needs to provide when authenticating at the verification URL
      * @param deviceCode code which should be included in the request for the access token
      * @param verificationUrl URL where user can authenticate
-     * @param expiresIn expiration time of device code in seconds
+     * @param expiresOn expiration time of device code in seconds
      * @param message message which should be displayed to the user
      */
-    public DeviceCodeInfo(String userCode, String deviceCode, String verificationUrl, Duration expiresIn,
+    public DeviceCodeInfo(String userCode, String deviceCode, String verificationUrl, OffsetDateTime expiresOn,
                           String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUrl = verificationUrl;
-        this.expiresIn = expiresIn;
+        this.expiresOn = expiresOn;
         this.message = message;
     }
 
@@ -37,7 +37,7 @@ public class DeviceCodeInfo {
 
     private final String verificationUrl;
 
-    private final Duration expiresIn;
+    private final OffsetDateTime expiresOn;
 
     private final String message;
 
@@ -66,8 +66,8 @@ public class DeviceCodeInfo {
     /**
      * @return expiration time of device code.
      */
-    public Duration getExpiresIn() {
-        return expiresIn;
+    public OffsetDateTime getExpiresOn() {
+        return expiresOn;
     }
 
     /**
