@@ -5,7 +5,7 @@ package com.azure.storage.common.credentials;
 
 import com.azure.storage.common.Utility;
 
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.sas.SasTokenCredential;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;

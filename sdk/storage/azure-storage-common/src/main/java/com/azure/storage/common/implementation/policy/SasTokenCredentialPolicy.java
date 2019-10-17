@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
+import com.azure.storage.common.sas.SasTokenCredential;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
