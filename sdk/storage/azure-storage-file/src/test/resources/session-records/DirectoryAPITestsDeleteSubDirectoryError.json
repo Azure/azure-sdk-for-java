@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestsdeletesubdirectoryerror63803d69e659?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletesubdirectoryerror148533ba0055?restype=share",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "2c0d84fa-7530-4c55-b77e-f107eb0e4b0c"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "c9d58ff9-faa6-407b-b37c-f74d099d5f9a"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7325B8717644D\"",
-      "Last-Modified" : "Thu, 05 Sep 2019 23:48:18 GMT",
+      "ETag" : "0x8D7519F63472A88",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:10 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "07339ca7-301a-000d-2744-645aef000000",
-      "Date" : "Thu, 05 Sep 2019 23:48:17 GMT",
-      "x-ms-client-request-id" : "2c0d84fa-7530-4c55-b77e-f107eb0e4b0c"
+      "x-ms-request-id" : "beee0fd2-701a-001b-1b88-831ee4000000",
+      "Date" : "Tue, 15 Oct 2019 18:42:10 GMT",
+      "x-ms-client-request-id" : "c9d58ff9-faa6-407b-b37c-f74d099d5f9a"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestsdeletesubdirectoryerror63803d69e659/directoryapitestsdeletesubdirectoryerror39652e6b901d?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletesubdirectoryerror148533ba0055/directoryapitestsdeletesubdirectoryerror24083dca74ae?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "a9d09f4c-a7f3-4a34-8c76-fb6aba052281"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "1ba4ca96-d7d0-4b4b-8dbb-a42cd63f2a5a"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "1749612463032355572*8114634751575874941",
+      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-09-05T23:48:18.7169564Z",
-      "Last-Modified" : "Thu, 05 Sep 2019 23:48:18 GMT",
+      "x-ms-file-creation-time" : "2019-10-15T18:42:10.3974374Z",
+      "Last-Modified" : "Tue, 15 Oct 2019 18:42:10 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 05 Sep 2019 23:48:18 GMT",
-      "ETag" : "\"0x8D7325B8727F31C\"",
+      "Date" : "Tue, 15 Oct 2019 18:42:10 GMT",
+      "ETag" : "0x8D7519F634ED1E6",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-09-05T23:48:18.7169564Z",
+      "x-ms-file-change-time" : "2019-10-15T18:42:10.3974374Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "07339ca9-301a-000d-2844-645aef000000",
-      "x-ms-client-request-id" : "a9d09f4c-a7f3-4a34-8c76-fb6aba052281",
-      "x-ms-file-last-write-time" : "2019-09-05T23:48:18.7169564Z"
+      "x-ms-request-id" : "c1ad4e3c-b01a-00ca-3c88-83a3bb000000",
+      "x-ms-client-request-id" : "1ba4ca96-d7d0-4b4b-8dbb-a42cd63f2a5a",
+      "x-ms-file-last-write-time" : "2019-10-15T18:42:10.3974374Z"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.file.core.windows.net/directoryapitestsdeletesubdirectoryerror63803d69e659/directoryapitestsdeletesubdirectoryerror39652e6b901d%2ftestsubdirectory?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryapitestsdeletesubdirectoryerror148533ba0055/directoryapitestsdeletesubdirectoryerror24083dca74ae%2ftestsubdirectory?restype=directory",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "f8b28450-a42c-449d-92a4-10ef7a0136fe"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "ff285ee3-5fcc-4ce4-af2b-375a1a86beab"
     },
     "Response" : {
       "x-ms-version" : "2019-02-02",
@@ -64,13 +64,13 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "07339caa-301a-000d-2944-645aef000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:07339caa-301a-000d-2944-645aef000000\nTime:2019-09-05T23:48:18.8164451Z</Message></Error>",
-      "Date" : "Thu, 05 Sep 2019 23:48:18 GMT",
-      "x-ms-client-request-id" : "f8b28450-a42c-449d-92a4-10ef7a0136fe",
+      "x-ms-request-id" : "beee0fd4-701a-001b-1c88-831ee4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:beee0fd4-701a-001b-1c88-831ee4000000\nTime:2019-10-15T18:42:10.4693939Z</Message></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:42:10 GMT",
+      "x-ms-client-request-id" : "ff285ee3-5fcc-4ce4-af2b-375a1a86beab",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryapitestsdeletesubdirectoryerror63803d69e659", "directoryapitestsdeletesubdirectoryerror39652e6b901d" ]
+  "variables" : [ "directoryapitestsdeletesubdirectoryerror148533ba0055", "directoryapitestsdeletesubdirectoryerror24083dca74ae" ]
 }

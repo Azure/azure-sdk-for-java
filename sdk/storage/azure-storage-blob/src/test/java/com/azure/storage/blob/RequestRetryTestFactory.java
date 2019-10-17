@@ -362,7 +362,7 @@ class RequestRetryTestFactory {
             switch (this.factory.retryTestScenario) {
                 case RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING:
                     return (long) Math.ceil(
-                        ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getMaxRetryDelayInMs()) / 1000);
+                        ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getRetryDelayInMs()) / 1000);
                 case RETRY_TEST_SCENARIO_FIXED_TIMING:
                     return (long) Math.ceil(this.factory.options.getRetryDelayInMs() / 1000);
                 default:

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains generic classes used by Azure Storage services for shared access signature.
+ * Package containing sas classes used by Azure Storage services.
  */
 package com.azure.storage.common.sas;

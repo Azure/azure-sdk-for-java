@@ -54,10 +54,11 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous Queue Client with credential</strong></p>
  * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a StorageSharedKeyCredential
- * a connection string from the Storage Queue service must be used. Set the StorageSharedKeyCredential with {@link
- * QueueClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage Queue service must be used.
+ * Set the StorageSharedKeyCredential with {@link QueueClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred
+ * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.queue.queueClient.instantiation.connectionstring}
@@ -129,8 +130,8 @@ public final class QueueClientBuilder {
      *
      * @return A QueueClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueClient buildClient() {
         return new QueueClient(buildAsyncClient());
@@ -148,8 +149,8 @@ public final class QueueClientBuilder {
      *
      * @return A QueueAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueAsyncClient buildAsyncClient() {
         return new QueueAsyncClient(constructImpl(), queueName, accountName);
@@ -254,8 +255,8 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
+     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.

@@ -16,7 +16,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -50,7 +50,8 @@ final class BuilderHelper {
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain 'AccountName' or 'AccountKey'.
      */
     static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
-                                          Consumer<StorageSharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
+                                          Consumer<StorageSharedKeyCredential> credentialSetter,
+                                          Consumer<String> endpointSetter, ClientLogger logger) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);

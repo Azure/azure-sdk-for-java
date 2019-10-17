@@ -4,7 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.util.Configuration;
 import com.azure.storage.file.models.FileServiceProperties;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
 
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class FileServiceSample {
         for (int i = 0; i < 3; i++) {
             try {
                 fileServiceClient.createShare(generateRandomName());
-            } catch (StorageException e) {
+            } catch (FileStorageException e) {
                 System.out.printf("Failed to create share %d. Reasons: %s", i, e.getMessage());
             }
         }
@@ -43,7 +43,7 @@ public class FileServiceSample {
 
             System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b%n",
                 properties.getHourMetrics(), properties.getMinuteMetrics());
-        } catch (StorageException e) {
+        } catch (FileStorageException e) {
             System.out.println("Failed to get the account properties. Reasons: " + e.getMessage());
         }
         // List all shares under file service and delete them.
@@ -53,7 +53,7 @@ public class FileServiceSample {
                     System.out.printf("This is the share name: %s in the file account.%n", shareItem.getName());
                     fileServiceClient.deleteShare(shareItem.getName());
                     System.out.println("The share has been deleted from the storage file account!");
-                } catch (StorageException e) {
+                } catch (FileStorageException e) {
                     System.out.println("Failed to delete the share. Reasons: " + e.getMessage());
                 }
             }

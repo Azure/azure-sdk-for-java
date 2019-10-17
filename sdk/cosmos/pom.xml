@@ -7,13 +7,13 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.3.0</version>
+  <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Cosmos DB SQL API</name>
@@ -55,7 +55,7 @@ Licensed under the MIT License.
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmos</artifactId>
-        <version>3.3.0</version>
+        <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
       </dependency>
 
       <dependency>

@@ -10,14 +10,15 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.models.CorsRule;
+import com.azure.storage.file.models.FileCorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a fileServiceAsyncClient that contains all the operations for interacting with a file account in
@@ -196,16 +197,16 @@ public final class FileServiceClient {
      * Docs</a>.</p>
      *
      * @param properties Storage account File service properties
-     * @throws StorageException When one of the following is true
+     * @throws FileStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
-     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link FileCorsRule#getAllowedHeaders() allowed headers}, {@link FileCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link FileCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link FileCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      */
@@ -240,16 +241,16 @@ public final class FileServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException When one of the following is true
+     * @throws FileStorageException When one of the following is true
      * <ul>
      * <li>A CORS rule is missing one of its fields</li>
      * <li>More than five CORS rules will exist for the Queue service</li>
      * <li>Size of all CORS rules exceeds 2KB</li>
      * <li>
-     * Length of {@link CorsRule#getAllowedHeaders() allowed headers}, {@link CorsRule#getExposedHeaders() exposed
-     * headers}, or {@link CorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
+     * Length of {@link FileCorsRule#getAllowedHeaders() allowed headers}, {@link FileCorsRule#getExposedHeaders()
+     * exposed headers}, or {@link FileCorsRule#getAllowedOrigins() allowed origins} exceeds 256 characters.
      * </li>
-     * <li>{@link CorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
+     * <li>{@link FileCorsRule#getAllowedMethods() Allowed methods} isn't DELETE, GET, HEAD, MERGE, POST, OPTIONS, or
      * PUT</li>
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
@@ -274,7 +275,7 @@ public final class FileServiceClient {
      *
      * @param shareName Name of the share
      * @return The {@link ShareClient ShareClient}
-     * @throws StorageException If a share with the same name already exists
+     * @throws FileStorageException If a share with the same name already exists
      */
     public ShareClient createShare(String shareName) {
         return createShareWithResponse(shareName, null, null, null, Context.NONE).getValue();
@@ -301,8 +302,8 @@ public final class FileServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
-     * @throws StorageException If a share with the same name already exists or {@code quotaInGB} is outside the allowed
-     * range.
+     * @throws FileStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * allowed range.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareClient> createShareWithResponse(String shareName, Map<String, String> metadata,
@@ -324,7 +325,7 @@ public final class FileServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
      * @param shareName Name of the share
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
     public void deleteShare(String shareName) {
         deleteShareWithResponse(shareName, null, null, Context.NONE);
@@ -349,7 +350,7 @@ public final class FileServiceClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the share doesn't exist or the snapshot doesn't exist
+     * @throws FileStorageException If the share doesn't exist or the snapshot doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteShareWithResponse(String shareName, String snapshot, Duration timeout,

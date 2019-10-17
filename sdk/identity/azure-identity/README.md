@@ -37,13 +37,15 @@ The Azure Identity library provides Azure Active Directory token authentication 
 ### Adding the package to your project
 
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
+[//]: # ({x-version-update-start;com.azure:azure-identity;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.0-preview.5</version>
+    <version>1.0.0-preview.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Prerequisites
 * An [Azure subscription][azure_sub].
@@ -82,14 +84,14 @@ Note that you also need to be the admin of your tenant to grant consent to your 
 #### Enable applications for interactive browser oauth 2 flow
 You need to register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Follow all the steps above for device code flow to register your application to support logging you into Active Directory and access certain resources. Note the same limitations apply that an admin of your tenant must grant consent to your application before any user account can login.
 
-You may notice in `InteractiveBrowserCredentialBuilder`, a port number is required, and you need to add the redirect URI on this page too:
+You may notice in `InteractiveBrowserCredentialBuilder`, a port number is required, and you need to add the redirect URL on this page too:
 
 ![interactive redirect uri](./images/interactive-redirecturi.png)
 
 In this case, the port number is 8765.
 
 #### Enable applications for oauth 2 auth code flow
-You need the same application registered as in [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow), except that the redirect URI must be an API endpoint on your web application where the auth code must be handled as a query parameter.
+You need the same application registered as in [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow), except that the redirect URL must be an API endpoint on your web application where the auth code must be handled as a query parameter.
 
 #### Enable applications for shared token cache credential
 You will need to have Visual Studio 2019 installed. Login to Visual Studio with your org ID or live ID and you are ready to use shared token cache credential.
@@ -206,9 +208,9 @@ KeyClient client = new KeyClientBuilder()
 ### Authenticating a user account with auth code flow
 This example demonstrates authenticating the `KeyClient` from the [azure-keyvault-keys][keys_client_library] client library using the `AuthorizationCodeCredential` on a web application.
 
-First, prompt the user to login at the URL documented at [Microsoft identity platform and OAuth 2.0 authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code). You will need the client id, tenant id, redirect URI, and the scopes your application plans to access.
+First, prompt the user to login at the URL documented at [Microsoft identity platform and OAuth 2.0 authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code). You will need the client id, tenant id, redirect URL, and the scopes your application plans to access.
 
-Then create an API at the redirect URI with the following code to access the Key Vault service.
+Then create an API at the redirect URL with the following code to access the Key Vault service.
 
 ```java
 import com.azure.identity.credential.AuthorizationCodeCredential;
@@ -218,7 +220,7 @@ import com.azure.security.keyvault.keys.KeyClient;
 AuthorizationCodeCredential authCodeCredential = new AuthorizationCodeCredentialBuilder()
         .clientId("<YOUR CLIENT ID>")
         .authorizationCode("<AUTH CODE FROM QUERY PARAMETERS")
-        .redirectUri("<THE REDIRECT URI>")
+        .redirectUrl("<THE REDIRECT URL>")
         .build();
 
 KeyClient client = new KeyClientBuilder()

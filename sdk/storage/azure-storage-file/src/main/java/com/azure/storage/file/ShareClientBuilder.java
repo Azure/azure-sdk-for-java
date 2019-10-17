@@ -50,10 +50,11 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.storage.file.shareAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a StorageSharedKeyCredential
- * a connection string from the Storage File service must be used. Set the StorageSharedKeyCredential with {@link
- * ShareClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage File service must be used. Set the
+ * StorageSharedKeyCredential with {@link ShareClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be
+ * preferred when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Share Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.file.shareClient.instantiation.connectionstring}
@@ -124,8 +125,8 @@ public class ShareClientBuilder {
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareAsyncClient buildAsyncClient() {
         return new ShareAsyncClient(constructImpl(), shareName, snapshot, accountName);
@@ -143,8 +144,8 @@ public class ShareClientBuilder {
      *
      * @return A ShareClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
-     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public ShareClient buildClient() {
         return new ShareClient(buildAsyncClient());
@@ -246,8 +247,8 @@ public class ShareClientBuilder {
     }
 
     /**
-     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
+     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.

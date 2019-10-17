@@ -55,10 +55,11 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.storage.file.fileAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a StorageSharedKeyCredential
- * a connection string from the Storage File service must be used. Set the StorageSharedKeyCredential with {@link
- * FileClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage File service must be used.
+ * Set the StorageSharedKeyCredential with {@link FileClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred
+ * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.file.directoryClient.instantiation.connectionstring}
@@ -134,8 +135,8 @@ public class FileClientBuilder {
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
         return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
@@ -153,8 +154,8 @@ public class FileClientBuilder {
      *
      * @return A DirectoryClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public DirectoryClient buildDirectoryClient() {
         return new DirectoryClient(this.buildDirectoryAsyncClient());
@@ -172,8 +173,8 @@ public class FileClientBuilder {
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or the (@code resourcePath) is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileAsyncClient buildFileAsyncClient() {
 
@@ -192,8 +193,8 @@ public class FileClientBuilder {
      *
      * @return A FileClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code resourcePath} is {@code null}.
-     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileClient buildFileClient() {
         return new FileClient(this.buildFileAsyncClient());
@@ -307,8 +308,8 @@ public class FileClientBuilder {
     }
 
     /**
-     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
+     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.
