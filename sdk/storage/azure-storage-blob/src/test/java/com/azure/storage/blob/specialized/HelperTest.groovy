@@ -292,7 +292,7 @@ class HelperTest extends APISpec {
         where:
         containerName | version | creds             | blobName || parameter
         "c"           | null    | primaryCredential | "b"       | "version"
-        "c"           | "v"     | null              | "b"       | "sharedKeyCredentials"
+        "c"           | "v"     | null              | "b"       | "storageSharedKeyCredentials"
         "c"           | "v"     | primaryCredential | null      | "canonicalName"
     }
 
@@ -511,7 +511,7 @@ class HelperTest extends APISpec {
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "sharedKeyCredentials"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "storageSharedKeyCredentials"
     }
 
     @Unroll
