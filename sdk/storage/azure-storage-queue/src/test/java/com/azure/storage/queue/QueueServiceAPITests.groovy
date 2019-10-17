@@ -30,7 +30,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue"() {
         when:
         def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60),  null, null, null)
-        def enqueueMessageResponse = queueClientResponse.getValue().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null,null)
+        def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null,null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -68,7 +68,7 @@ class QueueServiceAPITests extends APISpec {
     def "Create queue maxOverload"() {
         when:
         def queueClientResponse = primaryQueueServiceClient.createQueueWithResponse(testResourceName.randomName(methodName, 60), metadata,null, null)
-        def enqueueMessageResponse = queueClientResponse.getValue().enqueueMessageWithResponse("Testing service client creating a queue", null, null, null, null)
+        def enqueueMessageResponse = queueClientResponse.getValue().sendMessageWithResponse("Testing service client creating a queue", null, null, null, null)
 
         then:
         QueueTestHelper.assertResponseStatusCode(queueClientResponse, 201)
@@ -100,7 +100,7 @@ class QueueServiceAPITests extends APISpec {
         when:
         def queueClient = primaryQueueServiceClient.createQueue(queueName)
         def deleteQueueResponse = primaryQueueServiceClient.deleteQueueWithResponse(queueName, null, null)
-        queueClient.enqueueMessage("Expecting exception as queue has been deleted.")
+        queueClient.sendMessage("Expecting exception as queue has been deleted.")
 
         then:
         QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)

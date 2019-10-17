@@ -56,6 +56,15 @@ public class ShareClient {
     }
 
     /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return client.getServiceVersion();
+    }
+
+    /**
      * Constructs a {@link DirectoryClient} that interacts with the root directory in the share.
      *
      * <p>If the directory doesn't exist in the share {@link DirectoryClient#create() create} in the client will

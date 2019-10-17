@@ -11,12 +11,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /**
- * The object returned in the QueueMessageList array when calling Peek Messages
+ * The object returned in the QueueMessageList array when calling Get Messages
  * on a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class PeekedMessage {
+public final class QueueMessageItem {
     /*
      * The Id of the Message.
      */
@@ -34,6 +34,19 @@ public final class PeekedMessage {
      */
     @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
+
+    /*
+     * This value is required to delete the Message. If deletion fails using
+     * this popreceipt then the message has been dequeued by another client.
+     */
+    @JsonProperty(value = "PopReceipt", required = true)
+    private String popReceipt;
+
+    /*
+     * The time that the message will again become visible in the Queue.
+     */
+    @JsonProperty(value = "TimeNextVisible", required = true)
+    private DateTimeRfc1123 timeNextVisible;
 
     /*
      * The number of times the message has been dequeued.
@@ -60,9 +73,9 @@ public final class PeekedMessage {
      * Set the messageId property: The Id of the Message.
      *
      * @param messageId the messageId value to set.
-     * @return the PeekedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public PeekedMessage setMessageId(String messageId) {
+    public QueueMessageItem setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -85,9 +98,9 @@ public final class PeekedMessage {
      * the Queue.
      *
      * @param insertionTime the insertionTime value to set.
-     * @return the PeekedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public PeekedMessage setInsertionTime(OffsetDateTime insertionTime) {
+    public QueueMessageItem setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -114,13 +127,66 @@ public final class PeekedMessage {
      * and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
-     * @return the PeekedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public PeekedMessage setExpirationTime(OffsetDateTime expirationTime) {
+    public QueueMessageItem setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
             this.expirationTime = new DateTimeRfc1123(expirationTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the popReceipt property: This value is required to delete the
+     * Message. If deletion fails using this popreceipt then the message has
+     * been dequeued by another client.
+     *
+     * @return the popReceipt value.
+     */
+    public String getPopReceipt() {
+        return this.popReceipt;
+    }
+
+    /**
+     * Set the popReceipt property: This value is required to delete the
+     * Message. If deletion fails using this popreceipt then the message has
+     * been dequeued by another client.
+     *
+     * @param popReceipt the popReceipt value to set.
+     * @return the QueueMessageItem object itself.
+     */
+    public QueueMessageItem setPopReceipt(String popReceipt) {
+        this.popReceipt = popReceipt;
+        return this;
+    }
+
+    /**
+     * Get the timeNextVisible property: The time that the message will again
+     * become visible in the Queue.
+     *
+     * @return the timeNextVisible value.
+     */
+    public OffsetDateTime getTimeNextVisible() {
+        if (this.timeNextVisible == null) {
+            return null;
+        }
+        return this.timeNextVisible.getDateTime();
+    }
+
+    /**
+     * Set the timeNextVisible property: The time that the message will again
+     * become visible in the Queue.
+     *
+     * @param timeNextVisible the timeNextVisible value to set.
+     * @return the QueueMessageItem object itself.
+     */
+    public QueueMessageItem setTimeNextVisible(OffsetDateTime timeNextVisible) {
+        if (timeNextVisible == null) {
+            this.timeNextVisible = null;
+        } else {
+            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
         }
         return this;
     }
@@ -140,9 +206,9 @@ public final class PeekedMessage {
      * dequeued.
      *
      * @param dequeueCount the dequeueCount value to set.
-     * @return the PeekedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public PeekedMessage setDequeueCount(long dequeueCount) {
+    public QueueMessageItem setDequeueCount(long dequeueCount) {
         this.dequeueCount = dequeueCount;
         return this;
     }
@@ -160,9 +226,9 @@ public final class PeekedMessage {
      * Set the messageText property: The content of the Message.
      *
      * @param messageText the messageText value to set.
-     * @return the PeekedMessage object itself.
+     * @return the QueueMessageItem object itself.
      */
-    public PeekedMessage setMessageText(String messageText) {
+    public QueueMessageItem setMessageText(String messageText) {
         this.messageText = messageText;
         return this;
     }

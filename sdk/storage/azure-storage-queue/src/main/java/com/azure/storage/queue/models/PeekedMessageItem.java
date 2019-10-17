@@ -11,12 +11,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /**
- * The object returned in the QueueMessageList array when calling Put Message
+ * The object returned in the QueueMessageList array when calling Peek Messages
  * on a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class EnqueuedMessage {
+public final class PeekedMessageItem {
     /*
      * The Id of the Message.
      */
@@ -36,17 +36,16 @@ public final class EnqueuedMessage {
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * This value is required to delete the Message. If deletion fails using
-     * this popreceipt then the message has been dequeued by another client.
+     * The number of times the message has been dequeued.
      */
-    @JsonProperty(value = "PopReceipt", required = true)
-    private String popReceipt;
+    @JsonProperty(value = "DequeueCount", required = true)
+    private long dequeueCount;
 
     /*
-     * The time that the message will again become visible in the Queue.
+     * The content of the Message.
      */
-    @JsonProperty(value = "TimeNextVisible", required = true)
-    private DateTimeRfc1123 timeNextVisible;
+    @JsonProperty(value = "MessageText", required = true)
+    private String messageText;
 
     /**
      * Get the messageId property: The Id of the Message.
@@ -61,9 +60,9 @@ public final class EnqueuedMessage {
      * Set the messageId property: The Id of the Message.
      *
      * @param messageId the messageId value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the PeekedMessageItem object itself.
      */
-    public EnqueuedMessage setMessageId(String messageId) {
+    public PeekedMessageItem setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -86,9 +85,9 @@ public final class EnqueuedMessage {
      * the Queue.
      *
      * @param insertionTime the insertionTime value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the PeekedMessageItem object itself.
      */
-    public EnqueuedMessage setInsertionTime(OffsetDateTime insertionTime) {
+    public PeekedMessageItem setInsertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -115,9 +114,9 @@ public final class EnqueuedMessage {
      * and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the PeekedMessageItem object itself.
      */
-    public EnqueuedMessage setExpirationTime(OffsetDateTime expirationTime) {
+    public PeekedMessageItem setExpirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -127,55 +126,44 @@ public final class EnqueuedMessage {
     }
 
     /**
-     * Get the popReceipt property: This value is required to delete the
-     * Message. If deletion fails using this popreceipt then the message has
-     * been dequeued by another client.
+     * Get the dequeueCount property: The number of times the message has been
+     * dequeued.
      *
-     * @return the popReceipt value.
+     * @return the dequeueCount value.
      */
-    public String getPopReceipt() {
-        return this.popReceipt;
+    public long getDequeueCount() {
+        return this.dequeueCount;
     }
 
     /**
-     * Set the popReceipt property: This value is required to delete the
-     * Message. If deletion fails using this popreceipt then the message has
-     * been dequeued by another client.
+     * Set the dequeueCount property: The number of times the message has been
+     * dequeued.
      *
-     * @param popReceipt the popReceipt value to set.
-     * @return the EnqueuedMessage object itself.
+     * @param dequeueCount the dequeueCount value to set.
+     * @return the PeekedMessageItem object itself.
      */
-    public EnqueuedMessage setPopReceipt(String popReceipt) {
-        this.popReceipt = popReceipt;
+    public PeekedMessageItem setDequeueCount(long dequeueCount) {
+        this.dequeueCount = dequeueCount;
         return this;
     }
 
     /**
-     * Get the timeNextVisible property: The time that the message will again
-     * become visible in the Queue.
+     * Get the messageText property: The content of the Message.
      *
-     * @return the timeNextVisible value.
+     * @return the messageText value.
      */
-    public OffsetDateTime getTimeNextVisible() {
-        if (this.timeNextVisible == null) {
-            return null;
-        }
-        return this.timeNextVisible.getDateTime();
+    public String getMessageText() {
+        return this.messageText;
     }
 
     /**
-     * Set the timeNextVisible property: The time that the message will again
-     * become visible in the Queue.
+     * Set the messageText property: The content of the Message.
      *
-     * @param timeNextVisible the timeNextVisible value to set.
-     * @return the EnqueuedMessage object itself.
+     * @param messageText the messageText value to set.
+     * @return the PeekedMessageItem object itself.
      */
-    public EnqueuedMessage setTimeNextVisible(OffsetDateTime timeNextVisible) {
-        if (timeNextVisible == null) {
-            this.timeNextVisible = null;
-        } else {
-            this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
-        }
+    public PeekedMessageItem setMessageText(String messageText) {
+        this.messageText = messageText;
         return this;
     }
 }

@@ -3,10 +3,10 @@
 
 package com.azure.storage.queue
 
-
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
+import com.azure.storage.queue.models.QueueMessageItem
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import reactor.test.StepVerifier
 import spock.lang.Ignore
@@ -269,8 +269,8 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def expectMsg = "test message"
         when:
-        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.enqueueMessageWithResponse(expectMsg, null, null))
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
+        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.sendMessageWithResponse(expectMsg, null, null))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
         then:
         enqueueMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -284,8 +284,8 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         when:
-        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.enqueueMessageWithResponse("", null, null))
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
+        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.sendMessageWithResponse("", null, null))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
         then:
         enqueueMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -299,7 +299,7 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         when:
-        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.enqueueMessageWithResponse("test message",
+        def enqueueMsgVerifier = StepVerifier.create(queueAsyncClient.sendMessageWithResponse("test message",
             Duration.ofSeconds(0), Duration.ofSeconds(2)))
         then:
         enqueueMsgVerifier.assertNext {
@@ -311,9 +311,9 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         def expectMsg = "test message"
-        queueAsyncClient.enqueueMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(expectMsg).block()
         when:
-        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.getMessages())
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.receiveMessage())
         then:
         dequeueMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
@@ -325,10 +325,10 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def expectMsg1 = "test message 1"
         def expectMsg2 = "test message 2"
-        queueAsyncClient.enqueueMessage(expectMsg1).block()
-        queueAsyncClient.enqueueMessage(expectMsg2).block()
+        queueAsyncClient.sendMessage(expectMsg1).block()
+        queueAsyncClient.sendMessage(expectMsg2).block()
         when:
-        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.getMessages(2))
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.receiveMessages(2))
         then:
         dequeueMsgVerifier.assertNext {
             assert expectMsg1 == it.getMessageText()
@@ -341,7 +341,7 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         when:
-        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.getMessages(33))
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.receiveMessages(33))
         then:
         dequeueMsgVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
@@ -352,9 +352,9 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         def expectMsg = "test message"
-        queueAsyncClient.enqueueMessage(expectMsg).block()
+        queueAsyncClient.sendMessage(expectMsg).block()
         when:
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
         then:
         peekMsgVerifier.assertNext {
             assert expectMsg == it.getMessageText()
@@ -366,8 +366,8 @@ class QueueAysncAPITests extends APISpec {
         queueAsyncClient.create().block()
         def expectMsg1 = "test message 1"
         def expectMsg2 = "test message 2"
-        queueAsyncClient.enqueueMessage(expectMsg1).block()
-        queueAsyncClient.enqueueMessage(expectMsg2).block()
+        queueAsyncClient.sendMessage(expectMsg1).block()
+        queueAsyncClient.sendMessage(expectMsg2).block()
         when:
         def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages(2))
         then:
@@ -391,7 +391,7 @@ class QueueAysncAPITests extends APISpec {
 
     def "Peek messages error"() {
         when:
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages())
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
         then:
         peekMsgVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
@@ -401,9 +401,9 @@ class QueueAysncAPITests extends APISpec {
     def "Clear messages"() {
         given:
         queueAsyncClient.create().block()
-        queueAsyncClient.enqueueMessage("test message 1").block()
-        queueAsyncClient.enqueueMessage("test message 2").block()
-        queueAsyncClient.enqueueMessage("test message 3").block()
+        queueAsyncClient.sendMessage("test message 1").block()
+        queueAsyncClient.sendMessage("test message 2").block()
+        queueAsyncClient.sendMessage("test message 3").block()
         when:
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getPropertiesWithResponse())
         def clearMsgVerifier = StepVerifier.create(queueAsyncClient.clearMessagesWithResponse())
@@ -434,10 +434,10 @@ class QueueAysncAPITests extends APISpec {
     def "Delete message"() {
         given:
         queueAsyncClient.create().block()
-        queueAsyncClient.enqueueMessage("test message 1").block()
-        queueAsyncClient.enqueueMessage("test message 2").block()
-        queueAsyncClient.enqueueMessage("test message 3").block()
-        def dequeueMsg = queueAsyncClient.getMessages().blockFirst()
+        queueAsyncClient.sendMessage("test message 1").block()
+        queueAsyncClient.sendMessage("test message 2").block()
+        queueAsyncClient.sendMessage("test message 3").block()
+        def dequeueMsg = queueAsyncClient.receiveMessage().block()
         when:
         def getPropertiesVerifier = StepVerifier.create(queueAsyncClient.getPropertiesWithResponse())
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt()))
@@ -462,11 +462,11 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         def expectMsg = "test message"
-        queueAsyncClient.enqueueMessage(expectMsg).block()
-        def dequeueMessage = queueAsyncClient.getMessages().blockFirst()
+        queueAsyncClient.sendMessage(expectMsg).block()
+        QueueMessageItem queueMessageItem = queueAsyncClient.receiveMessage().block()
         when:
-        def deleteMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
-        def deletePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
+        def deleteMessageId = messageId ? queueMessageItem.getMessageId() : queueMessageItem.getMessageId() + "Random"
+        def deletePopReceipt = popReceipt ? queueMessageItem.getPopReceipt() : queueMessageItem.getPopReceipt() + "Random"
         def deleteMsgVerifier = StepVerifier.create(queueAsyncClient.deleteMessageWithResponse(deleteMessageId, deletePopReceipt))
         then:
         deleteMsgVerifier.verifyErrorSatisfies {
@@ -483,13 +483,13 @@ class QueueAysncAPITests extends APISpec {
         given:
         def updateMsg = "Updated test message"
         queueAsyncClient.create().block()
-        queueAsyncClient.enqueueMessage("test message before update").block()
+        queueAsyncClient.sendMessage("test message before update").block()
 
-        def dequeueMsg = queueAsyncClient.getMessages().blockFirst()
+        def dequeueMsg = queueAsyncClient.receiveMessage().block()
         when:
-        def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(updateMsg,
-            dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), Duration.ofSeconds(1)))
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessages().delaySubscription(Duration.ofSeconds(2)))
+        def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(
+            dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage().delaySubscription(Duration.ofSeconds(2)))
         then:
         updateMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
@@ -504,12 +504,12 @@ class QueueAysncAPITests extends APISpec {
         given:
         queueAsyncClient.create().block()
         def updateMsg = "Updated test message"
-        queueAsyncClient.enqueueMessage("test message before update").block()
-        def dequeueMessage = queueAsyncClient.getMessages().blockFirst()
+        queueAsyncClient.sendMessage("test message before update").block()
+        def dequeueMessage = queueAsyncClient.receiveMessage().block()
         when:
         def updateMessageId = messageId ? dequeueMessage.getMessageId() : dequeueMessage.getMessageId() + "Random"
         def updatePopReceipt = popReceipt ? dequeueMessage.getPopReceipt() : dequeueMessage.getPopReceipt() + "Random"
-        def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(updateMsg, updateMessageId, updatePopReceipt, Duration.ofSeconds(1)))
+        def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(updateMessageId, updatePopReceipt, updateMsg, Duration.ofSeconds(1)))
         then:
         updateMsgVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMsg)
