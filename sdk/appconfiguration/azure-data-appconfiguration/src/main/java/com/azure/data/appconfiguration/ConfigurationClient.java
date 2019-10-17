@@ -301,7 +301,8 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Set the {@link ConfigurationSetting} to read-only with a matching {@code key}, optional {@code label} combination.
+     * Set the {@link ConfigurationSetting} to read-only with a matching {@code key}, optional {@code label}
+     * combination.
      *
      * <p><strong>Code Samples</strong></p>
      *
