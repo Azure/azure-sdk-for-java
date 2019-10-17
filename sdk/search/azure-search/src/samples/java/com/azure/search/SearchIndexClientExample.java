@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.search.common.SearchPagedResponse;
 import com.azure.search.models.SearchResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +44,7 @@ public class SearchIndexClientExample {
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
 
-        Stream<PagedResponse<SearchResult>> pagedResults = searchClient.search()
+        Stream<SearchPagedResponse> pagedResults = searchClient.search()
             .byPage().toStream();
 
         System.out.println("Oh Yeah");
