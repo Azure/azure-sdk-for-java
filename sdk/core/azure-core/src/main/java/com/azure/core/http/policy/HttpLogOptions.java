@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,34 +16,35 @@ public class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
+    private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
+        "x-ms-client-request-id",
+        "x-ms-return-client-request-id",
+        "traceparent",
+        "Accept",
+        "Cache-Control",
+        "Connection",
+        "Content-Length",
+        "Content-Type",
+        "Date",
+        "ETag",
+        "Expires",
+        "If-Match",
+        "If-Modified-Since",
+        "If-None-Match",
+        "If-Unmodified-Since",
+        "Last-Modified",
+        "Pragma",
+        "Request-Id",
+        "Retry-After",
+        "Server",
+        "Transfer-Encoding",
+        "User-Agent"
+        );
 
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.NONE;
-        allowedHeaderNames = new HashSet<>(Arrays.asList(
-            "x-ms-client-request-id",
-            "x-ms-return-client-request-id",
-            "traceparent",
-            "Accept",
-            "Cache-Control",
-            "Connection",
-            "Content-Length",
-            "Content-Type",
-            "Date",
-            "ETag",
-            "Expires",
-            "If-Match",
-            "If-Modified-Since",
-            "If-None-Match",
-            "If-Unmodified-Since",
-            "Last-Modified",
-            "Pragma",
-            "Request-Id",
-            "Retry-After",
-            "Server",
-            "Transfer-Encoding",
-            "User-Agent"
-        ));
-        allowedQueryParamNames = new HashSet<>();
+        allowedHeaderNames = new HashSet<>();
+        allowedQueryParamNames = new HashSet<>(DEFAULT_HEADERS_WHITELIST);
     }
 
     /**
