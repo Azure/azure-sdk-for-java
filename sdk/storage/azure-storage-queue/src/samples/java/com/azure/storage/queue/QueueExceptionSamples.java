@@ -6,6 +6,7 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.QueueErrorCode;
+import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueStorageException;
 
 import java.time.Duration;
@@ -39,18 +40,15 @@ public class QueueExceptionSamples {
             throw new RuntimeException(e);
         }
         QueueClient queueClient = queueClientResponse.getValue();
-        queueClient.enqueueMessage("Hello, message 1!");
-        queueClient.enqueueMessage("Hello, message 2!");
+        queueClient.sendMessage("Hello, message 1!");
+        queueClient.sendMessage("Hello, message 2!");
 
         // Delete message with wrong message id.
         try {
-            queueClientResponse.getValue().getMessages().forEach(
-                msg -> {
-                    queueClient.deleteMessage("wrong id", msg.getPopReceipt());
-                }
-            );
+            QueueMessageItem queueMessageItem = queueClientResponse.getValue().receiveMessage();
+            queueClient.deleteMessage("wrong id", queueMessageItem.getPopReceipt());
         } catch (QueueStorageException e) {
-            if (e.getMessage().contains(QueueErrorCode.MESSAGE_NOT_FOUND.toString())) {
+            if (QueueErrorCode.MESSAGE_NOT_FOUND.equals(e.getErrorCode())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");
@@ -59,13 +57,10 @@ public class QueueExceptionSamples {
 
         // Delete message with wrong pop receipt.
         try {
-            queueClient.getMessages().forEach(
-                msg -> {
-                    queueClient.deleteMessage(msg.getMessageId(), "Wrong Pop Receipt");
-                }
-            );
+            QueueMessageItem queueMessageItem = queueClientResponse.getValue().receiveMessage();
+            queueClient.deleteMessage(queueMessageItem.getMessageId(), "Wrong Pop Receipt");
         } catch (QueueStorageException e) {
-            if (e.getMessage().contains(QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE.toString())) {
+            if (QueueErrorCode.INVALID_QUERY_PARAMETER_VALUE.equals(e.getErrorCode())) {
                 System.out.println("This is the error expected to throw");
             } else {
                 System.out.println("This is not the error we expect!");
