@@ -27,7 +27,7 @@ import java.util.Objects;
  * <p><strong>Generating SAS query parameters with {@link StorageSharedKeyCredential}</strong></p>
  * The following code generates SAS query parameters for an Azure storage blob.
  * <p>
- * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#SharedKeyCredential}
+ * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
  *
  * <p><strong>Generating SAS query parameters with {@link UserDelegationKey}</strong></p>
  * The following sample generates SAS query parameters for an Azure storage container.
@@ -444,8 +444,10 @@ public final class BlobServiceSasSignatureValues {
      * parameters.
      *
      * <p>
-     * If {@link #getVersion()} is not set, then the latest service version is used.
+     * If {@link #getVersion()} is not set, then the {@link BlobServiceVersion#getLatest() latest service version} is
+     * used.
      * </p>
+     *
      * <p>
      * The type of SAS query parameters returned depends on the following:
      * <ol>
@@ -480,9 +482,12 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
+     *
      * <p>
-     * If {@link #getVersion()} is not set, then the latest service version is used.
+     * If {@link #getVersion()} is not set, then the {@link BlobServiceVersion#getLatest() latest service version} is
+     * used.
      * </p>
+     *
      * <p>
      * The type of SAS query parameters returned depends on the following:
      * <ol>
