@@ -12,8 +12,9 @@ import com.azure.storage.common.sas.SasProtocol;
 import java.time.OffsetDateTime;
 
 /**
- * QueueServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)}
+ * Used to generate a Shared Access Signature (SAS) for Azure Storage Queues service. Once all the values here are set,
+ * call {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)}
  * to obtain a representation of the SAS which can be applied to queue urls.
  *
  * <p><strong>Generating a queue SAS with expiryTime and permissions</strong></p>
