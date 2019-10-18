@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta272171df6992aae98d4",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta2947234692e3af43644",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.4 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "f4de6b74-6364-43d3-af7b-8403b7aa8a4b"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "4d07e3df-7d37-4ba9-8361-bb9430e10147"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -13,17 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "f7f7c643-b003-0085-3eee-7367a3000000",
-      "Date" : "Wed, 25 Sep 2019 22:13:40 GMT"
+      "x-ms-request-id" : "2f7e7fd8-f003-0082-4b8d-839126000000",
+      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta272171df6992aae98d4?comp=metadata",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta2947234692e3af43644?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.4 1.8.0_222; Windows 10 10.0",
-      "x-ms-client-request-id" : "25c7a9ed-7656-4d23-9c65-8f35112b9e6a"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "24d9c4c5-4861-4e94-b579-95c3943ceb32"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -32,12 +32,12 @@
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "f7f7c648-b003-0085-42ee-7367a3000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:f7f7c648-b003-0085-42ee-7367a3000000\nTime:2019-09-25T22:13:40.9887176Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Wed, 25 Sep 2019 22:13:40 GMT",
+      "x-ms-request-id" : "2f7e7feb-f003-0082-5d8d-839126000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:2f7e7feb-f003-0082-5d8d-839126000000\nTime:2019-10-15T19:19:37.5034579Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetinvalidmeta272171df6992aae98d4" ]
+  "variables" : [ "queueapitestssetinvalidmeta2947234692e3af43644" ]
 }

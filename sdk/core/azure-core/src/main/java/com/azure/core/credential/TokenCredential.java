@@ -15,5 +15,5 @@ public interface TokenCredential {
      * @param request the details of the token request
      * @return a Publisher that emits a single access token
      */
-    Mono<AccessToken> getToken(TokenRequest request);
+    Mono<AccessToken> getToken(TokenRequestContext request);
 }

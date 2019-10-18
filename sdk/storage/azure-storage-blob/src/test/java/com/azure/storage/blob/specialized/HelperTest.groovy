@@ -5,19 +5,19 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.BlobSasPermission
 import com.azure.storage.blob.BlobContainerSasPermission
+import com.azure.storage.blob.BlobSasPermission
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
-import com.azure.storage.common.AccountSasPermission
-import com.azure.storage.common.AccountSasResourceType
-import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.Constants
-import com.azure.storage.common.IpRange
-import com.azure.storage.common.SasProtocol
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -32,8 +32,8 @@ class HelperTest extends APISpec {
         cc.listBlobsFlat().iterator().hasNext()
 
         then:
-        def e = thrown(StorageException)
-        e.getErrorCode() == StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.INVALID_QUERY_PARAMETER_VALUE
         e.getStatusCode() == 400
         e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
         e.getServiceMessage().contains("<?xml") // Ensure that the details in the payload are printable
@@ -43,6 +43,7 @@ class HelperTest extends APISpec {
     This test is to validate the workaround for the autorest bug that forgets to set the request property on the
     response.
      */
+
     def "Request property"() {
         when:
         def response = cc.deleteWithResponse(null, null, null)
@@ -94,9 +95,9 @@ class HelperTest extends APISpec {
         }
 
         if (snapId != null) {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
         } else {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_CONSTANT)
         }
 
         v.setStartTime(startTime)
@@ -110,7 +111,7 @@ class HelperTest extends APISpec {
         }
 
         if (ipRange != null) {
-            v.setIpRange(new IpRange().setIpMin("ip"))
+            v.setSasIpRange(new SasIpRange().setIpMin("ip"))
         }
 
         v.setIdentifier(identifier)
@@ -144,19 +145,19 @@ class HelperTest extends APISpec {
         Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
          */
         where:
-        permissions             | startTime                                       | expiryTime                                     | identifier | ipRange | protocol | snapId | cacheControl | disposition | encoding | language | type   || expectedStringToSign
-        new BlobSasPermission() | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null    | null     | null   | null         | null        | null     | null     | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | OffsetDateTime.now(ZoneOffset.UTC).minusDays(1) | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null    | null     | null   | null         | null        | null     | null     | null   || "\n%s\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | "id"       | null          | null                   | null | null | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | new IpRange() | null                   | null     | null      | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | SasProtocol.HTTPS_ONLY | null     | null      | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | "snapId" | null      | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | "control" | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
-        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null    | null     | null   | null         | null        | null     | null     | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
+        permissions             | startTime                                       | expiryTime                                     | identifier | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
+        new BlobSasPermission() | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | OffsetDateTime.now(ZoneOffset.UTC).minusDays(1) | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n%s\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | "id"       | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
+        null                    | null                                            | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null             | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
     }
 
     @Unroll
@@ -180,13 +181,13 @@ class HelperTest extends APISpec {
         }
 
         if (snapId != null) {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
         } else {
-            v.setResource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            v.setResource(BlobServiceSasSignatureValues.SAS_BLOB_CONSTANT)
         }
 
         if (ipRange != null) {
-            v.setIpRange(new IpRange().setIpMin("ip"))
+            v.setSasIpRange(new SasIpRange().setIpMin("ip"))
         }
 
         v.setProtocol(protocol)
@@ -216,24 +217,24 @@ class HelperTest extends APISpec {
         We test string to sign functionality directly related to user delegation sas specific parameters
          */
         where:
-        permissions             | startTime | expiryTime | keyOid | keyTid | keyStart | keyExpiry | keyService | keyVersion | keyValue                                       | ipRange | protocol | snapId | cacheControl | disposition | encoding | language | type   || expectedStringToSign
-        new BlobSasPermission() | null      | null       | null   | null   | null     | null      | null       | null       | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null    | null     | null   | null         | null        | null     | null     | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null | null | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new IpRange() | null                   | null     | null | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | SasProtocol.HTTPS_ONLY | null     | null | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | "snapId" | null | null | null | null | null || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
-        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-        null                    | null      | null       | null   | null   | null     | null      | null       | null       | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null    | null     | null   | null         | null        | null     | null     | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
+        permissions             | startTime                                                 | expiryTime                                                | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange          | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
+        new BlobSasPermission() | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
     }
 
     @Unroll
@@ -281,7 +282,8 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((SharedKeyCredential)creds)
+        v.generateSasQueryParameters((StorageSharedKeyCredential)creds)
+
 
         then:
         def e = thrown(NullPointerException)
@@ -290,7 +292,7 @@ class HelperTest extends APISpec {
         where:
         containerName | version | creds             | blobName || parameter
         "c"           | null    | primaryCredential | "b"       | "version"
-        "c"           | "v"     | null              | "b"       | "sharedKeyCredentials"
+        "c"           | "v"     | null              | "b"       | "storageSharedKeyCredentials"
         "c"           | "v"     | primaryCredential | null      | "canonicalName"
     }
 
@@ -409,7 +411,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "IPRange toString"() {
         setup:
-        def ip = new IpRange()
+        def ip = new SasIpRange()
             .setIpMin(min)
             .setIpMax(max)
 
@@ -426,7 +428,7 @@ class HelperTest extends APISpec {
     @Unroll
     def "IPRange parse"() {
         when:
-        IpRange ip = IpRange.parse(rangeStr)
+        SasIpRange ip = SasIpRange.parse(rangeStr)
 
         then:
         ip.getIpMin() == min
@@ -468,7 +470,7 @@ class HelperTest extends APISpec {
             .setProtocol(protocol)
 
         if (ipRange != null) {
-            v.setIpRange(new IpRange().setIpMin("ip"))
+            v.setSasIpRange(new SasIpRange().setIpMin("ip"))
         }
 
         def token = v.generateSasQueryParameters(primaryCredential)
@@ -479,10 +481,10 @@ class HelperTest extends APISpec {
         token.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
 
         where:
-        startTime                                                 | ipRange       | protocol               || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null          | null                   || "%s\nr\nb\no\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
-        null                                                      | new IpRange() | null                   || "%s\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
-        null                                                      | null          | SasProtocol.HTTPS_ONLY || "%s\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
+        startTime                                                 | ipRange          | protocol               || expectedStringToSign
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null             | null                   || "%s\nr\nb\no\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
+        null                                                      | new SasIpRange() | null                   || "%s\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
+        null                                                      | null             | SasProtocol.HTTPS_ONLY || "%s\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
     }
 
     @Unroll
@@ -509,7 +511,7 @@ class HelperTest extends APISpec {
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "SharedKeyCredential"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "storageSharedKeyCredentials"
     }
 
     @Unroll
@@ -637,7 +639,7 @@ class HelperTest extends APISpec {
             .setExpiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setCanonicalName(String.format("/blob/%s/container/blob", primaryCredential.getAccountName()))
-            .setResource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+            .setResource(BlobServiceSasSignatureValues.SAS_BLOB_SNAPSHOT_CONSTANT)
 
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 

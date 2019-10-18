@@ -12,11 +12,11 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 
@@ -55,10 +55,11 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.storage.file.fileAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
- * a connection string from the Storage File service must be used. Set the SharedKeyCredential with {@link
- * FileClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage File service must be used.
+ * Set the StorageSharedKeyCredential with {@link FileClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred
+ * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous File Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.file.directoryClient.instantiation.connectionstring}
@@ -68,7 +69,7 @@ import java.util.Objects;
  *
  * @see FileClient
  * @see FileAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {
     FileClient.class, FileAsyncClient.class,
@@ -83,7 +84,7 @@ public class FileClientBuilder {
     private String shareSnapshot;
     private String resourcePath;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
@@ -93,6 +94,7 @@ public class FileClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private FileServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileClient FileClients} and {@link
@@ -104,21 +106,23 @@ public class FileClientBuilder {
     private AzureFileStorageImpl constructImpl() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
+        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (sasTokenCredential != null) {
                 return new SasTokenCredentialPolicy(sasTokenCredential);
             } else {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -134,8 +138,8 @@ public class FileClientBuilder {
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
         return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
@@ -153,8 +157,8 @@ public class FileClientBuilder {
      *
      * @return A DirectoryClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public DirectoryClient buildDirectoryClient() {
         return new DirectoryClient(this.buildDirectoryAsyncClient());
@@ -172,8 +176,8 @@ public class FileClientBuilder {
      *
      * @return A ShareAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code shareName} is {@code null} or the (@code resourcePath) is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileAsyncClient buildFileAsyncClient() {
 
@@ -192,8 +196,8 @@ public class FileClientBuilder {
      *
      * @return A FileClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code resourcePath} is {@code null}.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileClient buildFileClient() {
         return new FileClient(this.buildFileAsyncClient());
@@ -280,14 +284,14 @@ public class FileClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated FileClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public FileClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public FileClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.sasTokenCredential = null;
         return this;
     }
@@ -302,13 +306,13 @@ public class FileClientBuilder {
     public FileClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
+     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.
@@ -399,6 +403,21 @@ public class FileClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link FileServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link FileServiceVersion} of the service to be used when making requests.
+     * @return the updated FileClientBuilder object
+     */
+    public FileClientBuilder serviceVersion(FileServiceVersion version) {
+        this.version = version;
         return this;
     }
 }
