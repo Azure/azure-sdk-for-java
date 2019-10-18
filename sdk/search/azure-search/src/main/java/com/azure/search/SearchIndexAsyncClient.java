@@ -21,15 +21,15 @@ import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.AutocompleteItem;
-import com.azure.search.models.AutocompleteParameters;
+import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
-import com.azure.search.models.SearchParameters;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SearchResult;
-import com.azure.search.models.SuggestParameters;
+import com.azure.search.models.SuggestOptions;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
 
@@ -302,15 +302,15 @@ public class SearchIndexAsyncClient {
      * Searches for documents in the Azure Search index
      *
      * @param searchText Search Test
-     * @param searchParameters Search Parameters
+     * @param searchOptions search options
      * @param searchRequestOptions Search Request Options
      * @return A {@link PagedFlux} of SearchResults
      */
     public PagedFlux<SearchResult> search(
             String searchText,
-            SearchParameters searchParameters,
+            SearchOptions searchOptions,
             SearchRequestOptions searchRequestOptions) {
-        SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
+        SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
         return new PagedFlux<SearchResult>(
             () -> withContext(context -> searchFirstPage(searchRequest, searchRequestOptions, context)),
             skip -> withContext(context -> searchNextPage(searchRequest, searchRequestOptions, skip, context)));
@@ -318,10 +318,10 @@ public class SearchIndexAsyncClient {
 
     PagedFlux<SearchResult> search(
             String searchText,
-            SearchParameters searchParameters,
+            SearchOptions searchOptions,
             SearchRequestOptions searchRequestOptions,
             Context context) {
-        SearchRequest searchRequest = createSearchRequest(searchText, searchParameters);
+        SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
         return new PagedFlux<>(
             () -> searchFirstPage(searchRequest, searchRequestOptions, context),
             skip -> searchNextPage(searchRequest, searchRequestOptions, skip, context));
@@ -410,16 +410,16 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param suggestParameters suggest parameters
+     * @param suggestOptions suggest options
      * @param searchRequestOptions search request options
      * @return suggests results
      */
     public PagedFlux<SuggestResult> suggest(
             String searchText,
             String suggesterName,
-            SuggestParameters suggestParameters,
+            SuggestOptions suggestOptions,
             SearchRequestOptions searchRequestOptions) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestParameters);
+        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestOptions);
         return new PagedFlux<>(
             () -> withContext(context -> suggestFirst(searchRequestOptions, suggestRequest, context)),
             nextLink -> Mono.empty());
@@ -428,10 +428,10 @@ public class SearchIndexAsyncClient {
     PagedFlux<SuggestResult> suggest(
             String searchText,
             String suggesterName,
-            SuggestParameters suggestParameters,
+            SuggestOptions suggestOptions,
             SearchRequestOptions searchRequestOptions,
             Context context) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestParameters);
+        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestOptions);
         return new PagedFlux<>(
             () -> suggestFirst(searchRequestOptions, suggestRequest, context),
             nextLink -> Mono.empty());
@@ -487,18 +487,18 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param autocompleteParameters auto complete parameters
+     * @param autocompleteOptions autocomplete options
      * @param searchRequestOptions search request options
      * @return auto complete result
      */
     public PagedFlux<AutocompleteItem> autocomplete(
         String searchText,
         String suggesterName,
-        AutocompleteParameters autocompleteParameters,
+        AutocompleteOptions autocompleteOptions,
         SearchRequestOptions searchRequestOptions) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,
-            autocompleteParameters);
+            autocompleteOptions);
         return new PagedFlux<>(
             () -> withContext(context -> autocompleteFirst(autocompleteRequest, searchRequestOptions, context)),
             nextLink -> Mono.empty());
@@ -507,12 +507,12 @@ public class SearchIndexAsyncClient {
     PagedFlux<AutocompleteItem> autocomplete(
         String searchText,
         String suggesterName,
-        AutocompleteParameters autocompleteParameters,
+        AutocompleteOptions autocompleteOptions,
         SearchRequestOptions searchRequestOptions,
         Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,
-            autocompleteParameters);
+            autocompleteOptions);
         return new PagedFlux<>(
             () -> autocompleteFirst(autocompleteRequest, searchRequestOptions, context),
             nextLink -> Mono.empty());
@@ -584,36 +584,36 @@ public class SearchIndexAsyncClient {
      * Create search request from search text and parameters
      *
      * @param searchText search text
-     * @param searchParameters search parameters
+     * @param searchOptions search options
      * @return SearchRequest
      */
-    private SearchRequest createSearchRequest(String searchText, SearchParameters searchParameters) {
+    private SearchRequest createSearchRequest(String searchText, SearchOptions searchOptions) {
         SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
-        if (searchParameters != null) {
+        if (searchOptions != null) {
             searchRequest
-                .setSearchMode(searchParameters.getSearchMode())
-                .setFacets(searchParameters.getFacets())
-                .setFilter(searchParameters.getFilter())
-                .setHighlightPostTag(searchParameters.getHighlightPostTag())
-                .setHighlightPreTag(searchParameters.getHighlightPreTag())
-                .setIncludeTotalResultCount(searchParameters.isIncludeTotalResultCount())
-                .setMinimumCoverage(searchParameters.getMinimumCoverage())
-                .setQueryType(searchParameters.getQueryType())
-                .setScoringParameters(searchParameters.getScoringParameters())
-                .setScoringProfile(searchParameters.getScoringProfile())
-                .setSkip(searchParameters.getSkip())
-                .setTop(searchParameters.getTop());
-            if (searchParameters.getHighlightFields() != null) {
-                searchRequest.setHighlightFields(String.join(",", searchParameters.getHighlightFields()));
+                .setSearchMode(searchOptions.getSearchMode())
+                .setFacets(searchOptions.getFacets())
+                .setFilter(searchOptions.getFilter())
+                .setHighlightPostTag(searchOptions.getHighlightPostTag())
+                .setHighlightPreTag(searchOptions.getHighlightPreTag())
+                .setIncludeTotalResultCount(searchOptions.isIncludeTotalResultCount())
+                .setMinimumCoverage(searchOptions.getMinimumCoverage())
+                .setQueryType(searchOptions.getQueryType())
+                .setScoringParameters(searchOptions.getScoringParameters())
+                .setScoringProfile(searchOptions.getScoringProfile())
+                .setSkip(searchOptions.getSkip())
+                .setTop(searchOptions.getTop());
+            if (searchOptions.getHighlightFields() != null) {
+                searchRequest.setHighlightFields(String.join(",", searchOptions.getHighlightFields()));
             }
-            if (searchParameters.getSearchFields() != null) {
-                searchRequest.setSearchFields(String.join(",", searchParameters.getSearchFields()));
+            if (searchOptions.getSearchFields() != null) {
+                searchRequest.setSearchFields(String.join(",", searchOptions.getSearchFields()));
             }
-            if (searchParameters.getOrderBy() != null) {
-                searchRequest.setOrderBy(String.join(",", searchParameters.getOrderBy()));
+            if (searchOptions.getOrderBy() != null) {
+                searchRequest.setOrderBy(String.join(",", searchOptions.getOrderBy()));
             }
-            if (searchParameters.getSelect() != null) {
-                searchRequest.setSelect(String.join(",", searchParameters.getSelect()));
+            if (searchOptions.getSelect() != null) {
+                searchRequest.setSelect(String.join(",", searchOptions.getSelect()));
             }
         }
 
@@ -625,35 +625,35 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param suggestParameters suggest parameters
+     * @param suggestOptions suggest options
      * @return SuggestRequest
      */
     private SuggestRequest createSuggestRequest(String searchText,
                                                 String suggesterName,
-                                                SuggestParameters suggestParameters) {
+                                                SuggestOptions suggestOptions) {
         SuggestRequest suggestRequest = new SuggestRequest()
             .setSearchText(searchText)
             .setSuggesterName(suggesterName);
-        if (suggestParameters != null) {
+        if (suggestOptions != null) {
             suggestRequest
-                .setFilter(suggestParameters.getFilter())
-                .setUseFuzzyMatching(suggestParameters.isUseFuzzyMatching())
-                .setHighlightPostTag(suggestParameters.getHighlightPostTag())
-                .setHighlightPreTag(suggestParameters.getHighlightPreTag())
-                .setMinimumCoverage(suggestParameters.getMinimumCoverage())
-                .setTop(suggestParameters.getTop());
+                .setFilter(suggestOptions.getFilter())
+                .setUseFuzzyMatching(suggestOptions.isUseFuzzyMatching())
+                .setHighlightPostTag(suggestOptions.getHighlightPostTag())
+                .setHighlightPreTag(suggestOptions.getHighlightPreTag())
+                .setMinimumCoverage(suggestOptions.getMinimumCoverage())
+                .setTop(suggestOptions.getTop());
 
-            List<String> searchFields = suggestParameters.getSearchFields();
+            List<String> searchFields = suggestOptions.getSearchFields();
             if (searchFields != null) {
                 suggestRequest.setSearchFields(String.join(",", searchFields));
             }
 
-            List<String> orderBy = suggestParameters.getOrderBy();
+            List<String> orderBy = suggestOptions.getOrderBy();
             if (orderBy != null) {
                 suggestRequest.setOrderBy(String.join(",", orderBy));
             }
 
-            List<String> select = suggestParameters.getSelect();
+            List<String> select = suggestOptions.getSelect();
             if (select != null) {
                 suggestRequest.setSelect(String.join(",", select));
             }
@@ -667,25 +667,25 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param autocompleteParameters autocomplete parameters
+     * @param autocompleteOptions autocomplete parameters
      * @return AutocompleteRequest
      */
     private AutocompleteRequest createAutoCompleteRequest(String searchText,
                                                           String suggesterName,
-                                                          AutocompleteParameters autocompleteParameters) {
+                                                          AutocompleteOptions autocompleteOptions) {
         AutocompleteRequest autoCompleteRequest = new AutocompleteRequest()
                                                         .setSearchText(searchText)
                                                         .setSuggesterName(suggesterName);
-        if (autocompleteParameters != null) {
+        if (autocompleteOptions != null) {
             autoCompleteRequest
-                .setFilter(autocompleteParameters.getFilter())
-                .setUseFuzzyMatching(autocompleteParameters.isUseFuzzyMatching())
-                .setHighlightPostTag(autocompleteParameters.getHighlightPostTag())
-                .setHighlightPreTag(autocompleteParameters.getHighlightPreTag())
-                .setMinimumCoverage(autocompleteParameters.getMinimumCoverage())
-                .setTop(autocompleteParameters.getTop())
-                .setAutocompleteMode(autocompleteParameters.getAutocompleteMode());
-            List<String> searchFields = autocompleteParameters.getSearchFields();
+                .setFilter(autocompleteOptions.getFilter())
+                .setUseFuzzyMatching(autocompleteOptions.isUseFuzzyMatching())
+                .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
+                .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
+                .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
+                .setTop(autocompleteOptions.getTop())
+                .setAutocompleteMode(autocompleteOptions.getAutocompleteMode());
+            List<String> searchFields = autocompleteOptions.getSearchFields();
             if (searchFields != null) {
                 autoCompleteRequest.setSearchFields(String.join(",", searchFields));
             }

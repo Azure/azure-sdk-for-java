@@ -7,11 +7,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
-import com.azure.search.models.SearchParameters;
-import com.azure.search.models.SearchRequest;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * This example shows how to handle errors when the Azure Cognitive Search service
@@ -41,10 +38,10 @@ public class HttpResponseExceptionExample {
 
         try {
             // Perform a search on a non-existent field
-            SearchParameters searchParams = new SearchParameters()
+            SearchOptions searchOptions = new SearchOptions()
                 .setFilter("Non_Existent_Field eq 'Luxury'");
 
-            Iterable<SearchResult> results = client.search("hotel", searchParams, null);
+            Iterable<SearchResult> results = client.search("hotel", searchOptions, null);
 
             for (SearchResult result : results) {
                 // normal results processing
@@ -70,10 +67,10 @@ public class HttpResponseExceptionExample {
             .indexName("hotels")
             .buildAsyncClient();
 
-        SearchParameters searchParams = new SearchParameters()
+        SearchOptions searchOptions = new SearchOptions()
             .setFilter("Non_Existent_Field eq 'Luxury'");
 
-        PagedFlux<SearchResult> results = client.search("hotel", searchParams, null);
+        PagedFlux<SearchResult> results = client.search("hotel", searchOptions, null);
         results
             .subscribe(
             foo -> {

@@ -8,9 +8,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.QueryType;
-import com.azure.search.models.SearchParameters;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SearchResult;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.Index;
 import com.azure.search.models.SynonymMap;
@@ -175,14 +175,14 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         return searchResult.getAdditionalProperties().get(idFieldName).toString();
     }
 
-    SearchParameters getSearchParametersForRangeFacets() {
-        return new SearchParameters().setFacets(Arrays.asList(
+    SearchOptions getSearchOptionsForRangeFacets() {
+        return new SearchOptions().setFacets(Arrays.asList(
             "Rooms/BaseRate,values:5|8|10",
             "LastRenovationDate,values:2000-01-01T00:00:00Z"));
     }
 
-    SearchParameters getSearchParametersForValueFacets() {
-        return new SearchParameters().setFacets(Arrays.asList(
+    SearchOptions getSearchOptionsForValueFacets() {
+        return new SearchOptions().setFacets(Arrays.asList(
             "Rating,count:2,sort:-value",
             "SmokingAllowed,sort:count",
             "Category",
@@ -239,10 +239,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Invalid expression: Syntax error at position 7 in 'This is not a valid filter.'");
 
-        SearchParameters invalidSearchParameters = new SearchParameters()
+        SearchOptions invalidSearchOptions = new SearchOptions()
             .setFilter("This is not a valid filter.");
 
-        search("*", invalidSearchParameters, new SearchRequestOptions());
+        search("*", invalidSearchOptions, new SearchRequestOptions());
     }
 
     @Test
@@ -250,10 +250,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         thrown.expect(HttpResponseException.class);
         thrown.expectMessage("Failed to parse query string at line 1, column 8.");
 
-        SearchParameters invalidSearchParameters = new SearchParameters()
+        SearchOptions invalidSearchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL);
 
-        search("/.*/.*/", invalidSearchParameters, new SearchRequestOptions());
+        search("/.*/.*/", invalidSearchOptions, new SearchRequestOptions());
     }
 
     @Test
@@ -328,5 +328,5 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canSearchWithSynonyms();
 
-    abstract void search(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions);
+    abstract void search(String searchText, SearchOptions searchOptions, SearchRequestOptions searchRequestOptions);
 }

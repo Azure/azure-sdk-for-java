@@ -26,7 +26,7 @@ import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteMode;
-import com.azure.search.models.AutocompleteParameters;
+import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.AutocompleteResult;
 import com.azure.search.models.DocumentIndexResult;
@@ -35,10 +35,10 @@ import com.azure.search.models.DocumentSuggestResult;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.QueryType;
 import com.azure.search.models.SearchMode;
-import com.azure.search.models.SearchParameters;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchRequestOptions;
-import com.azure.search.models.SuggestParameters;
+import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import java.util.List;
 import java.util.UUID;
@@ -179,77 +179,77 @@ public final class DocumentsImpl {
      * Searches for documents in the Azure Search index.
      *
      * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
-     * @param searchParameters Additional parameters for the operation.
+     * @param searchOptions Additional parameters for the operation.
      * @param searchRequestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(String searchText, SearchParameters searchParameters, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, SearchRequestOptions searchRequestOptions, Context context) {
         Boolean includeTotalResultCount = null;
-        if (searchParameters != null) {
-            includeTotalResultCount = searchParameters.isIncludeTotalResultCount();
+        if (searchOptions != null) {
+            includeTotalResultCount = searchOptions.isIncludeTotalResultCount();
         }
         List<String> facets = null;
-        if (searchParameters != null) {
-            facets = searchParameters.getFacets();
+        if (searchOptions != null) {
+            facets = searchOptions.getFacets();
         }
         String filter = null;
-        if (searchParameters != null) {
-            filter = searchParameters.getFilter();
+        if (searchOptions != null) {
+            filter = searchOptions.getFilter();
         }
         List<String> highlightFields = null;
-        if (searchParameters != null) {
-            highlightFields = searchParameters.getHighlightFields();
+        if (searchOptions != null) {
+            highlightFields = searchOptions.getHighlightFields();
         }
         String highlightPostTag = null;
-        if (searchParameters != null) {
-            highlightPostTag = searchParameters.getHighlightPostTag();
+        if (searchOptions != null) {
+            highlightPostTag = searchOptions.getHighlightPostTag();
         }
         String highlightPreTag = null;
-        if (searchParameters != null) {
-            highlightPreTag = searchParameters.getHighlightPreTag();
+        if (searchOptions != null) {
+            highlightPreTag = searchOptions.getHighlightPreTag();
         }
         Double minimumCoverage = null;
-        if (searchParameters != null) {
-            minimumCoverage = searchParameters.getMinimumCoverage();
+        if (searchOptions != null) {
+            minimumCoverage = searchOptions.getMinimumCoverage();
         }
         List<String> orderBy = null;
-        if (searchParameters != null) {
-            orderBy = searchParameters.getOrderBy();
+        if (searchOptions != null) {
+            orderBy = searchOptions.getOrderBy();
         }
         QueryType queryType = null;
-        if (searchParameters != null) {
-            queryType = searchParameters.getQueryType();
+        if (searchOptions != null) {
+            queryType = searchOptions.getQueryType();
         }
         List<String> scoringParameters = null;
-        if (searchParameters != null) {
-            scoringParameters = searchParameters.getScoringParameters();
+        if (searchOptions != null) {
+            scoringParameters = searchOptions.getScoringParameters();
         }
         String scoringProfile = null;
-        if (searchParameters != null) {
-            scoringProfile = searchParameters.getScoringProfile();
+        if (searchOptions != null) {
+            scoringProfile = searchOptions.getScoringProfile();
         }
         List<String> searchFields = null;
-        if (searchParameters != null) {
-            searchFields = searchParameters.getSearchFields();
+        if (searchOptions != null) {
+            searchFields = searchOptions.getSearchFields();
         }
         SearchMode searchMode = null;
-        if (searchParameters != null) {
-            searchMode = searchParameters.getSearchMode();
+        if (searchOptions != null) {
+            searchMode = searchOptions.getSearchMode();
         }
         List<String> select = null;
-        if (searchParameters != null) {
-            select = searchParameters.getSelect();
+        if (searchOptions != null) {
+            select = searchOptions.getSelect();
         }
         Integer skip = null;
-        if (searchParameters != null) {
-            skip = searchParameters.getSkip();
+        if (searchOptions != null) {
+            skip = searchOptions.getSkip();
         }
         Integer top = null;
-        if (searchParameters != null) {
-            top = searchParameters.getTop();
+        if (searchOptions != null) {
+            top = searchOptions.getTop();
         }
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
@@ -360,49 +360,49 @@ public final class DocumentsImpl {
      *
      * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
-     * @param suggestParameters Additional parameters for the operation.
+     * @param suggestOptions Additional parameters for the operation.
      * @param searchRequestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestParameters suggestParameters, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, SearchRequestOptions searchRequestOptions, Context context) {
         String filter = null;
-        if (suggestParameters != null) {
-            filter = suggestParameters.getFilter();
+        if (suggestOptions != null) {
+            filter = suggestOptions.getFilter();
         }
         Boolean useFuzzyMatching = null;
-        if (suggestParameters != null) {
-            useFuzzyMatching = suggestParameters.isUseFuzzyMatching();
+        if (suggestOptions != null) {
+            useFuzzyMatching = suggestOptions.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
-        if (suggestParameters != null) {
-            highlightPostTag = suggestParameters.getHighlightPostTag();
+        if (suggestOptions != null) {
+            highlightPostTag = suggestOptions.getHighlightPostTag();
         }
         String highlightPreTag = null;
-        if (suggestParameters != null) {
-            highlightPreTag = suggestParameters.getHighlightPreTag();
+        if (suggestOptions != null) {
+            highlightPreTag = suggestOptions.getHighlightPreTag();
         }
         Double minimumCoverage = null;
-        if (suggestParameters != null) {
-            minimumCoverage = suggestParameters.getMinimumCoverage();
+        if (suggestOptions != null) {
+            minimumCoverage = suggestOptions.getMinimumCoverage();
         }
         List<String> orderBy = null;
-        if (suggestParameters != null) {
-            orderBy = suggestParameters.getOrderBy();
+        if (suggestOptions != null) {
+            orderBy = suggestOptions.getOrderBy();
         }
         List<String> searchFields = null;
-        if (suggestParameters != null) {
-            searchFields = suggestParameters.getSearchFields();
+        if (suggestOptions != null) {
+            searchFields = suggestOptions.getSearchFields();
         }
         List<String> select = null;
-        if (suggestParameters != null) {
-            select = suggestParameters.getSelect();
+        if (suggestOptions != null) {
+            select = suggestOptions.getSelect();
         }
         Integer top = null;
-        if (suggestParameters != null) {
-            top = suggestParameters.getTop();
+        if (suggestOptions != null) {
+            top = suggestOptions.getTop();
         }
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
@@ -507,48 +507,48 @@ public final class DocumentsImpl {
      * @param searchText The incomplete term which should be auto-completed.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
      * @param searchRequestOptions Additional parameters for the operation.
-     * @param autocompleteParameters Additional parameters for the operation.
+     * @param autocompleteOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteParameters autocompleteParameters, Context context) {
+    public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteOptions autocompleteOptions, Context context) {
         UUID clientRequestId = null;
         if (searchRequestOptions != null) {
             clientRequestId = searchRequestOptions.getClientRequestId();
         }
         AutocompleteMode autocompleteMode = null;
-        if (autocompleteParameters != null) {
-            autocompleteMode = autocompleteParameters.getAutocompleteMode();
+        if (autocompleteOptions != null) {
+            autocompleteMode = autocompleteOptions.getAutocompleteMode();
         }
         String filter = null;
-        if (autocompleteParameters != null) {
-            filter = autocompleteParameters.getFilter();
+        if (autocompleteOptions != null) {
+            filter = autocompleteOptions.getFilter();
         }
         Boolean useFuzzyMatching = null;
-        if (autocompleteParameters != null) {
-            useFuzzyMatching = autocompleteParameters.isUseFuzzyMatching();
+        if (autocompleteOptions != null) {
+            useFuzzyMatching = autocompleteOptions.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
-        if (autocompleteParameters != null) {
-            highlightPostTag = autocompleteParameters.getHighlightPostTag();
+        if (autocompleteOptions != null) {
+            highlightPostTag = autocompleteOptions.getHighlightPostTag();
         }
         String highlightPreTag = null;
-        if (autocompleteParameters != null) {
-            highlightPreTag = autocompleteParameters.getHighlightPreTag();
+        if (autocompleteOptions != null) {
+            highlightPreTag = autocompleteOptions.getHighlightPreTag();
         }
         Double minimumCoverage = null;
-        if (autocompleteParameters != null) {
-            minimumCoverage = autocompleteParameters.getMinimumCoverage();
+        if (autocompleteOptions != null) {
+            minimumCoverage = autocompleteOptions.getMinimumCoverage();
         }
         List<String> searchFields = null;
-        if (autocompleteParameters != null) {
-            searchFields = autocompleteParameters.getSearchFields();
+        if (autocompleteOptions != null) {
+            searchFields = autocompleteOptions.getSearchFields();
         }
         Integer top = null;
-        if (autocompleteParameters != null) {
-            top = autocompleteParameters.getTop();
+        if (autocompleteOptions != null) {
+            top = autocompleteOptions.getTop();
         }
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         return service.autocompleteGet(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), this.client.getApiVersion(), searchText, suggesterName, clientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);

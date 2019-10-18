@@ -3,7 +3,7 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
-import com.azure.search.models.SearchParameters;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SearchResult;
 import reactor.core.publisher.Flux;
@@ -37,7 +37,7 @@ public class SearchForDynamicDocumentsExample {
             .buildClient();
 
         // Perform a text-based search
-        for (SearchResult result : client.search("luxury hotel", new SearchParameters(), new SearchRequestOptions())) {
+        for (SearchResult result : client.search("luxury hotel", new SearchOptions(), new SearchRequestOptions())) {
 
             // Each result is a dynamic Map
             Document doc = result.getAdditionalProperties();
@@ -60,7 +60,7 @@ public class SearchForDynamicDocumentsExample {
             .buildAsyncClient();
 
         // Add additional options for the search
-        SearchParameters parameters = new SearchParameters()
+        SearchOptions parameters = new SearchOptions()
             .setFilter("geo.distance(Location,geography'POINT(-122.121513 47.673988)') le 5")  // items having a geo-location distance which is less than 5 km from Redmond
             .setFacets(Collections.singletonList("Tags,sort:value"))
             .setOrderBy(Collections.singletonList("Rating"))

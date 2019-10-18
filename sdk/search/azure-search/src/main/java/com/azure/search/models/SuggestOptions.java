@@ -14,7 +14,7 @@ import java.util.List;
  * Additional parameters for suggestGet operation.
  */
 @Fluent
-public final class SuggestParameters {
+public final class SuggestOptions {
     /*
      * An OData expression that filters the documents considered for
      * suggestions.
@@ -107,9 +107,9 @@ public final class SuggestParameters {
      * considered for suggestions.
      *
      * @param filter the filter value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setFilter(String filter) {
+    public SuggestOptions setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -137,9 +137,9 @@ public final class SuggestParameters {
      * queries are slower and consume more resources.
      *
      * @param useFuzzyMatching the useFuzzyMatching value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setUseFuzzyMatching(Boolean useFuzzyMatching) {
+    public SuggestOptions setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
     }
@@ -161,9 +161,9 @@ public final class SuggestParameters {
      * highlighting of suggestions is disabled.
      *
      * @param highlightPostTag the highlightPostTag value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setHighlightPostTag(String highlightPostTag) {
+    public SuggestOptions setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
     }
@@ -185,9 +185,9 @@ public final class SuggestParameters {
      * highlighting of suggestions is disabled.
      *
      * @param highlightPreTag the highlightPreTag value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setHighlightPreTag(String highlightPreTag) {
+    public SuggestOptions setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
     }
@@ -213,9 +213,9 @@ public final class SuggestParameters {
      * one replica. The default is 80.
      *
      * @param minimumCoverage the minimumCoverage value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setMinimumCoverage(Double minimumCoverage) {
+    public SuggestOptions setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
     }
@@ -247,9 +247,9 @@ public final class SuggestParameters {
      * at most 32 $orderby clauses.
      *
      * @param orderBy the orderBy value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setOrderBy(List<String> orderBy) {
+    public SuggestOptions setOrderBy(List<String> orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -271,9 +271,9 @@ public final class SuggestParameters {
      * suggester.
      *
      * @param searchFields the searchFields value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setSearchFields(List<String> searchFields) {
+    public SuggestOptions setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
     }
@@ -293,9 +293,9 @@ public final class SuggestParameters {
      * only the key field will be included in the results.
      *
      * @param select the select value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setSelect(List<String> select) {
+    public SuggestOptions setSelect(List<String> select) {
         this.select = select;
         return this;
     }
@@ -315,9 +315,9 @@ public final class SuggestParameters {
      * must be a number between 1 and 100. The default is 5.
      *
      * @param top the top value to set.
-     * @return the SuggestParameters object itself.
+     * @return the SuggestOptions object itself.
      */
-    public SuggestParameters setTop(Integer top) {
+    public SuggestOptions setTop(Integer top) {
         this.top = top;
         return this;
     }

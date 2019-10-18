@@ -9,7 +9,7 @@ import com.azure.search.common.jsonwrapper.JsonWrapper;
 import com.azure.search.common.jsonwrapper.api.JsonApi;
 import com.azure.search.common.jsonwrapper.jacksonwrapper.JacksonDeserializer;
 import com.azure.search.models.GeoPoint;
-import com.azure.search.models.SearchParameters;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SearchResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -219,7 +219,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
     }
 
     @Test
-    public void canGetPaginatedDocumentsWithSearchParameters() throws Exception {
+    public void canGetPaginatedDocumentsWithSearchOptions() throws Exception {
         List<Document> docs = new LinkedList<>();
 
         for (int i = 1; i <= 200; i++) {
@@ -236,7 +236,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         Runnable searchWithNoSkip = () -> {
             try {
-                SearchParameters sp = new SearchParameters();
+                SearchOptions sp = new SearchOptions();
                 processResult(asyncClient.search("*", sp, new SearchRequestOptions()), 200);
             } catch (Exception ex) {
                 System.out.println("An exception occurred in searchWithNoSkip: " + ex.getMessage());
@@ -246,7 +246,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         Runnable searchWithSkip10 = () -> {
             try {
-                SearchParameters sp = new SearchParameters().setSkip(10);
+                SearchOptions sp = new SearchOptions().setSkip(10);
                 processResult(asyncClient.search("*", sp, new SearchRequestOptions()), 190);
             } catch (Exception ex) {
                 System.out.println("An exception occurred in searchWithSkip10: " + ex.getMessage());
@@ -257,7 +257,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         Runnable searchWithSkip30 = () -> {
             try {
-                SearchParameters sp = new SearchParameters().setSkip(30);
+                SearchOptions sp = new SearchOptions().setSkip(30);
                 processResult(asyncClient.search("*", sp, new SearchRequestOptions()), 170);
             } catch (Exception ex) {
                 System.out.println("An exception occurred in searchWithSkip30: " + ex.getMessage());

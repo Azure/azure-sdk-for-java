@@ -9,13 +9,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
-import com.azure.search.models.AutocompleteParameters;
+import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
-import com.azure.search.models.SearchParameters;
 import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
-import com.azure.search.models.SuggestParameters;
+import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 
 import reactor.core.publisher.Mono;
@@ -195,16 +195,16 @@ public class SearchIndexClient {
     /**
      * Searches for documents in the Azure Search index
      *
-     * @param searchText Search Test
-     * @param searchParameters Search Parameters
-     * @param searchRequestOptions Search Request Options
+     * @param searchText search text
+     * @param searchOptions search parameters
+     * @param searchRequestOptions search request options
      * @return A {@link PagedIterable} of SearchResults
      */
     public PagedIterable<SearchResult> search(String searchText,
-                                              SearchParameters searchParameters,
+                                              SearchOptions searchOptions,
                                               SearchRequestOptions searchRequestOptions) {
         return this.search(searchText,
-            searchParameters,
+            searchOptions,
             searchRequestOptions,
             Context.NONE);
     }
@@ -212,18 +212,18 @@ public class SearchIndexClient {
     /**
      * Searches for documents in the Azure Search index
      *
-     * @param searchText Search Test
-     * @param searchParameters Search Parameters
-     * @param searchRequestOptions Search Request Options
+     * @param searchText search text
+     * @param searchOptions search parameters
+     * @param searchRequestOptions search request options
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return A {@link PagedIterable} of SearchResults
      */
     public PagedIterable<SearchResult> search(String searchText,
-                                              SearchParameters searchParameters,
+                                              SearchOptions searchOptions,
                                               SearchRequestOptions searchRequestOptions,
                                               Context context) {
         PagedFlux<SearchResult> result = asyncClient.search(searchText,
-            searchParameters,
+            searchOptions,
             searchRequestOptions,
             context);
         return new PagedIterable<>(result);
@@ -297,17 +297,17 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param suggestParameters suggest parameters
+     * @param suggestOptions suggest options
      * @param searchRequestOptions search request options
      * @return suggests results
      */
     public PagedIterable<SuggestResult> suggest(String searchText,
                                                 String suggesterName,
-                                                SuggestParameters suggestParameters,
+                                                SuggestOptions suggestOptions,
                                                 SearchRequestOptions searchRequestOptions) {
         return this.suggest(searchText,
             suggesterName,
-            suggestParameters,
+            suggestOptions,
             searchRequestOptions,
             Context.NONE);
     }
@@ -317,19 +317,19 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param suggestParameters suggest parameters
+     * @param suggestOptions suggest options
      * @param searchRequestOptions search request options
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return suggests results
      */
     public PagedIterable<SuggestResult> suggest(String searchText,
                                                 String suggesterName,
-                                                SuggestParameters suggestParameters,
+                                                SuggestOptions suggestOptions,
                                                 SearchRequestOptions searchRequestOptions,
                                                 Context context) {
         PagedFlux<SuggestResult> result = asyncClient.suggest(searchText,
             suggesterName,
-            suggestParameters,
+            suggestOptions,
             searchRequestOptions,
             context);
         return new PagedIterable<>(result);
@@ -377,17 +377,17 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param autocompleteParameters auto complete parameters
+     * @param autocompleteOptions autocomplete parameters
      * @param searchRequestOptions search request options
      * @return auto complete result
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
-                                                        AutocompleteParameters autocompleteParameters,
+                                                        AutocompleteOptions autocompleteOptions,
                                                         SearchRequestOptions searchRequestOptions) {
         return this.autocomplete(searchText,
             suggesterName,
-            autocompleteParameters,
+            autocompleteOptions,
             searchRequestOptions,
             Context.NONE);
     }
@@ -397,19 +397,19 @@ public class SearchIndexClient {
      *
      * @param searchText search text
      * @param suggesterName suggester name
-     * @param autocompleteParameters auto complete parameters
+     * @param autocompleteOptions autocomplete options
      * @param searchRequestOptions search request options
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return auto complete result
      */
     public PagedIterable<AutocompleteItem> autocomplete(String searchText,
                                                         String suggesterName,
-                                                        AutocompleteParameters autocompleteParameters,
+                                                        AutocompleteOptions autocompleteOptions,
                                                         SearchRequestOptions searchRequestOptions,
                                                         Context context) {
         PagedFlux<AutocompleteItem> result = asyncClient.autocomplete(searchText,
             suggesterName,
-            autocompleteParameters,
+            autocompleteOptions,
             searchRequestOptions,
             context);
         return new PagedIterable<>(result);
