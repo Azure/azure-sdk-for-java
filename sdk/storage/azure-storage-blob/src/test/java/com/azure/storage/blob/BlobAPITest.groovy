@@ -1005,7 +1005,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def copyID =
-            bu2.startCopyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null,
+            bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null,
                 new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID)), null, null).getValue()
 
         then:
