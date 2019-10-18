@@ -304,7 +304,7 @@ class BlobAPITest extends APISpec {
         properties.getLeaseStatus() == LeaseStatusType.UNLOCKED
         properties.getBlobSize() >= 0
         properties.getContentType() != null
-        properties.getContentMD5() != null
+        properties.getContentMd5() != null
         properties.getContentEncoding() == null // tested in "set HTTP headers"
         properties.getContentDisposition() == null // tested in "set HTTP headers"
         properties.getContentLanguage() == null // tested in "set HTTP headers"

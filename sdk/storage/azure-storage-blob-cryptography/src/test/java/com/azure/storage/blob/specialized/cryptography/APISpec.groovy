@@ -277,7 +277,7 @@ class APISpec extends Specification {
             response.getHeaders().getValue("Content-Type") == contentType
 
         if (checkContentMD5) {
-            return propertiesEqual && response.getValue().getContentMD5() == contentMD5
+            return propertiesEqual && response.getValue().getContentMd5() == contentMD5
         }
         return propertiesEqual
     }

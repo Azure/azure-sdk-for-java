@@ -22,7 +22,7 @@ public final class BlobProperties {
     private final String eTag;
     private final long blobSize;
     private final String contentType;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final String contentEncoding;
     private final String contentDisposition;
     private final String contentLanguage;
@@ -55,7 +55,7 @@ public final class BlobProperties {
         this.eTag = generatedHeaders.getETag();
         this.blobSize = generatedHeaders.getContentLength() == null ? 0 : generatedHeaders.getContentLength();
         this.contentType = generatedHeaders.getContentType();
-        this.contentMD5 = generatedHeaders.getContentMD5();
+        this.contentMd5 = generatedHeaders.getContentMD5();
         this.contentEncoding = generatedHeaders.getContentEncoding();
         this.contentDisposition = generatedHeaders.getContentDisposition();
         this.contentLanguage = generatedHeaders.getContentLanguage();
@@ -121,8 +121,8 @@ public final class BlobProperties {
     /**
      * @return the MD5 of the blob's content
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 
     /**
