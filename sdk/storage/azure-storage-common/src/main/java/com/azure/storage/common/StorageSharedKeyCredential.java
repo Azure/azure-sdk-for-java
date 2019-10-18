@@ -115,8 +115,8 @@ public final class StorageSharedKeyCredential {
         contentLength = contentLength.equals("0") ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.containsKey("x-ms-date")) ? "" :
-            getStandardHeaderValue(headers, "Date");
+        String dateHeader = (headers.containsKey("x-ms-date")) ? ""
+            : getStandardHeaderValue(headers, "Date");
 
         return String.join("\n",
             httpMethod,
