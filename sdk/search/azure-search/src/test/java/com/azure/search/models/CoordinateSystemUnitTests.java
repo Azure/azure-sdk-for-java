@@ -14,54 +14,61 @@ public class CoordinateSystemUnitTests {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
 
         Assert.assertNotNull(coordinateSystem);
-        Assert.assertEquals("name", coordinateSystem.type());
-        Assert.assertEquals(1, coordinateSystem.properties().size());
-        Assert.assertTrue(coordinateSystem.properties().get("name").startsWith("EPSG"));
+        Assert.assertEquals("name", coordinateSystem.getType());
+        Assert.assertEquals(1, coordinateSystem.getProperties().size());
+        Assert.assertTrue(coordinateSystem.getProperties().get("name").startsWith("EPSG"));
     }
 
     @Test
     public void canValidate() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
-        Assert.assertTrue(coordinateSystem.validate());
+        Assert.assertTrue(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectType() {
-        CoordinateSystem coordinateSystem = CoordinateSystem.create().type("IncorrectType");
-        Assert.assertFalse(coordinateSystem.validate());
+        CoordinateSystem coordinateSystem = CoordinateSystem.create()
+            .setType("IncorrectType");
+
+        Assert.assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithNullProperties() {
-        CoordinateSystem coordinateSystem = CoordinateSystem.create().properties(null);
-        Assert.assertFalse(coordinateSystem.validate());
+        CoordinateSystem coordinateSystem = CoordinateSystem.create().setProperties(null);
+
+        Assert.assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithEmptyProperties() {
-        CoordinateSystem coordinateSystem = CoordinateSystem.create().properties(new HashMap<>());
-        Assert.assertFalse(coordinateSystem.validate());
+        CoordinateSystem coordinateSystem = CoordinateSystem.create().setProperties(new HashMap<>());
+
+        Assert.assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectPropertiesSize() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
-        coordinateSystem.properties().put("IncorrectKey", "value");
-        Assert.assertFalse(coordinateSystem.validate());
+        coordinateSystem.getProperties().put("IncorrectKey", "value");
+
+        Assert.assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectProperty() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
-        coordinateSystem.properties().remove("name");
-        coordinateSystem.properties().put("IncorrectKey", "value");
-        Assert.assertFalse(coordinateSystem.validate());
+        coordinateSystem.getProperties().remove("name");
+        coordinateSystem.getProperties().put("IncorrectKey", "value");
+
+        Assert.assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectPropertyValue() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
-        coordinateSystem.properties().put("name", "IncorrectValue");
-        Assert.assertFalse(coordinateSystem.validate());
+        coordinateSystem.getProperties().put("name", "IncorrectValue");
+
+        Assert.assertFalse(coordinateSystem.isValid());
     }
 }

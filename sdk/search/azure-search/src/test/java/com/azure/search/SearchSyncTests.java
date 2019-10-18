@@ -183,7 +183,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Hotel> hotelsList = hotels.stream().map(hotel -> {
             Hotel h = jsonApi.convertObjectToType(hotel, Hotel.class);
             if (h.location() != null) {
-                h.location().coordinateSystem(CoordinateSystem.create());
+                h.location().setCoordinateSystem(CoordinateSystem.create());
             }
             return h;
         }).collect(Collectors.toList());

@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Fluent
 public final class GeoPoint {
-    public static final String TYPE = "Point";
+    private static final String TYPE = "Point";
 
     @JsonProperty
     private List<Double> coordinates;
@@ -29,32 +29,12 @@ public final class GeoPoint {
         return TYPE;
     }
 
-    public List<Double> coordinates() {
-        return this.coordinates;
-    }
-
-    public GeoPoint coordinates(List<Double> coordinates) {
-        this.coordinates = coordinates;
-        return this;
-    }
-
-    public CoordinateSystem coordinateSystem() {
-        return this.coordinateSystem;
-    }
-
-    public GeoPoint coordinateSystem(CoordinateSystem coordinateSystem) {
-        this.coordinateSystem = coordinateSystem;
-        return this;
-    }
-
     public static GeoPoint create(double latitude, double longitude) {
-        return new GeoPoint()
-            .coordinates(Arrays.asList(longitude, latitude));
+        return new GeoPoint().setCoordinates(Arrays.asList(longitude, latitude));
     }
 
     public static GeoPoint create(double latitude, double longitude, CoordinateSystem coordinateSystem) {
-        return create(latitude, longitude)
-            .coordinateSystem(coordinateSystem);
+        return create(latitude, longitude).setCoordinateSystem(coordinateSystem);
     }
 
     /**
@@ -62,11 +42,11 @@ public final class GeoPoint {
      *
      * @return true if valid, false if invalid
      */
-    public boolean validate() {
+    public boolean isValid() {
         return coordinates != null && coordinates.size() == 2
             && coordinates.get(0) >= -180.0 && coordinates.get(0) <= 180.0
             && coordinates.get(1) >= -90.0 && coordinates.get(1) <= 90.0
-            && (coordinateSystem == null || coordinateSystem.validate());
+            && (coordinateSystem == null || coordinateSystem.isValid());
     }
 
     @Override
@@ -78,7 +58,7 @@ public final class GeoPoint {
             return false;
         }
         GeoPoint other = (GeoPoint) o;
-        if (!this.validate() || !other.validate()) {
+        if (!this.isValid() || !other.isValid()) {
             return false;
         }
         return Objects.equals(coordinates.get(0), other.coordinates.get(0))
@@ -89,5 +69,23 @@ public final class GeoPoint {
     @Override
     public int hashCode() {
         return Objects.hash(coordinates, coordinateSystem);
+    }
+
+    public List<Double> getCoordinates() {
+        return coordinates;
+    }
+
+    public GeoPoint setCoordinates(List<Double> coordinates) {
+        this.coordinates = coordinates;
+        return this;
+    }
+
+    public CoordinateSystem getCoordinateSystem() {
+        return coordinateSystem;
+    }
+
+    public GeoPoint setCoordinateSystem(CoordinateSystem coordinateSystem) {
+        this.coordinateSystem = coordinateSystem;
+        return this;
     }
 }
