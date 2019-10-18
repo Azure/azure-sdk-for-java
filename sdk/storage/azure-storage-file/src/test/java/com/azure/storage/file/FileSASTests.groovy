@@ -1,14 +1,8 @@
 package com.azure.storage.file
 
-
-import com.azure.storage.common.sas.AccountSasPermission
-import com.azure.storage.common.sas.AccountSasResourceType
-import com.azure.storage.common.sas.AccountSasService
-import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.sas.SasIpRange
-import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.sas.*
 import com.azure.storage.file.models.FileAccessPolicy
 import com.azure.storage.file.models.FileSignedIdentifier
 import com.azure.storage.file.models.FileStorageException
@@ -136,21 +130,6 @@ class FileSASTests extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "serviceSASSignatureValues canonicalizedResource"() {
-        setup:
-        def filePath = primaryFileClient.getFilePath()
-        def shareName = primaryFileClient.getShareName()
-        def accountName = "account"
-
-        when:
-        def serviceSASSignatureValues = new FileServiceSasSignatureValues()
-            .setCanonicalName(shareName, filePath, accountName)
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
-
-        then:
-        serviceSASSignatureValues.getCanonicalName() == "/file/" + accountName  + "/" + shareName + "/" + filePath
-    }
-
     def "FileSAS network test download upload"() {
         setup:
         String data = "test"
@@ -187,8 +166,8 @@ class FileSASTests extends APISpec {
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentType(contentType)
-            .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .setShareName(primaryFileClient.getShareName())
+            .setFilePath(primaryFileClient.getFilePath())
             .generateSASQueryParameters(credential)
             .encode()
 
@@ -246,8 +225,8 @@ class FileSASTests extends APISpec {
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
             .setContentType(contentType)
-            .setCanonicalName(primaryFileClient.getShareName(), primaryFileClient.getFilePath(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .setShareName(primaryFileClient.getShareName())
+            .setFilePath(primaryFileClient.getFilePath())
             .generateSASQueryParameters(credential)
             .encode()
 
@@ -291,8 +270,7 @@ class FileSASTests extends APISpec {
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasWithId = new FileServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
-            .setCanonicalName(primaryShareClient.getShareName(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_SHARE_CONSTANT)
+            .setShareName(primaryFileClient.getShareName())
             .generateSASQueryParameters(credential)
             .encode()
 
@@ -307,8 +285,7 @@ class FileSASTests extends APISpec {
         def sasWithPermissions = new FileServiceSasSignatureValues()
             .setPermissions(permissions.toString())
             .setExpiryTime(expiryTime)
-            .setCanonicalName(primaryShareClient.getShareName(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_SHARE_CONSTANT)
+            .setShareName(primaryFileClient.getShareName())
             .generateSASQueryParameters(credential)
             .encode()
 

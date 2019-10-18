@@ -6,13 +6,8 @@ package com.azure.storage.file
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.models.FileErrorCode
-import com.azure.storage.file.models.FileHttpHeaders
-import com.azure.storage.file.models.FileRange
-import com.azure.storage.file.models.FileStorageException
-import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.*
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
@@ -409,8 +404,8 @@ class FileAsyncAPITests extends APISpec {
         def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))
             .setPermissions(new FileSasPermission().setReadPermission(true).toString())
-            .setCanonicalName(primaryFileAsyncClient.getShareName(), primaryFileAsyncClient.getFilePath(), credential.getAccountName())
-            .setResource(Constants.UrlConstants.SAS_FILE_CONSTANT)
+            .setShareName(primaryFileAsyncClient.getShareName())
+            .setFilePath(primaryFileAsyncClient.getFilePath())
             .generateSASQueryParameters(credential)
             .encode()
 
