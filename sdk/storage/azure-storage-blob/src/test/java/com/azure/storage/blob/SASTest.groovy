@@ -24,6 +24,7 @@ import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Ignore
 import spock.lang.Unroll
 
+import java.lang.reflect.Field
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -257,9 +258,6 @@ class SASTest extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    /* TODO: Fix user delegation tests to run in CI */
-
-    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -290,7 +288,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
+        def keyOid = getConfigValue(key.getSignedOid())
+        key.setSignedOid(keyOid)
+
         when:
+
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -401,7 +403,6 @@ class SASTest extends APISpec {
 
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -433,6 +434,8 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
+        def keyOid = getConfigValue(key.getSignedOid())
+        key.setSignedOid(keyOid)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
@@ -480,7 +483,6 @@ class SASTest extends APISpec {
         properties.getContentLanguage() == "language"
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -494,6 +496,8 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+        def keyOid = getConfigValue(key.getSignedOid())
+        key.setSignedOid(keyOid)
 
         when:
         def sasWithPermissions = new BlobServiceSasSignatureValues()

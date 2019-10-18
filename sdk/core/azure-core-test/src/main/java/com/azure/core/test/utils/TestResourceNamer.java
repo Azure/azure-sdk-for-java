@@ -81,4 +81,13 @@ public class TestResourceNamer extends ResourceNamer {
             return now;
         }
     }
+
+    public String recordValueFromConfig(String value) {
+        if (testMode == TestMode.PLAYBACK) {
+            return recordedData.removeVariable();
+        } else {
+            recordedData.addVariable(value);
+            return value;
+        }
+    }
 }
