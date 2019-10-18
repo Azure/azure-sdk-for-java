@@ -84,8 +84,8 @@ public final class BlobBatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.submitBatchWithResponse(batch, throwOnAnyFailure, context),
-            timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(client.submitBatchWithResponse(batch,
+            throwOnAnyFailure, context), timeout);
     }
 
     /**
