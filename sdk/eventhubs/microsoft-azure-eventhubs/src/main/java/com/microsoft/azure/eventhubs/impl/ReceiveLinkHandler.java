@@ -79,7 +79,7 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
             }
             final ErrorCondition condition = link.getCondition();
             final Exception finalOpenError = (condition != null) ? ExceptionUtil.toException(condition) :
-                new EventHubException(false, "Link open failed, cause not available");
+                new EventHubException(true, "Link open failed, cause not available");
             this.executor.schedule(new Runnable() {
                 @Override
                 public void run() {
