@@ -11,7 +11,6 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
@@ -466,7 +465,8 @@ public final class BlobServiceSasSignatureValues {
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException if {@code storageSharedKeyCredentials} is null.
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public BlobServiceSasQueryParameters generateSasQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
         Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
@@ -509,7 +509,8 @@ public final class BlobServiceSasSignatureValues {
      * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">
      *     Create a user delegation SAS</a>
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey, String accountName) {
+    public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey,
+                                                                    String accountName) {
         Utility.assertNotNull("delegationKey", delegationKey);
         Utility.assertNotNull("accountName", accountName);
 
