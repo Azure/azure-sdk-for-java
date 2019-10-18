@@ -11,6 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.BlockBlobCommitBlockListHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobUploadHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -150,7 +152,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -411,6 +418,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,
             headers, accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
             accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
+                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 }
