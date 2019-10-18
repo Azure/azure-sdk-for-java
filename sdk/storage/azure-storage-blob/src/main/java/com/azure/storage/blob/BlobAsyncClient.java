@@ -209,8 +209,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Docs for Put Block List</a>.
      * <p>
      * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods
-     * when
-     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * when retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
      * support uploading any arbitrary data source, including network streams. This behavior is possible because this
      * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
      * this method may offer additional convenience, it will not be as performant as other options, which should be
@@ -219,19 +218,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
      * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
      * trade-offs between these values are context-dependent, so some experimentation may be required to optimize
-     * inputs
-     * for a given scenario.
+     * inputs for a given scenario.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient
-     * .uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient
-     * .uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
-     * .ProgressReporter}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -344,8 +339,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient
-     * .uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -358,7 +352,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return An empty response
      *
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
-     * @throws UncheckedIOException     If an I/O error occurs
+     * @throws UncheckedIOException If an I/O error occurs
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
