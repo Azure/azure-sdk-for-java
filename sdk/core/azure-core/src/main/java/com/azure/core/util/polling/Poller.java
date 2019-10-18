@@ -305,7 +305,9 @@ public class Poller<T, R> {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
-        this.fluxHandle.blockLast();
+        if (!isComplete()) {
+            this.fluxHandle.blockLast();
+        }
         return getResult().block();
     }
 
@@ -321,7 +323,9 @@ public class Poller<T, R> {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
-        this.fluxHandle.blockLast(timeout);
+        if (!isComplete()) {
+            this.fluxHandle.blockLast(timeout);
+        }
         return getResult().block();
     }
 
@@ -337,14 +341,15 @@ public class Poller<T, R> {
     }
 
     /**
-     * Blocks until given {@code statusToBlockFor} is received or the {@code timeout} elapses. If a {@code null}
-     * {@code timeout} is given, it will block indefinitely.
+     * Blocks until given {@code statusToBlockFor} is received or the {@code timeout} elapses, if the polling operation
+     * is not complete. If a {@code null} {@code timeout} is given, it will block indefinitely.
      *
      * @param statusToBlockFor The desired {@link OperationStatus} to block for and it can be any valid
      *     {@link OperationStatus} value.
      * @param timeout The time after which it will stop blocking. A {@code null} value will cause to block
      *     indefinitely. Zero or negative are not valid values.
-     * @return {@link PollResponse} for matching desired status to block for.
+     * @return the {@link PollResponse} for matching desired status to block for, if the polling operation is not complete
+     * else the final {@link PollResponse} received.
      * @throws IllegalArgumentException if {@code timeout} is zero or negative and if {@code statusToBlockFor} is
      *     {@code null}.
      */
@@ -356,6 +361,10 @@ public class Poller<T, R> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for timeout is not allowed."));
         }
+        if (matchStatus(pollResponse, statusToBlockFor) || isComplete()){
+            return pollResponse;
+        }
+
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }

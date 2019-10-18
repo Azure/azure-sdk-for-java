@@ -172,6 +172,7 @@ public class PollerTests {
         final Duration pollInterval = Duration.ofMillis(100);
 
         when(pollOperation.apply(any())).thenReturn(Mono.just(inProgressPollResponse), Mono.just(successPollResponse));
+        when(fetchResultOperation.get()).thenReturn(Mono.just(new CertificateOutput(OUTPUT_NAME)));
 
         // Act
         final Poller<Response, CertificateOutput> poller = new Poller<>(pollInterval, pollOperation, fetchResultOperation);
@@ -186,6 +187,9 @@ public class PollerTests {
             .verifyComplete();
 
         Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, poller.getStatus());
+        Assert.assertEquals(OUTPUT_NAME, poller.block().getName());
+        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, poller.blockUntil(OperationStatus.IN_PROGRESS));
+        Assert.assertEquals(OperationStatus.SUCCESSFULLY_COMPLETED, poller.blockUntil(OperationStatus.SUCCESSFULLY_COMPLETED));
         Assert.assertTrue(poller.isAutoPollingEnabled());
     }
 
