@@ -5,8 +5,8 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.SasProtocol;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
@@ -23,7 +23,7 @@ public class BlobServiceSasSignatureValuesJavaDocCodeSnippets {
             .setBlobName("HelloWorld.txt")
             .setPermissions(blobPermission);
 
-        SharedKeyCredential credential = new SharedKeyCredential("account-name", "key");
+        StorageSharedKeyCredential credential = new StorageSharedKeyCredential("account-name", "key");
         BlobServiceSasQueryParameters sasQueryParameters = builder.generateSasQueryParameters(credential);
         // END: com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#SharedKeyCredential
     }
