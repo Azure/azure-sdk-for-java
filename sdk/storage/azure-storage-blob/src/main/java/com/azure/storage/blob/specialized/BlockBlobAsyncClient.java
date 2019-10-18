@@ -104,7 +104,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         try {
-            return uploadWithResponse(data, length, null, null, null, null).flatMap(FluxUtil::toMono);
+            return uploadWithResponse(data, length, null, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -133,27 +133,33 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
+     * @param contentMd5 An MD5 hash of the blob content. This hash is used to verify the integrity of the blob during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
      * @param accessConditions {@link BlobAccessConditions}
      *
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobAccessConditions accessConditions) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
-                context));
+            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
+                accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
+        Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobAccessConditions accessConditions,
+        Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
-            getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
+            null, data, length, null, contentMd5, metadata, tier, null, headers,
+            accessConditions.getLeaseAccessConditions(), getCustomerProvidedKey(),
+            accessConditions.getModifiedAccessConditions(), context)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.getDeserializedHeaders())));
     }
 
