@@ -216,10 +216,19 @@ public final class QueueServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * <p>If {@link #getVersion()} is not set, then the {@link QueueServiceVersion#getLatest() latest service version}
-     * is used.</p>
+     * <p><strong>Notes on SAS generation</strong></p>
+     * <p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link QueueServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
      *
      * <p>For samples, see class level JavaDocs.</p>
+     *
      * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return A new {@link QueueServiceSasQueryParameters} represented by the current builder.
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
