@@ -4,9 +4,9 @@
 package com.azure.storage.common.sas;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import java.time.OffsetDateTime;
 
 /**
@@ -260,12 +260,12 @@ public final class AccountSasSignatureValues {
      */
     public AccountSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
-        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
-        Utility.assertNotNull("services", this.services);
-        Utility.assertNotNull("resourceTypes", this.resourceTypes);
-        Utility.assertNotNull("expiryTime", this.expiryTime);
-        Utility.assertNotNull("permissions", this.permissions);
-        Utility.assertNotNull("version", this.version);
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        StorageImplUtils.assertNotNull("services", this.services);
+        StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
+        StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
+        StorageImplUtils.assertNotNull("permissions", this.permissions);
+        StorageImplUtils.assertNotNull("version", this.version);
 
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
@@ -280,8 +280,8 @@ public final class AccountSasSignatureValues {
             AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
             this.services,
             resourceTypes,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             this.version,

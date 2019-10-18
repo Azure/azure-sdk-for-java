@@ -26,7 +26,8 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -96,7 +97,7 @@ public final class BlobServiceAsyncClient {
         }
 
         return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToUrlPath(getAccountUrl(), containerName).toString())
+            .url(StorageImplUtils.appendToUrlPath(getAccountUrl(), containerName).toString())
             .pipeline(getHttpPipeline())
             .version(getServiceVersion())
             .build(), customerProvidedKey, accountName);
@@ -282,7 +283,7 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toIncludeType(), null,
                 null, Context.NONE), timeout);
@@ -425,7 +426,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Context context) {
-        Utility.assertNotNull("expiry", expiry);
+        StorageImplUtils.assertNotNull("expiry", expiry);
         if (start != null && !start.isBefore(expiry)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
@@ -433,8 +434,8 @@ public final class BlobServiceAsyncClient {
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
-                    .setStart(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                    .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
                 null, null, context).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 

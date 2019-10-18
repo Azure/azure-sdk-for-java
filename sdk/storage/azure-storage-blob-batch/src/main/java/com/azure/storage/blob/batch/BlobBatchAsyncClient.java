@@ -20,7 +20,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -143,7 +143,7 @@ public final class BlobBatchAsyncClient {
     PagedFlux<Response<Void>> deleteBlobsWithTimeout(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions,
         Duration timeout, Context context) {
         return new PagedFlux<>(() ->
-            Utility.applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
+            StorageImplUtils.applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
     }
 
     Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
@@ -176,7 +176,7 @@ public final class BlobBatchAsyncClient {
     PagedFlux<Response<Void>> setBlobsAccessTierWithTimeout(List<String> blobUrls, AccessTier accessTier,
         Duration timeout, Context context) {
         return new PagedFlux<>(() ->
-            Utility.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
+            StorageImplUtils.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
     }
 
     Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,

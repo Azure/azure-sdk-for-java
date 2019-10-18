@@ -3,10 +3,10 @@
 
 package com.azure.storage.file;
 
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.time.OffsetDateTime;
@@ -405,7 +405,7 @@ public final class FileServiceSasSignatureValues {
      */
     public FileServiceSasQueryParameters generateSASQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
-        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK();
 
         // Signature is generated on the un-url-encoded values.
@@ -420,26 +420,26 @@ public final class FileServiceSasSignatureValues {
      * Common assertions for generateSASQueryParameters overloads.
      */
     private void assertGenerateOK() {
-        Utility.assertNotNull("version", this.version);
-        Utility.assertNotNull("canonicalName", this.canonicalName);
-        Utility.assertNotNull("resource", this.resource);
+        StorageImplUtils.assertNotNull("version", this.version);
+        StorageImplUtils.assertNotNull("canonicalName", this.canonicalName);
+        StorageImplUtils.assertNotNull("resource", this.resource);
 
         // If a SignedIdentifier is not being used both expiryDate and permissions must be set.
         if (identifier == null) {
-            Utility.assertNotNull("expiryTime", this.expiryTime);
-            Utility.assertNotNull("permissions", this.permissions);
+            StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
+            StorageImplUtils.assertNotNull("permissions", this.permissions);
         }
         // Still need to check identifier if expiry time and permissions are not both set
         if (expiryTime == null || permissions == null) {
-            Utility.assertNotNull("identifier", identifier);
+            StorageImplUtils.assertNotNull("identifier", identifier);
         }
     }
 
     private String stringToSign() {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),

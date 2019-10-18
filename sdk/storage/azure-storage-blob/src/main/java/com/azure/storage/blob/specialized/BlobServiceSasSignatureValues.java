@@ -7,10 +7,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.net.MalformedURLException;
@@ -462,7 +462,7 @@ public final class BlobServiceSasSignatureValues {
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential
            storageSharedKeyCredentials) {
-        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK(false);
 
         // Signature is generated on the un-url-encoded values.
@@ -484,11 +484,11 @@ public final class BlobServiceSasSignatureValues {
      * {@code canonicalName}, {@code resource}, {@code expiryTime} or {@code permissions} are null.
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey) {
-        Utility.assertNotNull("delegationKey", delegationKey);
+        StorageImplUtils.assertNotNull("delegationKey", delegationKey);
         assertGenerateOK(true);
 
         // Signature is generated on the un-url-encoded values.
-        String signature = Utility.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey));
+        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey));
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature, this.cacheControl,
@@ -499,17 +499,17 @@ public final class BlobServiceSasSignatureValues {
      * Common assertions for generateSASQueryParameters overloads.
      */
     private void assertGenerateOK(boolean usingUserDelegation) {
-        Utility.assertNotNull("version", this.version);
-        Utility.assertNotNull("canonicalName", this.canonicalName);
-        Utility.assertNotNull("resource", this.resource);
+        StorageImplUtils.assertNotNull("version", this.version);
+        StorageImplUtils.assertNotNull("canonicalName", this.canonicalName);
+        StorageImplUtils.assertNotNull("resource", this.resource);
 
         // If a UserDelegation key or a SignedIdentifier is not being used both expiryDate and permissions must be set.
         if (usingUserDelegation || identifier == null) {
-            Utility.assertNotNull("expiryTime", this.expiryTime);
-            Utility.assertNotNull("permissions", this.permissions);
+            StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
+            StorageImplUtils.assertNotNull("permissions", this.permissions);
         } else {
             // Otherwise a SignedIdentifier must be used.
-            Utility.assertNotNull("identifier", this.identifier);
+            StorageImplUtils.assertNotNull("identifier", this.identifier);
         }
 
         if (BlobServiceSasSignatureValues.SAS_CONTAINER_CONSTANT.equals(this.resource) && this.snapshotId != null) {
@@ -521,8 +521,8 @@ public final class BlobServiceSasSignatureValues {
     private String stringToSign() {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
@@ -541,13 +541,13 @@ public final class BlobServiceSasSignatureValues {
     private String stringToSign(final UserDelegationKey key) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
             key.getSignedOid() == null ? "" : key.getSignedOid(),
             key.getSignedTid() == null ? "" : key.getSignedTid(),
-            key.getSignedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
-            key.getSignedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+            key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+            key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),

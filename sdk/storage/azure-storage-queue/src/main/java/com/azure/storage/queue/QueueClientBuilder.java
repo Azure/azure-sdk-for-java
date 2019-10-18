@@ -12,8 +12,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -179,7 +179,7 @@ public final class QueueClientBuilder {
             URL fullURL = new URL(endpoint);
             this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
 
-            this.accountName = Utility.getAccountName(fullURL);
+            this.accountName = StorageImplUtils.getAccountName(fullURL);
 
             // Attempt to get the queue name from the URL passed
             String[] pathSegments = fullURL.getPath().split("/", 2);
@@ -188,7 +188,7 @@ public final class QueueClientBuilder {
             }
 
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(Utility
+            String sasToken = new QueueServiceSasQueryParameters(StorageImplUtils
                 .parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);

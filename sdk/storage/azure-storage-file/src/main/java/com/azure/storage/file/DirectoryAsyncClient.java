@@ -14,8 +14,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DirectorysCreateResponse;
 import com.azure.storage.file.implementation.models.DirectorysGetPropertiesResponse;
@@ -514,7 +514,7 @@ public class DirectoryAsyncClient {
     PagedFlux<StorageFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
                                                                           Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<StorageFileItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryPath, prefix, snapshot,
                     marker, maxResultsPerPage, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -555,7 +555,7 @@ public class DirectoryAsyncClient {
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive, Duration timeout,
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .listHandlesWithRestResponseAsync(shareName, directoryPath, marker, maxResultPerPage, null, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -647,7 +647,7 @@ public class DirectoryAsyncClient {
 
     PagedFlux<Integer> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<Integer>>> retriever =
-            marker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.directorys()
+            marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.directorys()
                 .forceCloseHandlesWithRestResponseAsync(shareName, directoryPath, "*", null, marker, snapshot,
                     recursive, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
@@ -1021,7 +1021,7 @@ public class DirectoryAsyncClient {
         }
 
         if (filePermission != null) {
-            Utility.assertInBounds("filePermission",
+            StorageImplUtils.assertInBounds("filePermission",
                 filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
         }
     }

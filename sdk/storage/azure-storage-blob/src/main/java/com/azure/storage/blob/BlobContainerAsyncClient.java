@@ -29,7 +29,7 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -122,7 +122,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToUrlPath(getBlobContainerUrl(), blobName).toString())
+            .url(StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString())
             .pipeline(getHttpPipeline())
             .version(getServiceVersion())
             .build(), snapshot, customerProvidedKey, accountName);
@@ -703,7 +703,7 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
                 marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
                 null, null, Context.NONE), timeout);
@@ -831,7 +831,7 @@ public final class BlobContainerAsyncClient {
                 new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toList(), null, null,
                 Context.NONE),

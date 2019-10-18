@@ -4,6 +4,9 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.storage.common.sas.SasProtocol;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * Defines general constants.
@@ -41,6 +44,10 @@ public final class Constants {
      */
     public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
         "%s could not be parsed from '%s' due to invalid value %s.";
+
+
+    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
 
     private Constants() {
     }
