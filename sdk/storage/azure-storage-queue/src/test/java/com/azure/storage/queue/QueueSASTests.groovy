@@ -114,7 +114,7 @@ class QueueSASTests extends APISpec {
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
-            .setPermissions(permissions.toString())
+            .setPermissions(permissions)
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
@@ -164,7 +164,7 @@ class QueueSASTests extends APISpec {
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
-            .setPermissions(permissions.toString())
+            .setPermissions(permissions)
             .setExpiryTime(expiryTime)
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
