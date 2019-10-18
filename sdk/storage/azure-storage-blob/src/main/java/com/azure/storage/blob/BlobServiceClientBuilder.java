@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -97,11 +96,7 @@ public final class BlobServiceClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new BlobServiceAsyncClient(new AzureBlobStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build(), customerProvidedKey, accountName);
+        return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey);
     }
 
     /**
@@ -113,10 +108,12 @@ public final class BlobServiceClientBuilder {
      */
     public BlobServiceClientBuilder endpoint(String endpoint) {
         try {
-            URL url = new URL(endpoint);
-            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
+            BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
-            String sasToken = BlobUrlParts.parse(url).getSasQueryParameters().encode();
+            this.accountName = parts.getAccountName();
+            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+
+            String sasToken = parts.getSasQueryParameters().encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

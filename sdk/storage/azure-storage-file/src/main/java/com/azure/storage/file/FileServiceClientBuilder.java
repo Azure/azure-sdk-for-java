@@ -89,26 +89,6 @@ public final class FileServiceClientBuilder {
     public FileServiceClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
-        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Credentials are required for authorization"));
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
-
-        return new AzureFileStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
-    }
-
     /**
      * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time this method is called a
      * new instance of {@link FileServiceAsyncClient} is created.
@@ -124,7 +104,25 @@ public final class FileServiceClientBuilder {
      * has been set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
-        return new FileServiceAsyncClient(constructImpl(), accountName);
+        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (sharedKeyCredential != null) {
+                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Credentials are required for authorization"));
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .build();
+
+        return new FileServiceAsyncClient(azureFileStorage, accountName, serviceVersion);
     }
 
     /**

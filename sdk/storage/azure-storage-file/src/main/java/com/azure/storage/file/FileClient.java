@@ -77,7 +77,7 @@ public class FileClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         return fileAsyncClient.getServiceVersion();
     }
 

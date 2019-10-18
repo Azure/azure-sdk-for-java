@@ -11,7 +11,7 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobProperties;
-import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.ProgressReporter;
@@ -74,22 +74,37 @@ public class BlobAsyncClientBase {
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
     protected final String accountName;
+    protected final String containerName;
+    protected final String blobName;
+    protected final BlobServiceVersion serviceVersion;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
-     * @param snapshot Optional. The snapshot identifier for the snapshot blob.
-     * @param customerProvidedKey Optional. Customer provided key used during encryption of the blob's data on the
-     * server.
-     * @param accountName The account name for storage account.
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    protected BlobAsyncClientBase(AzureBlobStorageImpl azureBlobStorage, String snapshot,
-        CpkInfo customerProvidedKey, String accountName) {
-        this.azureBlobStorage = azureBlobStorage;
+    protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        this.azureBlobStorage = new AzureBlobStorageBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        this.serviceVersion = serviceVersion;
+
+        this.accountName = accountName;
+        this.containerName = containerName;
+        this.blobName = blobName;
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
-        this.accountName = accountName;
     }
 
     /**
@@ -99,11 +114,8 @@ public class BlobAsyncClientBase {
      * @return a {@link BlobAsyncClientBase} used to interact with the specific snapshot.
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
-        return new BlobAsyncClientBase(new AzureBlobStorageBuilder()
-            .url(getBlobUrl())
-            .pipeline(azureBlobStorage.getHttpPipeline())
-            .version(getServiceVersion())
-            .build(), snapshot, customerProvidedKey, accountName);
+        return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey());
     }
 
     /**
@@ -133,7 +145,7 @@ public class BlobAsyncClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobContainerName();
+        return containerName;
     }
 
     /**
@@ -146,7 +158,7 @@ public class BlobAsyncClientBase {
      * @return The name of the blob.
      */
     public final String getBlobName() {
-        return BlobUrlParts.parse(this.azureBlobStorage.getUrl(), logger).getBlobName();
+        return blobName;
     }
 
     /**
@@ -173,7 +185,7 @@ public class BlobAsyncClientBase {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.accountName;
+        return accountName;
     }
 
     /**
@@ -181,8 +193,8 @@ public class BlobAsyncClientBase {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return this.azureBlobStorage.getVersion();
+    public BlobServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**

@@ -97,29 +97,6 @@ public final class QueueClientBuilder {
     public QueueClientBuilder() {
     }
 
-    private AzureQueueStorageImpl constructImpl() {
-        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
-
-        return new AzureQueueStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
-    }
-
     /**
      * Creates a {@link QueueClient} based on options set in the builder. Every time {@code buildClient()} is called a
      * new instance of {@link QueueClient} is created.
@@ -155,7 +132,28 @@ public final class QueueClientBuilder {
      * has been set.
      */
     public QueueAsyncClient buildAsyncClient() {
-        return new QueueAsyncClient(constructImpl(), queueName, accountName);
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
+        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
+
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (sharedKeyCredential != null) {
+                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            } else if (tokenCredential != null) {
+                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                return null;
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+
+        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .build();
+
+        return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion);
     }
 
     /**

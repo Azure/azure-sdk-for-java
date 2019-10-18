@@ -93,28 +93,6 @@ public class ShareClientBuilder {
     public ShareClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
-        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
-        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Credentials are required for authorization"));
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
-
-        return new AzureFileStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
-    }
-
     /**
      * Creates a {@link ShareAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
      * called a new instance of {@link ShareAsyncClient} is created.
@@ -131,7 +109,27 @@ public class ShareClientBuilder {
      * has been set.
      */
     public ShareAsyncClient buildAsyncClient() {
-        return new ShareAsyncClient(constructImpl(), shareName, snapshot, accountName);
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
+
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
+            if (sharedKeyCredential != null) {
+                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            } else if (sasTokenCredential != null) {
+                return new SasTokenCredentialPolicy(sasTokenCredential);
+            } else {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Credentials are required for authorization"));
+            }
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .build();
+
+        return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion);
     }
 
     /**

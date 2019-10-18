@@ -24,11 +24,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -102,7 +100,31 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder() {
     }
 
-    private AzureBlobStorageImpl constructImpl() {
+    /**
+     * Creates a {@link EncryptedBlobClient} based on options set in the Builder.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient}
+     *
+     * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     */
+    public EncryptedBlobClient buildEncryptedBlobClient() {
+        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
+    }
+
+    /**
+     * Creates a {@link EncryptedBlobAsyncClient} based on options set in the Builder.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient}
+     *
+     * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     */
+    public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
@@ -115,12 +137,14 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
+        return new EncryptedBlobAsyncClient(getHttpPipeline(serviceVersion),
+            String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
+            blobName, snapshot, keyWrapper, keyWrapAlgorithm);
+    }
+
+    private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
         if (httpPipeline != null) {
-            return new AzureBlobStorageBuilder()
-                .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-                .pipeline(httpPipeline)
-                .version(serviceVersion.getVersion())
-                .build();
+            return  httpPipeline;
         }
 
         String userAgentName = BlobCryptographyConfiguration.NAME;
@@ -159,49 +183,10 @@ public final class EncryptedBlobClientBuilder {
 
         policies.add(new ScrubEtagPolicy());
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-
-        return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
-    }
-
-    /**
-     * Creates a {@link EncryptedBlobClient} based on options set in the Builder.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient}
-     *
-     * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
-     */
-    public EncryptedBlobClient buildEncryptedBlobClient() {
-        return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
-    }
-
-    /**
-     * Creates a {@link EncryptedBlobAsyncClient} based on options set in the Builder.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobClient}
-     *
-     * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
-     */
-    public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
-        return new EncryptedBlobAsyncClient(constructImpl(), snapshot, accountName, keyWrapper, keyWrapAlgorithm);
-    }
-
-    protected void addOptionalEncryptionPolicy(List<HttpPipelinePolicy> policies) {
-        BlobDecryptionPolicy decryptionPolicy = new BlobDecryptionPolicy(keyWrapper, keyResolver);
-        policies.add(decryptionPolicy);
     }
 
     /**

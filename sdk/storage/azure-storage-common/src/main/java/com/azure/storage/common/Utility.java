@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
@@ -54,6 +55,9 @@ public final class Utility {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
     private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
     private static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
+
+    private static final Pattern IP_URL_PATTERN = Pattern
+        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
 
     public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
@@ -464,6 +468,13 @@ public final class Utility {
      * @return account name.
      */
     public static String getAccountName(URL url) {
+        if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
+            // URL is using an IP pattern of http://127.0.0.1:10000/accountName or http://localhost:10000/accountName
+
+        } else {
+            // URL is using a pattern of http://accountName.blob.core.windows.net
+
+        }
         UrlBuilder builder = UrlBuilder.parse(url);
         String accountName =  null;
         String host = builder.getHost();

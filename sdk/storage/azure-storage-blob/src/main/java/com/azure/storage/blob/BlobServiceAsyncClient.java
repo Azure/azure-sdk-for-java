@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
@@ -63,18 +64,32 @@ public final class BlobServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobServiceAsyncClient.class);
 
     private final AzureBlobStorageImpl azureBlobStorage;
-    private final CpkInfo customerProvidedKey;
+
     private final String accountName;
+    private final BlobServiceVersion serviceVersion;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Package-private constructor for use by {@link BlobServiceClientBuilder}.
      *
-     * @param azureBlobStorage the API client for blob storage
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
-    BlobServiceAsyncClient(AzureBlobStorageImpl azureBlobStorage, CpkInfo customerProvidedKey, String accountName) {
-        this.azureBlobStorage = azureBlobStorage;
-        this.customerProvidedKey = customerProvidedKey;
+    BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        CpkInfo customerProvidedKey) {
+        this.azureBlobStorage = new AzureBlobStorageBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        this.serviceVersion = serviceVersion;
+
         this.accountName = accountName;
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -91,15 +106,13 @@ public final class BlobServiceAsyncClient {
      * @return A {@link BlobContainerAsyncClient} object pointing to the specified container
      */
     public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName) {
-        if (containerName == null || containerName.isEmpty()) {
+        if (ImplUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
 
-        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToUrlPath(getAccountUrl(), containerName).toString())
-            .pipeline(getHttpPipeline())
-            .version(getServiceVersion())
-            .build(), customerProvidedKey, accountName);
+        return new BlobContainerAsyncClient(getHttpPipeline(),
+            Utility.appendToUrlPath(getAccountUrl(), containerName).toString(), getServiceVersion(), getAccountName(),
+            containerName, customerProvidedKey);
     }
 
     /**
@@ -116,8 +129,8 @@ public final class BlobServiceAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return this.azureBlobStorage.getVersion();
+    public BlobServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**

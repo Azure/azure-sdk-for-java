@@ -693,12 +693,12 @@ class HelperTest extends APISpec {
         parts.getBlobName() == blobName
 
         where:
-        endpoint                                                 | scheme | host              | accountName          | blobContainerName | blobName
-        "http://127.0.0.1:10000/devstoreaccount1"                | "http" | "127.0.0.1:10000" | "devstorageaccount1" | null              | null
-        "http://127.0.0.1:10000/devstoreaccount1/container"      | "http" | "127.0.0.1:10000" | "devstorageaccount1" | "container"       | null
-        "http://127.0.0.1:10000/devstoreaccount1/container/blob" | "http" | "127.0.0.1:10000" | "devstorageaccount1" | "container"       | "blob"
-        "http://localhost:10000/devstoreaccount1"                | "http" | "localhost:10000" | "devstorageaccount1" | null              | null
-        "http://localhost:10000/devstoreaccount1/container"      | "http" | "localhost:10000" | "devstorageaccount1" | "container"       | null
-        "http://localhost:10000/devstoreaccount1/container/blob" | "http" | "localhost:10000" | "devstorageaccount1" | "container"       | "blob"
+        endpoint                                                 | scheme | host              | accountName        | blobContainerName | blobName
+        "http://127.0.0.1:10000/devstoreaccount1"                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
+        "http://127.0.0.1:10000/devstoreaccount1/container"      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
+        "http://127.0.0.1:10000/devstoreaccount1/container/blob" | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
+        "http://localhost:10000/devstoreaccount1"                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
+        "http://localhost:10000/devstoreaccount1/container"      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
+        "http://localhost:10000/devstoreaccount1/container/blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
     }
 }

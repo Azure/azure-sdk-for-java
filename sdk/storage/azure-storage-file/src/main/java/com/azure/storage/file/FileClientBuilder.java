@@ -102,10 +102,13 @@ public class FileClientBuilder {
     public FileClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
+    private FileServiceVersion getServiceVersion() {
+        return version != null ? version : FileServiceVersion.getLatest();
+    }
+
+    private AzureFileStorageImpl constructImpl(FileServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
-        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
@@ -141,7 +144,9 @@ public class FileClientBuilder {
      * has been set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
-        return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
+        FileServiceVersion serviceVersion = getServiceVersion();
+        return new DirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion);
     }
 
     /**
@@ -179,8 +184,9 @@ public class FileClientBuilder {
      * has been set.
      */
     public FileAsyncClient buildFileAsyncClient() {
-
-        return new FileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
+        FileServiceVersion serviceVersion = getServiceVersion();
+        return new FileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion);
     }
 
     /**

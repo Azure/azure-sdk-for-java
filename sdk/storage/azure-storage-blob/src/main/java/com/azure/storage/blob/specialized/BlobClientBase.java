@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -82,7 +83,7 @@ public class BlobClientBase {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.client.getAccountName();
+        return client.getAccountName();
     }
 
     /**
@@ -134,8 +135,8 @@ public class BlobClientBase {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return this.client.getServiceVersion();
+    public BlobServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -144,7 +145,7 @@ public class BlobClientBase {
      * @return A string that represents the snapshotId of the snapshot blob
      */
     public String getSnapshotId() {
-        return this.client.getSnapshotId();
+        return client.getSnapshotId();
     }
 
     /**
@@ -153,7 +154,7 @@ public class BlobClientBase {
      * @return A boolean that indicates if a blob is a snapshot
      */
     public boolean isSnapshot() {
-        return this.client.isSnapshot();
+        return client.isSnapshot();
     }
 
     /**

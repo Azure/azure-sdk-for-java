@@ -7,8 +7,8 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlobServiceSasQueryParameters;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
@@ -24,6 +25,8 @@ import java.util.TreeMap;
  * #toURL()}.
  */
 public final class BlobUrlParts {
+    private static final Pattern IP_URL_PATTERN = Pattern
+        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
     private String scheme;
     private String host;
     private String containerName;
@@ -280,12 +283,56 @@ public final class BlobUrlParts {
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
      */
     public static BlobUrlParts parse(URL url) {
-        final String scheme = url.getProtocol();
-        final String host = url.getHost();
+        BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        String containerName = null;
-        String blobName = null;
-        String accountName = null;
+        if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
+            parseIpUrl(url, parts);
+        } else {
+            parseNonIpUrl(url, parts);
+        }
+
+        Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
+
+        String[] snapshotArray = queryParamsMap.remove("snapshot");
+        if (snapshotArray != null) {
+            parts.setSnapshot(snapshotArray[0]);
+        }
+
+        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
+            new BlobServiceSasQueryParameters(queryParamsMap, true);
+
+        return parts.setSasQueryParameters(blobServiceSasQueryParameters)
+            .setUnparsedParameters(queryParamsMap);
+    }
+
+    /*
+     * Parse the IP url into its host, account name, container name, and blob name.
+     */
+    private static void parseIpUrl(URL url, BlobUrlParts parts) {
+        parts.setHost(url.getAuthority());
+
+        String path = url.getPath();
+        if (path.charAt(0) == '/') {
+            path = path.substring(1);
+        }
+
+        String[] pathPieces = path.split("/", 3);
+        parts.setAccountName(pathPieces[0]);
+
+        if (pathPieces.length >= 3) {
+            parts.setContainerName(pathPieces[1]);
+            parts.setBlobName(pathPieces[2]);
+        } else if (pathPieces.length == 2) {
+            parts.setContainerName(pathPieces[1]);
+        }
+    }
+
+    /*
+     * Parse the non-IP url into its host, account name, container name, and blob name.
+     */
+    private static void parseNonIpUrl(URL url, BlobUrlParts parts) {
+        String host = url.getHost();
+        parts.setHost(host);
 
         //Parse host to get account name
         // host will look like this : <accountname>.blob.core.windows.net
@@ -293,10 +340,10 @@ public final class BlobUrlParts {
             int accountNameIndex = host.indexOf('.');
             if (accountNameIndex == -1) {
                 // host only contains account name
-                accountName = host;
+                parts.setAccountName(host);
             } else {
                 // if host is separated by .
-                accountName = host.substring(0, accountNameIndex);
+                parts.setAccountName(host.substring(0, accountNameIndex));
             }
         }
 
@@ -311,41 +358,14 @@ public final class BlobUrlParts {
             int containerEndIndex = path.indexOf('/');
             if (containerEndIndex == -1) {
                 // path contains only a container name and no blob name
-                containerName = path;
+                parts.setContainerName(path);
             } else {
                 // path contains the container name up until the slash and blob name is everything after the slash
-                containerName = path.substring(0, containerEndIndex);
-                blobName = path.substring(containerEndIndex + 1);
+                parts.setContainerName(path.substring(0, containerEndIndex));
+                parts.setBlobName(path.substring(containerEndIndex + 1));
             }
         }
-        Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());
 
-        String snapshot = null;
-        String[] snapshotArray = queryParamsMap.get("snapshot");
-        if (snapshotArray != null) {
-            snapshot = snapshotArray[0];
-            queryParamsMap.remove("snapshot");
-        }
-
-        BlobServiceSasQueryParameters blobServiceSasQueryParameters =
-            new BlobServiceSasQueryParameters(queryParamsMap, true);
-
-        return new BlobUrlParts()
-            .setScheme(scheme)
-            .setHost(host)
-            .setContainerName(containerName)
-            .setBlobName(blobName)
-            .setSnapshot(snapshot)
-            .setAccountName(accountName)
-            .setSasQueryParameters(blobServiceSasQueryParameters)
-            .setUnparsedParameters(queryParamsMap);
-    }
-
-    private static void parseIpUrl() {
-
-    }
-
-    private static void parseNonIpUrl() {
 
     }
 
