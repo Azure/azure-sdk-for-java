@@ -686,17 +686,15 @@ public final class ConfigurationAsyncClient {
                 String labels = ImplUtils.arrayToString(selector.getLabels(), label -> label);
                 String range = selector.getRange() != null ? String.format(RANGE_QUERY, selector.getRange()) : null;
 
-                result =
-                    service.listKeyValueRevisions(
-                        serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), range, context)
-                        .doOnRequest(
-                            ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
-                        .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
-                        .doOnError(
-                            error -> logger
-                                .warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
+                result = service.listKeyValueRevisions(
+                    serviceEndpoint, keys, labels, fields, selector.getAcceptDateTime(), range, context)
+                    .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
+                    .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
+                    .doOnError(error ->
+                        logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
             } else {
-                result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
+                result = service.listKeyValueRevisions(
+                    serviceEndpoint, null, null, null, null, null, context)
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
