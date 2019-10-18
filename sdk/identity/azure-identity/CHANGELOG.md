@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0-preview.4 (2019-10-07)
+**New features**
+
+- A new credential `AuthorizationCodeCredential` is added.
+- `DeviceCodeCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, and `UsernamePasswordCredentialBuilder` now
+supports single tenant apps with `.tenantId(String)` method.
+
+**Breaking changes**
+
+The `getToken(String... scopes)` methods on all the credentials are changed to `getToken(TokenRequest tokenRequest)`. 
+
 ## 1.0.0-preview.3 (2019-09-09)
 **New features**
 
