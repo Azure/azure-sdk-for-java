@@ -70,7 +70,7 @@
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
-      <Class name="AzureFileStorageBuilder"/>
+      <Class name="com.azure.storage.file.share.AzureFileStorageBuilder"/>
       <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
@@ -386,7 +386,7 @@
       <Class name="com.azure.storage.blob.HttpGetterInfo"/>
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
-      <Class name="DirectoryCreateHeaders"/>
+      <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -456,7 +456,7 @@
   <Match>
     <Or>
       <Class name="com.azure.storage.blob.specialized.BlobInputStream"/>
-      <Class name="StorageFileInputStream"/>
+      <Class name="com.azure.storage.file.share.StorageFileInputStream"/>
       <Class name="com.azure.storage.blob.specialized.BlobOutputStream$AppendBlobOutputStream"/>
       <Class name="com.azure.storage.queue.QueueServiceClient"/>
     </Or>
@@ -632,7 +632,7 @@
 
   <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
-    <Class name="StorageFileOutputStream"/>
+    <Class name="com.azure.storage.file.share.StorageFileOutputStream"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
