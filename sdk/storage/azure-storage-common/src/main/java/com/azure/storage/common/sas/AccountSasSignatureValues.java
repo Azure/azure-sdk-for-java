@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.sas;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.sas.SasIpRange;
 import java.time.OffsetDateTime;
 
 /**
@@ -57,7 +57,7 @@ public final class AccountSasSignatureValues {
     /**
      * Shared method between service clients to generate an account SAS.
      *
-     * @param sharedKeyCredential The {@code SharedKeyCredential} shared key credential for the account SAS
+     * @param storageSharedKeyCredential The {@code SharedKeyCredential} shared key credential for the account SAS
      * @param accountSasService The {@code AccountSasService} services for the account SAS
      * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
      * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
@@ -70,7 +70,7 @@ public final class AccountSasSignatureValues {
      * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public static String generateAccountSas(SharedKeyCredential sharedKeyCredential,
+    public static String generateAccountSas(StorageSharedKeyCredential storageSharedKeyCredential,
             AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
             AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
             String version, SasIpRange sasIpRange, SasProtocol sasProtocol) {
@@ -90,7 +90,7 @@ public final class AccountSasSignatureValues {
         values.setSasIpRange(sasIpRange);
         values.setProtocol(sasProtocol);
 
-        AccountSasQueryParameters sasQueryParameters = values.generateSasQueryParameters(sharedKeyCredential);
+        AccountSasQueryParameters sasQueryParameters = values.generateSasQueryParameters(storageSharedKeyCredential);
 
         return sasQueryParameters.encode();
     }
@@ -250,14 +250,17 @@ public final class AccountSasSignatureValues {
      * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters needed to make an
      * actual REST request.
      *
-     * @param sharedKeyCredentials Credentials for the storage account and corresponding primary or secondary key.
+     * @param storageSharedKeyCredentials Credentials for the storage account and corresponding
+     * primary or secondary key.
      * @return {@link AccountSasQueryParameters}
-     * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
-     * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
+     * @throws RuntimeException If the HMAC-SHA256 signature for {@code storageSharedKeyCredentials} fails to generate.
+     * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services},
+     * {@code resourceTypes},
      * {@code expiryTime}, {@code permissions} or {@code versions} is null
      */
-    public AccountSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+    public AccountSasQueryParameters generateSasQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
+        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
         Utility.assertNotNull("expiryTime", this.expiryTime);
@@ -265,15 +268,15 @@ public final class AccountSasSignatureValues {
         Utility.assertNotNull("version", this.version);
 
         // Signature is generated on the un-url-encoded values.
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign(sharedKeyCredentials));
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
 
         return new AccountSasQueryParameters(this.version, this.services, resourceTypes,
             this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions, signature);
     }
 
-    private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
+    private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {
         return String.join("\n",
-            sharedKeyCredentials.getAccountName(),
+            storageSharedKeyCredentials.getAccountName(),
             AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
             this.services,
             resourceTypes,

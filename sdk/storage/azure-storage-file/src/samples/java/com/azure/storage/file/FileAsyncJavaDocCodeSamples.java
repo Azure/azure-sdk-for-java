@@ -3,7 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.util.polling.Poller;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileProperties;
@@ -73,7 +73,7 @@ public class FileAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link FileAsyncClient} with {@code connectionString}
-     * which turns into {@link SharedKeyCredential}
+     * which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithConnectionString() {
