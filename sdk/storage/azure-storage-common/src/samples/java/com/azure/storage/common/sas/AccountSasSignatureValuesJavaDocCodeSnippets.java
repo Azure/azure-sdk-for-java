@@ -30,6 +30,6 @@ public class AccountSasSignatureValuesJavaDocCodeSnippets {
             .setServices(services)
             .setExpiryTime(OffsetDateTime.now().plus(Duration.ofDays(2)))
             .generateSasQueryParameters(credential);
-        // END: com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential
+        // END: com.azure.storage.common.sas.accountSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential
     }
 }
