@@ -4,8 +4,8 @@
 package com.azure.storage.file;
 
 import com.azure.storage.common.BaseSasQueryParameters;
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.SasProtocol;
 
 import java.time.OffsetDateTime;
@@ -68,7 +68,7 @@ public final class FileServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param protocol A {@code String} representing the allowed HTTP protocol(s) or {@code null}.
      * @param startTime A {@code java.util.Date} representing the start time for this SAS token or {@code null}.
      * @param expiryTime A {@code java.util.Date} representing the expiry time for this SAS token.
-     * @param ipRange A {@link IpRange} representing the range of valid IP addresses for this SAS token or
+     * @param sasIpRange A {@link SasIpRange} representing the range of valid IP addresses for this SAS token or
      * {@code null}.
      * @param identifier A {@code String} representing the signed identifier (only for Service SAS) or {@code null}.
      * @param resource A {@code String} representing the storage share or file (only for Service SAS).
@@ -76,10 +76,10 @@ public final class FileServiceSasQueryParameters extends BaseSasQueryParameters 
      * @param signature A {@code String} representing the signature for the SAS token.
      */
     FileServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, IpRange ipRange, String identifier, String resource, String permissions,
+        OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
         String contentLanguage, String contentType) {
-        super(version, protocol, startTime, expiryTime, ipRange, permissions, signature);
+        super(version, protocol, startTime, expiryTime, sasIpRange, permissions, signature);
 
         this.identifier = identifier;
         this.resource = resource;
@@ -157,7 +157,7 @@ public final class FileServiceSasQueryParameters extends BaseSasQueryParameters 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.ipRange);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);

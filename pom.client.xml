@@ -7,7 +7,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+  <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
+    <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -582,9 +582,9 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-certificates/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
-                -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
+                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
+                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
+                -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
@@ -870,12 +870,13 @@
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
+    <module>sdk/core/azure-core-tracing-opencensus</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>
-    <module>sdk/keyvault/azure-keyvault-certificates</module>
-    <module>sdk/keyvault/azure-keyvault-keys</module>
-    <module>sdk/keyvault/azure-keyvault-secrets</module>
+    <module>sdk/keyvault/azure-security-keyvault-certificates</module>
+    <module>sdk/keyvault/azure-security-keyvault-keys</module>
+    <module>sdk/keyvault/azure-security-keyvault-secrets</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
@@ -884,6 +885,5 @@
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
-    <module>sdk/tracing/azure-core-tracing-opencensus</module>
   </modules>
 </project>

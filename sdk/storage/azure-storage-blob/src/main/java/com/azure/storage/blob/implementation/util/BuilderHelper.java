@@ -16,7 +16,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -86,15 +87,16 @@ public final class BuilderHelper {
      * @param httpClient HttpClient to use in the builder.
      * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
      * @param configuration Configuration store contain environment settings.
+     * @param serviceVersion {@link BlobServiceVersion} of the service to be used when making requests.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration) {
+        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, BlobServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration));
+        policies.add(getUserAgentPolicy(configuration, serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -126,12 +128,13 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, BlobServiceVersion serviceVersion) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, serviceVersion);
     }
 
     /*

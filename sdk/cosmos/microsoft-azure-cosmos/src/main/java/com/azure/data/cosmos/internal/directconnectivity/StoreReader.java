@@ -161,7 +161,7 @@ public class StoreReader {
                 ).onErrorResume(throwable -> {
                     Throwable unwrappedException = Exceptions.unwrap(throwable);
                     try {
-                        logger.debug("Exception {} is thrown while doing readMany", unwrappedException);
+                        logger.debug("Exception is thrown while doing readMany: ", unwrappedException);
                         Exception storeException = Utils.as(unwrappedException, Exception.class);
                         if (storeException == null) {
                             return Flux.error(unwrappedException);

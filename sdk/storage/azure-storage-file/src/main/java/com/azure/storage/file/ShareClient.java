@@ -10,17 +10,18 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.FileHttpHeaders;
+import com.azure.storage.file.models.FileSignedIdentifier;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
-import com.azure.storage.file.models.SignedIdentifier;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
@@ -52,6 +53,15 @@ public class ShareClient {
      */
     public String getShareUrl() {
         return client.getShareUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -105,7 +115,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return The {@link ShareInfo information about the share}.
-     * @throws StorageException If the share already exists with different metadata
+     * @throws FileStorageException If the share already exists with different metadata
      */
     public ShareInfo create() {
         return createWithResponse(null, null, null, Context.NONE).getValue();
@@ -134,8 +144,8 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareInfo information about the share} and the status its creation.
-     * @throws StorageException If the share already exists with different metadata or {@code quotaInGB} is outside the
-     * allowed range.
+     * @throws FileStorageException If the share already exists with different metadata or {@code quotaInGB} is outside
+     * the allowed range.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
@@ -157,8 +167,8 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @return The {@link ShareSnapshotInfo information about snapshot of share}
-     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is in
-     * progress for the share
+     * @throws FileStorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
+     * in progress for the share
      */
     public ShareSnapshotInfo createSnapshot() {
         return createSnapshotWithResponse(null, null, Context.NONE).getValue();
@@ -183,8 +193,8 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareSnapshotInfo information about snapshot of the share} and status of
      * creation.
-     * @throws StorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is in
-     * progress for the share
+     * @throws FileStorageException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
+     * in progress for the share
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
@@ -205,7 +215,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
      *
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
     public void delete() {
         deleteWithResponse(null, Context.NONE);
@@ -227,7 +237,7 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
@@ -249,7 +259,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @return The {@link ShareProperties properties of the share}
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
     public ShareProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
@@ -272,7 +282,7 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareProperties> getPropertiesWithResponse(Duration timeout, Context context) {
@@ -294,7 +304,7 @@ public class ShareClient {
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return The {@link ShareProperties properties of the share}
-     * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @throws FileStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      */
     public ShareInfo setQuota(int quotaInGB) {
         return setQuotaWithResponse(quotaInGB, null, Context.NONE).getValue();
@@ -317,7 +327,7 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
-     * @throws StorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
+     * @throws FileStorageException If the share doesn't exist or {@code quotaInGB} is outside the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> setQuotaWithResponse(int quotaInGB, Duration timeout, Context context) {
@@ -345,7 +355,7 @@ public class ShareClient {
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return The {@link ShareProperties properties of the share}
-     * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the share doesn't exist or the metadata contains invalid keys
      */
     public ShareInfo setMetadata(Map<String, String> metadata) {
         return setMetadataWithResponse(metadata, null, Context.NONE).getValue();
@@ -370,7 +380,7 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing {@link ShareProperties properties of the share} with response status code
-     * @throws StorageException If the share doesn't exist or the metadata contains invalid keys
+     * @throws FileStorageException If the share doesn't exist or the metadata contains invalid keys
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<ShareInfo> setMetadataWithResponse(Map<String, String> metadata, Duration timeout,
@@ -392,9 +402,9 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
-     * @throws StorageException If the share doesn't exist
+     * @throws FileStorageException If the share doesn't exist
      */
-    public PagedIterable<SignedIdentifier> getAccessPolicy() {
+    public PagedIterable<FileSignedIdentifier> getAccessPolicy() {
         return new PagedIterable<>(client.getAccessPolicy());
     }
 
@@ -412,10 +422,10 @@ public class ShareClient {
      *
      * @param permissions Access policies to set on the queue
      * @return The {@link ShareInfo information of the share}
-     * @throws StorageException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
-     * or the share will have more than five policies.
+     * @throws FileStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the share will have more than five policies.
      */
-    public ShareInfo setAccessPolicy(List<SignedIdentifier> permissions) {
+    public ShareInfo setAccessPolicy(List<FileSignedIdentifier> permissions) {
         return setAccessPolicyWithResponse(permissions, null, Context.NONE).getValue();
     }
 
@@ -437,11 +447,11 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the {@link ShareInfo information of the share} with headers and response status
      * code
-     * @throws StorageException If the share doesn't exist, a stored access policy doesn't have all fields filled out,
-     * or the share will have more than five policies.
+     * @throws FileStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
+     * out, or the share will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<ShareInfo> setAccessPolicyWithResponse(List<SignedIdentifier> permissions, Duration timeout,
+    public Response<ShareInfo> setAccessPolicyWithResponse(List<FileSignedIdentifier> permissions, Duration timeout,
         Context context) {
         Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(permissions, context);
         return Utility.blockWithOptionalTimeout(response, timeout);
@@ -502,8 +512,8 @@ public class ShareClient {
      *
      * @param directoryName Name of the directory
      * @return A response containing a {@link DirectoryClient} to interact with the created directory.
-     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of being
-     * deleted, or the parent directory for the new directory doesn't exist
+     * @throws FileStorageException If the share doesn't exist, the directory already exists or is in the process of
+     * being deleted, or the parent directory for the new directory doesn't exist
      */
     public DirectoryClient createDirectory(String directoryName) {
         return createDirectoryWithResponse(directoryName, null, null, null,
@@ -531,8 +541,9 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
-     * @throws StorageException If the share doesn't exist, the directory already exists or is in the process of being
-     * deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal key name
+     * @throws FileStorageException If the share doesn't exist, the directory already exists or is in the process of
+     * being deleted, the parent directory for the new directory doesn't exist, or the metadata is using an illegal key
+     * name
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<DirectoryClient> createDirectoryWithResponse(String directoryName, FileSmbProperties smbProperties,
@@ -557,7 +568,7 @@ public class ShareClient {
      * @param fileName Name of the file.
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing a {@link FileClient} to interact with the created file.
-     * @throws StorageException If one of the following cases happen:
+     * @throws FileStorageException If one of the following cases happen:
      * <ul>
      * <li>
      * If the share or parent directory does not exist.
@@ -595,7 +606,7 @@ public class ShareClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link FileClient} to interact with the created file and the status of its
      * creation.
-     * @throws StorageException If one of the following cases happen:
+     * @throws FileStorageException If one of the following cases happen:
      * <ul>
      * <li>
      * If the share or parent directory does not exist.
@@ -606,7 +617,7 @@ public class ShareClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHTTPHeaders httpHeaders,
+    public Response<FileClient> createFileWithResponse(String fileName, long maxSize, FileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
         Context context) {
         FileClient fileClient = getFileClient(fileName);
@@ -627,7 +638,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
-     * @throws StorageException If the share doesn't exist or the directory isn't empty
+     * @throws FileStorageException If the share doesn't exist or the directory isn't empty
      */
     public void deleteDirectory(String directoryName) {
         deleteDirectoryWithResponse(directoryName, null, Context.NONE);
@@ -651,7 +662,7 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the share doesn't exist or the directory isn't empty
+     * @throws FileStorageException If the share doesn't exist or the directory isn't empty
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteDirectoryWithResponse(String directoryName, Duration timeout, Context context) {
@@ -672,7 +683,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
-     * @throws StorageException If the share or the file doesn't exist.
+     * @throws FileStorageException If the share or the file doesn't exist.
      */
     public void deleteFile(String fileName) {
         deleteFileWithResponse(fileName, null, Context.NONE);
@@ -695,7 +706,7 @@ public class ShareClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that only contains headers and response status code
-     * @throws StorageException If the share or the file doesn't exist.
+     * @throws FileStorageException If the share or the file doesn't exist.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     public Response<Void> deleteFileWithResponse(String fileName, Duration timeout, Context context) {

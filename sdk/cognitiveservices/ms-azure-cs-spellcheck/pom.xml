@@ -11,7 +11,7 @@
       <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
       <relativePath>../../../pom.data.xml</relativePath>
     </parent>
-    <version>1.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cognitiveservices-spellcheck;current} -->
+    <version>1.1.0-preview.1</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-spellcheck;current} -->
     <artifactId>azure-cognitiveservices-spellcheck</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <packaging>jar</packaging>

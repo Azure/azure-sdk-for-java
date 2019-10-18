@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.storage.blob.ProgressReceiver;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 
 import static com.azure.storage.blob.BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;

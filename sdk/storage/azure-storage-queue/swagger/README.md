@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: StorageError,StorageErrorException,StorageErrorCode,SignedIdentifier,EnqueuedMessage,DequeuedMessage,PeekedMessage,QueueItem,StorageServiceProperties,StorageServiceStats,CorsRule,AccessPolicy,Logging,Metrics,RetentionPolicy
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
 custom-types-subpackage: models
 ```
 
@@ -156,15 +156,15 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.DequeuedMessage) {
-        $.DequeuedMessage = $.DequeuedMessageItem;
+    if (!$.QueueMessageItem) {
+        $.QueueMessageItem = $.DequeuedMessageItem;
         delete $.DequeuedMessageItem;
-        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "DequeuedMessage");
+        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "QueueMessageItem");
     }
-    if (!$.PeekedMessage) {
-        $.PeekedMessage = $.PeekedMessageItem;
-        delete $.PeekedMessageItem;
-        $.PeekedMessagesList.items.$ref = $.PeekedMessagesList.items.$ref.replace("PeekedMessageItem", "PeekedMessage");
+    if (!$.SendMessageResult) {
+        $.SendMessageResult = $.EnqueuedMessage;
+        delete $.EnqueuedMessage;
+        $.EnqueuedMessageList.items.$ref = $.EnqueuedMessageList.items.$ref.replace("EnqueuedMessage", "SendMessageResult");
     }
 ```
 
@@ -177,6 +177,149 @@ directive:
     $.description = "The message ID name.";
 ```
 
+### GeoReplication
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.GeoReplication.properties.Status
+  transform: >
+    $["x-ms-enum"].name = "GeoReplicationStatus";
+```
+
+### QueueErrorCode
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ErrorCode
+  transform: >
+    $["x-ms-enum"].name = "QueueErrorCode";
+```
+
+### QueueServiceProperties, QueueAnalyticsLogging, QueueMetrics, QueueCorsRule, and QueueRetentionPolicy
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.QueueServiceProperties) {
+        $.QueueServiceProperties = $.StorageServiceProperties;
+        delete $.StorageServiceProperties;
+        $.QueueServiceProperties.xml = { "name": "StorageServiceProperties" };
+    }
+    if (!$.QueueAnalyticsLogging) {
+      $.QueueAnalyticsLogging = $.Logging;
+      delete $.Logging;
+      $.QueueAnalyticsLogging.xml = {"name": "Logging"};
+      $.QueueServiceProperties.properties.Logging["$ref"] = "#/definitions/QueueAnalyticsLogging";
+    }
+    if (!$.QueueMetrics) {
+      $.QueueMetrics = $.Metrics;
+      delete $.Metrics;
+      $.QueueMetrics.xml = {"name": "Metrics"};
+      $.QueueServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/QueueMetrics";
+      $.QueueServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/QueueMetrics";
+    }
+    if (!$.QueueCorsRule) {
+      $.QueueCorsRule = $.CorsRule;
+      delete $.CorsRule;
+      $.QueueCorsRule.xml = {"name": "CorsRule"};
+      $.QueueServiceProperties.properties.Cors.items["$ref"] = "#/definitions/QueueCorsRule";
+    }
+    if (!$.QueueRetentionPolicy) {
+      $.QueueRetentionPolicy = $.RetentionPolicy;
+      delete $.RetentionPolicy;
+      $.QueueRetentionPolicy.xml = {"name": "RetentionPolicy"};
+      $.QueueAnalyticsLogging.properties.RetentionPolicy["$ref"] = "#/definitions/QueueRetentionPolicy";
+      $.QueueMetrics.properties.RetentionPolicy["$ref"] = "#/definitions/QueueRetentionPolicy";
+    }
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    if (!$.QueueServiceProperties) {
+        const props = $.QueueServiceProperties = $.StorageServiceProperties;
+        props.name = "QueueServiceProperties";
+        props["x-ms-client-name"] = "properties";
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/QueueServiceProperties") };
+        delete $.StorageServiceProperties;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
+  transform: >
+    const param = $.put.parameters[0];
+    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueServiceProperties");
+        $.put.parameters[0] = { "$ref": path };
+    }
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/QueueServiceProperties");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+```
+
+### QueueServiceStatistics
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.QueueServiceStatistics) {
+        $.QueueServiceStatistics = $.StorageServiceStats;
+        delete $.StorageServiceStats;
+        $.QueueServiceStatistics.xml = { "name": "StorageServiceStats" }
+        $.QueueServiceStatistics.description = "Statistics for the storage service.";
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=stats"].get.responses["200"]
+  transform: >
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("StorageServiceStats")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/QueueServiceStatistics");
+        $.schema = { "$ref": path };
+    }
+```
+
+### QueueAccessPolicy and QueueSignedIdentifier
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.QueueSignedIdentifier) {
+      $.QueueSignedIdentifier = $.SignedIdentifier;
+      delete $.SignedIdentifier;
+      $.QueueSignedIdentifier.xml = {"name": "SignedIdentifier"};
+      $.SignedIdentifiers.items["$ref"] = "#/definitions/QueueSignedIdentifier";
+    }
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.QueueAccessPolicy) {
+      $.QueueAccessPolicy = $.AccessPolicy;
+      delete $.AccessPolicy;
+      $.QueueAccessPolicy.xml = {"name": "AccessPolicy"};
+      $.QueueAccessPolicy.properties.StartsOn = $.QueueAccessPolicy.properties.Start;
+      $.QueueAccessPolicy.properties.StartsOn.xml = {"name": "Start"};
+      delete $.QueueAccessPolicy.properties.Start;
+      $.QueueAccessPolicy.properties.ExpiresOn = $.QueueAccessPolicy.properties.Expiry;
+      $.QueueAccessPolicy.properties.ExpiresOn.xml = {"name": "Expiry"};
+      delete $.QueueAccessPolicy.properties.Expiry;
+      $.QueueAccessPolicy.properties.Permissions = $.QueueAccessPolicy.properties.Permission;
+      $.QueueAccessPolicy.properties.Permissions.xml = {"name": "Permission"};
+      delete $.QueueAccessPolicy.properties.Permission;
+    }
+    $.QueueSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/QueueAccessPolicy";
+```
+
+### QueueServiceProperties Annotation Fix
+``` yaml
+directive:
+- from: QueueServiceProperties.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private QueueMetrics hourMetrics;').
+      replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private QueueMetrics minuteMetrics;');
+```
+
 ### Change StorageErrorException to StorageException
 ``` yaml
 directive:
@@ -185,47 +328,47 @@ directive:
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 - from: QueuesImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 - from: MessagesImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 - from: MessageIdsImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.queue.models.StorageErrorException",
-        "com.azure.storage.queue.models.StorageException"
+        "com.azure.storage.queue.implementation.models.StorageErrorException",
+        "com.azure.storage.queue.models.QueueStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
       );
 ```

@@ -33,8 +33,8 @@ import com.azure.storage.file.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.implementation.models.SharesSetAccessPolicyResponse;
 import com.azure.storage.file.implementation.models.SharesSetMetadataResponse;
 import com.azure.storage.file.implementation.models.SharesSetQuotaResponse;
-import com.azure.storage.file.models.SignedIdentifier;
-import com.azure.storage.file.models.StorageException;
+import com.azure.storage.file.models.FileStorageException;
+import com.azure.storage.file.models.FileSignedIdentifier;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -73,57 +73,57 @@ public final class SharesImpl {
     private interface SharesService {
         @Put("{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesCreateResponse> create(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
         @Get("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
         @Delete("{shareName}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesDeleteResponse> delete(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-delete-snapshots") DeleteSnapshotsOptionType deleteSnapshots, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesCreateSnapshotResponse> createSnapshot(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesCreatePermissionResponse> createPermission(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @BodyParam("application/json; charset=utf-8") SharePermission sharePermission, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesGetPermissionResponse> getPermission(@PathParam("shareName") String shareName, @HostParam("url") String url, @HeaderParam("x-ms-file-permission-key") String filePermissionKey, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesSetQuotaResponse> setQuota(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesSetMetadataResponse> setMetadata(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesGetAccessPolicyResponse> getAccessPolicy(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesSetAccessPolicyResponse> setAccessPolicy(@PathParam("shareName") String shareName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper shareAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Get("{shareName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageException.class)
+        @UnexpectedResponseExceptionType(FileStorageException.class)
         Mono<SharesGetStatisticsResponse> getStatistics(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
     }
 
@@ -457,7 +457,7 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String shareName, List<SignedIdentifier> shareAcl, Integer timeout, Context context) {
+    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(String shareName, List<FileSignedIdentifier> shareAcl, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "acl";
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(shareAcl);

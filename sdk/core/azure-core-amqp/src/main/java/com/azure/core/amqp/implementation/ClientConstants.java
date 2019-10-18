@@ -6,7 +6,7 @@ package com.azure.core.amqp.implementation;
 public final class ClientConstants {
     public static final String NOT_APPLICABLE = "n/a";
     public static final String PRODUCT_NAME = "azsdk-java-eventhubs";
-    public static final String CURRENT_JAVA_CLIENT_VERSION = "5.0.0-preview.4";
+    public static final String CURRENT_JAVA_CLIENT_VERSION = "5.0.0-preview.5";
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
 
