@@ -218,27 +218,26 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Sets the Blob permissions allowed by the SAS.
      *
-     * <p>this will set the {@link #resource} to {@link #SAS_BLOB_CONSTANT} or {@link #SAS_BLOB_SNAPSHOT_CONSTANT} based
-     * on the value of {@link #getSnapshotId()}.</p>
-     *
      * @param permissions {@link BlobSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
+     * @throws NullPointerException if {@code permissions} is null.
      */
     public BlobServiceSasSignatureValues setPermissions(BlobSasPermission permissions) {
-        this.permissions = Objects.requireNonNull(permissions, "'permissions' cannot be null").toString();
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
     /**
      * Sets the Container permissions allowed by the SAS.
      *
-     * <p>this will set the {@link #resource} to {@link #SAS_CONTAINER_CONSTANT}.</p>
-     *
      * @param permissions {@link BlobContainerSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
+     * @throws NullPointerException if {@code permissions} is null.
      */
     public BlobServiceSasSignatureValues setPermissions(BlobContainerSasPermission permissions) {
-        this.permissions = Objects.requireNonNull(permissions, "'permissions' cannot be null").toString();
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
