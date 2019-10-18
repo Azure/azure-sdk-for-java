@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -34,6 +35,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -76,6 +78,7 @@ public final class SpecializedBlobClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private BlobServiceVersion version;
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -165,6 +168,7 @@ public final class SpecializedBlobClientBuilder {
         if (Objects.isNull(containerName) || containerName.isEmpty()) {
             containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
         }
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (sharedKeyCredential != null) {
@@ -176,11 +180,12 @@ public final class SpecializedBlobClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -193,6 +198,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobClient(BlobClientBase blobClient) {
         pipeline(blobClient.getHttpPipeline());
         endpoint(blobClient.getBlobUrl());
+        serviceVersion(fromClientVersion(blobClient.getServiceVersion()));
         this.snapshot = blobClient.getSnapshotId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         return this;
@@ -207,6 +213,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient) {
         pipeline(blobAsyncClient.getHttpPipeline());
         endpoint(blobAsyncClient.getBlobUrl());
+        serviceVersion(fromClientVersion(blobAsyncClient.getServiceVersion()));
         this.snapshot = blobAsyncClient.getSnapshotId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         return this;
@@ -222,6 +229,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder containerClient(BlobContainerClient blobContainerClient, String blobName) {
         pipeline(blobContainerClient.getHttpPipeline());
         endpoint(blobContainerClient.getBlobContainerUrl());
+        serviceVersion(fromClientVersion(blobContainerClient.getServiceVersion()));
         blobName(blobName);
         this.customerProvidedKey = blobContainerClient.getCustomerProvidedKey();
         return this;
@@ -239,6 +247,7 @@ public final class SpecializedBlobClientBuilder {
         String blobName) {
         pipeline(blobContainerAsyncClient.getHttpPipeline());
         endpoint(blobContainerAsyncClient.getBlobContainerUrl());
+        serviceVersion(fromClientVersion(blobContainerAsyncClient.getServiceVersion()));
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         return this;
@@ -482,5 +491,27 @@ public final class SpecializedBlobClientBuilder {
 
         this.httpPipeline = httpPipeline;
         return this;
+    }
+
+    /**
+     * Sets the {@link BlobServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
+        this.version = version;
+        return this;
+    }
+
+    private static BlobServiceVersion fromClientVersion(String version) {
+        return Arrays.stream(BlobServiceVersion.values())
+            .filter(en -> Objects.equals(en.getVersion(), version))
+            .findFirst()
+            .orElseGet(BlobServiceVersion::getLatest);
     }
 }

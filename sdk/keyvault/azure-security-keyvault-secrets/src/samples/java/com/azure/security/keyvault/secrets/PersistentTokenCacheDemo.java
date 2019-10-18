@@ -3,9 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.SharedTokenCacheCredential;
-import com.azure.identity.credential.SharedTokenCacheCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.identity.SharedTokenCacheCredential;
+import com.azure.identity.SharedTokenCacheCredentialBuilder;
 
 /**
  * Sample showing how to authenticate to key vault with a shared token cache credential.

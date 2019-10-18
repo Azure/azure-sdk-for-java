@@ -68,24 +68,25 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
      */
     @Override
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
-        this.keyId = keyId;
+        this.keyIdentifier(keyId);
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create key encryption key async client"));
         }
+        CryptographyServiceVersion serviceVersion = this.getServiceVersion() != null ? this.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
-        if (pipeline != null) {
-            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline)));
+        if (this.getPipeline() != null) {
+            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, this.getPipeline(), serviceVersion)));
         }
 
-        if (credential == null) {
+        if (this.getCredential() == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Key Vault credentials are required to build the key encryption key async client"));
         }
 
-        HttpPipeline pipeline = setupPipeline();
+        HttpPipeline pipeline = setupPipeline(serviceVersion);
 
-        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline)));
+        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
     }
 
     /**
@@ -137,6 +138,15 @@ public final class KeyEncryptionKeyClientBuilder extends CryptographyClientBuild
     @Override
     public KeyEncryptionKeyClientBuilder configuration(Configuration configuration) {
         super.configuration(configuration);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyEncryptionKeyClientBuilder serviceVersion(CryptographyServiceVersion version) {
+        super.serviceVersion(version);
         return this;
     }
 }
