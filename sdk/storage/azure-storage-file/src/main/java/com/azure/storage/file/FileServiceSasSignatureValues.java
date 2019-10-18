@@ -162,10 +162,11 @@ public final class FileServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS.
+     * Sets the permissions allowed by the SAS. Share SASs are created when <b>only</b>
+     * {@link #setShareName(String) share name} is set on the builder.
      *
-     * @param permissions Permissions string for the SAS
-     * @return the updated FileServiceSasSignatureValues object
+     * @param permissions Permissions for the share SAS.
+     * @return the updated FileServiceSasSignatureValues object.
      */
     public FileServiceSasSignatureValues setPermissions(ShareSasPermission permissions) {
         Utility.assertNotNull("permissions", permissions);
@@ -174,9 +175,10 @@ public final class FileServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS.
+     * Sets the permissions allowed by the SAS. File SASs are created when both a
+     * {@link #setShareName(String) share name} and {@link #setFilePath(String) file path} are set on the builder.
      *
-     * @param permissions Permissions string for the SAS
+     * @param permissions Permissions for the SAS.
      * @return the updated FileServiceSasSignatureValues object
      */
     public FileServiceSasSignatureValues setPermissions(FileSasPermission permissions) {
