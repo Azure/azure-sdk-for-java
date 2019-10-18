@@ -272,7 +272,7 @@ class HelperTest extends APISpec {
 
         then:
         def e = thrown(NullPointerException)
-        e.getMessage().contains("sharedKeyCredentials")
+        e.getMessage().contains("storageSharedKeyCredentials")
     }
 
     @Unroll
