@@ -30,7 +30,7 @@ import java.time.OffsetDateTime;
  * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential}
  *
  * @see FileServiceSasQueryParameters
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
  */
@@ -248,7 +248,7 @@ public final class FileServiceSasSignatureValues {
 
     /**
      * @return the name of the access policy on the share this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">
      * Establishing a stored access policy</a> for more information.
      */
     public String getIdentifier() {
@@ -257,7 +257,7 @@ public final class FileServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the share this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">
      * Establishing a stored access policy</a> for more information.
      *
      * @param identifier Name of the stored access policy
