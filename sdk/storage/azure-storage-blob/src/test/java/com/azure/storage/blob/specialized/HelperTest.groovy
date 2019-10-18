@@ -442,7 +442,7 @@ class HelperTest extends APISpec {
     def "accountSasSignatures string to sign"() {
         when:
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(new AccountSasPermission().setReadPermission(true).toString())
+            .setPermissions(new AccountSasPermission().setReadPermission(true))
             .setServices("b")
             .setResourceTypes("o")
             .setStartTime(startTime)
@@ -470,8 +470,13 @@ class HelperTest extends APISpec {
     @Unroll
     def "accountSasSignatureValues IA"() {
         setup:
+        AccountSasPermission sasPermission = null;
+        if (permissions != null) {
+            sasPermission = AccountSasPermission.parse(permissions);
+        }
+
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(permissions)
+            .setPermissions(sasPermission)
             .setServices(service)
             .setResourceTypes(resourceType)
             .setExpiryTime(expiryTime)
