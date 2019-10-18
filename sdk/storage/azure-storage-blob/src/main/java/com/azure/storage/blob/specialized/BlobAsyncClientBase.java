@@ -275,7 +275,7 @@ public class BlobAsyncClientBase {
      * cancelled.
      */
     public Poller<BlobCopyInfo, Void> beginCopyFromUrl(String sourceUrl, Duration pollInterval) {
-            return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
+        return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
     /**
@@ -284,7 +284,7 @@ public class BlobAsyncClientBase {
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration}
      *
      * <p><strong>Cancelling a copy operation</strong></p>
      *
@@ -439,8 +439,8 @@ public class BlobAsyncClientBase {
      *
      * @see #copyFromURL(String)
      * @see #beginCopyFromUrl(String, Duration)
-     * @see #beginCopyFromUrl(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions,
-     * Duration)
+     * @see #beginCopyFromUrl(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions,
+     * BlobAccessConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
@@ -464,8 +464,8 @@ public class BlobAsyncClientBase {
      *
      * @see #copyFromURL(String)
      * @see #beginCopyFromUrl(String, Duration)
-     * @see #beginCopyFromUrl(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions, BlobAccessConditions,
-     * Duration)
+     * @see #beginCopyFromUrl(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions,
+     * BlobAccessConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.

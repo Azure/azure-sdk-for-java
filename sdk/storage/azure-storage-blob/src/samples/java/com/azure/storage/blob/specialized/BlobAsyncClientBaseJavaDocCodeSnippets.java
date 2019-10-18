@@ -48,10 +48,10 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(String, Duration)}
      */
     public void beginCopyFromUrlCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Duration
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#String-Duration
         client.beginCopyFromUrl(url, Duration.ofSeconds(3)).getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#URL-Duration
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrl#String-Duration
     }
 
     /**
@@ -243,7 +243,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(URL, Map, AccessTier,
+     * Code snippets for {@link BlobAsyncClientBase#beginCopyFromUrl(String, Map, AccessTier,
      * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
     public void beginCopyFromUrlCancelCodeSnippets() {
