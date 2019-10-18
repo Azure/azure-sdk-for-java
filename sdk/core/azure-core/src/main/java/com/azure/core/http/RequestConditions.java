@@ -13,6 +13,28 @@ public class RequestConditions extends MatchConditions {
     private OffsetDateTime ifUnmodifiedSince;
 
     /**
+     * {@inheritDoc}
+     *
+     * @return The updated ResourceConditions object.
+     */
+    @Override
+    public RequestConditions setIfMatch(String ifMatch) {
+        super.setIfMatch(ifMatch);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return The updated ResourceConditions object.
+     */
+    @Override
+    public RequestConditions setIfNoneMatch(String ifNoneMatch) {
+        super.setIfNoneMatch(ifNoneMatch);
+        return this;
+    }
+
+    /**
      * Gets the {@link OffsetDateTime datetime} that resources must have been modified since.
      *
      * @return The datetime that resources must have been modified since.
