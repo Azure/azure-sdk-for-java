@@ -3,35 +3,29 @@
 
 package com.azure.storage.common.sas;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
-
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import java.time.OffsetDateTime;
 
 /**
- * AccountSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all
- * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
- * can actually be applied to blob urls. Note: that both this class and {@link AccountSasQueryParameters} exist because
- * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
- * requests.
- * <p>
- * Please see
- * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
- * for more conceptual information on SAS:
- * <p>
- * <p>
- * Please see
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas>here</a> for further
- * descriptions of the parameters, including which are required:
+ * Used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once all the values are set, call
+ * {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSASQueryParameters(StorageSharedKeyCredential)} to
+ * obtain a representation of the SAS which can actually be applied to container, file, queue, and tables.
  *
- * <p>Please see
- * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
- * for additional samples.</p>
+ * <p><strong>Generating an account SAS</strong></p>
+ * <p>The snippet below generates an account SAS that lasts for two days and gives the user read and list access to
+ * blob containers and file shares.</p>
+ *
+ * {@codesnippet com.azure.storage.common.sas.accountSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
+ *
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  */
 public final class AccountSasSignatureValues {
-
-    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private String version;
 
     private SasProtocol protocol;
 
@@ -48,55 +42,14 @@ public final class AccountSasSignatureValues {
     private String resourceTypes;
 
     /**
-     * Initializes an {@code AccountSasSignatureValues} object with the version number set to the default and all other
-     * values empty.
+     * Initializes a new {@link AccountSasSignatureValues} object.
      */
     public AccountSasSignatureValues() {
     }
 
     /**
-     * Shared method between service clients to generate an account SAS.
      *
-     * @param storageSharedKeyCredential The {@code SharedKeyCredential} shared key credential for the account SAS
-     * @param accountSasService The {@code AccountSasService} services for the account SAS
-     * @param accountSasResourceType An optional {@code AccountSasResourceType} resources for the account SAS
-     * @param accountSasPermission The {@code AccountSasPermission} permission for the account SAS
-     * @param expiryTime The {@code OffsetDateTime} expiry time for the account SAS
-     * @param startTime The {@code OffsetDateTime} start time for the account SAS
-     * @param version The {@code String} version for the account SAS
-     * @param sasIpRange An optional {@code SasIpRange} ip address range for the SAS
-     * @param sasProtocol An optional {@code SasProtocol} protocol for the SAS
-     * @return A string that represents the SAS token
-     * @throws NullPointerException If any of {@code sharedKeyCredentials}, {@code services}, {@code resourceTypes},
-     * {@code expiryTime}, {@code permissions} or {@code versions} is null
-     */
-    public static String generateAccountSas(StorageSharedKeyCredential storageSharedKeyCredential,
-            AccountSasService accountSasService, AccountSasResourceType accountSasResourceType,
-            AccountSasPermission accountSasPermission, OffsetDateTime expiryTime, OffsetDateTime startTime,
-            String version, SasIpRange sasIpRange, SasProtocol sasProtocol) {
-
-        AccountSasSignatureValues values = new AccountSasSignatureValues();
-
-        values.setServices(accountSasService == null ? null : accountSasService.toString());
-        values.setResourceTypes(accountSasResourceType == null ? null : accountSasResourceType.toString());
-        values.setPermissions(accountSasPermission == null ? null : accountSasPermission.toString());
-        values.setExpiryTime(expiryTime);
-        values.setStartTime(startTime);
-
-        if (version != null) {
-            values.setVersion(version);
-        }
-
-        values.setSasIpRange(sasIpRange);
-        values.setProtocol(sasProtocol);
-
-        AccountSasQueryParameters sasQueryParameters = values.generateSasQueryParameters(storageSharedKeyCredential);
-
-        return sasQueryParameters.encode();
-    }
-
-    /**
-     * @return the service version that is targeted, if {@code null} or empty the service version targeted by the
+     * @return the service version that is targeted, if {@code null} or empty the latest service version targeted by the
      * library will be used.
      */
     public String getVersion() {
@@ -170,7 +123,9 @@ public final class AccountSasSignatureValues {
     }
 
     /**
-     * @return the operations the SAS user may perform. Please refer to {@link AccountSasPermission} to help determine
+     * Gets the operations the SAS user may perform.
+     *
+     * @return The operations the SAS user may perform. Please refer to {@link AccountSasPermission} to help determine
      * which permissions are allowed.
      */
     public String getPermissions() {
@@ -178,14 +133,16 @@ public final class AccountSasSignatureValues {
     }
 
     /**
-     * Sets the operations the SAS user may perform. Please refer to {@link AccountSasPermission} for help constructing
-     * the permissions string.
+     * Sets the operations the account SAS user may perform. Please refer to {@link AccountSasPermission} for help
+     * constructing the permissions string.
      *
-     * @param permissions Permissions string to set
+     * @param permissions Permissions to set.
      * @return the updated AccountSasSignatureValues object.
+     * @throws NullPointerException if {@code permissions} is null.
      */
-    public AccountSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public AccountSasSignatureValues setPermissions(AccountSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
@@ -247,16 +204,33 @@ public final class AccountSasSignatureValues {
     }
 
     /**
-     * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters needed to make an
-     * actual REST request.
+     * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters for authenticating
+     * requests.
      *
-     * @param storageSharedKeyCredentials Credentials for the storage account and corresponding
-     * primary or secondary key.
-     * @return {@link AccountSasQueryParameters}
+     * <p><strong>Notes on SAS generation</strong></p>
+     * <p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the latest service version is used.</li>
+     * <li>The following parameters are required to generate a SAS:
+     *     <ul>
+     *         <li>{@link #setExpiryTime(OffsetDateTime) expiryTime}</li>
+     *         <li>{@link #setServices(String) services}</li>
+     *         <li>{@link #setPermissions(AccountSasPermission) permissions}</li>
+     *         <li>{@link #setResourceTypes(String) resourceTypes}</li>
+     *     </ul>
+     * </li>
+     * </ul>
+     *
+     * <p>For samples, see class level JavaDocs.</p>
+     *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
+     *
+     * @param storageSharedKeyCredentials Credentials for the storage account.
+     * @return A new {@link AccountSasQueryParameters} used for authenticating requests.
+     *
      * @throws RuntimeException If the HMAC-SHA256 signature for {@code storageSharedKeyCredentials} fails to generate.
      * @throws NullPointerException If any of {@code storageSharedKeyCredentials}, {@code services},
-     * {@code resourceTypes},
-     * {@code expiryTime}, {@code permissions} or {@code versions} is null
+     * {@code resourceTypes}, {@code expiryTime}, or {@code permissions} is null.
      */
     public AccountSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
@@ -265,7 +239,10 @@ public final class AccountSasSignatureValues {
         StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
         StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
         StorageImplUtils.assertNotNull("permissions", this.permissions);
-        StorageImplUtils.assertNotNull("version", this.version);
+
+        if (ImplUtils.isNullOrEmpty(version)) {
+            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+        }
 
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
