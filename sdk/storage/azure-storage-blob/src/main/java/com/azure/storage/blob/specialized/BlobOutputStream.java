@@ -109,7 +109,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long offset, long writeLength) {
             this.appendPositionAccessConditions.setAppendPosition(offset);
 
-            return client.appendBlockWithResponse(blockData, writeLength, appendBlobAccessConditions)
+            return client.appendBlockWithResponse(blockData, writeLength, null, appendBlobAccessConditions)
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
                     this.lastError = new IOException(e);
@@ -174,7 +174,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             LeaseAccessConditions leaseAccessConditions = (accessConditions == null)
                 ? null : accessConditions.getLeaseAccessConditions();
 
-            return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
+            return client.stageBlockWithResponse(blockId, blockData, writeLength, null, leaseAccessConditions)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -232,7 +232,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
             return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1),
-                pageData, pageBlobAccessConditions)
+                pageData, null, pageBlobAccessConditions)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

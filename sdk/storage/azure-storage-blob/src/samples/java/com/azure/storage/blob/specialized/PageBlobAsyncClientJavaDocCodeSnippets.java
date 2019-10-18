@@ -19,7 +19,10 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -87,17 +90,18 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesWithResponse(PageRange, Flux, PageBlobAccessConditions)}
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobAccessConditions)}
      */
-    public void uploadPagesWithResponseCodeSnippet() {
+    public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest("data".getBytes()));
         PageBlobAccessConditions pageBlobAccessConditions = new PageBlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.uploadPagesWithResponse(pageRange, body, pageBlobAccessConditions)
+        client.uploadPagesWithResponse(pageRange, body, md5, pageBlobAccessConditions)
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-PageBlobAccessConditions

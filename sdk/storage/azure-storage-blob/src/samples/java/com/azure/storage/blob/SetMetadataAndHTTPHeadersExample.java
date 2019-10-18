@@ -12,6 +12,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
@@ -28,7 +31,7 @@ public class SetMetadataAndHTTPHeadersExample {
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         String accountName = SampleHelper.getAccountName();
         String accountKey = SampleHelper.getAccountKey();
 
@@ -75,12 +78,20 @@ public class SetMetadataAndHTTPHeadersExample {
         BlobHttpHeaders blobHTTPHeaders = new BlobHttpHeaders().setBlobContentDisposition("attachment")
             .setBlobContentType("text/html; charset=utf-8");
 
+
+        String data = "Hello world!";
+
+        /*
+         * Send an MD5 hash of the content to be validated by the service.
+         */
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.getBytes()));
+
         /*
          * Data which will upload to block blob.
          */
-        String data = "Hello world!";
         InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
-        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, null, null, null);
+        blobClient.uploadWithResponse(dataStream, data.length(), blobHTTPHeaders, blobMetadata, null, md5, null, null,
+            null);
 
         /*
          * Clean up the container and blob.

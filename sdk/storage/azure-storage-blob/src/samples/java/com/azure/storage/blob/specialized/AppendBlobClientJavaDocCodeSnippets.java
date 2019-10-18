@@ -16,8 +16,11 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,11 +81,12 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, AppendBlobAccessConditions,
+     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, byte[], AppendBlobAccessConditions,
      * Duration, Context)}
      */
-    public void appendBlock2() {
+    public void appendBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest("data".getBytes()));
         AppendBlobAccessConditions accessConditions = new AppendBlobAccessConditions()
             .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
                 .setAppendPosition(POSITION)
@@ -90,8 +94,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("AppendBlob has %d committed blocks%n",
-            client.appendBlockWithResponse(data, length, accessConditions, timeout,
-                context).getValue().getBlobCommittedBlockCount());
+            client.appendBlockWithResponse(data, length, md5, accessConditions, timeout, context)
+                .getValue().getBlobCommittedBlockCount());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-AppendBlobAccessConditions-Duration-Context
     }
 

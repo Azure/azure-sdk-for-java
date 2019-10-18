@@ -20,8 +20,11 @@ import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
 
@@ -89,11 +92,12 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, InputStream, PageBlobAccessConditions,
-     * Duration, Context)}
+     * Code snippets for {@link PageBlobClient#uploadPagesWithResponse(PageRange, InputStream, byte[],
+     * PageBlobAccessConditions, Duration, Context)}
      */
-    public void uploadPagesWithResponseCodeSnippet() {
+    public void uploadPagesWithResponseCodeSnippet() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest("data".getBytes()));
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
@@ -103,7 +107,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesWithResponse(pageRange, dataStream, pageBlobAccessConditions, timeout, context).getValue();
+            .uploadPagesWithResponse(pageRange, dataStream, md5, pageBlobAccessConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-PageBlobAccessConditions-Duration-Context

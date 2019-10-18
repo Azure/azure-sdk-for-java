@@ -58,8 +58,8 @@ class CPKTest extends APISpec {
 
     def "Put blob with CPK"() {
         when:
-        def response = cpkBlockBlob.uploadWithResponse(defaultInputStream.get(), defaultDataSize,
-            null, null, null, null, null, null)
+        def response = cpkBlockBlob.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+            null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -83,7 +83,7 @@ class CPKTest extends APISpec {
     def "Put block with CPK"() {
         when:
         def response = cpkBlockBlob.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
-            null, null, null)
+            null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -133,7 +133,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -146,7 +146,7 @@ class CPKTest extends APISpec {
         def sourceBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         sourceBlob.create(PageBlobClient.PAGE_BYTES)
         sourceBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null)
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)), null, null, null, null)
 
         cpkPageBlob.create(PageBlobClient.PAGE_BYTES)
 
@@ -174,7 +174,7 @@ class CPKTest extends APISpec {
 
         when:
         def response = cpkPageBlob.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
-            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null)
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 2)), null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -187,7 +187,8 @@ class CPKTest extends APISpec {
         cpkAppendBlob.create()
 
         when:
-        def response = cpkAppendBlob.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null)
+        def response = cpkAppendBlob.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null,
+            null, null)
 
         then:
         response.getStatusCode() == 201

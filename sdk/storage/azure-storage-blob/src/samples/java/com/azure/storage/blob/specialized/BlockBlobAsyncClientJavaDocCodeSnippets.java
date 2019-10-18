@@ -16,6 +16,8 @@ import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
@@ -48,9 +50,9 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#uploadWithResponse(Flux, long, BlobHttpHeaders, Map, AccessTier, byte[], BlobAccessConditions)}
      */
-    public void upload2() {
+    public void upload2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
@@ -58,12 +60,13 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .setBlobContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest("data".getBytes()));
         BlobAccessConditions accessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
-        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, accessConditions)
+        client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT, md5, accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
@@ -82,12 +85,13 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, LeaseAccessConditions)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, byte[], LeaseAccessConditions)}
      */
-    public void stageBlock2() {
+    public void stageBlock2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
+        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest("data".getBytes()));
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-        client.stageBlockWithResponse(base64BlockID, data, length, accessConditions).subscribe(response ->
+        client.stageBlockWithResponse(base64BlockID, data, length, md5, accessConditions).subscribe(response ->
             System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-LeaseAccessConditions
     }
