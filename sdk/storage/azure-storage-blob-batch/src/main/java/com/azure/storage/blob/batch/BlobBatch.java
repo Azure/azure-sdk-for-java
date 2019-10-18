@@ -157,7 +157,8 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName), deleteOptions, blobAccessConditions);
+        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName),
+            deleteOptions, blobAccessConditions);
     }
 
     /**
