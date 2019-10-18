@@ -117,7 +117,7 @@ public class BlobAsyncClientBase {
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
         return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey());
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
     }
 
     /**

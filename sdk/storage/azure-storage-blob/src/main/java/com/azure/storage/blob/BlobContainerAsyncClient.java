@@ -624,13 +624,13 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobs}
      *
      * @return A reactive response emitting the flattened blobs.
      */
-    public PagedFlux<BlobItem> listBlobsFlat() {
+    public PagedFlux<BlobItem> listBlobs() {
         try {
-            return this.listBlobsFlat(new ListBlobsOptions());
+            return this.listBlobs(new ListBlobsOptions());
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -656,12 +656,12 @@ public final class BlobContainerAsyncClient {
      *
      *
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat#ListBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions}
      *
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the listed blobs, flattened.
      */
-    public PagedFlux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
+    public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options) {
         try {
             return listBlobsFlatWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
@@ -750,14 +750,14 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String}
      *
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedFlux<BlobItem> listBlobsHierarchy(String directory) {
+    public PagedFlux<BlobItem> listBlobsByHierarchy(String directory) {
         try {
-            return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory));
+            return this.listBlobsByHierarchy("/", new ListBlobsOptions().setPrefix(directory));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -789,13 +789,13 @@ public final class BlobContainerAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedFlux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
+    public PagedFlux<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options) {
         try {
             return listBlobsHierarchyWithOptionalTimeout(delimiter, options, null);
         } catch (RuntimeException ex) {
