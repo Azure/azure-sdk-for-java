@@ -512,7 +512,6 @@ public final class BlobServiceSasSignatureValues {
         Utility.assertNotNull("delegationKey", delegationKey);
         Utility.assertNotNull("accountName", accountName);
 
-
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
