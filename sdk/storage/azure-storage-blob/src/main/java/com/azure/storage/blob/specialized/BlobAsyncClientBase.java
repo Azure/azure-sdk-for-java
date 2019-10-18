@@ -275,11 +275,7 @@ public class BlobAsyncClientBase {
      * cancelled.
      */
     public Poller<BlobCopyInfo, Void> beginCopyFromUrl(String sourceUrl, Duration pollInterval) {
-        try {
             return beginCopyFromUrl(sourceUrl, null, null, null, null, null, pollInterval);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**
