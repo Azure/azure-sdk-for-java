@@ -3,18 +3,22 @@
 
 package com.azure.core.http;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 
 /**
  * Specifies HTTP options for conditional requests based on modification time.
  */
+@Fluent
 public class RequestConditions extends MatchConditions {
     private OffsetDateTime ifModifiedSince;
     private OffsetDateTime ifUnmodifiedSince;
 
     /**
-     * {@inheritDoc}
+     * Optionally limit requests to resources that match the passed ETag.
      *
+     * @param ifMatch ETag that resources must match.
      * @return The updated ResourceConditions object.
      */
     @Override
@@ -24,8 +28,9 @@ public class RequestConditions extends MatchConditions {
     }
 
     /**
-     * {@inheritDoc}
+     * Optionally limit requests to resources that do not match the passed ETag.
      *
+     * @param ifNoneMatch ETag that resources must not match.
      * @return The updated ResourceConditions object.
      */
     @Override
