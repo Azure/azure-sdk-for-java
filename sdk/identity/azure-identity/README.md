@@ -6,6 +6,7 @@ The Azure Identity library provides Azure Active Directory token authentication 
   - [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)
   - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
   - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
+  - [Username + password authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth-ropc)
   - Shared Token Cache credential, which shares login information with Visual Studio, Azure CLI, and more
 
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
@@ -27,6 +28,7 @@ The Azure Identity library provides Azure Active Directory token authentication 
   - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
   - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
   - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
+  - [Authenticating a user account with username and password](#authenticating-a-user-account-with-username-and-password)
   - [Authenticating a user account with auth code flow](#authenticating-a-user-account-with-auth-code-flow)
   - [Chaining credentials](#chaining-credentials)
 - [Troubleshooting](#troubleshooting)
@@ -164,7 +166,6 @@ When executing this in a development machine you need to first [configure the en
 ### Authenticating a service principal with a client secret
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 ```java
-// using a client secret
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
@@ -186,7 +187,6 @@ KeyClient client = new KeyClientBuilder()
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 
 ```java
-// using a client secret
 import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
@@ -202,6 +202,27 @@ DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
 KeyClient client = new KeyClientBuilder()
     .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
     .credential(deviceCodeCredential)
+    .buildClient();
+```
+
+### Authenticating a user account with username and password
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `UsernamePasswordCredential`. The user must **not** have Multi-factor auth turned on. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
+
+```java
+import com.azure.identity.UsernamePasswordCredential;
+import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClient;
+
+// authenticate with client secret,
+UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
+        .clientId("<YOUR_CLIENT_ID>")
+        .username("<YOUR_USERNAME>")
+        .password("<YOUR_PASSWORD>")
+        .build();
+
+KeyClient client = new KeyClientBuilder()
+    .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .credential(usernamePasswordCredential)
     .buildClient();
 ```
 
