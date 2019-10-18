@@ -168,7 +168,7 @@ class FileSASTests extends APISpec {
             .setContentType(contentType)
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         then:
@@ -227,7 +227,7 @@ class FileSASTests extends APISpec {
             .setContentType(contentType)
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def client = fileBuilderHelper(interceptorManager, shareName, filePath)
@@ -271,7 +271,7 @@ class FileSASTests extends APISpec {
         def sasWithId = new FileServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setShareName(primaryFileClient.getShareName())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         ShareClient client1 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())
@@ -286,7 +286,7 @@ class FileSASTests extends APISpec {
             .setPermissions(permissions.toString())
             .setExpiryTime(expiryTime)
             .setShareName(primaryFileClient.getShareName())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         def client2 = shareBuilderHelper(interceptorManager, primaryShareClient.getShareName())

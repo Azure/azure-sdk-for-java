@@ -377,7 +377,7 @@ class FileAPITests extends APISpec {
             .setPermissions(new FileSasPermission().setReadPermission(true).toString())
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:

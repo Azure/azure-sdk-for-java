@@ -406,7 +406,7 @@ class FileAsyncAPITests extends APISpec {
             .setPermissions(new FileSasPermission().setReadPermission(true).toString())
             .setShareName(primaryFileAsyncClient.getShareName())
             .setFilePath(primaryFileAsyncClient.getFilePath())
-            .generateSASQueryParameters(credential)
+            .generateSasQueryParameters(credential)
             .encode()
 
         when:
