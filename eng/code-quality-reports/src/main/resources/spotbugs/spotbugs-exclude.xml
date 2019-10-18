@@ -70,7 +70,7 @@
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
-      <Class name="com.azure.storage.file.share.AzureFileStorageBuilder"/>
+      <Class name="com.azure.storage.file.share.implementation.AzureFileStorageBuilder"/>
       <Class name="com.azure.storage.queue.implementation.AzureQueueStorageBuilder"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
     </Or>
