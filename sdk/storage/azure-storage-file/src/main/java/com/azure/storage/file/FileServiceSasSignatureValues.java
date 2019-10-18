@@ -14,8 +14,20 @@ import java.time.OffsetDateTime;
 
 /**
  * FileServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call {@link #generateSASQueryParameters(StorageSharedKeyCredential)} to
+ * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)} to
  * obtain a representation of the SAS which can be applied to file urls.
+ *
+ * <p><strong>Generating a file share SAS</strong></p>
+ * <p>The snippet below generates a file share SAS that lasts for three days, and gives the user read, create, and list
+ * permissions to the share.
+ *
+ * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters.shareSas#StorageSharedKeyCredential}
+ *
+ * <p><strong>Generating a file SAS</strong></p>
+ * <p>The snippet below generates a file SAS that has the same duration and permissions as specified by the
+ * {@link #setIdentifier(String) shared access policy} set.
+ *
+ * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential}
  *
  * @see FileServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
@@ -60,7 +72,7 @@ public final class FileServiceSasSignatureValues {
     /**
      * Creates an object with the specified expiry time and permissions
      *
-     * @param expiryTime Time the SAS becomes valid
+     * @param expiryTime Time the SAS becomes invalid
      * @param permissions Permissions granted by the SAS
      */
     FileServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
@@ -179,14 +191,26 @@ public final class FileServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link ShareSasPermission} or {@link
-     * FileSasPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the permissions string allowed by the SAS.
      *
      * @param permissions Permissions string for the SAS
      * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public FileServiceSasSignatureValues setPermissions(ShareSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
+        return this;
+    }
+
+    /**
+     * Sets the permissions string allowed by the SAS.
+     *
+     * @param permissions Permissions string for the SAS
+     * @return the updated FileServiceSasSignatureValues object
+     */
+    public FileServiceSasSignatureValues setPermissions(FileSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
@@ -385,7 +409,7 @@ public final class FileServiceSasSignatureValues {
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
      * @throws NullPointerException If {@code storageSharedKeyCredentials} is null.
      */
-    public FileServiceSasQueryParameters generateSASQueryParameters(
+    public FileServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
