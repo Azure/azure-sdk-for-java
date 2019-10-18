@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
  *
  * <p><strong>Generating a file SAS</strong></p>
  * <p>The snippet below generates a file SAS that has the same duration and permissions as specified by the
- * {@link #setIdentifier(String) shared access policy} set.
+ * {@link #setIdentifier(String) stored access policy} set.
  *
  * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential}
  *
@@ -67,45 +67,6 @@ public final class FileServiceSasSignatureValues {
      * Creates an object with empty values for all fields.
      */
     public FileServiceSasSignatureValues() {
-    }
-
-    /**
-     * Creates an object with the specified expiry time and permissions
-     *
-     * @param expiryTime Time the SAS becomes invalid
-     * @param permissions Permissions granted by the SAS
-     */
-    FileServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
-        this.expiryTime = expiryTime;
-        this.permissions = permissions;
-    }
-
-    /**
-     * Creates an object with the specified identifier
-     *
-     * @param identifier Identifier for the SAS
-     */
-    FileServiceSasSignatureValues(String identifier) {
-        this.identifier = identifier;
-    }
-
-    FileServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        if (version != null) {
-            this.version = version;
-        }
-        this.protocol = sasProtocol;
-        this.startTime = startTime;
-        this.expiryTime = expiryTime;
-        this.permissions = permission;
-        this.sasIpRange = sasIpRange;
-        this.identifier = identifier;
-        this.cacheControl = cacheControl;
-        this.contentDisposition = contentDisposition;
-        this.contentEncoding = contentEncoding;
-        this.contentLanguage = contentLanguage;
-        this.contentType = contentType;
     }
 
     /**
@@ -275,8 +236,8 @@ public final class FileServiceSasSignatureValues {
 
     /**
      * @return the name of the access policy on the share this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information.
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">
+     * Establishing a stored access policy</a> for more information.
      */
     public String getIdentifier() {
         return identifier;
@@ -284,10 +245,10 @@ public final class FileServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the share this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information.
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">
+     * Establishing a stored access policy</a> for more information.
      *
-     * @param identifier Name of the access policy
+     * @param identifier Name of the stored access policy
      * @return the updated FileServiceSasSignatureValues object
      */
     public FileServiceSasSignatureValues setIdentifier(String identifier) {
@@ -389,10 +350,17 @@ public final class FileServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
+     * <p><strong>Notes on SAS generation</strong></p>
      * <p>
-     * If {@link #getVersion()} is not set, the {@link FileServiceVersion#getLatest() latest service version} is used.
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link FileServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
      *
-     * </p>
      * <p>
      * The type of SAS query parameters returned depends on the following:
      * <ol>
