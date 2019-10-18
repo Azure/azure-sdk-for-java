@@ -11,8 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,6 +47,12 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String DESERIALIZED_HEADERS = "deserializedHeaders";
     private static final String ETAG = "eTag";
+    private static final String UTF8_CHARSET = "UTF-8";
+    private static final String ARGUMENT_NULL_OR_EMPTY =
+        "The argument must not be null or an empty string. Argument name: %s.";
+    private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
+    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
+    private static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
 
     public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
         DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
@@ -66,7 +71,8 @@ public final class Utility {
     /**
      * The length of a datestring that matches the MAX_PRECISION_PATTERN.
      */
-    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
+    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
+            .length();
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -152,7 +158,7 @@ public final class Utility {
      */
     private static String decode(final String stringToDecode) {
         try {
-            return URLDecoder.decode(stringToDecode, Constants.UTF8_CHARSET);
+            return URLDecoder.decode(stringToDecode, UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -172,7 +178,7 @@ public final class Utility {
         }
 
         if (stringToEncode.length() == 0) {
-            return Constants.EMPTY_STRING;
+            return "";
         }
 
         if (stringToEncode.contains(" ")) {
@@ -205,7 +211,7 @@ public final class Utility {
      */
     private static String encode(final String stringToEncode) {
         try {
-            return URLEncoder.encode(stringToEncode, Constants.UTF8_CHARSET);
+            return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -282,8 +288,7 @@ public final class Utility {
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new NullPointerException(String.format(Locale.ROOT,
-                Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new NullPointerException(String.format(Locale.ROOT, ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -300,7 +305,7 @@ public final class Utility {
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max)));
+                PARAMETER_NOT_IN_RANGE, param, min, max)));
         }
     }
 
@@ -337,8 +342,7 @@ public final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT,
-                    Constants.MessageConstants.INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -385,7 +389,8 @@ public final class Utility {
             }
 
             try {
-                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("getHeaders").invoke(response);
+                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("getHeaders")
+                    .invoke(response);
                 //
                 if (eTag != null) {
                     rawHeaders.put(ETAG, eTag);
@@ -435,7 +440,7 @@ public final class Utility {
      * @return a URL with the path appended.
      * @throws IllegalArgumentException If {@code name} causes the URL to become malformed.
      */
-    public static URL appendToURLPath(String baseURL, String name) {
+    public static URL appendToUrlPath(String baseURL, String name) {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.getPath() == null) {
@@ -481,17 +486,16 @@ public final class Utility {
     /**
      * Strips the last path segment from the passed URL.
      *
-     * @param baseURL URL having its last path segment stripped
+     * @param baseUrl URL having its last path segment stripped
      * @return a URL with the path segment stripped.
      * @throws IllegalArgumentException If stripping the last path segment causes the URL to become malformed or it
      * doesn't contain any path segments.
      */
-    public static URL stripLastPathSegment(URL baseURL) {
-        UrlBuilder builder = UrlBuilder.parse(baseURL);
+    public static URL stripLastPathSegment(URL baseUrl) {
+        UrlBuilder builder = UrlBuilder.parse(baseUrl);
 
         if (builder.getPath() == null || !builder.getPath().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
-                Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, NO_PATH_SEGMENTS, baseUrl));
         }
 
         builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
@@ -503,17 +507,18 @@ public final class Utility {
     }
 
     /**
-     * Searches for a {@link SharedKeyCredential} in the passed {@link HttpPipeline}.
+     * Searches for a {@link StorageSharedKeyCredential} in the passed {@link HttpPipeline}.
      *
      * @param httpPipeline Pipeline being searched
-     * @return a SharedKeyCredential if the pipeline contains one, otherwise null.
+     * @return a StorageSharedKeyCredential if the pipeline contains one, otherwise null.
      */
-    public static SharedKeyCredential getSharedKeyCredential(HttpPipeline httpPipeline) {
+    public static StorageSharedKeyCredential getSharedKeyCredential(HttpPipeline httpPipeline) {
         for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
-            if (httpPipelinePolicy instanceof SharedKeyCredentialPolicy) {
-                SharedKeyCredentialPolicy sharedKeyCredentialPolicy = (SharedKeyCredentialPolicy) httpPipelinePolicy;
-                return sharedKeyCredentialPolicy.sharedKeyCredential();
+            if (httpPipelinePolicy instanceof StorageSharedKeyCredentialPolicy) {
+                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy =
+                    (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
+                return storageSharedKeyCredentialPolicy.sharedKeyCredential();
             }
         }
         return null;

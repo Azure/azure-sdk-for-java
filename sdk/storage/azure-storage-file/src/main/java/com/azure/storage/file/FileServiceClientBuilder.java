@@ -12,11 +12,11 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import java.net.MalformedURLException;
@@ -48,10 +48,11 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
- * a connection string from the Storage File service must be used. Set the SharedKeyCredential with {@link
- * FileServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage File service must be used. Set the
+ * StorageSharedKeyCredential with {@link FileServiceClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred
+ * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous FileService Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.file.fileServiceClient.instantiation.connectionstring}
@@ -61,7 +62,7 @@ import java.util.Objects;
  *
  * @see FileServiceClient
  * @see FileServiceAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {FileServiceClient.class, FileServiceAsyncClient.class})
 public final class FileServiceClientBuilder {
@@ -70,7 +71,7 @@ public final class FileServiceClientBuilder {
     private String endpoint;
     private String accountName;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
@@ -80,6 +81,7 @@ public final class FileServiceClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private FileServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileServiceClient FileServiceClients}
@@ -89,20 +91,22 @@ public final class FileServiceClientBuilder {
     }
 
     private AzureFileStorageImpl constructImpl() {
+        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (sasTokenCredential != null) {
                 return new SasTokenCredentialPolicy(sasTokenCredential);
             } else {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -117,8 +121,8 @@ public final class FileServiceClientBuilder {
      * </p>
      *
      * @return A FileServiceAsyncClient with the options set from the builder.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
         return new FileServiceAsyncClient(constructImpl(), accountName);
@@ -136,8 +140,8 @@ public final class FileServiceClientBuilder {
      *
      * @return A FileServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileServiceClient buildClient() {
         return new FileServiceClient(buildAsyncClient());
@@ -176,14 +180,14 @@ public final class FileServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated FileServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public FileServiceClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public FileServiceClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.sasTokenCredential = null;
         return this;
     }
@@ -198,13 +202,13 @@ public final class FileServiceClientBuilder {
     public FileServiceClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
+     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.
@@ -295,6 +299,21 @@ public final class FileServiceClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link FileServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link FileServiceVersion} of the service to be used when making requests.
+     * @return the updated FileServiceClientBuilder object
+     */
+    public FileServiceClientBuilder serviceVersion(FileServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

@@ -16,9 +16,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -43,14 +43,14 @@ final class BuilderHelper {
      *
      * @param connectionString Connection string from the service account.
      * @param accountNameSetter Callback to set the account name on the builder.
-     * @param credentialSetter Callback to set the {@link SharedKeyCredential} of the builder.
+     * @param credentialSetter Callback to set the {@link StorageSharedKeyCredential} of the builder.
      * @param endpointSetter Callback to set the endpoint of the builder.
      * @param logger {@link ClientLogger} used to log any exceptions.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain 'AccountName' or 'AccountKey'.
      */
     static void configureConnectionString(String connectionString, Consumer<String> accountNameSetter,
-        Consumer<SharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
+        Consumer<StorageSharedKeyCredential> credentialSetter, Consumer<String> endpointSetter, ClientLogger logger) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
@@ -72,7 +72,7 @@ final class BuilderHelper {
         }
 
         accountNameSetter.accept(accountName);
-        credentialSetter.accept(new SharedKeyCredential(accountName, accountKey));
+        credentialSetter.accept(new StorageSharedKeyCredential(accountName, accountKey));
     }
 
     /**
@@ -84,15 +84,16 @@ final class BuilderHelper {
      * @param httpClient HttpClient to use in the builder.
      * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
      * @param configuration Configuration store contain environment settings.
+     * @param serviceVersion {@link FileServiceVersion} of the service to be used when making requests.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     static HttpPipeline buildPipeline(Supplier<HttpPipelinePolicy> credentialPolicySupplier,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration) {
+        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, FileServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration));
+        policies.add(getUserAgentPolicy(configuration, serviceVersion));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -124,12 +125,13 @@ final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param version {@link FileServiceVersion} of the service to be used when making requests.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, FileServiceVersion version) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
-        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration);
+        return new UserAgentPolicy(DEFAULT_USER_AGENT_NAME, DEFAULT_USER_AGENT_VERSION, configuration, version);
     }
 
     /*

@@ -55,7 +55,7 @@ class Configuration {
     private int documentDataFieldSize = 20;
 
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
-    private Integer maxConnectionPoolSize = 500;
+    private Integer maxConnectionPoolSize = 1000;
 
     @Parameter(names = "-consistencyLevel", description = "Consistency Level", converter = ConsistencyLevelConverter.class)
     private ConsistencyLevel consistencyLevel = ConsistencyLevel.SESSION;

@@ -3,11 +3,11 @@
 
 package com.azure.storage.file;
 
-import com.azure.storage.common.Constants;
-import com.azure.storage.common.IpRange;
-import com.azure.storage.common.SasProtocol;
+import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.time.OffsetDateTime;
 
@@ -40,7 +40,7 @@ public final class FileServiceSasSignatureValues {
 
     private String permissions;
 
-    private IpRange ipRange;
+    private SasIpRange sasIpRange;
 
     private String canonicalName;
 
@@ -85,7 +85,7 @@ public final class FileServiceSasSignatureValues {
     }
 
     FileServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, IpRange ipRange, String identifier, String cacheControl,
+        OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
             this.version = version;
@@ -94,7 +94,7 @@ public final class FileServiceSasSignatureValues {
         this.startTime = startTime;
         this.expiryTime = expiryTime;
         this.permissions = permission;
-        this.ipRange = ipRange;
+        this.sasIpRange = sasIpRange;
         this.identifier = identifier;
         this.cacheControl = cacheControl;
         this.contentDisposition = contentDisposition;
@@ -198,20 +198,20 @@ public final class FileServiceSasSignatureValues {
     }
 
     /**
-     * @return the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * @return the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      */
-    public IpRange getIpRange() {
-        return ipRange;
+    public SasIpRange getSasIpRange() {
+        return sasIpRange;
     }
 
     /**
-     * Sets the {@link IpRange} which determines the IP ranges that are allowed to use the SAS.
+     * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
-     * @param ipRange Allowed IP range to set
+     * @param sasIpRange Allowed IP range to set
      * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSasSignatureValues setIpRange(IpRange ipRange) {
-        this.ipRange = ipRange;
+    public FileServiceSasSignatureValues setSasIpRange(SasIpRange sasIpRange) {
+        this.sasIpRange = sasIpRange;
         return this;
     }
 
@@ -394,24 +394,25 @@ public final class FileServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
+     * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link FileServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException If {@code sharedKeyCredentials} is null. Or when any of {@code version},
+     * @throws NullPointerException If {@code storageSharedKeyCredentials} is null. Or when any of {@code version},
      * {@code canonicalName} or {@code resource} is null. Or if {@code identifier} is not set and any of
      * {@code expiryTime} or {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} are not set
      * and {@code identifier} is null
      */
-    public FileServiceSasQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+    public FileServiceSasQueryParameters generateSASQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
+        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK();
 
         // Signature is generated on the un-url-encoded values.
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign());
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign());
 
         return new FileServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
-            this.ipRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
+            this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType);
     }
 
@@ -441,7 +442,7 @@ public final class FileServiceSasSignatureValues {
             this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.canonicalName == null ? "" : this.canonicalName,
             this.identifier == null ? "" : this.identifier,
-            this.ipRange == null ? "" : this.ipRange.toString(),
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
             this.version == null ? "" : this.version,
             this.cacheControl == null ? "" : this.cacheControl,

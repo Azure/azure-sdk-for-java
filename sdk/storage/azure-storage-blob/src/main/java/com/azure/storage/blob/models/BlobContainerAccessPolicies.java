@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class BlobContainerAccessPolicies {
     private final PublicAccessType blobAccessType;
-    private final List<SignedIdentifier> identifiers;
+    private final List<BlobSignedIdentifier> identifiers;
 
-    public BlobContainerAccessPolicies(PublicAccessType blobAccessType, List<SignedIdentifier> identifiers) {
+    public BlobContainerAccessPolicies(PublicAccessType blobAccessType, List<BlobSignedIdentifier> identifiers) {
         this.blobAccessType = blobAccessType;
         this.identifiers = identifiers;
     }
@@ -25,9 +25,9 @@ public class BlobContainerAccessPolicies {
     }
 
     /**
-     * @return the {@link SignedIdentifier SignedIdentifiers} associates with the container.
+     * @return the {@link BlobSignedIdentifier BlobSignedIdentifiers} associates with the container.
      */
-    public List<SignedIdentifier> getIdentifiers() {
+    public List<BlobSignedIdentifier> getIdentifiers() {
         return this.identifiers;
     }
 }

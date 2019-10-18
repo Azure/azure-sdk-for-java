@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.file.core.windows.net?restype=service&comp=properties",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.3 1.8.0_221; Windows 10 10.0",
-      "x-ms-client-request-id" : "c0932b50-0bdd-4453-80b0-9e7939781458",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
+      "x-ms-client-request-id" : "07919de8-1e86-4985-8f43-d0963f3f2d81",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -15,13 +15,13 @@
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "cac52051-301a-001d-4544-649f87000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:cac52051-301a-001d-4544-649f87000000\nTime:2019-09-05T23:49:40.9861252Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Thu, 05 Sep 2019 23:49:40 GMT",
-      "x-ms-client-request-id" : "c0932b50-0bdd-4453-80b0-9e7939781458",
+      "x-ms-request-id" : "83e48bcf-a01a-0116-7188-83b7bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:83e48bcf-a01a-0116-7188-83b7bd000000\nTime:2019-10-15T18:43:18.0871710Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Tue, 15 Oct 2019 18:43:17 GMT",
+      "x-ms-client-request-id" : "07919de8-1e86-4985-8f43-d0963f3f2d81",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "00bb0c7a7a1a45f0ab9d2f23dd6c3a84435060c054384b9e8b9914e0d48d0876" ]
+  "variables" : [ "4a0816bd0d064d7293e9afad8135f20cd5a78ee67a2b4e5ba640ce295c5a08c5" ]
 }

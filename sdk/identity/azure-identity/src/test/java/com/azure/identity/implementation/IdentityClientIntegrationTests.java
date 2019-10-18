@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credential.TokenRequest;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ public class IdentityClientIntegrationTests {
     private static final String AZURE_CLI_CLIENT_ID = "AZURE_CLI_CLIENT_ID";
     private static final String AZURE_CLIENT_SECRET = "AZURE_CLIENT_SECRET";
     private static final String AZURE_CLIENT_CERTIFICATE = "AZURE_CLIENT_CERTIFICATE";
-    private final TokenRequest request = new TokenRequest().addScopes("https://management.azure.com/.default");
+    private final TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
 
     @Ignore("Integration test")
     public void clientSecretCanGetToken() {
@@ -29,7 +29,7 @@ public class IdentityClientIntegrationTests {
                 && token.getExpiresAt() != null
                 && !token.isExpired())
             .verifyComplete();
-        StepVerifier.create(client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), new TokenRequest().addScopes("https://vault.azure.net/.default")))
+        StepVerifier.create(client.authenticateWithClientSecret(System.getenv(AZURE_CLIENT_SECRET), new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .expectNextMatches(token -> token.getToken() != null
                 && token.getExpiresAt() != null
                 && !token.isExpired())
@@ -51,7 +51,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequest().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
@@ -66,7 +66,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequest().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
@@ -81,7 +81,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequest().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
@@ -96,7 +96,7 @@ public class IdentityClientIntegrationTests {
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());
         Assert.assertFalse(token.isExpired());
-        token = client.authenticateWithUserRefreshToken(new TokenRequest().addScopes("https://vault.azure.net/.default"), token).block();
+        token = client.authenticateWithUserRefreshToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default"), token).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
         Assert.assertNotNull(token.getExpiresAt());

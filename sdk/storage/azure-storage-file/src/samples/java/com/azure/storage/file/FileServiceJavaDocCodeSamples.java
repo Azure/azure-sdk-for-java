@@ -4,7 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import java.time.Duration;
@@ -74,7 +74,7 @@ public class FileServiceJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link FileServiceClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link FileServiceClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link FileServiceClient}
      */
     public FileServiceClient createClientWithConnectionString() {

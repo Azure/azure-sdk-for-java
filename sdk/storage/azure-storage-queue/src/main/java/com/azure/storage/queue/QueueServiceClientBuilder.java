@@ -13,11 +13,11 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
@@ -52,10 +52,11 @@ import java.util.Objects;
  * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
  *
- * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
- * a connection string from the Storage Queue service must be used. Set the SharedKeyCredential with {@link
- * QueueServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SAS token and
- * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
+ * <p>Another way to authenticate the client is using a {@link StorageSharedKeyCredential}. To create a
+ * StorageSharedKeyCredential a connection string from the Storage Queue service must be used.
+ * Set the StorageSharedKeyCredential with {@link QueueServiceClientBuilder#connectionString(String) connectionString}.
+ * If the builder has both a SAS token and StorageSharedKeyCredential the StorageSharedKeyCredential will be preferred
+ * when authorizing requests sent to the service.</p>
  *
  * <p><strong>Instantiating a synchronous Queue Service Client with connection string.</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation.connectionstring}
@@ -65,7 +66,7 @@ import java.util.Objects;
  *
  * @see QueueServiceClient
  * @see QueueServiceAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
 public final class QueueServiceClientBuilder {
@@ -74,7 +75,7 @@ public final class QueueServiceClientBuilder {
     private String endpoint;
     private String accountName;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -85,6 +86,7 @@ public final class QueueServiceClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private QueueServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueServiceClient QueueServiceClients}
@@ -94,9 +96,10 @@ public final class QueueServiceClientBuilder {
     }
 
     private AzureQueueStorageImpl constructImpl() {
+        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -104,11 +107,12 @@ public final class QueueServiceClientBuilder {
             } else {
                 return null;
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
         return new AzureQueueStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
             .build();
     }
 
@@ -124,8 +128,8 @@ public final class QueueServiceClientBuilder {
      *
      * @return A QueueServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
         return new QueueServiceAsyncClient(constructImpl(), accountName);
@@ -143,8 +147,8 @@ public final class QueueServiceClientBuilder {
      *
      * @return A QueueServiceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
+     * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceClient buildClient() {
         return new QueueServiceClient(buildAsyncClient());
@@ -186,14 +190,14 @@ public final class QueueServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated QueueServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public QueueServiceClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public QueueServiceClientBuilder credential(StorageSharedKeyCredential credential) {
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -208,7 +212,7 @@ public final class QueueServiceClientBuilder {
      */
     public QueueServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -223,14 +227,14 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder sasToken(String sasToken) {
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
 
     /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
+     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
+     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
      * #endpoint(String) endpoint}.
      *
      * @param connectionString Connection string of the storage account.
@@ -321,6 +325,21 @@ public final class QueueServiceClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link QueueServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link QueueServiceVersion} of the service to be used when making requests.
+     * @return the updated QueueServiceClientBuilder object
+     */
+    public QueueServiceClientBuilder serviceVersion(QueueServiceVersion version) {
+        this.version = version;
         return this;
     }
 }

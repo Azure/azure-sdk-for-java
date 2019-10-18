@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,FileHTTPHeaders,ShareItem,FileServiceProperties,CorsRule,ShareProperties,Range,CopyStatusType,SignedIdentifier,SourceModifiedAccessConditions,StorageErrorException,StorageErrorCode,StorageError,StorageServiceProperties
+custom-types: HandleItem,FileHttpHeaders,ShareItem,FileServiceProperties,FileCorsRule,ShareProperties,Range,CopyStatusType,FileSignedIdentifier,SourceModifiedAccessConditions,FileErrorCode,StorageServiceProperties,FileMetrics,FileAccessPolicy
 ```
 
 ### Query Parameters
@@ -75,42 +75,6 @@ directive:
             "type": "string",
             "x-ms-parameter-location": "method"
         };
-    }
-```
-
-### /?restype=service&comp=properties
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.FileServiceProperties) {
-        const props = $.FileServiceProperties = $.StorageServiceProperties;
-        props.xml = { "name": "StorageServiceProperties" };
-        delete $.StorageServiceProperties;
-    }
-- from: swagger-document
-  where: $.parameters
-  transform: >
-    if (!$.FileServiceProperties) {
-        const props = $.FileServiceProperties = $.StorageServiceProperties;
-        props.name = "FileServiceProperties";
-        props.description = "The FileStorage properties.";
-        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/FileServiceProperties") };
-        delete $.StorageServiceProperties;
-    }
-- from: swagger-document
-  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
-  transform: >
-    const param = $.put.parameters[0];
-    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/FileServiceProperties");
-        $.put.parameters[0] = { "$ref": path };
-    }
-    const def = $.get.responses["200"].schema;
-    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
-        const path = def["$ref"].replace(/[#].*$/, "#/definitions/FileServiceProperties");
-        $.get.responses["200"].schema = { "$ref": path };
     }
 ```
 
@@ -559,6 +523,126 @@ directive:
         "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
 ```
 
+### FileErrorCode
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ErrorCode
+  transform: >
+    $["x-ms-enum"].name = "FileErrorCode";
+```
+
+### FileServiceProperties, FileMetrics, FileCorsRule, and FileRetentionPolicy
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.FileServiceProperties) {
+        $.FileServiceProperties = $.StorageServiceProperties;
+        delete $.StorageServiceProperties;
+        $.FileServiceProperties.xml = { "name": "StorageServiceProperties" };
+    }
+    if (!$.FileMetrics) {
+      $.FileMetrics = $.Metrics;
+      delete $.Metrics;
+      $.FileMetrics.xml = {"name": "Metrics"};
+      $.FileServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/FileMetrics";
+      $.FileServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/FileMetrics";
+    }
+    if (!$.FileCorsRule) {
+      $.FileCorsRule = $.CorsRule;
+      delete $.CorsRule;
+      $.FileCorsRule.xml = {"name": "CorsRule"};
+      $.FileServiceProperties.properties.Cors.items["$ref"] = "#/definitions/FileCorsRule";
+    }
+    if (!$.FileRetentionPolicy) {
+      $.FileRetentionPolicy = $.RetentionPolicy;
+      delete $.RetentionPolicy;
+      $.FileRetentionPolicy.xml = {"name": "RetentionPolicy"};
+      $.FileMetrics.properties.RetentionPolicy["$ref"] = "#/definitions/FileRetentionPolicy";
+    }
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    if (!$.FileServiceProperties) {
+        const props = $.FileServiceProperties = $.StorageServiceProperties;
+        props.name = "FileServiceProperties";
+        props.description = "The FileStorage properties.";
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/FileServiceProperties") };
+        delete $.StorageServiceProperties;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
+  transform: >
+    const param = $.put.parameters[0];
+    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/FileServiceProperties");
+        $.put.parameters[0] = { "$ref": path };
+    }
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/FileServiceProperties");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
+```
+
+### FileAccessPolicy and FileSignedIdentifier
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.FileSignedIdentifier) {
+      $.FileSignedIdentifier = $.SignedIdentifier;
+      delete $.SignedIdentifier;
+      $.FileSignedIdentifier.xml = {"name": "SignedIdentifier"};
+      $.SignedIdentifiers.items["$ref"] = "#/definitions/FileSignedIdentifier";
+    }
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.FileAccessPolicy) {
+      $.FileAccessPolicy = $.AccessPolicy;
+      delete $.AccessPolicy;
+      $.FileAccessPolicy.xml = {"name": "AccessPolicy"};
+      $.FileAccessPolicy.properties.StartsOn = $.FileAccessPolicy.properties.Start;
+      $.FileAccessPolicy.properties.StartsOn.xml = {"name": "Start"};
+      delete $.FileAccessPolicy.properties.Start;
+      $.FileAccessPolicy.properties.ExpiresOn = $.FileAccessPolicy.properties.Expiry;
+      $.FileAccessPolicy.properties.ExpiresOn.xml = {"name": "Expiry"};
+      delete $.FileAccessPolicy.properties.Expiry;
+      $.FileAccessPolicy.properties.Permissions = $.FileAccessPolicy.properties.Permission;
+      $.FileAccessPolicy.properties.Permissions.xml = {"name": "Permission"};
+      delete $.FileAccessPolicy.properties.Permission;
+    }
+    $.FileSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/FileAccessPolicy";
+```
+
+### FileServiceProperties Annotation Fix
+``` yaml
+directive:
+- from: FileServiceProperties.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "Metrics")\n    private FileMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private FileMetrics hourMetrics;').
+      replace('@JsonProperty(value = "Metrics")\n    private FileMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private FileMetrics minuteMetrics;');
+```
+
+### Rename FileHTTPHeaders to FileHttpHeader
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.FileCacheControl["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentDisposition["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentEncoding["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentLanguage["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentMD5["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentType["x-ms-parameter-grouping"].name = "file-http-headers";
+```
+
 ### Change StorageErrorException to StorageException
 ``` yaml
 directive:
@@ -567,47 +651,47 @@ directive:
   transform: >
     return $.
       replace(
-        "com.azure.storage.file.models.StorageErrorException",
-        "com.azure.storage.file.models.StorageException"
+        "com.azure.storage.file.implementation.models.StorageErrorException",
+        "com.azure.storage.file.models.FileStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(FileStorageException.class)"
       );
 - from: SharesImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.file.models.StorageErrorException",
-        "com.azure.storage.file.models.StorageException"
+        "com.azure.storage.file.implementation.models.StorageErrorException",
+        "com.azure.storage.file.models.FileStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(FileStorageException.class)"
       );
 - from: DirectorysImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.file.models.StorageErrorException",
-        "com.azure.storage.file.models.StorageException"
+        "com.azure.storage.file.implementation.models.StorageErrorException",
+        "com.azure.storage.file.models.FileStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(FileStorageException.class)"
       );
 - from: FilesImpl.java
   where: $
   transform: >
     return $.
       replace(
-        "com.azure.storage.file.models.StorageErrorException",
-        "com.azure.storage.file.models.StorageException"
+        "com.azure.storage.file.implementation.models.StorageErrorException",
+        "com.azure.storage.file.models.FileStorageException"
       ).
       replace(
-        /StorageErrorException.class/g,
-        "StorageException.class"
+        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
+        "@UnexpectedResponseExceptionType(FileStorageException.class)"
       );
 ```

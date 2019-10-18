@@ -58,7 +58,7 @@ public class Configs {
     //  Reactor Netty Constants
     private static final int MAX_IDLE_CONNECTION_TIMEOUT_IN_MILLIS = 60 * 1000;
     private static final int CONNECTION_ACQUIRE_TIMEOUT_IN_MILLIS = 45 * 1000;
-    private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 500;
+    private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
 
     public Configs() {

@@ -7,7 +7,7 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlobServiceSasQueryParameters;
-import com.azure.storage.common.Constants;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 
 import java.net.MalformedURLException;
@@ -228,7 +228,7 @@ public final class BlobUrlParts {
         url.setPath(path.toString());
 
         if (this.snapshot != null) {
-            url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
+            url.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
         if (this.blobServiceSasQueryParameters != null) {
             String encodedSAS = this.blobServiceSasQueryParameters.encode();
