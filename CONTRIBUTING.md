@@ -79,7 +79,7 @@ mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 
 ## Versions and versioning
 
-Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client (version_client.txt) and one for data (version_data.txt). The format of the version files is as follows:
+Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](./eng/versioning/version_client.txt)) and one for data ([version_data.txt](./eng/versioning/version_data.txt)). The format of the version files is as follows:
 
 `groupId:artifactId;dependency-version;current-version`
 
@@ -147,7 +147,7 @@ In theory, absence of an x-version-update tag would do the same thing but the to
 
 Let's say we've GA'd and I need to tick up the version of azure-storage libraries how would I do it? Guidelines for incrementing versions after release can be found [here](https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#incrementing-after-release).
 
-1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory. It's worth noting that any module entry starting with "../" isn't something that's released as part of the pipeline and once we GA these build dependencies for library components outside of a given area should go away and be replaced with downloading the appropriate dependency from Maven like we do for external dependencies.
+1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory. It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Once we GA, these build dependencies for library components outside of a given area should go away and be replaced with downloading the appropriate dependency from Maven like we do for external dependencies.
 2. Execute the update_versions python script from the root of the enlistment
 `python eng/versioning/update_versions.py --ut libary --bt client`
 This will go through the entire source tree and update all of the references in the POM and README files with the updated versions. Git status will show all of the modified files.
