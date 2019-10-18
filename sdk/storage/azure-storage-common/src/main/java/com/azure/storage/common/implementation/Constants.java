@@ -52,24 +52,105 @@ public final class Constants {
      */
     public static final class ConnectionStringConstants {
         /**
-         * The AccountName key.
+         * The setting name for the storage account name.
          */
-        public static final String ACCOUNT_NAME = "accountname";
+        public static final String ACCOUNT_NAME_NAME = "AccountName";
 
         /**
-         * The AccountKey key.
+         * The setting name for the storage account key.
          */
-        public static final String ACCOUNT_KEY = "accountkey";
+        public static final String ACCOUNT_KEY_NAME = "AccountKey";
 
         /**
-         * The DefaultEndpointsProtocol key.
+         * The setting name for using the default storage endpoints with the specified protocol.
          */
-        public static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
+        public static final String DEFAULT_ENDPOINTS_PROTOCOL_NAME = "DefaultEndpointsProtocol";
 
         /**
-         * The EndpointSuffix key.
+         * The setting name for a custom blob storage endpoint.
          */
-        public static final String ENDPOINT_SUFFIX = "endpointsuffix";
+        public static final String BLOB_ENDPOINT_NAME = "BlobEndpoint";
+
+        /**
+         * The setting name for a custom blob storage secondary endpoint.
+         */
+        public static final String BLOB_SECONDARY_ENDPOINT_NAME = "BlobSecondaryEndpoint";
+
+        /**
+         * The setting name for a custom queue endpoint.
+         */
+        public static final String QUEUE_ENDPOINT_NAME = "QueueEndpoint";
+
+        /**
+         * The setting name for a custom queue secondary endpoint.
+         */
+        public static final String QUEUE_SECONDARY_ENDPOINT_NAME = "QueueSecondaryEndpoint";
+
+        /**
+         * The setting name for a custom file endpoint.
+         */
+        public static final String FILE_ENDPOINT_NAME = "FileEndpoint";
+
+        /**
+         * The setting name for a custom file secondary endpoint.
+         */
+        public static final String FILE_SECONDARY_ENDPOINT_NAME = "FileSecondaryEndpoint";
+
+        /**
+         * The setting name for a custom table storage endpoint.
+         */
+        public static final String TABLE_ENDPOINT_NAME = "TableEndpoint";
+
+        /**
+         * The setting name for a custom table storage secondary endpoint.
+         */
+        public static final String TABLE_SECONDARY_ENDPOINT_NAME = "TableSecondaryEndpoint";
+
+        /**
+         * The setting name for a custom storage endpoint suffix.
+         */
+        public static final String ENDPOINT_SUFFIX_NAME = "EndpointSuffix";
+
+        /**
+         * The setting name for a shared access key.
+         */
+        public static final String SHARED_ACCESS_SIGNATURE_NAME = "SharedAccessSignature";
+
+        /**
+         * The setting name for using the emulator storage.
+         */
+        public static final String USE_EMULATOR_STORAGE_NAME = "UseDevelopmentStorage";
+
+        /**
+         * The setting name for specifying a development storage proxy Uri.
+         */
+        public static final String EMULATOR_STORAGE_PROXY_URI_NAME = "DevelopmentStorageProxyUri";
+
+        /**
+         * The root storage DNS name.
+         */
+        public static final String DEFAULT_DNS = "core.windows.net";
+
+        /**
+         * The format string for the primary endpoint in emulator.
+         */
+        public static final String EMULATOR_PRIMARY_ENDPOINT_FORMAT = "%s://%s:%s/devstoreaccount1";
+
+        /**
+         * The format string for the secondary endpoint in emulator.
+         */
+        public static final String EMULATOR_SECONDARY_ENDPOINT_FORMAT = "%s://%s:%s/devstoreaccount1-secondary";
+
+        /**
+         * The default account key for the development storage.
+         */
+        public static final String EMULATOR_ACCOUNT_KEY
+                = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
+
+        /**
+         * The default account name for the development storage.
+         */
+        public static final String EMULATOR_ACCOUNT_NAME = "devstoreaccount1";
 
         private ConnectionStringConstants() {
         }

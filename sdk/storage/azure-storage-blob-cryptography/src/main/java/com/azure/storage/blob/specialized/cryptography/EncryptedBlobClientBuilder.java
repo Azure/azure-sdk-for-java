@@ -314,16 +314,17 @@ public final class EncryptedBlobClientBuilder {
 
         Map<String, String> connectionStringPieces = Utility.parseConnectionString(connectionString);
 
-        String accountName = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
-        String accountKey = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
+        String accountName = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME);
+        String accountKey = connectionStringPieces.get(Constants.ConnectionStringConstants.ACCOUNT_KEY_NAME);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'connectionString' must contain 'AccountName' and 'AccountKey'."));
         }
 
-        String endpointProtocol = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
-        String endpointSuffix = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
+        String endpointProtocol
+                = connectionStringPieces.get(Constants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
+        String endpointSuffix = connectionStringPieces.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX_NAME);
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
             endpoint(String.format("%s://%s.blob.%s", endpointProtocol, accountName,
