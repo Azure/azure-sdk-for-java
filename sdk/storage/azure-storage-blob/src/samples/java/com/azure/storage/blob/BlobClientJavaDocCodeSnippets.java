@@ -58,18 +58,18 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#beginCopyFromUrl(String, Duration)}
+     * Code snippets for {@link BlobClient#beginCopy(String, Duration)}
      */
     public void beginCopyFromUrl() {
-        // BEGIN: com.azure.storage.blob.BlobClient.beginCopyFromUrl#String
-        Poller<BlobCopyInfo, Void> poller = client.beginCopyFromUrl(url, Duration.ofSeconds(2));
+        // BEGIN: com.azure.storage.blob.BlobClient.beginCopy#String
+        Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, Duration.ofSeconds(2));
 
         // This blocks until either the copy operation has completed, failed, or been cancelled.
         poller.block();
         PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
         BlobCopyInfo operation = response.getValue();
         System.out.printf("Status: %s, Copy identifier: %s%n", poller.getStatus(), operation.getCopyId());
-        // END: com.azure.storage.blob.BlobClient.beginCopyFromUrl#String
+        // END: com.azure.storage.blob.BlobClient.beginCopy#String
     }
 
     /**

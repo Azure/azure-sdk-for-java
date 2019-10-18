@@ -14,8 +14,8 @@ import java.util.Objects;
 /**
  * The status of a long running Azure Blob copy operation.
  *
- * @see BlobAsyncClient#beginCopyFromUrl(String, Duration)
- * @see BlobClient#beginCopyFromUrl(String, Duration)
+ * @see BlobAsyncClient#beginCopy(String, Duration)
+ * @see BlobClient#beginCopy(String, Duration)
  */
 @Immutable
 public class BlobCopyInfo {
