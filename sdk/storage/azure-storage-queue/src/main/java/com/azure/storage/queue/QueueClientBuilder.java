@@ -11,12 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-<<<<<<< HEAD
-import com.azure.storage.common.credentials.SharedKeyCredential;
-=======
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -99,32 +94,6 @@ public final class QueueClientBuilder {
     public QueueClientBuilder() {
     }
 
-<<<<<<< HEAD
-=======
-    private AzureQueueStorageImpl constructImpl() {
-        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
-
-        return new AzureQueueStorageBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
-    }
-
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
     /**
      * Creates a {@link QueueClient} based on options set in the builder. Every time {@code buildClient()} is called a
      * new instance of {@link QueueClient} is created.
@@ -164,8 +133,8 @@ public final class QueueClientBuilder {
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {

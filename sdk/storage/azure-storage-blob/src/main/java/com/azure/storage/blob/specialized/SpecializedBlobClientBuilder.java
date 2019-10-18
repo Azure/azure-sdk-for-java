@@ -188,16 +188,10 @@ public final class SpecializedBlobClientBuilder {
         return ImplUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
     }
 
-<<<<<<< HEAD
     private HttpPipeline getHttpPipeline(BlobServiceVersion serviceVersion) {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
-=======
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {

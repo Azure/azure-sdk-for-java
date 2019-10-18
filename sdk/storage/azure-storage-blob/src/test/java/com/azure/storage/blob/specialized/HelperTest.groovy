@@ -10,24 +10,14 @@ import com.azure.storage.blob.BlobSasPermission
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
-<<<<<<< HEAD
-import com.azure.storage.common.AccountSasPermission
-import com.azure.storage.common.AccountSasResourceType
-import com.azure.storage.common.AccountSasSignatureValues
-import com.azure.storage.common.SasProtocol
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
-import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-=======
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.SasProtocol
-import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.Utility
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
 import com.azure.storage.common.sas.SasIpRange
+import com.azure.storage.common.sas.SasProtocol
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -292,7 +282,7 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((StorageSharedKeyCredential)creds)
+        v.generateSasQueryParameters((StorageSharedKeyCredential) creds)
 
 
         then:
@@ -692,6 +682,7 @@ class HelperTest extends APISpec {
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 
+    @Unroll
     def "IP URLParser"() {
         when:
         BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint))

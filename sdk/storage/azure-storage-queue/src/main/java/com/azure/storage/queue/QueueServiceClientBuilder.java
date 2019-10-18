@@ -11,12 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-<<<<<<< HEAD
-import com.azure.storage.common.credentials.SharedKeyCredential;
-=======
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -108,8 +103,8 @@ public final class QueueServiceClientBuilder {
      *
      * @return A QueueServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link #sasToken(String) SAS token}
-     * has been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
+     * {@link #sasToken(String) SAS token} has been set.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
@@ -131,27 +126,7 @@ public final class QueueServiceClientBuilder {
             .version(serviceVersion.getVersion())
             .build();
 
-<<<<<<< HEAD
         return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
-=======
-    /**
-     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time this is called a new
-     * instance of {@link QueueServiceAsyncClient} is created.
-     *
-     * <p>
-     * If {@link QueueServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
-     * QueueServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link QueueServiceAsyncClient
-     * client}. All other builder settings are ignored.
-     * </p>
-     *
-     * @return A QueueServiceAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
-     * or {@link #sasToken(String) SAS token} has been set.
-     */
-    public QueueServiceAsyncClient buildAsyncClient() {
-        return new QueueServiceAsyncClient(constructImpl(), accountName);
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
     }
 
     /**

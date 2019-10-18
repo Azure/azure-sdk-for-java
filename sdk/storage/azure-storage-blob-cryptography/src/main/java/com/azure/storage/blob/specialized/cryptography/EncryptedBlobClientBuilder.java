@@ -25,12 +25,8 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.Utility;
-<<<<<<< HEAD
-import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-=======
 import com.azure.storage.common.StorageSharedKeyCredential;
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;

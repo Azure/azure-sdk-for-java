@@ -17,12 +17,8 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-<<<<<<< HEAD
-import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-=======
 import com.azure.storage.common.StorageSharedKeyCredential;
->>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
