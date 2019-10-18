@@ -96,6 +96,9 @@ public final class ParallelTransferOptions {
 
     /**
      * RESERVED FOR INTERNAL USE.
+     *
+     * @param other The customer provided transfer options. If it has non-null values, they will be used, otherwise
+     * defaults will be set.
      */
     public void populateAndApplyDefaults(ParallelTransferOptions other) {
         if (other == null) {

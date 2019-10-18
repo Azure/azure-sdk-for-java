@@ -57,7 +57,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import static com.azure.core.implementation.util.FluxUtil.fluxError;
 import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
