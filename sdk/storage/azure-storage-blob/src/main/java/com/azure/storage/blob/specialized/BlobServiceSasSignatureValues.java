@@ -7,11 +7,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.SasProtocol;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -453,19 +453,20 @@ public final class BlobServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
+     * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException if {@code sharedKeyCredentials} is null. Or if any of {@code version},
+     * @throws NullPointerException if {@code storageSharedKeyCredentials} is null. Or if any of {@code version},
      * {@code canonicalName}, {@code resource} or {@code identifier} are null.
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+    public BlobServiceSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential
+           storageSharedKeyCredentials) {
+        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         assertGenerateOK(false);
 
         // Signature is generated on the un-url-encoded values.
-        String signature = sharedKeyCredentials.computeHmac256(stringToSign());
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign());
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,

@@ -3,7 +3,7 @@
 
 package com.azure.storage.queue;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,7 +66,7 @@ public class QueueAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueAsyncClient} with {@code connectionString} which turns into
-     * {@link SharedKeyCredential}
+     * {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link QueueAsyncClient}
      */
@@ -267,10 +266,11 @@ public class QueueAsyncJavaDocCodeSamples {
      */
     public void updateMessageWithResponse() {
         // BEGIN: com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration
+
         client.receiveMessage().subscribe(
             message -> {
-                client.updateMessageWithResponse("newText", message.getMessageId(),
-                    message.getPopReceipt(), null).subscribe(
+                client.updateMessageWithResponse(message.getMessageId(), message.getPopReceipt(), "newText",
+                    null).subscribe(
                         response -> System.out.println("Complete updating the message with status code:"
                             + response.getStatusCode()),
                         updateError -> System.err.print(updateError.toString()),
@@ -428,11 +428,11 @@ public class QueueAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicyWithResponse(List)}
+     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicyWithResponse(Iterable)}
      */
     public void setAccessPolicyWithResponse() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#Iterable
         QueueAccessPolicy accessPolicy = new QueueAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
             .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -441,15 +441,15 @@ public class QueueAsyncJavaDocCodeSamples {
         client.setAccessPolicyWithResponse(Collections.singletonList(permission))
             .subscribe(response -> System.out.printf("Setting access policies completed with status code %d",
                 response.getStatusCode()));
-        // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#List
+        // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#Iterable
     }
 
     /**
-     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicy(List)}
+     * Generates a code sample for using {@link QueueAsyncClient#setAccessPolicy(Iterable)}
      */
     public void setAccessPolicyAsync() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#Iterable
         QueueAccessPolicy accessPolicy = new QueueAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
             .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -457,7 +457,7 @@ public class QueueAsyncJavaDocCodeSamples {
         QueueSignedIdentifier permission = new QueueSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         client.setAccessPolicy(Collections.singletonList(permission))
             .subscribe(response -> System.out.println("Setting access policies completed."));
-        // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#List
+        // END: com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#Iterable
     }
 
     /**

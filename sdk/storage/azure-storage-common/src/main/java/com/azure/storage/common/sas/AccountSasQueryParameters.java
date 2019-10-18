@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common;
+package com.azure.storage.common.sas;
+
 
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.sas.SasIpRange;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -26,15 +26,15 @@ public final class AccountSasQueryParameters extends BaseSasQueryParameters {
      * Creates a new {@link AccountSasQueryParameters} object.
      *
      * @param queryParamsMap All query parameters for the request as key-value pairs
-     * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from
+     * @param removeSasParameters When {@code true}, the SAS query parameters will be removed from
      * queryParamsMap
      */
-    public AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        super(queryParamsMap, removeSASParametersFromMap);
+    AccountSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSasParameters) {
+        super(queryParamsMap, removeSasParameters);
         this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES,
-            removeSASParametersFromMap);
+            removeSasParameters);
         this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES,
-            removeSASParametersFromMap);
+            removeSasParameters);
     }
 
     /**

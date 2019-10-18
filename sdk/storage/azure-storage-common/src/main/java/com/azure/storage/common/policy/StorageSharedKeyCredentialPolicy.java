@@ -7,28 +7,28 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import reactor.core.publisher.Mono;
 
 /**
  * Policy that adds the SharedKey into the request's Authorization header.
  */
-public final class SharedKeyCredentialPolicy implements HttpPipelinePolicy {
-    private final SharedKeyCredential credential;
+public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolicy {
+    private final StorageSharedKeyCredential credential;
 
     /**
      * Creates a SharedKey pipeline policy that adds the SharedKey into the request's authorization header.
      *
      * @param credential the SharedKey credential used to create the policy.
      */
-    public SharedKeyCredentialPolicy(SharedKeyCredential credential) {
+    public StorageSharedKeyCredentialPolicy(StorageSharedKeyCredential credential) {
         this.credential = credential;
     }
 
     /**
-     * @return the {@link SharedKeyCredential} linked to the policy.
+     * @return the {@link StorageSharedKeyCredential} linked to the policy.
      */
-    public SharedKeyCredential sharedKeyCredential() {
+    public StorageSharedKeyCredential sharedKeyCredential() {
         return this.credential;
     }
 
