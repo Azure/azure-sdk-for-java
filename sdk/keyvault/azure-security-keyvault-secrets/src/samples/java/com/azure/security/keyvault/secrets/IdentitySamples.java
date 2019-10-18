@@ -3,16 +3,16 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.identity.credential.ChainedTokenCredential;
-import com.azure.identity.credential.ChainedTokenCredentialBuilder;
-import com.azure.identity.credential.ClientSecretCredential;
-import com.azure.identity.credential.ClientSecretCredentialBuilder;
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
-import com.azure.identity.credential.DeviceCodeCredential;
-import com.azure.identity.credential.DeviceCodeCredentialBuilder;
-import com.azure.identity.credential.ManagedIdentityCredential;
-import com.azure.identity.credential.ManagedIdentityCredentialBuilder;
+import com.azure.identity.ChainedTokenCredential;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.DeviceCodeCredential;
+import com.azure.identity.DeviceCodeCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 
 /**
@@ -62,7 +62,7 @@ public class IdentitySamples {
     public void authenticateWithDeviceCodeCredential() {
         // authenticate with client secret,
         DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
-            .deviceCodeChallengeConsumer(challenge -> {
+            .challengeConsumer(challenge -> {
                 // lets user know of the challenge, e.g., display the message on an IoT device
                 displayMessage(challenge.getMessage());
             })

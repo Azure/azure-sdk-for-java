@@ -10,6 +10,7 @@ import com.azure.storage.blob.BlobSasPermission
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
+<<<<<<< HEAD
 import com.azure.storage.common.AccountSasPermission
 import com.azure.storage.common.AccountSasResourceType
 import com.azure.storage.common.AccountSasSignatureValues
@@ -17,6 +18,15 @@ import com.azure.storage.common.SasProtocol
 import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+=======
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.Utility
+>>>>>>> 44657b9dd642e20e7149dfed9d24619368acc277
 import com.azure.storage.common.sas.SasIpRange
 import spock.lang.Unroll
 
@@ -282,7 +292,8 @@ class HelperTest extends APISpec {
             .setVersion(version)
 
         when:
-        v.generateSasQueryParameters((SharedKeyCredential) creds)
+        v.generateSasQueryParameters((StorageSharedKeyCredential)creds)
+
 
         then:
         def e = thrown(NullPointerException)
@@ -291,7 +302,7 @@ class HelperTest extends APISpec {
         where:
         containerName | version | creds             | blobName || parameter
         "c"           | null    | primaryCredential | "b"       | "version"
-        "c"           | "v"     | null              | "b"       | "sharedKeyCredentials"
+        "c"           | "v"     | null              | "b"       | "storageSharedKeyCredentials"
         "c"           | "v"     | primaryCredential | null      | "canonicalName"
     }
 
@@ -510,7 +521,7 @@ class HelperTest extends APISpec {
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "sharedKeyCredentials"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "storageSharedKeyCredentials"
     }
 
     @Unroll

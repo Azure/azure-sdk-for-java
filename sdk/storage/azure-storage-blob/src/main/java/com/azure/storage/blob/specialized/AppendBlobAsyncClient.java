@@ -30,6 +30,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
+import static com.azure.core.implementation.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -94,7 +95,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link Mono} containing the information of the created appended blob.
      */
     public Mono<AppendBlobItem> create() {
-        return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -112,7 +117,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobAccessConditions accessConditions) {
-        return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
+        try {
+            return withContext(context -> createWithResponse(headers, metadata, accessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
@@ -142,7 +151,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return {@link Mono} containing the information of the append blob operation.
      */
     public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
-        return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
+        try {
+            return appendBlockWithResponse(data, length, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -165,7 +178,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
         AppendBlobAccessConditions appendBlobAccessConditions) {
-        return withContext(context -> appendBlockWithResponse(data, length, appendBlobAccessConditions, context));
+        try {
+            return withContext(context -> appendBlockWithResponse(data, length, appendBlobAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length,
@@ -196,7 +213,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @return {@link Mono} containing the information of the append blob operation.
      */
     public Mono<AppendBlobItem> appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
-        return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -221,8 +242,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions) {
-        return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
-            destAccessConditions, sourceAccessConditions, context));
+        try {
+            return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
+                destAccessConditions, sourceAccessConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
