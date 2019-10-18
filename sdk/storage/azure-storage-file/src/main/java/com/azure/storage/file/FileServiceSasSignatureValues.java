@@ -6,7 +6,6 @@ package com.azure.storage.file;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
@@ -35,6 +34,16 @@ import java.time.OffsetDateTime;
  * SAS</a>
  */
 public final class FileServiceSasSignatureValues {
+    /**
+     * The SAS file constant.
+     */
+    private static final String SAS_FILE_CONSTANT = "f";
+
+    /**
+     * The SAS share constant.
+     */
+    private static final String SAS_SHARE_CONSTANT = "s";
+
     private String version;
 
     private SasProtocol protocol;
@@ -384,14 +393,14 @@ public final class FileServiceSasSignatureValues {
 
         final String resource;
         if (ImplUtils.isNullOrEmpty(filePath)) {
-            resource = Constants.UrlConstants.SAS_SHARE_CONSTANT;
+            resource = SAS_SHARE_CONSTANT;
 
             // Make sure the permission characters are in the correct order
             if (permissions != null) {
                 permissions = ShareSasPermission.parse(permissions).toString();
             }
         } else {
-            resource = Constants.UrlConstants.SAS_FILE_CONSTANT;
+            resource = SAS_FILE_CONSTANT;
 
             // Make sure the permission characters are in the correct order
             if (permissions != null) {
