@@ -16,20 +16,23 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-
 import com.azure.storage.common.policy.ScrubEtagPolicy;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -37,6 +40,9 @@ import java.util.function.Supplier;
 final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-queue";
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+
+    private static final Pattern IP_URL_PATTERN = Pattern
+        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
 
     /**
      * Parses the passed {@code connectionString} for values to configure on the builder.
@@ -73,6 +79,61 @@ final class BuilderHelper {
 
         accountNameSetter.accept(accountName);
         credentialSetter.accept(new SharedKeyCredential(accountName, accountKey));
+    }
+
+    static void parseEndpoint(String endpoint, Consumer<String> endpointSetter, Consumer<String> accountNameSetter,
+        Consumer<String> queueNameSetter, Consumer<String> sasTokenSetter, ClientLogger logger) {
+        Objects.requireNonNull(endpoint);
+        try {
+            URL url = new URL(endpoint);
+            endpointSetter.accept(url.getProtocol() + "://" + url.getAuthority());
+
+            if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
+                // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
+                // or http://localhost:10000/accountName/queueName
+                String path = url.getPath();
+                if (!ImplUtils.isNullOrEmpty(path) && path.charAt(0) == '/') {
+                    path = path.substring(1);
+                }
+
+                String[] pathPieces = path.split("/", 2);
+                accountNameSetter.accept(pathPieces[0]);
+
+                if (queueNameSetter != null && pathPieces.length == 2) {
+                    queueNameSetter.accept(pathPieces[1]);
+                }
+            } else {
+                // URL is using a pattern of http://accountName.blob.core.windows.net/queueName
+                String host = url.getHost();
+
+                String accountName = null;
+                if (!ImplUtils.isNullOrEmpty(host)) {
+                    int accountNameIndex = host.indexOf('.');
+                    if (accountNameIndex == -1) {
+                        accountName = host;
+                    } else {
+                        accountName = host.substring(0, accountNameIndex);
+                    }
+                }
+
+                accountNameSetter.accept(accountName);
+
+                String[] pathSegments = url.getPath().split("/", 2);
+                if (queueNameSetter != null && pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
+                    queueNameSetter.accept(pathSegments[1]);
+                }
+            }
+
+            // Attempt to get the SAS token from the URL passed
+            String sasToken = new QueueServiceSasQueryParameters(
+                Utility.parseQueryStringSplitValues(url.getQuery()), false).encode();
+            if (!ImplUtils.isNullOrEmpty(sasToken)) {
+                sasTokenSetter.accept(sasToken);
+            }
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.", ex));
+        }
     }
 
     /**

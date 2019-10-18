@@ -9,10 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
@@ -21,8 +19,6 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -171,30 +167,8 @@ public final class QueueClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public QueueClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        try {
-            URL fullURL = new URL(endpoint);
-            this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
-
-            this.accountName = Utility.getAccountName(fullURL);
-
-            // Attempt to get the queue name from the URL passed
-            String[] pathSegments = fullURL.getPath().split("/", 2);
-            if (pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
-                this.queueName = pathSegments[1];
-            }
-
-            // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(Utility
-                .parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
-                this.sasToken(sasToken);
-            }
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: "
-                    + endpoint));
-        }
+        BuilderHelper.parseEndpoint(endpoint, (ep) -> this.endpoint = ep, (ac) -> this.accountName = ac,
+            this::queueName, this::sasToken, logger);
 
         return this;
     }

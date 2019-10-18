@@ -9,10 +9,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
@@ -21,8 +19,6 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -165,23 +161,8 @@ public final class QueueServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public QueueServiceClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
-        try {
-            URL fullURL = new URL(endpoint);
-            this.endpoint = fullURL.getProtocol() + "://" + fullURL.getAuthority();
-
-            this.accountName = Utility.getAccountName(fullURL);
-
-            // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
-                this.sasToken(sasToken);
-            }
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
-        }
+        BuilderHelper.parseEndpoint(endpoint, (ep) -> this.endpoint = ep, (ac) -> this.accountName = ac, null,
+            this::sasToken, logger);
 
         return this;
     }

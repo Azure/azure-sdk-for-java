@@ -27,6 +27,9 @@ import java.util.regex.Pattern;
 public final class BlobUrlParts {
     private static final Pattern IP_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
+
+    private final ClientLogger logger = new ClientLogger(BlobUrlParts.class);
+
     private String scheme;
     private String host;
     private String containerName;
@@ -209,10 +212,10 @@ public final class BlobUrlParts {
      * Converts the blob URL parts to a {@link URL}.
      *
      * @return A {@code URL} to the blob resource composed of all the elements in this object.
-     * @throws MalformedURLException The fields present on the BlobUrlParts object were insufficient to construct a
+     * @throws IllegalStateException The fields present on the BlobUrlParts object were insufficient to construct a
      * valid URL or were ill-formatted.
      */
-    public URL toURL() throws MalformedURLException {
+    public URL toURL() {
         UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
@@ -246,25 +249,33 @@ public final class BlobUrlParts {
                 Utility.urlEncode(String.join(",", entry.getValue())));
         }
 
-        return url.toURL();
+        try {
+            return url.toURL();
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalStateException("The URL parts created a malformed URL."));
+        }
     }
 
     /**
-     * URLParser parses a string URL initializing BlobUrlParts' fields including any SAS-related and snapshot query
-     * parameters. Any other query parameters remain in the UnparsedParams field. This method overwrites all fields
-     * in the BlobUrlParts object.
+     * Parses a string into a BlobUrlParts.
      *
-     * @param url The string URL to be parsed.
-     * @param logger Logger associated to the calling class to log a {@link MalformedURLException}.
+     * <p>Query parameters will be parsed into two properties, {@link BlobServiceSasQueryParameters} which contains
+     * all SAS token related values and {@link #getUnparsedParameters() unparsedParameters} which is all other query
+     * parameters.</p>
+     *
+     * <p>If a URL points to a blob in the root container, and the root container is referenced implicitly, i.e. there
+     * is no path element for the container, the name of this blob in the root container will be set as the
+     * containerName field in the resulting {@code BlobURLParts}.</p>
+     *
+     * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
-     * @throws IllegalArgumentException If the {@code url} is malformed.
+     * @throws IllegalArgumentException If {@code url} is a malformed {@link URL}.
      */
-    public static BlobUrlParts parse(String url, ClientLogger logger) {
+    public static BlobUrlParts parse(String url) {
         try {
             return parse(new URL(url));
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Please double check the URL format. URL: "
-                + url));
+            throw new IllegalArgumentException("Please double check the URL format. URL: " + url);
         }
     }
 

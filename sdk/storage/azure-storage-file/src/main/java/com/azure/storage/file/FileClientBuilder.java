@@ -228,7 +228,7 @@ public class FileClientBuilder {
             URL fullUrl = new URL(endpoint);
             this.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
 
-            this.accountName = Utility.getAccountName(fullUrl);
+            this.accountName = BuilderHelper.getAccountName(fullUrl);
 
             // Attempt to get the share name and file path from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");
