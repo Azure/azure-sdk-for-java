@@ -14,7 +14,6 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
-import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -541,8 +540,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
-
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -569,8 +573,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
-
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
         client.delete()
 
@@ -592,8 +601,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
-
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
@@ -615,7 +629,13 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def sas = AccountSasSignatureValues.generateAccountSas(primaryCredential, service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(primaryCredential)
+            .encode()
         def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
         sc.createBlobContainer(generateContainerName())
 
