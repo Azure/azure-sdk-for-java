@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
@@ -61,7 +61,7 @@ public class QueueServiceAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@code connectionString} which turns
-     * into {@link SharedKeyCredential}
+     * into {@link StorageSharedKeyCredential}
      *
      * @return An instance of {@link QueueServiceAsyncClient}
      */

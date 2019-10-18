@@ -3,10 +3,10 @@
 
 package com.azure.storage.file;
 
-import com.azure.storage.common.BaseSasQueryParameters;
+import com.azure.storage.common.sas.BaseSasQueryParameters;
+import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.SasProtocol;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

@@ -133,11 +133,11 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#setHTTPHeaders(BlobHttpHeaders)}
+     * Code snippets for {@link BlobClient#setHttpHeaders(BlobHttpHeaders)}
      */
     public void setHTTPHeaders() {
         // BEGIN: com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHttpHeaders
-        client.setHTTPHeaders(new BlobHttpHeaders()
+        client.setHttpHeaders(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary"));
         System.out.println("Set HTTP headers completed");
@@ -304,7 +304,7 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#setHTTPHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions, Duration,
+     * Code snippets for {@link BlobClient#setHttpHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions, Duration,
      * Context)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
@@ -313,7 +313,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
         System.out.printf("Set HTTP headers completed with status %d%n",
-            client.setHTTPHeadersWithResponse(new BlobHttpHeaders()
+            client.setHttpHeadersWithResponse(new BlobHttpHeaders()
                 .setBlobContentLanguage("en-US")
                 .setBlobContentType("binary"), accessConditions, timeout, new Context(key1, value1))
                 .getStatusCode());

@@ -51,8 +51,9 @@ public final class RequestRetryOptions {
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
      * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
      * for more information.</p>
-     * @throws IllegalArgumentException If {@code retryDelayInMs} and {@code maxRetryDelayInMs} are not both null or
-     * non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL} or {@link RetryPolicyType#FIXED}.
+     * @throws IllegalArgumentException If {@code getRetryDelayInMs} and {@code getMaxRetryDelayInMs} are not both null
+     * or non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL}
+     * or {@link RetryPolicyType#FIXED}.
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
         Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {

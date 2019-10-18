@@ -9,11 +9,11 @@ import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.SasProtocol;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -456,21 +456,21 @@ public final class BlobServiceSasSignatureValues {
      *
      *  See class level JavaDocs for code snippets.
      *
-     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
+     * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
      * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
-     * @throws NullPointerException if {@code sharedKeyCredentials} is null.
+     * @throws NullPointerException if {@code storageSharedKeyCredentials} is null.
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(SharedKeyCredential sharedKeyCredentials) {
-        Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
+    public BlobServiceSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential storageSharedKeyCredentials) {
+        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
-        final String canonicalName = getCanonicalName(sharedKeyCredentials.getAccountName());
-        final String signature = sharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
+        final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
+        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
