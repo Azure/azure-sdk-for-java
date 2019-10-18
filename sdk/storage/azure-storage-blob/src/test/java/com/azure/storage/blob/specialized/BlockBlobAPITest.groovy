@@ -12,8 +12,24 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
-import com.azure.storage.blob.*
-import com.azure.storage.blob.models.*
+import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobAsyncClient
+import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.ProgressReceiver
+import com.azure.storage.blob.implementation.models.StorageError
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlockListType
+import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.ParallelTransferOptions
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.SourceModifiedAccessConditions
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -96,6 +112,16 @@ class BlockBlobAPITest extends APISpec {
         expect:
         bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, md5, null, null, null)
             .statusCode == 201
+    }
+
+    def "Stage block transactionalMD5 fail"() {
+        when:
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
     def "Stage block null body"() {
@@ -698,6 +724,16 @@ class BlockBlobAPITest extends APISpec {
         expect:
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, md5, null, null, null)
             .statusCode == 201
+    }
+
+    def "Upload transactionalMD5 fail"() {
+        when:
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
     @Unroll

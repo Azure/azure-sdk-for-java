@@ -38,13 +38,10 @@ import java.util.Objects;
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
  * {@link BlobClient#getBlockBlobClient()}. This class does not hold any state about a particular blob, but is instead
- * a
- * convenient way of sending appropriate requests to the resource on the service.
+ * a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
- * Docs</a> for more information.
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
@@ -149,8 +146,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the uploaded block blob.
      *
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
-     * @throws NullPointerException      if the input data is null.
-     * @throws UncheckedIOException      If an I/O error occurs
+     * @throws NullPointerException if the input data is null.
+     * @throws UncheckedIOException If an I/O error occurs
      */
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobAccessConditions accessConditions,
@@ -195,8 +192,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient
-     * .stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -215,7 +211,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return A response containing status code and HTTP headers
      *
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
-     * @throws NullPointerException      if the input data is null.
+     * @throws NullPointerException if the input data is null.
      */
     public Response<Void> stageBlockWithResponse(String base64BlockID, InputStream data, long length, byte[] contentMd5,
         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
@@ -306,14 +302,11 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list
-     * filter.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
+     * filter. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient
-     * .listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockListType-LeaseAccessConditions-Duration-Context}
      *
      * @param listType Specifies which type of blocks to return.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
@@ -353,10 +346,9 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Writes a blob by specifying the list of block IDs that are to make up the blob. In order to be written as part
-     * of
-     * a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can call
-     * commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new and
-     * existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
+     * of a blob, a block must have been successfully written to the server in a prior stageBlock operation. You can
+     * call commitBlockList to update a blob by uploading only those blocks that have changed, then committing the new
+     * and existing blocks together. Any blocks not specified in the block list and permanently deleted. For more
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      *

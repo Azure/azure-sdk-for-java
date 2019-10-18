@@ -9,6 +9,7 @@ import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.AppendBlobAccessConditions
 import com.azure.storage.blob.models.AppendPositionAccessConditions
 import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.LeaseAccessConditions
@@ -220,6 +221,16 @@ class AppendBlobAPITest extends APISpec {
 
         expect:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, md5, null, null, null).statusCode == 201
+    }
+
+    def "Append block transactionalMD5 fail"() {
+        when:
+        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
     @Unroll

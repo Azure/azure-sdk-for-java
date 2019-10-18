@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.CopyStatusType
@@ -219,6 +220,17 @@ class PageBlobAPITest extends APISpec {
         expect:
         bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(data), md5, null, null, null).getStatusCode() == 201
+    }
+
+    def "Upload page transactionalMD5 fail"() {
+        when:
+        bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)),
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
     @Unroll
