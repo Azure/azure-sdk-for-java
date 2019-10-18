@@ -17,10 +17,11 @@ import com.azure.storage.common.sas.SasProtocol;
 import java.time.OffsetDateTime;
 
 /**
- * BlobServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)} or
- * {@link #generateSasQueryParameters(UserDelegationKey, String)} to obtain a representation of the SAS which can be
- * applied to blob urls.
+ * Used to generate a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the values here are set,
+ * call {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)} or
+ * {@link #generateSasQueryParameters(UserDelegationKey, String) generateSasQueryParameters(UserDelegationKey, String)}
+ * to obtain a representation of the SAS which can be applied to blob urls.
  *
  * <p><strong>Generating SAS query parameters with {@link StorageSharedKeyCredential}</strong></p>
  * The following code generates SAS query parameters for an Azure storage blob.
@@ -440,10 +441,16 @@ public final class BlobServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
+     * <p><strong>Notes on SAS generation</strong></p>
      * <p>
-     * If {@link #getVersion()} is not set, then the {@link BlobServiceVersion#getLatest() latest service version} is
-     * used.
-     * </p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
      *
      * <p>
      * The type of SAS query parameters returned depends on the following:
@@ -481,10 +488,16 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
      *
+     * <p><strong>Notes on SAS generation</strong></p>
      * <p>
-     * If {@link #getVersion()} is not set, then the {@link BlobServiceVersion#getLatest() latest service version} is
-     * used.
-     * </p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
      *
      * <p>
      * The type of SAS query parameters returned depends on the following:
