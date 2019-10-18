@@ -275,7 +275,7 @@ class FileSASTests extends APISpec {
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasWithId = new FileServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
-            .setShareName(primaryFileClient.getShareName())
+            .setShareName(primaryShareClient.getShareName())
             .generateSasQueryParameters(credential)
             .encode()
 

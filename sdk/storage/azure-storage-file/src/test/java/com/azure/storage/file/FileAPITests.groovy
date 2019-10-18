@@ -380,7 +380,7 @@ class FileAPITests extends APISpec {
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasToken = new FileServiceSasSignatureValues()
             .setExpiryTime(getUTCNow().plusDays(1))
-            .setPermissions(new FileSasPermission().setReadPermission(true).toString())
+            .setPermissions(new FileSasPermission().setReadPermission(true))
             .setShareName(primaryFileClient.getShareName())
             .setFilePath(primaryFileClient.getFilePath())
             .generateSasQueryParameters(credential)
