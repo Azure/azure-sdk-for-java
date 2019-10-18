@@ -123,6 +123,8 @@ public final class BlobUrlParts {
     /**
      * Gets the blob name that will be used as part of the URL path.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @return the blob name.
      */
     public String getBlobName() {
@@ -132,11 +134,13 @@ public final class BlobUrlParts {
     /**
      * Sets the blob name that will be used as part of the URL path.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param blobName The blob name.
      * @return the updated BlobUrlParts object.
      */
     public BlobUrlParts setBlobName(String blobName) {
-        this.blobName = blobName;
+        this.blobName = Utility.urlEncode(blobName);
         return this;
     }
 
@@ -251,6 +255,8 @@ public final class BlobUrlParts {
      * parameters. Any other query parameters remain in the UnparsedParams field. This method overwrites all fields
      * in the BlobUrlParts object.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param url The string URL to be parsed.
      * @param logger Logger associated to the calling class to log a {@link MalformedURLException}.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.
@@ -275,6 +281,8 @@ public final class BlobUrlParts {
      * <p>If a URL points to a blob in the root container, and the root container is referenced implicitly, i.e. there
      * is no path element for the container, the name of this blob in the root container will be set as the
      * containerName field in the resulting {@code BlobURLParts}.</p>
+     *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * @param url The {@code URL} to be parsed.
      * @return A {@link BlobUrlParts} object containing all the components of a BlobURL.

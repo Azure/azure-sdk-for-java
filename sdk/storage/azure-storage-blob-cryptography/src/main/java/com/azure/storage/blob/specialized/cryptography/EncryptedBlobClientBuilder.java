@@ -165,6 +165,8 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Creates a {@link EncryptedBlobClient} based on options set in the Builder.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder.buildEncryptedBlobAsyncClient}
@@ -178,6 +180,8 @@ public final class EncryptedBlobClientBuilder {
 
     /**
      * Creates a {@link EncryptedBlobAsyncClient} based on options set in the Builder.
+     *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -334,6 +338,8 @@ public final class EncryptedBlobClientBuilder {
      * with blobs in the root container, it is best to set the endpoint to the account url and specify the blob name
      * separately using the {@link EncryptedBlobClientBuilder#blobName(String) blobName} method.</p>
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param endpoint URL of the service
      * @return the updated EncryptedBlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -375,12 +381,14 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the name of the blob.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param blobName Name of the blob.
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public EncryptedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        this.blobName = Utility.urlEncode(Objects.requireNonNull(blobName, "'blobName' cannot be null."));
         return this;
     }
 

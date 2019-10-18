@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
@@ -125,6 +126,8 @@ public final class BlobBatch {
     /**
      * Adds a delete blob operation to the batch.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * <p><strong>Code sample</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String}
@@ -136,11 +139,13 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(String.format("%s/%s", containerName, blobName), null, null);
+        return deleteBlobHelper(String.format("%s/%s", containerName, Utility.urlEncode(blobName)), null, null);
     }
 
     /**
      * Adds a delete blob operation to the batch.
+     *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code sample</strong></p>
      *
@@ -156,7 +161,7 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
-        return deleteBlobHelper(String.format("%s/%s", containerName, blobName), deleteOptions, blobAccessConditions);
+        return deleteBlobHelper(String.format("%s/%s", containerName, Utility.urlEncode(blobName)), deleteOptions, blobAccessConditions);
     }
 
     /**
@@ -204,6 +209,8 @@ public final class BlobBatch {
     /**
      * Adds a set tier operation to the batch.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * <p><strong>Code sample</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier}
@@ -216,11 +223,13 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(String.format("%s/%s", containerName, blobName), accessTier, null);
+        return setBlobAccessTierHelper(String.format("%s/%s", containerName, Utility.urlEncode(blobName)), accessTier, null);
     }
 
     /**
      * Adds a set tier operation to the batch.
+     *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code sample</strong></p>
      *
@@ -236,7 +245,7 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         LeaseAccessConditions leaseAccessConditions) {
-        return setBlobAccessTierHelper(String.format("%s/%s", containerName, blobName), accessTier,
+        return setBlobAccessTierHelper(String.format("%s/%s", containerName, Utility.urlEncode(blobName)), accessTier,
             leaseAccessConditions);
     }
 

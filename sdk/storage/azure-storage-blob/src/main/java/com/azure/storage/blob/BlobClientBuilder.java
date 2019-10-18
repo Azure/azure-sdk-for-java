@@ -17,6 +17,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
@@ -80,6 +81,8 @@ public final class BlobClientBuilder {
      * methods such as {@link BlobClient#download(OutputStream) download} and {@link BlobClient#getProperties() get
      * properties}, use this when the blob type is unknown.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildClient}
@@ -95,6 +98,8 @@ public final class BlobClientBuilder {
      * Creates a {@link BlobAsyncClient} based on options set in the builder. BlobAsyncClients are used to perform
      * generic blob methods such as {@link BlobAsyncClient#download() download} and {@link
      * BlobAsyncClient#getProperties()}, use this when the blob type is unknown.
+     *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -235,6 +240,8 @@ public final class BlobClientBuilder {
      * with blobs in the root container, it is best to set the endpoint to the account url and specify the blob name
      * separately using the {@link BlobClientBuilder#blobName(String) blobName} method.</p>
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
@@ -276,12 +283,14 @@ public final class BlobClientBuilder {
     /**
      * Sets the name of the blob.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param blobName Name of the blob.
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public BlobClientBuilder blobName(String blobName) {
-        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
+        this.blobName = Utility.urlEncode(Objects.requireNonNull(blobName, "'blobName' cannot be null."));
         return this;
     }
 

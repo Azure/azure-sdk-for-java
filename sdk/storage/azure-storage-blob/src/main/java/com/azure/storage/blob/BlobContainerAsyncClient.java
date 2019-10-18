@@ -93,6 +93,8 @@ public final class BlobContainerAsyncClient {
      * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
      * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.getBlobAsyncClient#String}
@@ -110,6 +112,8 @@ public final class BlobContainerAsyncClient {
      * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
      * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.getBlobAsyncClient#String-String}
@@ -120,7 +124,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getBlobContainerUrl(), blobName).toString())
+            .url(Utility.appendToURLPath(getBlobContainerUrl(), Utility.urlEncode(blobName)).toString())
             .pipeline(azureBlobStorage.getHttpPipeline())
             .build(), snapshot, customerProvidedKey, accountName);
     }
