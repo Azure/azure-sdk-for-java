@@ -35,9 +35,7 @@ interface ConnectionSettingsFilter {
         return (ConnectionSettings inputSettings) -> {
             ConnectionSettings outputSettings = inputSettings.clone();
             for (final String settingName : settingNames) {
-                if (outputSettings.hasSetting(settingName)) {
-                    outputSettings.removeSetting(settingName);
-                }
+                outputSettings.removeSetting(settingName);
             }
             return outputSettings;
         };

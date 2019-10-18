@@ -54,7 +54,7 @@ public final class Constants {
         /**
          * The setting name for the storage account name.
          */
-        public static final String ACCOUNT_NAME_NAME = "AccountName";
+        public static final String ACCOUNT_NAME = "AccountName";
 
         /**
          * The setting name for the storage account key.

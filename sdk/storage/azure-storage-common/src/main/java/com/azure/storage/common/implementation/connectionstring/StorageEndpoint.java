@@ -108,7 +108,7 @@ public final class StorageEndpoint {
                         + "required, specify whether to use http or https."));
             }
             final String accountName =
-                    settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME);
+                    settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME);
             if (isNullOrEmpty(accountName)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'AccountName' is required."));
             }

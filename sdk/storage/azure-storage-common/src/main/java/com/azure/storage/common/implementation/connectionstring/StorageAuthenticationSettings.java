@@ -42,7 +42,7 @@ public final class StorageAuthenticationSettings {
      * @return the StorageAuthenticationSettings.
      */
     public static StorageAuthenticationSettings fromConnectionSettings(final ConnectionSettings settings) {
-        final String accountName = settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME);
+        final String accountName = settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME);
         final String accountKey = settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_KEY_NAME);
         final String sasSignature =
                 settings.getSettingValue(Constants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);

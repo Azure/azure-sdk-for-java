@@ -83,7 +83,7 @@ final class StorageServiceConnectionString {
                                 Constants.ConnectionStringConstants.FILE_SECONDARY_ENDPOINT_NAME,
                                 matchesAutomaticEndpointsSpec,
                                 logger),
-                        settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME));
+                        settings.getSettingValue(Constants.ConnectionStringConstants.ACCOUNT_NAME));
             }
         }
         return null;
@@ -113,7 +113,7 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter requireAccountName() {
-        return ConnectionSettingsFilter.allRequired(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME);
+        return ConnectionSettingsFilter.allRequired(Constants.ConnectionStringConstants.ACCOUNT_NAME);
     }
 
     private static ConnectionSettingsFilter requireAccountKey() {
@@ -125,12 +125,12 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter requireAccountNameAndKey() {
-        return ConnectionSettingsFilter.allRequired(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME,
+        return ConnectionSettingsFilter.allRequired(Constants.ConnectionStringConstants.ACCOUNT_NAME,
                 Constants.ConnectionStringConstants.ACCOUNT_KEY_NAME);
     }
 
     private static ConnectionSettingsFilter optionalAccountName() {
-        return ConnectionSettingsFilter.optional(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME);
+        return ConnectionSettingsFilter.optional(Constants.ConnectionStringConstants.ACCOUNT_NAME);
     }
 
     private static ConnectionSettingsFilter noAccountKey() {
@@ -155,7 +155,7 @@ final class StorageServiceConnectionString {
     }
 
     private static ConnectionSettingsFilter noAccountNameNoAccountKeyNoSas() {
-        return ConnectionSettingsFilter.none(Constants.ConnectionStringConstants.ACCOUNT_NAME_NAME,
+        return ConnectionSettingsFilter.none(Constants.ConnectionStringConstants.ACCOUNT_NAME,
                 Constants.ConnectionStringConstants.ACCOUNT_KEY_NAME,
                 Constants.ConnectionStringConstants.SHARED_ACCESS_SIGNATURE_NAME);
     }
