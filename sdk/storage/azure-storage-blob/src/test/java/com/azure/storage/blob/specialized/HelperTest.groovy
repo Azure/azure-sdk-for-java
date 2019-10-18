@@ -644,7 +644,7 @@ class HelperTest extends APISpec {
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 
         when:
-        String[] splitParts = parts.toURL().toString().split("\\?")
+        String[] splitParts = parts.toUrl().toString().split("\\?")
 
         then:
         splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present
@@ -663,7 +663,7 @@ class HelperTest extends APISpec {
             .setBlobName("blob")
 
         then:
-        new BlobUrlParts().parse(bup.toURL()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        new BlobUrlParts().parse(bup.toUrl()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
     }
 
     def "URLParser"() {

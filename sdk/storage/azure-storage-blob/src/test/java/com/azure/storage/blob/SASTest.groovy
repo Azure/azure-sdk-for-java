@@ -1132,7 +1132,7 @@ class SASTest extends APISpec {
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 
         when:
-        def splitParts = parts.toURL().toString().split("\\?")
+        def splitParts = parts.toUrl().toString().split("\\?")
 
         then:
         splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present

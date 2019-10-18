@@ -22,10 +22,10 @@ import java.util.regex.Pattern;
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
  * existing URL into its parts with the {@link #parse(URL)} class. You may construct a URL from parts by calling {@link
- * #toURL()}.
+ * #toUrl()}.
  */
 public final class BlobUrlParts {
-    private static final Pattern IP_URL_PATTERN = Pattern
+    private static final Pattern IP_V4_URL_PATTERN = Pattern
         .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
 
     private final ClientLogger logger = new ClientLogger(BlobUrlParts.class);
@@ -215,7 +215,7 @@ public final class BlobUrlParts {
      * @throws IllegalStateException The fields present on the BlobUrlParts object were insufficient to construct a
      * valid URL or were ill-formatted.
      */
-    public URL toURL() {
+    public URL toUrl() {
         UrlBuilder url = new UrlBuilder().setScheme(this.scheme).setHost(this.host);
 
         StringBuilder path = new StringBuilder();
@@ -275,7 +275,7 @@ public final class BlobUrlParts {
         try {
             return parse(new URL(url));
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Please double check the URL format. URL: " + url);
+            throw new IllegalArgumentException("Invalid URL format. URL: " + url);
         }
     }
 
@@ -296,7 +296,7 @@ public final class BlobUrlParts {
     public static BlobUrlParts parse(URL url) {
         BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
+        if (IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
             parseIpUrl(url, parts);
         } else {
             parseNonIpUrl(url, parts);

@@ -82,12 +82,13 @@ final class BuilderHelper {
         credentialSetter.accept(new StorageSharedKeyCredential(accountName, accountKey));
     }
 
-    static void parseEndpoint(String endpoint, Consumer<String> endpointSetter, Consumer<String> accountNameSetter,
-        Consumer<String> queueNameSetter, Consumer<String> sasTokenSetter, ClientLogger logger) {
+    static QueueUrlParts parseEndpoint(String endpoint, ClientLogger logger) {
         Objects.requireNonNull(endpoint);
         try {
             URL url = new URL(endpoint);
-            endpointSetter.accept(url.getProtocol() + "://" + url.getAuthority());
+            QueueUrlParts parts = new QueueUrlParts();
+
+            parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
 
             if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
@@ -98,10 +99,10 @@ final class BuilderHelper {
                 }
 
                 String[] pathPieces = path.split("/", 2);
-                accountNameSetter.accept(pathPieces[0]);
+                parts.setAccountName(pathPieces[0]);
 
-                if (queueNameSetter != null && pathPieces.length == 2) {
-                    queueNameSetter.accept(pathPieces[1]);
+                if (pathPieces.length == 2) {
+                    parts.setQueueName(pathPieces[1]);
                 }
             } else {
                 // URL is using a pattern of http://accountName.blob.core.windows.net/queueName
@@ -117,11 +118,11 @@ final class BuilderHelper {
                     }
                 }
 
-                accountNameSetter.accept(accountName);
+                parts.setAccountName(accountName);
 
                 String[] pathSegments = url.getPath().split("/", 2);
-                if (queueNameSetter != null && pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
-                    queueNameSetter.accept(pathSegments[1]);
+                if (pathSegments.length == 2 && !ImplUtils.isNullOrEmpty(pathSegments[1])) {
+                    parts.setQueueName(pathSegments[1]);
                 }
             }
 
@@ -129,8 +130,10 @@ final class BuilderHelper {
             String sasToken = new QueueServiceSasQueryParameters(
                 Utility.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
-                sasTokenSetter.accept(sasToken);
+                parts.setQueueName(sasToken);
             }
+
+            return parts;
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.", ex));
@@ -206,5 +209,48 @@ final class BuilderHelper {
         return new ResponseValidationPolicyBuilder()
             .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
             .build();
+    }
+
+    static class QueueUrlParts {
+        private String endpoint;
+        private String accountName;
+        private String queueName;
+        private String sasToken;
+
+        String getEndpoint() {
+            return endpoint;
+        }
+
+        QueueUrlParts setEndpoint(String endpoint) {
+            this.endpoint = endpoint;
+            return this;
+        }
+
+        String getAccountName() {
+            return accountName;
+        }
+
+        QueueUrlParts setAccountName(String accountName) {
+            this.accountName = accountName;
+            return this;
+        }
+
+        String getQueueName() {
+            return queueName;
+        }
+
+        QueueUrlParts setQueueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        String getSasToken() {
+            return sasToken;
+        }
+
+        QueueUrlParts setSasToken(String sasToken) {
+            this.sasToken = sasToken;
+            return this;
+        }
     }
 }

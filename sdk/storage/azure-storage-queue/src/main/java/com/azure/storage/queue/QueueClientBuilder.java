@@ -9,9 +9,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -129,7 +131,7 @@ public final class QueueClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public QueueAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
+        Utility.assertNotNull("queueName", queueName);
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
@@ -168,8 +170,14 @@ public final class QueueClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public QueueClientBuilder endpoint(String endpoint) {
-        BuilderHelper.parseEndpoint(endpoint, (ep) -> this.endpoint = ep, (ac) -> this.accountName = ac,
-            this::queueName, this::sasToken, logger);
+        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
+        this.endpoint = parts.getEndpoint();
+        this.accountName = parts.getAccountName();
+        this.queueName = parts.getQueueName();
+
+        if (!ImplUtils.isNullOrEmpty(parts.getSasToken())) {
+            sasToken(parts.getSasToken());
+        }
 
         return this;
     }
