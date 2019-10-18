@@ -138,17 +138,17 @@ public final class ConfigurationAsyncClient {
         // finds any existing configuration settings, then its e-tag will match and the service will return an error.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), setting, null,
             getETagValue(ETAG_ANY), context)
-            .onErrorResume((Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
-                if (throwable instanceof HttpResponseException) {
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
                     final HttpResponse httpResponse = e.getResponse();
                     if (httpResponse.getStatusCode() == 412) {
-                        return Mono.error(new ResourceExistsException("Setting was already present.",
-                            httpResponse, throwable));
+                        return Mono.error(new ResourceExistsException("Setting was already present.", httpResponse,
+                            throwable));
                     }
-                }
-                return Mono.error(throwable);
-            })
+
+                    return Mono.error(throwable);
+                })
             .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addSettingExceptionMapper)
@@ -346,8 +346,8 @@ public final class ConfigurationAsyncClient {
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), null,
             acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
-            .onErrorResume((Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
-                if (throwable instanceof HttpResponseException) {
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
                     final HttpResponse httpResponse = e.getResponse();
                     if (httpResponse.getStatusCode() == 304) {
@@ -356,9 +356,9 @@ public final class ConfigurationAsyncClient {
                     } else if (httpResponse.getStatusCode() == 404) {
                         return Mono.error(new ResourceNotFoundException("Setting not found.", httpResponse, throwable));
                     }
-                }
-                return Mono.error(throwable);
-            })
+
+                    return Mono.error(throwable);
+                })
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
