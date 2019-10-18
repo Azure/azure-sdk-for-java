@@ -87,7 +87,7 @@ public final class AccountSasService {
     /**
      * @return the access status for file resources.
      */
-    public boolean isFile() {
+    public boolean hasFileAccess() {
         return file;
     }
 
@@ -105,7 +105,7 @@ public final class AccountSasService {
     /**
      * @return the access status for queue resources.
      */
-    public boolean isQueue() {
+    public boolean hasQueueAccess() {
         return queue;
     }
 
@@ -123,7 +123,7 @@ public final class AccountSasService {
     /**
      * @return the access status for table resources.
      */
-    public boolean isTable() {
+    public boolean hasTableAccess() {
         return table;
     }
 
