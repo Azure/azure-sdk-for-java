@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobSignedIdentifier
@@ -21,10 +20,8 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.Utility
 import com.azure.storage.common.sas.SasIpRange
-import spock.lang.Ignore
 import spock.lang.Unroll
 
-import java.lang.reflect.Field
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -292,7 +289,6 @@ class SASTest extends APISpec {
         key.setSignedOid(keyOid)
 
         when:
-
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
