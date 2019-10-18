@@ -9,7 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileSignedIdentifier;
 import com.azure.storage.file.models.ShareInfo;
@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @see ShareClientBuilder
  * @see ShareAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
@@ -53,6 +53,15 @@ public class ShareClient {
      */
     public String getShareUrl() {
         return client.getShareUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**

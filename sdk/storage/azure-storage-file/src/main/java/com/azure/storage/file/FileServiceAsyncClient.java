@@ -3,10 +3,6 @@
 
 package com.azure.storage.file;
 
-import static com.azure.core.implementation.util.FluxUtil.monoError;
-import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
-import static com.azure.core.implementation.util.FluxUtil.withContext;
-
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -18,15 +14,15 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.models.FileCorsRule;
 import com.azure.storage.file.models.FileServiceProperties;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.ListSharesOptions;
 import com.azure.storage.file.models.ShareItem;
-import com.azure.storage.file.models.FileStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -34,6 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import static com.azure.core.implementation.util.FluxUtil.monoError;
+import static com.azure.core.implementation.util.FluxUtil.pagedFluxError;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -48,7 +48,7 @@ import java.util.function.Function;
  *
  * @see FileServiceClientBuilder
  * @see FileServiceClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = FileServiceClientBuilder.class, isAsync = true)
 public final class FileServiceAsyncClient {
@@ -73,6 +73,15 @@ public final class FileServiceAsyncClient {
      */
     public String getFileServiceUrl() {
         return azureFileStorageClient.getUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return azureFileStorageClient.getVersion();
     }
 
     /**

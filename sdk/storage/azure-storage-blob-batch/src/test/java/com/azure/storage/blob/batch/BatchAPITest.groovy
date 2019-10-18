@@ -5,8 +5,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 
 class BatchAPITest extends APISpec {
     static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
@@ -386,9 +386,9 @@ class BatchAPITest extends APISpec {
         }
 
         when:
-        batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE)
+        batchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).iterator().next()
 
         then:
-        def e = thrown(BlobStorageException)
+        thrown(BlobStorageException)
     }
 }

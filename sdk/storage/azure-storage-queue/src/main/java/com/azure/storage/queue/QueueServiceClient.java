@@ -8,7 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @see QueueServiceClientBuilder
  * @see QueueServiceAsyncClient
- * @see SharedKeyCredential
+ * @see StorageSharedKeyCredential
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class)
 public final class QueueServiceClient {
@@ -53,6 +53,15 @@ public final class QueueServiceClient {
      */
     public String getQueueServiceUrl() {
         return client.getQueueServiceUrl();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public String getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**

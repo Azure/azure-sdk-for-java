@@ -16,7 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;

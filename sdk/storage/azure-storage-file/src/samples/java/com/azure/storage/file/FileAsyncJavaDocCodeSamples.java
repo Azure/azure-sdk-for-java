@@ -2,15 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.NtfsFileAttributes;
 import reactor.core.publisher.Flux;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -73,7 +71,7 @@ public class FileAsyncJavaDocCodeSamples {
 
     /**
      * Generates code sample for creating a {@link FileAsyncClient} with {@code connectionString}
-     * which turns into {@link SharedKeyCredential}
+     * which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link FileAsyncClient}
      */
     public FileAsyncClient createAsyncClientWithConnectionString() {
@@ -254,33 +252,31 @@ public class FileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrl(long, long, long, URI)}
-     * @throws URISyntaxException when the URI is invalid
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrl(long, long, long, String)}
      */
-    public void uploadFileFromURLAsync() throws URISyntaxException {
+    public void uploadFileFromURLAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri
-        fileAsyncClient.uploadRangeFromUrl(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        // BEGIN: com.azure.storage.file.FileAsyncClient.uploadRangeFromUrl#long-long-long-String
+        fileAsyncClient.uploadRangeFromUrl(6, 8, 0, "sourceUrl").subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrl#long-long-long-uri
+        // END: com.azure.storage.file.FileAsyncClient.uploadRangeFromUrl#long-long-long-String
     }
 
     /**
-     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, URI)}
-     * @throws URISyntaxException when the URI is invalid
+     * Generates a code sample for using {@link FileAsyncClient#uploadRangeFromUrlWithResponse(long, long, long, String)}
      */
-    public void uploadFileFromURLWithResponseAsync() throws URISyntaxException {
+    public void uploadFileFromURLWithResponseAsync() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri
-        fileAsyncClient.uploadRangeFromUrlWithResponse(6, 8, 0, new URI("filewithSAStoken")).subscribe(
+        // BEGIN: com.azure.storage.file.FileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-String
+        fileAsyncClient.uploadRangeFromUrlWithResponse(6, 8, 0, "sourceUrl").subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Completed upload range from url!")
         );
-        // END: com.azure.storage.file.fileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-uri
+        // END: com.azure.storage.file.FileAsyncClient.uploadRangeFromUrlWithResponse#long-long-long-String
     }
 
     /**

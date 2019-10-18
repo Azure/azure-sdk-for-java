@@ -4,7 +4,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.models.FileAccessPolicy;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileSignedIdentifier;
@@ -76,7 +76,7 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates code sample for creating a {@link ShareClient} with {@code connectionString} which turns into {@link SharedKeyCredential}
+     * Generates code sample for creating a {@link ShareClient} with {@code connectionString} which turns into {@link StorageSharedKeyCredential}
      * @return An instance of {@link ShareClient}
      */
     public ShareClient createClientWithConnectionString() {

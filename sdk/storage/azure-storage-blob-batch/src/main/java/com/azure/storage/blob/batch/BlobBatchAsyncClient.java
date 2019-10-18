@@ -15,7 +15,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
@@ -48,11 +47,11 @@ public final class BlobBatchAsyncClient {
 
     private final AzureBlobStorageImpl client;
 
-    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, BlobServiceVersion version) {
+    BlobBatchAsyncClient(String accountUrl, HttpPipeline pipeline, String version) {
         this.client = new AzureBlobStorageBuilder()
             .url(accountUrl)
             .pipeline(pipeline)
-            .version(version.getVersion())
+            .version(version)
             .build();
     }
 

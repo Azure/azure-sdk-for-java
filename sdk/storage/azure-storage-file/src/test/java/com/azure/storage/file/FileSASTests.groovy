@@ -1,14 +1,14 @@
 package com.azure.storage.file
 
 
-import com.azure.storage.common.AccountSasPermission
-import com.azure.storage.common.AccountSasResourceType
-import com.azure.storage.common.AccountSasService
-import com.azure.storage.common.AccountSasSignatureValues
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.SasIpRange
-import com.azure.storage.common.SasProtocol
-import com.azure.storage.common.credentials.SharedKeyCredential
+import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.models.FileAccessPolicy
 import com.azure.storage.file.models.FileSignedIdentifier
 import com.azure.storage.file.models.FileStorageException
@@ -175,7 +175,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sas = new FileServiceSasSignatureValues()
             .setPermissions(permissions.toString())
             .setExpiryTime(expiryTime)
@@ -234,7 +234,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sas = new FileServiceSasSignatureValues()
             .setPermissions(permissions.toString())
             .setExpiryTime(expiryTime)
@@ -288,7 +288,7 @@ class FileSASTests extends APISpec {
         OffsetDateTime expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasWithId = new FileServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setCanonicalName(primaryShareClient.getShareName(), credential.getAccountName())
@@ -339,7 +339,7 @@ class FileSASTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         when:
-        def credential = SharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sas = AccountSasSignatureValues.generateAccountSas(credential, service, resourceType, permissions, expiryTime, null, null, null, null)
 
         then:

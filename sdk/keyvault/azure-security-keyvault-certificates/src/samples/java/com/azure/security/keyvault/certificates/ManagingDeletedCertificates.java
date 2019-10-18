@@ -5,7 +5,7 @@ package com.azure.security.keyvault.certificates;
 
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.Poller;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;

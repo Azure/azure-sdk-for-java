@@ -73,8 +73,18 @@ class BlobBatchHelper {
                 String body = new String(byteArrayBody, StandardCharsets.UTF_8);
                 List<BlobStorageException> exceptions = new ArrayList<>();
 
+                String[] subResponses = body.split("--" + boundary);
+                if (subResponses.length == 3 && batch.getOperationCount() != 1) {
+                    String[] exceptionSections = subResponses[1].split(HTTP_NEWLINE + HTTP_NEWLINE);
+                    int statusCode = getStatusCode(exceptionSections[1], logger);
+                    HttpHeaders headers = getHttpHeaders(exceptionSections[1]);
+
+                    throw logger.logExceptionAsError(new BlobStorageException(headers.getValue("x-ms-error-code"),
+                        createHttpResponse(batchResponse.getRequest(), statusCode, headers, body), body));
+                }
+
                 // Split the batch response body into batch operation responses.
-                for (String subResponse : body.split("--" + boundary)) {
+                for (String subResponse : subResponses) {
                     // This is a split value that isn't a response.
                     if (!APPLICATION_HTTP_PATTERN.matcher(subResponse).find()) {
                         continue;
@@ -88,7 +98,8 @@ class BlobBatchHelper {
                         getBatchOperation(batch, subResponseSections[0], logger);
 
                     // The second section will contain status code and header information.
-                    setStatusCodeAndHeaders(batchOperationResponse, subResponseSections[1]);
+                    batchOperationResponse.setStatusCode(getStatusCode(subResponseSections[1], logger));
+                    batchOperationResponse.setHeaders(getHttpHeaders(subResponseSections[1]));
 
                     // The third section will contain the body.
                     if (subResponseSections.length > 2) {
@@ -121,30 +132,32 @@ class BlobBatchHelper {
         return batch.getBatchRequest(contentId).setResponseReceived();
     }
 
-    private static void setStatusCodeAndHeaders(BlobBatchOperationResponse<?> batchOperationResponse,
-        String responseHeaders) {
+    private static int getStatusCode(String responseMetadata, ClientLogger logger) {
+        Matcher statusCodeMatcher = STATUS_CODE_PATTERN.matcher(responseMetadata);
+        if (statusCodeMatcher.find()) {
+            return Integer.parseInt(statusCodeMatcher.group(1));
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException("Unable to parse response status code."));
+        }
+    }
+
+    private static HttpHeaders getHttpHeaders(String responseMetadata) {
         HttpHeaders headers = new HttpHeaders();
-        for (String line : responseHeaders.split(HTTP_NEWLINE)) {
-            if (ImplUtils.isNullOrEmpty(line)) {
+
+        for (String line : responseMetadata.split(HTTP_NEWLINE)) {
+            if (ImplUtils.isNullOrEmpty(line) || (line.startsWith("HTTP") && !line.contains(":"))) {
                 continue;
             }
 
-            if (line.startsWith("HTTP")) {
-                Matcher statusCodeMatcher = STATUS_CODE_PATTERN.matcher(line);
-                if (statusCodeMatcher.find()) {
-                    batchOperationResponse.setStatusCode(Integer.parseInt(statusCodeMatcher.group(1)));
-                }
+            String[] headerPieces = line.split(":\\s*", 2);
+            if (headerPieces.length == 1) {
+                headers.put(headerPieces[0], null);
             } else {
-                String[] headerPieces = line.split(":\\s*", 2);
-                if (headerPieces.length == 1) {
-                    headers.put(headerPieces[0], null);
-                } else {
-                    headers.put(headerPieces[0], headerPieces[1]);
-                }
+                headers.put(headerPieces[0], headerPieces[1]);
             }
         }
 
-        batchOperationResponse.setHeaders(headers);
+        return headers;
     }
 
     private static void setBodyOrAddException(BlobBatchOperationResponse<?> batchOperationResponse,
