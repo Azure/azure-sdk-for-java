@@ -589,7 +589,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
-                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
               </additionalOptions>
               <doclint>all</doclint>
@@ -881,7 +881,7 @@
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
     <module>sdk/storage/azure-storage-common</module>
-    <module>sdk/storage/azure-storage-file</module>
+    <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/azure-storage-queue-cryptography</module>
