@@ -47,7 +47,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobAsyncClientBase#beginCopy(String, Duration)}
      */
-    public void beginCopyFromUrlCodeSnippet() {
+    public void beginCopyCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration
         client.beginCopy(url, Duration.ofSeconds(3)).getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
@@ -224,7 +224,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobAsyncClientBase#beginCopy(String, Map, AccessTier,
      * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions, Duration)}
      */
-    public void beginCopyFromUrlCodeSnippets() {
+    public void beginCopyCodeSnippets() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()

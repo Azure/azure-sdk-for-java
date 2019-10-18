@@ -4,11 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
-import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -55,21 +52,6 @@ public class BlobClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobClient.exists
         System.out.printf("Exists? %b%n", client.exists());
         // END: com.azure.storage.blob.BlobClient.exists
-    }
-
-    /**
-     * Code snippets for {@link BlobClient#beginCopy(String, Duration)}
-     */
-    public void beginCopyFromUrl() {
-        // BEGIN: com.azure.storage.blob.BlobClient.beginCopy#String
-        Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, Duration.ofSeconds(2));
-
-        // This blocks until either the copy operation has completed, failed, or been cancelled.
-        poller.block();
-        PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
-        BlobCopyInfo operation = response.getValue();
-        System.out.printf("Status: %s, Copy identifier: %s%n", poller.getStatus(), operation.getCopyId());
-        // END: com.azure.storage.blob.BlobClient.beginCopy#String
     }
 
     /**

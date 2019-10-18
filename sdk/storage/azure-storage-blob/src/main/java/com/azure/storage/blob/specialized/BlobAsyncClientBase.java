@@ -380,7 +380,7 @@ public class BlobAsyncClientBase {
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
-                return new BlobCopyInfo(sourceUrl.toString(), headers.getCopyId(), headers.getCopyStatus(),
+                return new BlobCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
                     headers.getETag(), headers.getLastModified(), headers.getErrorCode());
             });
     }
