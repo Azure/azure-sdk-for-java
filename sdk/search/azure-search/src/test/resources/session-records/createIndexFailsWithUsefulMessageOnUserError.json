@@ -1,19 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdka94821976bc5.search.windows.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://azs-sdkc86932563b15.search.windows.net/indexes?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "30d19c48-46df-45a0-903d-61978908747d",
+      "request-id" : "df4c3b22-f652-402b-a474-a6e355495982",
       "StatusCode" : "400",
-      "Date" : "Wed, 16 Oct 2019 18:10:06 GMT",
+      "Date" : "Thu, 17 Oct 2019 22:16:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "134",
+      "elapsed-time" : "49",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "160",

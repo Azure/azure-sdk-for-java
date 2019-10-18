@@ -3,9 +3,9 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.search.models.Index;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
-import com.azure.search.models.Index;
 import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
@@ -15,6 +15,7 @@ import com.azure.search.models.CorsOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import reactor.test.StepVerifier;
+
 import java.util.Collections;
 
 public class IndexManagementAsyncTests extends IndexManagementTestBase {
@@ -82,22 +83,53 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index).block();
+
+        StepVerifier
+            .create(client.getIndex(index.getName()))
+            .assertNext(res -> {
+                assertIndexesEqual(index, res);
+            })
+            .verifyComplete();
     }
 
     @Override
     public void getIndexThrowsOnNotFound() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        StepVerifier
+            .create(client.getIndex("thisindexdoesnotexist"))
+            .verifyErrorSatisfies(error -> {
+                Assert.assertEquals(HttpResponseException.class, error.getClass());
+                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) error).getResponse().getStatusCode());
+                Assert.assertTrue(error.getMessage().contains("No index with the name 'thisindexdoesnotexist' was found in the service"));
+            });
     }
 
     @Override
     public void existsReturnsTrueForExistingIndex() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index).block();
+
+        StepVerifier
+            .create(client.indexExists(index.getName()))
+            .assertNext(res -> Assert.assertTrue(res))
+            .verifyComplete();
     }
 
     @Override
     public void existsReturnsFalseForNonExistingIndex() {
+        client = getSearchServiceClientBuilder().buildAsyncClient();
 
+        StepVerifier
+            .create(client.indexExists("invalidindex"))
+            .assertNext(res -> Assert.assertFalse(res))
+            .verifyComplete();
     }
 
     @Override

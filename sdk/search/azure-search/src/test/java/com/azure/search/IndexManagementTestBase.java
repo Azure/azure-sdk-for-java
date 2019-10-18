@@ -8,30 +8,35 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.search.models.AnalyzerName;
+import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
+import com.azure.search.models.DistanceScoringFunction;
+import com.azure.search.models.DistanceScoringParameters;
 import com.azure.search.models.Field;
+import com.azure.search.models.FreshnessScoringFunction;
+import com.azure.search.models.FreshnessScoringParameters;
 import com.azure.search.models.Index;
-import com.azure.search.models.ScoringProfile;
-import com.azure.search.models.MagnitudeScoringParameters;
 import com.azure.search.models.MagnitudeScoringFunction;
+import com.azure.search.models.MagnitudeScoringParameters;
+import com.azure.search.models.ScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
-import com.azure.search.models.DistanceScoringParameters;
-import com.azure.search.models.DistanceScoringFunction;
-import com.azure.search.models.TagScoringParameters;
-import com.azure.search.models.TagScoringFunction;
-import com.azure.search.models.TextWeights;
-import com.azure.search.models.CorsOptions;
+import com.azure.search.models.ScoringProfile;
 import com.azure.search.models.Suggester;
-import com.azure.search.models.FreshnessScoringParameters;
-import com.azure.search.models.FreshnessScoringFunction;
+import com.azure.search.models.TagScoringFunction;
+import com.azure.search.models.TagScoringParameters;
+import com.azure.search.models.TextWeights;
+import com.azure.search.test.environment.models.ModelComparer;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Override
@@ -66,12 +71,16 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
     @Test
     public abstract void createIndexFailsWithUsefulMessageOnUserError();
 
+    @Test
     public abstract void getIndexReturnsCorrectDefinition();
 
+    @Test
     public abstract void getIndexThrowsOnNotFound();
 
+    @Test
     public abstract void existsReturnsTrueForExistingIndex();
 
+    @Test
     public abstract void existsReturnsFalseForNonExistingIndex();
 
     public abstract void deleteIndexIfNotChangedWorksOnlyOnCurrentResource();
@@ -83,8 +92,111 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
     public abstract void canCreateAndDeleteIndex();
 
-    protected Index createTestIndex() {
+    protected void assertFieldsEquals(Field expected, Field actual) {
+        Assert.assertEquals(expected.getName(), actual.getName());
+        Assert.assertEquals(expected.isKey(), actual.isKey());
+        Assert.assertEquals(expected.isSearchable(), actual.isSearchable());
+        Assert.assertEquals(expected.isFilterable(), actual.isFilterable());
+        Assert.assertEquals(expected.isSortable(), actual.isSortable());
+        Assert.assertEquals(expected.isFacetable(), actual.isFacetable());
+    }
 
+    protected void assertIndexesEqual(Index expected, Index actual) {
+        Double delta = 0.0;
+
+        // Name
+        Assert.assertEquals(expected.getName(), actual.getName());
+
+        // Fields
+        List<Field> expectedFields = expected.getFields();
+        List<Field> actualFields = expected.getFields();
+        Assert.assertEquals(expectedFields.size(), actualFields.size());
+        for (int i = 0; i < expectedFields.size(); i++) {
+            Field expectedField = expectedFields.get(i);
+            Field actualField = actualFields.get(i);
+
+            assertFieldsEquals(expectedField, actualField);
+
+            // (Secondary) fields
+            if (expectedField.getFields() != null && actualField.getFields() != null) {
+                for (int j = 0; j < expectedField.getFields().size(); j++) {
+                    assertFieldsEquals(expectedField.getFields().get(j), actualField.getFields().get(j));
+                }
+            }
+        }
+
+        // Scoring profiles
+        Assert.assertEquals(expected.getScoringProfiles().size(), actual.getScoringProfiles().size());
+        for (int i = 0; i < expected.getScoringProfiles().size(); i++) {
+            ScoringProfile expectedScoringProfile = expected.getScoringProfiles().get(i);
+            ScoringProfile actualScoringProfile = actual.getScoringProfiles().get(i);
+
+            Assert.assertEquals(expectedScoringProfile.getName(), actualScoringProfile.getName());
+            Assert.assertTrue(Objects.equals(expectedScoringProfile.getFunctionAggregation(), actualScoringProfile.getFunctionAggregation()));
+
+            // Scoring functions
+            Assert.assertEquals(expectedScoringProfile.getFunctions().size(), actualScoringProfile.getFunctions().size());
+            for (int j = 0; j < expectedScoringProfile.getFunctions().size(); j++) {
+                ScoringFunction expectedFunction = expectedScoringProfile.getFunctions().get(j);
+                ScoringFunction actualFunction = expectedScoringProfile.getFunctions().get(j);
+                Assert.assertEquals(expectedFunction.getFieldName(), actualFunction.getFieldName());
+                Assert.assertEquals(expectedFunction.getBoost(), actualFunction.getBoost(), delta);
+                Assert.assertEquals(expectedFunction.getInterpolation(), actualFunction.getInterpolation());
+
+                if (expectedFunction instanceof MagnitudeScoringFunction) {
+                    MagnitudeScoringFunction expectedMsf = (MagnitudeScoringFunction) expectedFunction;
+                    MagnitudeScoringFunction actualMsf = (MagnitudeScoringFunction) actualFunction;
+                    MagnitudeScoringParameters expectedParams = expectedMsf.getParameters();
+                    MagnitudeScoringParameters actualParams = actualMsf.getParameters();
+                    Assert.assertEquals(expectedParams.getBoostingRangeStart(), actualParams.getBoostingRangeStart(), delta);
+                    Assert.assertEquals(expectedParams.getBoostingRangeEnd(), actualParams.getBoostingRangeEnd(), delta);
+                }
+
+                if (expectedFunction instanceof DistanceScoringFunction) {
+                    DistanceScoringFunction expectedDsf = (DistanceScoringFunction) expectedFunction;
+                    DistanceScoringFunction actualDsf = (DistanceScoringFunction) actualFunction;
+                    DistanceScoringParameters expectedParams = expectedDsf.getParameters();
+                    DistanceScoringParameters actualParams = actualDsf.getParameters();
+                    Assert.assertEquals(expectedParams.getBoostingDistance(), actualParams.getBoostingDistance(), delta);
+                    Assert.assertEquals(expectedParams.getReferencePointParameter(), actualParams.getReferencePointParameter());
+                }
+
+                if (expectedFunction instanceof FreshnessScoringFunction) {
+                    Assert.assertEquals(((FreshnessScoringFunction) expectedFunction).getParameters().getBoostingDuration(),
+                        ((FreshnessScoringFunction) actualFunction).getParameters().getBoostingDuration());
+                }
+
+                if (expectedFunction instanceof TagScoringFunction) {
+                    Assert.assertEquals(((TagScoringFunction) expectedFunction).getParameters().getTagsParameter(),
+                        ((TagScoringFunction) actualFunction).getParameters().getTagsParameter());
+                }
+
+            }
+            if (expectedScoringProfile.getTextWeights() != null && actualScoringProfile.getTextWeights().getWeights() != null) {
+                Assert.assertEquals(expectedScoringProfile.getTextWeights().getWeights().size(), actualScoringProfile.getTextWeights().getWeights().size());
+            }
+        }
+
+        // Default scoring profile
+        Assert.assertEquals(expected.getDefaultScoringProfile(), actual.getDefaultScoringProfile());
+
+        // Cors options
+        ModelComparer.collectionEquals(expected.getCorsOptions().getAllowedOrigins(), actual.getCorsOptions().getAllowedOrigins());
+        Assert.assertEquals(expected.getCorsOptions().getMaxAgeInSeconds(), actual.getCorsOptions().getMaxAgeInSeconds());
+
+        // Suggesters
+        List<Suggester> expectedSuggesters = expected.getSuggesters();
+        List<Suggester> actualSuggesters = expected.getSuggesters();
+        Assert.assertEquals(expectedSuggesters.size(), actualSuggesters.size());
+        for (int i = 0; i < expectedSuggesters.size(); i++) {
+            Suggester expectedSuggester = expectedSuggesters.get(i);
+            Suggester actualSuggester = actualSuggesters.get(i);
+            Assert.assertEquals(expectedSuggester.getName(), actualSuggester.getName());
+            ModelComparer.collectionEquals(expectedSuggester.getSourceFields(), actualSuggester.getSourceFields());
+        }
+    }
+
+    protected Index createTestIndex() {
         Map<String, Double> weights = new HashMap<String, Double>();
         weights.put("Description", 1.5);
         weights.put("Category", 2.0);

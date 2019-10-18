@@ -252,7 +252,7 @@ public class SearchServiceClient {
     /**
      * Creates a new Azure Cognitive Search index
      * @param index definition of the index to create
-     * @param searchRequestOptions Search Request Options
+     * @param searchRequestOptions Additional parameters for the operation.
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the created Index.
      */
@@ -263,18 +263,70 @@ public class SearchServiceClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
      * @return the Index.
      */
-    public Index getIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Index getIndex(String indexName) {
+        return this.getIndexWithResponse(indexName, null, Context.NONE).getValue();
     }
+
+
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @return the Index.
+     */
+    public Index getIndex(String indexName,
+                          SearchRequestOptions searchRequestOptions) {
+        return this.getIndexWithResponse(indexName, searchRequestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
+     * @param searchRequestOptions Additional parameters for the operation
+     * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index.
      */
-    public Response<Index> getIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Response<Index> getIndexWithResponse(String indexName,
+                                                SearchRequestOptions searchRequestOptions,
+                                                Context context) {
+        return asyncClient.getIndexWithResponse(indexName, searchRequestOptions, context).block();
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @return true if the index exists; false otherwise.
+     */
+    public Boolean indexExists(String indexName) {
+        return indexExistsWithResponse(indexName, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @return true if the index exists; false otherwise.
+     */
+    public Boolean indexExists(String indexName,
+                               SearchRequestOptions searchRequestOptions) {
+        return indexExistsWithResponse(indexName, searchRequestOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @param searchRequestOptions Additional parameters for the operation
+     * @param context additional context that is passed through the Http pipeline during the service call
+     * @return true if the index exists; false otherwise.
+     */
+    public Response<Boolean> indexExistsWithResponse(String indexName,
+                                                     SearchRequestOptions searchRequestOptions,
+                                                     Context context) {
+        return asyncClient.indexExistsWithResponse(indexName, searchRequestOptions, context).block();
     }
 
     /**

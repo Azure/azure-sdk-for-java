@@ -13,6 +13,7 @@ import com.azure.search.models.MagnitudeScoringFunction;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.CorsOptions;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -78,22 +79,44 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
     @Override
     public void getIndexReturnsCorrectDefinition() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index);
+        Index createdIndex = client.getIndex(index.getName());
+
+        assertIndexesEqual(createdIndex, index);
     }
 
     @Override
     public void getIndexThrowsOnNotFound() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        try {
+            client.getIndex("thisindexdoesnotexist");
+            Assert.fail("getIndex did not throw an expected Exception");
+        } catch (Exception ex) {
+            Assert.assertEquals(HttpResponseException.class, ex.getClass());
+            Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+            Assert.assertTrue(ex.getMessage().contains("No index with the name 'thisindexdoesnotexist' was found in the service"));
+        }
     }
 
     @Override
     public void existsReturnsTrueForExistingIndex() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        Index index = createTestIndex();
+        client.createIndex(index);
+
+        Assert.assertTrue(client.indexExists(index.getName()));
     }
 
     @Override
     public void existsReturnsFalseForNonExistingIndex() {
+        client = getSearchServiceClientBuilder().buildClient();
 
+        Assert.assertFalse(client.indexExists("invalidindex"));
     }
 
     @Override

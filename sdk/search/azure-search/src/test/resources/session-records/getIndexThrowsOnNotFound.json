@@ -1,0 +1,26 @@
+{
+    "networkCallRecords" : [ {
+        "Method" : "GET",
+        "Uri" : "https://azs-sdkf0412552dfda.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06",
+        "Headers" : { },
+        "Response" : {
+            "Pragma" : "no-cache",
+            "retry-after" : "0",
+            "request-id" : "563b9d25-eff3-4ac4-88e1-9b70a2a35eed",
+            "StatusCode" : "404",
+            "Date" : "Thu, 17 Oct 2019 22:27:34 GMT",
+            "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+            "Cache-Control" : "no-cache",
+            "elapsed-time" : "72",
+            "OData-Version" : "4.0",
+            "Expires" : "-1",
+            "Content-Length" : "128",
+            "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azs-sdkf0412552dfda'.\"}}",
+            "Preference-Applied" : "odata.include-annotations=\"*\"",
+            "Content-Language" : "en",
+            "Content-Type" : "application/json; odata.metadata=minimal"
+        },
+        "Exception" : null
+    } ],
+    "variables" : [ ]
+}

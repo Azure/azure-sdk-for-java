@@ -3,10 +3,13 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
@@ -343,7 +346,7 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index.
      * @param index definition of the index to create.
-     * @param searchRequestOptions Search Request Options.
+     * @param searchRequestOptions Additional parameters for the operation.
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, SearchRequestOptions searchRequestOptions) {
@@ -360,19 +363,88 @@ public class SearchServiceAsyncClient {
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
      * @return the Index.
      */
-    public Mono<Index> getIndex() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Index> getIndex(String indexName) {
+        return this.getIndexWithResponse(indexName, null)
+            .map(Response::getValue);
     }
 
     /**
-     * @throws NotImplementedException not implemented
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @return the Index.
+     */
+    public Mono<Index> getIndex(String indexName, SearchRequestOptions searchRequestOptions) {
+        return this.getIndexWithResponse(indexName, searchRequestOptions)
+            .map(Response::getValue);
+    }
+
+    /**
+     * Retrieves an index definition from the Azure Cognitive Search.
+     * @param indexName The name of the index to retrieve
+     * @param searchRequestOptions Additional parameters for the operation
      * @return a response containing the Index.
      */
-    public Mono<Response<Index>> getIndexWithResponse() {
-        throw logger.logExceptionAsError(new NotImplementedException("not implemented."));
+    public Mono<Response<Index>> getIndexWithResponse(String indexName, SearchRequestOptions searchRequestOptions) {
+        return withContext(context -> getIndexWithResponse(indexName, searchRequestOptions, context));
+    }
+
+    Mono<Response<Index>> getIndexWithResponse(String indexName,
+                                               SearchRequestOptions searchRequestOptions,
+                                               Context context) {
+        return restClient
+            .indexes()
+            .getWithRestResponseAsync(indexName, searchRequestOptions, context)
+            .map(Function.identity());
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @return true if the index exists; false otherwise.
+     */
+    public Mono<Boolean> indexExists(String indexName) {
+        return indexExistsWithResponse(indexName, null).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @param searchRequestOptions Additional parameters for the operation.
+     * @return true if the index exists; false otherwise.
+     */
+    public Mono<Boolean> indexExists(String indexName, SearchRequestOptions searchRequestOptions) {
+        return indexExistsWithResponse(indexName, searchRequestOptions).map(Response::getValue);
+    }
+
+    /**
+     * Determines whether or not the given index exists in the Azure Cognitive Search.
+     * @param indexName The name of the index
+     * @param searchRequestOptions Additional parameters for the operation
+     * @return true if the index exists; false otherwise.
+     */
+    public Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
+                                                           SearchRequestOptions searchRequestOptions) {
+        return withContext(context -> indexExistsWithResponse(indexName, searchRequestOptions, context));
+    }
+
+    Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
+                                                    SearchRequestOptions searchRequestOptions,
+                                                    Context context) {
+        return this.getIndexWithResponse(indexName, searchRequestOptions, context)
+            .map(i -> (Response<Boolean>) new SimpleResponse<>(i, true))
+            .onErrorResume(
+                t -> t instanceof HttpResponseException
+                    && ((HttpResponseException) t).getResponse().getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((HttpResponseException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
