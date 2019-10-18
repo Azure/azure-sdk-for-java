@@ -620,7 +620,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertNotNull(block);
         assertConfigurationEquals(expected, block);
+        // conditional get, now the setting has not be updated yet, resulting 304 and null value
+        assertConfigurationEquals(null, client.getSettingWithResponse(block, null, true, Context.NONE), 304);
         assertConfigurationEquals(newExpected, client.setSettingWithResponse(newExpected, false, Context.NONE).getValue());
+        // conditional get, now the setting is updated and we are able to get a new setting with 200 code
+        assertConfigurationEquals(newExpected, client.getSettingWithResponse(newExpected, null, true, Context.NONE).getValue());
     }
 
     public void deleteAllSettings() {

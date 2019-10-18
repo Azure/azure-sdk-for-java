@@ -843,13 +843,21 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final String key = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().setKey(key).setValue("myNewValue");
-        final ConfigurationSetting block =
-            client.addSetting(expected.getKey(), expected.getLabel(), expected.getValue()).single().block();
+        final ConfigurationSetting block = client.addSettingWithResponse(expected).block().getValue();
 
         assertNotNull(block);
-        assertConfigurationEquals(expected, block);
+
+        // conditional get, now the setting has not be updated yet, resulting 304 and null value
+        StepVerifier.create(client.getSettingWithResponse(block, null, true))
+            .assertNext(response -> assertConfigurationEquals(null, response, 304))
+            .verifyComplete();
 
         StepVerifier.create(client.setSettingWithResponse(newExpected, false))
+            .assertNext(response -> assertConfigurationEquals(newExpected, response))
+            .verifyComplete();
+
+        // conditional get, now the setting is updated and we are able to get a new setting with 200 code
+        StepVerifier.create(client.getSettingWithResponse(block, null, true))
             .assertNext(response -> assertConfigurationEquals(newExpected, response))
             .verifyComplete();
     }

@@ -352,7 +352,7 @@ public final class ConfigurationAsyncClient {
                     final HttpResponse httpResponse = e.getResponse();
                     if (httpResponse.getStatusCode() == 304) {
                         return Mono.just(new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(), setting, null));
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
                     } else if (httpResponse.getStatusCode() == 404) {
                         return Mono.error(new ResourceNotFoundException("Setting not found.", httpResponse, throwable));
                     }
