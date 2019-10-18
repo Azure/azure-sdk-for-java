@@ -17,9 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.time.ZoneOffset;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -70,42 +68,53 @@ public class SharedTokenCacheCredential implements TokenCredential {
             }
         }
 
-        IAccount requestedAccount = null;
-
         // find if the Public Client app with the requested username exists
-        Collection<IAccount> accounts = pubClient.getAccounts().join();
-        Iterator<IAccount> iter = accounts.iterator();
+        return Mono.fromFuture(pubClient.getAccounts())
+            .flatMap(set -> {
+                IAccount requestedAccount = null;
 
-
-        if (username == null && iter.hasNext()) {
-            requestedAccount = iter.next();
-        } else {
-            while (iter.hasNext()) {
-                IAccount account = iter.next();
-                if (account.username().equals(username)) {
-                    requestedAccount = account;
-                    break;
+                if (username != null) {
+                    for (IAccount cached : set) {
+                        if (username.equals(cached.username())) {
+                            requestedAccount = cached;
+                            break;
+                        }
+                    }
+                } else {
+                    for (IAccount cached : set) {
+                        if (requestedAccount != null) {
+                            if (!cached.username().equals(requestedAccount.username())
+                                    || !cached.environment().equals(requestedAccount.environment())
+                                    || !cached.homeAccountId().equals(requestedAccount.homeAccountId())) {
+                                return Mono.error(new RuntimeException("Multiple accounts found in the token cache. "
+                                    + "Please specify the username of the account in the AZURE_USERNAME environment "
+                                    + "variable"));
+                            }
+                        } else {
+                            requestedAccount = cached;
+                        }
+                    }
                 }
-            }
-        }
 
-        if (requestedAccount == null) {
-            return Mono.error(new RuntimeException("Requested account was not found"));
-        }
+                if (requestedAccount == null) {
+                    return Mono.error(new RuntimeException("Requested account was not found"));
+                }
 
-        // if it does, then request the token
-        SilentParameters params = SilentParameters.builder(
-            new HashSet<>(request.getScopes()), requestedAccount).build();
+                // if it does, then request the token
+                SilentParameters params = SilentParameters.builder(
+                    new HashSet<>(request.getScopes()), requestedAccount).build();
 
-        CompletableFuture<IAuthenticationResult> future;
-        try {
-            future = pubClient.acquireTokenSilently(params);
-            return Mono.fromFuture(() -> future).map(result ->
-                new AccessToken(result.accessToken(), result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC)));
+                CompletableFuture<IAuthenticationResult> future;
+                try {
+                    future = pubClient.acquireTokenSilently(params);
+                    return Mono.fromFuture(() -> future).map(result ->
+                        new AccessToken(result.accessToken(),
+                            result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC)));
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return Mono.error(new RuntimeException("Token was not found"));
-        }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    return Mono.error(new RuntimeException("Token was not found"));
+                }
+            });
     }
 }
