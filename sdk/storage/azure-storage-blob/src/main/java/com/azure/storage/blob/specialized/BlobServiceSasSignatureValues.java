@@ -20,12 +20,11 @@ import java.util.Objects;
 
 /**
  * BlobServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link BlobServiceSasQueryParameters}
- * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
- * actual REST requests.
+ * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)} or
+ * {@link #generateSasQueryParameters(UserDelegationKey, String)} to obtain a representation of the SAS which can be
+ * applied to blob urls.
  *
- * <p><strong>Generating SAS query parameters with {@link SharedKeyCredential}</strong></p>
+ * <p><strong>Generating SAS query parameters with {@link StorageSharedKeyCredential}</strong></p>
  * The following code generates SAS query parameters for an Azure storage blob.
  * <p>
  * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#SharedKeyCredential}
@@ -35,8 +34,10 @@ import java.util.Objects;
  * <p>
  * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String}
  *
- * {@see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>}
- * {@see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a SAS</a>}
+ * @see BlobServiceSasQueryParameters
+ * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
+ * SAS</a>
  */
 public final class BlobServiceSasSignatureValues {
     /**

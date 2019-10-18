@@ -10,9 +10,15 @@ import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Code snippets for {@link BlobServiceSasSignatureValues}.
+ */
 public class BlobServiceSasSignatureValuesJavaDocCodeSnippets {
+    /**
+     * Generates a blob SAS with {@link StorageSharedKeyCredential}
+     */
     public void blobSas() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#SharedKeyCredential
+        // BEGIN: com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential
         BlobSasPermission blobPermission = new BlobSasPermission().setReadPermission(true);
 
         // We are creating a SAS to a blob because we set both the container name and blob name.
@@ -25,9 +31,12 @@ public class BlobServiceSasSignatureValuesJavaDocCodeSnippets {
 
         StorageSharedKeyCredential credential = new StorageSharedKeyCredential("account-name", "key");
         BlobServiceSasQueryParameters sasQueryParameters = builder.generateSasQueryParameters(credential);
-        // END: com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#SharedKeyCredential
+        // END: com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential
     }
 
+    /**
+     * Generates a container SAS using {@link UserDelegationKey}.
+     */
     public void userDelegationKey() {
         // BEGIN: com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String
         BlobSasPermission blobPermission = new BlobSasPermission()
