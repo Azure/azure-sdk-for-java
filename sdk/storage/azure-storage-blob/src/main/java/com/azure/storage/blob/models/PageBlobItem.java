@@ -32,7 +32,7 @@ public class PageBlobItem {
         final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMD5 = contentMD5;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.blobSequenceNumber = blobSequenceNumber;

@@ -30,7 +30,7 @@ public class BlockBlobItem {
         final boolean isServerEncrypted, final String encryptionKeySha256) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMD5 = contentMD5;
+        this.contentMD5 = ImplUtils.clone(contentMD5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
     }
