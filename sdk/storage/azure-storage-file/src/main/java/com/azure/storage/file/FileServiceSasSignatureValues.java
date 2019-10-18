@@ -24,8 +24,8 @@ import java.time.OffsetDateTime;
  * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters.shareSas#StorageSharedKeyCredential}
  *
  * <p><strong>Generating a file SAS</strong></p>
- * <p>The snippet below generates a file SAS that has the same duration and permissions as specified by the
- * {@link #setIdentifier(String) stored access policy} set.
+ * <p>The snippet below generates a file SAS that has the same duration and permissions specified by the
+ * {@link #setIdentifier(String) stored access policy}.
  *
  * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential}
  *

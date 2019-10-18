@@ -21,7 +21,8 @@ public class FileServiceSasSignatureValuesJavaDocCodeSnippets {
             .setCreatePermission(true)
             .setReadPermission(true);
 
-        // The expiry time and permissions are required to create a valid SAS.
+        // The expiry time and permissions are required to create a valid SAS
+        // if a stored access policy identifier is not set.
         FileServiceSasQueryParameters sasQueryParameters = new FileServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plus(Duration.ofDays(3)))
             .setPermissions(permission)
@@ -37,8 +38,8 @@ public class FileServiceSasSignatureValuesJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential
         StorageSharedKeyCredential credential = new StorageSharedKeyCredential("my-account", "key");
 
-        // The shared access policy, "read-write-user" exists in the account. The file SAS generated from this has the
-        // same duration and permissions as the policy.
+        // The shared access policy, "read-write-user" exists in the storage account. The file SAS generated from this
+        // has the same duration and permissions as the policy.
         // The expiry and permissions should not be set explicitly.
         FileServiceSasQueryParameters sasQueryParameters = new FileServiceSasSignatureValues()
             .setIdentifier("read-write-user")
