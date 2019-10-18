@@ -97,7 +97,7 @@ public final class AccountSasService {
      * @param file Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setFile(boolean file) {
+    public AccountSasService setFileAccess(boolean file) {
         this.file = file;
         return this;
     }
@@ -115,7 +115,7 @@ public final class AccountSasService {
      * @param queue Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setQueue(boolean queue) {
+    public AccountSasService setQueueAccess(boolean queue) {
         this.queue = queue;
         return this;
     }
@@ -133,7 +133,7 @@ public final class AccountSasService {
      * @param table Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setTable(boolean table) {
+    public AccountSasService setTableAccess(boolean table) {
         this.table = table;
         return this;
     }
