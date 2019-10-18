@@ -16,8 +16,17 @@ import java.time.OffsetDateTime;
  * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)}
  * to obtain a representation of the SAS which can be applied to queue urls.
  *
- * <p><strong>Generating a queue SAS</strong></p>
+ * <p><strong>Generating a queue SAS with expiryTime and permissions</strong></p>
+ * <p>The snippet below generates a queue SAS that lasts for two days and gives the user read, add, and update
+ * permissions to the queue.
+ *
  * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
+ *
+ * <p><strong>Generating a queue SAS with stored access policy identifier</strong></p>
+ * <p>The snippet below generates a queue SAS that has the same duration and permissions specified by the
+ * {@link #setIdentifier(String) stored access policy}.
+ *
+ * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters.identifier#StorageSharedKeyCredential}
  *
  * @see QueueServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
@@ -45,39 +54,6 @@ public final class QueueServiceSasSignatureValues {
      * Creates an object with empty values for all fields.
      */
     public QueueServiceSasSignatureValues() {
-    }
-
-    /**
-     * Creates an object with the specified expiry time and permissions
-     *
-     * @param expiryTime Time the SAS becomes valid
-     * @param permissions Permissions granted by the SAS
-     */
-    QueueServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
-        this.expiryTime = expiryTime;
-        this.permissions = permissions;
-    }
-
-    /**
-     * Creates an object with the specified identifier
-     *
-     * @param identifier Identifier for the SAS
-     */
-    QueueServiceSasSignatureValues(String identifier) {
-        this.identifier = identifier;
-    }
-
-    QueueServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier) {
-        if (version != null) {
-            this.version = version;
-        }
-        this.protocol = sasProtocol;
-        this.startTime = startTime;
-        this.expiryTime = expiryTime;
-        this.permissions = permission;
-        this.sasIpRange = sasIpRange;
-        this.identifier = identifier;
     }
 
     /**
