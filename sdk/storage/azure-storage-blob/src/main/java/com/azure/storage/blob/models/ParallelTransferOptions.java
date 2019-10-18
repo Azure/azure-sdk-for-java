@@ -102,9 +102,9 @@ public final class ParallelTransferOptions {
             other = new ParallelTransferOptions();
         }
         this.setBlockSize(other.getBlockSize() == null
-            ? new Integer(BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) : other.getBlockSize());
+            ? Integer.valueOf(BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) : other.getBlockSize());
         this.setNumBuffers(other.getNumBuffers() == null
-            ? new Integer(BLOB_DEFAULT_NUMBER_OF_BUFFERS) : other.getNumBuffers());
+            ? Integer.valueOf(BLOB_DEFAULT_NUMBER_OF_BUFFERS) : other.getNumBuffers());
         this.setProgressReceiver(other.getProgressReceiver());
     }
 }
