@@ -276,7 +276,7 @@ public final class QueueClientBuilder {
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive queue service endpoint."));
         }
-        this.endpoint(endpoint.getPrimaryUri().toString());
+        this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
             this.accountName = storageConnectionString.getAccountName();
         }

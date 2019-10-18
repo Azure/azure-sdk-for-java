@@ -36,7 +36,7 @@ public final class StorageEndpoint {
         Objects.requireNonNull(primaryUri);
         Objects.requireNonNull(secondaryUri);
         this.primaryUri = primaryUri.toString();
-        this.secondaryUri = secondaryUri. toString();
+        this.secondaryUri = secondaryUri.toString();
     }
 
     /**

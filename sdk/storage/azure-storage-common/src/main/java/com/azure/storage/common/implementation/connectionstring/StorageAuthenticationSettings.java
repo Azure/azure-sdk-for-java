@@ -10,7 +10,6 @@ import java.util.Objects;
  * Type represents settings for accessing a storage account.
  */
 public final class StorageAuthenticationSettings {
-
     private final Type type;
     private final String sasToken;
     private final Account account;
