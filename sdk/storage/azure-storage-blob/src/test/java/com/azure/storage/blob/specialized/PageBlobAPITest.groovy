@@ -211,6 +211,16 @@ class PageBlobAPITest extends APISpec {
         PageBlobClient.PAGE_BYTES * 3 | UnexpectedLengthException
     }
 
+    def "Upload page transactionalMD5"() {
+        setup:
+        def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data)
+
+        expect:
+        bc.uploadPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(data), md5, null, null, null).getStatusCode() == 201
+    }
+
     @Unroll
     def "Upload page AC"() {
         setup:

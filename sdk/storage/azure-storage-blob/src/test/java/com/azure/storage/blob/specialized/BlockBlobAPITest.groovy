@@ -89,6 +89,15 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Stage block transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bc.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, md5, null, null, null)
+            .statusCode == 201
+    }
+
     def "Stage block null body"() {
         when:
         bc.stageBlock(getBlockID(), null, 0)
@@ -680,6 +689,15 @@ class BlockBlobAPITest extends APISpec {
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
         null         | null               | null            | null            | null                                                         | null
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+    }
+
+    def "Upload transactionalMD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, md5, null, null, null)
+            .statusCode == 201
     }
 
     @Unroll
