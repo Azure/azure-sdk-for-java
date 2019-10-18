@@ -30,8 +30,9 @@ public class AppendBlobItem {
      * @param blobAppendOffset The offset at which the block was committed to the block blob.
      * @param blobCommittedBlockCount The number of committed blocks in the block blob.
      */
-    public AppendBlobItem(String eTag, OffsetDateTime lastModified, byte[] contentMD5, boolean isServerEncrypted,
-        String encryptionKeySha256, String blobAppendOffset, Integer blobCommittedBlockCount) {
+    public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final boolean isServerEncrypted, final String encryptionKeySha256, final String blobAppendOffset,
+        final Integer blobCommittedBlockCount) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMD5 = contentMD5;

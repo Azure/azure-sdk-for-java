@@ -26,8 +26,8 @@ public class BlockBlobItem {
      * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      */
-    public BlockBlobItem(String eTag, OffsetDateTime lastModified, byte[] contentMD5, boolean isServerEncrypted,
-        String encryptionKeySha256) {
+    public BlockBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final boolean isServerEncrypted, final String encryptionKeySha256) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMD5 = contentMD5;

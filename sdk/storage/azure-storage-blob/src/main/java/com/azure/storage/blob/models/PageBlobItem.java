@@ -28,8 +28,8 @@ public class PageBlobItem {
      * @param encryptionKeySha256 The encryption key used to encrypt the page blob.
      * @param blobSequenceNumber The current sequence number for the page blob.
      */
-    public PageBlobItem(String eTag, OffsetDateTime lastModified, byte[] contentMD5, Boolean isServerEncrypted,
-        String encryptionKeySha256, Long blobSequenceNumber) {
+    public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMD5,
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final Long blobSequenceNumber) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMD5 = contentMD5;
