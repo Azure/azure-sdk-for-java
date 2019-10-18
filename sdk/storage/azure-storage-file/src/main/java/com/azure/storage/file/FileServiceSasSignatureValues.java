@@ -390,7 +390,8 @@ public final class FileServiceSasSignatureValues {
      * parameters.
      *
      * <p>
-     * If {@link #getVersion()} is not set, then the latest service version is used.
+     * If {@link #getVersion()} is not set, the {@link FileServiceVersion#getLatest() latest service version} is used.
+     *
      * </p>
      * <p>
      * The type of SAS query parameters returned depends on the following:
@@ -428,6 +429,10 @@ public final class FileServiceSasSignatureValues {
             if (permissions != null) {
                 permissions = FileSasPermission.parse(permissions).toString();
             }
+        }
+
+        if (ImplUtils.isNullOrEmpty(version)) {
+            version = FileServiceVersion.getLatest().getVersion();
         }
 
         // Signature is generated on the un-url-encoded values.
