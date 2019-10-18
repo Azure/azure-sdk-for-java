@@ -51,27 +51,47 @@ public class ManagingDeletedSecretsAsync {
         Thread.sleep(2000);
 
         // The storage account was closed, need to delete its credentials from the key vault.
-        secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        secretAsyncClient.beginDeleteSecret("BankAccountPassword")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+            });
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);
 
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
-        secretAsyncClient.recoverDeletedSecret("BankAccountPassword").subscribe(recoveredSecretResponse ->
-            System.out.printf("Recovered Secret with name %s %n", recoveredSecretResponse.getName()));
+        secretAsyncClient.beginRecoverDeletedSecret("BankAccountPassword")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
+                System.out.println("Recovered Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Recovered Secret Value: " + pollResponse.getValue().getValue());
+            });
 
         //To ensure secret is recovered on server side.
         Thread.sleep(10000);
 
         // The bank acoount and storage accounts got closed.
         // Let's delete bank and  storage accounts secrets.
-        secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        secretAsyncClient.beginDeleteSecret("BankAccountPassword")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+            });
 
-        secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        secretAsyncClient.beginDeleteSecret("StorageAccountPassword")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+            });
 
         // To ensure secret is deleted on server side.
         Thread.sleep(30000);

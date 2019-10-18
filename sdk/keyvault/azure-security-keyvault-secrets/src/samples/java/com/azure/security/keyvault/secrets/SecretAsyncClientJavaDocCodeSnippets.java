@@ -217,34 +217,23 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#deleteSecret(String)}
+     * Method to insert code snippets for {@link SecretAsyncClient#beginDeleteSecret(String)}
      */
     public void deleteSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.deleteSecret#string
-        secretAsyncClient.deleteSecret("secretName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        secretAsyncClient.beginDeleteSecret("secretName")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+            });
         // END: com.azure.keyvault.secrets.secretclient.deleteSecret#string
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#deleteSecretWithResponse(String)}
-     */
-    public void deleteSecretWithResponseCodeSnippets() {
-        SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.deleteSecretWithResponse#string
-        secretAsyncClient.deleteSecretWithResponse("secretName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n",
-                    deletedSecretResponse.getValue().getRecoveryId()));
-        // END: com.azure.keyvault.secrets.secretclient.deleteSecretWithResponse#string
-    }
-
-    /**
-     * Method to insert code snippets for {@link SecretAsyncClient#deleteSecret(String)}
+     * Method to insert code snippets for {@link SecretAsyncClient#getDeletedSecret(String)}
      */
     public void getDeletedSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
@@ -296,29 +285,19 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#recoverDeletedSecret(String)}
+     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)}
      */
     public void recoverDeletedSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
         // BEGIN: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string
-        secretAsyncClient.recoverDeletedSecret("deletedSecretName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Secret with name %s %n", recoveredSecretResponse.getName()));
+        secretAsyncClient.beginRecoverDeletedSecret("deletedSecretName")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
+                System.out.println("Recovered Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Recovered Secret Value: " + pollResponse.getValue().getValue());
+            });
         // END: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string
-    }
-
-    /**
-     * Method to insert code snippets for {@link SecretAsyncClient#recoverDeletedSecretWithResponse(String)}
-     */
-    public void recoverDeletedSecretWithResponseCodeSnippets() {
-        SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string
-        secretAsyncClient.recoverDeletedSecretWithResponse("deletedSecretName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(recoveredSecretResponse ->
-                System.out.printf("Recovered Secret with name %s %n", recoveredSecretResponse.getValue().getName()));
-        // END: com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string
     }
 
     /**

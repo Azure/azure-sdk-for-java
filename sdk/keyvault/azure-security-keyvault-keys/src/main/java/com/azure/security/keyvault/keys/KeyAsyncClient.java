@@ -3,7 +3,9 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.annotation.Delete;
 import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
@@ -18,6 +20,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -30,10 +34,13 @@ import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -732,46 +739,39 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
-     * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
+     * @return A {@link Poller} to poll on the {@link DeletedKey deleted key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedKey> deleteKey(String name) {
-        try {
-            return deleteKeyWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Poller<DeletedKey, Void> beginDeleteKey(String name) {
+        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), fetchResultOperation(), activationOperation(name), null);
     }
 
-    /**
-     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
-     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
-     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
-     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
-     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
-     * {@code keys/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string}
-     *
-     * @param name The name of the key to be deleted.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     DeletedKey deleted key}.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedKey>> deleteKeyWithResponse(String name) {
-        try {
-            return withContext(context -> deleteKeyWithResponse(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    private Supplier<Mono<DeletedKey>> activationOperation(String name) {
+        return () -> withContext(context -> deleteKeyWithResponse(name, context)
+            .flatMap(deletedKeyResponse -> Mono.just(deletedKeyResponse.getValue())));
+    }
+
+    private Supplier<Mono<Void>> fetchResultOperation() {
+        return () -> Mono.empty();
+    }
+
+    /*
+    Polling operation to poll on create delete key operation status.
+    */
+    private Function<PollResponse<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
+        return prePollResponse ->
+            withContext(context -> service.getDeletedKeyPoller(endpoint, keyName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .flatMap(deletedKeyResponse -> {
+                    if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                    }
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, deletedKeyResponse.getValue())));
+                }))
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
+                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
+                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
     }
 
     Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
@@ -908,43 +908,35 @@ public final class KeyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return A {@link Mono} containing the {@link KeyVaultKey recovered key}.
+     * @return A {@link Poller} to poll on the {@link KeyVaultKey recovered key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> recoverDeletedKey(String name) {
-        try {
-            return recoverDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
+        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), fetchResultOperation(), recoverAtivationOperation(name), null);
     }
 
-    /**
-     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
-     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
-     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
-     * prints out the recovered key details when a response has been received.</p>
-     * //Assuming key is deleted on a soft-delete enabled vault.
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string}
-     *
-     * @param name The name of the deleted key to be recovered.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey
-     *     recovered key}.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponse(String name) {
-        try {
-            return withContext(context -> recoverDeletedKeyWithResponse(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    private Supplier<Mono<KeyVaultKey>> recoverAtivationOperation(String name) {
+        return () -> withContext(context -> recoverDeletedKeyWithResponse(name, context)
+            .flatMap(keyResponse -> Mono.just(keyResponse.getValue())));
+    }
+
+    /*
+    Polling operation to poll on create delete key operation status.
+    */
+    private Function<PollResponse<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
+        return prePollResponse ->
+            withContext(context -> service.getKeyPoller(endpoint, keyName, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .flatMap(keyResponse -> {
+                    if (keyResponse.getStatusCode() == 404) {
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                    }
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, keyResponse.getValue())));
+                }))
+                // This means permission is not granted for the get deleted key operation.
+                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
+                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
     }
 
     Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponse(String name, Context context) {

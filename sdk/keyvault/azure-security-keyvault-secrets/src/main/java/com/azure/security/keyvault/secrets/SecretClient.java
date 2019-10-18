@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -284,35 +285,12 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecret#string}
      *
      * @param name The name of the secret to be deleted.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedSecret deleted
-     * secret}.
+     * @return A {@link Poller} to poll on and retrieve the {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public DeletedSecret deleteSecret(String name) {
-        return deleteSecretWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the
-     * deleted state and requires to be purged for permanent deletion else the secret is permanently deleted. The delete
-     * operation applies to any secret stored in Azure Key Vault but it cannot be applied to an individual version of a
-     * secret. This operation requires the {@code secrets/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the secret from the keyvault. Prints out the recovery id of the deleted secret returned in the
-     * response.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecretWithResponse#string-Context}
-     *
-     * @param name The name of the secret to be deleted.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedSecret deleted
-     * secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a secret with {@code name} is empty string.
-     */
-    public Response<DeletedSecret> deleteSecretWithResponse(String name, Context context) {
-        return client.deleteSecretWithResponse(name, context).block();
+    public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
+        return client.beginDeleteSecret(name);
     }
 
     /**
@@ -407,33 +385,12 @@ public final class SecretClient {
      * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#string}
      *
      * @param name The name of the deleted secret to be recovered.
-     * @return The {@link KeyVaultSecret recovered secret}.
+     * @return A {@link Poller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
-    public KeyVaultSecret recoverDeletedSecret(String name) {
-        return recoverDeletedSecretWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete
-     * enabled vault.
-     * This operation requires the {@code secrets/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Prints out the details of the
-     * recovered secret returned in the response.</p>
-     * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context}
-     *
-     * @param name The name of the deleted secret to be recovered.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultSecret recovered secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a secret with {@code name} is empty string.
-     */
-    public Response<KeyVaultSecret> recoverDeletedSecretWithResponse(String name, Context context) {
-        return client.recoverDeletedSecretWithResponse(name, context).block();
+    public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
+        return client.beginRecoverDeletedSecret(name);
     }
 
     /**

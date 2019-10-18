@@ -87,6 +87,15 @@ public final class CryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
+        byte[] plainTextToEncrypt = new byte[100];
+        new Random(0x1234567L).nextBytes(plainTextToEncrypt);
+        EncryptResult encryptionResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainTextToEncrypt,
+            new Context(key1, value1));
+        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
+            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
     }
 
     /**
@@ -95,12 +104,17 @@ public final class CryptographyClientJavaDocCodeSnippets {
      */
     public void decrypt() {
         CryptographyClient cryptographyClient = createClient();
+        byte[] encryptedData = new byte[100];
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
-        DecryptResult decryptResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
+        DecryptResult decryptResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptedData);
         System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
+        DecryptResult decryptionResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptedData,
+            new Context(key1, value1));
+        System.out.printf("Received decrypted content of length %d\n", decryptionResult.getPlainText().length);
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
     }
 
     /**

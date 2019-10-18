@@ -57,8 +57,13 @@ public class BackupAndRestoreOperationsAsync {
         Thread.sleep(7000);
 
         // The storage account secret is no longer in use, so you delete it.
-        secretAsyncClient.deleteSecret("StorageAccountPassword").subscribe(deletedSecretResponse ->
-                System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        secretAsyncClient.beginDeleteSecret("StorageAccountPassword")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+            });
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);

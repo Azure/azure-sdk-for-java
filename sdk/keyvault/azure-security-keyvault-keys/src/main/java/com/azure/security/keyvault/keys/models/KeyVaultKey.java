@@ -67,7 +67,7 @@ public class KeyVaultKey {
      * Get the key type of the key
      * @return the key type
      */
-    public KeyType getKetyType() {
+    public KeyType getKeyType() {
         return key.getKeyType();
     }
 
@@ -75,7 +75,7 @@ public class KeyVaultKey {
      * Get the key operations of the key
      * @return the key operations
      */
-    public List<KeyOperation> getKeyOperation() {
+    public List<KeyOperation> getKeyOperations() {
         return key.getKeyOps();
     }
 

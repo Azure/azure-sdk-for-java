@@ -3,6 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
+import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -57,10 +60,23 @@ public class HelloWorld {
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The bank account was closed, need to delete its credentials from the key vault.
-        secretClient.deleteSecret("BankAccountPassword");
+        Poller<DeletedSecret, Void> deletedBankSecretPoller = secretClient.beginDeleteSecret("BankAccountPassword");
 
-        // To ensure secret is deleted on server side.
-        Thread.sleep(30000);
+        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
+            !deletedBankSecretPoller.isComplete()) {
+            System.out.println(deletedBankSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
+        DeletedSecret deletedBankSecret = deletedBankSecretPoller.getLastPollResponse().getValue();
+        System.out.println("Deleted Date %s" + deletedBankSecret.getDeletedOn().toString());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedBankSecret.getRecoveryId());
+
+        // Key is being deleted on server.
+        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println(deletedBankSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
 
         // If the key vault is soft-delete enabled, then for permanent deletion  deleted secrets need to be purged.
         secretClient.purgeDeletedSecret("BankAccountPassword");

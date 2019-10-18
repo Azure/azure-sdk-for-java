@@ -66,6 +66,18 @@ interface KeyService {
                                        @HeaderParam("Content-Type") String type,
                                        Context context);
 
+    @Get("keys/{key-name}/{key-version}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<KeyVaultKey>> getKeyPoller(@HostParam("url") String url,
+                                       @PathParam("key-name") String keyName,
+                                       @PathParam("key-version") String keyVersion,
+                                       @QueryParam("api-version") String apiVersion,
+                                       @HeaderParam("accept-language") String acceptLanguage,
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
+
     @Put("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -191,6 +203,18 @@ interface KeyService {
                                              @HeaderParam("accept-language") String acceptLanguage,
                                              @HeaderParam("Content-Type") String type,
                                              Context context);
+
+
+    @Get("deletedkeys/{key-name}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<DeletedKey>> getDeletedKeyPoller(@HostParam("url") String url,
+                                             @PathParam("key-name") String keyName,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
+
 
     @Delete("deletedkeys/{key-name}")
     @ExpectedResponses({204})

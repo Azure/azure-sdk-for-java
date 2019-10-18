@@ -6,6 +6,8 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.keys.models.*;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -80,14 +82,28 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#deleteKey(String)}
+     * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)}
      */
-    public void deleteKeySnippets() {
+    public void deleteKeySnippets() throws InterruptedException {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.deleteKey#string
-        KeyVaultKey key = keyClient.getKey("keyName");
-        DeletedKey deletedKey = keyClient.deleteKey("keyName");
+        Poller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyName");
+
+        while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
+            System.out.println(deletedKeyPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
+        DeletedKey deletedKey = deletedKeyPoller.getLastPollResponse().getValue();
+        System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
+
+        // Key is being deleted on server.
+        while (deletedKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println(deletedKeyPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+        // Key is deleted
         // END: com.azure.keyvault.keys.keyclient.deleteKey#string
     }
 
@@ -207,22 +223,10 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties-keyOperations
         KeyVaultKey key = keyClient.getKey("keyName");
         key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(60));
-        KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties(), KeyOperation.ENCRYPT, KeyOperation.DECRYPT);
+        KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties(), KeyOperation.ENCRYPT,
+            KeyOperation.DECRYPT);
         System.out.printf("Key is updated with name %s and id %s %n", updatedKey.getName(), updatedKey.getId());
         // END: com.azure.keyvault.keys.keyclient.updateKeyProperties#KeyProperties-keyOperations
-    }
-
-    /**
-     * Generates a code sample for using {@link KeyClient#deleteKeyWithResponse(String, Context)}
-     */
-    public void deleteKeyWithResponseSnippets() {
-        KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.deleteKeyWithResponse#string-Context
-        KeyVaultKey key = keyClient.getKey("keyName");
-        DeletedKey deletedKey = keyClient.deleteKeyWithResponse("keyName", new Context(key1, value1))
-            .getValue();
-        System.out.printf("Deleted Key's Recovery Id %s", deletedKey.getRecoveryId());
-        // END: com.azure.keyvault.keys.keyclient.deleteKeyWithResponse#string-Context
     }
 
     /**
@@ -261,25 +265,28 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#recoverDeletedKeyWithResponse(String, Context)}
+     * Generates a code sample for using {@link KeyClient#beginRecoverDeletedKey(String)}
      */
-    public void recoverDeletedKeyWithResponseSnippets() {
-        KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKeyWithResponse#string-Context
-        KeyVaultKey recoveredKey =  keyClient.recoverDeletedKeyWithResponse("deletedKeyName",
-            new Context(key2, value2)).getValue();
-        System.out.printf("Recovered key with name %s", recoveredKey.getName());
-        // END: com.azure.keyvault.keys.keyclient.recoverDeletedKeyWithResponse#string-Context
-    }
-
-    /**
-     * Generates a code sample for using {@link KeyClient#recoverDeletedKey(String)}
-     */
-    public void recoverDeletedKeySnippets() {
+    public void recoverDeletedKeySnippets() throws InterruptedException {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
-        KeyVaultKey recoveredKey =  keyClient.recoverDeletedKey("deletedKeyName");
-        System.out.printf("Recovered key with name %s", recoveredKey.getName());
+        Poller<KeyVaultKey, Void> recoverKeyPoller = keyClient.beginRecoverDeletedKey("deletedKeyName");
+
+        while (recoverKeyPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS) {
+            System.out.println(recoverKeyPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
+        KeyVaultKey recoveredKey = recoverKeyPoller.getLastPollResponse().getValue();
+        System.out.println("Recovered Key Name %s" + recoveredKey.getName());
+        System.out.printf("Recovered Key's Id %s", recoveredKey.getId());
+
+        // Key is being recovered on server.
+        while (recoverKeyPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println(recoverKeyPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+        // Key is recovered
         // END: com.azure.keyvault.keys.keyclient.recoverDeletedKey#string
     }
 
@@ -324,7 +331,8 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context
         byte[] keyBackupByteArray = {};
-        Response<KeyVaultKey> keyResponse = keyClient.restoreKeyBackupWithResponse(keyBackupByteArray, new Context(key1, value1));
+        Response<KeyVaultKey> keyResponse = keyClient.restoreKeyBackupWithResponse(keyBackupByteArray,
+            new Context(key1, value1));
         System.out.printf("Restored Key with name %s and id %s %n",
             keyResponse.getValue().getName(), keyResponse.getValue().getId());
         // END: com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context

@@ -3,10 +3,13 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.annotation.Delete;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -137,30 +140,33 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#deleteSecret(String)}
+     * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)}
      */
-    public void deleteSecretCodeSnippets() {
+    public void deleteSecretCodeSnippets() throws InterruptedException {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
-        DeletedSecret deletedSecret = secretClient.deleteSecret("secretName");
+        Poller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
+
+        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
+            !deletedSecretPoller.isComplete()) {
+            System.out.println(deletedSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
+        DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
+        System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
+
+        // Key is being deleted on server.
+        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println(deletedSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
         // END: com.azure.security.keyvault.secretclient.deleteSecret#string
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#deleteSecretWithResponse(String, Context)}
-     */
-    public void deleteSecretWithResponseCodeSnippets() {
-        SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.deleteSecretWithResponse#string-Context
-        DeletedSecret deletedSecret = secretClient.deleteSecretWithResponse("secretName",
-            new Context(key2, value2)).getValue();
-        System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
-        // END: com.azure.security.keyvault.secretclient.deleteSecretWithResponse#string-Context
-    }
-
-    /**
-     * Method to insert code snippets for {@link SecretClient#deleteSecret(String)}
+     * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)}
      */
     public void getDeletedSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
@@ -206,26 +212,30 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#recoverDeletedSecret(String)}
+     * Method to insert code snippets for {@link SecretClient#beginRecoverDeletedSecret(String)}
      */
-    public void recoverDeletedSecretCodeSnippets() {
+    public void recoverDeletedSecretCodeSnippets() throws InterruptedException {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
-        KeyVaultSecret recoveredSecret = secretClient.recoverDeletedSecret("secretName");
-        System.out.printf("Recovered Secret with name %s", recoveredSecret.getName());
-        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
-    }
+        Poller<KeyVaultSecret, Void> recoverSecretPoller =
+            secretClient.beginRecoverDeletedSecret("deletedSecretName");
 
-    /**
-     * Method to insert code snippets for {@link SecretClient#recoverDeletedSecretWithResponse(String, Context)}
-     */
-    public void recoverDeletedSecretWithResponseCodeSnippets() {
-        SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context
-        KeyVaultSecret recoveredSecret = secretClient.recoverDeletedSecretWithResponse("secretName",
-            new Context(key1, value1)).getValue();
-        System.out.printf("Recovered Secret with name %s", recoveredSecret.getName());
-        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context
+        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
+            !recoverSecretPoller.isComplete()) {
+            System.out.println(recoverSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
+        KeyVaultSecret recoveredSecret = recoverSecretPoller.getLastPollResponse().getValue();
+        System.out.println("Recovered Key Name %s" + recoveredSecret.getName());
+        System.out.printf("Recovered Key's Id %s", recoveredSecret.getId());
+
+        // Key is being recovered on server.
+        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println(recoverSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
     }
 
     /**

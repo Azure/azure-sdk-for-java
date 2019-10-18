@@ -73,8 +73,13 @@ public class HelloWorldAsync {
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
-        keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.getRecoveryId()));
+        keyAsyncClient.beginDeleteKey("CloudRsaKey")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);

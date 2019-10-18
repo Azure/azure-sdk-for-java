@@ -56,8 +56,13 @@ public class BackupAndRestoreOperationsAsync {
         Thread.sleep(7000);
 
         // The Cloud Rsa key is no longer in use, so you delete it.
-        keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s %n", deletedKeyResponse.getRecoveryId()));
+        keyAsyncClient.beginDeleteKey("CloudRsaKey")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
 
         //To ensure file is deleted on server side.
         Thread.sleep(30000);

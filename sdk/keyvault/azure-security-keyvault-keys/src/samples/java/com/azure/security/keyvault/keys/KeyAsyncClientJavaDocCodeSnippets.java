@@ -133,15 +133,18 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#deleteKey(String)}
+     * Generates a code sample for using {@link KeyAsyncClient#beginDeleteKey(String)}
      */
     public void deleteKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
-        keyAsyncClient.deleteKey("keyName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(keyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s", keyResponse.getRecoveryId()));
+        keyAsyncClient.beginDeleteKey("keyName")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                    System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                    System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
+                    System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+                });
         // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
     }
 
@@ -310,19 +313,6 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#deleteKeyWithResponse(String)}
-     */
-    public void deleteKeyWithResponseSnippets() {
-        KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string
-        keyAsyncClient.deleteKeyWithResponse("keyName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s", deletedKeyResponse.getValue().getRecoveryId()));
-        // END: com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string
-    }
-
-    /**
      * Generates a code sample for using {@link KeyAsyncClient#getDeletedKeyWithResponse(String)}
      */
     public void getDeleteKeyWithResponseSnippets() {
@@ -361,28 +351,18 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyAsyncClient#recoverDeletedKeyWithResponse(String)}
-     */
-    public void recoverDeletedKeyWithResponseSnippets() {
-        KeyAsyncClient keyAsyncClient = createAsyncClient();
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string
-        keyAsyncClient.recoverDeletedKeyWithResponse("deletedKeyName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(recoveredKeyResponse ->
-                System.out.printf("Recovered Key with name %s %n", recoveredKeyResponse.getValue().getName()));
-        // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string
-    }
-
-    /**
-     * Generates a code sample for using {@link KeyAsyncClient#recoverDeletedKey(String)}
+     * Generates a code sample for using {@link KeyAsyncClient#beginRecoverDeletedKey(String)}
      */
     public void recoverDeletedKeySnippets() {
         KeyAsyncClient keyAsyncClient = createAsyncClient();
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
-        keyAsyncClient.recoverDeletedKey("deletedKeyName")
-            .subscriberContext(Context.of(key1, value1, key2, value2))
-            .subscribe(recoveredKeyResponse ->
-                System.out.printf("Recovered Key with name %s %n", recoveredKeyResponse.getName()));
+        keyAsyncClient.beginRecoverDeletedKey("deletedKeyName")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
+                System.out.println("Recover Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
+            });
         // END: com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string
     }
 

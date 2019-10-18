@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -497,35 +498,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
-     * @return The {@link DeletedKey deleted key}.
+     * @return A {@link Poller} to poll on and retrieve {@link DeletedKey deleted key}
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public DeletedKey deleteKey(String name) {
-        return deleteKeyWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
-     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
-     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
-     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
-     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the {@code
-     * keys/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the
-     * response.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKeyWithResponse#string-Context}
-     *
-     * @param name The name of the key to be deleted.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedKey deleted key}.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     */
-    public Response<DeletedKey> deleteKeyWithResponse(String name, Context context) {
-        return client.deleteKeyWithResponse(name, context).block();
+    public Poller<DeletedKey, Void> beginDeleteKey(String name) {
+        return client.beginDeleteKey(name);
     }
 
     /**
@@ -616,32 +594,12 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
-     * @return The {@link KeyVaultKey recovered key}.
+     * @return A {@link Poller} to poll on and retrieve {@link KeyVaultKey recovered key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
      */
-    public KeyVaultKey recoverDeletedKey(String name) {
-        return recoverDeletedKeyWithResponse(name, Context.NONE).getValue();
-    }
-
-    /**
-     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
-     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
-     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
-     * //Assuming key is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKeyWithResponse#string-Context}
-     *
-     * @param name The name of the deleted key to be recovered.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey recovered key}.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     */
-    public Response<KeyVaultKey> recoverDeletedKeyWithResponse(String name, Context context) {
-        return client.recoverDeletedKeyWithResponse(name, context).block();
+    public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
+        return client.beginRecoverDeletedKey(name);
     }
 
     /**

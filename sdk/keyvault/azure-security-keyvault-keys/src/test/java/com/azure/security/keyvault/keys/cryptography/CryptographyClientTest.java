@@ -78,7 +78,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertArrayEquals(decryptedText, plainText);
             }
 
-            client.deleteKey(keyName);
+            client.beginDeleteKey(keyName);
             pollOnKeyDeletion(keyName);
             client.purgeDeletedKey(keyName);
             pollOnKeyPurge(keyName);
@@ -114,7 +114,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertArrayEquals(decryptedKey, plainText);
             }
 
-            client.deleteKey(keyName);
+            client.beginDeleteKey(keyName);
             pollOnKeyDeletion(keyName);
             client.purgeDeletedKey(keyName);
             pollOnKeyPurge(keyName);
@@ -151,7 +151,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertTrue(verifyStatus);
             }
 
-            client.deleteKey(keyName);
+            client.beginDeleteKey(keyName);
             pollOnKeyDeletion(keyName);
             client.purgeDeletedKey(keyName);
             pollOnKeyPurge(keyName);
@@ -204,7 +204,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertTrue(verifyStatus);
             }
 
-            client.deleteKey(keyName);
+            client.beginDeleteKey(keyName);
             pollOnKeyDeletion(keyName);
             client.purgeDeletedKey(keyName);
             pollOnKeyPurge(keyName);

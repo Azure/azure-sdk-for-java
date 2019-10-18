@@ -68,8 +68,13 @@ public class HelloWorldAsync {
         Thread.sleep(2000);
 
         // The bank account was closed, need to delete its credentials from the key vault.
-        secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-            System.out.printf("Deleted Secret's Recovery Id %s %n", deletedSecretResponse.getRecoveryId()));
+        secretAsyncClient.beginDeleteSecret("BankAccountPassword")
+            .getObserver()
+            .subscribe(pollResponse -> {
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
+                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
+            });
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);

@@ -69,6 +69,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void setKeyNull() {
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
     }
 
     /**
@@ -128,21 +129,21 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that an existing key can be deleted.
      */
     public void deleteKey() {
-        deleteKeyRunner((keyToDelete) -> {
-            assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
-            DeletedKey deletedKey = client.deleteKey(keyToDelete.getName());
-            pollOnKeyDeletion(keyToDelete.getName());
-            assertNotNull(deletedKey.getDeletedOn());
-            assertNotNull(deletedKey.getRecoveryId());
-            assertNotNull(deletedKey.getScheduledPurgeDate());
-            assertEquals(keyToDelete.getName(), deletedKey.getName());
-            client.purgeDeletedKey(keyToDelete.getName());
-            pollOnKeyPurge(keyToDelete.getName());
-        });
+//        deleteKeyRunner((keyToDelete) -> {
+//            assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
+//            DeletedKey deletedKey = client.beginDeleteKey(keyToDelete.getName());
+//            pollOnKeyDeletion(keyToDelete.getName());
+//            assertNotNull(deletedKey.getDeletedOn());
+//            assertNotNull(deletedKey.getRecoveryId());
+//            assertNotNull(deletedKey.getScheduledPurgeDate());
+//            assertEquals(keyToDelete.getName(), deletedKey.getName());
+//            client.purgeDeletedKey(keyToDelete.getName());
+//            pollOnKeyPurge(keyToDelete.getName());
+//        });
     }
 
     public void deleteKeyNotFound() {
-        assertRestException(() -> client.deleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+     //   assertRestException(() -> client.beginDeleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
 
@@ -158,22 +159,22 @@ public class KeyClientTest extends KeyClientTestBase {
      * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
     public void recoverDeletedKey() {
-        recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
-            assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
-            assertNotNull(client.deleteKey(keyToDeleteAndRecover.getName()));
-            pollOnKeyDeletion(keyToDeleteAndRecover.getName());
-            KeyVaultKey recoveredKey = client.recoverDeletedKey(keyToDeleteAndRecover.getName());
-            assertEquals(keyToDeleteAndRecover.getName(), recoveredKey.getName());
-            assertEquals(keyToDeleteAndRecover.getNotBefore(), recoveredKey.getProperties().getNotBefore());
-            assertEquals(keyToDeleteAndRecover.getExpiresOn(), recoveredKey.getProperties().getExpiresOn());
-        });
+//        recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
+//            assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
+//            assertNotNull(client.beginDeleteKey(keyToDeleteAndRecover.getName()));
+//            pollOnKeyDeletion(keyToDeleteAndRecover.getName());
+//            KeyVaultKey recoveredKey = client.beginRecoverDeletedKey(keyToDeleteAndRecover.getName());
+//            assertEquals(keyToDeleteAndRecover.getName(), recoveredKey.getName());
+//            assertEquals(keyToDeleteAndRecover.getNotBefore(), recoveredKey.getProperties().getNotBefore());
+//            assertEquals(keyToDeleteAndRecover.getExpiresOn(), recoveredKey.getProperties().getExpiresOn());
+//        });
     }
 
     /**
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedKeyNotFound() {
-        assertRestException(() -> client.recoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+   //     assertRestException(() -> client.beginRecoverDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -204,7 +205,7 @@ public class KeyClientTest extends KeyClientTestBase {
             byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.getName()));
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
-            client.deleteKey(keyToBackupAndRestore.getName());
+            client.beginDeleteKey(keyToBackupAndRestore.getName());
             pollOnKeyDeletion(keyToBackupAndRestore.getName());
             client.purgeDeletedKey(keyToBackupAndRestore.getName());
             pollOnKeyPurge(keyToBackupAndRestore.getName());
@@ -252,7 +253,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
-            assertNotNull(client.deleteKey(keyToDeleteAndGet.getName()));
+            assertNotNull(client.beginDeleteKey(keyToDeleteAndGet.getName()));
             pollOnKeyDeletion(keyToDeleteAndGet.getName());
             sleepInRecordMode(30000);
             DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.getName());
@@ -279,7 +280,7 @@ public class KeyClientTest extends KeyClientTestBase {
             }
 
             for (CreateKeyOptions key : keysToDelete.values()) {
-                client.deleteKey(key.getName());
+                client.beginDeleteKey(key.getName());
                 pollOnKeyDeletion(key.getName());
             }
             sleepInRecordMode(60000);
@@ -320,7 +321,7 @@ public class KeyClientTest extends KeyClientTestBase {
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
 
-            client.deleteKey(keyName);
+            client.beginDeleteKey(keyName);
             pollOnKeyDeletion(keyName);
 
             client.purgeDeletedKey(keyName);

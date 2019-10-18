@@ -3,6 +3,9 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
+import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -49,7 +52,24 @@ public class BackupAndRestoreOperations {
         writeBackupToFile(secretBackup, backupFilePath);
 
         // The storage account secret is no longer in use, so you delete it.
-        client.deleteSecret("StorageAccountPassword");
+        Poller<DeletedSecret, Void> deletedStorageSecretPoller = client.beginDeleteSecret("StorageAccountPassword");
+
+        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
+            !deletedStorageSecretPoller.isComplete()) {
+            System.out.println(deletedStorageSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
+        DeletedSecret deletedStorageSecret = deletedStorageSecretPoller.getLastPollResponse().getValue();
+        System.out.println("Deleted Date %s" + deletedStorageSecret.getDeletedOn().toString());
+        System.out.printf("Deleted Secret's Recovery Id %s", deletedStorageSecret.getRecoveryId());
+
+        // Key is being deleted on server.
+        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.println(deletedStorageSecretPoller.getStatus().toString());
+            Thread.sleep(2000);
+        }
+
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);

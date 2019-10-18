@@ -66,6 +66,18 @@ interface SecretService {
                                              @HeaderParam("Content-Type") String type,
                                              Context context);
 
+    @Get("secrets/{secret-name}/{secret-version}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<KeyVaultSecret>> getSecretPoller(@HostParam("url") String url,
+                                             @PathParam("secret-name") String secretName,
+                                             @PathParam("secret-version") String secretVersion,
+                                             @QueryParam("api-version") String apiVersion,
+                                             @HeaderParam("accept-language") String acceptLanguage,
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
+
 
     @Patch("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
@@ -102,6 +114,16 @@ interface SecretService {
                                                        @HeaderParam("accept-language") String acceptLanguage,
                                                        @HeaderParam("Content-Type") String type,
                                                        Context context);
+
+    @Get("deletedsecrets/{secret-name}")
+    @ExpectedResponses({200, 404})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Mono<Response<DeletedSecret>> getDeletedSecretPoller(@HostParam("url") String url,
+                                                   @PathParam("secret-name") String secretName,
+                                                   @QueryParam("api-version") String apiVersion,
+                                                   @HeaderParam("accept-language") String acceptLanguage,
+                                                   @HeaderParam("Content-Type") String type,
+                                                   Context context);
 
     @Delete("deletedsecrets/{secret-name}")
     @ExpectedResponses({204})

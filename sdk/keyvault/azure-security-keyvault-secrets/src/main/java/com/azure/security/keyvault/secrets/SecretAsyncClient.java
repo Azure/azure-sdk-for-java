@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.annotation.Delete;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
@@ -16,15 +17,21 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.Poller;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.HttpRequestException;
@@ -428,43 +435,39 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#string}
      *
      * @param name The name of the secret to be deleted.
-     * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
+     * @return A {@link Poller} to poll on and retrieve {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeletedSecret> deleteSecret(String name) {
-        try {
-            return deleteSecretWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Poller<DeletedSecret, Void> beginDeleteSecret(String name) {
+        return new Poller<>(Duration.ofSeconds(1), createPollOperation(name), fetchResultOperation(), activationOperation(name), null);
     }
 
-    /**
-     * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the
-     * deleted state and requires to be purged for permanent deletion else the secret is permanently deleted. The delete
-     * operation applies to any secret stored in Azure Key Vault but it cannot be applied to an individual version of a
-     * secret. This operation requires the {@code secrets/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * deleted secret details when a response is received.</p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecretWithResponse#string}
-     *
-     * @param name The name of the secret to be deleted.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     DeletedSecret deleted secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a secret with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name) {
-        try {
-            return withContext(context -> deleteSecretWithResponse(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    private Supplier<Mono<DeletedSecret>> activationOperation(String name) {
+        return () -> withContext(context -> deleteSecretWithResponse(name, context)
+            .flatMap(deletedSecretResponse -> Mono.just(deletedSecretResponse.getValue())));
+    }
+
+    private Supplier<Mono<Void>> fetchResultOperation() {
+        return () -> Mono.empty();
+    }
+
+    /*
+    Polling operation to poll on create delete key operation status.
+    */
+    private Function<PollResponse<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> createPollOperation(String keyName) {
+        return prePollResponse ->
+            withContext(context -> service.getDeletedSecretPoller(endpoint, keyName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .flatMap(deletedSecretResponse -> {
+                    if (deletedSecretResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                    }
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, deletedSecretResponse.getValue())));
+                }))
+                // This means either vault has soft-delete disabled or permission is not granted for the get deleted key operation.
+                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
+                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
     }
 
     Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name, Context context) {
@@ -606,44 +609,35 @@ public final class SecretAsyncClient {
      * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
      *
      * @param name The name of the deleted secret to be recovered.
-     * @return A {@link Mono} containing the {@link KeyVaultSecret recovered secret}.
+     * @return A {@link Poller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultSecret> recoverDeletedSecret(String name) {
-        try {
-            return recoverDeletedSecretWithResponse(name).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Poller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
+        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), fetchResultOperation(), recoverActivationOperation(name), null);
     }
 
-    /**
-     * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete
-     * enabled vault.
-     * This operation requires the {@code secrets/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously
-     * and prints out the recovered secret details when a response is received.</p>
-     *
-     * //Assuming secret is deleted on a soft-delete enabled vault.
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string}
-     *
-     * @param name The name of the deleted secret to be recovered.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
-     *     KeyVaultSecret recovered secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a secret with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponse(String name) {
-        try {
-            return withContext(context -> recoverDeletedSecretWithResponse(name, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    private Supplier<Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
+        return () -> withContext(context -> recoverDeletedSecretWithResponse(name, context)
+            .flatMap(keyResponse -> Mono.just(keyResponse.getValue())));
+    }
+
+    /*
+    Polling operation to poll on create delete key operation status.
+    */
+    private Function<PollResponse<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> createRecoverPollOperation(String secretName) {
+        return prePollResponse ->
+            withContext(context -> service.getSecretPoller(endpoint, secretName, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .flatMap(secretResponse -> {
+                    if (secretResponse.getStatusCode() == 404) {
+                        return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, prePollResponse.getValue())));
+                    }
+                    return Mono.defer(() -> Mono.just(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, secretResponse.getValue())));
+                }))
+                // This means permission is not granted for the get deleted key operation.
+                // In both cases deletion operation was successful when activation operation succeeded before reaching here.
+                .onErrorReturn(new PollResponse<>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, prePollResponse.getValue()));
     }
 
     Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponse(String name, Context context) {
