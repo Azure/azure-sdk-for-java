@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 public class AppendBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
-    private final byte[] contentMD5;
+    private final byte[] contentMd5;
     private final boolean isServerEncrypted;
     private final String encryptionKeySha256;
     private final String blobAppendOffset;
@@ -35,7 +35,7 @@ public class AppendBlobItem {
         final Integer blobCommittedBlockCount) {
         this.eTag = eTag;
         this.lastModified = lastModified;
-        this.contentMD5 = ImplUtils.clone(contentMD5);
+        this.contentMd5 = ImplUtils.clone(contentMD5);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.blobAppendOffset = blobAppendOffset;
@@ -73,8 +73,8 @@ public class AppendBlobItem {
     /**
      * @return the calculated MD5 of the append blob
      */
-    public byte[] getContentMD5() {
-        return ImplUtils.clone(contentMD5);
+    public byte[] getContentMd5() {
+        return ImplUtils.clone(contentMd5);
     }
 
     /**

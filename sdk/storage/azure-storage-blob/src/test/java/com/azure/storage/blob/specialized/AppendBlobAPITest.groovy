@@ -37,7 +37,7 @@ class AppendBlobAPITest extends APISpec {
         then:
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
-        createResponse.getValue().getContentMD5() == null
+        createResponse.getValue().getContentMd5() == null
         createResponse.getValue().isServerEncrypted()
     }
 
