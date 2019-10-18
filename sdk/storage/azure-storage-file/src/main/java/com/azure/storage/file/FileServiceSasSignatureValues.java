@@ -12,8 +12,9 @@ import com.azure.storage.common.sas.SasProtocol;
 import java.time.OffsetDateTime;
 
 /**
- * FileServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)} to
+ * Used to generate a Shared Access Signature (SAS) for Azure Files service. Once all the values here are set
+ * appropriately, call {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)} to
  * obtain a representation of the SAS which can be applied to file urls.
  *
  * <p><strong>Generating a file share SAS</strong></p>
@@ -378,7 +379,7 @@ public final class FileServiceSasSignatureValues {
      *     <b>file SAS</b>.</li>
      * </ol>
      *
-     * See class level JavaDocs for code snippets.
+     * <p>See class level JavaDocs for code snippets.</p>
      *
      * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link FileServiceSasQueryParameters}
