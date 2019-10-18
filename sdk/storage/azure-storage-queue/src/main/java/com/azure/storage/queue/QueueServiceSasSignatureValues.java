@@ -3,8 +3,8 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -13,24 +13,16 @@ import java.time.OffsetDateTime;
 
 /**
  * QueueServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to queue urls. Note: that both this class and {@link QueueServiceSasQueryParameters}
- * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
- * actual REST requests.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
- * for more conceptual information on SAS.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
- * more details on each value, including which are required.
+ * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)}
+ * to obtain a representation of the SAS which can be applied to queue urls.
  *
- * <p>Please see
- * <a href=https://github.com/Azure/azure-storage-java/queue/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
- * for additional samples.</p>
+ * @see QueueServiceSasQueryParameters
+ * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
+ * SAS</a>
  */
 public final class QueueServiceSasSignatureValues {
-
-    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private String version;
 
     private SasProtocol protocol;
 
@@ -42,7 +34,7 @@ public final class QueueServiceSasSignatureValues {
 
     private SasIpRange sasIpRange;
 
-    private String canonicalName;
+    private String queueName;
 
     private String identifier;
 
@@ -198,33 +190,22 @@ public final class QueueServiceSasSignatureValues {
     }
 
     /**
-     * @return the canonical name of the object the SAS user may access.
+     * Gets the name of the queue this SAS may access.
+     *
+     * @return The name of the queue the SAS user may access.
      */
-    public String getCanonicalName() {
-        return canonicalName;
+    public String getQueueName() {
+        return queueName;
     }
 
     /**
-     * Sets the canonical name of the object the SAS user may access.
+     * Sets the name of the queue this SAS may access.
      *
-     * @param canonicalName Canonical name of the object the SAS grants access
+     * @param queueName Canonical name of the object the SAS grants access
      * @return the updated QueueServiceSasSignatureValues object
      */
-    public QueueServiceSasSignatureValues setCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-        return this;
-    }
-
-    /**
-     * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/queue/{accountName}{queueName}".
-     *
-     * @param queueName Name of the queue object
-     * @param accountName Name of the account that contains the object
-     * @return the updated QueueServiceSasSignatureValues object
-     */
-    public QueueServiceSasSignatureValues setCanonicalName(String queueName, String accountName) {
-        this.canonicalName = String.format("/queue/%s/%s", accountName, queueName);
+    public QueueServiceSasSignatureValues setQueueName(String queueName) {
+        this.queueName = queueName;
         return this;
     }
 
@@ -254,21 +235,28 @@ public final class QueueServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
+     * <p>
+     * If {@link #getVersion()} is not set, then the {@link QueueServiceVersion#getLatest() latest service version} is
+     * used.
+     * </p>
+     *
      * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
-     * @return {@link QueueServiceSasQueryParameters}
+     * @return A new {@link QueueServiceSasQueryParameters} represented by the current builder.
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException If {@code sharedKeyCredential} is null. Or if any of {@code version} or
-     * {@code canonicalName} is null. Or if {@code identifier} is null and any or {@code expiryTime} or
-     * {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} and {@code identifier} is null
+     * @throws NullPointerException If {@code storageSharedKeyCredentials} is null.
      */
-    public QueueServiceSasQueryParameters generateSASQueryParameters(
+    public QueueServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
-        assertGenerateOK();
+
+        if (ImplUtils.isNullOrEmpty(version)) {
+            version = QueueServiceVersion.getLatest().getVersion();
+        }
 
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = stringToSign();
+        String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName(), queueName);
+        String stringToSign = stringToSign(canonicalName);
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return new QueueServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
@@ -276,29 +264,22 @@ public final class QueueServiceSasSignatureValues {
     }
 
     /**
-     * Common assertions for generateSASQueryParameters overloads.
+     * Computes the canonical name for a queue resource for SAS signing.
+     * @param account Account of the storage account.
+     * @param queueName Name of the queue.
+     * @return Canonical name as a string.
      */
-    private void assertGenerateOK() {
-        Utility.assertNotNull("version", this.version);
-        Utility.assertNotNull("canonicalName", this.canonicalName);
-
-        // If a SignedIdentifier is not being used both expiryDate and permissions must be set.
-        if (identifier == null) {
-            Utility.assertNotNull("expiryTime", this.expiryTime);
-            Utility.assertNotNull("permissions", this.permissions);
-        }
-        // Still need to check identifier if expiry time and permissions are not both set
-        if (expiryTime == null || permissions == null) {
-            Utility.assertNotNull("identifier", identifier);
-        }
+    private static String getCanonicalName(String account, String queueName) {
+        // Queue: "/queue/account/queuename"
+        return String.join("", new String[] { "/queue/", account, "/", queueName });
     }
 
-    private String stringToSign() {
+    private String stringToSign(String canonicalName) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.canonicalName == null ? "" : this.canonicalName,
+            canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),

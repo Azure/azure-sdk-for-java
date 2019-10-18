@@ -86,13 +86,12 @@ class QueueSASTests extends APISpec {
     def "queueServiceSASSignatureValues canonicalizedResource"() {
         setup:
         def queueName = queueClient.getQueueName()
-        def accountName = "account"
 
         when:
-        def serviceSASSignatureValues = new QueueServiceSasSignatureValues().setCanonicalName(queueName, accountName)
+        def serviceSASSignatureValues = new QueueServiceSasSignatureValues().setQueueName(queueName)
 
         then:
-        serviceSASSignatureValues.getCanonicalName() == "/queue/" + accountName + "/" + queueName
+        serviceSASSignatureValues.getQueueName() == queueName
     }
 
     @Test
@@ -120,8 +119,8 @@ class QueueSASTests extends APISpec {
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
             .setSasIpRange(ipRange)
-            .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .setQueueName(queueClient.getQueueName())
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
@@ -170,8 +169,8 @@ class QueueSASTests extends APISpec {
             .setStartTime(startTime)
             .setProtocol(sasProtocol)
             .setSasIpRange(ipRange)
-            .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .setQueueName(queueClient.getQueueName())
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientPermissions = queueBuilderHelper(interceptorManager)
@@ -218,8 +217,8 @@ class QueueSASTests extends APISpec {
         def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
-            .setCanonicalName(queueClient.getQueueName(), credential.getAccountName())
-            .generateSASQueryParameters(credential)
+            .setQueueName(queueClient.getQueueName())
+            .generateSasQueryParameters(credential)
             .encode()
 
         def clientBuilder = queueBuilderHelper(interceptorManager)
