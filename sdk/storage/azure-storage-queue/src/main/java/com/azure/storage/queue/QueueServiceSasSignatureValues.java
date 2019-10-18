@@ -4,10 +4,10 @@
 package com.azure.storage.queue;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
@@ -15,6 +15,9 @@ import java.time.OffsetDateTime;
  * QueueServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
  * all the values here are set appropriately, call {@link #generateSasQueryParameters(StorageSharedKeyCredential)}
  * to obtain a representation of the SAS which can be applied to queue urls.
+ *
+ * <p><strong>Generating a queue SAS</strong></p>
+ * {@codesnippet com.azure.storage.queue.queueServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
  *
  * @see QueueServiceSasQueryParameters
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
@@ -41,7 +44,7 @@ public final class QueueServiceSasSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    QueueServiceSasSignatureValues() {
+    public QueueServiceSasSignatureValues() {
     }
 
     /**
@@ -163,11 +166,13 @@ public final class QueueServiceSasSignatureValues {
      * Sets the permissions string allowed by the SAS. Please refer to {@link QueueSasPermission} for help constructing
      * the permissions string.
      *
-     * @param permissions Permissions string for the SAS
+     * @param permissions Permissions for the SAS
      * @return the updated QueueServiceSasSignatureValues object
+     * @throws NullPointerException if {@code permissions} is null.
      */
-    public QueueServiceSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public QueueServiceSasSignatureValues setPermissions(QueueSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
@@ -235,11 +240,10 @@ public final class QueueServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * <p>
-     * If {@link #getVersion()} is not set, then the {@link QueueServiceVersion#getLatest() latest service version} is
-     * used.
-     * </p>
+     * <p>If {@link #getVersion()} is not set, then the {@link QueueServiceVersion#getLatest() latest service version}
+     * is used.</p>
      *
+     * <p>For samples, see class level JavaDocs.</p>
      * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return A new {@link QueueServiceSasQueryParameters} represented by the current builder.
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
