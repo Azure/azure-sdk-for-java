@@ -15,7 +15,6 @@ import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /**
  * BlobServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
