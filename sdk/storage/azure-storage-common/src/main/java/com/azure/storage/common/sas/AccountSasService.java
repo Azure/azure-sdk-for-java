@@ -69,7 +69,7 @@ public final class AccountSasService {
     /**
      * @return the access status for blob resources.
      */
-    public boolean isBlob() {
+    public boolean hasBlobAccess() {
         return blob;
     }
 
@@ -79,7 +79,7 @@ public final class AccountSasService {
      * @param blob Access status to set
      * @return the updated AccountSasService object.
      */
-    public AccountSasService setBlob(boolean blob) {
+    public AccountSasService setBlobAccess(boolean blob) {
         this.blob = blob;
         return this;
     }

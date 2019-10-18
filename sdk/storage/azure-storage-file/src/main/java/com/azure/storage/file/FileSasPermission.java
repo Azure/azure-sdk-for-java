@@ -67,7 +67,7 @@ public final class FileSasPermission {
     /**
      * @return the read permission status
      */
-    public boolean getReadPermission() {
+    public boolean hasReadPermission() {
         return readPermission;
     }
 
@@ -85,7 +85,7 @@ public final class FileSasPermission {
     /**
      * @return the create permission status
      */
-    public boolean getCreatePermission() {
+    public boolean hasCreatePermission() {
         return createPermission;
     }
 
@@ -103,7 +103,7 @@ public final class FileSasPermission {
     /**
      * @return the write permission status
      */
-    public boolean getWritePermission() {
+    public boolean hasWritePermission() {
         return writePermission;
     }
 
@@ -121,7 +121,7 @@ public final class FileSasPermission {
     /**
      * @return the delete permission status
      */
-    public boolean getDeletePermission() {
+    public boolean hasDeletePermission() {
         return deletePermission;
     }
 
