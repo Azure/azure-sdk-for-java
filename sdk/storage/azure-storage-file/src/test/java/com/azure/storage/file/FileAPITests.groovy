@@ -9,7 +9,13 @@ import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.models.*
+import com.azure.storage.file.models.FileCopyInfo
+import com.azure.storage.file.models.FileErrorCode
+import com.azure.storage.file.models.FileHttpHeaders
+import com.azure.storage.file.models.FileRange
+import com.azure.storage.file.models.FileStorageException
+import com.azure.storage.file.models.NtfsFileAttributes
+import com.azure.storage.file.models.ShareSnapshotInfo
 import spock.lang.Ignore
 import spock.lang.Unroll
 
