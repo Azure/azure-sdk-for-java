@@ -21,7 +21,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -98,7 +98,7 @@ public final class BlobBatch {
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             HttpPipelinePolicy policy = pipeline.getPolicy(i);
 
-            if (policy instanceof SharedKeyCredentialPolicy) {
+            if (policy instanceof StorageSharedKeyCredentialPolicy) {
                 batchHeadersPolicySet = true;
                 // The batch policy needs to be added before the SharedKey policy to run preparation cleanup.
                 batchPipelineBuilder.policies(this::cleanseHeaders, this::setRequestUrl);

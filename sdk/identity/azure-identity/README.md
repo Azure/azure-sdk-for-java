@@ -146,8 +146,8 @@ This example demonstrates authenticating the `SecretClient` from the [azure-secu
 ```java
 // The default credential first checks environment variables for configuration as described above.
 // If environment configuration is incomplete, it will try managed identity.
-import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 
 DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
@@ -165,8 +165,8 @@ When executing this in a development machine you need to first [configure the en
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
 ```java
 // using a client secret
-import com.azure.identity.credential.ClientSecretCredential;
-import com.azure.identity.credential.ClientSecretCredentialBuilder;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 
 // authenticate with client secret,
@@ -187,13 +187,13 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 ```java
 // using a client secret
-import com.azure.identity.credential.DeviceCodeCredential;
-import com.azure.identity.credential.DeviceCodeCredentialBuilder;
+import com.azure.identity.DeviceCodeCredential;
+import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 
 // authenticate with client secret,
 DeviceCodeCredential deviceCodeCredential = new DeviceCodeCredentialBuilder()
-        .deviceCodeChallengeConsumer(challenge -> {
+        .challengeConsumer(challenge -> {
             // lets user know of the challenge, e.g., display the message on an IoT device
             displayMessage(challenge.message());
         })
@@ -213,8 +213,8 @@ First, prompt the user to login at the URL documented at [Microsoft identity pla
 Then create an API at the redirect URL with the following code to access the Key Vault service.
 
 ```java
-import com.azure.identity.credential.AuthorizationCodeCredential;
-import com.azure.identity.credential.AuthorizationCodeCredentialBuilder;
+import com.azure.identity.AuthorizationCodeCredential;
+import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 
 AuthorizationCodeCredential authCodeCredential = new AuthorizationCodeCredentialBuilder()

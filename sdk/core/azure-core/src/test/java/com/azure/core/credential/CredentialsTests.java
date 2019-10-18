@@ -31,7 +31,7 @@ public class CredentialsTests {
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
-            .policies((context, next) -> credentials.getToken(new TokenRequest().addScopes("scope./default"))
+            .policies((context, next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default"))
                 .flatMap(token -> {
                     context.getHttpRequest().getHeaders().put("Authorization", "Basic " + token.getToken());
                     return next.process();

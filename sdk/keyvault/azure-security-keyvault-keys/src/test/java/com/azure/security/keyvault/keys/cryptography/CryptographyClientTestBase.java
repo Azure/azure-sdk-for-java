@@ -14,7 +14,7 @@ import com.azure.core.http.policy.*;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import org.junit.Rule;
 import org.junit.Test;
