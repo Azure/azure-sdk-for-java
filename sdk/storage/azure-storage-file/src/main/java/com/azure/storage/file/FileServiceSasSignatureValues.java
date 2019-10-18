@@ -458,7 +458,7 @@ public final class FileServiceSasSignatureValues {
      */
     private static String getCanonicalName(String account, String shareName, String filePath) {
         return ImplUtils.isNullOrEmpty(filePath)
-            ? String.format("/file/%s/%s/%s",account, shareName, filePath.replace("\\", "/"))
+            ? String.format("/file/%s/%s/%s", account, shareName, filePath.replace("\\", "/"))
             : String.format("/file/%s/%s",account, shareName);
     }
 
