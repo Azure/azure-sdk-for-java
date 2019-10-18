@@ -64,7 +64,8 @@ public final class LeaseClientBuilder {
      * @return a {@link LeaseAsyncClient} based on the configurations in this builder.
      */
     public LeaseAsyncClient buildAsyncClient() {
-        return new LeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName, serviceVersion.getVersion());
+        BlobServiceVersion version = (serviceVersion == null) ? BlobServiceVersion.getLatest() : serviceVersion;
+        return new LeaseAsyncClient(pipeline, url, getLeaseId(), isBlob, accountName, version.getVersion());
     }
 
     /**
