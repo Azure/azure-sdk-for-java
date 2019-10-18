@@ -504,4 +504,20 @@ class AppendBlobAPITest extends APISpec {
         expect:
         blobName == bc.getBlobName()
     }
+
+    def "Create overwrite false"() {
+        when:
+        bc.create()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Create overwrite true"() {
+        when:
+        bc.createWithResponse(true, null, null, null, null, null)
+
+        then:
+        notThrown(Throwable)
+    }
 }

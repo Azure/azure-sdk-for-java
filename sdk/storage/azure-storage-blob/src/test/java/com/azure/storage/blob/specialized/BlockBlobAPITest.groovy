@@ -41,6 +41,7 @@ import java.security.MessageDigest
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient bc
+    BlockBlobClient emptyBc
     BlockBlobAsyncClient bac
     BlobAsyncClient blobac
     BlobClient blobClient
@@ -54,6 +55,7 @@ class BlockBlobAPITest extends APISpec {
         blobac = ccAsync.getBlobAsyncClient(generateBlobName())
         bac = blobac.getBlockBlobAsyncClient()
         bac.upload(defaultFlux, defaultDataSize)
+        emptyBc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
     }
 
     def "Stage block"() {
@@ -583,7 +585,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        def response = bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, null, null, null, null, null, null)
+        def response = bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, true, null, null, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
@@ -605,7 +607,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath())
+        blobClient.uploadFromFile(file.getAbsolutePath(), true, null, null, null, null, null, null)
 
         then:
         bc.download(outStream)
@@ -620,7 +622,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath(), false, null, null, metadata, null, null, null)
+        blobClient.uploadFromFile(file.getAbsolutePath(), true, null, null, metadata, null, null, null)
 
         then:
         metadata == bc.getProperties().getMetadata()
@@ -630,11 +632,11 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload min"() {
         when:
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        emptyBc.upload(defaultInputStream.get(), defaultDataSize)
 
         then:
         def outStream = new ByteArrayOutputStream()
-        bc.download(outStream)
+        emptyBc.download(outStream)
         outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
@@ -655,7 +657,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload empty body"() {
         expect:
-        bc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, false, null, null, null, null, null, null).getStatusCode() == 201
+        emptyBc.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, false, null, null, null, null, null, null).getStatusCode() == 201
     }
 
     def "Upload null body"() {
@@ -677,8 +679,8 @@ class BlockBlobAPITest extends APISpec {
             .setBlobContentType(contentType)
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, headers, null, null, null, null, null)
-        def response = bc.getPropertiesWithResponse(null, null, null)
+        emptyBc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, headers, null, null, null, null, null)
+        def response = emptyBc.getPropertiesWithResponse(null, null, null)
 
         // If the value isn't set the service will automatically set it
         contentMD5 = (contentMD5 == null) ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5
@@ -705,7 +707,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, null, metadata, null, null, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, true, null, metadata, null, null, null, null)
         def response = bc.getPropertiesWithResponse(null, null, null)
 
         then:
@@ -733,7 +735,7 @@ class BlockBlobAPITest extends APISpec {
 
 
         expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, null, null, null, bac, null, null).getStatusCode() == 201
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, true, null, null, null, bac, null, null).getStatusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -759,7 +761,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch))
 
         when:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, false, null, null, null, bac, null, null)
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, true, null, null, null, bac, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -1186,7 +1188,6 @@ class BlockBlobAPITest extends APISpec {
     def "BlobClient overwrite false"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
-        blobClient.uploadFromFile(file.getPath())
 
         when:
         blobClient.uploadFromFile(file.getPath())
@@ -1198,10 +1199,25 @@ class BlockBlobAPITest extends APISpec {
     def "BlobClient overwrite true"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
-        blobClient.uploadFromFile(file.getPath())
 
         when:
         blobClient.uploadFromFile(file.getPath(), true, null, null, null, null, null, null)
+
+        then:
+        notThrown(Throwable)
+    }
+
+    def "Upload overwrite false"() {
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Upload overwrite true"() {
+        when:
+        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, true, null, null, null, null, null, null)
 
         then:
         notThrown(Throwable)
