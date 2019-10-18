@@ -5,11 +5,12 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Additional parameters for a set of operations, such as: Paths_create,
- * Paths_update, Paths_flushData.
+ * Paths_update, Paths_flushData, Paths_appendData.
  */
 @Fluent
 public final class PathHTTPHeaders {
@@ -46,6 +47,13 @@ public final class PathHTTPHeaders {
      */
     @JsonProperty(value = "")
     private String contentType;
+
+    /*
+     * Specify the transactional md5 for the body, to be validated by the
+     * service.
+     */
+    @JsonProperty(value = "")
+    private byte[] transactionalContentMD5;
 
     /**
      * Get the cacheControl property: Optional. Sets the blob's cache control.
@@ -162,6 +170,28 @@ public final class PathHTTPHeaders {
      */
     public PathHTTPHeaders setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the transactionalContentMD5 property: Specify the transactional md5
+     * for the body, to be validated by the service.
+     *
+     * @return the transactionalContentMD5 value.
+     */
+    public byte[] getTransactionalContentMD5() {
+        return ImplUtils.clone(this.transactionalContentMD5);
+    }
+
+    /**
+     * Set the transactionalContentMD5 property: Specify the transactional md5
+     * for the body, to be validated by the service.
+     *
+     * @param transactionalContentMD5 the transactionalContentMD5 value to set.
+     * @return the PathHTTPHeaders object itself.
+     */
+    public PathHTTPHeaders setTransactionalContentMD5(byte[] transactionalContentMD5) {
+        this.transactionalContentMD5 = ImplUtils.clone(transactionalContentMD5);
         return this;
     }
 }

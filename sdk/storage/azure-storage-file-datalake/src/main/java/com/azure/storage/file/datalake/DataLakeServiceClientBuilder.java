@@ -95,11 +95,11 @@ public class DataLakeServiceClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
-        return new DataLakeServiceAsyncClient(blobServiceClientBuilder.buildAsyncClient(),
-            new DataLakeStorageClientBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .build(), accountName);
+        return new DataLakeServiceAsyncClient(accountName, new DataLakeStorageClientBuilder()
+        .url(endpoint)
+        .pipeline(pipeline)
+        .build(), blobServiceClientBuilder.buildAsyncClient()
+        );
     }
 
     /**

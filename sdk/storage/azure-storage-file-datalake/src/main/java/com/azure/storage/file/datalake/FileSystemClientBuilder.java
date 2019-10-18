@@ -79,7 +79,7 @@ public class FileSystemClientBuilder {
      * @return a {@link FileSystemClient} created from the configurations in this builder.
      */
     public FileSystemClient buildClient() {
-        return new FileSystemClient(blobContainerClientBuilder.buildClient(), buildAsyncClient());
+        return new FileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient());
     }
 
     /**
@@ -110,12 +110,12 @@ public class FileSystemClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
 
-        return new FileSystemAsyncClient(blobContainerClientBuilder.buildAsyncClient(),
-            new DataLakeStorageClientBuilder()
-                .url(String.format("%s/%s", endpoint, fileSystemName))
-                .fileSystem(fileSystemName)
-                .pipeline(pipeline)
-                .build(), accountName, fileSystemName);
+        return new FileSystemAsyncClient(fileSystemName, new DataLakeStorageClientBuilder()
+            .url(String.format("%s/%s", endpoint, fileSystemName))
+            .fileSystem(fileSystemName)
+            .pipeline(pipeline)
+            .build(), accountName, blobContainerClientBuilder.buildAsyncClient()
+        );
     }
 
     /**

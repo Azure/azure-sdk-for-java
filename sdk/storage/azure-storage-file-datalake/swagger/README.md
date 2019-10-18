@@ -37,3 +37,85 @@ models-subpackage: implementation.models
 custom-types: FileSystemInfo, FileSystemItem, FileSystemProperties, PathAccessConditions, PathInfo, PathItem, PathProperties, ListFileSystemsOptions
 custom-types-subpackage: models
 ```
+
+### Adds FileSystem parameter to /{filesystem}?resource=filesystem
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}?resource=filesystem"]
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        $.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### Adds FileSystem and Path parameter to /{filesystem}/{path}
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}"]
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=append
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?action=append"].patch
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=setAccessControl
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?action=setAccessControl"].patch
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?action=flush
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?action=flush"].patch
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
+```
+
+### Make the body of append octet-stream /{filesystem}/{path}?action=append
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?action=append"]
+  transform: >
+    $.patch.consumes = ["application/octet-stream"];
+```

@@ -57,8 +57,8 @@ public class DataLakeServiceClient {
      * @return A {@link FileSystemClient} object pointing to the specified file system
      */
     public FileSystemClient getFileSystemClient(String fileSystemName) {
-        return new FileSystemClient(blobServiceClient.getBlobContainerClient(fileSystemName),
-            dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName));
+        return new FileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName), blobServiceClient.getBlobContainerClient(fileSystemName)
+        );
     }
 
     /**

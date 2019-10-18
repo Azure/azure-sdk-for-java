@@ -36,6 +36,30 @@ public final class DataLakeStorageClientImpl {
     }
 
     /**
+     * The value must be "filesystem" for all filesystem operations.
+     */
+    private String resource;
+
+    /**
+     * Gets The value must be "filesystem" for all filesystem operations.
+     *
+     * @return the resource value.
+     */
+    public String getResource() {
+        return this.resource;
+    }
+
+    /**
+     * Sets The value must be "filesystem" for all filesystem operations.
+     *
+     * @param resource the resource value.
+     */
+    DataLakeStorageClientImpl setResource(String resource) {
+        this.resource = resource;
+        return this;
+    }
+
+    /**
      * Specifies the version of the operation to use for this request.
      */
     private String version;

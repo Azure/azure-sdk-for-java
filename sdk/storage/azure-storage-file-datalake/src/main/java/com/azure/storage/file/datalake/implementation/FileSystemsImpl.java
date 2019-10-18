@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -87,7 +88,7 @@ public final class FileSystemsImpl {
         @Get("{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<FileSystemsListPathsResponse> listPaths(@HostParam("url") String url, @QueryParam("continuation") String continuation, @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive, @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
+        Mono<FileSystemsListPathsResponse> listPaths(@PathParam("filesystem") String fileSystem, @HostParam("url") String url, @QueryParam("continuation") String continuation, @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive, @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn, @QueryParam("resource") String resource, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, Context context);
     }
 
     /**
@@ -101,10 +102,9 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsCreateResponse> createWithRestResponseAsync(Context context) {
         final String properties = null;
-        final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
-        return service.create(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), context);
+        return service.create(this.client.getUrl(), properties, this.client.getResource(), requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -120,8 +120,7 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsCreateResponse> createWithRestResponseAsync(String properties, String requestId, Integer timeout, Context context) {
-        final String resource = "filesystem";
-        return service.create(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), context);
+        return service.create(this.client.getUrl(), properties, this.client.getResource(), requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -135,12 +134,11 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithRestResponseAsync(Context context) {
         final String properties = null;
-        final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setProperties(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setProperties(this.client.getUrl(), properties, this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -157,7 +155,6 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithRestResponseAsync(String properties, String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String resource = "filesystem";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
             ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
@@ -168,7 +165,7 @@ public final class FileSystemsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setProperties(this.client.getUrl(), properties, resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.setProperties(this.client.getUrl(), properties, this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -181,10 +178,9 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
-        final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
-        return service.getProperties(this.client.getUrl(), resource, requestId, timeout, this.client.getVersion(), context);
+        return service.getProperties(this.client.getUrl(), this.client.getResource(), requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -199,8 +195,7 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsGetPropertiesResponse> getPropertiesWithRestResponseAsync(String requestId, Integer timeout, Context context) {
-        final String resource = "filesystem";
-        return service.getProperties(this.client.getUrl(), resource, requestId, timeout, this.client.getVersion(), context);
+        return service.getProperties(this.client.getUrl(), this.client.getResource(), requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -213,12 +208,11 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsDeleteResponse> deleteWithRestResponseAsync(Context context) {
-        final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.delete(this.client.getUrl(), resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.delete(this.client.getUrl(), this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -234,7 +228,6 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsDeleteResponse> deleteWithRestResponseAsync(String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        final String resource = "filesystem";
         OffsetDateTime ifModifiedSince = null;
         if (modifiedAccessConditions != null) {
             ifModifiedSince = modifiedAccessConditions.getIfModifiedSince();
@@ -245,7 +238,7 @@ public final class FileSystemsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(this.client.getUrl(), resource, requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
+        return service.delete(this.client.getUrl(), this.client.getResource(), requestId, timeout, this.client.getVersion(), ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
     }
 
     /**
@@ -263,10 +256,9 @@ public final class FileSystemsImpl {
         final String path = null;
         final Integer maxResults = null;
         final Boolean upn = null;
-        final String resource = "filesystem";
         final String requestId = null;
         final Integer timeout = null;
-        return service.listPaths(this.client.getUrl(), continuation, path, recursive, maxResults, upn, resource, requestId, timeout, this.client.getVersion(), context);
+        return service.listPaths(this.client.getFileSystem(), this.client.getUrl(), continuation, path, recursive, maxResults, upn, this.client.getResource(), requestId, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -286,7 +278,6 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileSystemsListPathsResponse> listPathsWithRestResponseAsync(boolean recursive, String continuation, String path, Integer maxResults, Boolean upn, String requestId, Integer timeout, Context context) {
-        final String resource = "filesystem";
-        return service.listPaths(this.client.getUrl(), continuation, path, recursive, maxResults, upn, resource, requestId, timeout, this.client.getVersion(), context);
+        return service.listPaths(this.client.getFileSystem(), this.client.getUrl(), continuation, path, recursive, maxResults, upn, this.client.getResource(), requestId, timeout, this.client.getVersion(), context);
     }
 }

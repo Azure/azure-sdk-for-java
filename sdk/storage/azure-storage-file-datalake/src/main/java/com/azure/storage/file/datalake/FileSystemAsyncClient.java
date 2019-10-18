@@ -13,16 +13,19 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.Utility;
+import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.GetPathsOptions;
+import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 
@@ -71,8 +74,8 @@ public class FileSystemAsyncClient {
      * Protected constructor for use by {@link FileSystemClientBuilder}.
      *
      */
-    protected FileSystemAsyncClient(BlobContainerAsyncClient blobContainerAsyncClient,
-        DataLakeStorageClientImpl dataLakeImpl, String accountName, String fileSystemName) {
+    protected FileSystemAsyncClient(String fileSystemName, DataLakeStorageClientImpl dataLakeImpl, String accountName,
+        BlobContainerAsyncClient blobContainerAsyncClient) {
         this.blobContainerAsyncClient = blobContainerAsyncClient;
         this.azureDataLakeStorage = dataLakeImpl;
         this.accountName = accountName;
@@ -92,13 +95,12 @@ public class FileSystemAsyncClient {
      * system.
      */
     public FileAsyncClient getFileAsyncClient(String fileName) {
-        BlobAsyncClient blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
-            null);
-        return null;
-//        return new FileAsyncClient(blobAsyncClient, new DataLakeStorageClientBuilder()
-//            .url(Utility.appendToURLPath(getFileSystemUrl(), fileName).toString())
-//            .pipeline(azureDataLakeStorage.getHttpPipeline())
-//            .build(), snapshot, customerProvidedKey, accountName);
+        BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
+            null).getBlockBlobAsyncClient();
+        return new FileAsyncClient(new DataLakeStorageClientBuilder()
+            .url(Utility.appendToURLPath(getFileSystemUrl(), fileName).toString())
+            .pipeline(azureDataLakeStorage.getHttpPipeline())
+            .build(), accountName, fileSystemName, fileName, blockBlobAsyncClient);
     }
 
     /**
@@ -114,32 +116,13 @@ public class FileSystemAsyncClient {
      * file system.
      */
     public DirectoryAsyncClient getDirectoryAsyncClient(String directoryName) {
-        return getDirectoryAsyncClient(directoryName, null);
+        BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
+            null).getBlockBlobAsyncClient();
+        return new DirectoryAsyncClient(new DataLakeStorageClientBuilder()
+            .url(Utility.appendToURLPath(getFileSystemUrl(), directoryName).toString())
+            .pipeline(azureDataLakeStorage.getHttpPipeline())
+            .build(), accountName, fileSystemName, directoryName, blockBlobAsyncClient);
     }
-
-    /**
-     * Creates a new DirectoryAsyncClient object by concatenating directoryName to the end of FileSystemAsyncClient's
-     * URL. The new DirectoryAsyncClient uses the same request policy pipeline as the FileSystemAsyncClient.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.FileSystemAsyncClient.getDirectoryAsyncClient#String-String}
-     *
-     * @param directoryName A {@code String} representing the name of the directory.
-     * @param snapshot the snapshot identifier for the directory.
-     * @return A new {@link DirectoryAsyncClient} object which references the directory with the specified name in this
-     * file system.
-     */
-    public DirectoryAsyncClient getDirectoryAsyncClient(String directoryName, String snapshot) {
-        BlobAsyncClient blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
-            snapshot);
-        return null;
-//        return new FileAsyncClient(blobAsyncClient, new DataLakeStorageClientBuilder()
-//            .url(Utility.appendToURLPath(getFileSystemUrl(), fileName).toString())
-//            .pipeline(azureDataLakeStorage.getHttpPipeline())
-//            .build(), snapshot, customerProvidedKey, accountName);
-    }
-
     /**
      * Gets the URL of the file system represented by this client.
      *
@@ -381,4 +364,45 @@ public class FileSystemAsyncClient {
                 null, Context.NONE), timeout));
     }
 
+
+    public Mono<FileAsyncClient> createFile(String fileSystemName) {
+        return createFileWithResponse(fileSystemName, null, null, null, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<FileAsyncClient>> createFileWithResponse(String fileSystemName,
+        PathHTTPHeaders httpHeaders, Map<String, String> metadata, String permissions, String umask,
+        PathAccessConditions accessConditions) {
+        FileAsyncClient fileAsyncClient = getFileAsyncClient(fileSystemName);
+        return fileAsyncClient.createWithResponse(httpHeaders, metadata, permissions, umask, accessConditions)
+            .map(response -> new SimpleResponse<>(response, fileAsyncClient));
+    }
+
+    public Mono<Void> deleteFile(String fileSystemName) {
+        return deleteFileWithResponse(fileSystemName, null).flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<Void>> deleteFileWithResponse(String fileSystemName, PathAccessConditions accessConditions) {
+        return getFileAsyncClient(fileSystemName).deleteWithResponse(accessConditions);
+    }
+
+    public Mono<DirectoryAsyncClient> createDirectory(String directoryName) {
+        return createDirectoryWithResponse(directoryName, null, null, null, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<DirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
+        PathHTTPHeaders httpHeaders, Map<String, String> metadata, String permissions, String umask,
+        PathAccessConditions accessConditions) {
+        DirectoryAsyncClient directoryAsyncClient = getDirectoryAsyncClient(directoryName);
+        return directoryAsyncClient.createWithResponse(httpHeaders, metadata, permissions, umask, accessConditions)
+            .map(response -> new SimpleResponse<>(response, directoryAsyncClient));
+    }
+
+    public Mono<Void> deleteDirectory(String directoryName) {
+        return deleteDirectoryWithResponse(directoryName, false, null).flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, boolean recursive,
+        PathAccessConditions accessConditions) {
+        return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, accessConditions);
+    }
 }

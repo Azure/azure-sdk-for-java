@@ -43,7 +43,7 @@ public class FileSystemClient {
     /**
      * Package-private constructor for use by {@link FileSystemClientBuilder}.
      */
-    FileSystemClient(BlobContainerClient blobContainerClient, FileSystemAsyncClient fileSystemAsyncClient) {
+    FileSystemClient(FileSystemAsyncClient fileSystemAsyncClient, BlobContainerClient blobContainerClient) {
         this.fileSystemAsyncClient = fileSystemAsyncClient;
         this.blobContainerClient = blobContainerClient;
     }
@@ -61,8 +61,8 @@ public class FileSystemClient {
      * @return A new {@link FileClient} object which references the file with the specified name in this file system.
      */
     public FileClient getFileClient(String fileName) {
-        return null;
-//        return new FileClient(fileSystemAsyncClient.getFileAsyncClient(fileName));
+        return new FileClient(fileSystemAsyncClient.getFileAsyncClient(fileName),
+            blobContainerClient.getBlobClient(fileName).getBlockBlobClient());
     }
 
     /**
@@ -79,8 +79,8 @@ public class FileSystemClient {
      * file system.
      */
     public DirectoryClient getDirectoryClient(String directoryName) {
-        return null;
-//        return new DirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName));
+        return new DirectoryClient(fileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
+            blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
     }
 
     BlobContainerClient getBlobContainerClient() {

@@ -52,8 +52,8 @@ public class DataLakeServiceAsyncClient {
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      */
-    DataLakeServiceAsyncClient(BlobServiceAsyncClient blobServiceAsyncClient, DataLakeStorageClientImpl dataLakeImpl,
-        String accountName) {
+    DataLakeServiceAsyncClient(String accountName, DataLakeStorageClientImpl dataLakeImpl,
+        BlobServiceAsyncClient blobServiceAsyncClient) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
         this.dataLakeImpl = dataLakeImpl;
         this.accountName = accountName;
@@ -77,11 +77,11 @@ public class DataLakeServiceAsyncClient {
             fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
 
-        return new FileSystemAsyncClient(blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName),
-            new DataLakeStorageClientBuilder()
-                .url(Utility.appendToURLPath(getAccountUrl(), fileSystemName).toString())
-                .pipeline(dataLakeImpl.getHttpPipeline())
-                .build(), accountName, fileSystemName);
+        return new FileSystemAsyncClient(fileSystemName, new DataLakeStorageClientBuilder()
+            .url(Utility.appendToURLPath(getAccountUrl(), fileSystemName).toString())
+            .pipeline(dataLakeImpl.getHttpPipeline())
+            .build(), accountName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
+        );
     }
 
     /**

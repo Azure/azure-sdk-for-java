@@ -30,6 +30,22 @@ public final class DataLakeStorageClientBuilder {
     }
 
     /*
+     * The value must be "filesystem" for all filesystem operations.
+     */
+    private String resource;
+
+    /**
+     * Sets The value must be "filesystem" for all filesystem operations.
+     *
+     * @param resource the resource value.
+     * @return the DataLakeStorageClientBuilder.
+     */
+    public DataLakeStorageClientBuilder resource(String resource) {
+        this.resource = resource;
+        return this;
+    }
+
+    /*
      * Specifies the version of the operation to use for this request.
      */
     private String version;
@@ -105,6 +121,11 @@ public final class DataLakeStorageClientBuilder {
         DataLakeStorageClientImpl client = new DataLakeStorageClientImpl(pipeline);
         if (this.url != null) {
             client.setUrl(this.url);
+        }
+        if (this.resource != null) {
+            client.setResource(this.resource);
+        } else {
+            client.setResource("filesystem");
         }
         if (this.version != null) {
             client.setVersion(this.version);

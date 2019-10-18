@@ -1,17 +1,25 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.BlobContainerProperties;
+import com.azure.storage.blob.BlobProperties;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
+import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
@@ -120,6 +128,19 @@ class Transforms {
             .setValue(blobUserDelegationKey.getValue());
     }
 
+    static BlobAccessConditions toBlobAccessConditions(PathAccessConditions
+        pathAccessConditions) {
+        if (pathAccessConditions == null) {
+            return null;
+        } else {
+            return new BlobAccessConditions()
+                .setModifiedAccessConditions(toBlobModifiedAccessConditions(pathAccessConditions
+                    .getModifiedAccessConditions()))
+                .setLeaseAccessConditions(toBlobLeaseAccessConditions(pathAccessConditions
+                    .getLeaseAccessConditions()));
+        }
+    }
+
     static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
         String desiredRegex = "." + desiredEndpoint + ".";
         String currentRegex = "." + currentEndpoint + ".";
@@ -127,6 +148,43 @@ class Transforms {
             return endpoint;
         } else {
             return endpoint.replaceFirst(currentRegex, desiredRegex);
+        }
+    }
+
+    static BlobHTTPHeaders toBlobHttpHeaders(PathHTTPHeaders pathHTTPHeaders) {
+        if (pathHTTPHeaders == null) {
+            return null;
+        }
+        return new BlobHTTPHeaders()
+            .setBlobCacheControl(pathHTTPHeaders.getCacheControl())
+            .setBlobContentDisposition(pathHTTPHeaders.getContentDisposition())
+            .setBlobContentEncoding(pathHTTPHeaders.getContentEncoding())
+            .setBlobContentLanguage(pathHTTPHeaders.getContentLanguage())
+            .setBlobContentType(pathHTTPHeaders.getContentType())
+            .setBlobContentMD5(pathHTTPHeaders.getTransactionalContentMD5());
+    }
+
+    static BlobRange toBlobRange(FileRange fileRange) {
+        if (fileRange == null) {
+            return null;
+        }
+        return new BlobRange(fileRange.getOffset(), fileRange.getCount());
+    }
+
+    static ReliableDownloadOptions toBlobReliableDownloadOptions(
+        com.azure.storage.file.datalake.models.ReliableDownloadOptions dataLakeOptions) {
+        if (dataLakeOptions == null) {
+            return null;
+        }
+        return new ReliableDownloadOptions()
+            .maxRetryRequests(dataLakeOptions.maxRetryRequests());
+    }
+
+    static PathProperties toPathProperties(BlobProperties blobProperties) {
+        if (blobProperties == null) {
+            return null;
+        } else {
+            return new PathProperties(blobProperties);
         }
     }
 }

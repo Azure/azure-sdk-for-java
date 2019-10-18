@@ -20,10 +20,9 @@ public class PathAccessConditions {
     /**
      * Creates an instance which has fields set to non-null, empty values.
      */
-    public PathAccessConditions(ModifiedAccessConditions modifiedAccessConditions,
-        LeaseAccessConditions leaseAccessConditions) {
-        this.modifiedAccessConditions = modifiedAccessConditions;
-        this.leaseAccessConditions = leaseAccessConditions;
+    public PathAccessConditions() {
+        this.modifiedAccessConditions = new ModifiedAccessConditions();
+        this.leaseAccessConditions = new LeaseAccessConditions();
     }
 
     /**
