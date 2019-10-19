@@ -4,7 +4,7 @@
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "49e37267-b398-4e94-8abb-ee6fd34a8e13",
+      "x-ms-client-request-id" : "1ff6cc77-abac-48f6-9552-ebbaa4ac06cc",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -14,23 +14,23 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "405",
-      "Date" : "Fri, 18 Oct 2019 23:38:39 GMT",
+      "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "1fbbe180-51dc-4673-9557-1af914291c5c",
+      "x-ms-correlation-request-id" : "4a59a7f4-df29-4764-b171-56f0c06ebd1c",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
       "Content-Length" : "0",
-      "x-ms-request-id" : "1fbbe180-51dc-4673-9557-1af914291c5c",
-      "x-ms-client-request-id" : "49e37267-b398-4e94-8abb-ee6fd34a8e13"
+      "x-ms-request-id" : "4a59a7f4-df29-4764-b171-56f0c06ebd1c",
+      "x-ms-client-request-id" : "1ff6cc77-abac-48f6-9552-ebbaa4ac06cc"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key95766%2a",
+    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key87741%2a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "6af48d72-6997-44ed-a4b7-1bc5d33f840a",
+      "x-ms-client-request-id" : "43fe3b67-f00b-4652-9b63-02d15d7f48f2",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -41,18 +41,18 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 18 Oct 2019 23:38:39 GMT",
+      "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "88ee5fac-45bc-449b-8b3a-d33c9f802c8a",
+      "x-ms-correlation-request-id" : "419464a2-4ab2-4375-8edd-0b883973b9ae",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
-      "x-ms-request-id" : "88ee5fac-45bc-449b-8b3a-d33c9f802c8a",
+      "x-ms-request-id" : "419464a2-4ab2-4375-8edd-0b883973b9ae",
       "Body" : "{\"items\":[]}",
-      "x-ms-client-request-id" : "6af48d72-6997-44ed-a4b7-1bc5d33f840a",
+      "x-ms-client-request-id" : "43fe3b67-f00b-4652-9b63-02d15d7f48f2",
       "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "key95766", "820a7009" ]
+  "variables" : [ "key87741", "16d2bdd3" ]
 }
