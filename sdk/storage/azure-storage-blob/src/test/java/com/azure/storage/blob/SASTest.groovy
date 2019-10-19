@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobSignedIdentifier
@@ -21,7 +20,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.Utility
 import com.azure.storage.common.sas.SasIpRange
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -258,9 +256,6 @@ class SASTest extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    /* TODO: Fix user delegation tests to run in CI */
-
-    @Ignore
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -291,6 +286,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
+        def keyOid = getConfigValue(key.getSignedOid())
+        key.setSignedOid(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTid())
+        key.setSignedTid(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -404,7 +404,6 @@ class SASTest extends APISpec {
 
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -437,6 +436,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
 
+        def keyOid = getConfigValue(key.getSignedOid())
+        key.setSignedOid(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTid())
+        key.setSignedTid(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -484,7 +488,6 @@ class SASTest extends APISpec {
         properties.getContentLanguage() == "language"
     }
 
-    @Ignore
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -499,6 +502,11 @@ class SASTest extends APISpec {
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
+        def keyOid = getConfigValue(key.getSignedOid())
+        key.setSignedOid(keyOid)
+
+        def keyTid = getConfigValue(key.getSignedTid())
+        key.setSignedTid(keyTid)
         when:
         def sasWithPermissions = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
