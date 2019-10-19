@@ -13,8 +13,8 @@ import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.implementation.models.ListSharesIncludeType;
@@ -202,7 +202,7 @@ public final class FileServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
-            nextMarker -> Utility.applyOptionalTimeout(this.azureFileStorageClient.services()
+            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.services()
                     .listSharesSegmentWithRestResponseAsync(
                         prefix, nextMarker, maxResultsPerPage, include, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),

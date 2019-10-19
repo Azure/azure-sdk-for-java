@@ -12,8 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.common.Utility;
-
+import com.azure.storage.common.implementation.StorageImplUtils;
 import java.time.Duration;
 import java.util.List;
 
@@ -85,8 +84,8 @@ public final class BlobBatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Duration timeout,
         Context context) {
-        return Utility.blockWithOptionalTimeout(client.submitBatchWithResponse(batch, throwOnAnyFailure, context),
-            timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(client.submitBatchWithResponse(batch,
+            throwOnAnyFailure, context), timeout);
     }
 
     /**

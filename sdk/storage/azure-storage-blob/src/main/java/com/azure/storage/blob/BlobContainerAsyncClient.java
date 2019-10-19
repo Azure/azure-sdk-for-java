@@ -29,7 +29,7 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -139,8 +139,8 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(),
-            Utility.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(), getAccountName(),
-            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
+            StorageImplUtils.appendToUrlPath(getBlobContainerUrl(), blobName).toString(), getServiceVersion(), 
+            getAccountName(), getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
     }
 
     /**
@@ -718,7 +718,7 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
                 marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
                 null, null, Context.NONE), timeout);
@@ -846,7 +846,7 @@ public final class BlobContainerAsyncClient {
                 new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
-        return Utility.applyOptionalTimeout(
+        return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toList(), null, null,
                 Context.NONE),

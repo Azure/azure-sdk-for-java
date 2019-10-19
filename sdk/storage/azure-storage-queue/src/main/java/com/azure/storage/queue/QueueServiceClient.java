@@ -7,8 +7,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
@@ -116,7 +116,7 @@ public final class QueueServiceClient {
         Duration timeout, Context context) {
 
         Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
-        Response<QueueAsyncClient> response = Utility.blockWithOptionalTimeout(asyncResponse, timeout);
+        Response<QueueAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(asyncResponse, timeout);
         return new SimpleResponse<>(response, new QueueClient(response.getValue()));
     }
 
@@ -155,7 +155,7 @@ public final class QueueServiceClient {
      */
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteQueueWithResponse(queueName, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class QueueServiceClient {
      */
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueServiceProperties>> response = client.getPropertiesWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -351,7 +351,7 @@ public final class QueueServiceClient {
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setPropertiesWithResponse(properties, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -392,7 +392,7 @@ public final class QueueServiceClient {
      */
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueServiceStatistics>> response = client.getStatisticsWithResponse(context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
 

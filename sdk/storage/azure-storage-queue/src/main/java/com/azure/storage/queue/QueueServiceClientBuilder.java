@@ -169,7 +169,6 @@ public final class QueueServiceClientBuilder {
         BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
         this.accountName = parts.getAccountName();
-
         if (!ImplUtils.isNullOrEmpty(parts.getSasToken())) {
             sasToken(parts.getSasToken());
         }

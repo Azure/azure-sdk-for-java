@@ -3,11 +3,10 @@
 
 package com.azure.storage.common.credentials;
 
-import com.azure.storage.common.Utility;
-
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -37,8 +36,12 @@ public final class SASTokenCredentialJavaDocCodeSnippets {
      */
     public void fromQueryParameters() {
         // BEGIN: com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map
+        Map<String, String> queryMap = new HashMap<String, String>() {{
+                put("queryPara1", "queryValue1");
+                put("queryPara2", "queryValue2");
+            }};
         SasTokenCredential credential = SasTokenCredential
-            .fromQueryParameters(Utility.parseQueryString(url.getQuery()));
+            .fromQueryParameters(queryMap);
         // END: com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map
     }
 }

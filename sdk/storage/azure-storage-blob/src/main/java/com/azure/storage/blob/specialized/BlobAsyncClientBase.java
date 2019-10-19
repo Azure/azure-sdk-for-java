@@ -38,8 +38,8 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -1152,7 +1152,7 @@ public class BlobAsyncClientBase {
 
     Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority,
         LeaseAccessConditions leaseAccessConditions, Context context) {
-        Utility.assertNotNull("tier", tier);
+        StorageImplUtils.assertNotNull("tier", tier);
 
         return this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
             null, null, tier, null, priority, null, leaseAccessConditions, context)

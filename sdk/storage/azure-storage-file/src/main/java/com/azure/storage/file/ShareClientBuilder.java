@@ -11,8 +11,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -176,6 +176,7 @@ public class ShareClientBuilder {
 
             this.accountName = BuilderHelper.getAccountName(fullUrl);
 
+
             // Attempt to get the share name from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");
             int length = pathSegments.length;
@@ -187,7 +188,7 @@ public class ShareClientBuilder {
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new FileServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
+                StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }

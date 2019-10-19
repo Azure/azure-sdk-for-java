@@ -3,11 +3,12 @@
 
 package com.azure.storage.queue;
 
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.sas.SasIpRange;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
@@ -148,7 +149,7 @@ public final class QueueServiceSasSignatureValues {
      * @throws NullPointerException if {@code permissions} is null.
      */
     public QueueServiceSasSignatureValues setPermissions(QueueSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
@@ -238,7 +239,7 @@ public final class QueueServiceSasSignatureValues {
      */
     public QueueServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
-        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         if (ImplUtils.isNullOrEmpty(version)) {
             version = QueueServiceVersion.getLatest().getVersion();
@@ -267,8 +268,8 @@ public final class QueueServiceSasSignatureValues {
     private String stringToSign(String canonicalName) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
