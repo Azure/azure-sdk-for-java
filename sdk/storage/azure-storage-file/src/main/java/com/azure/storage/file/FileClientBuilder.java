@@ -13,6 +13,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -311,19 +314,32 @@ public class FileClientBuilder {
     }
 
     /**
-     * Constructs a {@link StorageSharedKeyCredential} used to authorize requests sent to the service. Additionally,
-     * if the connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
+     * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the storage account.
      * @return the updated FileClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
     public FileClientBuilder connectionString(String connectionString) {
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
+        StorageConnectionString storageConnectionString
+                = StorageConnectionString.create(connectionString, logger);
+        StorageEndpoint endpoint = storageConnectionString.getFileEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw logger
+                    .logExceptionAsError(new IllegalArgumentException(
+                            "connectionString missing required settings to derive file service endpoint."));
+        }
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
+        }
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
         return this;
     }
 
