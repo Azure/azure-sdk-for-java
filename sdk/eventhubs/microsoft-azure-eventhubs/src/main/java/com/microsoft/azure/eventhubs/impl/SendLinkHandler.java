@@ -56,9 +56,7 @@ public class SendLinkHandler extends BaseLinkHandler {
                             this.senderName, link.getName(), link.getRemoteTarget()));
                 }
 
-                TRACE_LOGGER.info("onLinkRemoteOpen starts with isFirstFlow = " + this.isFirstFlow.get());
                 if (this.isFirstFlow.compareAndSet(true, false)) {
-                    TRACE_LOGGER.info("onLinkRemoteOpen changes isFirstFlow to " + this.isFirstFlow.get());
                     this.msgSender.onOpenComplete(null);
                 }
             } else {

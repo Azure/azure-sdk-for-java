@@ -164,10 +164,9 @@ public class ConnectionHandler extends BaseHandler {
                     connection.getHostname(), this.connectionId, connection.getLocalState(), connection.getRemoteState()));
         }
 
-        // if failure happened while establishing transport - nothing to free up.
-        if (connection.getRemoteState() != EndpointState.UNINITIALIZED) {
-            connection.free();
-        }
+        // It is important to call free even if connection is uninitialized, because that
+        // triggers the onLinkFinal handler on half-open links that cleans them up.
+        connection.free();
     }
 
     @Override
