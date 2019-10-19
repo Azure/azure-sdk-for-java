@@ -8,29 +8,47 @@ import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
 /**
- * FileServiceSasSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to file urls. Note: that both this class and {@link FileServiceSasQueryParameters}
- * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
- * actual REST requests.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
- * for more conceptual information on SAS.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
- * more details on each value, including which are required.
+ * Used to generate a Shared Access Signature (SAS) for Azure Files service. Once all the values here are set
+ * appropriately, call {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)} to
+ * obtain a representation of the SAS which can be applied to file urls.
  *
- * <p>Please see
- * <a href=https://github.com/Azure/azure-storage-java/file/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
- * for additional samples.</p>
+ * <p><strong>Generating a file share SAS</strong></p>
+ * <p>The snippet below generates a file share SAS that lasts for three days, and gives the user read, create, and list
+ * permissions to the share.
+ *
+ * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters.shareSas#StorageSharedKeyCredential}
+ *
+ * <p><strong>Generating a file SAS</strong></p>
+ * <p>The snippet below generates a file SAS that has the same duration and permissions specified by the
+ * {@link #setIdentifier(String) stored access policy}.
+ *
+ * {@codesnippet com.azure.storage.file.fileServiceSasQueryParameters.generateSasQueryParameters#StorageSharedKeyCredential}
+ *
+ * @see FileServiceSasQueryParameters
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
+ * SAS</a>
  */
 public final class FileServiceSasSignatureValues {
+    /**
+     * The SAS file constant.
+     */
+    private static final String SAS_FILE_CONSTANT = "f";
 
-    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    /**
+     * The SAS share constant.
+     */
+    private static final String SAS_SHARE_CONSTANT = "s";
+
+    private String version;
 
     private SasProtocol protocol;
 
@@ -42,9 +60,9 @@ public final class FileServiceSasSignatureValues {
 
     private SasIpRange sasIpRange;
 
-    private String canonicalName;
+    private String shareName;
 
-    private String resource;
+    private String filePath;
 
     private String identifier;
 
@@ -61,46 +79,7 @@ public final class FileServiceSasSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    FileServiceSasSignatureValues() {
-    }
-
-    /**
-     * Creates an object with the specified expiry time and permissions
-     *
-     * @param expiryTime Time the SAS becomes valid
-     * @param permissions Permissions granted by the SAS
-     */
-    FileServiceSasSignatureValues(OffsetDateTime expiryTime, String permissions) {
-        this.expiryTime = expiryTime;
-        this.permissions = permissions;
-    }
-
-    /**
-     * Creates an object with the specified identifier
-     *
-     * @param identifier Identifier for the SAS
-     */
-    FileServiceSasSignatureValues(String identifier) {
-        this.identifier = identifier;
-    }
-
-    FileServiceSasSignatureValues(String version, SasProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, SasIpRange sasIpRange, String identifier, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        if (version != null) {
-            this.version = version;
-        }
-        this.protocol = sasProtocol;
-        this.startTime = startTime;
-        this.expiryTime = expiryTime;
-        this.permissions = permission;
-        this.sasIpRange = sasIpRange;
-        this.identifier = identifier;
-        this.cacheControl = cacheControl;
-        this.contentDisposition = contentDisposition;
-        this.contentEncoding = contentEncoding;
-        this.contentLanguage = contentLanguage;
-        this.contentType = contentType;
+    public FileServiceSasSignatureValues() {
     }
 
     /**
@@ -186,14 +165,28 @@ public final class FileServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to either {@link ShareSasPermission} or {@link
-     * FileSasPermission} depending on the resource being accessed for help constructing the permissions string.
+     * Sets the permissions allowed by the SAS. Share SASs are created when <b>only</b>
+     * {@link #setShareName(String) share name} is set on the builder.
      *
-     * @param permissions Permissions string for the SAS
+     * @param permissions Permissions for the share SAS.
+     * @return the updated FileServiceSasSignatureValues object.
+     */
+    public FileServiceSasSignatureValues setPermissions(ShareSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
+        return this;
+    }
+
+    /**
+     * Sets the permissions allowed by the SAS. File SASs are created when both a
+     * {@link #setShareName(String) share name} and {@link #setFilePath(String) file path} are set on the builder.
+     *
+     * @param permissions Permissions for the SAS.
      * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSasSignatureValues setPermissions(String permissions) {
-        this.permissions = permissions;
+    public FileServiceSasSignatureValues setPermissions(FileSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
+        this.permissions = permissions.toString();
         return this;
     }
 
@@ -216,72 +209,50 @@ public final class FileServiceSasSignatureValues {
     }
 
     /**
-     * @return the resource the SAS user may access.
+     * Gets the name of the share being made accessible.
+     *
+     * @return The name of the share being made accessible.
      */
-    public String getResource() {
-        return resource;
+    public String getShareName() {
+        return shareName;
     }
 
     /**
-     * Sets the resource the SAS user may access.
+     * Sets the name of the share being made accessible.
      *
-     * @param resource Allowed resources string to set
+     * @param shareName The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSasSignatureValues setResource(String resource) {
-        this.resource = resource;
+    public FileServiceSasSignatureValues setShareName(String shareName) {
+        this.shareName = shareName;
         return this;
     }
 
     /**
-     * @return the canonical name of the object the SAS user may access.
+     * Gets the path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
+     *
+     * @return The path of the file or directory being made accessible. {@code null} or an empty string for a share SAS.
      */
-    public String getCanonicalName() {
-        return canonicalName;
+    public String getFilePath() {
+        return filePath;
     }
 
     /**
-     * Sets the canonical name of the object the SAS user may access.
+     * Sets the path of the file or directory being made accessible. Pass in {@code null} or an empty string for a share
+     * SAS.
      *
-     * @param canonicalName Canonical name of the object the SAS grants access
+     * @param filePath The name of the share being made accessible.
      * @return the updated FileServiceSasSignatureValues object
      */
-    public FileServiceSasSignatureValues setCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-        return this;
-    }
-
-    /**
-     * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/file/{accountName}/{shareName}/{filePath}".
-     *
-     * @param shareName Name of the share
-     * @param filePath Name of the file
-     * @param accountName Name of the account that contains the object
-     * @return the updated FileServiceSasSignatureValues object
-     */
-    public FileServiceSasSignatureValues setCanonicalName(String shareName, String filePath, String accountName) {
-        this.canonicalName = String.format("/file/%s/%s/%s", accountName, shareName, filePath);
-        return this;
-    }
-
-    /**
-     * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/file/{accountName}/{shareName}".
-     *
-     * @param shareName Name of the share
-     * @param accountName Name of the account that contains the object
-     * @return the updated FileServiceSasSignatureValues object
-     */
-    public FileServiceSasSignatureValues setCanonicalName(String shareName, String accountName) {
-        this.canonicalName = String.format("/file/%s/%s", accountName, shareName);
+    public FileServiceSasSignatureValues setFilePath(String filePath) {
+        this.filePath = filePath;
         return this;
     }
 
     /**
      * @return the name of the access policy on the share this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">
+     * Establishing a stored access policy</a> for more information.
      */
     public String getIdentifier() {
         return identifier;
@@ -289,10 +260,10 @@ public final class FileServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the share this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information.
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">
+     * Establishing a stored access policy</a> for more information.
      *
-     * @param identifier Name of the access policy
+     * @param identifier Name of the stored access policy
      * @return the updated FileServiceSasSignatureValues object
      */
     public FileServiceSasSignatureValues setIdentifier(String identifier) {
@@ -394,53 +365,92 @@ public final class FileServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
+     * <p><strong>Notes on SAS generation</strong></p>
+     * <p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link FileServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
+     *
+     * <p>
+     * The type of SAS query parameters returned depends on the following:
+     * <ol>
+     *     <li>If {@link #getFilePath()} is not set, query parameters for a <b>share SAS</b> are returned.</li>
+     *     <li>Otherwise, {@link #getShareName()} and {@link #getFilePath()} are used to create query parameters for a
+     *     <b>file SAS</b>.</li>
+     * </ol>
+     *
+     * <p>See class level JavaDocs for code snippets.</p>
+     *
      * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link FileServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException If {@code storageSharedKeyCredentials} is null. Or when any of {@code version},
-     * {@code canonicalName} or {@code resource} is null. Or if {@code identifier} is not set and any of
-     * {@code expiryTime} or {@code permissions} is null. Or if {@code expiryTime} and {@code permissions} are not set
-     * and {@code identifier} is null
+     * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
+     * @throws NullPointerException If {@code storageSharedKeyCredentials} is null.
      */
-    public FileServiceSasQueryParameters generateSASQueryParameters(
+    public FileServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
-        assertGenerateOK();
+
+        final String resource;
+        if (ImplUtils.isNullOrEmpty(filePath)) {
+            resource = SAS_SHARE_CONSTANT;
+
+            // Make sure the permission characters are in the correct order
+            if (permissions != null) {
+                permissions = ShareSasPermission.parse(permissions).toString();
+            }
+        } else {
+            resource = SAS_FILE_CONSTANT;
+
+            // Make sure the permission characters are in the correct order
+            if (permissions != null) {
+                permissions = FileSasPermission.parse(permissions).toString();
+            }
+        }
+
+        if (ImplUtils.isNullOrEmpty(version)) {
+            version = FileServiceVersion.getLatest().getVersion();
+        }
 
         // Signature is generated on the un-url-encoded values.
-        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign());
+        String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName(), shareName, filePath);
+        String stringToSign = stringToSign(canonicalName);
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return new FileServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
-            this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
+            this.sasIpRange, this.identifier, resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType);
     }
 
     /**
-     * Common assertions for generateSASQueryParameters overloads.
+     * Computes the canonical name for a share or file resource for SAS signing.
+     * Share: "/file/account/sharename"
+     * File: "/file/account/sharename/filename"
+     * File: "/file/account/sharename/directoryname/filename"
+     *
+     * @param account The name of the storage account.
+     * @param shareName The name of the share.
+     * @param filePath The path of the file.
+     * @return The canonical resource name.
      */
-    private void assertGenerateOK() {
-        StorageImplUtils.assertNotNull("version", this.version);
-        StorageImplUtils.assertNotNull("canonicalName", this.canonicalName);
-        StorageImplUtils.assertNotNull("resource", this.resource);
-
-        // If a SignedIdentifier is not being used both expiryDate and permissions must be set.
-        if (identifier == null) {
-            StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
-            StorageImplUtils.assertNotNull("permissions", this.permissions);
-        }
-        // Still need to check identifier if expiry time and permissions are not both set
-        if (expiryTime == null || permissions == null) {
-            StorageImplUtils.assertNotNull("identifier", identifier);
-        }
+    private static String getCanonicalName(String account, String shareName, String filePath) {
+        return !ImplUtils.isNullOrEmpty(filePath)
+            ? String.format("/file/%s/%s/%s", account, shareName, filePath.replace("\\", "/"))
+            : String.format("/file/%s/%s", account, shareName);
     }
 
-    private String stringToSign() {
+    private String stringToSign(String canonicalName) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.canonicalName == null ? "" : this.canonicalName,
+            canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),

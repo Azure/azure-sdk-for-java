@@ -242,16 +242,6 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
-         * The SAS file constant.
-         */
-        public static final String SAS_FILE_CONSTANT = "f";
-
-        /**
-         * The SAS share constant.
-         */
-        public static final String SAS_SHARE_CONSTANT = "s";
-
-        /**
          * The SAS queue constant.
          */
         public static final String SAS_QUEUE_CONSTANT = "q";
