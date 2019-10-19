@@ -60,7 +60,7 @@ public final class QueueServiceClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public QueueServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 

@@ -97,7 +97,22 @@ public class ShareClientBuilder {
     public ShareClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
+    /**
+     * Creates a {@link ShareAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
+     * called a new instance of {@link ShareAsyncClient} is created.
+     *
+     * <p>
+     * If {@link ShareClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * ShareClientBuilder#endpoint(String) endpoint} are used to create the {@link ShareAsyncClient client}. All other
+     * builder settings are ignored.
+     * </p>
+     *
+     * @return A ShareAsyncClient with the options set from the builder.
+     * @throws NullPointerException If {@code shareName} is {@code null}.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
+     * {@link #sasToken(String) SAS token} has been set.
+     */
+    public ShareAsyncClient buildAsyncClient() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
 
@@ -112,30 +127,13 @@ public class ShareClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new AzureFileStorageBuilder()
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .build();
-    }
 
-    /**
-     * Creates a {@link ShareAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
-     * called a new instance of {@link ShareAsyncClient} is created.
-     *
-     * <p>
-     * If {@link ShareClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
-     * ShareClientBuilder#endpoint(String) endpoint} are used to create the {@link ShareAsyncClient client}. All other
-     * builder settings are ignored.
-     * </p>
-     *
-     * @return A ShareAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code shareName} is {@code null}.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
-     * or {@link #sasToken(String) SAS token} has been set.
-     */
-    public ShareAsyncClient buildAsyncClient() {
-        return new ShareAsyncClient(constructImpl(), shareName, snapshot, accountName);
+        return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion);
     }
 
     /**
@@ -176,7 +174,8 @@ public class ShareClientBuilder {
             URL fullUrl = new URL(endpoint);
             this.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
 
-            this.accountName = StorageImplUtils.getAccountName(fullUrl);
+            this.accountName = BuilderHelper.getAccountName(fullUrl);
+
 
             // Attempt to get the share name from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");

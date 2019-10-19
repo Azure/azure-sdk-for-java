@@ -66,7 +66,7 @@ public class DirectoryClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         return directoryAsyncClient.getServiceVersion();
     }
 

@@ -93,7 +93,21 @@ public final class FileServiceClientBuilder {
     public FileServiceClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
+    /**
+     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time this method is called a
+     * new instance of {@link FileServiceAsyncClient} is created.
+     *
+     * <p>
+     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * FileServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link FileServiceAsyncClient client}.
+     * All other builder settings are ignored.
+     * </p>
+     *
+     * @return A FileServiceAsyncClient with the options set from the builder.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
+     * {@link #sasToken(String) SAS token} has been set.
+     */
+    public FileServiceAsyncClient buildAsyncClient() {
         FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
@@ -106,29 +120,13 @@ public final class FileServiceClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new AzureFileStorageBuilder()
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .build();
-    }
 
-    /**
-     * Creates a {@link FileServiceAsyncClient} based on options set in the builder. Every time this method is called a
-     * new instance of {@link FileServiceAsyncClient} is created.
-     *
-     * <p>
-     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
-     * FileServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link FileServiceAsyncClient client}.
-     * All other builder settings are ignored.
-     * </p>
-     *
-     * @return A FileServiceAsyncClient with the options set from the builder.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
-     * or {@link #sasToken(String) SAS token} has been set.
-     */
-    public FileServiceAsyncClient buildAsyncClient() {
-        return new FileServiceAsyncClient(constructImpl(), accountName);
+        return new FileServiceAsyncClient(azureFileStorage, accountName, serviceVersion);
     }
 
     /**
@@ -165,8 +163,7 @@ public final class FileServiceClientBuilder {
         try {
             URL fullUrl = new URL(endpoint);
             this.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
-
-            this.accountName = StorageImplUtils.getAccountName(fullUrl);
+            this.accountName = BuilderHelper.getAccountName(fullUrl);
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new FileServiceSasQueryParameters(

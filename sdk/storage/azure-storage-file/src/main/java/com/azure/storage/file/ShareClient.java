@@ -12,11 +12,11 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.models.FileHttpHeaders;
 import com.azure.storage.file.models.FileSignedIdentifier;
+import com.azure.storage.file.models.FileStorageException;
 import com.azure.storage.file.models.ShareInfo;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
-import com.azure.storage.file.models.FileStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -60,7 +60,7 @@ public class ShareClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public FileServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 

@@ -185,7 +185,7 @@ public final class Utility {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         return LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime();
-    }
+    } 
 
     /**
      * A utility method for converting the input stream to Flux of ByteBuffer. Will check the equality of entity length

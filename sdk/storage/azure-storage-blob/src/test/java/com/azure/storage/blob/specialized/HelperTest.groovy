@@ -12,14 +12,14 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.implementation.StorageImplUtils
+import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.SasProtocol
-import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.Utility
 import com.azure.storage.common.sas.SasIpRange
+import com.azure.storage.common.sas.SasProtocol
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -624,7 +624,7 @@ class HelperTest extends APISpec {
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 
         when:
-        String[] splitParts = parts.toURL().toString().split("\\?")
+        String[] splitParts = parts.toUrl().toString().split("\\?")
 
         then:
         splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present
@@ -643,7 +643,7 @@ class HelperTest extends APISpec {
             .setBlobName("blob")
 
         then:
-        new BlobUrlParts().parse(bup.toURL()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+        new BlobUrlParts().parse(bup.toUrl()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
     }
 
     def "URLParser"() {
@@ -660,5 +660,27 @@ class HelperTest extends APISpec {
         parts.getSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.getSasQueryParameters().getResource() == "c"
         parts.getSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+    }
+
+    @Unroll
+    def "IP URLParser"() {
+        when:
+        BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint))
+
+        then:
+        parts.getScheme() == scheme
+        parts.getHost() == host
+        parts.getAccountName() == accountName
+        parts.getBlobContainerName() == blobContainerName
+        parts.getBlobName() == blobName
+
+        where:
+        endpoint                                                 | scheme | host              | accountName        | blobContainerName | blobName
+        "http://127.0.0.1:10000/devstoreaccount1"                | "http" | "127.0.0.1:10000" | "devstoreaccount1" | null              | null
+        "http://127.0.0.1:10000/devstoreaccount1/container"      | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | null
+        "http://127.0.0.1:10000/devstoreaccount1/container/blob" | "http" | "127.0.0.1:10000" | "devstoreaccount1" | "container"       | "blob"
+        "http://localhost:10000/devstoreaccount1"                | "http" | "localhost:10000" | "devstoreaccount1" | null              | null
+        "http://localhost:10000/devstoreaccount1/container"      | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | null
+        "http://localhost:10000/devstoreaccount1/container/blob" | "http" | "localhost:10000" | "devstoreaccount1" | "container"       | "blob"
     }
 }

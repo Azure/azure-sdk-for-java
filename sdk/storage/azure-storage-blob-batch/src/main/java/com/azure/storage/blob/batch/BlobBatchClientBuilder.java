@@ -18,7 +18,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 public final class BlobBatchClientBuilder {
     private final String accountUrl;
     private final HttpPipeline pipeline;
-    private String version;
+    private final BlobServiceVersion version;
 
     /**
      * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobServiceClient#getAccountUrl() account URL} and
@@ -68,22 +68,7 @@ public final class BlobBatchClientBuilder {
      * @return a {@link BlobBatchAsyncClient} created from the configurations in this builder.
      */
     public BlobBatchAsyncClient buildAsyncClient() {
-        String serviceVersion = version != null ? version : BlobServiceVersion.getLatest().getVersion();
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         return new BlobBatchAsyncClient(accountUrl, pipeline, serviceVersion);
-    }
-
-    /**
-     * Sets the {@link BlobServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
-     *
-     * @param version {@link BlobServiceVersion} of the service to be used when making requests.
-     * @return the updated BlobClientBuilder object
-     */
-    public BlobBatchClientBuilder serviceVersion(BlobServiceVersion version) {
-        this.version = version.getVersion();
-        return this;
     }
 }
