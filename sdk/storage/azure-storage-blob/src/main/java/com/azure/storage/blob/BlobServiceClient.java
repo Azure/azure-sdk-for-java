@@ -79,7 +79,7 @@ public final class BlobServiceClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public BlobServiceVersion getServiceVersion() {
         return this.blobServiceAsyncClient.getServiceVersion();
     }
 

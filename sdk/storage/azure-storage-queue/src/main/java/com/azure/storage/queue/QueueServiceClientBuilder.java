@@ -12,7 +12,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -24,8 +23,6 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +95,22 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder() {
     }
 
-    private AzureQueueStorageImpl constructImpl() {
+    /**
+     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time this is called a new
+     * instance of {@link QueueServiceAsyncClient} is created.
+     *
+     * <p>
+     * If {@link QueueServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
+     * QueueServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link QueueServiceAsyncClient
+     * client}. All other builder settings are ignored.
+     * </p>
+     *
+     * @return A QueueServiceAsyncClient with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
+     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
+     * {@link #sasToken(String) SAS token} has been set.
+     */
+    public QueueServiceAsyncClient buildAsyncClient() {
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
@@ -112,30 +124,13 @@ public final class QueueServiceClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new AzureQueueStorageBuilder()
+        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .build();
-    }
 
-    /**
-     * Creates a {@link QueueServiceAsyncClient} based on options set in the builder. Every time this is called a new
-     * instance of {@link QueueServiceAsyncClient} is created.
-     *
-     * <p>
-     * If {@link QueueServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link
-     * QueueServiceClientBuilder#endpoint(String) endpoint} are used to create the {@link QueueServiceAsyncClient
-     * client}. All other builder settings are ignored.
-     * </p>
-     *
-     * @return A QueueServiceAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
-     * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
-     * or {@link #sasToken(String) SAS token} has been set.
-     */
-    public QueueServiceAsyncClient buildAsyncClient() {
-        return new QueueServiceAsyncClient(constructImpl(), accountName);
+        return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
     }
 
     /**
@@ -171,22 +166,12 @@ public final class QueueServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public QueueServiceClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
-        try {
-            URL fullURL = new URL(endpoint);
-            this.endpoint = fullURL.getProtocol() + "://" + fullURL.getHost();
+        BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
+        this.endpoint = parts.getEndpoint();
+        this.accountName = parts.getAccountName();
 
-            this.accountName = Utility.getAccountName(fullURL);
-
-            // Attempt to get the SAS token from the URL passed
-            String sasToken = new QueueServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(fullURL.getQuery()), false).encode();
-            if (!ImplUtils.isNullOrEmpty(sasToken)) {
-                this.sasToken(sasToken);
-            }
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed."));
+        if (!ImplUtils.isNullOrEmpty(parts.getSasToken())) {
+            sasToken(parts.getSasToken());
         }
 
         return this;

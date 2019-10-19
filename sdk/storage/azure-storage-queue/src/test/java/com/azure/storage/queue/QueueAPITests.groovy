@@ -43,6 +43,18 @@ class QueueAPITests extends APISpec {
         expectURL == queueURL
     }
 
+    def "IP based endpoint"() {
+        when:
+        def queueClient = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
+            .buildClient()
+
+        then:
+        queueClient.getAccountName() == "devstoreaccount1"
+        queueClient.getQueueName() == "myqueue"
+    }
+
     def "Create queue with shared key"() {
         expect:
         QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null, null), 201)

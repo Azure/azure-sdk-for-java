@@ -129,7 +129,7 @@ public final class BlobContainerClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
+    public BlobServiceVersion getServiceVersion() {
         return this.blobContainerAsyncClient.getServiceVersion();
     }
 
@@ -424,12 +424,12 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsFlat}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs}
      *
      * @return The listed blobs, flattened.
      */
-    public PagedIterable<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions(), null);
+    public PagedIterable<BlobItem> listBlobs() {
+        return this.listBlobs(new ListBlobsOptions(), null);
     }
 
     /**
@@ -445,13 +445,13 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsFlat#ListBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration}
      *
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The listed blobs, flattened.
      */
-    public PagedIterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+    public PagedIterable<BlobItem> listBlobs(ListBlobsOptions options, Duration timeout) {
         return new PagedIterable<>(blobContainerAsyncClient.listBlobsFlatWithOptionalTimeout(options, timeout));
     }
 
@@ -481,13 +481,13 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String}
      *
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedIterable<BlobItem> listBlobsHierarchy(String directory) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().setPrefix(directory), null);
+    public PagedIterable<BlobItem> listBlobsByHierarchy(String directory) {
+        return this.listBlobsByHierarchy("/", new ListBlobsOptions().setPrefix(directory), null);
     }
 
     /**
@@ -516,14 +516,14 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsHierarchy#String-ListBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A reactive response emitting the prefixes and blobs.
      */
-    public PagedIterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+    public PagedIterable<BlobItem> listBlobsByHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         return new PagedIterable<>(blobContainerAsyncClient
             .listBlobsHierarchyWithOptionalTimeout(delimiter, options, timeout));
     }

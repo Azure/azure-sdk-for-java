@@ -96,6 +96,7 @@ public class FileAsyncClient {
     private final String filePath;
     private final String snapshot;
     private final String accountName;
+    private final FileServiceVersion serviceVersion;
 
     /**
      * Creates a FileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -107,7 +108,7 @@ public class FileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
-                    String snapshot, String accountName) {
+                    String snapshot, String accountName, FileServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
@@ -115,6 +116,7 @@ public class FileAsyncClient {
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -136,8 +138,8 @@ public class FileAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return azureFileStorageClient.getVersion();
+    public FileServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**

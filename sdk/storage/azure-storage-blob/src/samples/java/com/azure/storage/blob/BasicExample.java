@@ -112,7 +112,7 @@ public class BasicExample {
         /*
          * List the blob(s) in our container.
          */
-        blobContainerClient.listBlobsFlat()
+        blobContainerClient.listBlobs()
             .forEach(blobItem -> System.out.println("Blob name: " + blobItem.getName() + ", Snapshot: " + blobItem.getSnapshot()));
 
         /*

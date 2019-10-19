@@ -106,10 +106,13 @@ public class FileClientBuilder {
     public FileClientBuilder() {
     }
 
-    private AzureFileStorageImpl constructImpl() {
+    private FileServiceVersion getServiceVersion() {
+        return version != null ? version : FileServiceVersion.getLatest();
+    }
+
+    private AzureFileStorageImpl constructImpl(FileServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
-        FileServiceVersion serviceVersion = version != null ? version : FileServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
@@ -145,7 +148,9 @@ public class FileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public DirectoryAsyncClient buildDirectoryAsyncClient() {
-        return new DirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
+        FileServiceVersion serviceVersion = getServiceVersion();
+        return new DirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion);
     }
 
     /**
@@ -183,8 +188,9 @@ public class FileClientBuilder {
      * or {@link #sasToken(String) SAS token} has been set.
      */
     public FileAsyncClient buildFileAsyncClient() {
-
-        return new FileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName);
+        FileServiceVersion serviceVersion = getServiceVersion();
+        return new FileAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
+            accountName, serviceVersion);
     }
 
     /**
@@ -226,7 +232,7 @@ public class FileClientBuilder {
             URL fullUrl = new URL(endpoint);
             this.endpoint = fullUrl.getProtocol() + "://" + fullUrl.getHost();
 
-            this.accountName = Utility.getAccountName(fullUrl);
+            this.accountName = BuilderHelper.getAccountName(fullUrl);
 
             // Attempt to get the share name and file path from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");
