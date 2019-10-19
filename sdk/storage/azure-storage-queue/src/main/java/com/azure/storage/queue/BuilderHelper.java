@@ -16,8 +16,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -94,7 +94,7 @@ final class BuilderHelper {
 
             // Attempt to get the SAS token from the URL passed
             String sasToken = new QueueServiceSasQueryParameters(
-                Utility.parseQueryStringSplitValues(url.getQuery()), false).encode();
+                StorageImplUtils.parseQueryStringSplitValues(url.getQuery()), false).encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 parts.setQueueName(sasToken);
             }
