@@ -969,7 +969,7 @@ class SASTest extends APISpec {
         def v = new AccountSasSignatureValues()
         def p = new AccountSasPermission()
             .setReadPermission(true)
-        v.setPermissions(p.toString())
+        v.setPermissions(p)
             .setServices("b")
             .setResourceTypes("o")
             .setStartTime(startTime)
@@ -997,7 +997,7 @@ class SASTest extends APISpec {
     def "accountSasSignatureValues IA"() {
         setup:
         def v = new AccountSasSignatureValues()
-            .setPermissions(permissions)
+            .setPermissions(AccountSasPermission.parse(permissions))
             .setServices(service)
             .setResourceTypes(resourceType)
             .setExpiryTime(expiryTime)
@@ -1012,12 +1012,32 @@ class SASTest extends APISpec {
 
         where:
         permissions | service | resourceType | expiryTime                                                | version | creds             || parameter
-        null        | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "permissions"
         "c"         | null    | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "services"
         "c"         | "b"     | null         | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                                                      | "v"     | primaryCredential || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null    | primaryCredential || "version"
         "c"         | "b"     | "c"          | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | "v"     | null              || "storageSharedKeyCredentials"
+    }
+
+    def "accountSasSignatureValues null"() {
+        when:
+        setup:
+        def v = new AccountSasSignatureValues()
+
+        when:
+        v.setPermissions(null)
+
+
+        then:
+        def e = thrown(NullPointerException)
+        e.getMessage().contains("permissions")
+    }
+
+    def "accountSasSignatureValues null permission"() {
+        when:
+        AccountSasPermission.parse(null)
+
+        then:
+        thrown(NullPointerException)
     }
 
     @Unroll
