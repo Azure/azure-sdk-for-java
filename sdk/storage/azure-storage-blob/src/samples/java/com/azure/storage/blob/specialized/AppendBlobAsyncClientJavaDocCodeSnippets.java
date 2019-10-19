@@ -44,10 +44,10 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHttpHeaders, Map, BlobAccessConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(boolean, BlobHttpHeaders, Map, BlobAccessConditions)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#boolean-BlobHttpHeaders-Map-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentType("binary")
             .setBlobContentLanguage("en-US");
@@ -56,10 +56,11 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        boolean overwrite = false; // Default
 
-        client.createWithResponse(headers, metadata, accessConditions).subscribe(response ->
+        client.createWithResponse(overwrite, headers, metadata, accessConditions).subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#boolean-BlobHttpHeaders-Map-BlobAccessConditions
     }
 
     /**

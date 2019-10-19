@@ -441,10 +441,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, boolean, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void upload4() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -460,17 +460,20 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setBlockSize(blockSize)
             .setNumBuffers(numBuffers);
 
-        client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
+        boolean overwrite = false; // Default
+
+        client.uploadWithResponse(data, parallelTransferOptions, overwrite, headers, metadata, AccessTier.HOT,
+            accessConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, boolean, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void upload5() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -488,10 +491,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setProgressReceiver(bytesTransferred -> System.out.printf(
                 "Upload progress: %s bytes sent", bytesTransferred));
 
-        client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
-            .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+        boolean overwrite = false; // Default
+
+        client.uploadWithResponse(data, parallelTransferOptions, overwrite, headers, metadata, AccessTier.HOT,
+            accessConditions).subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMD5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
     }
 
     /**
@@ -506,10 +511,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, boolean, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
      */
     public void uploadFromFile2() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -521,12 +526,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
 
+        boolean overwrite = false; // Default
+
         client.uploadFromFile(filePath,
-            new ParallelTransferOptions().setBlockSize(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE),
+            new ParallelTransferOptions().setBlockSize(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE), overwrite,
             headers, metadata, AccessTier.HOT, accessConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
     }
 
 }

@@ -59,12 +59,12 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, boolean, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile2() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -78,14 +78,15 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
         int blockSize = 100 * 1024 * 1024; // 100 MB;
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize);
+        boolean overwrite = false;
 
         try {
-            client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT,
+            client.uploadFromFile(filePath, parallelTransferOptions, overwrite, headers, metadata, AccessTier.HOT,
                 accessConditions, timeout);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration
     }
 }

@@ -65,7 +65,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param filePath Path of the file to upload
      */
     public void uploadFromFile(String filePath) {
-        uploadFromFile(filePath, null, null, null, null, null, null);
+        uploadFromFile(filePath, null, false, null, null, null, null, null);
     }
 
     /**
@@ -73,11 +73,12 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the uploaded blob
@@ -85,10 +86,10 @@ public class EncryptedBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
+    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions, boolean overwrite,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout) throws UncheckedIOException {
-        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
+        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions, overwrite,
             headers, metadata, tier, accessConditions);
 
         try {

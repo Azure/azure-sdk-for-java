@@ -83,7 +83,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
-        return getBlobOutputStream(null);
+        return getBlobOutputStream(null, false);
     }
 
     /**
@@ -92,11 +92,12 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @param accessConditions A {@link BlobAccessConditions} object that represents the access conditions for the
      * blob.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
-        return BlobOutputStream.blockBlobOutputStream(blockBlobAsyncClient, accessConditions);
+    public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions, boolean overwrite) {
+        return BlobOutputStream.blockBlobOutputStream(blockBlobAsyncClient, accessConditions, overwrite);
     }
 
     /**
@@ -117,7 +118,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws IOException If an I/O error occurs
      */
     public BlockBlobItem upload(InputStream data, long length) throws IOException {
-        return uploadWithResponse(data, length, null, null, null, null, null, Context.NONE).getValue();
+        return uploadWithResponse(data, length, false, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -129,11 +130,12 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param data The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -145,14 +147,14 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input data is null.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Duration timeout,
-        Context context) {
+    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, boolean overwrite,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Duration timeout, Context context) {
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier,
+            .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, overwrite, headers, metadata, tier,
                 accessConditions, context);
 
         try {
@@ -326,7 +328,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the block blob.
      */
     public BlockBlobItem commitBlockList(List<String> base64BlockIDs) {
-        return commitBlockListWithResponse(base64BlockIDs, null, null, null, null, null, Context.NONE).getValue();
+        return commitBlockListWithResponse(base64BlockIDs, false, null, null, null, null, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -339,9 +342,10 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -350,11 +354,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the block blob.
      */
-    public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs,
+    public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIDs, boolean overwrite,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockListWithResponse(
-            base64BlockIDs, headers, metadata, tier, accessConditions, context);
+            base64BlockIDs, overwrite, headers, metadata, tier, accessConditions, context);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

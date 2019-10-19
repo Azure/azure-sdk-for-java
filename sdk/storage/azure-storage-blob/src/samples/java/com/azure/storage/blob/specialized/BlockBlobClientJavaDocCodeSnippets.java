@@ -53,10 +53,10 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#uploadWithResponse(InputStream, long, boolean, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
      */
     public void upload2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -69,12 +69,14 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("key", "value");
 
+        boolean overwrite = false;
+
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
-            .encodeToString(client.uploadWithResponse(data, length, headers, metadata, AccessTier.HOT,
+            .encodeToString(client.uploadWithResponse(data, length, overwrite, headers, metadata, AccessTier.HOT,
                 accessConditions, timeout, context)
                 .getValue()
                 .getContentMD5()));
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }
 
     /**
@@ -166,10 +168,10 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, boolean, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration, Context)}
      */
     public void commitBlockList2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -181,10 +183,11 @@ public class BlockBlobClientJavaDocCodeSnippets {
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("key", "value");
+        boolean overwrite = false;
 
         System.out.printf("Committing block list completed with status %d%n",
-            client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
+            client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), overwrite, headers, metadata,
                 AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }
 }

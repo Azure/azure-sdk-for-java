@@ -108,7 +108,7 @@ public class BlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath) {
-        uploadFromFile(filePath, null, null, null, null, null, null);
+        uploadFromFile(filePath, null, false, null, null, null, null, null);
     }
 
     /**
@@ -116,11 +116,12 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the uploaded blob
@@ -129,10 +130,10 @@ public class BlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
-        Duration timeout) {
+        boolean overwrite, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Void> upload = this.client.uploadFromFile(
-            filePath, parallelTransferOptions, headers, metadata, tier, accessConditions);
+            filePath, parallelTransferOptions, overwrite, headers, metadata, tier, accessConditions);
 
         try {
             Utility.blockWithOptionalTimeout(upload, timeout);

@@ -54,22 +54,23 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, Long, BlobHttpHeaders, Map, BlobAccessConditions)}
+     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, boolean, Long, BlobHttpHeaders, Map, BlobAccessConditions)}
      */
     public void createWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-boolean-Long-BlobHttpHeaders-Map-BlobAccessConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
+        boolean overwrite = false; // Default
 
         client
-            .createWithResponse(size, sequenceNumber, headers, metadata, blobAccessConditions)
+            .createWithResponse(size, overwrite, sequenceNumber, headers, metadata, blobAccessConditions)
             .subscribe(response -> System.out.printf(
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
 
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-boolean-Long-BlobHttpHeaders-Map-BlobAccessConditions
     }
 
     /**

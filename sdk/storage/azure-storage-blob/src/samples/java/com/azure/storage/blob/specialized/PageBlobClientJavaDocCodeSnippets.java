@@ -54,23 +54,24 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#createWithResponse(long, Long, BlobHttpHeaders, Map, BlobAccessConditions, Duration, Context)}
+     * Code snippets for {@link PageBlobClient#createWithResponse(long, boolean, Long, BlobHttpHeaders, Map, BlobAccessConditions, Duration, Context)}
      */
     public void createWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-boolean-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
             .setBlobContentType("binary");
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(
             new LeaseAccessConditions().setLeaseId(leaseId));
         Context context = new Context(key, value);
+        boolean overwrite = false;
 
         PageBlobItem pageBlob = client
-            .createWithResponse(size, sequenceNumber, headers, metadata, blobAccessConditions, timeout, context)
+            .createWithResponse(size, overwrite, sequenceNumber, headers, metadata, blobAccessConditions, timeout, context)
             .getValue();
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-boolean-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
     }
 
     /**

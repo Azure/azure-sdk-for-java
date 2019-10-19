@@ -101,7 +101,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, long length) {
         try {
-            return uploadWithResponse(data, length, null, null, null, null).flatMap(FluxUtil::toMono);
+            return uploadWithResponse(data, length, false, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -121,31 +121,37 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, boolean overwrite,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, accessConditions,
-                context));
+            return withContext(context -> uploadWithResponse(data, length, overwrite, headers, metadata, tier,
+                accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
-        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions, Context context) {
+    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, boolean overwrite,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
+        Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        if (!overwrite) {
+            accessConditions.getModifiedAccessConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, metadata, tier, null, headers, accessConditions.getLeaseAccessConditions(),
@@ -367,7 +373,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
         try {
-            return commitBlockListWithResponse(base64BlockIDs, null, null, null, null).flatMap(FluxUtil::toMono);
+            return commitBlockListWithResponse(base64BlockIDs, false, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -383,29 +389,34 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the information of the block blob.
      */
-    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
+    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs, boolean overwrite,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         try {
-            return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
-                accessConditions, context));
+            return withContext(context -> commitBlockListWithResponse(base64BlockIDs, overwrite, headers, metadata,
+                tier, accessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
+    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs, boolean overwrite,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions,
         Context context) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        if (!overwrite) {
+            accessConditions.getModifiedAccessConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
 
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().setLatest(base64BlockIDs), null, null, null, metadata, tier, null,

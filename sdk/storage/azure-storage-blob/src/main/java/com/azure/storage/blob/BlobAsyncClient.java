@@ -183,7 +183,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
-            return uploadWithResponse(data, parallelTransferOptions, null, null, null, null).flatMap(FluxUtil::toMono);
+            return uploadWithResponse(data, parallelTransferOptions, false, null, null, null, null)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -213,16 +214,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-Boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter}
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -230,8 +232,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
-        AccessTier tier, BlobAccessConditions accessConditions) {
+        ParallelTransferOptions parallelTransferOptions, boolean overwrite, BlobHttpHeaders headers,
+        Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
         try {
             // TODO: Parallelism parameter? Or let Reactor handle it?
             // TODO: Sample/api reference
@@ -274,7 +276,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             /*
              Write to the pool and upload the output.
              */
-            return chunkedSource.concatMap(pool::write)
+            Mono<Response<BlockBlobItem>> uploadTask = chunkedSource.concatMap(pool::write)
                 .concatWith(Flux.defer(pool::flush))
                 .flatMapSequential(buffer -> {
                     // Report progress as necessary.
@@ -297,7 +299,16 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 .collect(Collectors.toList())
                 .flatMap(ids ->
                     getBlockBlobAsyncClient()
-                        .commitBlockListWithResponse(ids, headers, metadata, tier, accessConditions));
+                        .commitBlockListWithResponse(ids, overwrite, headers, metadata, tier, accessConditions));
+
+            if (overwrite) {
+                return uploadTask;
+            } else {
+                return exists()
+                    .flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : uploadTask);
+            }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -317,7 +328,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Void> uploadFromFile(String filePath) {
         try {
-            return uploadFromFile(filePath, null, null, null, null, null);
+            return uploadFromFile(filePath, null, false, null, null, null, null);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -329,11 +340,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-boolean-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
+     * @param overwrite Whether to overwrite, should data already exist on this blob.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
@@ -344,7 +356,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        boolean overwrite, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobAccessConditions accessConditions) {
         try {
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions()
@@ -355,7 +368,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             AtomicLong totalProgress = new AtomicLong(0);
             Lock progressLock = new ReentrantLock();
 
-            return Mono.using(() -> uploadFileResourceSupplier(filePath),
+            Mono<Void> uploadTask = Mono.using(() -> uploadFileResourceSupplier(filePath),
                 channel -> {
                     final SortedMap<Long, String> blockIds = new TreeMap<>();
                     return Flux.fromIterable(sliceFile(filePath, finalParallelTransferOptions.getBlockSize()))
@@ -371,7 +384,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                 .stageBlockWithResponse(blockId, progressData, chunk.getCount(), null);
                         })
                         .then(Mono.defer(() -> getBlockBlobAsyncClient().commitBlockListWithResponse(
-                            new ArrayList<>(blockIds.values()), headers, metadata, tier, accessConditions)))
+                            new ArrayList<>(blockIds.values()), overwrite, headers, metadata, tier, accessConditions)))
                         .then()
                         .doOnTerminate(() -> {
                             try {
@@ -381,6 +394,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                             }
                         });
                 }, this::uploadFileCleanup);
+            if (overwrite) {
+                return uploadTask;
+            } else {
+                return exists()
+                    .flatMap(exists -> exists
+                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        : uploadTask);
+            }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

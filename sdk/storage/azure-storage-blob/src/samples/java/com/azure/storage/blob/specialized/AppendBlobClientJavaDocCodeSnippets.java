@@ -47,11 +47,11 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#createWithResponse(BlobHttpHeaders, Map, BlobAccessConditions,
+     * Code snippet for {@link AppendBlobClient#createWithResponse(boolean, BlobHttpHeaders, Map, BlobAccessConditions,
      * Duration, Context)}
      */
     public void createWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#boolean-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentType("binary")
             .setBlobContentLanguage("en-US");
@@ -61,10 +61,12 @@ public class AppendBlobClientJavaDocCodeSnippets {
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
         Context context = new Context("key", "value");
+        boolean overwrite = false; //Default
 
         System.out.printf("Created AppendBlob at %s%n",
-            client.createWithResponse(headers, metadata, accessConditions, timeout, context).getValue().getLastModified());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
+            client.createWithResponse(overwrite, headers, metadata, accessConditions, timeout, context)
+                .getValue().getLastModified());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#boolean-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
     }
 
     /**

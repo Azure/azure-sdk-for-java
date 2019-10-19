@@ -36,8 +36,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
-                                                  final BlobAccessConditions accessConditions) {
-        return new BlockBlobOutputStream(client, accessConditions);
+                                                  final BlobAccessConditions accessConditions,
+                                                  final boolean overwrite) {
+        return new BlockBlobOutputStream(client, accessConditions, overwrite);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -150,13 +151,16 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private final String blockIdPrefix;
         private final List<String> blockList;
         private final BlockBlobAsyncClient client;
+        private final boolean overwrite;
 
-        private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
+        private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions,
+            final boolean overwrite) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
             this.client = client;
             this.accessConditions = accessConditions;
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
             this.blockList = new ArrayList<>();
+            this.overwrite = overwrite;
         }
 
         /**
@@ -202,7 +206,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
          */
         @Override
         synchronized void commit() {
-            client.commitBlockListWithResponse(this.blockList, null, null, null, this.accessConditions).block();
+            client.commitBlockListWithResponse(this.blockList, overwrite, null, null, null, this.accessConditions)
+                .block();
         }
     }
 
