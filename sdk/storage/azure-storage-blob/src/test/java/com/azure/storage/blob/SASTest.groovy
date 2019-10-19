@@ -240,7 +240,7 @@ class SASTest extends APISpec {
 
         def client1 = getContainerClient(sasWithId, cc.getBlobContainerUrl())
 
-        client1.listBlobsFlat().iterator().hasNext()
+        client1.listBlobs().iterator().hasNext()
 
         def sasWithPermissions = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -250,7 +250,7 @@ class SASTest extends APISpec {
             .encode()
         def client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
 
-        client2.listBlobsFlat().iterator().hasNext()
+        client2.listBlobs().iterator().hasNext()
 
         then:
         notThrown(BlobStorageException)
@@ -516,7 +516,7 @@ class SASTest extends APISpec {
             .encode()
 
         def client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl())
-        client.listBlobsFlat().iterator().hasNext()
+        client.listBlobs().iterator().hasNext()
 
         then:
         notThrown(BlobStorageException)
@@ -1127,7 +1127,7 @@ class SASTest extends APISpec {
         parts.setSasQueryParameters(sasValues.generateSasQueryParameters(primaryCredential))
 
         when:
-        def splitParts = parts.toURL().toString().split("\\?")
+        def splitParts = parts.toUrl().toString().split("\\?")
 
         then:
         splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present

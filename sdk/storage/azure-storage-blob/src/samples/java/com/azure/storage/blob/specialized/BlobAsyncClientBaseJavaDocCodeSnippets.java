@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.polling.Poller;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -29,7 +30,8 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class BlobAsyncClientBaseJavaDocCodeSnippets {
-    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, null, null);
+    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, BlobServiceVersion.getLatest(),
+        null, null, null, null, null);
     private String leaseId = "leaseId";
     private String copyId = "copyId";
     private String url = "https://sample.com";

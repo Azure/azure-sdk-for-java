@@ -1233,7 +1233,7 @@ class BlobAPITest extends APISpec {
         bc.deleteWithResponse(option, null, null, null)
 
         then:
-        cc.listBlobsFlat().stream().count() == blobsRemaining
+        cc.listBlobs().stream().count() == blobsRemaining
 
         where:
         option                            | blobsRemaining
@@ -1322,7 +1322,7 @@ class BlobAPITest extends APISpec {
         headers.getValue("x-ms-version") != null
         headers.getValue("x-ms-request-id") != null
         bc.getProperties().getAccessTier() == tier
-        cc.listBlobsFlat().iterator().next().getProperties().getAccessTier() == tier
+        cc.listBlobs().iterator().next().getProperties().getAccessTier() == tier
 
         cleanup:
         cc.delete()
@@ -1347,7 +1347,7 @@ class BlobAPITest extends APISpec {
 
         then:
         bc.getProperties().getAccessTier() == tier
-        cc.listBlobsFlat().iterator().next().getProperties().getAccessTier() == tier
+        cc.listBlobs().iterator().next().getProperties().getAccessTier() == tier
 
         cleanup:
         cc.delete()
@@ -1387,12 +1387,12 @@ class BlobAPITest extends APISpec {
 
         when:
         def inferred1 = bc.getProperties().isAccessTierInferred()
-        def inferredList1 = cc.listBlobsFlat().iterator().next().getProperties().isAccessTierInferred()
+        def inferredList1 = cc.listBlobs().iterator().next().getProperties().isAccessTierInferred()
 
         bc.setAccessTier(AccessTier.HOT)
 
         def inferred2 = bc.getProperties().isAccessTierInferred()
-        def inferredList2 = cc.listBlobsFlat().iterator().next().getProperties().isAccessTierInferred()
+        def inferredList2 = cc.listBlobs().iterator().next().getProperties().isAccessTierInferred()
 
         then:
         inferred1
@@ -1414,7 +1414,7 @@ class BlobAPITest extends APISpec {
 
         then:
         bc.getProperties().getArchiveStatus() == status
-        cc.listBlobsFlat().iterator().next().getProperties().getArchiveStatus() == status
+        cc.listBlobs().iterator().next().getProperties().getArchiveStatus() == status
 
         where:
         sourceTier         | destTier        | priority                   | status

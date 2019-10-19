@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -100,9 +99,10 @@ public final class BlobContainerClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (Objects.isNull(containerName) || containerName.isEmpty()) {
-            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
-        }
+        String blobContainerName = ImplUtils.isNullOrEmpty(containerName)
+            ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+            : containerName;
+
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
@@ -117,11 +117,8 @@ public final class BlobContainerClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new BlobContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s", endpoint, containerName))
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build(), customerProvidedKey, accountName);
+        return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
+            serviceVersion, accountName, blobContainerName, customerProvidedKey);
     }
 
     /**
@@ -137,6 +134,7 @@ public final class BlobContainerClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.endpoint = parts.getScheme() + "://" + parts.getHost();
+            this.accountName = parts.getAccountName();
             this.containerName = parts.getBlobContainerName();
 
             String sasToken = parts.getSasQueryParameters().encode();

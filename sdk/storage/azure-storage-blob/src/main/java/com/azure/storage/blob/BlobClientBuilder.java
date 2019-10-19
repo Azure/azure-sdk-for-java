@@ -13,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -115,9 +114,9 @@ public final class BlobClientBuilder {
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        if (Objects.isNull(containerName) || containerName.isEmpty()) {
-            containerName = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
-        }
+        String blobContainerName = ImplUtils.isNullOrEmpty(containerName)
+            ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+            : containerName;
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
@@ -133,11 +132,8 @@ public final class BlobClientBuilder {
             }
         }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build(), snapshot, customerProvidedKey, accountName);
+        return new BlobAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, blobContainerName, blobName),
+            serviceVersion, accountName, blobContainerName, blobName, snapshot, customerProvidedKey);
     }
 
     /**

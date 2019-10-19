@@ -75,7 +75,7 @@ public class BlobPartitionManager implements PartitionManager {
         String prefix = getBlobPrefix(eventHubName, consumerGroupName);
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
-        return blobContainerAsyncClient.listBlobsFlat(options)
+        return blobContainerAsyncClient.listBlobs(options)
             // Blob names should be of the pattern eventhub/consumergroup/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
             .filter(blobItem -> blobItem.getName().split(BLOB_PATH_SEPARATOR).length == 3)

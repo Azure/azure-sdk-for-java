@@ -65,6 +65,7 @@ public final class QueueAsyncClient {
     private final AzureQueueStorageImpl client;
     private final String queueName;
     private final String accountName;
+    private final QueueServiceVersion serviceVersion;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -73,11 +74,13 @@ public final class QueueAsyncClient {
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue
      */
-    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName) {
+    QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
+        QueueServiceVersion serviceVersion) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
         this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -92,8 +95,8 @@ public final class QueueAsyncClient {
      *
      * @return the service version the client is using.
      */
-    public String getServiceVersion() {
-        return client.getVersion();
+    public QueueServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
