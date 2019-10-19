@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -221,7 +221,7 @@ public final class BlobServiceClient {
 
         Mono<Response<BlobServiceProperties>> response = blobServiceAsyncClient.getPropertiesWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -259,7 +259,7 @@ public final class BlobServiceClient {
         Context context) {
         Mono<Response<Void>> response = blobServiceAsyncClient.setPropertiesWithResponse(properties, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -297,7 +297,7 @@ public final class BlobServiceClient {
         Mono<Response<UserDelegationKey>> response = blobServiceAsyncClient.getUserDelegationKeyWithResponse(start,
             expiry, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -333,7 +333,7 @@ public final class BlobServiceClient {
     public Response<BlobServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<BlobServiceStatistics>> response = blobServiceAsyncClient.getStatisticsWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -361,7 +361,7 @@ public final class BlobServiceClient {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = blobServiceAsyncClient.getAccountInfoWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

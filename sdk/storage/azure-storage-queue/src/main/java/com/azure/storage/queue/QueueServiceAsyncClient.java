@@ -11,8 +11,8 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.ListQueuesIncludeType;
 import com.azure.storage.queue.models.QueueCorsRule;
@@ -270,7 +270,7 @@ public final class QueueServiceAsyncClient {
         }
 
         Function<String, Mono<PagedResponse<QueueItem>>> retriever =
-            nextMarker -> Utility.applyOptionalTimeout(this.client.services()
+            nextMarker -> StorageImplUtils.applyOptionalTimeout(this.client.services()
                 .listQueuesSegmentWithRestResponseAsync(prefix, nextMarker, maxResultsPerPage, include,
                     null, null, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),

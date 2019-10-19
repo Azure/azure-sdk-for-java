@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.sas;
 
-
 import com.azure.storage.common.implementation.Constants;
 import java.time.OffsetDateTime;
 import java.util.Map;

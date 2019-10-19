@@ -4,10 +4,11 @@
 package com.azure.storage.file;
 
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.time.OffsetDateTime;
 
@@ -169,7 +170,7 @@ public final class FileServiceSasSignatureValues {
      * @return the updated FileServiceSasSignatureValues object.
      */
     public FileServiceSasSignatureValues setPermissions(ShareSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
@@ -182,7 +183,7 @@ public final class FileServiceSasSignatureValues {
      * @return the updated FileServiceSasSignatureValues object
      */
     public FileServiceSasSignatureValues setPermissions(FileSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
@@ -392,7 +393,7 @@ public final class FileServiceSasSignatureValues {
      */
     public FileServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
-        Utility.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         final String resource;
         if (ImplUtils.isNullOrEmpty(filePath)) {
@@ -445,8 +446,8 @@ public final class FileServiceSasSignatureValues {
     private String stringToSign(String canonicalName) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
-            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),

@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -178,7 +178,7 @@ public final class BlobContainerClient {
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = blobContainerAsyncClient.existsWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -213,7 +213,7 @@ public final class BlobContainerClient {
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.createWithResponse(metadata, accessType, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -247,7 +247,7 @@ public final class BlobContainerClient {
         Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.deleteWithResponse(accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -283,7 +283,7 @@ public final class BlobContainerClient {
         Mono<Response<BlobContainerProperties>> response = blobContainerAsyncClient
             .getPropertiesWithResponse(leaseAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -317,7 +317,7 @@ public final class BlobContainerClient {
         BlobContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = blobContainerAsyncClient.setMetadataWithResponse(metadata, accessConditions,
             context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -356,7 +356,7 @@ public final class BlobContainerClient {
         Mono<Response<BlobContainerAccessPolicies>> response = blobContainerAsyncClient
             .getAccessPolicyWithResponse(leaseAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -408,7 +408,7 @@ public final class BlobContainerClient {
         Mono<Response<Void>> response = blobContainerAsyncClient
             .setAccessPolicyWithResponse(accessType, identifiers, accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -558,6 +558,6 @@ public final class BlobContainerClient {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = blobContainerAsyncClient.getAccountInfoWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }

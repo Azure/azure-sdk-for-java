@@ -25,7 +25,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -209,7 +209,7 @@ public class BlobClientBase {
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = client.existsWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -261,7 +261,7 @@ public class BlobClientBase {
             .startCopyFromURLWithResponse(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
                 destAccessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -302,7 +302,7 @@ public class BlobClientBase {
         Mono<Response<Void>> response = client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
             context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -353,7 +353,7 @@ public class BlobClientBase {
             .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -399,7 +399,7 @@ public class BlobClientBase {
      */
     public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
-        Utility.assertNotNull("stream", stream);
+        StorageImplUtils.assertNotNull("stream", stream);
         Mono<Response<Void>> download = client
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
@@ -411,7 +411,7 @@ public class BlobClientBase {
                 }
             }).thenReturn(new SimpleResponse<>(response, null)));
 
-        return Utility.blockWithOptionalTimeout(download, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -475,7 +475,7 @@ public class BlobClientBase {
         BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
             parallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
-        return Utility.blockWithOptionalTimeout(download, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -515,7 +515,7 @@ public class BlobClientBase {
         Mono<Response<Void>> response = client
             .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -553,7 +553,7 @@ public class BlobClientBase {
         Context context) {
         Mono<Response<BlobProperties>> response = client.getPropertiesWithResponse(accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -595,7 +595,7 @@ public class BlobClientBase {
         Mono<Response<Void>> response = client
             .setHttpHeadersWithResponse(headers, accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -636,7 +636,7 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, accessConditions, context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -680,7 +680,7 @@ public class BlobClientBase {
             .createSnapshotWithResponse(metadata, accessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, new BlobClientBase(rb.getValue())));
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -728,7 +728,7 @@ public class BlobClientBase {
         Mono<Response<Void>> response = client.setTierWithResponse(tier, priority, leaseAccessConditions,
             context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -762,7 +762,7 @@ public class BlobClientBase {
     public Response<Void> undeleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.undeleteWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -798,6 +798,6 @@ public class BlobClientBase {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 }
