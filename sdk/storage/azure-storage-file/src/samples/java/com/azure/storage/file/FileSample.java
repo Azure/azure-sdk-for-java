@@ -3,6 +3,7 @@
 package com.azure.storage.file;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileProperties;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.UUID;
 
 /**
@@ -70,22 +72,21 @@ public class FileSample {
         String clientURL = srcFileClient.getFileUrl();
 
         String sourceURL = clientURL + "/" + shareName + "/" + parentDirName + "/" + srcFileName;
+        Duration pollInterval = Duration.ofSeconds(2);
+        Poller<FileCopyInfo, Void> poller = destFileClient.beginCopy(sourceURL, null, pollInterval);
 
-        FileCopyInfo copyResponse;
-        try {
-            copyResponse = destFileClient.startCopy(sourceURL, null);
-        } catch (FileStorageException e) {
-            throw new RuntimeException("Failed to start the copy of source file. Reasons: " + e.getMessage());
-        }
+        poller.getObserver().subscribe(pollResponse -> {
+            final FileCopyInfo copyInfo = pollResponse.getValue();
 
-        // Abort the copy if the status is pending.
-        if (copyResponse.getCopyStatus() == CopyStatusType.PENDING) {
-            try {
-                destFileClient.abortCopy(copyResponse.getCopyId());
-            } catch (FileStorageException e) {
-                System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
+            // Abort the copy if the status is pending.
+            if (copyInfo.getCopyStatus() == CopyStatusType.PENDING) {
+                try {
+                    destFileClient.abortCopy(copyInfo.getCopyId());
+                } catch (FileStorageException e) {
+                    System.out.println("Failed to abort the copy. Reasons: " + e.getMessage());
+                }
             }
-        }
+        });
 
         // Upload a local file to the storage.
         String filePath = "C:/resourcePath/";

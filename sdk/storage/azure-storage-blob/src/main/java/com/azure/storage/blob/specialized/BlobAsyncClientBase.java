@@ -8,8 +8,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
@@ -17,11 +21,14 @@ import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -47,6 +54,7 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -267,28 +275,32 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     * cancelled.
      */
-    public Mono<String> startCopyFromURL(String sourceUrl) {
-        try {
-            return startCopyFromURLWithResponse(sourceUrl, null, null, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
+        return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
     /**
      * Copies the data at the source URL to a blob.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p><strong>Starting a copy operation</strong></p>
+     * Starting a copy operation and polling on the responses.
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration}
+     *
+     * <p><strong>Cancelling a copy operation</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -297,49 +309,134 @@ public class BlobAsyncClientBase {
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
-     * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
-     * related to when the blob was changed relative to the given request. The request will fail if the specified
-     * condition is not satisfied.
+     * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP
+     * Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
+     * conditions related to when the blob was changed relative to the given request. The request will fail if the
+     * specified condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     * cancelled.
      */
-    public Mono<Response<String>> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata,
-        AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions) {
-        try {
-            return withContext(context -> startCopyFromURLWithResponse(sourceUrl, metadata, tier, priority,
-                sourceModifiedAccessConditions, destAccessConditions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
+    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions, Duration pollInterval) {
 
-    Mono<Response<String>> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-        RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions, Context context) {
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
-            ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
-        destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+        final ModifiedAccessConditions sourceModifiedCondition = sourceModifiedAccessConditions == null
+            ? new ModifiedAccessConditions()
+            : sourceModifiedAccessConditions;
+        final BlobAccessConditions destinationAccessConditions = destAccessConditions == null
+            ? new BlobAccessConditions()
+            : destAccessConditions;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
-        SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
-            .setSourceIfModifiedSince(sourceModifiedAccessConditions.getIfModifiedSince())
-            .setSourceIfUnmodifiedSince(sourceModifiedAccessConditions.getIfUnmodifiedSince())
-            .setSourceIfMatch(sourceModifiedAccessConditions.getIfMatch())
-            .setSourceIfNoneMatch(sourceModifiedAccessConditions.getIfNoneMatch());
+        final SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
+            .setSourceIfModifiedSince(sourceModifiedCondition.getIfModifiedSince())
+            .setSourceIfUnmodifiedSince(sourceModifiedCondition.getIfUnmodifiedSince())
+            .setSourceIfMatch(sourceModifiedCondition.getIfMatch())
+            .setSourceIfNoneMatch(sourceModifiedCondition.getIfNoneMatch());
 
+        return new Poller<>(interval,
+            response -> {
+                try {
+                    return onPoll(response);
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
+            Mono::empty,
+            () -> {
+                try {
+                    return onStart(sourceUrl, metadata, tier, priority, sourceConditions, destinationAccessConditions);
+                } catch (RuntimeException ex) {
+                    return monoError(logger, ex);
+                }
+            },
+            poller -> {
+                final PollResponse<BlobCopyInfo> response = poller.getLastPollResponse();
+
+                if (response == null || response.getValue() == null) {
+                    return Mono.error(logger.logExceptionAsError(
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                }
+
+                final String copyIdentifier = response.getValue().getCopyId();
+
+                if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
+                    logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
+
+                    return abortCopyFromURL(copyIdentifier).thenReturn(response.getValue());
+                }
+
+                return Mono.empty();
+            });
+    }
+
+    private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, AccessTier tier,
+            RehydratePriority priority, SourceModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destinationAccessConditions) {
         URL url;
         try {
             url = new URL(sourceUrl);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
 
-        return this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
-            null, null, url, null, metadata, tier, priority, null, sourceConditions,
-            destAccessConditions.getModifiedAccessConditions(), destAccessConditions.getLeaseAccessConditions(),
-            context).map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
+        return withContext(
+            context -> azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(null, null, url, null, metadata,
+                tier, priority, null, sourceModifiedAccessConditions,
+                destinationAccessConditions.getModifiedAccessConditions(),
+                destinationAccessConditions.getLeaseAccessConditions(), context))
+            .map(response -> {
+                final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+
+                return new BlobCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
+                    headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+            });
+    }
+
+    private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
+        if (pollResponse.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == OperationStatus.FAILED) {
+            return Mono.just(pollResponse);
+        }
+
+        final BlobCopyInfo lastInfo = pollResponse.getValue();
+        if (lastInfo == null) {
+            logger.warning("BlobCopyInfo does not exist. Activation operation failed.");
+            return Mono.just(new PollResponse<>(
+                OperationStatus.fromString("COPY_START_FAILED", true), null));
+        }
+
+        return getProperties().map(response -> {
+            final CopyStatusType status = response.getCopyStatus();
+            final BlobCopyInfo result = new BlobCopyInfo(response.getCopySource(), response.getCopyId(), status,
+                response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
+
+            OperationStatus operationStatus;
+            switch (status) {
+                case SUCCESS:
+                    operationStatus = OperationStatus.SUCCESSFULLY_COMPLETED;
+                    break;
+                case FAILED:
+                    operationStatus = OperationStatus.FAILED;
+                    break;
+                case ABORTED:
+                    operationStatus = OperationStatus.USER_CANCELLED;
+                    break;
+                case PENDING:
+                    operationStatus = OperationStatus.IN_PROGRESS;
+                    break;
+                default:
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "CopyStatusType is not supported. Status: " + status));
+            }
+
+            return new PollResponse<>(operationStatus, result);
+        }).onErrorReturn(
+            new PollResponse<>(OperationStatus.fromString("POLLING_FAILED", true), lastInfo));
     }
 
     /**
@@ -352,6 +449,10 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
+     * @see #copyFromURL(String)
+     * @see #beginCopy(String, Duration)
+     * @see #beginCopy(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions,
+     * BlobAccessConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
@@ -373,6 +474,10 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
+     * @see #copyFromURL(String)
+     * @see #beginCopy(String, Duration)
+     * @see #beginCopy(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions,
+     * BlobAccessConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
      * not match the active lease on the blob.
@@ -402,7 +507,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURL#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.

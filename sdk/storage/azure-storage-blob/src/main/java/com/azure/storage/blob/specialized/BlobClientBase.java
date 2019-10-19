@@ -9,11 +9,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.Poller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -217,17 +219,19 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURL#String}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @return The copy ID for the long running operation.
-     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     *     cancelled.
      */
-    public String startCopyFromURL(String sourceUrl) {
-        return startCopyFromURLWithResponse(sourceUrl, null, null, null, null, null, null, Context.NONE).getValue();
+    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
+        return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
     /**
@@ -235,10 +239,10 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
@@ -249,19 +253,17 @@ public class BlobClientBase {
      * related to when the blob was changed relative to the given request. The request will fail if the specified
      * condition is not satisfied.
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The copy ID for the long running operation.
-     * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @return A {@link Poller} that polls the blob copy operation until it has completed, has failed, or has been
+     *     cancelled.
      */
-    public Response<String> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata,
-        AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
-        Mono<Response<String>> response = client
-            .startCopyFromURLWithResponse(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
-                destAccessConditions, context);
+    public Poller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
+            RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions, Duration pollInterval) {
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return client.beginCopy(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
+                destAccessConditions, pollInterval);
     }
 
     /**

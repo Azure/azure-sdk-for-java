@@ -4,22 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.AppendBlobItem
-import com.azure.storage.blob.models.BlobAccessPolicy
-import com.azure.storage.blob.models.BlobContainerAccessConditions
-import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobListDetails
-import com.azure.storage.blob.models.BlobSignedIdentifier
-import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.ModifiedAccessConditions
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.*
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import spock.lang.Unroll
@@ -673,7 +658,7 @@ class ContainerAPITest extends APISpec {
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
-        copyBlob.startCopyFromURL(normal.getBlobUrl())
+        def poller = copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(2))
         def start = OffsetDateTime.now()
         def status = CopyStatusType.PENDING
         while (status != CopyStatusType.SUCCESS) {

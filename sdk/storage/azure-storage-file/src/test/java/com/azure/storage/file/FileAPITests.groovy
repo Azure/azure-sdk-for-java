@@ -5,8 +5,9 @@ package com.azure.storage.file
 
 import com.azure.core.exception.HttpResponseException
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.polling.Poller
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.models.FileCopyInfo
@@ -16,6 +17,7 @@ import com.azure.storage.file.models.FileRange
 import com.azure.storage.file.models.FileStorageException
 import com.azure.storage.file.models.NtfsFileAttributes
 import com.azure.storage.file.models.ShareSnapshotInfo
+import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
 
@@ -412,11 +414,13 @@ class FileAPITests extends APISpec {
         def sourceURL = primaryFileClient.getFileUrl()
 
         when:
-        Response<FileCopyInfo> copyInfoResponse = primaryFileClient.startCopyWithResponse(sourceURL, null, null, null)
+        Poller<FileCopyInfo, Void> copyInfoResponse = primaryFileClient.beginCopy(sourceURL, null, null)
+        def verifier = StepVerifier.create(copyInfoResponse.getObserver())
 
         then:
-        FileTestHelper.assertResponseStatusCode(copyInfoResponse, 202)
-        copyInfoResponse.getValue().getCopyId() != null
+        verifier.assertNext({
+                assert it.getValue().getCopyId() != null
+            }).thenCancel().verify()
     }
 
     def "Start copy error"() {
@@ -424,11 +428,14 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(1024)
 
         when:
-        primaryFileClient.startCopyWithResponse("some url", testMetadata, null, null)
+        Poller<FileCopyInfo, Void> copyInfoPoller = primaryFileClient.beginCopy("some url", testMetadata, null)
+        def verifier = StepVerifier.create(copyInfoPoller.getObserver())
 
         then:
-        def e = thrown(FileStorageException)
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        verifier.verifyErrorSatisfies{
+            assert it instanceof FileStorageException
+            assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, FileErrorCode.INVALID_HEADER_VALUE)
+        }
     }
 
     @Ignore
