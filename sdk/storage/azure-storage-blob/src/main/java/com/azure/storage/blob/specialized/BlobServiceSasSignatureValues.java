@@ -9,13 +9,13 @@ import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
-
 /**
  * Used to generate a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the values here are set,
  * call {@link
@@ -223,7 +223,7 @@ public final class BlobServiceSasSignatureValues {
      * @throws NullPointerException if {@code permissions} is null.
      */
     public BlobServiceSasSignatureValues setPermissions(BlobSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
@@ -236,7 +236,7 @@ public final class BlobServiceSasSignatureValues {
      * @throws NullPointerException if {@code permissions} is null.
      */
     public BlobServiceSasSignatureValues setPermissions(BlobContainerSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
@@ -522,19 +522,21 @@ public final class BlobServiceSasSignatureValues {
      */
     public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey,
                                                                     String accountName) {
-        Utility.assertNotNull("delegationKey", delegationKey);
-        Utility.assertNotNull("accountName", accountName);
+        StorageImplUtils.assertNotNull("delegationKey", delegationKey);
+        StorageImplUtils.assertNotNull("accountName", accountName);
 
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
+        String signature = StorageImplUtils.computeHMac256(
+            delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
 
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
-            this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature, this.cacheControl,
-            this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, delegationKey);
+            this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature,
+            this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType,
+            delegationKey);
     }
 
     /**

@@ -3,14 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
@@ -172,7 +170,7 @@ public final class FileServiceSasSignatureValues {
      * @return the updated FileServiceSasSignatureValues object.
      */
     public FileServiceSasSignatureValues setPermissions(ShareSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
@@ -185,7 +183,7 @@ public final class FileServiceSasSignatureValues {
      * @return the updated FileServiceSasSignatureValues object
      */
     public FileServiceSasSignatureValues setPermissions(FileSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }

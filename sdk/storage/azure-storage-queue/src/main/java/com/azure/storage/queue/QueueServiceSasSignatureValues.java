@@ -2,15 +2,13 @@
 // Licensed under the MIT License.
 
 package com.azure.storage.queue;
+
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
 
@@ -151,7 +149,7 @@ public final class QueueServiceSasSignatureValues {
      * @throws NullPointerException if {@code permissions} is null.
      */
     public QueueServiceSasSignatureValues setPermissions(QueueSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }

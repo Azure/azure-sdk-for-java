@@ -6,8 +6,6 @@ package com.azure.storage.common;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
-import java.util.TreeMap;
-import java.util.function.Function;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +20,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Map;
 
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
