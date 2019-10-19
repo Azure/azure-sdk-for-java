@@ -37,7 +37,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -215,23 +214,6 @@ public final class Utility {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    /**
-     * Parses the connection string into key-value pair map.
-     *
-     * @param connectionString Connection string to parse
-     * @return a mapping of connection string pieces as key-value pairs.
-     */
-    public static Map<String, String> parseConnectionString(final String connectionString) {
-        Map<String, String> parts = new HashMap<>();
-
-        for (String part : connectionString.split(";")) {
-            String[] kvp = part.split("=", 2);
-            parts.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
-
-        return parts;
     }
 
     /**
