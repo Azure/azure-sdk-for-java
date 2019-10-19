@@ -288,6 +288,8 @@ class SASTest extends APISpec {
         def keyOid = getConfigValue(key.getSignedOid())
         key.setSignedOid(keyOid)
 
+        def keyTid = getConfigValue(key.getSignedTid())
+        key.setSignedTid(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -430,9 +432,12 @@ class SASTest extends APISpec {
         def contentType = "type"
 
         def key = getOAuthServiceClient().getUserDelegationKey(startTime, expiryTime)
+
         def keyOid = getConfigValue(key.getSignedOid())
         key.setSignedOid(keyOid)
 
+        def keyTid = getConfigValue(key.getSignedTid())
+        key.setSignedTid(keyTid)
         when:
         def sas = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
@@ -492,9 +497,12 @@ class SASTest extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
+
         def keyOid = getConfigValue(key.getSignedOid())
         key.setSignedOid(keyOid)
 
+        def keyTid = getConfigValue(key.getSignedTid())
+        key.setSignedTid(keyTid)
         when:
         def sasWithPermissions = new BlobServiceSasSignatureValues()
             .setPermissions(permissions)
