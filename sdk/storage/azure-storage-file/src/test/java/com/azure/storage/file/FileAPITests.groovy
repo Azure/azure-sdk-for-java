@@ -48,8 +48,8 @@ class FileAPITests extends APISpec {
         shareClient.create()
         primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath).buildFileClient()
         testMetadata = Collections.singletonMap("testmetadata", "value")
-        httpHeaders = new FileHttpHeaders().setFileContentLanguage("en")
-            .setFileContentType("application/octet-stream")
+        httpHeaders = new FileHttpHeaders().setContentLanguage("en")
+            .setContentType("application/octet-stream")
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL))
     }
 
