@@ -442,6 +442,10 @@ class APISpec extends Specification {
         return resourceNamer.randomName(prefix + testName + entityNo, 63)
     }
 
+    String getConfigValue(String value) {
+        return resourceNamer.recordValueFromConfig(value)
+    }
+
     String getRandomUUID() {
         return resourceNamer.randomUuid()
     }

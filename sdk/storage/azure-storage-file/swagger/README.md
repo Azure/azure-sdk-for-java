@@ -629,18 +629,24 @@ directive:
       replace('@JsonProperty(value = "Metrics")\n    private FileMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private FileMetrics minuteMetrics;');
 ```
 
-### Rename FileHTTPHeaders to FileHttpHeader
+### Rename FileHTTPHeaders to FileHttpHeader and remove file prefix from properties
 ``` yaml
 directive:
 - from: swagger-document
   where: $.parameters
   transform: >
     $.FileCacheControl["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileCacheControl["x-ms-client-name"] = "cacheControl";
     $.FileContentDisposition["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentDisposition["x-ms-client-name"] = "contentDisposition";
     $.FileContentEncoding["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentEncoding["x-ms-client-name"] = "contentEncoding";
     $.FileContentLanguage["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentLanguage["x-ms-client-name"] = "contentLanguage";
     $.FileContentMD5["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentMD5["x-ms-client-name"] = "contentMD5";
     $.FileContentType["x-ms-parameter-grouping"].name = "file-http-headers";
+    $.FileContentType["x-ms-client-name"] = "contentType";
 ```
 
 ### Change StorageErrorException to StorageException

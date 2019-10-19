@@ -193,27 +193,27 @@ public final class FilesImpl {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHttpHeaders != null) {
-            fileContentType = fileHttpHeaders.getFileContentType();
+            fileContentType = fileHttpHeaders.getContentType();
         }
         String fileContentEncoding = null;
         if (fileHttpHeaders != null) {
-            fileContentEncoding = fileHttpHeaders.getFileContentEncoding();
+            fileContentEncoding = fileHttpHeaders.getContentEncoding();
         }
         String fileContentLanguage = null;
         if (fileHttpHeaders != null) {
-            fileContentLanguage = fileHttpHeaders.getFileContentLanguage();
+            fileContentLanguage = fileHttpHeaders.getContentLanguage();
         }
         String fileCacheControl = null;
         if (fileHttpHeaders != null) {
-            fileCacheControl = fileHttpHeaders.getFileCacheControl();
+            fileCacheControl = fileHttpHeaders.getCacheControl();
         }
         byte[] fileContentMD5 = null;
         if (fileHttpHeaders != null) {
-            fileContentMD5 = fileHttpHeaders.getFileContentMD5();
+            fileContentMD5 = fileHttpHeaders.getContentMD5();
         }
         String fileContentDisposition = null;
         if (fileHttpHeaders != null) {
-            fileContentDisposition = fileHttpHeaders.getFileContentDisposition();
+            fileContentDisposition = fileHttpHeaders.getContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
         return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
@@ -365,27 +365,27 @@ public final class FilesImpl {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHttpHeaders != null) {
-            fileContentType = fileHttpHeaders.getFileContentType();
+            fileContentType = fileHttpHeaders.getContentType();
         }
         String fileContentEncoding = null;
         if (fileHttpHeaders != null) {
-            fileContentEncoding = fileHttpHeaders.getFileContentEncoding();
+            fileContentEncoding = fileHttpHeaders.getContentEncoding();
         }
         String fileContentLanguage = null;
         if (fileHttpHeaders != null) {
-            fileContentLanguage = fileHttpHeaders.getFileContentLanguage();
+            fileContentLanguage = fileHttpHeaders.getContentLanguage();
         }
         String fileCacheControl = null;
         if (fileHttpHeaders != null) {
-            fileCacheControl = fileHttpHeaders.getFileCacheControl();
+            fileCacheControl = fileHttpHeaders.getCacheControl();
         }
         byte[] fileContentMD5 = null;
         if (fileHttpHeaders != null) {
-            fileContentMD5 = fileHttpHeaders.getFileContentMD5();
+            fileContentMD5 = fileHttpHeaders.getContentMD5();
         }
         String fileContentDisposition = null;
         if (fileHttpHeaders != null) {
-            fileContentDisposition = fileHttpHeaders.getFileContentDisposition();
+            fileContentDisposition = fileHttpHeaders.getContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
         return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, filePermission, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);

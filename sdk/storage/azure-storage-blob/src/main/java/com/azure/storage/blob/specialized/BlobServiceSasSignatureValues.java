@@ -3,56 +3,60 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerSasPermission;
 import com.azure.storage.blob.BlobSasPermission;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.SasIpRange;
+import com.azure.storage.common.sas.SasProtocol;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 
 /**
- * BlobServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link BlobServiceSasQueryParameters}
- * exist because the former is mutable and a logical representation while the latter is immutable and used to generate
- * actual REST requests.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
- * for more conceptual information on SAS.
- * <p>
- * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
- * more details on each value, including which are required.
+ * Used to generate a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the values here are set,
+ * call {@link
+ * #generateSasQueryParameters(StorageSharedKeyCredential) generateSasQueryParameters(StorageSharedKeyCredential)} or
+ * {@link #generateSasQueryParameters(UserDelegationKey, String) generateSasQueryParameters(UserDelegationKey, String)}
+ * to obtain a representation of the SAS which can be applied to blob urls.
  *
- * <p>Please see
- * <a href=https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java>here</a>
- * for additional samples.</p>
+ * <p><strong>Generating SAS query parameters with {@link StorageSharedKeyCredential}</strong></p>
+ * The following code generates SAS query parameters for an Azure storage blob.
+ * <p>
+ * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#StorageSharedKeyCredential}
+ *
+ * <p><strong>Generating SAS query parameters with {@link UserDelegationKey}</strong></p>
+ * The following sample generates SAS query parameters for an Azure storage container.
+ * <p>
+ * {@codesnippet com.azure.storage.blob.specialized.BlobServiceSasSignatureValues.generateSasQueryParameters#UserDelegationKey-String}
+ *
+ * @see BlobServiceSasQueryParameters
+ * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
+ * SAS</a>
  */
 public final class BlobServiceSasSignatureValues {
     /**
      * The SAS blob constant.
      */
-    public static final String SAS_BLOB_CONSTANT = "b";
+    private static final String SAS_BLOB_CONSTANT = "b";
 
     /**
      * The SAS blob snapshot constant.
      */
-    public static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
+    private static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
 
     /**
      * The SAS blob container constant.
      */
-    public static final String SAS_CONTAINER_CONSTANT = "c";
+    private static final String SAS_CONTAINER_CONSTANT = "c";
 
     private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
 
-    private String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private String version;
 
     private SasProtocol protocol;
 
@@ -64,7 +68,9 @@ public final class BlobServiceSasSignatureValues {
 
     private SasIpRange sasIpRange;
 
-    private String canonicalName;
+    private String containerName;
+
+    private String blobName;
 
     private String resource;
 
@@ -212,29 +218,26 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Sets the Blob permissions allowed by the SAS.
      *
-     * <p>this will set the {@link #resource} to {@link #SAS_BLOB_CONSTANT} or {@link #SAS_BLOB_SNAPSHOT_CONSTANT} based
-     * on the value of {@link #getSnapshotId()}.</p>
-     *
      * @param permissions {@link BlobSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
+     * @throws NullPointerException if {@code permissions} is null.
      */
     public BlobServiceSasSignatureValues setPermissions(BlobSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
-        this.resource = SAS_BLOB_CONSTANT;
         return this;
     }
 
     /**
      * Sets the Container permissions allowed by the SAS.
      *
-     * <p>this will set the {@link #resource} to {@link #SAS_CONTAINER_CONSTANT}.</p>
-     *
      * @param permissions {@link BlobContainerSasPermission}
      * @return the updated BlobServiceSASSignatureValues object
+     * @throws NullPointerException if {@code permissions} is null.
      */
     public BlobServiceSasSignatureValues setPermissions(BlobContainerSasPermission permissions) {
+        Utility.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
-        this.resource = SAS_CONTAINER_CONSTANT;
         return this;
     }
 
@@ -257,59 +260,44 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the resource the SAS user may access.
+     * Gets the name of the container the SAS user may access.
+     *
+     * @return The name of the container the SAS user may access.
      */
-    public String getResource() {
-        return resource;
+    public String getContainerName() {
+        return containerName;
     }
 
     /**
-     * Sets the resource the SAS user may access.
+     * Sets the container the SAS user may access.
      *
-     * @param resource Allowed resources string to set
-     * @return the updated BlobServiceSASSignatureValues object
+     * @param containerName The name of the container.
+     * @return The updated BlobServiceSASSignatureValues object.
      */
-    public BlobServiceSasSignatureValues setResource(String resource) {
-        this.resource = resource;
+    public BlobServiceSasSignatureValues setContainerName(String containerName) {
+        this.containerName = containerName;
         return this;
     }
 
     /**
-     * @return the canonical name of the object the SAS user may access.
+     * Gets the name of the blob the SAS user may access. {@code null} or an empty string is returned when a
+     * creating a container SAS.
+     *
+     * @return The name of the blob the SAS user may access. {@code null} or an empty string is returned when a
+     * creating a container SAS.
      */
-    public String getCanonicalName() {
-        return canonicalName;
+    public String getBlobName() {
+        return blobName;
     }
 
     /**
-     * Sets the canonical name of the object the SAS user may access.
+     * Sets the blob the SAS user may access. Use {@code null} or an empty string to create a container SAS.
      *
-     * @param canonicalName Canonical name of the object the SAS grants access
-     * @return the updated BlobServiceSASSignatureValues object
+     * @param blobName The name of the blob. Use {@code null} or an empty string to create a container SAS.
+     * @return The updated BlobServiceSASSignatureValues object.
      */
-    public BlobServiceSasSignatureValues setCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-        return this;
-    }
-
-    /**
-     * Sets the canonical name of the object the SAS user may access. Constructs a canonical name of
-     * "/blob/{accountName}{Path of urlString}".
-     *
-     * @param urlString URL string that contains the path to the object
-     * @param accountName Name of the account that contains the object
-     * @return the updated BlobServiceSASSignatureValues object
-     * @throws RuntimeException If {@code urlString} is a malformed URL.
-     */
-    public BlobServiceSasSignatureValues setCanonicalName(String urlString, String accountName) {
-        URL url;
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
-
-        this.canonicalName = String.format("/blob/%s%s", accountName, url.getPath());
+    public BlobServiceSasSignatureValues setBlobName(String blobName) {
+        this.blobName = blobName;
         return this;
     }
 
@@ -453,20 +441,44 @@ public final class BlobServiceSasSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
+     * <p><strong>Notes on SAS generation</strong></p>
+     * <p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
+     *
+     * <p>
+     * The type of SAS query parameters returned depends on the following:
+     * <ol>
+     *     <li>If {@link #getBlobName()} is not set, <b>container SAS</b> query parameters are returned.</li>
+     *     <li>If {@link #getBlobName()} and {@link #getSnapshotId()} are set, <b>blob snapshot</b> SAS query parameters
+     *     are returned.</li>
+     *     <li>If only {@link #getBlobName()} is set, <b>blob SAS</b> query parameters are returned.</li>
+     * </ol>
+     *
+     *  See class level JavaDocs for code snippets.
+     *
      * @param storageSharedKeyCredentials A {@link StorageSharedKeyCredential} object used to sign the SAS values.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException if {@code storageSharedKeyCredentials} is null. Or if any of {@code version},
-     * {@code canonicalName}, {@code resource} or {@code identifier} are null.
+     * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
+     * @throws NullPointerException if {@code storageSharedKeyCredentials} is null.
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(StorageSharedKeyCredential
-           storageSharedKeyCredentials) {
+    public BlobServiceSasQueryParameters generateSasQueryParameters(
+        StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
-        assertGenerateOK(false);
+
+        ensureState();
 
         // Signature is generated on the un-url-encoded values.
-        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign());
+        final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
+        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
@@ -476,19 +488,49 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
      *
+     * <p><strong>Notes on SAS generation</strong></p>
+     * <p>
+     * <ul>
+     * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
+     * version} is used.</li>
+     * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
+     * permissions should not be set. These values are inherited from the stored access policy.</li>
+     * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
+     * be set.</li>
+     * </ul>
+     *
+     * <p>
+     * The type of SAS query parameters returned depends on the following:
+     * <ol>
+     *     <li>If {@link #getBlobName()} is not set, <b>container SAS</b> query parameters are returned.</li>
+     *     <li>If {@link #getBlobName()} and {@link #getSnapshotId()} are set, <b>blob snapshot</b> SAS query parameters
+     *     are returned.</li>
+     *     <li>If only {@link #getBlobName()} is set, <b>blob SAS</b> query parameters are returned.</li>
+     * </ol>
+     *
+     *  See class level JavaDocs for code snippets.
+     *
      * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param accountName Azure Storage account name to generate SAS for.
      * @return {@link BlobServiceSasQueryParameters}
      * @throws IllegalStateException If the HMAC-SHA256 algorithm isn't supported, if the key isn't a valid Base64
      * encoded string, or the UTF-8 charset isn't supported.
-     * @throws NullPointerException if {@code delegationKey} is null. Or if any of {@code version},
-     * {@code canonicalName}, {@code resource}, {@code expiryTime} or {@code permissions} are null.
+     * @throws IllegalArgumentException if {@link #getPermissions()} contains an invalid character for the SAS resource.
+     * @throws NullPointerException if {@code delegationKey} or {@code account} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas">
+     *     Create a user delegation SAS</a>
      */
-    public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey) {
-        StorageImplUtils.assertNotNull("delegationKey", delegationKey);
-        assertGenerateOK(true);
+    public BlobServiceSasQueryParameters generateSasQueryParameters(UserDelegationKey delegationKey,
+                                                                    String accountName) {
+        Utility.assertNotNull("delegationKey", delegationKey);
+        Utility.assertNotNull("accountName", accountName);
+
+        ensureState();
 
         // Signature is generated on the un-url-encoded values.
-        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey));
+        final String canonicalName = getCanonicalName(accountName);
+        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
+
 
         return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature, this.cacheControl,
@@ -496,39 +538,71 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * Common assertions for generateSASQueryParameters overloads.
-     */
-    private void assertGenerateOK(boolean usingUserDelegation) {
-        StorageImplUtils.assertNotNull("version", this.version);
-        StorageImplUtils.assertNotNull("canonicalName", this.canonicalName);
-        StorageImplUtils.assertNotNull("resource", this.resource);
+     * Ensures that the builder's properties are in a consistent state.
 
-        // If a UserDelegation key or a SignedIdentifier is not being used both expiryDate and permissions must be set.
-        if (usingUserDelegation || identifier == null) {
-            StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
-            StorageImplUtils.assertNotNull("permissions", this.permissions);
-        } else {
-            // Otherwise a SignedIdentifier must be used.
-            StorageImplUtils.assertNotNull("identifier", this.identifier);
+     * 1. If there is no version, use latest.
+     * 2. Resource name is chosen by:
+     *    a. If "BlobName" is _not_ set, it is a container resource.
+     *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
+     *    c. Otherwise, it is a blob resource.
+     * 3. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     *
+     * Taken from:
+     * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
+     * https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
+     */
+    private void ensureState() {
+        if (version == null) {
+            version = BlobServiceVersion.getLatest().getVersion();
         }
 
-        if (BlobServiceSasSignatureValues.SAS_CONTAINER_CONSTANT.equals(this.resource) && this.snapshotId != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Cannot set a snapshotId without resource being a blob."));
+        if (ImplUtils.isNullOrEmpty(blobName)) {
+            resource = SAS_CONTAINER_CONSTANT;
+        } else if (snapshotId != null) {
+            resource = SAS_BLOB_SNAPSHOT_CONSTANT;
+        } else {
+            resource = SAS_BLOB_CONSTANT;
+        }
+
+        if (permissions != null) {
+            switch (resource) {
+                case SAS_BLOB_CONSTANT:
+                case SAS_BLOB_SNAPSHOT_CONSTANT:
+                    permissions = BlobSasPermission.parse(permissions).toString();
+                    break;
+                case SAS_CONTAINER_CONSTANT:
+                    permissions = BlobContainerSasPermission.parse(permissions).toString();
+                    break;
+                default:
+                    // We won't reparse the permissions if we don't know the type.
+                    logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
+                    break;
+            }
         }
     }
 
-    private String stringToSign() {
+    /**
+     * Computes the canonical name for a container or blob resource for SAS signing.
+     */
+    private String getCanonicalName(String account) {
+        // Container: "/blob/account/containername"
+        // Blob:      "/blob/account/containername/blobname"
+        return ImplUtils.isNullOrEmpty(blobName)
+            ? String.format("/blob/%s/%s", account, containerName)
+            : String.format("/blob/%s/%s/%s", account, containerName, blobName.replace("\\", "/"));
+    }
+
+    private String stringToSign(String canonicalName) {
         return String.join("\n",
-            this.permissions == null ? "" : this.permissions,
+            this.permissions == null ? "" : permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.canonicalName == null ? "" : this.canonicalName,
+            canonicalName,
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : protocol.toString(),
-            this.version == null ? "" : this.version,
-            this.resource == null ? "" : this.resource,
+            this.protocol == null ? "" : this.protocol.toString(),
+            version,
+            resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
@@ -538,12 +612,12 @@ public final class BlobServiceSasSignatureValues {
         );
     }
 
-    private String stringToSign(final UserDelegationKey key) {
+    private String stringToSign(final UserDelegationKey key, String canonicalName) {
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.canonicalName == null ? "" : this.canonicalName,
+            canonicalName,
             key.getSignedOid() == null ? "" : key.getSignedOid(),
             key.getSignedTid() == null ? "" : key.getSignedTid(),
             key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
@@ -552,8 +626,8 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            this.version == null ? "" : this.version,
-            this.resource == null ? "" : this.resource,
+            version,
+            resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,

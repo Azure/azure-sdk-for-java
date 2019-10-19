@@ -81,4 +81,19 @@ public class TestResourceNamer extends ResourceNamer {
             return now;
         }
     }
+
+    /**
+     * Record the value into recordedData, and pop it up when playback.
+     *
+     * @param value the value needs to record.
+     * @return the recorded value.
+     */
+    public String recordValueFromConfig(String value) {
+        if (testMode == TestMode.PLAYBACK) {
+            return recordedData.removeVariable();
+        } else {
+            recordedData.addVariable(value);
+            return value;
+        }
+    }
 }

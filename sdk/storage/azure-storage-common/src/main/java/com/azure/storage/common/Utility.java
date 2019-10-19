@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -150,7 +149,6 @@ public final class Utility {
             throw new RuntimeException(ex);
         }
     }
-
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
      * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
