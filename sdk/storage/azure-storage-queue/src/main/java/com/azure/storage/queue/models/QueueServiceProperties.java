@@ -22,7 +22,7 @@ public final class QueueServiceProperties {
      * Azure Analytics Logging settings
      */
     @JsonProperty(value = "Logging")
-    private QueueAnalyticsLogging logging;
+    private QueueAnalyticsLogging analyticsLogging;
 
     /*
      * A summary of request statistics grouped by API in hourly aggregates for
@@ -59,8 +59,8 @@ public final class QueueServiceProperties {
      *
      * @return the logging value.
      */
-    public QueueAnalyticsLogging getLogging() {
-        return this.logging;
+    public QueueAnalyticsLogging getAnalyticsLogging() {
+        return this.analyticsLogging;
     }
 
     /**
@@ -69,8 +69,8 @@ public final class QueueServiceProperties {
      * @param logging the logging value to set.
      * @return the QueueServiceProperties object itself.
      */
-    public QueueServiceProperties setLogging(QueueAnalyticsLogging logging) {
-        this.logging = logging;
+    public QueueServiceProperties setAnalyticsLogging(QueueAnalyticsLogging logging) {
+        this.analyticsLogging = logging;
         return this;
     }
 
