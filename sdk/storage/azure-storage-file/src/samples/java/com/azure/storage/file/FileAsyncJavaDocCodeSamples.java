@@ -138,9 +138,9 @@ public class FileAsyncJavaDocCodeSamples {
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
         poller.getObserver().subscribe(response -> {
-                final FileCopyInfo value = response.getValue();
-                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
-            }, error -> System.err.println("Error: " + error),
+            final FileCopyInfo value = response.getValue();
+            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+        }, error -> System.err.println("Error: " + error),
             () -> System.out.println("Complete copying the file."));
         // END: com.azure.storage.file.fileAsyncClient.beginCopy#string-map-duration
     }

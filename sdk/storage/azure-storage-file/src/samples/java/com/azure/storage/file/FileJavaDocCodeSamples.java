@@ -68,7 +68,6 @@ public class FileJavaDocCodeSamples {
         return fileClient;
     }
 
-
     /**
      * Generates code sample for creating a {@link FileClient} with SAS token.
      *
@@ -152,9 +151,9 @@ public class FileJavaDocCodeSamples {
             Collections.singletonMap("file", "metadata"), Duration.ofSeconds(2));
 
         poller.getObserver().subscribe(response -> {
-                final FileCopyInfo value = response.getValue();
-                System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
-            });
+            final FileCopyInfo value = response.getValue();
+            System.out.printf("Copy source: %s. Status: %s.%n", value.getCopySourceUrl(), value.getCopyStatus());
+        });
         // END: com.azure.storage.file.fileClient.beginCopy#string-map-duration
     }
 
