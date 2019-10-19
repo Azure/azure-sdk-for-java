@@ -840,7 +840,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * scenario will return a setting when the etag provided does not match the one of the current setting.
      */
     public void getSettingWhenValueNotUpdated() {
-        final String key = testResourceNamer.randomName(keyPrefix, 16);
+        final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().setKey(key).setValue("myNewValue");
         final ConfigurationSetting block = client.addSettingWithResponse(expected).block().getValue();
