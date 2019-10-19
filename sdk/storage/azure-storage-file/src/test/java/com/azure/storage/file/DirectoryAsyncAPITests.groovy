@@ -508,7 +508,7 @@ class DirectoryAsyncAPITests extends APISpec {
         given:
         primaryDirectoryAsyncClient.create().block()
         FileHttpHeaders httpHeaders = new FileHttpHeaders()
-            .setFileContentType("txt")
+            .setContentType("txt")
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
 
@@ -534,11 +534,11 @@ class DirectoryAsyncAPITests extends APISpec {
         })
 
         where:
-        fileName    | maxSize | httpHeaders                                          | metadata                              | errMsg
-        "testfile:" | 1024    | null                                                 | testMetadata                          | FileErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null                                                 | testMetadata                          | FileErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new FileHttpHeaders().setFileContentMD5(new byte[0]) | testMetadata                          | FileErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null                                                 | Collections.singletonMap("", "value") | FileErrorCode.EMPTY_METADATA_KEY
+        fileName    | maxSize | httpHeaders                                      | metadata                              | errMsg
+        "testfile:" | 1024    | null                                             | testMetadata                          | FileErrorCode.INVALID_RESOURCE_NAME
+        "fileName"  | -1      | null                                             | testMetadata                          | FileErrorCode.OUT_OF_RANGE_INPUT
+        "fileName"  | 1024    | new FileHttpHeaders().setContentMD5(new byte[0]) | testMetadata                          | FileErrorCode.INVALID_HEADER_VALUE
+        "fileName"  | 1024    | null                                             | Collections.singletonMap("", "value") | FileErrorCode.EMPTY_METADATA_KEY
 
     }
 

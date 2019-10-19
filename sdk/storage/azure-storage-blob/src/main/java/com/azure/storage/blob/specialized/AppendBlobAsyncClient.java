@@ -14,6 +14,9 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
+import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -131,7 +134,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
             null, 0, null, metadata, null, headers, accessConditions.getLeaseAccessConditions(),
             getCustomerProvidedKey(), accessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
+                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), null, null);
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -195,7 +203,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobAccessConditions.getLeaseAccessConditions(),
             appendBlobAccessConditions.getAppendPositionAccessConditions(), getCustomerProvidedKey(),
             appendBlobAccessConditions.getModifiedAccessConditions(), context)
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
+                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobAppendOffset(),
+                    hd.getBlobCommittedBlockCount());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 
     /**
@@ -269,6 +283,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                 destAccessConditions.getLeaseAccessConditions(),
                 destAccessConditions.getAppendPositionAccessConditions(),
                 destAccessConditions.getModifiedAccessConditions(), sourceAccessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.getDeserializedHeaders())));
+            .map(rb -> {
+                AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
+                AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                    hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getBlobAppendOffset(),
+                    hd.getBlobCommittedBlockCount());
+                return new SimpleResponse<>(rb, item);
+            });
     }
 }

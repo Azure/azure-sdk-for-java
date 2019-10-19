@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobAccessConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
@@ -20,7 +21,6 @@ import com.azure.storage.blob.models.ModifiedAccessConditions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.ReliableDownloadOptions
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.SyncCopyStatusType
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobServiceSasSignatureValues
@@ -1451,7 +1451,8 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Copy with tier"() {
         setup:
-        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blobName = generateBlobName()
+        def bc = cc.getBlobClient(blobName).getBlockBlobClient()
         bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, tier1, null, null, null)
         def bcCopy = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
@@ -1459,7 +1460,8 @@ class BlobAPITest extends APISpec {
         def sas = new BlobServiceSasSignatureValues()
             .setExpiryTime(OffsetDateTime.now().plusHours(1))
             .setPermissions(new BlobSasPermission().setReadPermission(true))
-            .setCanonicalName(bc.getBlobUrl().toString(), primaryCredential.getAccountName())
+            .setContainerName(cc.getBlobContainerName())
+            .setBlobName(blobName)
             .generateSasQueryParameters(primaryCredential)
             .encode()
         bcCopy.copyFromURLWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)

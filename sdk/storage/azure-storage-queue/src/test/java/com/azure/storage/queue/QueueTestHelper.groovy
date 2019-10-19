@@ -49,7 +49,7 @@ class QueueTestHelper {
         } else {
             return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics()) &&
                 assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
-                assertLoggingAreEqual(expected.getLogging(), actual.getLogging()) &&
+                assertLoggingAreEqual(expected.getAnalyticsLogging(), actual.getAnalyticsLogging()) &&
                 assertCorsAreEqual(expected.getCors(), actual.getCors())
         }
     }
