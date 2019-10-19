@@ -149,46 +149,6 @@ public final class Utility {
             throw new RuntimeException(ex);
         }
     }
-    /**
-     * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
-     * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
-     *
-     * @param queryString Query string to parse
-     * @return a mapping of query string pieces as key-value pairs.
-     */
-    public static Map<String, String> parseQueryString(final String queryString) {
-        return parseQueryStringHelper(queryString, Utility::urlDecode);
-    }
-
-    /**
-     * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
-     * stored as a parsed array (ex. key=[val1, val2, val3] instead of key=val1,val2,val3).
-     *
-     * @param queryString Query string to parse
-     * @return a mapping of query string pieces as key-value pairs.
-     */
-    public static Map<String, String[]> parseQueryStringSplitValues(final String queryString) {
-        return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
-    }
-
-    private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
-                                                             Function<String, T> valueParser) {
-        TreeMap<String, T> pieces = new TreeMap<>();
-
-        if (com.azure.core.implementation.util.ImplUtils.isNullOrEmpty(queryString)) {
-            return pieces;
-        }
-
-        for (String kvp : queryString.split("&")) {
-            int equalIndex = kvp.indexOf("=");
-            String key = urlDecode(kvp.substring(0, equalIndex).toLowerCase(Locale.ROOT));
-            T value = valueParser.apply(kvp.substring(equalIndex + 1));
-
-            pieces.putIfAbsent(key, value);
-        }
-
-        return pieces;
-    }
 
     /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
