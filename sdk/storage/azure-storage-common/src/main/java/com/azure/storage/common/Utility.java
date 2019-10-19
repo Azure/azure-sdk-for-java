@@ -152,23 +152,6 @@ public final class Utility {
     }
 
     /**
-     * Parses the connection string into key-value pair map.
-     *
-     * @param connectionString Connection string to parse
-     * @return a mapping of connection string pieces as key-value pairs.
-     */
-    public static Map<String, String> parseConnectionString(final String connectionString) {
-        Map<String, String> parts = new HashMap<>();
-
-        for (String part : connectionString.split(";")) {
-            String[] kvp = part.split("=", 2);
-            parts.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
-
-        return parts;
-    }
-
-    /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
      * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
      *
