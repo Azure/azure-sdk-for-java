@@ -68,7 +68,7 @@ public final class QueueSasPermission {
     /**
      * @return the read permission status.
      */
-    public boolean getReadPermission() {
+    public boolean hasReadPermission() {
         return readPermission;
     }
 
@@ -86,7 +86,7 @@ public final class QueueSasPermission {
     /**
      * @return the add permission status.
      */
-    public boolean getAddPermission() {
+    public boolean hasAddPermission() {
         return addPermission;
     }
 
@@ -104,7 +104,7 @@ public final class QueueSasPermission {
     /**
      * @return the update permission status.
      */
-    public boolean getUpdatePermission() {
+    public boolean hasUpdatePermission() {
         return updatePermission;
     }
 
@@ -122,7 +122,7 @@ public final class QueueSasPermission {
     /**
      * @return the process permission status.
      */
-    public boolean getProcessPermission() {
+    public boolean hasProcessPermission() {
         return processPermission;
     }
 
