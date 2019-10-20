@@ -470,17 +470,20 @@ class HelperTest extends APISpec {
     @Unroll
     def "accountSasSignatureValues IA"() {
         setup:
-        AccountSasPermission sasPermission = null;
+        AccountSasPermission sasPermission = null
         if (permissions != null) {
-            sasPermission = AccountSasPermission.parse(permissions);
+            sasPermission = AccountSasPermission.parse(permissions)
         }
 
         AccountSasSignatureValues v = new AccountSasSignatureValues()
-            .setPermissions(sasPermission)
             .setServices(service)
             .setResourceTypes(resourceType)
             .setExpiryTime(expiryTime)
             .setVersion(version)
+
+        if (sasPermission != null) {
+            v.setPermissions(sasPermission)
+        }
 
         when:
         v.generateSasQueryParameters(creds)
@@ -495,7 +498,6 @@ class HelperTest extends APISpec {
         "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCredential || "services"
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCredential || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCredential || "expiryTime"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCredential || "version"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null              || "storageSharedKeyCredentials"
     }
 
