@@ -7,6 +7,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -141,7 +142,7 @@ public final class AccountSasSignatureValues {
      * @throws NullPointerException if {@code permissions} is null.
      */
     public AccountSasSignatureValues setPermissions(AccountSasPermission permissions) {
-        Utility.assertNotNull("permissions", permissions);
+        StorageImplUtils.assertNotNull("permissions", permissions);
         this.permissions = permissions.toString();
         return this;
     }
