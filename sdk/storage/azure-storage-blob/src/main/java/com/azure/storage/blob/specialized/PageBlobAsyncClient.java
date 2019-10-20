@@ -272,9 +272,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * blob.
      * @return A reactive response containing the information of the uploaded pages.
      */
-    public Mono<PageBlobItem> uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
+    public Mono<PageBlobItem> uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
         try {
-            return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null)
+            return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null)
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -305,21 +305,21 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded pages.
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl,
-        Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-        SourceModifiedAccessConditions sourceAccessConditions) {
+    public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl,
+                                                                       Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+                                                                       SourceModifiedAccessConditions sourceAccessConditions) {
         try {
             return withContext(
-                context -> uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
+                context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
                     destAccessConditions, sourceAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-        byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-        SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
+                                                                byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+                                                                SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.

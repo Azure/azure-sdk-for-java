@@ -254,7 +254,7 @@ public final class PageBlobClient extends BlobClientBase {
         byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
         SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURLWithResponse(range, sourceUrl,
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceUrl,
             sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }

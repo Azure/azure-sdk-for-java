@@ -102,16 +102,16 @@ public class BlockBlobClientJavaDocCodeSnippets {
      * Code snippet for {@link BlockBlobClient#stageBlockFromUrl(String, String, BlobRange)}
      */
     public void stageBlockFromUrl() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-String-BlobRange
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange
         client.stageBlockFromUrl(base64BlockId, sourceUrl, new BlobRange(offset, count));
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-String-BlobRange
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange
     }
 
     /**
      * Code snippet for {@link BlockBlobClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
     public void stageBlockFromUrl2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()
             .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
@@ -120,7 +120,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Staging block from URL completed with status %d%n",
             client.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, new BlobRange(offset, count), null,
                 leaseAccessConditions, sourceModifiedAccessConditions, timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
 
     /**

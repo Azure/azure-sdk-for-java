@@ -67,21 +67,21 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobClientBase#abortCopyFromUrl(String)}
      */
     public void abortCopyFromURL() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId);
+        client.abortCopyFromUrl(copyId);
         System.out.println("Aborted copy completed.");
         // END: com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURL#String
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromURL(String)}
+     * Code snippets for {@link BlobClientBase#copyFromUrl(String)}
      */
     public void copyFromURL() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String
-        System.out.printf("Copy identifier: %s%n", client.copyFromURL(url));
+        System.out.printf("Copy identifier: %s%n", client.copyFromUrl(url));
         // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromURL#String
     }
 

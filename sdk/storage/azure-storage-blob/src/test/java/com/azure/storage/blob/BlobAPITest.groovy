@@ -980,7 +980,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        def copyID = bu2.copyFromURL(bc.getBlobUrl())
+        def copyID = bu2.copyFromUrl(bc.getBlobUrl())
 
         then:
         bu2.abortCopyFromURLWithResponse(copyID, null, null, null).getStatusCode() == 204
@@ -1017,7 +1017,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.copyFromURL("http://www.error.com")
+        bc.copyFromUrl("http://www.error.com")
 
         then:
         thrown(BlobStorageException)
@@ -1028,7 +1028,7 @@ class BlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bc.abortCopyFromURL("id")
+        bc.abortCopyFromUrl("id")
 
         then:
         thrown(BlobStorageException)
@@ -1198,7 +1198,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        bu2.copyFromURL(bc.getBlobUrl())
+        bu2.copyFromUrl(bc.getBlobUrl())
 
         then:
         thrown(BlobStorageException)

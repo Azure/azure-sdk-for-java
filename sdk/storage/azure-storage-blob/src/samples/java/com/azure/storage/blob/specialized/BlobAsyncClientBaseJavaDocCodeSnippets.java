@@ -59,7 +59,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobAsyncClientBase#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURLCodeSnippet() {
+    public void abortCopyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
         client.abortCopyFromUrl(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String

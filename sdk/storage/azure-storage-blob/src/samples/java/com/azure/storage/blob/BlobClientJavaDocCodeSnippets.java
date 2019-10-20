@@ -55,22 +55,22 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobClient#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURL() {
-        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId);
+    public void abortCopyFromUrl() {
+        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromUrl#String
+        client.abortCopyFromUrl(copyId);
         System.out.println("Aborted copy completed.");
-        // END: com.azure.storage.blob.BlobClient.abortCopyFromURL#String
+        // END: com.azure.storage.blob.BlobClient.abortCopyFromUrl#String
     }
 
     /**
-     * Code snippets for {@link BlobClient#copyFromURL(String)}
+     * Code snippets for {@link BlobClient#copyFromUrl(String)}
      */
-    public void copyFromURL() {
-        // BEGIN: com.azure.storage.blob.BlobClient.copyFromURL#String
-        System.out.printf("Copy identifier: %s%n", client.copyFromURL(url));
-        // END: com.azure.storage.blob.BlobClient.copyFromURL#String
+    public void copyFromUrl() {
+        // BEGIN: com.azure.storage.blob.BlobClient.copyFromUrl#String
+        System.out.printf("Copy identifier: %s%n", client.copyFromUrl(url));
+        // END: com.azure.storage.blob.BlobClient.copyFromUrl#String
     }
 
     /**

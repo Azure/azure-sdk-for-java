@@ -278,7 +278,7 @@ public class BlobClientBase {
      *
      * @param copyId The id of the copy operation to abort.
      */
-    public void abortCopyFromURL(String copyId) {
+    public void abortCopyFromUrl(String copyId) {
         abortCopyFromURLWithResponse(copyId, null, null, Context.NONE);
     }
 
@@ -321,7 +321,7 @@ public class BlobClientBase {
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
-    public String copyFromURL(String copySource) {
+    public String copyFromUrl(String copySource) {
         return copyFromURLWithResponse(copySource, null, null, null, null, null, Context.NONE).getValue();
     }
 
