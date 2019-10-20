@@ -54,8 +54,8 @@ public class BackupAndRestoreOperations {
         // The storage account secret is no longer in use, so you delete it.
         Poller<DeletedSecret, Void> deletedStorageSecretPoller = client.beginDeleteSecret("StorageAccountPassword");
 
-        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !deletedStorageSecretPoller.isComplete()) {
+        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !deletedStorageSecretPoller.isComplete()) {
             System.out.println(deletedStorageSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }

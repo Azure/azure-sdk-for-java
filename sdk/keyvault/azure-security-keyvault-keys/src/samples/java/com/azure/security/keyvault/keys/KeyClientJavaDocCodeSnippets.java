@@ -8,13 +8,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.Poller;
-import com.azure.security.keyvault.keys.models.*;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
+import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 
@@ -83,6 +86,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
     /**
      * Generates a code sample for using {@link KeyClient#beginDeleteKey(String)}
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public void deleteKeySnippets() throws InterruptedException {
         KeyClient keyClient = createClient();
@@ -266,6 +270,7 @@ public final class KeyClientJavaDocCodeSnippets {
 
     /**
      * Generates a code sample for using {@link KeyClient#beginRecoverDeletedKey(String)}
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public void recoverDeletedKeySnippets() throws InterruptedException {
         KeyClient keyClient = createClient();

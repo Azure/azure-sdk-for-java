@@ -50,8 +50,8 @@ public class ManagingDeletedSecrets {
         // The storage account was closed, need to delete its credentials from the key vault.
         Poller<DeletedSecret, Void> deletedBankSecretPoller = client.beginDeleteSecret("BankAccountPassword");
 
-        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !deletedBankSecretPoller.isComplete()) {
+        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !deletedBankSecretPoller.isComplete()) {
             System.out.println(deletedBankSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
@@ -72,8 +72,8 @@ public class ManagingDeletedSecrets {
         Poller<KeyVaultSecret, Void> recoverSecretPoller =
             client.beginRecoverDeletedSecret("BankAccountPassword");
 
-        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !recoverSecretPoller.isComplete()) {
+        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !recoverSecretPoller.isComplete()) {
             System.out.println(recoverSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
@@ -93,8 +93,8 @@ public class ManagingDeletedSecrets {
         // Let's delete bank and  storage accounts secrets.
         Poller<DeletedSecret, Void> deletedSecretPoller = client.beginDeleteSecret("BankAccountPassword");
 
-        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !deletedSecretPoller.isComplete()) {
+        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !deletedSecretPoller.isComplete()) {
             System.out.println(deletedSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
@@ -111,8 +111,8 @@ public class ManagingDeletedSecrets {
 
         Poller<DeletedSecret, Void> deletedStorageSecretPoller = client.beginDeleteSecret("StorageAccountPassword");
 
-        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !deletedStorageSecretPoller.isComplete()) {
+        while (deletedStorageSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !deletedStorageSecretPoller.isComplete()) {
             System.out.println(deletedStorageSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }

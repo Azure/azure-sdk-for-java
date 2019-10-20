@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.annotation.Delete;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
@@ -141,24 +140,26 @@ public final class SecretClientJavaDocCodeSnippets {
 
     /**
      * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)}
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public void deleteSecretCodeSnippets() throws InterruptedException {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
         Poller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
-        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !deletedSecretPoller.isComplete()) {
+        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !deletedSecretPoller.isComplete()) {
             System.out.println(deletedSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
 
+        // Deleted Secret is accessible as soon as polling begins
         DeletedSecret deletedSecret = deletedSecretPoller.getLastPollResponse().getValue();
         System.out.println("Deleted Date  %s" + deletedSecret.getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.getRecoveryId());
 
         // Key is being deleted on server.
-        while (deletedSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+        while (!deletedSecretPoller.isComplete()) {
             System.out.println(deletedSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
@@ -213,6 +214,7 @@ public final class SecretClientJavaDocCodeSnippets {
 
     /**
      * Method to insert code snippets for {@link SecretClient#beginRecoverDeletedSecret(String)}
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public void recoverDeletedSecretCodeSnippets() throws InterruptedException {
         SecretClient secretClient = getSecretClient();
@@ -220,18 +222,18 @@ public final class SecretClientJavaDocCodeSnippets {
         Poller<KeyVaultSecret, Void> recoverSecretPoller =
             secretClient.beginRecoverDeletedSecret("deletedSecretName");
 
-        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !recoverSecretPoller.isComplete()) {
+        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !recoverSecretPoller.isComplete()) {
             System.out.println(recoverSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
-
+        // Deleted Secret can be accessed as soon as polling is in progress.
         KeyVaultSecret recoveredSecret = recoverSecretPoller.getLastPollResponse().getValue();
         System.out.println("Recovered Key Name %s" + recoveredSecret.getName());
         System.out.printf("Recovered Key's Id %s", recoveredSecret.getId());
 
         // Key is being recovered on server.
-        while (recoverSecretPoller.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+        while (!recoverSecretPoller.isComplete()) {
             System.out.println(recoverSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }

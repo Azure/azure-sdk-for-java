@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.annotation.Delete;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;

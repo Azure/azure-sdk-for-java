@@ -141,10 +141,10 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         keyAsyncClient.beginDeleteKey("keyName")
             .getObserver()
             .subscribe(pollResponse -> {
-                    System.out.println("Delete Status: " + pollResponse.getStatus().toString());
-                    System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
-                    System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
-                });
+                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+                System.out.println("Delete Key Name: " + pollResponse.getValue().getName());
+                System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+            });
         // END: com.azure.security.keyvault.keys.async.keyclient.deleteKey#string
     }
 

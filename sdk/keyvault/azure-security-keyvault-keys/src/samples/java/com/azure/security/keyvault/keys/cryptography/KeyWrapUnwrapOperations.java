@@ -7,12 +7,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.KeyUnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.models.webkey.JsonWebKey;
-import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
-import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Arrays;
 import java.util.Random;
 
 

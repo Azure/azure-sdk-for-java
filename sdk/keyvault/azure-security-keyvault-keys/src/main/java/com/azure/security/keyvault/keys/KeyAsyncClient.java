@@ -3,9 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.annotation.Delete;
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;

@@ -62,8 +62,8 @@ public class HelloWorld {
         // The bank account was closed, need to delete its credentials from the key vault.
         Poller<DeletedSecret, Void> deletedBankSecretPoller = secretClient.beginDeleteSecret("BankAccountPassword");
 
-        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS &&
-            !deletedBankSecretPoller.isComplete()) {
+        while (deletedBankSecretPoller.getStatus() != PollResponse.OperationStatus.IN_PROGRESS
+            && !deletedBankSecretPoller.isComplete()) {
             System.out.println(deletedBankSecretPoller.getStatus().toString());
             Thread.sleep(2000);
         }
