@@ -135,7 +135,7 @@ public class CryptographyAsyncClient {
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> getKeyWithResponse() {
+    Mono<Response<KeyVaultKey>> getKeyWithResponse() {
         try {
             return withContext(context -> getKeyWithResponse(context));
         } catch (RuntimeException ex) {
@@ -156,7 +156,7 @@ public class CryptographyAsyncClient {
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> getKey() {
+    Mono<KeyVaultKey> getKey() {
         try {
             return getKeyWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
@@ -194,6 +194,8 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      *     contains the encrypted content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws UnsupportedOperationException if the key operation is not supported oe configured on the key.
+     * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -217,8 +219,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
-                + "permission/not supported for key with id %s", key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Encrypt Operation is missing "
+                + "permission/not supported for key with id %s", key.getKeyId()))));
         }
         return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context, key);
     }
@@ -248,6 +250,7 @@ public class CryptographyAsyncClient {
      * @param cipherText The content to be decrypted.
      * @return A {@link Mono} containing the decrypted blob.
      * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -269,8 +272,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
-                + "key with id %s", key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Decrypt Operation is not allowed for "
+                + "key with id %s", key.getKeyId()))));
         }
         return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, context, key);
     }
@@ -297,6 +300,7 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
      *     the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws UnsupportedOperationException if the sign operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code digest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -318,8 +322,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
+                + "with id %s", key.getKeyId()))));
         }
 
         return localKeyCryptographyClient.signAsync(algorithm, digest, context, key);
@@ -347,6 +351,7 @@ public class CryptographyAsyncClient {
      * @param signature The signature to be verified.
      * @return A {@link Mono} containing a {@link Boolean} indicating the signature verification result.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm}, {@code digest} or {@code signature} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -369,8 +374,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
-                + "key with id %s", key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Verify Operation is not allowed for "
+                + "key with id %s", key.getKeyId()))));
         }
         return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context, key);
     }
@@ -394,6 +399,7 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a {@link KeyWrapResult} whose {@link KeyWrapResult#getEncryptedKey() encrypted
      *     key} contains the wrapped key result.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws UnsupportedOperationException if the wrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -415,8 +421,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
-                + "key with id %s", this.key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Wrap Key Operation is not allowed for "
+                + "key with id %s", this.key.getKeyId()))));
         }
 
         return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
@@ -444,6 +450,7 @@ public class CryptographyAsyncClient {
      * @param encryptedKey The encrypted key content to unwrap.
      * @return A {@link Mono} containing a the unwrapped key content.
      * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws UnsupportedOperationException if the unwrap operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -466,8 +473,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
-                + "for key with id %s", this.key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Unwrap Key Operation is not allowed "
+                + "for key with id %s", this.key.getKeyId()))));
         }
         return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
     }
@@ -494,6 +501,7 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
      *     the created signature.
      * @throws ResourceNotFoundException if the key cannot be found for signing.
+     * @throws UnsupportedOperationException if the sign operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -516,8 +524,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
-            return Mono.error(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
-                + "with id %s", this.key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format("Sign Operation is not allowed for key "
+                + "with id %s", this.key.getKeyId()))));
         }
         return localKeyCryptographyClient.signDataAsync(algorithm, data, context, key);
     }
@@ -545,6 +553,7 @@ public class CryptographyAsyncClient {
      * @param signature The signature to be verified.
      * @return The {@link Boolean} indicating the signature verification result.
      * @throws ResourceNotFoundException if the key cannot be found for verifying.
+     * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm}, {@code data} or {@code signature} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -567,8 +576,8 @@ public class CryptographyAsyncClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
-            return Mono.error(new UnsupportedOperationException(String.format(
-                "Verify Operation is not allowed for key with id %s", this.key.getKeyId())));
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                "Verify Operation is not allowed for key with id %s", this.key.getKeyId()))));
         }
         return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context, key);
     }
@@ -603,11 +612,13 @@ public class CryptographyAsyncClient {
         boolean keyAvailableLocally = true;
         if (this.key == null) {
             try {
-                this.key = getKey().block().getKey();
+                KeyVaultKey keyVaultKey = getKey().block();
+                this.key = keyVaultKey.getKey();
                 keyAvailableLocally = this.key.isValid();
                 initializeCryptoClients();
             } catch (HttpResponseException | NullPointerException e) {
-                logger.info("Failed to retrieve key from key vault");
+                logger.warning("Failed to retrieve key from key vault");
+                logger.logExceptionAsWarning(e);
                 keyAvailableLocally = false;
             }
         }

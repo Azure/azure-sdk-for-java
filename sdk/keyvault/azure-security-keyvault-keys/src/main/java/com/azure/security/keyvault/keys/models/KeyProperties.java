@@ -150,9 +150,6 @@ public class KeyProperties {
      * @return the expires UTC time.
      */
     public OffsetDateTime getExpiresOn() {
-        if (this.expiresOn == null) {
-            return null;
-        }
         return this.expiresOn;
     }
 

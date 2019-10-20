@@ -162,9 +162,9 @@ public final class KeyClientBuilder {
     public KeyClientBuilder vaultEndpoint(String endpoint) {
         try {
             this.endpoint = new URL(endpoint);
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "The Azure Key Vault endpoint url is malformed."));
+                "The Azure Key Vault endpoint url is malformed.", ex));
         }
         return this;
     }
