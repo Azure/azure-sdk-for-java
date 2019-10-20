@@ -128,7 +128,7 @@ public class PageBlobClientJavaDocCodeSnippets {
      * Code snippets for {@link PageBlobClient#uploadPagesFromUrlWithResponse(PageRange, String, Long, byte[],
      * PageBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
-    public void uploadPagesFromURLWithResponseCodeSnippet() {
+    public void uploadPagesFromUrlWithResponseCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
         PageRange pageRange = new PageRange()
             .setStart(0)

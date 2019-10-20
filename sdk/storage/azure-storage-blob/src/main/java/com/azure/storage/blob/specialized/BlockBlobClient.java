@@ -222,7 +222,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-String-BlobRange}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -244,7 +244,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param base64BlockID A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -264,8 +264,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockID, String sourceUrl, BlobRange sourceRange,
-                                                        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-                                                        SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
+            byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
+            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceUrl,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

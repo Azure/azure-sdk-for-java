@@ -259,7 +259,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURL#PageRange-String-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrl#PageRange-String-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -288,7 +288,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -306,8 +306,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
     public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl,
-                                                                       Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-                                                                       SourceModifiedAccessConditions sourceAccessConditions) {
+            Long sourceOffset, byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+            SourceModifiedAccessConditions sourceAccessConditions) {
         try {
             return withContext(
                 context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMD5,
@@ -318,8 +318,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-                                                                byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-                                                                SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+            byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
         if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.

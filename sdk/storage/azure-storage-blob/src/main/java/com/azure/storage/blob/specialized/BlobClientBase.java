@@ -349,8 +349,8 @@ public class BlobClientBase {
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
     public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-                                                    ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-                                                    Duration timeout, Context context) {
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Duration timeout, Context context) {
         Mono<Response<String>> response = client
             .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
