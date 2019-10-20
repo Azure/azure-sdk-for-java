@@ -117,8 +117,8 @@ class PageBlobAPITest extends APISpec {
     def "Create AC"() {
         setup:
         def bac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -143,7 +143,7 @@ class PageBlobAPITest extends APISpec {
         def bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
 
@@ -209,8 +209,8 @@ class PageBlobAPITest extends APISpec {
     def "Upload page AC"() {
         setup:
         def pac = new PageBlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
@@ -374,8 +374,8 @@ class PageBlobAPITest extends APISpec {
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
         def pac = new PageBlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfMatch(match)
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)

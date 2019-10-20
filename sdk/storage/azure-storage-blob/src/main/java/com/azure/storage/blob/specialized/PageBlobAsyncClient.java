@@ -245,7 +245,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
-            pageBlobRequestConditions.getIfModifiedSince(), pageBlobRequestConditions.getIfMatch(),
+            pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
             .map(rb -> {
                 PageBlobUploadPagesHeaders hd = rb.getDeserializedHeaders();
@@ -428,7 +428,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getLeaseId(), pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
             pageBlobRequestConditions.getIfSequenceNumberLessThan(),
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
-            pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfNoneMatch(),
+            pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
             .map(rb -> {
                 PageBlobClearPagesHeaders hd = rb.getDeserializedHeaders();
