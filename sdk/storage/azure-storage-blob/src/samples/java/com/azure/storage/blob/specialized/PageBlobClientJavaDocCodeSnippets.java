@@ -110,26 +110,26 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesFromURL(PageRange, String, Long)}
+     * Code snippets for {@link PageBlobClient#uploadPagesFromUrl(PageRange, String, Long)}
      */
     public void uploadPagesFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-String-Long
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
 
-        PageBlobItem pageBlob = client.uploadPagesFromURL(pageRange, url, sourceOffset);
+        PageBlobItem pageBlob = client.uploadPagesFromUrl(pageRange, url, sourceOffset);
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-String-Long
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#uploadPagesFromURLWithResponse(PageRange, String, Long, byte[],
+     * Code snippets for {@link PageBlobClient#uploadPagesFromUrlWithResponse(PageRange, String, Long, byte[],
      * PageBlobAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
     public void uploadPagesFromURLWithResponseCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
@@ -142,11 +142,11 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesFromURLWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
+            .uploadPagesFromUrlWithResponse(pageRange, url, sourceOffset, sourceContentMD5, pageBlobAccessConditions,
                 sourceAccessConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
 
     /**

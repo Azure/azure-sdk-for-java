@@ -525,7 +525,7 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>

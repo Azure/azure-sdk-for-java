@@ -162,7 +162,7 @@ class CPKTest extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def response = cpkPageBlob.uploadPagesFromURLWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+        def response = cpkPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             sourceBlob.getBlobUrl().toString() + "?" + sas, null, null, null, null, null, null)
 
         then:

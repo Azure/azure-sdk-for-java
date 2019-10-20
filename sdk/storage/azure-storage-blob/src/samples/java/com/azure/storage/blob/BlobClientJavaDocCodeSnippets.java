@@ -197,25 +197,25 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions, Duration, Context)}
+     * Code snippets for {@link BlobClient#abortCopyFromUrlWithResponse(String, LeaseAccessConditions, Duration, Context)}
      */
-    public void abortCopyFromURLWithResponseCodeSnippets() {
+    public void abortCopyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.abortCopyFromUrlWithResponse#String-LeaseAccessConditions-Duration-Context
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         System.out.printf("Aborted copy completed with status %d%n",
-            client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions, timeout,
+            client.abortCopyFromUrlWithResponse(copyId, leaseAccessConditions, timeout,
                 new Context(key2, value2)).getStatusCode());
-        // END: com.azure.storage.blob.BlobClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.abortCopyFromUrlWithResponse#String-LeaseAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippets for {@link BlobClient#copyFromURLWithResponse(String, Map, AccessTier, ModifiedAccessConditions,
+     * Code snippets for {@link BlobClient#copyFromUrlWithResponse(String, Map, AccessTier, ModifiedAccessConditions,
      * BlobAccessConditions, Duration, Context)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
@@ -223,10 +223,10 @@ public class BlobClientJavaDocCodeSnippets {
             new LeaseAccessConditions().setLeaseId(leaseId));
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
+            client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions,
                 blobAccessConditions, timeout,
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.BlobClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.BlobClient.copyFromUrlWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
     }
 
     /**

@@ -205,7 +205,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURL#PageRange-String-Long}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrl#PageRange-String-Long}
      *
      * @param range A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -219,8 +219,8 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public PageBlobItem uploadPagesFromURL(PageRange range, String sourceUrl, Long sourceOffset) {
-        return uploadPagesFromURLWithResponse(range, sourceUrl, sourceOffset, null, null, null, null, Context.NONE)
+    public PageBlobItem uploadPagesFromUrl(PageRange range, String sourceUrl, Long sourceOffset) {
+        return uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, null, null, null, null, Context.NONE)
             .getValue();
     }
 
@@ -231,7 +231,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -250,9 +250,9 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<PageBlobItem> uploadPagesFromURLWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-        byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-        SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
+                                                                 byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
+                                                                 SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(range, sourceUrl,
             sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
