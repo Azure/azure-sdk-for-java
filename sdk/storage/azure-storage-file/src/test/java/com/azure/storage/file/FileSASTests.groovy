@@ -327,7 +327,7 @@ class FileSASTests extends APISpec {
     def "AccountSAS FileService network test create delete share succeeds"() {
         setup:
         def service = new AccountSasService()
-            .setFile(true)
+            .setFileAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)

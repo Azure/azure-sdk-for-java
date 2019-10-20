@@ -518,7 +518,7 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -546,7 +546,7 @@ class SASTest extends APISpec {
         bu.upload(new ByteArrayInputStream(data), data.length)
 
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -591,7 +591,7 @@ class SASTest extends APISpec {
     def "accountSAS network create container succeeds"() {
         setup:
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
