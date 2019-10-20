@@ -4,14 +4,15 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AccessPolicy;
+import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
 import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SignedIdentifier;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -189,10 +190,10 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         client.getAccessPolicy().subscribe(response -> {
             System.out.printf("Blob Access Type: %s%n", response.getBlobAccessType());
 
-            for (SignedIdentifier identifier : response.getIdentifiers()) {
+            for (BlobSignedIdentifier identifier : response.getIdentifiers()) {
                 System.out.printf("Identifier Name: %s, Permissions %s%n",
                     identifier.getId(),
-                    identifier.getAccessPolicy().getPermission());
+                    identifier.getAccessPolicy().getPermissions());
             }
         });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.getAccessPolicy
@@ -208,10 +209,10 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         client.getAccessPolicyWithResponse(accessConditions).subscribe(response -> {
             System.out.printf("Blob Access Type: %s%n", response.getValue().getBlobAccessType());
 
-            for (SignedIdentifier identifier : response.getValue().getIdentifiers()) {
+            for (BlobSignedIdentifier identifier : response.getValue().getIdentifiers()) {
                 System.out.printf("Identifier Name: %s, Permissions %s%n",
                     identifier.getId(),
-                    identifier.getAccessPolicy().getPermission());
+                    identifier.getAccessPolicy().getPermissions());
             }
         });
         // END: com.azure.storage.blob.BlobContainerAsyncClient.getAccessPolicyWithResponse#LeaseAccessConditions
@@ -222,12 +223,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void setAccessPolicy() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicy#PublicAccessType-List
-        SignedIdentifier identifier = new SignedIdentifier()
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
-            .setAccessPolicy(new AccessPolicy()
-                .setStart(OffsetDateTime.now())
-                .setExpiry(OffsetDateTime.now().plusDays(7))
-                .setPermission("permissionString"));
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
 
         client.setAccessPolicy(PublicAccessType.CONTAINER, Collections.singletonList(identifier)).subscribe(
             response -> System.out.printf("Set access policy completed%n"),
@@ -240,12 +241,12 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
      */
     public void setAccessPolicy2() {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobContainerAccessConditions
-        SignedIdentifier identifier = new SignedIdentifier()
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("name")
-            .setAccessPolicy(new AccessPolicy()
-                .setStart(OffsetDateTime.now())
-                .setExpiry(OffsetDateTime.now().plusDays(7))
-                .setPermission("permissionString"));
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("permissionString"));
 
         BlobContainerAccessConditions accessConditions = new BlobContainerAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
@@ -259,63 +260,63 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsFlat()}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobs()}
      */
     public void listBlobsFlat() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat
-        client.listBlobsFlat().subscribe(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs
+        client.listBlobs().subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isPrefix()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsFlat(ListBlobsOptions)}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobs(ListBlobsOptions)}
      */
     public void listBlobsFlat2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat#ListBlobsOptions
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("prefixToMatch")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsFlat(options).subscribe(blob ->
+        client.listBlobs(options).subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsFlat#ListBlobsOptions
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobs#ListBlobsOptions
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsHierarchy(String)}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobsByHierarchy(String)}
      */
     public void listBlobsHierarchy() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String
-        client.listBlobsHierarchy("directoryName").subscribe(blob ->
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String
+        client.listBlobsByHierarchy("directoryName").subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b%n", blob.getName(), blob.isDeleted()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String
     }
 
     /**
-     * Code snippet for {@link BlobContainerAsyncClient#listBlobsHierarchy(String, ListBlobsOptions)}
+     * Code snippet for {@link BlobContainerAsyncClient#listBlobsByHierarchy(String, ListBlobsOptions)}
      */
     public void listBlobsHierarchy2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
         ListBlobsOptions options = new ListBlobsOptions()
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
                 .setRetrieveSnapshots(true));
 
-        client.listBlobsHierarchy("/", options).subscribe(blob ->
+        client.listBlobsByHierarchy("/", options).subscribe(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",
                 blob.getName(),
                 blob.isPrefix(),
                 blob.isDeleted(),
                 blob.getSnapshot()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsHierarchy#String-ListBlobsOptions
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
     }
 
     /**

@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
 
     public static final int DATA_COUNT = 40;
 
-    public static final int DOWNLOAD_SIZE = 64; // The total size of the "download" after expanding the requested range.
+    private static final int DOWNLOAD_SIZE = 64; // The total size of the "download" after expanding the requested range.
 
     /*
     These constants correspond to the positions above.
@@ -139,7 +140,7 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
         this.testCase = testCase;
         this.plainText = spec.getRandomData(DOWNLOAD_SIZE - 2); // This will yield two bytes of padding... for fun.
 
-        EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, null, null, key,
+        EncryptedBlob encryptedBlob = new EncryptedBlobAsyncClient(null, null, null, null, null, null, null, key,
             "keyWrapAlgorithm")
             .encryptBlob(Flux.just(this.plainText)).block();
         this.cipherText = APISpec.collectBytesInBuffer(encryptedBlob.getCiphertextFlux()).block();
@@ -156,8 +157,8 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
 
     @Override
     public void subscribe(CoreSubscriber<? super ByteBuffer> s) {
-        List<Integer> positionArr = null;
-        List<Integer> limitArr = null;
+        List<Integer> positionArr;
+        List<Integer> limitArr;
         switch (this.testCase) {
             case CASE_ZERO:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_FOUR_POSITION, POSITION_FIVE,
@@ -196,10 +197,11 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
                 limitArr = Arrays.asList(POSITION_EIGHT, POSITION_NINE_LIMIT);
                 break;
             case CASE_SEVEN:
-                positionArr = Arrays.asList(POSITION_ONE);
-                limitArr = Arrays.asList(POSITION_NINE_LIMIT);
+                positionArr = Collections.singletonList(POSITION_ONE);
+                limitArr = Collections.singletonList(POSITION_NINE_LIMIT);
                 break;
             case CASE_EIGHT:
+            case CASE_THIRTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_NINE_LIMIT);
                 break;
@@ -218,10 +220,6 @@ public class EncryptedFlux extends Flux<ByteBuffer> {
             case CASE_TWELVE:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO, POSITION_EIGHT);
                 limitArr = Arrays.asList(POSITION_TWO, POSITION_EIGHT, POSITION_NINE_LIMIT);
-                break;
-            case CASE_THIRTEEN:
-                positionArr = Arrays.asList(POSITION_ONE, POSITION_TWO);
-                limitArr = Arrays.asList(POSITION_TWO, POSITION_NINE_LIMIT);
                 break;
             case CASE_FOURTEEN:
                 positionArr = Arrays.asList(POSITION_ONE, POSITION_THREE_POSITION, POSITION_FOUR_LIMIT);

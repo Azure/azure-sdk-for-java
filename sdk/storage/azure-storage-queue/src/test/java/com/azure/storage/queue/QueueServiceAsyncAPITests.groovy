@@ -33,7 +33,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, null)).assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
         }.verifyComplete()
-        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).enqueueMessageWithResponse("Testing service client creating a queue", null, null))
+        StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName).sendMessageWithResponse("Testing service client creating a queue", null, null))
             .assertNext {
                 assert QueueTestHelper.assertResponseStatusCode(it, 201)
             }.verifyComplete()
@@ -59,7 +59,7 @@ class QueueServiceAsyncAPITests extends APISpec {
 
     def "Create null"() {
         when:
-        primaryQueueServiceAsyncClient.createQueue(null)
+        primaryQueueServiceAsyncClient.createQueue(null).block()
         then:
         thrown(NullPointerException)
     }
@@ -71,7 +71,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         when:
         def createQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.createQueueWithResponse(queueName, metadata))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
-            .enqueueMessageWithResponse("Testing service client creating a queue", null, null))
+            .sendMessageWithResponse("Testing service client creating a queue", null, null))
         then:
         createQueueVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 201)
@@ -106,7 +106,7 @@ class QueueServiceAsyncAPITests extends APISpec {
         when:
         def deleteQueueVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.deleteQueueWithResponse(queueName))
         def enqueueMessageVerifier = StepVerifier.create(primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName)
-            .enqueueMessageWithResponse("Expecting exception as queue has been deleted.", null, null))
+            .sendMessageWithResponse("Expecting exception as queue has been deleted.", null, null))
         then:
         deleteQueueVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)
@@ -176,7 +176,7 @@ class QueueServiceAsyncAPITests extends APISpec {
             .setIncludeAPIs(false)
             .setRetentionPolicy(retentionPolicy)
             .setVersion("1.0")
-        def updatedProperties = new QueueServiceProperties().setLogging(logging)
+        def updatedProperties = new QueueServiceProperties().setAnalyticsLogging(logging)
             .setHourMetrics(metrics)
             .setMinuteMetrics(metrics)
             .setCors(new ArrayList<>())

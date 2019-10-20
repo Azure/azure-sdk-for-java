@@ -28,39 +28,22 @@ public class AsyncSample {
         // Create a share
         String shareName = generateRandomName();
         fileServiceAsyncClient.createShareWithResponse(shareName, null, null).subscribe(
-            response -> {
-                System.out.printf("Successfully created a share with status code: %d.", response.getStatusCode());
-            },
-            err -> {
-                System.out.println("Failed to create a share. Reasons: " + err.getMessage());
-            },
-            () -> {
-                System.out.println("Completed creating a share!");
-            }
-        );
+            response -> System.out.printf("Successfully created a share with status code: %d.",
+                response.getStatusCode()),
+            err -> System.out.println("Failed to create a share. Reasons: " + err.getMessage()),
+            () -> System.out.println("Completed creating a share!"));
 
         // List all shares and delete them.
         fileServiceAsyncClient.listShares().subscribe(
             shareItem -> {
                 System.out.println("There is a share named: " + shareItem.getName());
                 fileServiceAsyncClient.deleteShare(shareItem.getName()).subscribe(
-                    response -> {
-                        System.out.printf("Successfully delete the share: %s.", shareItem.getName());
-                    },
-                    err -> {
-                        System.out.printf("Failed to delete the share: %s. Reasons: %s.", shareItem.getName(), err.getMessage());
-                    },
-                    () -> {
-                        System.out.println("Completed deleting the share.");
-                    }
-                );
+                    response -> System.out.printf("Successfully delete the share: %s.", shareItem.getName()),
+                    err -> System.out.printf("Failed to delete the share: %s. Reasons: %s.",
+                        shareItem.getName(), err.getMessage()),
+                    () -> System.out.println("Completed deleting the share."));
             },
-            err -> {
-                System.out.println("Failed to list shares. Reasons: " + err.getMessage());
-            },
-            () -> {
-                System.out.println("Completed the listing and deleting the shares.");
-            }
-        );
+            err -> System.out.println("Failed to list shares. Reasons: " + err.getMessage()),
+            () -> System.out.println("Completed the listing and deleting the shares."));
     }
 }

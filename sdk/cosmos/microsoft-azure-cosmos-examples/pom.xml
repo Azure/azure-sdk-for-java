@@ -8,12 +8,12 @@ Licensed under the MIT License.
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmos-parent</artifactId>
-    <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
+    <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-examples</artifactId>
-  <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-examples;current} -->
+  <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-examples;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - Examples</name>
   <description>This package contains examples for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -89,7 +89,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
+      <version>3.4.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>

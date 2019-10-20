@@ -3,8 +3,6 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.storage.common.Constants;
-
 import java.util.EnumSet;
 
 /**
@@ -76,7 +74,7 @@ public enum NtfsFileAttributes {
      */
     public static String toString(EnumSet<NtfsFileAttributes> ntfsAttributes) {
         if (ntfsAttributes == null) {
-            return Constants.EMPTY_STRING;
+            return "";
         }
 
         final StringBuilder builder = new StringBuilder();

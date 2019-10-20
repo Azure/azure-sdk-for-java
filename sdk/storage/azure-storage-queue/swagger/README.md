@@ -34,7 +34,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,EnqueuedMessage,DequeuedMessage,PeekedMessage,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
 custom-types-subpackage: models
 ```
 
@@ -156,15 +156,15 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.DequeuedMessage) {
-        $.DequeuedMessage = $.DequeuedMessageItem;
+    if (!$.QueueMessageItem) {
+        $.QueueMessageItem = $.DequeuedMessageItem;
         delete $.DequeuedMessageItem;
-        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "DequeuedMessage");
+        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "QueueMessageItem");
     }
-    if (!$.PeekedMessage) {
-        $.PeekedMessage = $.PeekedMessageItem;
-        delete $.PeekedMessageItem;
-        $.PeekedMessagesList.items.$ref = $.PeekedMessagesList.items.$ref.replace("PeekedMessageItem", "PeekedMessage");
+    if (!$.SendMessageResult) {
+        $.SendMessageResult = $.EnqueuedMessage;
+        delete $.EnqueuedMessage;
+        $.EnqueuedMessageList.items.$ref = $.EnqueuedMessageList.items.$ref.replace("EnqueuedMessage", "SendMessageResult");
     }
 ```
 
@@ -211,6 +211,7 @@ directive:
       delete $.Logging;
       $.QueueAnalyticsLogging.xml = {"name": "Logging"};
       $.QueueServiceProperties.properties.Logging["$ref"] = "#/definitions/QueueAnalyticsLogging";
+      $.QueueServiceProperties.properties.Logging["x-ms-client-name"] = "analyticsLogging";
     }
     if (!$.QueueMetrics) {
       $.QueueMetrics = $.Metrics;
