@@ -912,10 +912,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), fetchResultOperation(), recoverAtivationOperation(name), null);
+        return new Poller<>(Duration.ofSeconds(1), createRecoverPollOperation(name), fetchResultOperation(), recoverActivationOperation(name), null);
     }
 
-    private Supplier<Mono<KeyVaultKey>> recoverAtivationOperation(String name) {
+    private Supplier<Mono<KeyVaultKey>> recoverActivationOperation(String name) {
         return () -> withContext(context -> recoverDeletedKeyWithResponse(name, context)
             .flatMap(keyResponse -> Mono.just(keyResponse.getValue())));
     }
