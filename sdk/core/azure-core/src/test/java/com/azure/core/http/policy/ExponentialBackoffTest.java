@@ -54,7 +54,7 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testExponentialBackoff() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(3, Duration.ofSeconds(1),
+        ExponentialBackoff expBackoff = new ExponentialBackoff(10, Duration.ofSeconds(1),
             Duration.ofSeconds(10));
 
         // exponential backoff

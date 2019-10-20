@@ -15,7 +15,9 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class ExponentialBackoff implements RetryStrategy {
 
+    private static final double JITTER_FACTOR = 0.05;
     private final ClientLogger logger = new ClientLogger(ExponentialBackoff.class);
+
     private final int maxRetries;
     private final Duration baseDelay;
     private final Duration maxDelay;
@@ -31,7 +33,6 @@ public class ExponentialBackoff implements RetryStrategy {
         if (maxRetries < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
-
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
@@ -43,7 +44,6 @@ public class ExponentialBackoff implements RetryStrategy {
             throw logger
                 .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
         }
-
         this.maxRetries = maxRetries;
         this.baseDelay = baseDelay;
         this.maxDelay = maxDelay;
@@ -56,9 +56,10 @@ public class ExponentialBackoff implements RetryStrategy {
 
     @Override
     public Duration calculateRetryDelay(int retryAttempts) {
-        // Introduce a small amount (upto 1%) of jitter to base delay
-        long delayWithJitterInNanos = ThreadLocalRandom.current().nextLong((long) (baseDelay.toNanos() * 0.99),
-            (long) (baseDelay.toNanos() * 1.01));
+        // Introduce a small amount of jitter to base delay
+        long delayWithJitterInNanos = ThreadLocalRandom.current()
+            .nextLong((long) (baseDelay.toNanos() * (1 - JITTER_FACTOR)),
+                (long) (baseDelay.toNanos() * (1 + JITTER_FACTOR)));
         Duration delay = Duration.ofNanos(Math.min((1 << retryAttempts) * delayWithJitterInNanos,
             maxDelay.toNanos()));
         return delay;
