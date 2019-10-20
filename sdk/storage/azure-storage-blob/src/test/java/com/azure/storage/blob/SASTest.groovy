@@ -568,7 +568,7 @@ class SASTest extends APISpec {
     def "accountSAS network create container fails"() {
         setup:
         def service = new AccountSasService()
-            .setBlob(true)
+            .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
