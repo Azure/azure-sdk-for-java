@@ -75,7 +75,7 @@ public class RetryPolicyTests {
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    if (previousAttemptMadeAt != -1) {
+                    if (previousAttemptMadeAt > 0) {
                         Assert.assertTrue(System.currentTimeMillis() >= previousAttemptMadeAt + delayMillis);
                     }
                     Assert.assertTrue(count++ < maxRetries);
@@ -107,7 +107,7 @@ public class RetryPolicyTests {
                     if (count > 0) {
                         long requestMadeAt = System.currentTimeMillis();
                         long expectedToBeMadeAt =
-                            previousAttemptMadeAt + ((1 << (count - 1)) * (long)(baseDelayMillis * 0.99));
+                            previousAttemptMadeAt + ((1 << (count - 1)) * (long) (baseDelayMillis * 0.99));
                         Assert.assertTrue(requestMadeAt >= expectedToBeMadeAt);
                     }
                     Assert.assertTrue(count++ < maxRetries);
