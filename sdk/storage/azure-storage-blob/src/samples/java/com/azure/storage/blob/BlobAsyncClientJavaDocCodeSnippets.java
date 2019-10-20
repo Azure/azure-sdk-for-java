@@ -61,11 +61,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#copyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClient#copyFromUrl(String)}
      */
     public void copyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
-        client.copyFromURL(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
+        client.copyFromUrl(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
     }
 

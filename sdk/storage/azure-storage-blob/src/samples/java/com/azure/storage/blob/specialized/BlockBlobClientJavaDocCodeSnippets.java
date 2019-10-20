@@ -35,7 +35,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     private long length = 4L;
     private Duration timeout = Duration.ofSeconds(30);
     private String leaseId = "leaseId";
-    private String base64BlockID = "base64BlockID";
+    private String base64BlockId = "base64BlockID";
     private String sourceUrl = "https://example.com";
     private long offset = 1024L;
     private long count = length;
@@ -82,7 +82,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
      */
     public void stageBlock() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long
-        client.stageBlock(base64BlockID, data, length);
+        client.stageBlock(base64BlockId, data, length);
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long
     }
 
@@ -94,23 +94,23 @@ public class BlockBlobClientJavaDocCodeSnippets {
         LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         Context context = new Context("key", "value");
         System.out.printf("Staging block completed with status %d%n",
-            client.stageBlockWithResponse(base64BlockID, data, length, accessConditions, timeout, context).getStatusCode());
+            client.stageBlockWithResponse(base64BlockId, data, length, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-LeaseAccessConditions-Duration-Context
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#stageBlockFromURL(String, String, BlobRange)}
+     * Code snippet for {@link BlockBlobClient#stageBlockFromUrl(String, String, BlobRange)}
      */
-    public void stageBlockFromURL() {
+    public void stageBlockFromUrl() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-String-BlobRange
-        client.stageBlockFromURL(base64BlockID, sourceUrl, new BlobRange(offset, count));
+        client.stageBlockFromUrl(base64BlockId, sourceUrl, new BlobRange(offset, count));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURL#String-String-BlobRange
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#stageBlockFromURLWithResponse(String, String, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
+     * Code snippet for {@link BlockBlobClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions, Duration, Context)}
      */
-    public void stageBlockFromURL2() {
+    public void stageBlockFromUrl2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()
@@ -118,7 +118,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Staging block from URL completed with status %d%n",
-            client.stageBlockFromURLWithResponse(base64BlockID, sourceUrl, new BlobRange(offset, count), null,
+            client.stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, new BlobRange(offset, count), null,
                 leaseAccessConditions, sourceModifiedAccessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions-Duration-Context
     }
@@ -161,7 +161,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void commitBlockList() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List
         System.out.printf("Committing block list completed. Last modified: %s%n",
-            client.commitBlockList(Collections.singletonList(base64BlockID)).getLastModified());
+            client.commitBlockList(Collections.singletonList(base64BlockId)).getLastModified());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List
     }
 
@@ -183,7 +183,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Committing block list completed with status %d%n",
-            client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
+            client.commitBlockListWithResponse(Collections.singletonList(base64BlockId), headers, metadata,
                 AccessTier.HOT, accessConditions, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions-Duration-Context
     }

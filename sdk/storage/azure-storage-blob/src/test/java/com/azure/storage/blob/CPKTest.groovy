@@ -105,7 +105,7 @@ class CPKTest extends APISpec {
             .generateSasQueryParameters(primaryCredential)
             .encode()
 
-        def response = cpkBlockBlob.stageBlockFromURLWithResponse(getBlockID(), sourceBlob.getBlobUrl().toString() + "?" + sas,
+        def response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(), sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
 
         then:

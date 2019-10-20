@@ -233,8 +233,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param sourceRange {@link BlobRange}
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public void stageBlockFromURL(String base64BlockID, String sourceUrl, BlobRange sourceRange) {
-        stageBlockFromURLWithResponse(base64BlockID, sourceUrl, sourceRange, null, null, null, null, Context.NONE);
+    public void stageBlockFromUrl(String base64BlockID, String sourceUrl, BlobRange sourceRange) {
+        stageBlockFromUrlWithResponse(base64BlockID, sourceUrl, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
@@ -263,9 +263,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return A response containing status code and HTTP headers
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
-    public Response<Void> stageBlockFromURLWithResponse(String base64BlockID, String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-        SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
+    public Response<Void> stageBlockFromUrlWithResponse(String base64BlockID, String sourceUrl, BlobRange sourceRange,
+                                                        byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
+                                                        SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = blockBlobAsyncClient.stageBlockFromURLWithResponse(base64BlockID, sourceUrl,
             sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

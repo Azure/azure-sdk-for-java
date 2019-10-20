@@ -449,7 +449,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @see #copyFromURL(String)
+     * @see #copyFromUrl(String)
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions,
      * BlobAccessConditions, Duration)
@@ -474,7 +474,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @see #copyFromURL(String)
+     * @see #copyFromUrl(String)
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, ModifiedAccessConditions,
      * BlobAccessConditions, Duration)
@@ -512,7 +512,7 @@ public class BlobAsyncClientBase {
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<String> copyFromURL(String copySource) {
+    public Mono<String> copyFromUrl(String copySource) {
         try {
             return copyFromUrlWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
