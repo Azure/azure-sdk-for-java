@@ -194,7 +194,6 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      *     contains the encrypted content.
      * @throws ResourceNotFoundException if the key cannot be found for encryption.
-     * @throws UnsupportedOperationException if the key operation is not supported oe configured on the key.
      * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      */
