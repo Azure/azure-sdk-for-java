@@ -6,6 +6,8 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.core.util.polling.Poller;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -17,6 +19,7 @@ import com.azure.storage.blob.models.ReliableDownloadOptions;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -43,13 +46,13 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#startCopyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClientBase#beginCopy(String, Duration)}
      */
-    public void startCopyFromURLCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#String
-        client.startCopyFromURL(url)
+    public void beginCopyCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration
+        client.beginCopy(url, Duration.ofSeconds(3)).getObserver()
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURL#String
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration
     }
 
     /**
@@ -219,21 +222,43 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#startCopyFromURLWithResponse(String, Map, AccessTier,
-     * RehydratePriority, RequestConditions, BlobRequestConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#beginCopy(String, Map, AccessTier,
+     * RehydratePriority, RequestConditions, BlobRequestConditions, Duration)}
      */
-    public void startCopyFromURLWithResponseCodeSnippets() {
+    public void beginCopyCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        RequestConditions modifiedAccessConditions = new RequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
+        BlobRequestConditions blobAccessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions
+        client.beginCopy(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
+            modifiedAccessConditions, blobAccessConditions, Duration.ofSeconds(2))
+            .getObserver()
+            .subscribe(response -> {
+                BlobCopyInfo info = response.getValue();
+                System.out.printf("CopyId: %s. Status: %s%n", info.getCopyId(), info.getCopyStatus());
+            });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClientBase#beginCopy(String, Map, AccessTier,
+     * RehydratePriority, RequestConditions, BlobRequestConditions, Duration)}
+     */
+    public void beginCopyFromUrlCancelCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-            modifiedAccessConditions, blobRequestConditions)
-            .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions
+        Poller<BlobCopyInfo, Void> poller = client.beginCopy(url, metadata, AccessTier.HOT,
+            RehydratePriority.STANDARD, modifiedAccessConditions, blobRequestConditions, Duration.ofSeconds(2));
+
+        // Cancel a poll operation.
+        poller.cancelOperation().block();
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration
     }
 
     /**

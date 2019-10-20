@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
@@ -666,7 +665,7 @@ class ContainerAPITest extends APISpec {
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
 
-        copyBlob.startCopyFromURL(normal.getBlobUrl())
+        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(2))
         def start = OffsetDateTime.now()
         def status = CopyStatusType.PENDING
         while (status != CopyStatusType.SUCCESS) {
