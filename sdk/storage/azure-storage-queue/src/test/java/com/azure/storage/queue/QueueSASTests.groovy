@@ -36,10 +36,10 @@ class QueueSASTests extends APISpec {
         def perms = QueueSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getAddPermission() == add
-        perms.getUpdatePermission() == update
-        perms.getProcessPermission() == process
+        perms.hasReadPermission() == read
+        perms.hasAddPermission() == add
+        perms.hasUpdatePermission() == update
+        perms.hasProcessPermission() == process
 
         where:
         permString || read  | add   | update | process

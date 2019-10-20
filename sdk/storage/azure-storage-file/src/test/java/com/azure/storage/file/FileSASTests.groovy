@@ -59,10 +59,10 @@ class FileSASTests extends APISpec {
         def perms = FileSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getCreatePermission() == create
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
 
         where:
         permString || read  | write | delete | create
@@ -111,11 +111,11 @@ class FileSASTests extends APISpec {
         def perms = ShareSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getCreatePermission() == create
-        perms.getListPermission() == list
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
+        perms.hasListPermission() == list
 
         where:
         permString || read  | write | delete | create | list
