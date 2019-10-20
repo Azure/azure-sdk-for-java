@@ -18,9 +18,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
@@ -150,15 +149,15 @@ public final class BlobBatch {
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
-     * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
+     * @param blobRequestConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
-        DeleteSnapshotsOptionType deleteOptions, BlobAccessConditions blobAccessConditions) {
+        DeleteSnapshotsOptionType deleteOptions, BlobRequestConditions blobRequestConditions) {
         return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName, blobName),
-            deleteOptions, blobAccessConditions);
+            deleteOptions, blobRequestConditions);
     }
 
     /**
@@ -186,20 +185,20 @@ public final class BlobBatch {
      *
      * @param blobUrl URL of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.
-     * @param blobAccessConditions Additional access conditions that must be met to allow this operation.
+     * @param blobRequestConditions Additional access conditions that must be met to allow this operation.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String blobUrl, DeleteSnapshotsOptionType deleteOptions,
-        BlobAccessConditions blobAccessConditions) {
-        return deleteBlobHelper(getUrlPath(blobUrl), deleteOptions, blobAccessConditions);
+        BlobRequestConditions blobRequestConditions) {
+        return deleteBlobHelper(getUrlPath(blobUrl), deleteOptions, blobRequestConditions);
     }
 
     private Response<Void> deleteBlobHelper(String urlPath, DeleteSnapshotsOptionType deleteOptions,
-        BlobAccessConditions blobAccessConditions) {
+        BlobRequestConditions blobRequestConditions) {
         setBatchType(BlobBatchType.DELETE);
-        return createBatchOperation(blobAsyncClient.deleteWithResponse(deleteOptions, blobAccessConditions),
+        return createBatchOperation(blobAsyncClient.deleteWithResponse(deleteOptions, blobRequestConditions),
             urlPath, EXPECTED_DELETE_STATUS_CODES);
     }
 
@@ -226,20 +225,19 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
      * @param accessTier The tier to set on the blob.
-     * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
+     * @param leaseId The lease ID the active lease on the blob must match.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
-        LeaseAccessConditions leaseAccessConditions) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, blobName), accessTier,
-            leaseAccessConditions);
+        String leaseId) {
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName, blobName), accessTier, leaseId);
     }
 
     /**
@@ -264,24 +262,22 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-LeaseAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String}
      *
      * @param blobUrl URL of the blob.
      * @param accessTier The tier to set on the blob.
-     * @param leaseAccessConditions Lease access conditions that must be met to allow this operation.
+     * @param leaseId The lease ID the active lease on the blob must match.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
      * submitted.
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
-    public Response<Void> setBlobAccessTier(String blobUrl, AccessTier accessTier,
-        LeaseAccessConditions leaseAccessConditions) {
-        return setBlobAccessTierHelper(getUrlPath(blobUrl), accessTier, leaseAccessConditions);
+    public Response<Void> setBlobAccessTier(String blobUrl, AccessTier accessTier, String leaseId) {
+        return setBlobAccessTierHelper(getUrlPath(blobUrl), accessTier, leaseId);
     }
 
-    private Response<Void> setBlobAccessTierHelper(String urlPath, AccessTier accessTier,
-        LeaseAccessConditions leaseAccessConditions) {
+    private Response<Void> setBlobAccessTierHelper(String urlPath, AccessTier accessTier, String leaseId) {
         setBatchType(BlobBatchType.SET_TIER);
-        return createBatchOperation(blobAsyncClient.setAccessTierWithResponse(accessTier, null, leaseAccessConditions),
+        return createBatchOperation(blobAsyncClient.setAccessTierWithResponse(accessTier, null, leaseId),
             urlPath, EXPECTED_SET_TIER_STATUS_CODES);
     }
 

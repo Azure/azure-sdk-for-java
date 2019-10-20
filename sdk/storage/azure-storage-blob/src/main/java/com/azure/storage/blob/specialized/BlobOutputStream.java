@@ -3,12 +3,10 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.AppendBlobAccessConditions;
-import com.azure.storage.blob.models.AppendPositionAccessConditions;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.PageBlobAccessConditions;
+import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
@@ -31,17 +29,17 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
-                                                   final AppendBlobAccessConditions appendBlobAccessConditions) {
-        return new AppendBlobOutputStream(client, appendBlobAccessConditions);
+                                                   final AppendBlobRequestConditions appendBlobRequestConditions) {
+        return new AppendBlobOutputStream(client, appendBlobRequestConditions);
     }
 
     static BlobOutputStream blockBlobOutputStream(final BlockBlobAsyncClient client,
-                                                  final BlobAccessConditions accessConditions) {
+                                                  final BlobRequestConditions accessConditions) {
         return new BlockBlobOutputStream(client, accessConditions);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
-                                                 final BlobAccessConditions accessConditions) {
+                                                 final BlobRequestConditions accessConditions) {
         return new PageBlobOutputStream(client, pageRange, accessConditions);
     }
 
@@ -79,37 +77,34 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private static final String INVALID_BLOCK_SIZE =
             "Block data should not exceed BlockBlobURL.MAX_STAGE_BLOCK_BYTES";
 
-        private final AppendBlobAccessConditions appendBlobAccessConditions;
-        private final AppendPositionAccessConditions appendPositionAccessConditions;
+        private final AppendBlobRequestConditions appendBlobRequestConditions;
+        private final Long maxSize;
         private final long initialBlobOffset;
         private final AppendBlobAsyncClient client;
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
-                                       final AppendBlobAccessConditions appendBlobAccessConditions) {
+                                       final AppendBlobRequestConditions appendBlobRequestConditions) {
             super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES);
             this.client = client;
-            this.appendBlobAccessConditions = appendBlobAccessConditions;
+            this.appendBlobRequestConditions = appendBlobRequestConditions;
 
-            if (appendBlobAccessConditions != null) {
-                this.appendPositionAccessConditions = appendBlobAccessConditions.getAppendPositionAccessConditions();
-
-                if (appendBlobAccessConditions.getAppendPositionAccessConditions().getAppendPosition() != null) {
-                    this.initialBlobOffset = appendBlobAccessConditions
-                        .getAppendPositionAccessConditions()
-                        .getAppendPosition();
+            if (appendBlobRequestConditions != null) {
+                this.maxSize = appendBlobRequestConditions.getMaxSize();
+                if (appendBlobRequestConditions.getAppendPosition() != null) {
+                    this.initialBlobOffset = appendBlobRequestConditions.getAppendPosition();
                 } else {
                     this.initialBlobOffset = client.getProperties().block().getBlobSize();
                 }
             } else {
                 this.initialBlobOffset = client.getProperties().block().getBlobSize();
-                this.appendPositionAccessConditions = new AppendPositionAccessConditions();
+                this.maxSize = null;
             }
         }
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long offset, long writeLength) {
-            this.appendPositionAccessConditions.setAppendPosition(offset);
+            this.appendBlobRequestConditions.setAppendPosition(offset);
 
-            return client.appendBlockWithResponse(blockData, writeLength, appendBlobAccessConditions)
+            return client.appendBlockWithResponse(blockData, writeLength, appendBlobRequestConditions)
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
                     this.lastError = new IOException(e);
@@ -126,9 +121,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             // We cannot differentiate between max size condition failing only in the retry versus failing in the
             // first attempt and retry even for a single writer scenario. So we will eliminate the latter and handle
             // the former in the append block method.
-            if (this.appendPositionAccessConditions != null
-                && this.appendPositionAccessConditions.getMaxSize() != null
-                && this.initialBlobOffset > this.appendPositionAccessConditions.getMaxSize()) {
+            if (this.maxSize != null && this.initialBlobOffset > this.maxSize) {
                 this.lastError = new IOException(INVALID_BLOCK_SIZE);
                 return Mono.error(this.lastError);
             }
@@ -146,15 +139,17 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
-        private final BlobAccessConditions accessConditions;
+        private final BlobRequestConditions accessConditions;
+        private final String leaseId;
         private final String blockIdPrefix;
         private final List<String> blockList;
         private final BlockBlobAsyncClient client;
 
-        private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobAccessConditions accessConditions) {
+        private BlockBlobOutputStream(final BlockBlobAsyncClient client, final BlobRequestConditions accessConditions) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
             this.client = client;
             this.accessConditions = accessConditions;
+            this.leaseId = (accessConditions == null) ? null : accessConditions.getLeaseId();
             this.blockIdPrefix = UUID.randomUUID().toString() + '-';
             this.blockList = new ArrayList<>();
         }
@@ -171,10 +166,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         }
 
         private Mono<Void> writeBlock(Flux<ByteBuffer> blockData, String blockId, long writeLength) {
-            LeaseAccessConditions leaseAccessConditions = (accessConditions == null)
-                ? null : accessConditions.getLeaseAccessConditions();
-
-            return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseAccessConditions)
+            return client.stageBlockWithResponse(blockId, blockData, writeLength, leaseId)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -212,27 +204,25 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private final ClientLogger logger = new ClientLogger(PageBlobOutputStream.class);
         private final PageBlobAsyncClient client;
-        private final PageBlobAccessConditions pageBlobAccessConditions;
+        private final PageBlobRequestConditions pageBlobRequestConditions;
         private final PageRange pageRange;
 
         private PageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
-                                     final BlobAccessConditions blobAccessConditions) {
+                                     final BlobRequestConditions blobRequestConditions) {
             super(PageBlobClient.MAX_PUT_PAGES_BYTES);
             this.client = client;
             this.pageRange = pageRange;
 
-            if (blobAccessConditions != null) {
-                this.pageBlobAccessConditions = new PageBlobAccessConditions()
-                    .setModifiedAccessConditions(blobAccessConditions.getModifiedAccessConditions())
-                    .setLeaseAccessConditions(blobAccessConditions.getLeaseAccessConditions());
+            if (blobRequestConditions != null) {
+                this.pageBlobRequestConditions = (PageBlobRequestConditions) blobRequestConditions;
             } else {
-                this.pageBlobAccessConditions = null;
+                this.pageBlobRequestConditions = null;
             }
         }
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
             return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1),
-                pageData, pageBlobAccessConditions)
+                pageData, pageBlobRequestConditions)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

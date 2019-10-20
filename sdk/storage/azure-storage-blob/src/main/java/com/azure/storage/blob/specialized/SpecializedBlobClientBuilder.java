@@ -20,7 +20,6 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;

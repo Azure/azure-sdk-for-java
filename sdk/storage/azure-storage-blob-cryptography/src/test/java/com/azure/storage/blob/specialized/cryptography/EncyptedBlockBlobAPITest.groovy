@@ -3,12 +3,11 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.BlobAccessConditions
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.ModifiedAccessConditions
+
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -296,7 +295,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(defaultFlux, null).block()
         def etag = setupBlobMatchCondition(beac, match)
         leaseID = setupBlobLeaseCondition(beac, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions().setModifiedAccessConditions(
+        BlobRequestConditions bac = new BlobRequestConditions().setModifiedAccessConditions(
             new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
                 .setIfMatch(etag).setIfNoneMatch(noneMatch))
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
@@ -332,7 +331,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(defaultFlux, null).block()
         noneMatch = setupBlobMatchCondition(beac, noneMatch)
         setupBlobLeaseCondition(beac, leaseID)
-        BlobAccessConditions bac = new BlobAccessConditions().setModifiedAccessConditions(
+        BlobRequestConditions bac = new BlobRequestConditions().setModifiedAccessConditions(
             new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
                 .setIfMatch(match).setIfNoneMatch(noneMatch))
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))

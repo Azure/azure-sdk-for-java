@@ -3,13 +3,12 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
@@ -99,7 +98,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
-     * BlobAccessConditions, boolean)}
+     * BlobRequestConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -123,7 +122,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#downloadToFile(String)} and {@link BlobAsyncClient#downloadToFileWithResponse(
-     * String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobAccessConditions, boolean)}
+     * String, BlobRange, ParallelTransferOptions, ReliableDownloadOptions, BlobRequestConditions, boolean)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.downloadToFile#String
@@ -228,57 +227,54 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobAsyncClient#startCopyFromURLWithResponse(String, Map, AccessTier,
-     * RehydratePriority, ModifiedAccessConditions, BlobAccessConditions)}
+     * RehydratePriority, RequestConditions, BlobRequestConditions)}
      */
     public void startCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.startCopyFromURLWithResponse(url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
-            modifiedAccessConditions, blobAccessConditions)
+            modifiedAccessConditions, blobRequestConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.startCopyFromURLWithResponse#String-Metadata-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#abortCopyFromURLWithResponse(String, String)}
      */
     public void abortCopyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
-        LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-        client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-String
+        client.abortCopyFromURLWithResponse(copyId, leaseId)
             .subscribe(
                 response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-String
     }
 
     /**
      * Code snippets for {@link BlobAsyncClient#copyFromURLWithResponse(String, Map, AccessTier,
-     * ModifiedAccessConditions, BlobAccessConditions)}
+     * RequestConditions, BlobRequestConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
-        BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
+        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobRequestConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
-        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-RequestConditions-BlobRequestConditions
     }
 
     /**
      * Code snippets for {@link BlobAsyncClient#downloadWithResponse(BlobRange, ReliableDownloadOptions,
-     * BlobAccessConditions, boolean)}
+     * BlobRequestConditions, boolean)}
      *
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -301,7 +297,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#deleteWithResponse(DeleteSnapshotsOptionType, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)}
      */
     public void deleteWithResponseCodeSnippets() {
 
@@ -312,13 +308,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#getPropertiesWithResponse(BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#getPropertiesWithResponse(BlobRequestConditions)}
      */
     public void getPropertiesWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.getPropertiesWithResponse#BlobAccessConditions
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.getPropertiesWithResponse(accessConditions).subscribe(
             response -> System.out.printf("Type: %s, Size: %d%n", response.getValue().getBlobType(),
@@ -327,13 +322,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setHttpHeadersWithResponse(BlobHttpHeaders, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setHttpHeadersWithResponse(BlobHttpHeaders, BlobRequestConditions)}
      */
     public void setHTTPHeadersWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setHttpHeadersWithResponse#BlobHttpHeaders-BlobAccessConditions
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.setHttpHeadersWithResponse(new BlobHttpHeaders()
             .setBlobContentLanguage("en-US")
@@ -345,12 +339,11 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#setMetadataWithResponse(Map, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#setMetadataWithResponse(Map, BlobRequestConditions)}
      */
     public void setMetadataWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.setMetadataWithResponse#Metadata-BlobAccessConditions
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
+        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.setMetadataWithResponse(Collections.singletonMap("metadata", "value"), accessConditions)
             .subscribe(
@@ -359,14 +352,13 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClient#createSnapshotWithResponse(Map, BlobAccessConditions)}
+     * Code snippets for {@link BlobAsyncClient#createSnapshotWithResponse(Map, BlobRequestConditions)}
      */
     public void createSnapshotWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.createSnapshotWithResponse#Metadata-BlobAccessConditions
         Map<String, String> snapshotMetadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions().setLeaseAccessConditions(
-            new LeaseAccessConditions().setLeaseId(leaseId));
+        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.createSnapshotWithResponse(snapshotMetadata, accessConditions)
             .subscribe(response -> System.out.printf("Identifier for the snapshot is %s%n", response.getValue()));
@@ -374,16 +366,14 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#setAccessTierWithResponse(AccessTier, RehydratePriority, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#setAccessTierWithResponse(AccessTier, RehydratePriority, String)}
      */
     public void setTierWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
-        LeaseAccessConditions accessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-
-        client.setAccessTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, accessConditions)
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-String
+        client.setAccessTierWithResponse(AccessTier.HOT, RehydratePriority.STANDARD, leaseId)
             .subscribe(response -> System.out.printf("Set tier completed with status code %d%n",
                 response.getStatusCode()));
-        // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions
+        // END: com.azure.storage.blob.BlobAsyncClient.setTierWithResponse#AccessTier-RehydratePriority-String
     }
 
     /**
@@ -441,7 +431,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void upload4() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
@@ -451,10 +441,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setBlobContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize)
@@ -467,7 +456,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void upload5() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions.ProgressReporter
@@ -477,10 +466,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setBlobContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize)
@@ -506,7 +494,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions)}
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void uploadFromFile2() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
@@ -516,10 +504,9 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setBlobContentType("binary");
 
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadFromFile(filePath,
             new ParallelTransferOptions().setBlockSize(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE),

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
@@ -13,14 +14,12 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
@@ -36,6 +35,8 @@ import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
 import java.util.Map;
+
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -173,12 +174,12 @@ public class BlobClientBase {
      * <p>
      *
      * @param range {@link BlobRange}
-     * @param accessConditions An {@link BlobAccessConditions} object that represents the access conditions for the
+     * @param accessConditions An {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public final BlobInputStream openInputStream(BlobRange range, BlobAccessConditions accessConditions) {
+    public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions accessConditions) {
         return new BlobInputStream(client, range.getOffset(), range.getCount(), accessConditions);
     }
 
@@ -209,7 +210,7 @@ public class BlobClientBase {
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = client.existsWithResponse(context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -235,7 +236,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.startCopyFromURLWithResponse#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -244,24 +245,24 @@ public class BlobClientBase {
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
+     * @param sourceModifiedAccessConditions {@link RequestConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
      * condition is not satisfied.
-     * @param destAccessConditions {@link BlobAccessConditions} against the destination.
+     * @param destAccessConditions {@link BlobRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
     public Response<String> startCopyFromURLWithResponse(String sourceUrl, Map<String, String> metadata,
-        AccessTier tier, RehydratePriority priority, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions, Duration timeout, Context context) {
+        AccessTier tier, RehydratePriority priority, RequestConditions sourceModifiedAccessConditions,
+        BlobRequestConditions destAccessConditions, Duration timeout, Context context) {
         Mono<Response<String>> response = client
             .startCopyFromURLWithResponse(sourceUrl, metadata, tier, priority, sourceModifiedAccessConditions,
                 destAccessConditions, context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -285,24 +286,20 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.abortCopyFromURLWithResponse#String-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort.
-     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
+     * @param leaseId The lease ID the active lease on the blob must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
-        Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
-            context);
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    public Response<Void> abortCopyFromURLWithResponse(String copyId, String leaseId, Duration timeout,
+        Context context) {
+        return blockWithOptionalTimeout(client.abortCopyFromURLWithResponse(copyId, leaseId, context), timeout);
     }
 
     /**
@@ -328,7 +325,7 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromURLWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -336,24 +333,24 @@ public class BlobClientBase {
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
+     * @param sourceModifiedAccessConditions {@link RequestConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
      * related to when the blob was changed relative to the given request. The request will fail if the specified
      * condition is not satisfied.
-     * @param destAccessConditions {@link BlobAccessConditions} against the destination.
+     * @param destAccessConditions {@link BlobRequestConditions} against the destination.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
     public Response<String> copyFromURLWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+        RequestConditions sourceModifiedAccessConditions, BlobRequestConditions destAccessConditions,
         Duration timeout, Context context) {
         Mono<Response<String>> response = client
             .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -389,7 +386,7 @@ public class BlobClientBase {
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param options {@link ReliableDownloadOptions}
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -398,7 +395,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null
      */
     public Response<Void> downloadWithResponse(OutputStream stream, BlobRange range, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<Response<Void>> download = client
             .downloadWithResponse(range, options, accessConditions, rangeGetContentMD5, context)
@@ -411,7 +408,7 @@ public class BlobClientBase {
                 }
             }).thenReturn(new SimpleResponse<>(response, null)));
 
-        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+        return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -463,7 +460,7 @@ public class BlobClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      *        transfers parameter is ignored.
      * @param options {@link ReliableDownloadOptions}
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -472,10 +469,10 @@ public class BlobClientBase {
      */
     public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
+        BlobRequestConditions accessConditions, boolean rangeGetContentMD5, Duration timeout, Context context) {
         Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
             parallelTransferOptions, options, accessConditions, rangeGetContentMD5, context);
-        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+        return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -505,17 +502,17 @@ public class BlobClientBase {
      * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
      * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
      * deleted, you must pass null.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
     public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-        BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobRequestConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<Void>> response = client
             .deleteWithResponse(deleteBlobSnapshotOptions, accessConditions, context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -544,16 +541,16 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The blob properties and metadata.
      */
-    public Response<BlobProperties> getPropertiesWithResponse(BlobAccessConditions accessConditions, Duration timeout,
+    public Response<BlobProperties> getPropertiesWithResponse(BlobRequestConditions accessConditions, Duration timeout,
         Context context) {
         Mono<Response<BlobProperties>> response = client.getPropertiesWithResponse(accessConditions, context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -585,17 +582,17 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHttpHeaders}
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobAccessConditions accessConditions,
+    public Response<Void> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobRequestConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client
             .setHttpHeadersWithResponse(headers, accessConditions, context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -627,16 +624,16 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobAccessConditions accessConditions,
+    public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions accessConditions,
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, accessConditions, context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -668,19 +665,19 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the blob snapshot.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
      * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
     public Response<BlobClientBase> createSnapshotWithResponse(Map<String, String> metadata,
-        BlobAccessConditions accessConditions, Duration timeout, Context context) {
+        BlobRequestConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<BlobClientBase>> response = client
             .createSnapshotWithResponse(metadata, accessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, new BlobClientBase(rb.getValue())));
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -710,25 +707,21 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-LeaseAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
      * @param priority Optional priority to set for re-hydrating blobs.
-     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
-     * not match the active lease on the blob.
+     * @param leaseId The lease ID the active lease on the blob must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority,
-        LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.setTierWithResponse(tier, priority, leaseAccessConditions,
-            context);
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    public Response<Void> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId,
+        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setTierWithResponse(tier, priority, leaseId, context), timeout);
     }
 
     /**
@@ -762,7 +755,7 @@ public class BlobClientBase {
     public Response<Void> undeleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.undeleteWithResponse(context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -798,6 +791,6 @@ public class BlobClientBase {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, timeout);
     }
 }

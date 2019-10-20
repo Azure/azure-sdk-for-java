@@ -12,7 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -178,12 +178,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
-        AccessTier tier, BlobAccessConditions accessConditions) {
+        AccessTier tier, BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
@@ -226,13 +226,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
      * @param tier {@link AccessTier} for the destination blob.
-     * @param accessConditions {@link BlobAccessConditions}
+     * @param accessConditions {@link BlobRequestConditions}
      * @return An empty response
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobAccessConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions) {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null

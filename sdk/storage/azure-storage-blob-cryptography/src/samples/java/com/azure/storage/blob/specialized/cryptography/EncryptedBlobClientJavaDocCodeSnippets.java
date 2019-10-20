@@ -4,10 +4,8 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 
 import java.io.ByteArrayInputStream;
@@ -59,7 +57,7 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobAccessConditions, Duration)}
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration)}
      *
      * @throws IOException If an I/O error occurs
      */
@@ -71,7 +69,7 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
             .setBlobContentType("binary");
 
         Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
+        BlobRequestConditions accessConditions = new BlobRequestConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
             .setModifiedAccessConditions(new ModifiedAccessConditions()
                 .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
