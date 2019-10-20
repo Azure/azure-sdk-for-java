@@ -31,7 +31,7 @@ public class IndexContentManagementExample {
      */
     private static void basicIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -51,7 +51,7 @@ public class IndexContentManagementExample {
      */
     private static void advancedIndexing() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();

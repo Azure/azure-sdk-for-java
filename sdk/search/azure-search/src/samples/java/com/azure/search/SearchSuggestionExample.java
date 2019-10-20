@@ -72,8 +72,7 @@ public class SearchSuggestionExample {
         String indexName = "hotels";
 
         return new SearchIndexClientBuilder()
-            .serviceName(searchServiceName)
-            .searchDnsSuffix(dnsSuffix)
+            .serviceEndpoint(searchServiceName + "." + dnsSuffix)
             .indexName(indexName)
             .credential(apiKeyCredentials)
             .buildClient();

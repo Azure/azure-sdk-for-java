@@ -31,7 +31,7 @@ public class HttpResponseExceptionExample {
      */
     private static void handleErrorsWithSyncClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -62,7 +62,7 @@ public class HttpResponseExceptionExample {
      */
     private static void handleErrorsWithAsyncClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildAsyncClient();

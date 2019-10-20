@@ -16,7 +16,7 @@ public class GetSingleDocumentExample {
 
     public static void main(String[] args) {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();

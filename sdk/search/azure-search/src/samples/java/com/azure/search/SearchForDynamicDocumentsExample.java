@@ -31,7 +31,7 @@ public class SearchForDynamicDocumentsExample {
      */
     private static void searchWithSyncClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -54,7 +54,7 @@ public class SearchForDynamicDocumentsExample {
      */
     private static void searchWithAsyncClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildAsyncClient();

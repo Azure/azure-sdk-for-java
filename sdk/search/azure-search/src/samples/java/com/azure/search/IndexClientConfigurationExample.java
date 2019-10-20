@@ -27,7 +27,7 @@ public class IndexClientConfigurationExample {
      */
     private static SearchIndexClient createMinimalClient() {
         return new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .buildClient();
@@ -39,7 +39,7 @@ public class IndexClientConfigurationExample {
      */
     private static SearchIndexAsyncClient createAdvancedClient() {
         return new SearchIndexClientBuilder()
-            .serviceName(SEARCH_SERVICE)
+            .serviceEndpoint("https://" + SEARCH_SERVICE + "search.windows.net")
             .credential(new ApiKeyCredentials(API_KEY))
             .indexName("hotels")
             .apiVersion("2019-05-06")
