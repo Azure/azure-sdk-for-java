@@ -60,7 +60,7 @@ public class ExponentialBackoffTest {
         // exponential backoff
         for (int i = 0; i < 4; i++) {
             long delayMillis = expBackoff.calculateRetryDelay(i).toMillis();
-            assertTrue(delayMillis >= ((1 << i) * 990) && delayMillis <= ((1 << i) * 1010));
+            assertTrue(delayMillis >= ((1 << i) * 950) && delayMillis <= ((1 << i) * 1050));
         }
 
         // max delay
