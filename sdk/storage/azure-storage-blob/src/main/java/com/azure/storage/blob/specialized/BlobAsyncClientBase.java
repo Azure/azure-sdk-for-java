@@ -644,18 +644,18 @@ public class BlobAsyncClientBase {
      *
      * @param range {@link BlobRange}
      * @param accessConditions {@link BlobAccessConditions}
-     * @param rangeGetContentMD5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return Emits the successful response.
      */
     Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
-        boolean rangeGetContentMD5) {
-        return withContext(context -> download(range, accessConditions, rangeGetContentMD5, context));
+        boolean rangeGetContentMd5) {
+        return withContext(context -> download(range, accessConditions, rangeGetContentMd5, context));
     }
 
     Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
-        boolean rangeGetContentMD5, Context context) {
+        boolean rangeGetContentMd5, Context context) {
         range = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
+        Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HttpGetterInfo info = new HttpGetterInfo()
             .setOffset(range.getOffset())
@@ -754,7 +754,7 @@ public class BlobAsyncClientBase {
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, ReliableDownloadOptions options,
-        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Context context) {
+        BlobAccessConditions accessConditions, boolean rangeGetContentMd5, Context context) {
         final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
             ? new ParallelTransferOptions()
             : parallelTransferOptions;
@@ -767,19 +767,19 @@ public class BlobAsyncClientBase {
         return Mono.using(() -> downloadToFileResourceSupplier(filePath),
             channel -> getPropertiesWithResponse(accessConditions)
                 .flatMap(response -> processInRange(channel, response,
-                    range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMD5,
+                    range, finalParallelTransferOptions.getBlockSize(), options, accessConditions, rangeGetContentMd5,
                     context, totalProgress, progressLock, progressReceiver)), this::downloadToFileCleanup);
 
     }
 
     private Mono<Response<BlobProperties>> processInRange(AsynchronousFileChannel channel,
         Response<BlobProperties> blobPropertiesResponse, BlobRange range, Integer blockSize,
-        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMD5,
+        ReliableDownloadOptions options, BlobAccessConditions accessConditions, boolean rangeGetContentMd5,
         Context context, AtomicLong totalProgress, Lock progressLock, ProgressReceiver progressReceiver) {
         return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new BlobRange(0,
             blobPropertiesResponse.getValue().getBlobSize()))).flatMapMany(rg ->
             Flux.fromIterable(sliceBlobRange(rg, blockSize)))
-            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMD5, context)
+            .flatMap(chunk -> this.download(chunk, accessConditions, rangeGetContentMd5, context)
                 .subscribeOn(Schedulers.elastic())
                 .flatMap(dar -> {
                     Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
