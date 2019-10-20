@@ -367,7 +367,7 @@ public class BlobAsyncClientBase {
                 if (!ImplUtils.isNullOrEmpty(copyIdentifier)) {
                     logger.info("Cancelling copy operation for copy id: {}", copyIdentifier);
 
-                    return abortCopyFromURL(copyIdentifier).thenReturn(response.getValue());
+                    return abortCopyFromUrl(copyIdentifier).thenReturn(response.getValue());
                 }
 
                 return Mono.empty();
@@ -456,9 +456,9 @@ public class BlobAsyncClientBase {
      * @param copyId The id of the copy operation to abort.
      * @return A reactive response signalling completion.
      */
-    public Mono<Void> abortCopyFromURL(String copyId) {
+    public Mono<Void> abortCopyFromUrl(String copyId) {
         try {
-            return abortCopyFromURLWithResponse(copyId, null).flatMap(FluxUtil::toMono);
+            return abortCopyFromUrlWithResponse(copyId, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -483,17 +483,17 @@ public class BlobAsyncClientBase {
      * not match the active lease on the blob.
      * @return A reactive response signalling completion.
      */
-    public Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId,
-        LeaseAccessConditions leaseAccessConditions) {
+    public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId,
+                                                             LeaseAccessConditions leaseAccessConditions) {
         try {
-            return withContext(context -> abortCopyFromURLWithResponse(copyId, leaseAccessConditions, context));
+            return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
-        Context context) {
+    Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
+                                                      Context context) {
         return this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
             null, null, copyId, null, null, leaseAccessConditions, context)
             .map(response -> new SimpleResponse<>(response, null));
@@ -514,7 +514,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<String> copyFromURL(String copySource) {
         try {
-            return copyFromURLWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
+            return copyFromUrlWithResponse(copySource, null, null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -540,20 +540,20 @@ public class BlobAsyncClientBase {
      * @param destAccessConditions {@link BlobAccessConditions} against the destination.
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata,
-        AccessTier tier, ModifiedAccessConditions sourceModifiedAccessConditions,
-        BlobAccessConditions destAccessConditions) {
+    public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
+            AccessTier tier, ModifiedAccessConditions sourceModifiedAccessConditions,
+            BlobAccessConditions destAccessConditions) {
         try {
-            return withContext(context -> copyFromURLWithResponse(copySource, metadata, tier,
+            return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
                 sourceModifiedAccessConditions, destAccessConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> copyFromURLWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-        Context context) {
+    Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
+            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+            Context context) {
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;

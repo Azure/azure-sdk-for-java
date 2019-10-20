@@ -301,7 +301,7 @@ public class BlobClientBase {
      */
     public Response<Void> abortCopyFromURLWithResponse(String copyId, LeaseAccessConditions leaseAccessConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions,
+        Mono<Response<Void>> response = client.abortCopyFromUrlWithResponse(copyId, leaseAccessConditions,
             context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -352,7 +352,7 @@ public class BlobClientBase {
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
         Duration timeout, Context context) {
         Mono<Response<String>> response = client
-            .copyFromURLWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
+            .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedAccessConditions, destAccessConditions,
                 context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

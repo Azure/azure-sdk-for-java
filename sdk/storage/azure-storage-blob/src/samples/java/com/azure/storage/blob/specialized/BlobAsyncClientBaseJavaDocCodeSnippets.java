@@ -57,11 +57,11 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromURL(String)}
+     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromUrl(String)}
      */
     public void abortCopyFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
-        client.abortCopyFromURL(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
+        client.abortCopyFromUrl(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURL#String
     }
 
@@ -265,19 +265,19 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromURLWithResponse(String, LeaseAccessConditions)}
+     * Code snippets for {@link BlobAsyncClientBase#abortCopyFromUrlWithResponse(String, LeaseAccessConditions)}
      */
     public void abortCopyFromURLWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
-        client.abortCopyFromURLWithResponse(copyId, leaseAccessConditions)
+        client.abortCopyFromUrlWithResponse(copyId, leaseAccessConditions)
             .subscribe(response -> System.out.printf("Aborted copy completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromURLWithResponse#String-LeaseAccessConditions
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#copyFromURLWithResponse(String, Map, AccessTier,
+     * Code snippets for {@link BlobAsyncClientBase#copyFromUrlWithResponse(String, Map, AccessTier,
      * ModifiedAccessConditions, BlobAccessConditions)}
      */
     public void copyFromURLWithResponseCodeSnippets() {
@@ -289,7 +289,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         BlobAccessConditions blobAccessConditions = new BlobAccessConditions()
             .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId));
 
-        client.copyFromURLWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
+        client.copyFromUrlWithResponse(url, metadata, AccessTier.HOT, modifiedAccessConditions, blobAccessConditions)
             .subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromURLWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions
     }
