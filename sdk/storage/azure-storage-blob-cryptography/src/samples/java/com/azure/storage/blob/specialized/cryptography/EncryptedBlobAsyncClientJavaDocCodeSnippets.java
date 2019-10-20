@@ -70,9 +70,8 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
 
         Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
         BlobRequestConditions accessConditions = new BlobRequestConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize)
             .setNumBuffers(numBuffers);
@@ -98,7 +97,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFile(String, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void uploadFromFile2() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -106,9 +105,8 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
 
         Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
         BlobRequestConditions accessConditions = new BlobRequestConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSize(blockSize);
@@ -116,6 +114,6 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
         client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT, accessConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
 }

@@ -117,7 +117,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -174,8 +174,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -201,8 +201,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the {@code
-     * Flux} must produce the same data each time it is subscribed to.
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -291,7 +291,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -339,7 +339,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             .setStart(sourceOffset)
             .setEnd(sourceOffset + (range.getEnd() - range.getStart())));
 
-        destAccessConditions = destAccessConditions == null ? new PageBlobRequestConditions() : destAccessConditions;
+        destAccessConditions = (destAccessConditions == null) ? new PageBlobRequestConditions() : destAccessConditions;
+        sourceRequestConditions = (sourceRequestConditions == null)
+            ? new BlobRequestConditions() : sourceRequestConditions;
 
         URL url;
         try {
@@ -392,7 +394,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.clearPagesWithResponse#PageRange-PageBlobRequestConditions}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -461,7 +463,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobRequestConditions}
@@ -518,7 +520,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -580,7 +582,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.resizeWithResponse#long-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.resizeWithResponse#long-BlobRequestConditions}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -596,7 +598,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobRequestConditions accessConditions, Context context) {
+    Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobRequestConditions accessConditions,
+        Context context) {
         if (size % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -644,7 +647,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobRequestConditions}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can
@@ -744,6 +747,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         RequestConditions modifiedAccessConditions, Context context) {
         UrlBuilder builder = UrlBuilder.parse(source);
         builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, snapshot);
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
+
         URL url;
         try {
             url = builder.toURL();

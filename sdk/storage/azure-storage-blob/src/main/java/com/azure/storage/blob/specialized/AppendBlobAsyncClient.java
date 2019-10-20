@@ -110,7 +110,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions}
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob.
@@ -241,7 +241,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions}
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -269,9 +269,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobRequestConditions destAccessConditions,
         RequestConditions sourceAccessConditions, Context context) {
-        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
-        destAccessConditions = destAccessConditions == null
+        sourceRange = (sourceRange == null) ? new BlobRange(0) : sourceRange;
+        destAccessConditions = (destAccessConditions == null)
             ? new AppendBlobRequestConditions() : destAccessConditions;
+        sourceAccessConditions = (sourceAccessConditions == null)
+            ? new RequestConditions() : sourceAccessConditions;
 
         URL url;
         try {

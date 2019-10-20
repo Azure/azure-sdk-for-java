@@ -295,7 +295,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<Void>> stageBlockFromURLWithResponse(String base64BlockID, String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, String leaseId, BlobRequestConditions sourceRequestConditions, Context context) {
-        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
+        sourceRange = (sourceRange == null) ? new BlobRange(0) : sourceRange;
+        sourceRequestConditions = (sourceRequestConditions == null)
+            ? new BlobRequestConditions() : sourceRequestConditions;
 
         URL url;
         try {
@@ -393,7 +395,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
      *
      * @param base64BlockIDs A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHttpHeaders}
@@ -403,7 +405,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the block blob.
      */
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIDs,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions accessConditions) {
         try {
             return withContext(context -> commitBlockListWithResponse(base64BlockIDs, headers, metadata, tier,
                 accessConditions, context));

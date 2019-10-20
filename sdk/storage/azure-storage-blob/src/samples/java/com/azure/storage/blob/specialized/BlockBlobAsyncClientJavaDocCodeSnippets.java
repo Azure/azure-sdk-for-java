@@ -158,7 +158,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link BlockBlobAsyncClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions)}
      */
     public void commitBlockList2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentMD5("data".getBytes(StandardCharsets.UTF_8))
             .setBlobContentLanguage("en-US")
@@ -171,6 +171,6 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.commitBlockListWithResponse(Collections.singletonList(base64BlockID), headers, metadata,
             AccessTier.HOT, accessConditions).subscribe(response ->
                 System.out.printf("Committing block list completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
 }

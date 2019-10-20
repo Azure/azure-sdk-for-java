@@ -144,7 +144,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions}
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -181,7 +181,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions}
      *
      * @param blobUrl URL of the blob.
      * @param deleteOptions Delete options for the blob and its snapshots.

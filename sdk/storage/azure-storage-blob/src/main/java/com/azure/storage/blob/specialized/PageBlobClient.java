@@ -120,7 +120,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context}
      *
      * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
@@ -230,7 +230,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobAccessConditions-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromURLWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context}
      *
      * @param range The destination {@link PageRange} range. Given that pages must be aligned with 512-byte boundaries,
      * the start offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte
@@ -281,7 +281,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.clearPagesWithResponse#PageRange-PageBlobRequestConditions-Duration-Context}
      *
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
@@ -320,7 +320,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesWithResponse#BlobRange-BlobRequestConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param accessConditions {@link BlobRequestConditions}
@@ -360,7 +360,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.getPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context}
      *
      * @param blobRange {@link BlobRange}
      * @param prevSnapshot Specifies that the response will contain only pages that were changed between target blob and
@@ -399,7 +399,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.resizeWithResponse#long-BlobRequestConditions-Duration-Context}
      *
      * @param size Resizes a page blob to the specified size. If the specified value is less than the current size of
      * the blob, then all pages above the specified value are cleared.
@@ -408,8 +408,8 @@ public final class PageBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The resized page blob.
      */
-    public Response<PageBlobItem> resizeWithResponse(long size, BlobRequestConditions accessConditions, Duration timeout,
-        Context context) {
+    public Response<PageBlobItem> resizeWithResponse(long size, BlobRequestConditions accessConditions,
+        Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resizeWithResponse(size, accessConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -438,7 +438,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobAccessConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.updateSequenceNumberWithResponse#SequenceNumberActionType-Long-BlobRequestConditions-Duration-Context}
      *
      * @param action Indicates how the service should modify the blob's sequence number.
      * @param sequenceNumber The blob's sequence number. The sequence number is a user-controlled property that you can

@@ -325,7 +325,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobAccessConditions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -340,7 +340,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     // TODO (gapra) : Investigate if this is can be parallelized, and include the parallelTransfers parameter.
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions accessConditions) {
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions accessConditions) {
         try {
             final ParallelTransferOptions finalParallelTransferOptions = parallelTransferOptions == null
                 ? new ParallelTransferOptions()

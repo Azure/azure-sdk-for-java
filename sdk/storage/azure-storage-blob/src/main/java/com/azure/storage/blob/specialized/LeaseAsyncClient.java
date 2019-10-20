@@ -129,6 +129,8 @@ public final class LeaseAsyncClient {
 
     Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedAccessConditions,
         Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
             return this.client.blobs().acquireLeaseWithRestResponseAsync(null, null, null, duration, this.leaseId,
                 modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
@@ -182,6 +184,8 @@ public final class LeaseAsyncClient {
     }
 
     Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedAccessConditions, Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
             return this.client.blobs().renewLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
@@ -235,6 +239,8 @@ public final class LeaseAsyncClient {
     }
 
     Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedAccessConditions, Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
             return this.client.blobs().releaseLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
@@ -298,6 +304,8 @@ public final class LeaseAsyncClient {
 
     Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedAccessConditions, Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
             return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null, breakPeriodInSeconds,
                 modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),
@@ -355,6 +363,8 @@ public final class LeaseAsyncClient {
 
     Mono<Response<String>> changeLeaseWithResponse(String proposedId, RequestConditions modifiedAccessConditions,
         Context context) {
+        modifiedAccessConditions = (modifiedAccessConditions == null)
+            ? new RequestConditions() : modifiedAccessConditions;
         if (this.isBlob) {
             return this.client.blobs().changeLeaseWithRestResponseAsync(null, null, this.leaseId, proposedId, null,
                 modifiedAccessConditions.getIfModifiedSince(), modifiedAccessConditions.getIfUnmodifiedSince(),

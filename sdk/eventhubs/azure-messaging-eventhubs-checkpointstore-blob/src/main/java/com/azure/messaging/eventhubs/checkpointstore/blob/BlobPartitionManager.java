@@ -111,7 +111,7 @@ public class BlobPartitionManager implements PartitionManager {
             BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
             if (ImplUtils.isNullOrEmpty(partitionOwnership.getETag())) {
                 // New blob should be created
-                blobRequestConditions.setModifiedAccessConditions(new ModifiedAccessConditions().setIfNoneMatch("*"));
+                blobRequestConditions.setIfNoneMatch("*");
                 return blobAsyncClient.getBlockBlobAsyncClient()
                     .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
@@ -120,8 +120,7 @@ public class BlobPartitionManager implements PartitionManager {
                     }, Mono::empty);
             } else {
                 // update existing blob
-                blobRequestConditions.setModifiedAccessConditions(new ModifiedAccessConditions()
-                    .setIfMatch(partitionOwnership.getETag()));
+                blobRequestConditions.setIfMatch(partitionOwnership.getETag());
                 return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
                     .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
                         logger.info(CLAIM_ERROR, partitionId, error.getMessage());
@@ -164,8 +163,7 @@ public class BlobPartitionManager implements PartitionManager {
         metadata.put(OFFSET, offset);
         metadata.put(OWNER_ID, checkpoint.getOwnerId());
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
-        BlobRequestConditions blobRequestConditions = new BlobRequestConditions()
-            .setModifiedAccessConditions(new ModifiedAccessConditions().setIfMatch(checkpoint.getETag()));
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setIfMatch(checkpoint.getETag());
 
         return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
             .map(response -> response.getHeaders().get(ETAG).getValue());

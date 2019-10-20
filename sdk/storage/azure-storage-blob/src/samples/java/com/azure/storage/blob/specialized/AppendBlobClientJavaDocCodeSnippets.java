@@ -47,7 +47,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      * Duration, Context)}
      */
     public void createWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentType("binary")
             .setBlobContentLanguage("en-US");
@@ -59,7 +59,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created AppendBlob at %s%n",
             client.createWithResponse(headers, metadata, accessConditions, timeout, context).getValue().getLastModified());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -104,7 +104,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      * AppendBlobRequestConditions, BlobRequestConditions, Duration, Context)}
      */
     public void appendBlockFromUrlWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions-Duration-Context
         AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
             .setAppendPosition(POSITION)
             .setMaxSize(maxSize);
@@ -118,6 +118,6 @@ public class AppendBlobClientJavaDocCodeSnippets {
             client.appendBlockFromUrlWithResponse(sourceUrl, new BlobRange(offset, count), null,
                 appendBlobRequestConditions, modifiedAccessConditions, timeout,
                 context).getValue().getBlobCommittedBlockCount());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions-Duration-Context
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions-Duration-Context
     }
 }

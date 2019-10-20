@@ -295,17 +295,19 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(defaultFlux, null).block()
         def etag = setupBlobMatchCondition(beac, match)
         leaseID = setupBlobLeaseCondition(beac, leaseID)
-        BlobRequestConditions bac = new BlobRequestConditions().setModifiedAccessConditions(
-            new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-                .setIfMatch(etag).setIfNoneMatch(noneMatch))
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(etag)
+            .setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
 
         then:
         beac.uploadWithResponse(defaultFlux, null, null, null, null, bac).block().getStatusCode() == 201
 
         when:
         etag = setupBlobMatchCondition(beac, match)
-        bac.getModifiedAccessConditions().setIfMatch(etag)
+        bac.setIfMatch(etag)
 
         then:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
@@ -331,10 +333,12 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.upload(defaultFlux, null).block()
         noneMatch = setupBlobMatchCondition(beac, noneMatch)
         setupBlobLeaseCondition(beac, leaseID)
-        BlobRequestConditions bac = new BlobRequestConditions().setModifiedAccessConditions(
-            new ModifiedAccessConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-                .setIfMatch(match).setIfNoneMatch(noneMatch))
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID))
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()

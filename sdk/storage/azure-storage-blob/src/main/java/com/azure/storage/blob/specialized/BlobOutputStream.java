@@ -214,7 +214,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             this.pageRange = pageRange;
 
             if (blobRequestConditions != null) {
-                this.pageBlobRequestConditions = (PageBlobRequestConditions) blobRequestConditions;
+                this.pageBlobRequestConditions = new PageBlobRequestConditions()
+                    .setLeaseId(blobRequestConditions.getLeaseId())
+                    .setIfMatch(blobRequestConditions.getIfMatch())
+                    .setIfNoneMatch(blobRequestConditions.getIfNoneMatch())
+                    .setIfModifiedSince(blobRequestConditions.getIfModifiedSince())
+                    .setIfUnmodifiedSince(blobRequestConditions.getIfUnmodifiedSince());
             } else {
                 this.pageBlobRequestConditions = null;
             }

@@ -53,24 +53,24 @@ public class BlobBatchJavaDocCodeSnippets {
      * Code snippet for {@link BlobBatch#deleteBlob(String, String, DeleteSnapshotsOptionType, BlobRequestConditions)}
      */
     public void addDeleteOperationWithNames() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId("{lease ID}");
 
         Response<Void> deleteResponse = batch.deleteBlob("{container name}", "{blob name}",
             DeleteSnapshotsOptionType.INCLUDE, blobRequestConditions);
-        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobAccessConditions
+        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions
     }
 
     /**
      * Code snippet for {@link BlobBatch#deleteBlob(String, DeleteSnapshotsOptionType, BlobRequestConditions)}
      */
     public void addDeleteOperationWithUrl() {
-        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId("{lease ID}");
 
         Response<Void> deleteResponse = batch.deleteBlob("{url of blob}", DeleteSnapshotsOptionType.INCLUDE,
             blobRequestConditions);
-        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobAccessConditions
+        // END: com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions
     }
 
     /**
