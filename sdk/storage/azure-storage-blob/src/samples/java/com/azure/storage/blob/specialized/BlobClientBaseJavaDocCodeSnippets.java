@@ -245,7 +245,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
      * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(String, Map, AccessTier, ModifiedAccessConditions,
      * BlobAccessConditions, Duration, Context)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-ModifiedAccessConditions-BlobAccessConditions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");

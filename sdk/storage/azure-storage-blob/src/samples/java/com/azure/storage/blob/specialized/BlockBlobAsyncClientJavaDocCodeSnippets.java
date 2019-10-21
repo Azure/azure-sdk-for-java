@@ -95,7 +95,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURL(String, String, BlobRange)}
      */
-    public void stageBlockFromURL() {
+    public void stageBlockFromURLCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURL#String-String-BlobRange
         client.stageBlockFromURL(base64BlockID, sourceUrl, new BlobRange(offset, count))
             .subscribe(
@@ -107,7 +107,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromURLWithResponse(String, String, BlobRange, byte[], LeaseAccessConditions, SourceModifiedAccessConditions)}
      */
-    public void stageBlockFromURL2() {
+    public void stageBlockFromURL2CodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromURLWithResponse#String-String-BlobRange-byte-LeaseAccessConditions-SourceModifiedAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
         SourceModifiedAccessConditions sourceModifiedAccessConditions = new SourceModifiedAccessConditions()

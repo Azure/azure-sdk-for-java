@@ -106,7 +106,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrl(PageRange, String, Long)}
      */
-    public void uploadPagesFromUrlCodeSnippet() {
+    public void uploadPagesFromUrl() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrl#PageRange-String-Long
         PageRange pageRange = new PageRange()
             .setStart(0)

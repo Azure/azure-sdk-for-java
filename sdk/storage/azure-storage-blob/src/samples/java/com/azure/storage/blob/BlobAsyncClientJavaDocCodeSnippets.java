@@ -54,7 +54,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobAsyncClient#abortCopyFromUrl(String)}
      */
-    public void abortCopyFromURLCodeSnippet() {
+    public void abortCopyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
         client.abortCopyFromUrl(copyId).doOnSuccess(response -> System.out.println("Aborted copy from URL"));
         // END: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String
@@ -63,7 +63,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobAsyncClient#copyFromUrl(String)}
      */
-    public void copyFromURLCodeSnippet() {
+    public void copyFromUrlCodeSnippet() {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
         client.copyFromUrl(url).subscribe(response -> System.out.printf("Copy identifier: %s%n", response));
         // END: com.azure.storage.blob.BlobAsyncClient.copyFromURL#String
@@ -219,7 +219,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippets for {@link BlobAsyncClient#abortCopyFromUrlWithResponse(String, LeaseAccessConditions)}
      */
-    public void abortCopyFromURLWithResponseCodeSnippets() {
+    public void abortCopyFromUrlWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.abortCopyFromURLWithResponse#String-LeaseAccessConditions
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(leaseId);
@@ -233,7 +233,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
      * Code snippets for {@link BlobAsyncClient#copyFromUrlWithResponse(String, Map, AccessTier,
      * ModifiedAccessConditions, BlobAccessConditions)}
      */
-    public void copyFromURLWithResponseCodeSnippets() {
+    public void copyFromUrlWithResponseCodeSnippets() {
 
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.copyFromURLWithResponse#String-Metadata-AccessTier-ModifiedAccessConditions-BlobAccessConditions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
