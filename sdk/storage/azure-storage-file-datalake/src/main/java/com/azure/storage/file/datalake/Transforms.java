@@ -4,6 +4,8 @@ import com.azure.storage.blob.BlobContainerProperties;
 import com.azure.storage.blob.BlobProperties;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobContainerAccessConditions;
+import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -14,6 +16,8 @@ import com.azure.storage.file.datalake.implementation.models.ModifiedAccessCondi
 import com.azure.storage.file.datalake.implementation.models.PathHTTPHeaders;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileSystemAccessConditions;
+import com.azure.storage.file.datalake.models.FileSystemItem;
+import com.azure.storage.file.datalake.models.FileSystemItemProperties;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -22,6 +26,8 @@ import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PathAccessConditions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 class Transforms {
 
@@ -102,6 +108,9 @@ class Transforms {
     }
 
     static FileSystemProperties toFileSystemProperties(BlobContainerProperties blobContainerProperties) {
+        if (blobContainerProperties == null) {
+            return null;
+        }
         return new FileSystemProperties(blobContainerProperties);
     }
 
@@ -186,5 +195,31 @@ class Transforms {
         } else {
             return new PathProperties(blobProperties);
         }
+    }
+
+    public static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
+        if (blobContainerItem == null) {
+            return null;
+        }
+        return new FileSystemItem()
+            .setName(blobContainerItem.getName())
+            .setMetadata(blobContainerItem.getMetadata())
+            .setProperties(Transforms.toFileSystemItemProperties(blobContainerItem.getProperties()));
+    }
+
+    private static FileSystemItemProperties toFileSystemItemProperties(
+        BlobContainerItemProperties blobContainerItemProperties) {
+        if (blobContainerItemProperties == null) {
+            return null;
+        }
+        return new FileSystemItemProperties()
+            .setETag(blobContainerItemProperties.getETag())
+            .setHasImmutabilityPolicy(blobContainerItemProperties.isHasImmutabilityPolicy())
+            .setHasLegalHold(blobContainerItemProperties.isHasLegalHold())
+            .setLastModified(blobContainerItemProperties.getLastModified())
+            .setLeaseDuration(Transforms.toDataLakeLeaseDurationType(blobContainerItemProperties.getLeaseDuration()))
+            .setLeaseState(Transforms.toDataLakeLeaseStateType(blobContainerItemProperties.getLeaseState()))
+            .setLeaseStatus(Transforms.toDataLakeLeaseStatusType(blobContainerItemProperties.getLeaseStatus()))
+            .setPublicAccess(Transforms.toDataLakePublicAccessType(blobContainerItemProperties.getPublicAccess()));
     }
 }

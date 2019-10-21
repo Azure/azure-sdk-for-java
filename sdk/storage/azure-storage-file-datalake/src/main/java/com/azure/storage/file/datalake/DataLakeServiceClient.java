@@ -4,14 +4,16 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.core.credential.TokenCredential;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
@@ -57,8 +59,8 @@ public class DataLakeServiceClient {
      * @return A {@link FileSystemClient} object pointing to the specified file system
      */
     public FileSystemClient getFileSystemClient(String fileSystemName) {
-        return new FileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName), blobServiceClient.getBlobContainerClient(fileSystemName)
-        );
+        return new FileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName),
+            blobServiceClient.getBlobContainerClient(fileSystemName));
     }
 
     /**
@@ -68,6 +70,15 @@ public class DataLakeServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return dataLakeServiceAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public DataLakeServiceVersion getServiceVersion() {
+        return this.dataLakeServiceAsyncClient.getServiceVersion();
     }
 
     /**
@@ -129,6 +140,10 @@ public class DataLakeServiceClient {
      * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-Context}
+     *
      * @param fileSystemName Name of the file system to delete
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
@@ -146,7 +161,7 @@ public class DataLakeServiceClient {
         return dataLakeServiceAsyncClient.getAccountUrl();
     }
 
-    // TODO (gapra) : Make this return correct type
+    // TODO (gapra) : Change return type
     /**
      * Returns a lazy loaded list of file systems in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
@@ -163,17 +178,17 @@ public class DataLakeServiceClient {
     }
 
     /**
-     * Returns a lazy loaded list of file system in this account. The returned {@link PagedIterable} can be consumed
+     * Returns a lazy loaded list of file systems in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration}
      *
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The list of containers.
+     * @return The list of file systems.
      */
     public PagedIterable<BlobContainerItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
         return blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout);
@@ -211,13 +226,9 @@ public class DataLakeServiceClient {
      */
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
-        Response<com.azure.storage.blob.models.UserDelegationKey> userDelegationKeyResponse = blobServiceClient
+        Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
             .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
-        return new SimpleResponse<>(
-            userDelegationKeyResponse.getRequest(),
-            userDelegationKeyResponse.getStatusCode(),
-            userDelegationKeyResponse.getHeaders(),
-            Transforms.toDataLakeUserDelegationKey(userDelegationKeyResponse.getValue()));
+        return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
     }
 
     /**

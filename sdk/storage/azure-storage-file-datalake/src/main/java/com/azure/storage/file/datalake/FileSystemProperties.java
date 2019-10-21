@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
@@ -37,6 +38,17 @@ public final class FileSystemProperties {
             .getBlobPublicAccess());
         this.hasImmutabilityPolicy = blobContainerProperties.hasImmutabilityPolicy();
         this.hasLegalHold = blobContainerProperties.hasLegalHold();
+    }
+
+    public FileSystemProperties(BlobContainerItemProperties blobContainerProperties) {
+        this.eTag = blobContainerProperties.getETag();
+        this.lastModified = blobContainerProperties.getLastModified();
+        this.leaseDuration = Transforms.toDataLakeLeaseDurationType(blobContainerProperties.getLeaseDuration());
+        this.leaseState = Transforms.toDataLakeLeaseStateType(blobContainerProperties.getLeaseState());
+        this.leaseStatus = Transforms.toDataLakeLeaseStatusType(blobContainerProperties.getLeaseStatus());
+        this.dataLakePublicAccess = Transforms.toDataLakePublicAccessType(blobContainerProperties.getPublicAccess());
+        this.hasImmutabilityPolicy = blobContainerProperties.isHasImmutabilityPolicy();
+        this.hasLegalHold = blobContainerProperties.isHasLegalHold();
     }
 
     /**

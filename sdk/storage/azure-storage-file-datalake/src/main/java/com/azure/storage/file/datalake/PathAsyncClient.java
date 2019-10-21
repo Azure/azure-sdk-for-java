@@ -374,7 +374,8 @@ public class PathAsyncClient {
 
             return new SpecializedBlobClientBuilder()
                 .pipeline(getHttpPipeline())
-                .endpoint(newBlobEndpoint);
+                .endpoint(getBlobUrl())
+                .serviceVersion(getServiceVersion());
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }

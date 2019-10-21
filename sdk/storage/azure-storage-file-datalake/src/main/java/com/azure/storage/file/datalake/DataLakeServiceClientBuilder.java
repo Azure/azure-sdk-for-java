@@ -4,7 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credentials.TokenCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -15,12 +15,11 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 
 import java.net.MalformedURLException;
@@ -52,7 +51,7 @@ public class DataLakeServiceClientBuilder {
     private String endpoint;
     private String accountName;
 
-    private SharedKeyCredential sharedKeyCredential;
+    private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
 
@@ -63,6 +62,7 @@ public class DataLakeServiceClientBuilder {
     private HttpPipeline httpPipeline;
 
     private Configuration configuration;
+    private DataLakeServiceVersion version;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -83,9 +83,10 @@ public class DataLakeServiceClientBuilder {
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
+        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (sharedKeyCredential != null) {
-                return new SharedKeyCredentialPolicy(sharedKeyCredential);
+            if (storageSharedKeyCredential != null) {
+                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (tokenCredential != null) {
                 return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
             } else if (sasTokenCredential != null) {
@@ -94,12 +95,10 @@ public class DataLakeServiceClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Authorization credentials must be set."));
             }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration);
+        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
 
-        return new DataLakeServiceAsyncClient(new DataLakeStorageClientBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .build(), accountName, blobServiceClientBuilder.buildAsyncClient());
+        return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
+            blobServiceClientBuilder.buildAsyncClient());
     }
 
     /**
@@ -112,10 +111,12 @@ public class DataLakeServiceClientBuilder {
     public DataLakeServiceClientBuilder endpoint(String endpoint) {
         blobServiceClientBuilder.endpoint(Transforms.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
         try {
-            URL url = new URL(endpoint);
-            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
+            BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
-            String sasToken = BlobUrlParts.parse(url).getSasQueryParameters().encode();
+            this.accountName = parts.getAccountName();
+            this.endpoint = parts.getScheme() + "://" + parts.getHost();
+
+            String sasToken = parts.getSasQueryParameters().encode();
             if (!ImplUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
@@ -128,15 +129,15 @@ public class DataLakeServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link SharedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
      * @param credential The credential to use for authenticating request.
      * @return the updated DataLakeServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public DataLakeServiceClientBuilder credential(SharedKeyCredential credential) {
+    public DataLakeServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         blobServiceClientBuilder.credential(credential);
-        this.sharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -152,7 +153,7 @@ public class DataLakeServiceClientBuilder {
     public DataLakeServiceClientBuilder credential(TokenCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
     }
@@ -168,28 +169,12 @@ public class DataLakeServiceClientBuilder {
         blobServiceClientBuilder.sasToken(sasToken);
         this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
-        this.sharedKeyCredential = null;
+        this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
     }
 
-    /**
-     * Constructs a {@link SharedKeyCredential} used to authorize requests sent to the service. Additionally, if the
-     * connection string contains `DefaultEndpointsProtocol` and `EndpointSuffix` it will set the {@link
-     * #endpoint(String) endpoint}.
-     *
-     * @param connectionString Connection string of the storage account.
-     * @return the updated DataLakeServiceClientBuilder
-     * @throws IllegalArgumentException If {@code connectionString} doesn't contain `AccountName` or `AccountKey`.
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
-     */
-    public DataLakeServiceClientBuilder connectionString(String connectionString) {
-        blobServiceClientBuilder.connectionString(connectionString);
-        BuilderHelper.configureConnectionString(connectionString, (accountName) -> this.accountName = accountName,
-            this::credential, this::endpoint, logger);
-
-        return this;
-    }
+    // TODO (gapra) : Figure out connection string ability
 
     /**
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
@@ -273,6 +258,21 @@ public class DataLakeServiceClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the {@link DataLakeServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param version {@link DataLakeServiceVersion} of the service to be used when making requests.
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder serviceVersion(DataLakeServiceVersion version) {
+        this.version = version;
         return this;
     }
 

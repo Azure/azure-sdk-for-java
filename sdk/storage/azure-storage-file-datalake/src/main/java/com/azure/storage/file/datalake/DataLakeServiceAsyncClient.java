@@ -10,19 +10,22 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.models.BlobContainerItem;
-import com.azure.storage.common.Utility;
+import com.azure.core.credential.TokenCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
 import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
-import com.azure.core.credentials.TokenCredential;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
+
+import static com.azure.core.implementation.util.FluxUtil.*;
 
 
 /**
@@ -45,18 +48,30 @@ import java.util.Map;
 @ServiceClient(builder = DataLakeServiceClientBuilder.class, isAsync = true)
 public class DataLakeServiceAsyncClient {
 
-    private DataLakeStorageClientImpl dataLakeImpl;
+    private final ClientLogger logger = new ClientLogger(DataLakeServiceAsyncClient.class);
+
+    private final DataLakeStorageClientImpl datalakeStorage;
+
     private final String accountName;
-    BlobServiceAsyncClient blobServiceAsyncClient;
+    private final DataLakeServiceVersion serviceVersion;
+
+    private BlobServiceAsyncClient blobServiceAsyncClient;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
      */
-    DataLakeServiceAsyncClient(DataLakeStorageClientImpl dataLakeImpl, String accountName,
-        BlobServiceAsyncClient blobServiceAsyncClient) {
-        this.blobServiceAsyncClient = blobServiceAsyncClient;
-        this.dataLakeImpl = dataLakeImpl;
+    DataLakeServiceAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
+        String accountName, BlobServiceAsyncClient blobServiceAsyncClient) {
+        this.datalakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .build();
+        this.serviceVersion = serviceVersion;
+
         this.accountName = accountName;
+
+        this.blobServiceAsyncClient = blobServiceAsyncClient;
     }
 
     /**
@@ -77,10 +92,9 @@ public class DataLakeServiceAsyncClient {
             fileSystemName = FileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
         }
 
-        return new FileSystemAsyncClient(fileSystemName, new DataLakeStorageClientBuilder()
-            .url(Utility.appendToURLPath(getAccountUrl(), fileSystemName).toString())
-            .pipeline(dataLakeImpl.getHttpPipeline())
-            .build(), accountName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
+        return new FileSystemAsyncClient(getHttpPipeline(),
+            StorageImplUtils.appendToUrlPath(getAccountUrl(), fileSystemName).toString(), getServiceVersion(),
+            getAccountName(), fileSystemName, blobServiceAsyncClient.getBlobContainerAsyncClient(fileSystemName)
         );
     }
 
@@ -90,7 +104,16 @@ public class DataLakeServiceAsyncClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return dataLakeImpl.getHttpPipeline();
+        return datalakeStorage.getHttpPipeline();
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public DataLakeServiceVersion getServiceVersion() {
+        return serviceVersion;
     }
 
     /**
@@ -106,7 +129,11 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link FileSystemAsyncClient} used to interact with the file system created.
      */
     public Mono<FileSystemAsyncClient> createFileSystem(String fileSystemName) {
-        return createFileSystemWithResponse(fileSystemName, null, null).flatMap(FluxUtil::toMono);
+        try {
+            return createFileSystemWithResponse(fileSystemName, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -127,9 +154,14 @@ public class DataLakeServiceAsyncClient {
      */
     public Mono<Response<FileSystemAsyncClient>> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType) {
-        FileSystemAsyncClient fileSystemAsyncClient = getFileSystemAsyncClient(fileSystemName);
-        return fileSystemAsyncClient.createWithResponse(metadata, accessType).
-            map(response -> new SimpleResponse<>(response, fileSystemAsyncClient));
+        try {
+            FileSystemAsyncClient fileSystemAsyncClient = getFileSystemAsyncClient(fileSystemName);
+
+            return fileSystemAsyncClient.createWithResponse(metadata, accessType).
+                map(response -> new SimpleResponse<>(response, fileSystemAsyncClient));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -144,7 +176,11 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Void> deleteFileSystem(String fileSystemName) {
-        return deleteFileSystemWithResponse(fileSystemName).flatMap(FluxUtil::toMono);
+        try {
+            return deleteFileSystemWithResponse(fileSystemName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -154,16 +190,28 @@ public class DataLakeServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.deleteFileSystemWithResponse#String}
      *
      * @param fileSystemName Name of the file system to delete
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
     public Mono<Response<Void>> deleteFileSystemWithResponse(String fileSystemName) {
-        return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(null);
+        try {
+            return getFileSystemAsyncClient(fileSystemName).deleteWithResponse(null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    // TODO (gapra) : Make this method return FileSystemItem
+    /**
+     * Gets the URL of the storage account represented by this client.
+     *
+     * @return the URL.
+     */
+    public String getAccountUrl() {
+        return datalakeStorage.getUrl();
+    }
+
     /**
      * Returns a reactive Publisher emitting all the file systems in this account lazily as needed. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
@@ -174,8 +222,12 @@ public class DataLakeServiceAsyncClient {
      *
      * @return A reactive response emitting the list of file systems.
      */
-    public PagedFlux<BlobContainerItem> listFileSystems() {
-        return this.listFileSystems(new ListFileSystemsOptions());
+    public PagedFlux<FileSystemItem> listFileSystems() {
+        try {
+            return this.listFileSystems(new ListFileSystemsOptions());
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -184,13 +236,18 @@ public class DataLakeServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.listBlobContainers#ListBlobContainersOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.listFileSystems#ListFileSystemsOptions}
      *
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of containers.
      */
-    public PagedFlux<BlobContainerItem> listFileSystems(ListFileSystemsOptions options) {
-        return blobServiceAsyncClient.listBlobContainers(Transforms.toListBlobContainersOptions(options));
+    public PagedFlux<FileSystemItem> listFileSystems(ListFileSystemsOptions options) {
+        try {
+            return blobServiceAsyncClient.listBlobContainers(Transforms.toListBlobContainersOptions(options))
+                .mapPage(Transforms::toFileSystemItem);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     /**
@@ -208,7 +265,12 @@ public class DataLakeServiceAsyncClient {
      * @throws NullPointerException If {@code expiry} is null.
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return blobServiceAsyncClient.getUserDelegationKey(start, expiry).map(Transforms::toDataLakeUserDelegationKey);
+        try {
+            return blobServiceAsyncClient.getUserDelegationKey(start, expiry)
+                .map(Transforms::toDataLakeUserDelegationKey);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -228,18 +290,12 @@ public class DataLakeServiceAsyncClient {
      */
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
-        return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry).map(response ->
-            new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                Transforms.toDataLakeUserDelegationKey(response.getValue())));
-    }
-
-    /**
-     * Gets the URL of the storage account represented by this client.
-     *
-     * @return the URL.
-     */
-    public String getAccountUrl() {
-        return dataLakeImpl.getUrl();
+        try {
+            return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry).map(response ->
+                new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**

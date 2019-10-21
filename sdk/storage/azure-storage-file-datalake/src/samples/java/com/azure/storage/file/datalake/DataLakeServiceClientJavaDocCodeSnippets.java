@@ -3,47 +3,119 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.util.Context;
+import com.azure.storage.file.datalake.models.FileSystemListDetails;
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
 /**
- * Code snippets for {@link DataLakeServiceAsyncClient}
+ * Code snippets for {@link DataLakeServiceClient}
  */
 @SuppressWarnings({"unused"})
 public class DataLakeServiceClientJavaDocCodeSnippets {
-    private DataLakeServiceAsyncClient client = JavaDocCodeSnippetsHelpers.getDataLakeServiceAsyncClient();
+
+    private final DataLakeServiceClient client = JavaDocCodeSnippetsHelpers.getDataLakeServiceClient();
+    private final Duration timeout = Duration.ofSeconds(30);
 
     /**
-     * Code snippet for {@link DataLakeServiceAsyncClient#getFileSystemAsyncClient(String)}
+     * Code snippet for {@link DataLakeServiceClient#getFileSystemClient(String)}
      */
     public void getFileSystemClient() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getFileSystemAsyncClient#String
-        FileSystemAsyncClient fileSystemAsyncClient = client.getFileSystemAsyncClient("fileSystemName");
-        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.getFileSystemAsyncClient#String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String
+        FileSystemClient fileSystemClient = client.getFileSystemClient("fileSystemName");
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String
     }
 
     /**
-     * Code snippet for {@link DataLakeServiceAsyncClient#createFileSystem(String)}
+     * Code snippet for {@link DataLakeServiceClient#createFileSystem(String)}
      */
     public void createFileSystem() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystem#String
-        FileSystemAsyncClient fileSystemAsyncClient =
-            client.createFileSystem("fileSystemName").block();
-        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystem#String
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String
+        FileSystemClient fileSystemClient = client.createFileSystem("fileSystemName");
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String
     }
 
     /**
-     * Code snippet for {@link DataLakeServiceAsyncClient#createFileSystemWithResponse(String, Map, PublicAccessType)}
+     * Code snippet for {@link DataLakeServiceClient#createFileSystemWithResponse(String, Map, PublicAccessType, Context)}
      */
-    public void createContainerWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystemWithResponse#String-Map-PublicAccessType
+    public void createFileSystemWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystemWithResponse#String-Map-PublicAccessType-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Context context = new Context("Key", "Value");
 
-        FileSystemAsyncClient fileSystemAsyncClient = client
-            .createFileSystemWithResponse("fileSystemName", metadata, PublicAccessType.CONTAINER).block().getValue();
-        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystemWithResponse#String-Map-PublicAccessType
+        FileSystemClient fileSystemClient = client.createFileSystemWithResponse(
+            "fileSystemName",
+            metadata,
+            PublicAccessType.CONTAINER,
+            context).getValue();
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystemWithResponse#String-Map-PublicAccessType-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceClient#deleteFileSystem(String)}
+     */
+    public void deleteFileSystem() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String
+        try {
+            client.deleteFileSystem("fileSystemName");
+            System.out.printf("Delete file system completed with status %n");
+        } catch (UnsupportedOperationException error) {
+            System.out.printf("Delete file system failed: %s%n", error);
+        }
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceClient#deleteFileSystemWithResponse(String, Context)}
+     */
+    public void deleteFileSystemWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.deleteBlobContainerWithResponse#String-Context
+        Context context = new Context("Key", "Value");
+        System.out.printf("Delete file system completed with status %d%n",
+            client.deleteFileSystemWithResponse("fileSystemName", context).getStatusCode());
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.deleteBlobContainerWithResponse#String-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeServiceClient#listFileSystems()} and
+     * {@link DataLakeServiceClient#listFileSystems(ListFileSystemsOptions, Duration)}
+     */
+    public void listContainers() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems
+        client.listFileSystems().forEach(fileSystem -> System.out.printf("Name: %s%n", fileSystem.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration
+        ListFileSystemsOptions options = new ListFileSystemsOptions()
+            .setPrefix("filSystemNamePrefixToMatch")
+            .setDetails(new FileSystemListDetails().setRetrieveMetadata(true));
+
+        client.listFileSystems(options, timeout).forEach(fileSystem -> System.out.printf("Name: %s%n", fileSystem.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration
+    }
+
+    /**
+     * Code snippets for {@link DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)}
+     * and {@link DataLakeServiceClient#getUserDelegationKeyWithResponse(OffsetDateTime, OffsetDateTime, Duration, Context)}
+     */
+    public void getUserDelegationKey() {
+        OffsetDateTime delegationKeyStartTime = OffsetDateTime.now();
+        OffsetDateTime delegationKeyExpiryTime = OffsetDateTime.now().plusDays(7);
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime
+        System.out.printf("User delegation key: %s%n",
+            client.getUserDelegationKey(delegationKeyStartTime, delegationKeyExpiryTime));
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context
+        System.out.printf("User delegation key: %s%n",
+            client.getUserDelegationKeyWithResponse(delegationKeyStartTime, delegationKeyExpiryTime, timeout, context));
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context
     }
 
 }
