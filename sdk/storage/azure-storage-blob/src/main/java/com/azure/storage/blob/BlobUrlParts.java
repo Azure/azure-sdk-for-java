@@ -215,6 +215,8 @@ public final class BlobUrlParts {
     /**
      * Converts the blob URL parts to a {@link URL}.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @return A {@code URL} to the blob resource composed of all the elements in this object.
      * @throws IllegalStateException The fields present on the BlobUrlParts object were insufficient to construct a
      * valid URL or were ill-formatted.

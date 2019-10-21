@@ -223,7 +223,7 @@ public final class SpecializedBlobClientBuilder {
     }
 
     private String getUrl(String containerName) {
-        return String.format("%s/%s/%s", endpoint, containerName, Utility.urlEncoder(blobName));
+        return String.format("%s/%s/%s", endpoint, containerName, blobName);
     }
 
     /**

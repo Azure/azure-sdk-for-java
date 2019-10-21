@@ -144,7 +144,7 @@ public final class EncryptedBlobClientBuilder {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
         return new EncryptedBlobAsyncClient(getHttpPipeline(serviceVersion),
-            String.format("%s/%s/%s", endpoint, containerName, Utility.urlEncode(blobName)), serviceVersion, accountName, containerName,
+            String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
             blobName, snapshot, keyWrapper, keyWrapAlgorithm);
     }
 

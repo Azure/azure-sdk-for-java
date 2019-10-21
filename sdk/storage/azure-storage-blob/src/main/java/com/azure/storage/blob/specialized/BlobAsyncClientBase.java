@@ -38,6 +38,7 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.ReliableDownloadOptions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -91,6 +92,8 @@ public class BlobAsyncClientBase {
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
+     * <p>Blob name is encoded to UTF-8 using the {@link com.azure.storage.common.Utility#urlEncode(String)} method.</p>
+     *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -112,7 +115,7 @@ public class BlobAsyncClientBase {
 
         this.accountName = accountName;
         this.containerName = containerName;
-        this.blobName = blobName;
+        this.blobName = Utility.urlEncode(blobName);
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
     }
