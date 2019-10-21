@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
 
 import java.time.OffsetDateTime;
 
@@ -61,68 +61,68 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link LeaseAsyncClient#acquireLeaseWithResponse(int, ModifiedAccessConditions)}
+     * Code snippets for {@link LeaseAsyncClient#acquireLeaseWithResponse(int, RequestConditions)}
      */
     public void acquireLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfModifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.acquireLeaseWithResponse(60, modifiedAccessConditions).subscribe(response ->
             System.out.printf("Lease ID is %s%n", response.getValue()));
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-ModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions
     }
 
     /**
-     * Code snippets for {@link LeaseAsyncClient#renewLeaseWithResponse(ModifiedAccessConditions)}
+     * Code snippets for {@link LeaseAsyncClient#renewLeaseWithResponse(RequestConditions)}
      */
     public void renewLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#RequestConditions
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.renewLeaseWithResponse(modifiedAccessConditions).subscribe(response ->
             System.out.printf("Renewed lease ID is %s%n", response.getValue()));
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#ModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.renewLeaseWithResponse#RequestConditions
     }
 
     /**
-     * Code snippets for {@link LeaseAsyncClient#releaseLeaseWithResponse(ModifiedAccessConditions)}
+     * Code snippets for {@link LeaseAsyncClient#releaseLeaseWithResponse(RequestConditions)}
      */
     public void releaseLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#RequestConditions
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.releaseLeaseWithResponse(modifiedAccessConditions).subscribe(response ->
             System.out.printf("Release lease completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#ModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.releaseLeaseWithResponse#RequestConditions
     }
 
     /**
-     * Code snippets for {@link LeaseAsyncClient#breakLeaseWithResponse(Integer, ModifiedAccessConditions)}
+     * Code snippets for {@link LeaseAsyncClient#breakLeaseWithResponse(Integer, RequestConditions)}
      */
     public void breakLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions
         Integer retainLeaseInSeconds = 5;
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.breakLeaseWithResponse(retainLeaseInSeconds, modifiedAccessConditions).subscribe(response ->
             System.out.printf("The broken lease has %d seconds remaining on the lease", response.getValue()));
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-ModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions
     }
 
     /**
-     * Code snippets for {@link LeaseAsyncClient#changeLeaseWithResponse(String, ModifiedAccessConditions)}
+     * Code snippets for {@link LeaseAsyncClient#changeLeaseWithResponse(String, RequestConditions)}
      */
     public void changeLeaseWithResponseCodeSnippets() {
-        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-ModifiedAccessConditions
-        ModifiedAccessConditions modifiedAccessConditions = new ModifiedAccessConditions()
+        // BEGIN: com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions
+        RequestConditions modifiedAccessConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.changeLeaseWithResponse("proposedId", modifiedAccessConditions).subscribe(response ->
             System.out.printf("Changed lease ID is %s%n", response.getValue()));
-        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-ModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.LeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions
     }
 }

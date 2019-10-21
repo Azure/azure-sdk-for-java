@@ -4,9 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobAccessConditions;
-
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
+
 import java.time.Duration;
 
 /**
@@ -63,8 +63,8 @@ public final class HttpGetterInfo {
 
     /**
      * @return the eTag used when creating If-Match header. eTag is returned with any operation that modifies the
-     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context)
-     * properties}. Defaults to null.
+     * resource and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration,
+     * Context) properties}. Defaults to null.
      */
     public String getETag() {
         return eTag;
@@ -72,7 +72,7 @@ public final class HttpGetterInfo {
 
     /**
      * Sets the eTag used when creating If-Match header. eTag is returned with any operation that modifies the resource
-     * and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobAccessConditions, Duration, Context)
+     * and when retrieving {@link BlobClient#getPropertiesWithResponse(BlobRequestConditions, Duration, Context)
      * properties}. Defaults to null.
      *
      * @param eTag Resource's eTag

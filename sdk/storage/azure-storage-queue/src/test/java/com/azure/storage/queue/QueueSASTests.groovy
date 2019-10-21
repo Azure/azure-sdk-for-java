@@ -36,10 +36,10 @@ class QueueSASTests extends APISpec {
         def perms = QueueSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getAddPermission() == add
-        perms.getUpdatePermission() == update
-        perms.getProcessPermission() == process
+        perms.hasReadPermission() == read
+        perms.hasAddPermission() == add
+        perms.hasUpdatePermission() == update
+        perms.hasProcessPermission() == process
 
         where:
         permString || read  | add   | update | process
@@ -239,7 +239,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS create queue delete queue"() {
         def service = new AccountSasService()
-            .setQueue(true)
+            .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)
@@ -279,7 +279,7 @@ class QueueSASTests extends APISpec {
     @Test
     def "Test Account QueueServiceSAS list queues"() {
         def service = new AccountSasService()
-            .setQueue(true)
+            .setQueueAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
             .setService(true)

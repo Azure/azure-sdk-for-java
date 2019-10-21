@@ -305,11 +305,11 @@ class HelperTest extends APISpec {
         BlobSasPermission perms = BlobSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getCreatePermission() == create
-        perms.getAddPermission() == add
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
+        perms.hasAddPermission() == add
 
         where:
         permString || read  | write | delete | create | add
@@ -361,12 +361,12 @@ class HelperTest extends APISpec {
         BlobContainerSasPermission perms = BlobContainerSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getCreatePermission() == create
-        perms.getAddPermission() == add
-        perms.getListPermission() == list
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasCreatePermission() == create
+        perms.hasAddPermission() == add
+        perms.hasListPermission() == list
 
         where:
         permString || read  | write | delete | create | add   | list
@@ -536,14 +536,14 @@ class HelperTest extends APISpec {
         AccountSasPermission perms = AccountSasPermission.parse(permString)
 
         then:
-        perms.getReadPermission() == read
-        perms.getWritePermission() == write
-        perms.getDeletePermission() == delete
-        perms.getListPermission() == list
-        perms.getAddPermission() == add
-        perms.getCreatePermission() == create
-        perms.getUpdatePermission() == update
-        perms.getProcessMessages() == process
+        perms.hasReadPermission() == read
+        perms.hasWritePermission() == write
+        perms.hasDeletePermission() == delete
+        perms.hasListPermission() == list
+        perms.hasAddPermission() == add
+        perms.hasCreatePermission() == create
+        perms.hasUpdatePermission() == update
+        perms.hasProcessMessages() == process
 
         where:
         permString || read  | write | delete | list  | add   | create | update | process
