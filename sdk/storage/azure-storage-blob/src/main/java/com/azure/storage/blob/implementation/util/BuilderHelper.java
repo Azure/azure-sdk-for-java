@@ -32,7 +32,9 @@ import java.util.function.Supplier;
  */
 public final class BuilderHelper {
     private static final String DEFAULT_USER_AGENT_NAME = "azure-storage-blob";
+    // {x-version-update-start;com.azure:azure-storage-blob;current}
     private static final String DEFAULT_USER_AGENT_VERSION = "12.0.0-preview.5";
+    // {x-version-update-end}
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
