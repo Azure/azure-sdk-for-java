@@ -1,12 +1,15 @@
 # Release History
 
-## 1.0.0 (2019-10-23)
+## 1.0.0 (2019-10-25) - November 2019 SDK Release
 **Breaking changes**
 
 - The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 
 - All credentials are moved from `com.azure.identity.credential` package to `com.azure.identity` package
 - `DeviceCodeChallenge` is renamed to `DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
 - All methods containing `uri` is renamed to contain `url` for consistency
+
+**Known issues**
+- Support connecting to different clouds with `AZURE_CLOUD` environment variable ([#5741](https://github.com/Azure/azure-sdk-for-java/issues/5741))
 
 ## 1.0.0-preview.4 (2019-10-07)
 **New features**
