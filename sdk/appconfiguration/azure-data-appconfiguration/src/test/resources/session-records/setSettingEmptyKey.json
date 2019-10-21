@@ -3,13 +3,8 @@
     "Method" : "PUT",
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/",
     "Headers" : {
-<<<<<<< HEAD
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "1ff6cc77-abac-48f6-9552-ebbaa4ac06cc",
-=======
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "79f8d137-27b7-4d92-b1a5-0367dc6bedd4",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -19,41 +14,23 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "405",
-<<<<<<< HEAD
       "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "x-ms-correlation-request-id" : "4a59a7f4-df29-4764-b171-56f0c06ebd1c",
-=======
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "aa8fc1bf-a60a-4ce1-82cb-3a93b9fe4baf",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
       "Content-Length" : "0",
-<<<<<<< HEAD
       "x-ms-request-id" : "4a59a7f4-df29-4764-b171-56f0c06ebd1c",
       "x-ms-client-request-id" : "1ff6cc77-abac-48f6-9552-ebbaa4ac06cc"
-=======
-      "x-ms-request-id" : "aa8fc1bf-a60a-4ce1-82cb-3a93b9fe4baf",
-      "x-ms-client-request-id" : "79f8d137-27b7-4d92-b1a5-0367dc6bedd4"
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-<<<<<<< HEAD
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key87741%2a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "43fe3b67-f00b-4652-9b63-02d15d7f48f2",
-=======
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key67129%2a",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "a861117b-44ac-43aa-94a9-c43a57240606",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -64,7 +41,6 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-<<<<<<< HEAD
       "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "x-ms-correlation-request-id" : "419464a2-4ab2-4375-8edd-0b883973b9ae",
@@ -74,24 +50,9 @@
       "x-ms-request-id" : "419464a2-4ab2-4375-8edd-0b883973b9ae",
       "Body" : "{\"items\":[]}",
       "x-ms-client-request-id" : "43fe3b67-f00b-4652-9b63-02d15d7f48f2",
-=======
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "c6f261ee-b612-45d4-994e-3c58b120c4ae",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "Access-Control-Allow-Credentials" : "true",
-      "x-ms-request-id" : "c6f261ee-b612-45d4-994e-3c58b120c4ae",
-      "Body" : "{\"items\":[]}",
-      "x-ms-client-request-id" : "a861117b-44ac-43aa-94a9-c43a57240606",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
     },
     "Exception" : null
   } ],
-<<<<<<< HEAD
   "variables" : [ "key87741", "16d2bdd3" ]
-=======
-  "variables" : [ "key67129", "6ef77939" ]
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
 }

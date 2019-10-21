@@ -1,17 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-<<<<<<< HEAD
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key2950825201a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "65c23e40-200d-4477-a263-9bd390c64ba9",
-=======
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key33425090354",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "cb15fd6b-21db-4295-a0e1-c293efd04004",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -20,7 +13,6 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-<<<<<<< HEAD
       "Last-Modified" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
@@ -35,22 +27,6 @@
       "x-ms-request-id" : "caffd6ee-f5d9-4040-816b-c5fd1ef5d90c",
       "Body" : "{\"etag\":\"qHY0RxXSfmFACjos56xM6xUvnUA\",\"key\":\"key2950825201a\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-19T00:46:15+00:00\"}",
       "x-ms-client-request-id" : "65c23e40-200d-4477-a263-9bd390c64ba9",
-=======
-      "Last-Modified" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Tue, 08 Oct 2019 18:00:01 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "10177667-3d60-4875-a0e0-849967efe0d8",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\"",
-      "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM0MDIwNjY=;sn=402066",
-      "x-ms-request-id" : "10177667-3d60-4875-a0e0-849967efe0d8",
-      "Body" : "{\"etag\":\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\",\"key\":\"key33425090354\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-08T18:00:02+00:00\"}",
-      "x-ms-client-request-id" : "cb15fd6b-21db-4295-a0e1-c293efd04004",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
@@ -58,13 +34,8 @@
     "Method" : "DELETE",
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/myNonExistentKey",
     "Headers" : {
-<<<<<<< HEAD
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "3496f8da-4f22-4395-b58d-6c91b4b385e9",
-=======
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "4a50c7f9-03a1-48f9-9d86-7ec9d9e46fdb",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -74,41 +45,23 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "204",
-<<<<<<< HEAD
       "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "x-ms-correlation-request-id" : "9721507b-e3e5-4bc3-86ce-9f3bbc1fcc14",
-=======
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "46b0021e-7f96-4123-9ca2-d7055ba2291a",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
       "Content-Length" : "0",
-<<<<<<< HEAD
       "x-ms-request-id" : "9721507b-e3e5-4bc3-86ce-9f3bbc1fcc14",
       "x-ms-client-request-id" : "3496f8da-4f22-4395-b58d-6c91b4b385e9"
-=======
-      "x-ms-request-id" : "46b0021e-7f96-4123-9ca2-d7055ba2291a",
-      "x-ms-client-request-id" : "4a50c7f9-03a1-48f9-9d86-7ec9d9e46fdb"
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-<<<<<<< HEAD
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key2950825201a?label=myNonExistentLabel",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "d5b60eb6-2e64-4986-86d1-dacb0f2429cf",
-=======
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key33425090354?label=myNonExistentLabel",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "11f526ca-7f1a-4e57-9d06-f8dc689f5564",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -118,41 +71,23 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "204",
-<<<<<<< HEAD
       "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "x-ms-correlation-request-id" : "b718409a-3700-435d-a4da-104201a2b98a",
-=======
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "afab8895-d734-4358-b156-116567828b01",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "Access-Control-Allow-Credentials" : "true",
       "Content-Length" : "0",
-<<<<<<< HEAD
       "x-ms-request-id" : "b718409a-3700-435d-a4da-104201a2b98a",
       "x-ms-client-request-id" : "d5b60eb6-2e64-4986-86d1-dacb0f2429cf"
-=======
-      "x-ms-request-id" : "afab8895-d734-4358-b156-116567828b01",
-      "x-ms-client-request-id" : "11f526ca-7f1a-4e57-9d06-f8dc689f5564"
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-<<<<<<< HEAD
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key2950825201a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "e1d07228-97cf-4d1c-8cd2-8c11d9648d4f",
-=======
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key33425090354",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "2a4e4e38-6d29-4ee6-85f4-39430e90559e",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -161,7 +96,6 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-<<<<<<< HEAD
       "Last-Modified" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
@@ -176,38 +110,15 @@
       "x-ms-request-id" : "62bd31d8-cfbd-4827-8d43-d25a0b213f00",
       "Body" : "{\"etag\":\"qHY0RxXSfmFACjos56xM6xUvnUA\",\"key\":\"key2950825201a\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-19T00:46:15+00:00\"}",
       "x-ms-client-request-id" : "e1d07228-97cf-4d1c-8cd2-8c11d9648d4f",
-=======
-      "Last-Modified" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "4a138b5c-e462-4449-8176-98264a9da842",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\"",
-      "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM0MDIwNjY=;sn=402066",
-      "x-ms-request-id" : "4a138b5c-e462-4449-8176-98264a9da842",
-      "Body" : "{\"etag\":\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\",\"key\":\"key33425090354\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-08T18:00:02+00:00\"}",
-      "x-ms-client-request-id" : "2a4e4e38-6d29-4ee6-85f4-39430e90559e",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-<<<<<<< HEAD
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key29508%2a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "545f902e-e3a1-4523-ac7d-b8d7dee26fcf",
-=======
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv?key=key33425%2a",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "d4c9aaa7-a8e3-4262-b926-44b2a94f0439",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -218,7 +129,6 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-<<<<<<< HEAD
       "Date" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
       "x-ms-correlation-request-id" : "702894b0-b117-4b03-b93f-e72874d70781",
@@ -229,34 +139,15 @@
       "x-ms-request-id" : "702894b0-b117-4b03-b93f-e72874d70781",
       "Body" : "{\"items\":[{\"etag\":\"qHY0RxXSfmFACjos56xM6xUvnUA\",\"key\":\"key2950825201a\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-19T00:46:15+00:00\"}]}",
       "x-ms-client-request-id" : "545f902e-e3a1-4523-ac7d-b8d7dee26fcf",
-=======
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "edab2c1a-073c-4ee6-af93-39e8ebea9eb0",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM0MDIwNjY=;sn=402066",
-      "x-ms-request-id" : "edab2c1a-073c-4ee6-af93-39e8ebea9eb0",
-      "Body" : "{\"items\":[{\"etag\":\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\",\"key\":\"key33425090354\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-08T18:00:02+00:00\"}]}",
-      "x-ms-client-request-id" : "d4c9aaa7-a8e3-4262-b926-44b2a94f0439",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-<<<<<<< HEAD
     "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key2950825201a",
     "Headers" : {
       "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.6 11.0.4; Windows 10 10.0",
       "x-ms-client-request-id" : "c4143766-f1a6-48d3-b3e7-6a45d80b7f07",
-=======
-    "Uri" : "https://appconfigtestshawnfang.azconfig.io/kv/key33425090354",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-application-configuration/1.0.0-preview.4 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "0c566479-8733-4197-9caa-7a7dd1f1bc47",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -265,7 +156,6 @@
       "Access-Control-Allow-Origin" : "*",
       "Access-Control-Allow-Methods" : "GET, PUT, POST, DELETE, PATCH, OPTIONS",
       "Connection" : "keep-alive",
-<<<<<<< HEAD
       "Last-Modified" : "Sat, 19 Oct 2019 00:46:15 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
@@ -280,29 +170,9 @@
       "x-ms-request-id" : "15352ec9-766e-46e1-9996-b5ccb99d2ba3",
       "Body" : "{\"etag\":\"qHY0RxXSfmFACjos56xM6xUvnUA\",\"key\":\"key2950825201a\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-19T00:46:15+00:00\"}",
       "x-ms-client-request-id" : "c4143766-f1a6-48d3-b3e7-6a45d80b7f07",
-=======
-      "Last-Modified" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Tue, 08 Oct 2019 18:00:02 GMT",
-      "Access-Control-Allow-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "x-ms-correlation-request-id" : "4a05e81d-04bc-4a8e-9d07-b8ff3be47860",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Access-Control-Expose-Headers" : "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, x-ms-retry-after, x-ms-request-id, WWW-Authenticate",
-      "ETag" : "\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\"",
-      "Access-Control-Allow-Credentials" : "true",
-      "Sync-Token" : "zAJw6V16=MDotMSM0MDIwNjc=;sn=402067",
-      "x-ms-request-id" : "4a05e81d-04bc-4a8e-9d07-b8ff3be47860",
-      "Body" : "{\"etag\":\"1rd0F29aIvBbsSMnCFmC5dOC5Hh\",\"key\":\"key33425090354\",\"label\":null,\"content_type\":null,\"value\":\"myNeverDeletedValue\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-10-08T18:00:02+00:00\"}",
-      "x-ms-client-request-id" : "0c566479-8733-4197-9caa-7a7dd1f1bc47",
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
       "Content-Type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8"
     },
     "Exception" : null
   } ],
-<<<<<<< HEAD
   "variables" : [ "key29508", "8bbf5444", "key2950825201a" ]
-=======
-  "variables" : [ "key33425", "e7095d5a", "key33425090354" ]
->>>>>>> 037a38e8b5... Preview 4: Final API Review, Update java doc and sample (#5724)
 }
