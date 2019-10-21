@@ -1185,6 +1185,7 @@ class BlockBlobAPITest extends APISpec {
         blobName == bc.getBlobName()
     }
 
+    @Requires({liveMode()})
     def "BlobClient overwrite false"() {
         setup:
         def file = new File(this.getClass().getResource("/testfiles/uploadFromFileTestData.txt").getPath())
