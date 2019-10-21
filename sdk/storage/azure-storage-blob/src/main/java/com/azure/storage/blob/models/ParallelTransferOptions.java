@@ -4,6 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -60,7 +61,7 @@ public final class ParallelTransferOptions {
      */
     public ParallelTransferOptions setBlockSize(Integer blockSize) {
         if (blockSize != null) {
-            StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BLOB_MAX_BLOCK_SIZE);
+            StorageImplUtils.assertInBounds("blockSize", blockSize, 0, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
         }
         this.blockSize = blockSize;
         return this;
