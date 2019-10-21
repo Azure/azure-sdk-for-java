@@ -34,10 +34,10 @@ import com.azure.search.models.DocumentSearchResult;
 import com.azure.search.models.DocumentSuggestResult;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.QueryType;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchMode;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequest;
-import com.azure.search.models.SearchRequestOptions;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import java.util.List;
@@ -131,16 +131,16 @@ public final class DocumentsImpl {
     /**
      * Queries the number of documents in the Azure Search index.
      *
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Long>> countWithRestResponseAsync(SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Long>> countWithRestResponseAsync(RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.count(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), this.client.getApiVersion(), clientRequestId, context);
     }
@@ -180,13 +180,13 @@ public final class DocumentsImpl {
      *
      * @param searchText A full-text search query expression; Use "*" or omit this parameter to match all documents.
      * @param searchOptions Additional parameters for the operation.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DocumentSearchResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
         Boolean includeTotalResultCount = null;
         if (searchOptions != null) {
             includeTotalResultCount = searchOptions.isIncludeTotalResultCount();
@@ -252,8 +252,8 @@ public final class DocumentsImpl {
             top = searchOptions.getTop();
         }
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String facetsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(facets, CollectionFormat.MULTI);
         String highlightFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
@@ -282,16 +282,16 @@ public final class DocumentsImpl {
      * Searches for documents in the Azure Search index.
      *
      * @param searchRequest The definition of the Search request.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSearchResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DocumentSearchResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.searchPost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), searchRequest, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -316,16 +316,16 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing from the returned document.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, List<String> selectedFields, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String selectedFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(selectedFields, CollectionFormat.CSV);
         return service.get(key, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), clientRequestId, context);
@@ -361,13 +361,13 @@ public final class DocumentsImpl {
      * @param searchText The search text to use to suggest documents. Must be at least 1 character, and no more than 100 characters.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
      * @param suggestOptions Additional parameters for the operation.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DocumentSuggestResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
         String filter = null;
         if (suggestOptions != null) {
             filter = suggestOptions.getFilter();
@@ -405,8 +405,8 @@ public final class DocumentsImpl {
             top = suggestOptions.getTop();
         }
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         String orderByConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
@@ -432,16 +432,16 @@ public final class DocumentsImpl {
      * Suggests documents in the Azure Search index that match the given partial query text.
      *
      * @param suggestRequest The Suggest request.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DocumentSuggestResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<DocumentSuggestResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.suggestPost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), suggestRequest, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -464,16 +464,16 @@ public final class DocumentsImpl {
      * Sends a batch of document write actions to the Azure Search index.
      *
      * @param batch The batch of index actions.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, SearchRequestOptions searchRequestOptions, Context context) {
+    public <T> Mono<SimpleResponse<DocumentIndexResult>> indexWithRestResponseAsync(IndexBatch<T> batch, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.index(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), batch, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -506,17 +506,17 @@ public final class DocumentsImpl {
      *
      * @param searchText The incomplete term which should be auto-completed.
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index definition.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param autocompleteOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, SearchRequestOptions searchRequestOptions, AutocompleteOptions autocompleteOptions, Context context) {
+    public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, RequestOptions requestOptions, AutocompleteOptions autocompleteOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         AutocompleteMode autocompleteMode = null;
         if (autocompleteOptions != null) {
@@ -572,16 +572,16 @@ public final class DocumentsImpl {
      * Autocompletes incomplete query terms based on input text and matching terms in the Azure Search index.
      *
      * @param autocompleteRequest The definition of the Autocomplete request.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.autocompletePost(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), this.client.getApiVersion(), autocompleteRequest, clientRequestId, context);
     }

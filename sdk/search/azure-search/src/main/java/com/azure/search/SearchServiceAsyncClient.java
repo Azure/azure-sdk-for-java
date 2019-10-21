@@ -28,7 +28,7 @@ import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
 import com.azure.search.models.AccessCondition;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
@@ -346,19 +346,20 @@ public class SearchServiceAsyncClient {
     /**
      * Creates a new Azure Cognitive Search index.
      * @param index definition of the index to create.
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the created Index.
      */
-    public Mono<Response<Index>> createIndexWithResponse(Index index, SearchRequestOptions searchRequestOptions) {
-        return withContext(context -> createIndexWithResponse(index, searchRequestOptions, context));
+    public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
+        return withContext(context -> createIndexWithResponse(index, requestOptions, context));
     }
 
     Mono<Response<Index>> createIndexWithResponse(Index index,
-                                                  SearchRequestOptions searchRequestOptions,
+                                                  RequestOptions requestOptions,
                                                   Context context) {
         return restClient
             .indexes()
-            .createWithRestResponseAsync(index, searchRequestOptions, context)
+            .createWithRestResponseAsync(index, requestOptions, context)
             .map(Function.identity());
     }
 
@@ -375,30 +376,31 @@ public class SearchServiceAsyncClient {
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      * @param indexName The name of the index to retrieve
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return the Index.
      */
-    public Mono<Index> getIndex(String indexName, SearchRequestOptions searchRequestOptions) {
-        return this.getIndexWithResponse(indexName, searchRequestOptions)
+    public Mono<Index> getIndex(String indexName, RequestOptions requestOptions) {
+        return this.getIndexWithResponse(indexName, requestOptions)
             .map(Response::getValue);
     }
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      * @param indexName The name of the index to retrieve
-     * @param searchRequestOptions Additional parameters for the operation
+     * @param requestOptions Additional parameters for the operation
      * @return a response containing the Index.
      */
-    public Mono<Response<Index>> getIndexWithResponse(String indexName, SearchRequestOptions searchRequestOptions) {
-        return withContext(context -> getIndexWithResponse(indexName, searchRequestOptions, context));
+    public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
+        return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<Index>> getIndexWithResponse(String indexName,
-                                               SearchRequestOptions searchRequestOptions,
+                                               RequestOptions requestOptions,
                                                Context context) {
         return restClient
             .indexes()
-            .getWithRestResponseAsync(indexName, searchRequestOptions, context)
+            .getWithRestResponseAsync(indexName, requestOptions, context)
             .map(Function.identity());
     }
 
@@ -414,28 +416,29 @@ public class SearchServiceAsyncClient {
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
      * @param indexName The name of the index
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
-    public Mono<Boolean> indexExists(String indexName, SearchRequestOptions searchRequestOptions) {
-        return indexExistsWithResponse(indexName, searchRequestOptions).map(Response::getValue);
+    public Mono<Boolean> indexExists(String indexName, RequestOptions requestOptions) {
+        return indexExistsWithResponse(indexName, requestOptions).map(Response::getValue);
     }
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
      * @param indexName The name of the index
-     * @param searchRequestOptions Additional parameters for the operation
+     * @param requestOptions Additional parameters for the operation
      * @return true if the index exists; false otherwise.
      */
     public Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
-                                                           SearchRequestOptions searchRequestOptions) {
-        return withContext(context -> indexExistsWithResponse(indexName, searchRequestOptions, context));
+                                                           RequestOptions requestOptions) {
+        return withContext(context -> indexExistsWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
-                                                    SearchRequestOptions searchRequestOptions,
+                                                    RequestOptions requestOptions,
                                                     Context context) {
-        return this.getIndexWithResponse(indexName, searchRequestOptions, context)
+        return this.getIndexWithResponse(indexName, requestOptions, context)
             .map(i -> (Response<Boolean>) new SimpleResponse<>(i, true))
             .onErrorResume(
                 t -> t instanceof HttpResponseException
@@ -498,7 +501,7 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName The name of the index to delete.
+     * @param indexName the name of the index to delete
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName) {
@@ -509,16 +512,17 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName The name of the index to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param indexName the name of the index to delete
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName,
-                                  SearchRequestOptions searchRequestOptions,
+                                  RequestOptions requestOptions,
                                   AccessCondition accessCondition) {
         return this.deleteIndexWithResponse(indexName,
-            searchRequestOptions,
+            requestOptions,
             accessCondition)
             .map(Response::getValue);
     }
@@ -526,28 +530,29 @@ public class SearchServiceAsyncClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName The name of the index to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param indexName the name of the index to delete
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
-                                                        SearchRequestOptions searchRequestOptions,
+                                                        RequestOptions requestOptions,
                                                         AccessCondition accessCondition) {
         return withContext(context -> deleteIndexWithResponse(indexName,
-            searchRequestOptions,
+            requestOptions,
             accessCondition,
             context));
     }
 
     Mono<Response<Void>> deleteIndexWithResponse(String indexName,
-                                                 SearchRequestOptions searchRequestOptions,
+                                                 RequestOptions requestOptions,
                                                  AccessCondition accessCondition,
                                                  Context context) {
         return restClient
             .indexes()
             .deleteWithRestResponseAsync(indexName,
-                searchRequestOptions,
+                requestOptions,
                 accessCondition,
                 context)
             .map(Function.identity());

@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.core.util.Configuration;
 import com.azure.search.models.SearchOptions;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
 import reactor.core.publisher.Flux;
 
@@ -37,7 +37,7 @@ public class SearchForDynamicDocumentsExample {
             .buildClient();
 
         // Perform a text-based search
-        for (SearchResult result : client.search("luxury hotel", new SearchOptions(), new SearchRequestOptions())) {
+        for (SearchResult result : client.search("luxury hotel", new SearchOptions(), new RequestOptions())) {
 
             // Each result is a dynamic Map
             Document doc = result.getAdditionalProperties();
@@ -68,7 +68,7 @@ public class SearchForDynamicDocumentsExample {
             .setIncludeTotalResultCount(true);
 
         // Perform a search and subscribe to the results and log additional information
-        Flux<SearchResult> results = client.search("hotel", parameters, new SearchRequestOptions())
+        Flux<SearchResult> results = client.search("hotel", parameters, new RequestOptions())
             .log()
             .doOnSubscribe(__ -> System.out.println("Subscribed to PagedFlux results"));
 

@@ -20,7 +20,7 @@ import com.azure.search.models.Skillset;
 import com.azure.search.models.SkillsetListResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.SynonymMapListResult;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -252,19 +252,20 @@ public class SearchServiceClient {
     /**
      * Creates a new Azure Cognitive Search index
      * @param index definition of the index to create
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the created Index.
      */
     public Response<Index> createIndexWithResponse(Index index,
-                                                   SearchRequestOptions searchRequestOptions,
+                                                   RequestOptions requestOptions,
                                                    Context context) {
-        return asyncClient.createIndexWithResponse(index, searchRequestOptions, context).block();
+        return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
     }
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
-     * @param indexName The name of the index to retrieve
+     * @param indexName the name of the index to retrieve
      * @return the Index.
      */
     public Index getIndex(String indexName) {
@@ -274,31 +275,33 @@ public class SearchServiceClient {
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
-     * @param indexName The name of the index to retrieve
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param indexName the name of the index to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return the Index.
      */
     public Index getIndex(String indexName,
-                          SearchRequestOptions searchRequestOptions) {
-        return this.getIndexWithResponse(indexName, searchRequestOptions, Context.NONE).getValue();
+                          RequestOptions requestOptions) {
+        return this.getIndexWithResponse(indexName, requestOptions, Context.NONE).getValue();
     }
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
-     * @param indexName The name of the index to retrieve
-     * @param searchRequestOptions Additional parameters for the operation
+     * @param indexName the name of the index to retrieve
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response containing the Index.
      */
     public Response<Index> getIndexWithResponse(String indexName,
-                                                SearchRequestOptions searchRequestOptions,
+                                                RequestOptions requestOptions,
                                                 Context context) {
-        return asyncClient.getIndexWithResponse(indexName, searchRequestOptions, context).block();
+        return asyncClient.getIndexWithResponse(indexName, requestOptions, context).block();
     }
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
-     * @param indexName The name of the index
+     * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
     public Boolean indexExists(String indexName) {
@@ -307,26 +310,28 @@ public class SearchServiceClient {
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
-     * @param indexName The name of the index
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param indexName the name of the index
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
     public Boolean indexExists(String indexName,
-                               SearchRequestOptions searchRequestOptions) {
-        return indexExistsWithResponse(indexName, searchRequestOptions, Context.NONE).getValue();
+                               RequestOptions requestOptions) {
+        return indexExistsWithResponse(indexName, requestOptions, Context.NONE).getValue();
     }
 
     /**
      * Determines whether or not the given index exists in the Azure Cognitive Search.
-     * @param indexName The name of the index
-     * @param searchRequestOptions Additional parameters for the operation
+     * @param indexName the name of the index
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return true if the index exists; false otherwise.
      */
     public Response<Boolean> indexExistsWithResponse(String indexName,
-                                                     SearchRequestOptions searchRequestOptions,
+                                                     RequestOptions requestOptions,
                                                      Context context) {
-        return asyncClient.indexExistsWithResponse(indexName, searchRequestOptions, context).block();
+        return asyncClient.indexExistsWithResponse(indexName, requestOptions, context).block();
     }
 
     /**
@@ -380,7 +385,7 @@ public class SearchServiceClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName The name of the index to delete.
+     * @param indexName the name of the index to delete.
      */
     public void deleteIndex(String indexName) {
         this.deleteIndexWithResponse(indexName, null, null, Context.NONE);
@@ -389,31 +394,33 @@ public class SearchServiceClient {
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName The name of the index to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param indexName the name of the index to delete.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
      */
     public void deleteIndex(String indexName,
-                            SearchRequestOptions searchRequestOptions,
+                            RequestOptions requestOptions,
                             AccessCondition accessCondition) {
-        this.deleteIndexWithResponse(indexName, searchRequestOptions, accessCondition, Context.NONE);
+        this.deleteIndexWithResponse(indexName, requestOptions, accessCondition, Context.NONE);
     }
 
     /**
      * Deletes an Azure Cognitive Search index and all the documents it contains.
      *
-     * @param indexName The name of the index to delete.
-     * @param searchRequestOptions Additional parameters for the operation.
-     * @param accessCondition Additional parameters for the operation.
+     * @param indexName the name of the index to delete.
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param accessCondition the access condition
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
     public Response<Void> deleteIndexWithResponse(String indexName,
-                                                  SearchRequestOptions searchRequestOptions,
+                                                  RequestOptions requestOptions,
                                                   AccessCondition accessCondition,
                                                   Context context) {
         return asyncClient.deleteIndexWithResponse(indexName,
-            searchRequestOptions,
+            requestOptions,
             accessCondition,
             context).block();
     }

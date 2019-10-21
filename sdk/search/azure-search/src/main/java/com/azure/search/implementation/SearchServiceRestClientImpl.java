@@ -19,7 +19,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -239,16 +239,16 @@ public final class SearchServiceRestClientImpl {
     /**
      * Gets service level statistics for an Azure Search service.
      *
-     * @param searchRequestOptions Additional parameters for the operation.
+     * @param requestOptions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ServiceStatistics>> getServiceStatisticsWithRestResponseAsync(SearchRequestOptions searchRequestOptions, Context context) {
+    public Mono<SimpleResponse<ServiceStatistics>> getServiceStatisticsWithRestResponseAsync(RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
-        if (searchRequestOptions != null) {
-            clientRequestId = searchRequestOptions.getClientRequestId();
+        if (requestOptions != null) {
+            clientRequestId = requestOptions.getClientRequestId();
         }
         return service.getServiceStatistics(this.getSearchServiceName(), this.getSearchDnsSuffix(), this.getApiVersion(), clientRequestId, context);
     }

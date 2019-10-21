@@ -8,7 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.QueryType;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
@@ -242,7 +242,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         SearchOptions invalidSearchOptions = new SearchOptions()
             .setFilter("This is not a valid filter.");
 
-        search("*", invalidSearchOptions, new SearchRequestOptions());
+        search("*", invalidSearchOptions, new RequestOptions());
     }
 
     @Test
@@ -253,7 +253,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         SearchOptions invalidSearchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL);
 
-        search("/.*/.*/", invalidSearchOptions, new SearchRequestOptions());
+        search("/.*/.*/", invalidSearchOptions, new RequestOptions());
     }
 
     @Test
@@ -328,5 +328,5 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     @Test
     public abstract void canSearchWithSynonyms();
 
-    abstract void search(String searchText, SearchOptions searchOptions, SearchRequestOptions searchRequestOptions);
+    abstract void search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions);
 }

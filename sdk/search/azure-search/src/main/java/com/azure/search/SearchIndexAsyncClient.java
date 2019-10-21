@@ -26,7 +26,7 @@ import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.DocumentIndexResult;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.SearchRequest;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SearchOptions;
@@ -301,30 +301,31 @@ public class SearchIndexAsyncClient {
     /**
      * Searches for documents in the Azure Search index
      *
-     * @param searchText Search Test
+     * @param searchText Search text
      * @param searchOptions search options
-     * @param searchRequestOptions Search Request Options
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return A {@link PagedFlux} of SearchResults
      */
     public PagedFlux<SearchResult> search(
             String searchText,
             SearchOptions searchOptions,
-            SearchRequestOptions searchRequestOptions) {
+            RequestOptions requestOptions) {
         SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
         return new PagedFlux<SearchResult>(
-            () -> withContext(context -> searchFirstPage(searchRequest, searchRequestOptions, context)),
-            skip -> withContext(context -> searchNextPage(searchRequest, searchRequestOptions, skip, context)));
+            () -> withContext(context -> searchFirstPage(searchRequest, requestOptions, context)),
+            skip -> withContext(context -> searchNextPage(searchRequest, requestOptions, skip, context)));
     }
 
     PagedFlux<SearchResult> search(
             String searchText,
             SearchOptions searchOptions,
-            SearchRequestOptions searchRequestOptions,
+            RequestOptions requestOptions,
             Context context) {
         SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
         return new PagedFlux<>(
-            () -> searchFirstPage(searchRequest, searchRequestOptions, context),
-            skip -> searchNextPage(searchRequest, searchRequestOptions, skip, context));
+            () -> searchFirstPage(searchRequest, requestOptions, context),
+            skip -> searchNextPage(searchRequest, requestOptions, skip, context));
     }
 
     /**
@@ -344,14 +345,15 @@ public class SearchIndexAsyncClient {
      *
      * @param key document key
      * @param selectedFields selected fields to return
-     * @param searchRequestOptions search request options
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return the document object
      */
     public Mono<Document> getDocument(
             String key,
             List<String> selectedFields,
-            SearchRequestOptions searchRequestOptions) {
-        return this.getDocumentWithResponse(key, selectedFields, searchRequestOptions)
+            RequestOptions requestOptions) {
+        return this.getDocumentWithResponse(key, selectedFields, requestOptions)
             .map(Response::getValue);
     }
 
@@ -360,24 +362,25 @@ public class SearchIndexAsyncClient {
      *
      * @param key document key
      * @param selectedFields selected fields to return
-     * @param searchRequestOptions search request options
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the document object
      */
     public Mono<Response<Document>> getDocumentWithResponse(
             String key,
             List<String> selectedFields,
-            SearchRequestOptions searchRequestOptions) {
-        return withContext(context -> getDocumentWithResponse(key, selectedFields, searchRequestOptions, context));
+            RequestOptions requestOptions) {
+        return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
     }
 
     Mono<Response<Document>> getDocumentWithResponse(
             String key,
             List<String> selectedFields,
-            SearchRequestOptions searchRequestOptions,
+            RequestOptions requestOptions,
             Context context) {
         return restClient
             .documents()
-            .getWithRestResponseAsync(key, selectedFields, searchRequestOptions, context)
+            .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
             .map(res -> {
                 Document doc = res.getValue();
                 DocumentResponseConversions.cleanupDocument(doc);
@@ -390,7 +393,7 @@ public class SearchIndexAsyncClient {
                     + " and selectedFields: " + selectedFields
                     + " was retrieved successfully"))
             .doOnError(e -> logger.error("An error occurred in "
-                + "getDocument(key, selectedFields, searchRequestOptions): " + e.getMessage()))
+                + "getDocument(key, selectedFields, requestOptions): " + e.getMessage()))
             .map(Function.identity());
     }
 
@@ -411,17 +414,18 @@ public class SearchIndexAsyncClient {
      * @param searchText search text
      * @param suggesterName suggester name
      * @param suggestOptions suggest options
-     * @param searchRequestOptions search request options
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return suggests results
      */
     public PagedFlux<SuggestResult> suggest(
             String searchText,
             String suggesterName,
             SuggestOptions suggestOptions,
-            SearchRequestOptions searchRequestOptions) {
+            RequestOptions requestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestOptions);
         return new PagedFlux<>(
-            () -> withContext(context -> suggestFirst(searchRequestOptions, suggestRequest, context)),
+            () -> withContext(context -> suggestFirst(requestOptions, suggestRequest, context)),
             nextLink -> Mono.empty());
     }
 
@@ -429,11 +433,11 @@ public class SearchIndexAsyncClient {
             String searchText,
             String suggesterName,
             SuggestOptions suggestOptions,
-            SearchRequestOptions searchRequestOptions,
+            RequestOptions requestOptions,
             Context context) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName, suggestOptions);
         return new PagedFlux<>(
-            () -> suggestFirst(searchRequestOptions, suggestRequest, context),
+            () -> suggestFirst(requestOptions, suggestRequest, context),
             nextLink -> Mono.empty());
     }
 
@@ -488,19 +492,20 @@ public class SearchIndexAsyncClient {
      * @param searchText search text
      * @param suggesterName suggester name
      * @param autocompleteOptions autocomplete options
-     * @param searchRequestOptions search request options
+     * @param requestOptions additional parameters for the operation.
+     *                       Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result
      */
     public PagedFlux<AutocompleteItem> autocomplete(
         String searchText,
         String suggesterName,
         AutocompleteOptions autocompleteOptions,
-        SearchRequestOptions searchRequestOptions) {
+        RequestOptions requestOptions) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,
             autocompleteOptions);
         return new PagedFlux<>(
-            () -> withContext(context -> autocompleteFirst(autocompleteRequest, searchRequestOptions, context)),
+            () -> withContext(context -> autocompleteFirst(autocompleteRequest, requestOptions, context)),
             nextLink -> Mono.empty());
     }
 
@@ -508,13 +513,13 @@ public class SearchIndexAsyncClient {
         String searchText,
         String suggesterName,
         AutocompleteOptions autocompleteOptions,
-        SearchRequestOptions searchRequestOptions,
+        RequestOptions requestOptions,
         Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(searchText,
             suggesterName,
             autocompleteOptions);
         return new PagedFlux<>(
-            () -> autocompleteFirst(autocompleteRequest, searchRequestOptions, context),
+            () -> autocompleteFirst(autocompleteRequest, requestOptions, context),
             nextLink -> Mono.empty());
     }
 
@@ -522,17 +527,17 @@ public class SearchIndexAsyncClient {
      * Retrieve the first page of a document search
      *
      * @param searchRequest the search request
-     * @param searchRequestOptions the search request options
-     * @param context The context to associate with this operation.
+     * @param requestOptions the request options
+     * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
     private Mono<PagedResponse<SearchResult>> searchFirstPage(
         SearchRequest searchRequest,
-        SearchRequestOptions searchRequestOptions,
+        RequestOptions requestOptions,
         Context context) {
         return restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest, searchRequestOptions, context)
+            .searchPostWithRestResponseAsync(searchRequest, requestOptions, context)
             .map(res -> new SearchPagedResponse(res));
     }
 
@@ -542,13 +547,13 @@ public class SearchIndexAsyncClient {
      * @param searchRequest the search request
      * @param skip number of documents to skip. Due to a limitation in PageFlux, this value is stored as String and
      *             converted to its Integer value before making the next request
-     * @param context The context to associate with this operation.
+     * @param context the context to associate with this operation.
      * @return {@link Mono}{@code <}{@link PagedResponse}{@code <}{@link SearchResult}{@code >}{@code >} next page
      * response with results
      */
     private Mono<PagedResponse<SearchResult>> searchNextPage(
             SearchRequest searchRequest,
-            SearchRequestOptions searchRequestOptions,
+            RequestOptions requestOptions,
             String skip,
             Context context) {
         if (skip == null || skip.isEmpty()) {
@@ -558,25 +563,25 @@ public class SearchIndexAsyncClient {
         Integer skipValue = Integer.valueOf(skip);
 
         return restClient.documents()
-            .searchPostWithRestResponseAsync(searchRequest.setSkip(skipValue), searchRequestOptions, context)
+            .searchPostWithRestResponseAsync(searchRequest.setSkip(skipValue), requestOptions, context)
             .map(res -> new SearchPagedResponse(res));
     }
 
     private Mono<PagedResponse<AutocompleteItem>> autocompleteFirst(
             AutocompleteRequest autocompleteRequest,
-            SearchRequestOptions searchRequestOptions,
+            RequestOptions requestOptions,
             Context context) {
         return restClient.documents()
-            .autocompletePostWithRestResponseAsync(autocompleteRequest, searchRequestOptions, context)
+            .autocompletePostWithRestResponseAsync(autocompleteRequest, requestOptions, context)
             .map(AutoCompletePagedResponse::new);
     }
 
     private Mono<PagedResponse<SuggestResult>> suggestFirst(
-            SearchRequestOptions searchRequestOptions,
+            RequestOptions requestOptions,
             SuggestRequest suggestRequest,
             Context context) {
         return restClient.documents()
-            .suggestPostWithRestResponseAsync(suggestRequest, searchRequestOptions, context)
+            .suggestPostWithRestResponseAsync(suggestRequest, requestOptions, context)
             .map(SuggestPagedResponse::new);
     }
 
@@ -667,7 +672,7 @@ public class SearchIndexAsyncClient {
      *
      * @param searchText search text
      * @param suggesterName search text
-     * @param autocompleteOptions autocomplete parameters
+     * @param autocompleteOptions autocomplete options
      * @return AutocompleteRequest
      */
     private AutocompleteRequest createAutoCompleteRequest(String searchText,

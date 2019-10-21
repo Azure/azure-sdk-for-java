@@ -20,7 +20,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.search.models.SearchRequestOptions;
+import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
