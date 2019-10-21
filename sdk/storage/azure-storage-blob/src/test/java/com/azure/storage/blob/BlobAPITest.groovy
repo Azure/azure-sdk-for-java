@@ -941,12 +941,19 @@ class BlobAPITest extends APISpec {
         cu2.create()
         def bu2 = cu2.getBlobClient(generateBlobName()).getBlockBlobClient()
         bu2.upload(defaultInputStream.get(), defaultDataSize)
-        def leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+
+        def leaseId = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        def blobAccessConditions = new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
+        def leaseAccess = new LeaseAccessConditions().setLeaseId(garbageLeaseID)
 
         when:
-        def copyID = bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null,
-            new BlobAccessConditions().setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseID)), null, null).getValue()
-        bu2.abortCopyFromURLWithResponse(copyID, new LeaseAccessConditions().setLeaseId(garbageLeaseID), null, null)
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccessConditions, Duration.ofMillis(500))
+        def response = poller.getObserver().take(1).blockLast()
+
+        assert response.getStatus() != PollResponse.OperationStatus.FAILED
+
+        def blobCopyInfo = response.getValue()
+        bu2.abortCopyFromURLWithResponse(blobCopyInfo.getCopyId(), leaseAccess, null, null)
 
         then:
         def e = thrown(BlobStorageException)
@@ -959,7 +966,8 @@ class BlobAPITest extends APISpec {
     def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
-        new SpecializedBlobClientBuilder().blobClient(bc)
+        new SpecializedBlobClientBuilder()
+            .blobClient(bc)
             .buildBlockBlobClient()
             .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
@@ -970,8 +978,13 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        def copyID = bu2.copyFromURLWithResponse(bc.getBlobUrl(), null, null, null, null, null, null).getValue()
-        def response = bu2.abortCopyFromURLWithResponse(copyID, null, null, null)
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, Duration.ofSeconds(1))
+        def lastResponse = poller.getObserver().blockFirst()
+
+        assert lastResponse != null
+        assert lastResponse.getValue() != null
+
+        def response = bu2.abortCopyFromURLWithResponse(lastResponse.getValue().getCopyId(), null, null, null)
         def headers = response.getHeaders()
 
         then:
@@ -979,28 +992,10 @@ class BlobAPITest extends APISpec {
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
         headers.getValue("Date") != null
+
+        cleanup:
         // Normal test cleanup will not clean up containers in the alternate account.
         cu2.deleteWithResponse(null, null, null).getStatusCode() == 202
-    }
-
-    def "Abort copy min"() {
-        setup:
-        // Data has to be large enough and copied between accounts to give us enough time to abort
-        new SpecializedBlobClientBuilder().blobClient(bc)
-            .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
-        // So we don't have to create a SAS.
-        cc.setAccessPolicy(PublicAccessType.BLOB, null)
-
-        def cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName())
-        cu2.create()
-        def bu2 = cu2.getBlobClient(generateBlobName())
-
-        when:
-        def copyID = bu2.copyFromURL(bc.getBlobUrl())
-
-        then:
-        bu2.abortCopyFromURLWithResponse(copyID, null, null, null).getStatusCode() == 204
     }
 
     def "Abort copy lease"() {
