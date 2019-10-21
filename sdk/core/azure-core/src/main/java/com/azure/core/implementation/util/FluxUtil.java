@@ -64,7 +64,7 @@ public final class FluxUtil {
         try {
             byteOutputStream.write(byteBufferToArray(byteBuffer));
         } catch (IOException e) {
-            throw new RuntimeException("Error occurs when write ByteBuffer to ByteArrayOutputStream.", e);
+            throw new RuntimeException("Error occurred writing ByteBuffer to ByteArrayOutputStream.", e);
         }
     }
 
