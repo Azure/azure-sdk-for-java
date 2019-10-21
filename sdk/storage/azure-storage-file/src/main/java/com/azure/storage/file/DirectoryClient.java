@@ -62,15 +62,6 @@ public class DirectoryClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FileServiceVersion getServiceVersion() {
-        return directoryAsyncClient.getServiceVersion();
-    }
-
-    /**
      * Constructs a FileClient that interacts with the specified file.
      *
      * <p>If the file doesn't exist in this directory {@link FileClient#create(long)} create} in the client will

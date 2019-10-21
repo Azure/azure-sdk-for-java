@@ -56,15 +56,6 @@ public final class QueueServiceClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public QueueServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
-    }
-
-    /**
      * Constructs a QueueClient that interacts with the specified queue.
      *
      * This will not create the queue in the storage account if it doesn't exist.

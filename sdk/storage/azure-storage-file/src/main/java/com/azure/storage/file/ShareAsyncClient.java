@@ -100,15 +100,6 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FileServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Constructs a {@link DirectoryAsyncClient} that interacts with the root directory in the share.
      *
      * <p>If the directory doesn't exist in the share {@link DirectoryAsyncClient#create()} in the

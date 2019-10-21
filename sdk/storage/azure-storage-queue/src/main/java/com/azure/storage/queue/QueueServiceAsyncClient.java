@@ -76,15 +76,6 @@ public final class QueueServiceAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public QueueServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Constructs a QueueAsyncClient that interacts with the specified queue.
      *
      * This will not create the queue in the storage account if it doesn't exist.

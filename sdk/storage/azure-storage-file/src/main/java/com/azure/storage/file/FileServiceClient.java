@@ -58,15 +58,6 @@ public final class FileServiceClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FileServiceVersion getServiceVersion() {
-        return fileServiceAsyncClient.getServiceVersion();
-    }
-
-    /**
      * Constructs a ShareClient that interacts with the specified share.
      *
      * <p>If the share doesn't exist in the storage account {@link ShareClient#create() create} in the

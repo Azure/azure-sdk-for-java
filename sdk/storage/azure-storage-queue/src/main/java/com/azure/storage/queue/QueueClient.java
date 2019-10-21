@@ -57,15 +57,6 @@ public final class QueueClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public QueueServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
-    }
-
-    /**
      * Creates a new queue.
      *
      * <p><strong>Code Samples</strong></p>

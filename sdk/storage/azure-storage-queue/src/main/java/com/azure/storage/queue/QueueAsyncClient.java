@@ -91,15 +91,6 @@ public final class QueueAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public QueueServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Creates a new queue.
      *
      * <p><strong>Code Samples</strong></p>

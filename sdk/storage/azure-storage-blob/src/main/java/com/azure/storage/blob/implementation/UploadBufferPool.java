@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -29,7 +29,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * be sent. Filled buffers can be uploaded in parallel and should return buffers to the pool after the upload completes.
  * Once the source terminates, it should call flush.
  */
-final class UploadBufferPool {
+public final class UploadBufferPool {
     private final ClientLogger logger = new ClientLogger(UploadBufferPool.class);
 
     /*
@@ -53,7 +53,7 @@ final class UploadBufferPool {
      * @param numBuffs The number of buffers in the buffer pool.
      * @param buffSize The size of the buffers
      */
-    UploadBufferPool(final int numBuffs, final int buffSize) {
+    public UploadBufferPool(final int numBuffs, final int buffSize) {
         /*
         We require at least two buffers because it is possible that a given write will spill over into a second buffer.
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
@@ -164,7 +164,7 @@ final class UploadBufferPool {
      * Flushes the current buffer
      * @return the flushed buffer
      */
-    Flux<ByteBuffer> flush() {
+    public Flux<ByteBuffer> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
@@ -183,7 +183,7 @@ final class UploadBufferPool {
      * Returns the ByteBuffer
      * @param b The ByteBuffer to reset and return
      */
-    void returnBuffer(ByteBuffer b) {
+    public void returnBuffer(ByteBuffer b) {
         // Reset the buffer.
         b.position(0);
         b.limit(b.capacity());

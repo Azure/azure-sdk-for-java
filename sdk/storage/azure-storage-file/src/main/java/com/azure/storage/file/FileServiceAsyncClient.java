@@ -79,15 +79,6 @@ public final class FileServiceAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FileServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Constructs a ShareAsyncClient that interacts with the specified share.
      *
      * <p>If the share doesn't exist in the storage account {@link ShareAsyncClient#create() create} in the

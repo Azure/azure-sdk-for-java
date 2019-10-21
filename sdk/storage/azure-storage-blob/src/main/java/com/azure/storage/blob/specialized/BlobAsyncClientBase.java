@@ -83,10 +83,10 @@ public class BlobAsyncClientBase {
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
-    protected final String accountName;
-    protected final String containerName;
-    protected final String blobName;
-    protected final BlobServiceVersion serviceVersion;
+    private final String accountName;
+    private final String containerName;
+    private final String blobName;
+    private final BlobServiceVersion serviceVersion;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -194,7 +194,7 @@ public class BlobAsyncClientBase {
      *
      * @return account name associated with this storage resource.
      */
-    public String getAccountName() {
+    protected String getAccountName() {
         return accountName;
     }
 
@@ -203,7 +203,7 @@ public class BlobAsyncClientBase {
      *
      * @return the service version the client is using.
      */
-    public BlobServiceVersion getServiceVersion() {
+    protected BlobServiceVersion getServiceVersion() {
         return serviceVersion;
     }
 

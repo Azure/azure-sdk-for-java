@@ -75,15 +75,6 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public BlobServiceVersion getServiceVersion() {
-        return this.blobServiceAsyncClient.getServiceVersion();
-    }
-
-    /**
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
