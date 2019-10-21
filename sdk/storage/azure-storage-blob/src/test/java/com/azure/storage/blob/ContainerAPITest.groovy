@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.*
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.common.Utility
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -1165,9 +1166,9 @@ class ContainerAPITest extends APISpec {
         def blobs = cc.listBlobs().iterator()
 
         then:
-        blobs.next().getName() == name
-        blobs.next().getName() == name + "2"
-        blobs.next().getName() == name + "3"
+        Utility.urlDecode(blobs.next().getName()) == name
+        Utility.urlDecode(blobs.next().getName()) == name + "2"
+        Utility.urlDecode(blobs.next().getName()) == name + "3"
 
         where:
         name          | _

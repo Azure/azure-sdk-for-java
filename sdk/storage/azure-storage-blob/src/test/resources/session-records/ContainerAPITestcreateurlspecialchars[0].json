@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az[]",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az%5B%5D",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
@@ -44,7 +44,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az[]",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az%5B%5D",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
@@ -73,7 +73,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az[]2",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az%5B%5D2",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
@@ -95,7 +95,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az[]3",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtccreateurlspecialchars0949712d53f50aaceb478f/az%5B%5D3",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 11.0.4; Windows 10 10.0",
