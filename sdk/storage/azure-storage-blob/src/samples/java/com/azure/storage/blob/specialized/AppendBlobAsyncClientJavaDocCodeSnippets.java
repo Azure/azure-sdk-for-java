@@ -3,14 +3,10 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.storage.blob.models.AppendBlobAccessConditions;
-import com.azure.storage.blob.models.AppendPositionAccessConditions;
-import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -44,22 +40,20 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHttpHeaders, Map, BlobAccessConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#createWithResponse(BlobHttpHeaders, Map, BlobRequestConditions)}
      */
     public void create2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setBlobContentType("binary")
             .setBlobContentLanguage("en-US");
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        BlobAccessConditions accessConditions = new BlobAccessConditions()
-            .setLeaseAccessConditions(new LeaseAccessConditions().setLeaseId(leaseId))
-            .setModifiedAccessConditions(new ModifiedAccessConditions()
-                .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3)));
+        BlobRequestConditions accessConditions = new BlobRequestConditions().setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.createWithResponse(headers, metadata, accessConditions).subscribe(response ->
             System.out.printf("Created AppendBlob at %s%n", response.getValue().getLastModified()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobAccessConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions
     }
 
     /**
@@ -73,14 +67,13 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(Flux, long, AppendBlobAccessConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(Flux, long, AppendBlobRequestConditions)}
      */
     public void appendBlock2() {
         // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-AppendBlobAccessConditions
-        AppendBlobAccessConditions accessConditions = new AppendBlobAccessConditions()
-            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
-                .setAppendPosition(POSITION)
-                .setMaxSize(maxSize));
+        AppendBlobRequestConditions accessConditions = new AppendBlobRequestConditions()
+            .setAppendPosition(POSITION)
+            .setMaxSize(maxSize);
 
         client.appendBlockWithResponse(data, length, accessConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
@@ -98,21 +91,20 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobAsyncClient#appendBlockFromUrlWithResponse(String, BlobRange, byte[], AppendBlobAccessConditions, SourceModifiedAccessConditions)}
+     * Code snippet for {@link AppendBlobAsyncClient#appendBlockFromUrlWithResponse(String, BlobRange, byte[], AppendBlobRequestConditions, BlobRequestConditions)}
      */
     public void appendBlockFromUrl2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions
-        AppendBlobAccessConditions appendBlobAccessConditions = new AppendBlobAccessConditions()
-            .setAppendPositionAccessConditions(new AppendPositionAccessConditions()
-                .setAppendPosition(POSITION)
-                .setMaxSize(maxSize));
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions
+        AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
+            .setAppendPosition(POSITION)
+            .setMaxSize(maxSize);
 
-        SourceModifiedAccessConditions modifiedAccessConditions = new SourceModifiedAccessConditions()
-            .setSourceIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        BlobRequestConditions modifiedAccessConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.appendBlockFromUrlWithResponse(sourceUrl, new BlobRange(offset, count), null,
-            appendBlobAccessConditions, modifiedAccessConditions).subscribe(response ->
+            appendBlobRequestConditions, modifiedAccessConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobAccessConditions-SourceModifiedAccessConditions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions
     }
 }
